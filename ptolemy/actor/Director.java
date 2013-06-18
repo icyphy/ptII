@@ -1888,16 +1888,12 @@ public class Director extends Attribute implements Executable {
                         .getContainer();
                 Time fireAtTime = environmentTime;
                 if (!time.equals(Time.POSITIVE_INFINITY)) {
-                    fireAtTime = fireAtTime.add(time); 
-//                    fireAt(actor, fireAtTime);
+                    fireAtTime = fireAtTime.add(time);
                     container.getDirector().fireContainerAt(
                             fireAtTime);
                 }
             }
-        } else if (isEmbedded()) {
-            return ((CompositeActor) ((CompositeActor) getContainer())
-                    .getContainer()).getDirector()._schedule(actor, timestamp);
-        }
+        } 
         return time == null || finished;
     }
     

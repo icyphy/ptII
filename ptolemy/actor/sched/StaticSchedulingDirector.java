@@ -292,11 +292,6 @@ public class StaticSchedulingDirector extends Director {
         _currentlyExecuting = false; 
     }
     
-    boolean _actorFinished;
-    boolean _currentlyExecuting;
-    int _lastSchedulePosition;
-    int _lastIterationCount;
-
     /** Return true if the director is ready to fire. This method is
      *  called by the container of this director to determine whether
      *  the director is ready to execute. It does <i>not</i> call
@@ -343,10 +338,6 @@ public class StaticSchedulingDirector extends Director {
                 }
                 Actor actor = firing.getActor();
 
-                if (_currentlyExecuting) {
-                    _prefire = false;
-                    return false;
-                }
                 if (!_actorFinished) {
                     boolean finished = _schedule(actor, getModelTime());
                     if (!finished) {
@@ -451,6 +442,12 @@ public class StaticSchedulingDirector extends Director {
     /** The value returned by the prefire() method. */
     protected boolean _prefire = false;
 
+    private boolean _actorFinished;
+    private boolean _currentlyExecuting;
+    private int _lastSchedulePosition;
+    private int _lastIterationCount;
+    
+    
     /** Computed schedule that has not been fully executed because this
      *  director is waiting for resources.
      */

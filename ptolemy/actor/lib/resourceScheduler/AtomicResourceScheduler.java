@@ -286,7 +286,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *  decorate objects across opaque hierarchy boundaries.
      */
     public boolean isGlobalDecorator() {
-        return false;
+        return true;
     }
 
     public boolean isWaitingForResource(Actor actor) {
