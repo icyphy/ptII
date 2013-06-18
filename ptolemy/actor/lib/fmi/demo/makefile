@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/fmi/demo
 
-DIRS =		FMUBouncingBall FMUModelicaSin
+DIRS =		FMUBouncingBall FMUModelicaSin FMUSimulationX
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
