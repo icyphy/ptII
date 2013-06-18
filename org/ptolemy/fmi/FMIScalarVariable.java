@@ -177,9 +177,7 @@ public class FMIScalarVariable {
                     // Iterate over the children of this element to find the
                     // names of the dependents.
                     // FIXME: In FMI 2.0, DirectDependency will be replaced by
-                    // "InputDependency" or "inputDependency", depending on which
-                    // page of the standard you go by, and its value will be a space-
-                    // separated list of indexes of the input.
+                    // "dependencies" in the ModelStructure element of the model description.
                     directDependency = new HashSet<String>();
                     NodeList names = childElement.getChildNodes();
                     for (int j = 0; j < names.getLength(); j++) {
