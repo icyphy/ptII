@@ -39,7 +39,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, -20.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -286,6 +286,18 @@
             <entity name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 50.0]">
                 </property>
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPPCore">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
             </entity>
             <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
                 <property name="period" class="ptolemy.actor.parameters.PortParameter" value="clockPeriod">
@@ -322,6 +334,8 @@
                     </property>
                     <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
+                </property>
+                <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
                 </property>
             </entity>
             <entity name="App" class="ptolemy.actor.TypedCompositeActor">
@@ -399,6 +413,8 @@
                         </property>
                         <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                         </property>
+                    </property>
+                    <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
                     </property>
                     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
                         <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
@@ -504,7 +520,7 @@
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.3">
                         </property>
                         <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
                         </property>
@@ -522,6 +538,8 @@
                         </property>
                         <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
+                    </property>
+                    <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
                     </property>
                     <port name="trigger" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>

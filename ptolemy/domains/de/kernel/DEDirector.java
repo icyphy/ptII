@@ -1249,11 +1249,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     }
     
     /** Resume the execution of an actor that was previously blocked because
-     *  it didn't have all the resources it needed for execution. This method
-     *  is called by {@link ResourceScheduler} actors.
+     *  it didn't have all the resources it needed for execution. This method 
+     *  puts an event into the queue for the current time.
      *  
-     *  In this base class, the implementation is empty. Derived directors
-     *  should override this method to handle resuming of actor execution.
      *  @param actor The actor that resumes execution.
      *  @throws IllegalActionException Not thrown here but in derived classes.
      */
