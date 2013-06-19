@@ -881,7 +881,7 @@ public class TypedCompositeActor extends
                     }
                     else 
                         putString += _eol + "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                                + "_" + inputPort.getName() + "].farReceivers[0], temporary);" + _eol;
+                                + "_" + inputPort.getName() + "].farReceivers[" + channel + "], temporary);" + _eol;
                     if (container.getDirector() instanceof ptolemy.domains.modal.kernel.FSMDirector){
                         List actorList = container.deepEntityList();
                         Iterator<?> actors = actorList.iterator();
