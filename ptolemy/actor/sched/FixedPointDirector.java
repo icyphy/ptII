@@ -946,7 +946,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     }
 
     /** Call the send(index, null) method of each output port with
-     *  unknown status of the specified actor
+     *  unknown status of the specified actor.
      *  @param actor The actor.
      *  @exception IllegalActionException If thrown while getting
      *  the width of a port, determining if a port is known

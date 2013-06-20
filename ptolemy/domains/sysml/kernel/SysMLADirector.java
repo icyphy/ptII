@@ -669,6 +669,7 @@ public class SysMLADirector extends ProcessDirector {
     }
 
     /** Iterate the specified actor once.
+     *  @param actor The actor to iterate.
      *  @return True if either prefire() returns false
      *   or postfire() returns true.
      *  @exception IllegalActionException If the actor throws it.
@@ -726,6 +727,7 @@ public class SysMLADirector extends ProcessDirector {
      *  is empty and any pending fireAt() time requests
      *  are in the future. NOTE: This method is used
      *  only if activeObjects = false.
+     *  @param actor The actor to run.
      *  @return The earliest pending fireAt time in the
      *   future, or TIME.POSITIVE_INFINITY if there is none.
      *  @exception IllegalActionException If the actor throws it.
@@ -1168,7 +1170,7 @@ public class SysMLADirector extends ProcessDirector {
      */
     public class SysMLAReceiver extends Mailbox {
         /** Construct a SysMLAReceiver.
-         *  @excepton IllegalActionException If thrown by the superclass.   
+         *  @exception IllegalActionException If thrown by the superclass.   
          */
         public SysMLAReceiver() throws IllegalActionException {
             this(null);
@@ -1176,7 +1178,7 @@ public class SysMLADirector extends ProcessDirector {
 
         /** Construct a SysMLAReceiver.
          *  @param container The container for this SysMLAReceiver.   
-         *  @excepton IllegalActionException If thrown by the superclass.   
+         *  @exception IllegalActionException If thrown by the superclass.   
          */
         public SysMLAReceiver(IOPort container) throws IllegalActionException {
             super(container);
