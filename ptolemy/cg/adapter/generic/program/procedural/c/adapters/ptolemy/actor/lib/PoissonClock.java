@@ -55,22 +55,6 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         super(actor);
     }
 
-    //    public String generateFireCode() throws IllegalActionException {
-    //        CodeStream codeStream = _templateParser.getCodeStream();
-    //        codeStream.clear();
-    //        LinkedList args = new LinkedList();
-    //        Parameter delay = ((ptolemy.actor.lib.TimeDelay) getComponent()).delay;
-    //        double value = ((DoubleToken) delay.getToken()).doubleValue();
-    //
-    //        int intPart = (int) value;
-    //        int fracPart = (int) ((value - intPart) * 1000000000.0);
-    //        args.add(Integer.toString(intPart));
-    //        args.add(Integer.toString(fracPart));
-    //
-    //        codeStream.appendCodeBlock("fireBlock", args);
-    //        return processCode(codeStream.toString());
-    //    }
-    
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -133,14 +117,14 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
                     + "not supported yet.");
         }
         
-        String valuesString = "";
+        StringBuffer valuesString = new StringBuffer();
         int i = 0;
         if (valuesDouble != null)
         	for (double value : valuesDouble) 
-        		valuesString += "$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ";
+        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; " + _eol);
         else if (valuesInt != null)
         	for (int value : valuesInt) 
-        		valuesString += "$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ";
+        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; " + _eol);
                 
         args.add(valuesString);
         

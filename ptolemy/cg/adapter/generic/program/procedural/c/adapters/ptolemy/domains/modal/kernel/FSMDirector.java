@@ -103,15 +103,13 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                 + codeGenerator.comment("Initialization of the director"));
         
         if (_director.isEmbedded()) {
-            if (container instanceof CompositeActor) {
-                ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
-                // Some composites, such as RunCompositeActor want to be treated
-                // as if they are at the top level even though they have an executive
-                // director, so be sure to check _isTopLevel().
-                if (executiveDirector instanceof SuperdenseTimeDirector) {
-                    code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
-                        + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
-                }
+            ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
+            // Some composites, such as RunCompositeActor want to be treated
+            // as if they are at the top level even though they have an executive
+            // director, so be sure to check _isTopLevel().
+            if (executiveDirector instanceof SuperdenseTimeDirector) {
+                code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
+                    + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
             }
         }
         

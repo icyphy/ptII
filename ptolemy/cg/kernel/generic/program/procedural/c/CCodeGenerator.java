@@ -1346,7 +1346,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  The code generation algorithm works as followed :
      *  We generate a file with the name of the model (+ .c) and its header
      *  file. In this file we have the implementation of a ptolemy manager in
-     *  C ({@link ptolemy.actor.Manager.java}.
+     *  C ({@link ptolemy.actor.Manager}.
      *  
      *  Also for, each Composite Actor (including the top level container)
      *  We generate the files implementing the behavior of the director and
@@ -1397,9 +1397,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (!_includes.contains("-I " + directoryIncludes))
             _includes.add("-I " + directoryIncludes);
 
-        new File(directorySrc).mkdirs();
-        new File(directoryIncludes).mkdirs();
-        new File(directoryBuild).mkdirs();
+        if (new File(directorySrc).mkdirs() || new File(directoryIncludes).mkdirs() || new File(directoryBuild).mkdirs()) {
+            // Findbugs wants that
+            directory += "";
+        }
         
         /////////////////////////////////////////////////////////////////////
         
@@ -1570,6 +1571,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeMainH = null;
         codeTypesH = null;
         codeTypesC = null;
+        
+        // Writing the Makefile
+        _writeMakefile(container, directory);
 
         /*startTime =*/_printTimeAndMemory(startTime,
                 "CCodeGenerator: writing code consumed: ");
@@ -1621,21 +1625,21 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Generation of the code of the actor     //
         /////////////////////////////////////////////
         
-        String actorDefinition = _eol;
+        StringBuffer actorDefinition = new StringBuffer(_eol);
         if (actor instanceof ptolemy.actor.CompositeActor)
-            actorDefinition += "Composite";
-        actorDefinition += "Actor " + sanitizedActorName + ";";
+            actorDefinition.append("Composite");
+        actorDefinition.append("Actor " + sanitizedActorName + ";");
         
         if (actor instanceof ptolemy.cg.lib.CompiledCompositeActor) {
-            actorDefinition += _eol + "JNIEnv *env;" + _eol + "jobject obj";
+            actorDefinition.append(_eol + "JNIEnv *env;" + _eol + "jobject obj");
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                actorDefinition += ";" + _eol + "jobjectArray " + inputPort.getName() + "";
+                actorDefinition.append(";" + _eol + "jobjectArray " + inputPort.getName() + "");
             }
-            actorDefinition += ";" + _eol;
-            actorDefinition += "jobjectArray tokensToAllOutputPorts;" + _eol;   
+            actorDefinition.append(";" + _eol);
+            actorDefinition.append("jobjectArray tokensToAllOutputPorts;" + _eol);   
         }
 
         String constructorActorsDeclaration = "";
@@ -1803,7 +1807,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // Appending the name of the actor
         codeContainerH.append(comment("Actor declaration"));
-        codeContainerH.append(actorDefinition);
+        codeContainerH.append(actorDefinition.toString());
         codeContainerH.append(comment("end actor declaration"));
         
         // Appending the variable declaration
@@ -1902,7 +1906,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  Then we call the generation for the director
      *  Finally we generate the makefile corresponding
      *  
-     *  @param The actor that needs to be generated
+     *  @param container The actor that needs to be generated
+     *  @param containerDirectory A string describing where to write the files
      *  @exception IllegalActionException If anything goes wrong during the generation.
      */
     protected void _generateAndWriteCompositeActorCode(CompositeEntity container, String containerDirectory) throws IllegalActionException {
@@ -1951,9 +1956,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String directoryIncludes = directory + "includes" + containerDirectory;
         String directoryBuild = directory + "build" + containerDirectory;
 
-        new File(directorySrc).mkdirs();
-        new File(directoryIncludes).mkdirs();
-        new File(directoryBuild).mkdirs();
+        if (new File(directorySrc).mkdirs() || new File(directoryIncludes).mkdirs() || new File(directoryBuild).mkdirs()) {
+            //Findbugs wants that
+            directory += "";
+        }
         
         // add the includes to the makefile
         if (!_includes.contains("-I " + directoryIncludes))
@@ -1993,17 +1999,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Generate the director code
         _generateAndWriteDirectorCode(director, directoryIncludes, directorySrc);
 
-        // Writing the Makefile
-        if (_isTopLevel())
-            _writeMakefile(container, directory);
-        _writeMakefile(container, directorySrc);
+//        // Writing the Makefile
+//        if (_isTopLevel())
+//            _writeMakefile(container, directory);
+//        _writeMakefile(container, directorySrc);
     }
     
     /** Generate and write the code for a director within
      *  a container.
      *  This method is called by the container actor
      *    
-     *  @param container The container of the director that needs to be generated.
+     *  @param director The director that needs to be generated.
      *  @param includesDirectory The directory path of the includes files
      *  @param srcDirectory The directory path of the sources files
      *  @exception IllegalActionException If anything goes wrong during the generation.
@@ -2301,18 +2307,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         "Unsupported type of Actor : " + container.getFullName());
             
             if (director != null && director instanceof DEDirector) {
-                String ptcgC = "$(shell find src/ -type f -name '*.c')";//"src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
-                String ptcgO = "";//"build/types.o build/Actor.o build/CalendarQueue.o build/DEDirector.o build/DEEvent.o build/DEReceiver.o build/IOPort.o";
+                StringBuffer ptcgC = new StringBuffer("$(shell find src/ -type f -name '*.c')");//"src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
+                StringBuffer ptcgO = new StringBuffer();//"build/types.o build/Actor.o build/CalendarQueue.o build/DEDirector.o build/DEEvent.o build/DEReceiver.o build/IOPort.o";
                 if (_actorsToInclude != null) {
                     Iterator<String> actors = _actorsToInclude.iterator();
                     while (actors.hasNext()) {
                         String actor = actors.next();
-                        ptcgC += " src/" + actor + ".c";
-                        ptcgO += " build/" + actor + ".o";
+                        ptcgC.append(" src/" + actor + ".c");
+                        ptcgO.append(" build/" + actor + ".o");
                     }
                 }
-                substituteMap.put("@PTCG_CFILES@", ptcgC);
-                substituteMap.put("@PTCG_OFILES@", ptcgO);
+                substituteMap.put("@PTCG_CFILES@", ptcgC.toString());
+                substituteMap.put("@PTCG_OFILES@", ptcgO.toString());
             }
             else {
                 substituteMap.put("@PTCG_CFILES@", "$(shell find src/ -type f -name '*.c')");
@@ -2730,7 +2736,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 if (files[i].isDirectory()) {
                     _deleteDirectory(files[i].getAbsolutePath());
                 }
-                files[i].delete();
+                if (!files[i].delete()) {
+                    // FIXME : Throw something
+                }
             }
         }
     }

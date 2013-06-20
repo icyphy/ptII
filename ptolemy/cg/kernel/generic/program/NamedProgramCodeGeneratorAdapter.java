@@ -315,7 +315,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      * that are appended by default.
      */
     public static String[] getDefaultBlocks() {
-        return _defaultBlocks;
+        String[] retour = _defaultBlocks.clone();
+        return retour;
     }
 
     /** Return a string that represents the additional time.

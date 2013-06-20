@@ -30,21 +30,14 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 import java.util.Iterator;
 import java.util.List;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
@@ -135,15 +128,13 @@ public class SDFDirector
                 + codeGenerator.comment("Initialization of the director"));
         
         if (_director.isEmbedded()) {
-            if (container instanceof CompositeActor) {
-                ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
-                // Some composites, such as RunCompositeActor want to be treated
-                // as if they are at the top level even though they have an executive
-                // director, so be sure to check _isTopLevel().
-                if (executiveDirector instanceof SuperdenseTimeDirector) {
-                    code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
-                        + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
-                }
+            ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
+            // Some composites, such as RunCompositeActor want to be treated
+            // as if they are at the top level even though they have an executive
+            // director, so be sure to check _isTopLevel().
+            if (executiveDirector instanceof SuperdenseTimeDirector) {
+                code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
+                    + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
             }
         }
         
@@ -943,122 +934,122 @@ public class SDFDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Generate input variable declarations.
-     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
-     *  @return a String that declares input variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    private String _generateInputVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
-        boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
-
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> inputPorts = ((Actor) target.getComponent())
-                .inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-
-            if (!inputPort.isOutsideConnected()) {
-                continue;
-            }
-
-            code.append("static " + targetType(inputPort.getType()) + " "
-                    + CodeGeneratorAdapter.generateName(inputPort));
-
-            int bufferSize = _ports.getBufferSize(inputPort);
-            if (inputPort.isMultiport()) {
-                code.append("[" + inputPort.getWidth() + "]");
-                if (bufferSize > 1 || dynamicReferencesAllowed) {
-                    code.append("[" + bufferSize + "]");
-                }
-            } else {
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-            }
-
-            code.append(";" + _eol);
-        }
-
-        return code.toString();
-    }
-
-    /** Generate output variable declarations.
-     *  @return a String that declares output variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    private String _generateOutputVariableDeclaration(
-            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> outputPorts = ((Actor) target.getComponent())
-                .outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-            if (!outputPort.isOutsideConnected()
-                    || outputPort.isInsideConnected()) {
-                code.append("static " + targetType(outputPort.getType()) + " "
-                        + CodeGeneratorAdapter.generateName(outputPort));
-
-                if (outputPort.isMultiport()) {
-                    code.append("[" + outputPort.getWidthInside() + "]");
-                }
-
-                int bufferSize = _ports.getBufferSize(outputPort);
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
-        }
-
-        return code.toString();
-    }
-
-    /** Generate type convert variable declarations.
-     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
-     *  @return a String that declares type convert variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    private String _generateTypeConvertVariableDeclaration(
-            NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> channels = target.getTypeConvertChannels().iterator();
-        while (channels.hasNext()) {
-            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
-                    .next();
-            Type portType = ((TypedIOPort) channel.port).getType();
-
-            if (getCodeGenerator().isPrimitive(portType)) {
-
-                code.append("static ");
-                code.append(targetType(portType));
-                code.append(" " + getTypeConvertReference(channel));
-
-                //int bufferSize = getBufferSize(channel.port);
-                int bufferSize = Math.max(
-                        DFUtilities.getTokenProductionRate(channel.port),
-                        DFUtilities.getTokenConsumptionRate(channel.port));
-
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
-        }
-        return code.toString();
-    }
+//    /** Generate input variable declarations.
+//     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+//     *  @return a String that declares input variables.
+//     *  @exception IllegalActionException If thrown while
+//     *  getting port information.
+//     */
+//    private String _generateInputVariableDeclaration(
+//            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+//        boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
+//
+//        StringBuffer code = new StringBuffer();
+//
+//        Iterator<?> inputPorts = ((Actor) target.getComponent())
+//                .inputPortList().iterator();
+//        while (inputPorts.hasNext()) {
+//            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+//
+//            if (!inputPort.isOutsideConnected()) {
+//                continue;
+//            }
+//
+//            code.append("static " + targetType(inputPort.getType()) + " "
+//                    + CodeGeneratorAdapter.generateName(inputPort));
+//
+//            int bufferSize = _ports.getBufferSize(inputPort);
+//            if (inputPort.isMultiport()) {
+//                code.append("[" + inputPort.getWidth() + "]");
+//                if (bufferSize > 1 || dynamicReferencesAllowed) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//            } else {
+//                if (bufferSize > 1) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//            }
+//
+//            code.append(";" + _eol);
+//        }
+//
+//        return code.toString();
+//    }
+//
+//    /** Generate output variable declarations.
+//     *  @return a String that declares output variables.
+//     *  @exception IllegalActionException If thrown while
+//     *  getting port information.
+//     */
+//    private String _generateOutputVariableDeclaration(
+//            ProgramCodeGeneratorAdapter target) throws IllegalActionException {
+//        StringBuffer code = new StringBuffer();
+//
+//        Iterator<?> outputPorts = ((Actor) target.getComponent())
+//                .outputPortList().iterator();
+//
+//        while (outputPorts.hasNext()) {
+//            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+//
+//            // If either the output port is a dangling port or
+//            // the output port has inside receivers.
+//            if (!outputPort.isOutsideConnected()
+//                    || outputPort.isInsideConnected()) {
+//                code.append("static " + targetType(outputPort.getType()) + " "
+//                        + CodeGeneratorAdapter.generateName(outputPort));
+//
+//                if (outputPort.isMultiport()) {
+//                    code.append("[" + outputPort.getWidthInside() + "]");
+//                }
+//
+//                int bufferSize = _ports.getBufferSize(outputPort);
+//
+//                if (bufferSize > 1) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//                code.append(";" + _eol);
+//            }
+//        }
+//
+//        return code.toString();
+//    }
+//
+//    /** Generate type convert variable declarations.
+//     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+//     *  @return a String that declares type convert variables.
+//     *  @exception IllegalActionException If thrown while
+//     *  getting port information.
+//     */
+//    private String _generateTypeConvertVariableDeclaration(
+//            NamedProgramCodeGeneratorAdapter target)
+//            throws IllegalActionException {
+//        StringBuffer code = new StringBuffer();
+//
+//        Iterator<?> channels = target.getTypeConvertChannels().iterator();
+//        while (channels.hasNext()) {
+//            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
+//                    .next();
+//            Type portType = ((TypedIOPort) channel.port).getType();
+//
+//            if (getCodeGenerator().isPrimitive(portType)) {
+//
+//                code.append("static ");
+//                code.append(targetType(portType));
+//                code.append(" " + getTypeConvertReference(channel));
+//
+//                //int bufferSize = getBufferSize(channel.port);
+//                int bufferSize = Math.max(
+//                        DFUtilities.getTokenProductionRate(channel.port),
+//                        DFUtilities.getTokenConsumptionRate(channel.port));
+//
+//                if (bufferSize > 1) {
+//                    code.append("[" + bufferSize + "]");
+//                }
+//                code.append(";" + _eol);
+//            }
+//        }
+//        return code.toString();
+//    }
 
     /** Generate referenced parameter declarations.
      *  @return a String that declares referenced parameters.

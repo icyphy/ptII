@@ -90,7 +90,6 @@ public class ModalController
         
         String name = _myController.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
-        name = name.replace('.', '_');
         modalName = modalName.replace('.', '_');
         
         // Generate code for preemptive transition.
@@ -132,9 +131,7 @@ public class ModalController
        StringBuffer code = new StringBuffer();
        
        String name = _myController.getFullName().substring(1);
-       String modalName = name.replace("_Controller", "");
        name = name.replace('.', '_');
-       modalName = modalName.replace('.', '_');
        
        code.append(_eol + "switch (" + name + "__currentState) {");
        Iterator states = _myController.entityList().iterator();
@@ -190,7 +187,7 @@ public class ModalController
 
         //code.append("int " + name + "__currentState;" + _eol);
         code.append("int " + modalName + "__transitionFlag;" + _eol);
-        String enumStates = _eol + "enum " + name + "__currentState {";
+        StringBuffer enumStates = new StringBuffer(_eol + "enum " + name + "__currentState {");
 
         Iterator states = _myController.entityList().iterator();
         boolean first = true;
@@ -198,12 +195,12 @@ public class ModalController
             if (first)
                 first = false;
             else
-                enumStates += ", ";
+                enumStates.append(", ");
             State state = (State) states.next();
             String stateName = CodeGeneratorAdapter.generateName(state);
-            enumStates += stateName;
+            enumStates.append(stateName);
         }
-        enumStates += "};";
+        enumStates.append("};");
         code.append(enumStates);
         code.append(_eol + "enum " + name + "__currentState " + name + "__currentState;");
 
@@ -225,9 +222,7 @@ public class ModalController
             throws IllegalActionException {
 
         String name = _myController.getFullName().substring(1);
-        String modalName = name.replace("_Controller", "");
         name = name.replace('.', '_');
-        modalName = modalName.replace('.', '_');
         
         int depth = 1;
         code.append(_getIndentPrefix(depth));

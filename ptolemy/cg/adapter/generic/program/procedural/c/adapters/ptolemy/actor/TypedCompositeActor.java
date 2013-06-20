@@ -218,7 +218,7 @@ public class TypedCompositeActor extends
         codeStream.append(_eol + "void " + sanitizedContainerName + "_constructorPorts() {" + _eol);
         
         // We construct the ports of this composite actor
-        String enumString = _eol + "enum {";
+        StringBuffer enumString = new StringBuffer(_eol + "enum {");
         List inputPortList = TopActor.inputPortList();
         List outputPortList = TopActor.outputPortList();
         Iterator<?> ports = inputPortList.iterator();
@@ -246,7 +246,7 @@ public class TypedCompositeActor extends
             args.add(Integer.toString(widthInside));
             args.add(Integer.toString(widthOutside));
             codeStream.appendCodeBlock("IOPortSet", args, true);
-            enumString += "enum_" + sanitizedContainerName + "_" + port.getName() + ", ";
+            enumString.append("enum_" + sanitizedContainerName + "_" + port.getName() + ", ");
         }
         ports = outputPortList.iterator();
         // Sets the output ports
@@ -274,12 +274,12 @@ public class TypedCompositeActor extends
             args.add(Integer.toString(widthOutside));
             //args.add(Integer.toString(port.getRemoteReceivers()[0].length));
             codeStream.appendCodeBlock("IOPortSet", args, true);
-            enumString += "enum_" + sanitizedContainerName + "_" + port.getName() + ", ";
+            enumString.append("enum_" + sanitizedContainerName + "_" + port.getName() + ", ");
         }
         if (enumString.length() > 7) {
-            enumString = enumString.substring(0, enumString.length() - 2);
-            enumString += "};" + _eol;
-            _enumPortNumbersDefinition += enumString;
+            enumString.delete(enumString.length() - 2, enumString.length());
+            enumString.append("};" + _eol);
+            _enumPortNumbersDefinition += enumString.toString();
         }
         
         List actorList = TopActor.deepEntityList();
@@ -301,7 +301,7 @@ public class TypedCompositeActor extends
             }
             else {
                 args.clear();
-                enumString = _eol + "enum {";
+                enumString = new StringBuffer(_eol + "enum {");
                 inputPortList = act.inputPortList();
                 outputPortList = act.outputPortList();
                 ports = inputPortList.iterator();
@@ -323,7 +323,7 @@ public class TypedCompositeActor extends
                     args.add(Integer.toString(port.getWidth()));
                     args.add(Integer.toString(0));
                     codeStream.appendCodeBlock("IOPortSet", args, true);
-                    enumString += "enum_" + sanitizedActorName + "_" + port.getName() + ", ";
+                    enumString.append("enum_" + sanitizedActorName + "_" + port.getName() + ", ");
                 }
                 ports = outputPortList.iterator();
                 // Sets the output ports
@@ -348,12 +348,12 @@ public class TypedCompositeActor extends
                     args.add(Integer.toString(widthOutside));
                     //args.add(Integer.toString(port.getRemoteReceivers()[0].length));
                     codeStream.appendCodeBlock("IOPortSet", args, true);
-                    enumString += "enum_" + sanitizedActorName + "_" + port.getName() + ", ";
+                    enumString.append("enum_" + sanitizedActorName + "_" + port.getName() + ", ");
                 }
                 if (enumString.length() > 7) {
-                    enumString = enumString.substring(0, enumString.length() - 2);
-                    enumString += "};" + _eol;
-                    _enumPortNumbersDefinition += enumString;
+                    enumString.delete(enumString.length() - 2, enumString.length());
+                    enumString.append("};" + _eol);
+                    _enumPortNumbersDefinition += enumString.toString();
                 }
             }
         }
@@ -443,7 +443,7 @@ public class TypedCompositeActor extends
             if (!port.isOutsideConnected())
                 continue;
             Receiver[][] farReceivers = port.getRemoteReceivers();
-            String enumFarReceivers = _eol + "enum {";
+            StringBuffer enumFarReceivers = new StringBuffer(_eol + "enum {");
             int channel = 0;
             for (int k = 0 ; k < farReceivers.length ; k++) {
                 if (TopActor instanceof ptolemy.cg.lib.CompiledCompositeActor)
@@ -471,14 +471,14 @@ public class TypedCompositeActor extends
                     int farChannelNumber = r.getContainer().getChannelForReceiver(r);
                     args.add(Integer.toString(farChannelNumber));
                     codeStream.appendCodeBlock("FarReceiverSetBlock", args, true);
-                    enumFarReceivers += sanitizedContainerName + "_" + port.getName() + "_" + 
-                            farActorName + "_" + r.getContainer().getName() + "_" + farChannelNumber + ", ";
+                    enumFarReceivers.append(sanitizedContainerName + "_" + port.getName() + "_" + 
+                            farActorName + "_" + r.getContainer().getName() + "_" + farChannelNumber + ", ");
                 }
             }
             if (enumFarReceivers.length() > 7) {
-                enumFarReceivers = enumFarReceivers.substring(0, enumFarReceivers.length() - 2);
-                enumFarReceivers += "};" + _eol;
-                _enumPortNumbersDefinition += enumFarReceivers;
+                enumFarReceivers.delete(enumFarReceivers.length() - 2, enumFarReceivers.length());
+                enumFarReceivers.append("};" + _eol);
+                _enumPortNumbersDefinition += enumFarReceivers.toString();
             }
             
             // Create a local receivers for Composite actors output ports
@@ -869,19 +869,19 @@ public class TypedCompositeActor extends
                             + "_" + inputPort.getName() + "].receivers + " + channel + ")) {" + _eol;
                     String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
                             + "_" + inputPort.getName() + "].receivers + " + channel + ")";
-                    String putString = _eol + "Token temporary = " + getString + ";";
+                    StringBuffer putString = new StringBuffer(_eol + "Token temporary = " + getString + ";");
                     if (receivers[channel].length > 1) {
                         int foo = 0;
                         for (int cpt = 0 ; cpt < receivers[channel].length ; cpt++) {
                             if (!(receivers[channel][cpt].getContainer().getContainer() instanceof ModalController)) {
-                                putString += _eol + "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                                        + "_" + inputPort.getName() + "].farReceivers[" + foo++ + "], temporary);";
+                                putString.append(_eol + "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                                        + "_" + inputPort.getName() + "].farReceivers[" + foo++ + "], temporary);");
                             }
                         }
                     }
                     else 
-                        putString += _eol + "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
-                                + "_" + inputPort.getName() + "].farReceivers[" + channel + "], temporary);" + _eol;
+                        putString.append(_eol + "ReceiverPut((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                                + "_" + inputPort.getName() + "].farReceivers[" + channel + "], temporary);" + _eol);
                     if (container.getDirector() instanceof ptolemy.domains.modal.kernel.FSMDirector){
                         List actorList = container.deepEntityList();
                         Iterator<?> actors = actorList.iterator();
@@ -890,7 +890,7 @@ public class TypedCompositeActor extends
                             if (actor instanceof ModalController) {
                                 String actorName = CodeGeneratorAdapter.generateName(actor);
                                 String type = inputPort.getType().toString().substring(0,1).toUpperCase() + inputPort.getType().toString().substring(1);
-                                putString += _eol + actorName + "_" + inputPort.getName() + " = temporary.payload." + type + ";" + _eol;
+                                putString.append(_eol + actorName + "_" + inputPort.getName() + " = temporary.payload." + type + ";" + _eol);
                             }
                         }
                     }
@@ -904,7 +904,7 @@ public class TypedCompositeActor extends
                         +", " + sanitizedContainerName + ".director->currentModelTime, " 
                         + sanitizedContainerName + ".director->currentMicrostep);" + _eol;
                     }
-                    codeStream.append(_eol + hasTokenString + putString + fireAtString + _eol + "}" + _eol);
+                    codeStream.append(_eol + hasTokenString + putString.toString() + fireAtString + _eol + "}" + _eol);
                 }
             }
         }

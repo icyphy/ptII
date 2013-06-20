@@ -123,10 +123,10 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
                     + "not supported yet.");
         }
         
-        String offsetsString = "";
+        StringBuffer offsetsString = new StringBuffer();
         int i = 0;
         for (double offset : offsetsDouble) 
-        	offsetsString += "$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; ";
+        	offsetsString.append("$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; " + _eol);
                 
         args.add(offsetsString);
         
