@@ -182,7 +182,7 @@ public class FMUCoSimulation extends FMUDriver {
                 new FMULibrary.FMUStepFinished());
         // Logging tends to cause segfaults because of vararg callbacks.
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
-        loggingOn = (byte) 0;
+        //loggingOn = (byte) 0;
 
         Function instantiateSlave = getFunction("_fmiInstantiateSlave");
 	System.out.println("_fmiInstantiateSlave = " + instantiateSlave);

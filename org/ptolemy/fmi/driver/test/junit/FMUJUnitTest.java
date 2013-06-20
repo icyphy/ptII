@@ -73,7 +73,7 @@ public class FMUJUnitTest {
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
                 + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName);
         new FMUCoSimulation().simulate(fmuFileName, 1.0, 0.1,
-                false /*logging*/, ',', resultsFileName);
+                true /*logging*/, ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
@@ -156,7 +156,7 @@ public class FMUJUnitTest {
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUModelExchange "
                 + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName);
         new FMUModelExchange().simulate(fmuFileName, 1.0, 0.1,
-                false /*logging*/, ',', resultsFileName);
+                true /*logging*/, ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
