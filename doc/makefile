@@ -254,7 +254,6 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
-	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.giotto.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel \
@@ -308,9 +307,7 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program \
 	ptolemy.cg.kernel.generic.program.procedural \
 	ptolemy.cg.kernel.generic.program.procedural.c \
-	ptolemy.cg.kernel.generic.program.procedural.c.de \
 	ptolemy.cg.kernel.generic.program.procedural.c.ptidyos \
-	ptolemy.cg.kernel.generic.program.procedural.c.structures \
 	ptolemy.cg.kernel.generic.program.procedural.java \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
 	ptolemy.cg.kernel.generic.program.procedural.java.type \
