@@ -48,7 +48,9 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
 test FMUImport-1.1 {Test out importFMU} {
     set e1 [sdfModel 5]
     set fmuFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu} [java::null]]
-    java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 [$fmuFile getCanonicalPath]  $e1 100.0 100.0 false
+    set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParmeter]
+    $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
+    java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 $fmuFileParameter $e1 100.0 100.0 false
     set bouncingBall [$e1 getEntity {bouncingBall}]
     set moml [$bouncingBall exportMoML]
     regsub {value=".*/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} $moml {value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} moml2
@@ -65,6 +67,12 @@ test FMUImport-1.1 {Test out importFMU} {
     <port name="h" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
         </property>
         <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -72,6 +80,12 @@ test FMUImport-1.1 {Test out importFMU} {
     <port name="der_h_" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
         </property>
         <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -79,6 +93,12 @@ test FMUImport-1.1 {Test out importFMU} {
     <port name="v" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
         </property>
         <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -86,6 +106,12 @@ test FMUImport-1.1 {Test out importFMU} {
     <port name="der_v_" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
         </property>
         <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
