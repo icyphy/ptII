@@ -83,6 +83,13 @@ public class FMIModelDescription {
      */
     public String fmiVersion;
 
+    /** The absolute path to the resources directory.
+     *  In FMI-2.0, the fmiInstantiateXXX() method has a fmuResourceLocation
+     *  parameter.  This value of this parameter typically starts with "file://"
+     *  but may start with "http://", "https://" or "ftp://".
+     */
+    public String fmuResourceLocation;
+
     /** The FMI guid, typically the value of the guid attribute from a
      * .fmu file.  The value of guid in the modelDescription.xml file
      * must match the guid in the shared library.

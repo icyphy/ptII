@@ -179,16 +179,35 @@ public class FMUFile {
 
         // Find the modelDescription.xml file.
         File modelDescriptionFile = null;
+        String fmuResourceLocation = null;
         for (File file : files) {
-            if (file.getName().endsWith("modelDescription.xml")) {
+            String fileName = file.getName();
+            if (fileName.endsWith("modelDescription.xml")) {
                 modelDescriptionFile = file;
-                break;
+                if (fmuResourceLocation != null) {
+                    break;
+                }
+            }
+            if (fileName.endsWith("resources") || fileName.endsWith("resources/")) {
+                fmuResourceLocation = file.toURI().toString();
+                if (modelDescriptionFile != null) {
+                    break;
+                }
             }
         }
         if (modelDescriptionFile == null) {
             throw new IOException("File \"modelDescription.xml\" is missing "
                     + "from the fmu archive \"" + fmuFileName + "\"/");
         }
+        if (fmuResourceLocation == null) {
+            File fmuResourceFile = new File(modelDescriptionFile.getParent(), "resources");
+            fmuResourceLocation = fmuResourceFile.toURI().toString();
+            if (!fmuResourceFile.mkdirs()) {
+                throw new IOException("Could not create directory \"" + fmuResourceFile
+                        + "\"");
+            }
+        }
+
 
         // Read the modelDescription.xml file.
         Document document = null;
@@ -219,6 +238,9 @@ public class FMUFile {
 
         // Save the list of files that were extracted for later use.
         fmiModelDescription.files = files;
+
+        // Location of the resources/ directory in the zip file;
+        fmiModelDescription.fmuResourceLocation = fmuResourceLocation;
 
         // Handle the root attributes
         if (root.hasAttribute("fmiVersion")) {
