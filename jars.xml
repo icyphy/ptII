@@ -382,6 +382,12 @@
 	<include name="ptolemy/actor/lib/qm/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/resourceScheduler/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/resourceScheduler/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/security/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
