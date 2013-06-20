@@ -51,7 +51,9 @@ JSRCS = \
 	AutoCGKnownFailedTests.java \
 	AutoCGTests.java \
 	AutoKnownFailedTests.java \
+	Auto32Tests.java \
 	AutoTests.java \
+	JUnitAuto32Base.java \
 	JUnitCGCTestBase.java \
 	JUnitCGCNoInlineTestBase.java \
 	JUnitCGJavaTestBase.java \
