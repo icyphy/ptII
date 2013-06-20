@@ -1397,7 +1397,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (!_includes.contains("-I " + directoryIncludes))
             _includes.add("-I " + directoryIncludes);
 
-        if (new File(directorySrc).mkdirs() || new File(directoryIncludes).mkdirs() || new File(directoryBuild).mkdirs()) {
+        if (new File(directorySrc).mkdirs() && new File(directoryIncludes).mkdirs() && new File(directoryBuild).mkdirs()) {
             // Findbugs wants that
             directory += "";
         }
@@ -1956,7 +1956,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String directoryIncludes = directory + "includes" + containerDirectory;
         String directoryBuild = directory + "build" + containerDirectory;
 
-        if (new File(directorySrc).mkdirs() || new File(directoryIncludes).mkdirs() || new File(directoryBuild).mkdirs()) {
+        if (new File(directorySrc).mkdirs() && new File(directoryIncludes).mkdirs() && new File(directoryBuild).mkdirs()) {
             //Findbugs wants that
             directory += "";
         }
