@@ -192,8 +192,13 @@
     <exclude name="vendors/" />
   </patternset>
 
-  <!-- There are three categories of test, regular tests, long tests
+  <!-- There are several categories of test, 32-bit tests, regular tests, long tests
        and longest tests.  We have excludes for each category. -->
+
+  <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
+  <patternset id="test.32bit.excludes">
+    <exclude name="**/junit/JUnitAuto32Test.*" />
+  </patternset>
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
@@ -563,7 +568,7 @@ For example:
 
 
   <target name="test"
-	  depends="build, test.pt-modules, test.short, test.long, test.longest"
+	  depends="build, test.pt-modules, test.short, test.32bit, test.long, test.longest"
 	  description="Build and run the all the junit tests." />
 
   <target name="test.pt-modules"
@@ -577,6 +582,56 @@ For example:
     </ant>
   </target>
 
+
+  <target name="test.32bit"
+	  description="Run the 32-bit JVM tests in auto32/..">
+    <echo>
+      ==test.32bit==
+      This target runs 32-bit JVM tests from auto32/.
+
+      Various test targets are available:
+       test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
+       test.long - runs tests that are fairly long (called by the test target)
+       test.longest - runs tests that are longest (called by the test target)
+       test.report - runs batch of tests specified by a path with wildcards (output=files)
+       test.short - runs tests that are fairly fast (called by the test target)
+       test.single target runs single test specified by its class name (output=stdout)
+
+      test.batch = ${test.batch}
+      timeout = ${timeout} milliseconds
+
+    </echo>
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir32"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <!-- Set filtertrace to off so that we see the junit stackframes -->
+      <batchtest filtertrace="off">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <!-- Run all the tests in test.batch -->
+	  <include name="**/junit/JUnitAuto32Test.*" />
+	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
+	</fileset>
+      </batchtest>
+      <formatter type="plain" usefile="off" />
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
 
   <!-- Cobertura: code coverage tool -->
   <target name="test.cobertura"
@@ -662,6 +717,7 @@ For example:
 	  <!-- Run all the tests in test.batch -->
 	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
@@ -723,6 +779,7 @@ For example:
 	  <!-- Include the long running tests. -->
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
@@ -816,6 +873,7 @@ For example:
 	  <!-- Include the long running tests. -->
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
@@ -959,6 +1017,7 @@ For example:
 
       Various test targets are available:
        test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
        test.long - runs tests that are fairly long (called by the test target)
        test.longest - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
@@ -984,6 +1043,7 @@ For example:
 	  <!-- Include the long running tests. -->
 	  <patternset refid="test.long.includes" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
 	</fileset>
       </batchtest>
@@ -1005,6 +1065,7 @@ For example:
 
       Various test targets are available:
        test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
        test.long - runs tests that are fairly long (called by the test target)
        test.longest - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
@@ -1030,6 +1091,7 @@ For example:
 	  <!-- Include the longest running tests. -->
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
 	</fileset>
       </batchtest>
@@ -1047,6 +1109,7 @@ For example:
       ${junit.formatter} output in ${junit.output.dir}.
  
        test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
        test.long - runs tests that are fairly long (called by the test target)
        test.longest - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
@@ -1070,6 +1133,7 @@ For example:
 		 dir="${basedir}">
 	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
 	</fileset>
       </batchtest>
@@ -1094,6 +1158,7 @@ For example:
       
       Various test targets are available:
        test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
        test.long - runs tests that are fairly long (called by the test target)
        test.longest - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
@@ -1122,6 +1187,7 @@ For example:
 	  <!-- Run all the tests in test.batch -->
 	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
@@ -1150,6 +1216,7 @@ For example:
           ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest
       Various other test targets are available:
        test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
        test.cobertura - run tests using code coverage
        test.long - runs tests that are fairly long (called by the test target)
        test.longest - runs tests that are longest (called by the test target)
