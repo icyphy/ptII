@@ -53,7 +53,7 @@ This attribute decorates actors in the model at the same and lower levels of the
 hierarchy, including those inside opaque composite actors. It decorates them
 with the following parameters:
 <ul>
-<li> <li>enable</i>: If true, then the decorated actor will use this resource.
+<li> <i>enable</i>: If true, then the decorated actor will use this resource.
      This is a boolean that defaults to false.
 <li> <i>executionTime</i>: Specifies the execution time of the
      decorated actor. This means the time that the decorated actor occupies
