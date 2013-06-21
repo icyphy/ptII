@@ -83,5 +83,7 @@ public interface QuantityManager {
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException; 
     
+    /** The parameter name of the decorator highlight color.
+     */
     public static String decoratorHighlightColorName = "decoratorHighlightColor";
 }
