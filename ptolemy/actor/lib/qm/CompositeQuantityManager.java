@@ -423,6 +423,12 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** Attributes for ports decorated by this composite quantity manager.
+     *  A port on an actor decorated by a composite quantity manager must
+     *  specify the port in the CQM that input tokens are routed to.
+     * 
+     *  @author Patricia Derler
+     */
     public static class CQMAttributes extends ResourceAttributes {
 
         /** Constructor to use when editing a model.
@@ -452,10 +458,17 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         ///////////////////////////////////////////////////////////////////
         ////                         parameters                        ////
 
-        /** 
+        /** Input port in the composite quantity manager that receives
+         *  tokens from decorated actor ports.
          */
         public Parameter inputPort; 
         
+        /** React to a change in the input port attribute.
+         *  @param attribute The attribute that changed.
+         *  @exception IllegalActionException If the change is not acceptable
+         *   to this container (not thrown in this base class).
+         */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             if (attribute == inputPort) {
