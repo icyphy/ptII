@@ -246,25 +246,36 @@ public class PtidesPort extends MirrorPort {
         return times;
     }
 
-    /**
+    /** Check whether port is output and network port parameter is not set.
      *  @return True if port is an actuator port.
      */
     public boolean isActuatorPort() {
         return isOutput() && !_isNetworkPort;
     }
 
+    /** Check whether port is input and network port parameter is not set.
+     * @return True if is sensor port.
+     */
     public boolean isSensorPort() {
         return isInput() && !_isNetworkPort;
     }
 
+    /** Check whether port is input and network port parameter is set.
+     * @return True if is network receiver port.
+     */
     public boolean isNetworkReceiverPort() {
         return isInput() && _isNetworkPort;
     }
 
+    /** Check whether port is output and network port parameter is set.
+     *  @return True if port is an network transmitter port.
+     */
     public boolean isNetworkTransmitterPort() {
         return isOutput() && _isNetworkPort;
     }
 
+    /** Make port input port and update visual representation.
+     */
     @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
@@ -272,6 +283,8 @@ public class PtidesPort extends MirrorPort {
         _setIconAndParameterVisibility();
     }
 
+    /** Make port output port and update visual representation.
+     */
     @Override
     public void setOutput(boolean isInput) throws IllegalActionException {
         super.setOutput(isInput);
@@ -312,9 +325,7 @@ public class PtidesPort extends MirrorPort {
         super.send(channelIndex, token);
     }
 
-    protected HashMap<Token, Object[]> _transmittedTokenTimestamps;
-
-    protected HashMap<Token, Integer> _transmittedTokenCnt;
+    
 
 
     /** Change visibility of parameters depending on the type of
@@ -387,4 +398,9 @@ public class PtidesPort extends MirrorPort {
 
     private boolean _isNetworkPort;
 
+
+    private HashMap<Token, Object[]> _transmittedTokenTimestamps;
+
+    private HashMap<Token, Integer> _transmittedTokenCnt;
+    
 }
