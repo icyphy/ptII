@@ -47,7 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	SimulationX.fmu \
+	FMUSimulationXPIController.xml \
 	FMUSimulationX.xml
 
 EXTRA_SRCS = \
