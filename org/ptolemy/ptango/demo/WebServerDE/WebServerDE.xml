@@ -48,11 +48,13 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE">
+        <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/files">
+        </property>
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 55.0]">
         </property>
-        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
+        <property name="resourceAttribute2" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -72,9 +74,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: the &quot;img&quot; element in StringConst refer to &#10;files with a path relative to the resourceLocation&#10;parameters of the WebServer.  &#10;&#10;The first resourceLocation is by default&#10;the directory that the current model is in.&#10;&#10;The syntax &#10;&lt;img src=&quot;/files/img/Icon.gif&quot; /&gt; &#10;is a GET request to the web server.  &#10;First the web server determines which handler &#10;is mapped to URLs with the prefix /files&#10;in this case, it is a ResourceHandler created&#10;in WebServer.  (The prefix for the ResourceHandler&#10;is specified in WebServer's resourcePath parameter).  &#10;A ResourceHandler is a Jetty class that knows how &#10;to return files as part of an HttpResponse.&#10;&#10;Next, the ResourceHandler looks for a file /img/Icon.gif &#10;relative to the resourceLocation - here, the&#10;resourceLocation is the directory that this model is in, &#10;$PTII/org/ptolemy/ptango/demo/WebServerDE&#10;so the file is&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif&#10;&#10;Note that the resourcePath prefix does NOT have to &#10;be part of the resourceLocation's path anywhere.  &#10;In this example there is no /files in&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif&#10; &#10;You can add as many FileParameters&#10;as you like to the WebServer, and these&#10;directories or URLs will be searched for &#10;files.&#10;&#10;For example, StringConst2 uses a file&#10;that is stored in the WebServer's &#10;resourceLocation2, so &#10;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot; /&gt;&#10;maps to&#10;$PTII/org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif&#10;&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: the &quot;img&quot; elements in StringConst actors refer to &#10;files with a path relative to the resourceLocation&#10;parameters of the WebServer.  &#10;&#10;The first resourceLocation is by default&#10;the directory that the current model is in.&#10;&#10;The syntax &lt;img src=&quot;/img/Icon.gif&quot; /&gt; &#10;is a GET request to the web server.  &#10;First the web server determines which handler &#10;is mapped to URLs with the prefix /img.&#10;In this case, there is no such handler, so the server&#10;looks in the directory where the model is stored.&#10;In this case, the model is in&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE&#10;so the file is&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif.&#10;&#10;The syntax &lt;img src=&quot;/files/PtolemySmallIcon.gif&quot;/&gt;,&#10;by contrast, delegates to the handler with prefix &quot;/files&quot;,&#10;which is set to look for files in the directory&#10;&quot;$PTII/org/ptolemy/ptango/demo/files&quot;.&#10;&#10;A ResourceHandler is a Jetty class that knows how &#10;to return files as part of an HttpResponse.&#10;&#10;Note that the resourcePath prefix does NOT have to &#10;be part of the resourceLocation's path anywhere.  &#10;In this example there is no /files in&#10;$PTII/org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif&#10; &#10;You can add as many FileParameters&#10;as you like to the WebServer, and these&#10;directories or URLs will be searched for files.&#10;&#10;For example, StringConst3 specifies a file&#10;&quot;PtolemyIISmall.gif&quot;, which is stored in the&#10;WebServer's resourceLocation2, which has&#10;value &quot;$PTII/doc/img&quot; so &#10;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot; /&gt;&#10;maps to&#10;&quot;$PTII/doc/img/PtolemyIISmall.gif&quot;.&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 20.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -156,7 +158,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[78.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 520.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -182,7 +184,7 @@
         </port>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;img src=&quot;/files/img/Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;img src=&quot;/img/Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -197,7 +199,7 @@
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[438.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 380.0]">
         </property>
     </entity>
     <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
@@ -213,6 +215,21 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[248.0, 410.0]">
+        </property>
+    </entity>
+    <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmall.gif&quot;/&gt;">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 460.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -259,6 +276,8 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="HttpActor.response" relation="relation4"/>
     <link port="HttpActor.response" relation="relation10"/>
     <link port="HttpActor.getRequestURI" relation="relation"/>
@@ -278,7 +297,10 @@
     <link port="AddSubtract.plus" relation="relation3"/>
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation9"/>
+    <link port="AddSubtract.plus" relation="relation11"/>
     <link port="AddSubtract.output" relation="relation7"/>
     <link port="StringConst2.output" relation="relation9"/>
     <link port="StringConst2.trigger" relation="relation2"/>
+    <link port="StringConst3.output" relation="relation11"/>
+    <link port="StringConst3.trigger" relation="relation2"/>
 </entity>
