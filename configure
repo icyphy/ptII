@@ -714,6 +714,7 @@ PTJAVAMAIL_PACKAGES
 PTJAVAMAIL_JARS
 PTJAVAMAIL_DIR
 PTJAVA3D_DIR
+PTJAVA32_DIR
 PTJAVA_HOME
 PTJAVA_DIR_NO_CYGDRIVE
 PTJAVA_DIR
@@ -922,14 +923,17 @@ enable_verbose
 with_find
 with_gawk
 with_java
+with_java32
 with_boost
 with_cmkit
 with_cal
 with_chic
 with_colt
+with_cunit
 with_tools_jar
 with_eclipse
 with_dbxml
+with_db
 with_dbxmllib
 with_gc_include
 with_itextpdf
@@ -939,6 +943,8 @@ with_netbeansapivisual
 with_jcerti
 with_jetty
 with_servlet
+with_smack
+with_smackx
 with_javamail
 with_joystick_jar
 with_ptjacl_jar
@@ -946,8 +952,8 @@ with_junit
 with_junitparams
 with_jxl
 with_jython
-with_kieler
-with_guava
+with_kieler_jar
+with_guava_jar
 with_javacv
 with_rxtx
 with_lejos
@@ -960,11 +966,12 @@ with_hessian
 with_wmqtt
 with_mapss
 with_ptpowermock
+with_antlr
 with_soot
 with_javasystemjar
-with_ojdbc6
+with_mysql
 with_ojdbc
-with_pdfrendererjar
+with_pdfrenderer
 with_batikjar
 with_tini
 with_giotto
@@ -1602,6 +1609,9 @@ Optional Packages:
   --with-java=DIR         use Java binaries from DIR,
                            defaults to the value of the
                            PTJAVA_DIR environment variable
+  --with-java32=DIR         use 32-bit Java binaries from DIR,
+                           defaults to the value of the
+                           PTJAVA32_DIR environment variable
   --with-boost-include=DIR      use boost includes from DIR DIR/boost/numeric/odeint.hpp should exist,
                           defaults to /usr/local/include
   --with-cmkit=DIR       use CaffeineMark from DIR,
@@ -3234,6 +3244,80 @@ fi
 # PTJAVA_DIR without /cygdrive
 # Use changequote here to preserve square brackets
 PTJAVA_DIR_NO_CYGDRIVE="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+
+
+
+
+
+
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where the 32-bit Java is;  if
+#	not, check to see if the PTJAVA32_DIR environment variable is set;
+#       if it is not, look for javac on the path.
+#       NOTE: If your javac compiler is in /usr/bin, then PTJAVA32_DIR is
+#       likely to be set to /usr.  Consider using PTJAVA32_HOME if
+#       you are looking for Java jar files.
+#       Note that PTJAVA_HOME is set to the jre directory, wheras
+#       PTJAVA_DIR is set to the directory above the jre directory.
+#       PTJAVA_HOME will _not_ have a trailing slash.
+#--------------------------------------------------------------------
+
+
+# Check whether --with-java32 was given.
+if test "${with_java32+set}" = set; then :
+  withval=$with_java32; PTJAVA32_DIR=$withval
+fi
+
+
+if test -d "$PTJAVA32_DIR"; then
+	if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result:
+    PTJAVA32_DIR environment variable was set to
+    '$PTJAVA32_DIR', and there is a directory
+    at that location, so we will try it." >&5
+$as_echo "
+    PTJAVA32_DIR environment variable was set to
+    '$PTJAVA32_DIR', and there is a directory
+    at that location, so we will try it." >&6; }; fi
+else
+    if test -z "$PTJAVA32_DIR"; then
+	if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: PTJAVA32_DIR environment variable was not set,
+    so we search for the java compiler." >&5
+$as_echo "PTJAVA32_DIR environment variable was not set,
+    so we search for the java compiler." >&6; }; fi
+    else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: PTJAVA32_DIR environment variable is set to
+    '${PTJAVA32_DIR}', which is not a directory,
+    so we search for the java compiler." >&5
+$as_echo "$as_me: WARNING: PTJAVA32_DIR environment variable is set to
+    '${PTJAVA32_DIR}', which is not a directory,
+    so we search for the java compiler." >&2;}
+    fi
+    java -d32 -version > /dev/null
+    retval=$?
+    if test $retval = 0; then
+        PTJAVA32_DIR=${PTJAVA_DIR}
+	if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: Running java -d32 -version succeeded,
+    so PTJAVA32_DIR is $PTJAVA_32DIR" >&5
+$as_echo "Running java -d32 -version succeeded,
+    so PTJAVA32_DIR is $PTJAVA_32DIR" >&6; }; fi
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Running java -d32 -version failed,
+    perhaps you need to install a separate 32-bit JVM
+    or rerun configure with --with-java32?
+    The 32-bit JVM is only needed for FMI tests." >&5
+$as_echo "$as_me: WARNING: Running java -d32 -version failed,
+    perhaps you need to install a separate 32-bit JVM
+    or rerun configure with --with-java32?
+    The 32-bit JVM is only needed for FMI tests." >&2;}
+    fi
+fi
+
+# PTJAVA32_DIR without /cygdrive
+# Use changequote here to preserve square brackets
+PTJAVA32_DIR_NO_CYGDRIVE="`echo "$PTJAVA32_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+
+
+
 
 #
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
@@ -4897,9 +4981,9 @@ else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CUnit to be used to test the C cg templates" >&5
 $as_echo_n "checking for CUnit to be used to test the C cg templates... " >&6; }
 
-# Check whether --with-tools_jar was given.
-if test "${with_tools_jar+set}" = set; then :
-  withval=$with_tools_jar; CUNIT_DIR=$withval
+# Check whether --with-cunit was given.
+if test "${with_cunit+set}" = set; then :
+  withval=$with_cunit; CUNIT_DIR=$withval
 else
   CUNIT_DIR=/usr/local
 fi
@@ -5451,9 +5535,9 @@ $as_echo "$PTDBXML_JAR" >&6; }; fi
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for db.jar " >&5
 $as_echo_n "checking for db.jar ... " >&6; }
 
-# Check whether --with-dbxml was given.
-if test "${with_dbxml+set}" = set; then :
-  withval=$with_dbxml; PTDB_JAR=$withval
+# Check whether --with-db was given.
+if test "${with_db+set}" = set; then :
+  withval=$with_db; PTDB_JAR=$withval
 else
   PTDB_JAR=$PTII/ptdb/lib/db.jar
 fi
@@ -7880,9 +7964,9 @@ $as_echo "$PTSERVLET_JAR" >&6; }; fi
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Smack, used by ptango" >&5
 $as_echo_n "checking for Smack, used by ptango... " >&6; }
 
-# Check whether --with-jetty was given.
-if test "${with_jetty+set}" = set; then :
-  withval=$with_jetty; PTSMACK_JAR=$withval
+# Check whether --with-smack was given.
+if test "${with_smack+set}" = set; then :
+  withval=$with_smack; PTSMACK_JAR=$withval
 else
   PTSMACK_JAR=$PTII/lib/smack.jar
 fi
@@ -7904,9 +7988,9 @@ $as_echo "$as_me: WARNING: Failed to find the Smack jar files necessary to compi
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Smackx, used by ptango" >&5
 $as_echo_n "checking for Smackx, used by ptango... " >&6; }
 
-# Check whether --with-jetty was given.
-if test "${with_jetty+set}" = set; then :
-  withval=$with_jetty; PTSMACKX_JAR=$withval
+# Check whether --with-smackx was given.
+if test "${with_smackx+set}" = set; then :
+  withval=$with_smackx; PTSMACKX_JAR=$withval
 else
   PTSMACKX_JAR=$PTII/lib/smackx.jar
 fi
@@ -8729,9 +8813,9 @@ else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for kieler jar file used by layout " >&5
 $as_echo_n "checking for kieler jar file used by layout ... " >&6; }
 
-# Check whether --with-kieler was given.
-if test "${with_kieler+set}" = set; then :
-  withval=$with_kieler; KIELER_JAR=$withval
+# Check whether --with-kieler-jar was given.
+if test "${with_kieler_jar+set}" = set; then :
+  withval=$with_kieler_jar; KIELER_JAR=$withval
 else
   KIELER_JAR=$PTII/lib/kieler.jar
 fi
@@ -8744,9 +8828,9 @@ $as_echo "$KIELER_JAR" >&6; }; fi
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for guava jar file used by Kieler layout " >&5
 $as_echo_n "checking for guava jar file used by Kieler layout ... " >&6; }
 
-# Check whether --with-guava was given.
-if test "${with_guava+set}" = set; then :
-  withval=$with_guava; GUAVA_JAR=$withval
+# Check whether --with-guava-jar was given.
+if test "${with_guava_jar+set}" = set; then :
+  withval=$with_guava_jar; GUAVA_JAR=$withval
 else
   GUAVA_JAR=$PTII/lib/guava.jar
 fi
@@ -11131,9 +11215,9 @@ else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for anltr.jar, used by the Ptalon" >&5
 $as_echo_n "checking for anltr.jar, used by the Ptalon... " >&6; }
 
-# Check whether --with-mapss was given.
-if test "${with_mapss+set}" = set; then :
-  withval=$with_mapss; ANTLR_DIR=$withval
+# Check whether --with-antlr was given.
+if test "${with_antlr+set}" = set; then :
+  withval=$with_antlr; ANTLR_DIR=$withval
 else
   ANTLR_DIR=$PTII/ptolemy/actor/ptalon/antlr
 fi
@@ -11498,9 +11582,9 @@ else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for mysql jar, used by the database actors" >&5
 $as_echo_n "checking for mysql jar, used by the database actors... " >&6; }
 
-# Check whether --with-ojdbc6 was given.
-if test "${with_ojdbc6+set}" = set; then :
-  withval=$with_ojdbc6; MYSQL_JAR=$withval
+# Check whether --with-mysql was given.
+if test "${with_mysql+set}" = set; then :
+  withval=$with_mysql; MYSQL_JAR=$withval
 else
   MYSQL_JAR=$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
 fi
@@ -11603,9 +11687,9 @@ else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for PDFRenderer" >&5
 $as_echo_n "checking for PDFRenderer... " >&6; }
 
-# Check whether --with-pdfrendererjar was given.
-if test "${with_pdfrendererjar+set}" = set; then :
-  withval=$with_pdfrendererjar; PTPDFRENDERER_JAR=$withval
+# Check whether --with-pdfrenderer was given.
+if test "${with_pdfrenderer+set}" = set; then :
+  withval=$with_pdfrenderer; PTPDFRENDERER_JAR=$withval
 else
   PTPDFRENDERER_JAR=$PTII/lib/PDFRenderer.jar
 fi
@@ -12788,6 +12872,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
 
 
+# Location of the JDK
+
+
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 
@@ -13111,7 +13198,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Files we substitute in
-ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties"
+ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir32"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -13830,6 +13917,7 @@ do
     ".classpath") CONFIG_FILES="$CONFIG_FILES .classpath" ;;
     "bin/comm.policy") CONFIG_FILES="$CONFIG_FILES bin/comm.policy" ;;
     "lib/ptII.properties") CONFIG_FILES="$CONFIG_FILES lib/ptII.properties" ;;
+    "ptolemy/util/test/junit/javachdir32") CONFIG_FILES="$CONFIG_FILES ptolemy/util/test/junit/javachdir32" ;;
     "default") CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
