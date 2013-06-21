@@ -14337,7 +14337,7 @@ $as_echo "$as_me: executing $ac_file commands" >&6;}
 
 
   case $ac_file$ac_mode in
-    "default":C) chmod a+x bin/ptinvoke ;;
+    "default":C) chmod a+x bin/ptinvoke ptolemy/util/test/junit/javachdir32 ;;
 
   esac
 done # for ac_tag
