@@ -459,10 +459,57 @@ else
 	PT_MSG_STATUS([Running java -d32 -version succeeded,
     so PTJAVA32_DIR is $PTJAVA_32DIR])
     else
-        AC_MSG_WARN([Running java -d32 -version failed,
-    perhaps you need to install a separate 32-bit JVM
+        AC_PATH_PROG(JAVA32, java32)
+	JAVA32BIN=`dirname "$JAVA32"`
+	PTJAVA32_DIR=`dirname "$JAVA32BIN"`
+	if test -x "$JAVA32"; then
+	 if test "$PTJAV32_DIR" = "/"; then
+	    if test -d /usr/java; then
+		PTJAVA32_DIR=/usr/java
+	        AC_MSG_WARN([ Found java32 in "$JAVA32BIN", /usr/java exists, so
+  we are setting PTJAVA32_DIR to '$PTJAVA32_DIR'])
+	    fi
+	  fi
+          if test "$PTJAVA32_DIR" = "/usr" -o "$PTJAVA32_DIR" = "/usr/local"; then
+	    # $PTII/vendors/ptinyos/tinyos-1.x/contrib/ptII/ptinyos/tools/make/ptII/ptII.rules
+	    # uses -I$(PTJAVA_DIR).  If PTJAVA_DIR is /usr, then compilation of the ptinyos
+	    # demos fails.
+	    AC_MSG_CHECKING([PTJAVA32_DIR == /usr or /usr/local, checking for links])
+	    startdir=$PTII
+	    cd "$srcdir/config"
+	    if "$JAVAC" RootDirectory.java ; then
+	        AC_MSG_CHECKING([the value of the Java directory ])
+		if env CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"> /dev/null; then
+
+		    PTJAVA32_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"`
+
+		    # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+	            # Remove /cygdrive so we can compile with MSVC
+		    #PTJAVA_DIR_REAL=`echo "$PTJAVA_HOME_TMP" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+       	            if test -d "$PTJAVA32_DIR_TMP"; then
+		        PTJAVA32_DIR="$PTJAVA32_DIR_TMP"
+		        PT_MSG_RESULT('$PTJAVA_DIR');
+		    else	
+		        AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA32 RootDirectory "$JAVA32"' failed.
+    We will not be able to search for the canonical 32-bit Java home directory.]);
+		    fi
+	        else
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC RootDirectory.java' failed.
+    We will not be able to search for the canonical 32-bit Java home directory.]);
+	        fi
+	        cd "$startdir"
+            fi
+          fi
+        fi
+	if test ! -x "$PTJAVA32_DIR/bin/java"; then
+	   AC_MSG_WARN([Running java -d32 -version failed,
+    and $PTJAVA32_DIR/bin/java does not exist.
+    Perhaps you need to install a separate 32-bit JVM
     or rerun configure with --with-java32?
     The 32-bit JVM is only needed for FMI tests.])
+        fi
     fi
 fi
 
@@ -471,7 +518,6 @@ fi
 changequote(<<, >>)dnl
 PTJAVA32_DIR_NO_CYGDRIVE="`echo "$PTJAVA32_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
-
 
 
 
