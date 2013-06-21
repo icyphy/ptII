@@ -325,6 +325,7 @@ public class EditParametersDialog extends ComponentDialog implements
  
         _query.addChoice("class", "Class", new String[]{
                 "ptolemy.data.expr.Parameter",
+                "ptolemy.data.expr.FileParameter",
                 "ptolemy.kernel.util.StringAttribute",
                 "ptolemy.actor.gui.ColorAttribute",
                 "ptolemy.actor.lib.qm.QuantityManagerAttribute"
