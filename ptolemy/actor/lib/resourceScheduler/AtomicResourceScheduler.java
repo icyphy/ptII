@@ -63,7 +63,7 @@ This base class provides one decorator attributes. When you create an instance
 of this class in a composite actor, every Actor within that composite actor
 is decorated with these this parameter:
 <ul>
-<li> <li>enable</i>: If true, then the decorated actor will use this resource.
+<li> <i>enable</i>: If true, then the decorated actor will use this resource.
      This is a boolean that defaults to false.
 </ul>
 
@@ -436,6 +436,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *  @param environmentTime The current platform time.
      *  @param deadline The deadline timestamp of the event to be scheduled.
      *  This can be the same as the environmentTime. 
+     *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again to perform rescheduling actions.  In this base class, null
      *    is returned.
