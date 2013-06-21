@@ -6217,5 +6217,5 @@ AC_SUBST(WABA_CLASSES)
 AC_SUBST(WABA_DIR)
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir32, chmod a+x bin/ptinvoke)
+AC_OUTPUT(mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir32, chmod a+x bin/ptinvoke ptolemy/util/test/junit/javachdir32)
 
