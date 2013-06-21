@@ -52,6 +52,11 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface ResourceScheduler extends Decorator {
 
+    /** Check whether last actor that was scheduled on this resource
+     *  scheduler finished execution.
+     *  @return True if last actor that requested to be scheduled
+     *  finished.
+     */
     public boolean lastScheduledActorFinished();
     
     /** Schedule an actor for execution and return the next time
