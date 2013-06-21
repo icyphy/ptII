@@ -282,6 +282,12 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                       inner classes                       ////
     
+    /** Attributes for ports decorated by this composite quantity manager.
+     *  A port on an actor decorated by a composite quantity manager must
+     *  specify the port in the CQM that input tokens are routed to.
+     * 
+     *  @author Patricia Derler
+     */
     public static class QMAttributes extends DecoratorAttributes {
 
         /** Constructor to use when editing a model.
