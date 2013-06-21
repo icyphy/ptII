@@ -215,8 +215,10 @@ public class WebServer extends AbstractInitializableAttribute {
      *  $PTII/org/ptolemy/ptango/demo/img/PtolemyIcon.gif
      *
      *  The ResourceHandler can support multiple resourceLocations, in
-     *  which case they will be searched in some order (what order?)
-     *  for the file
+     *  which case they will be searched in the order of the parameters.
+     *  To added locations to search for files, just add parameters
+     *  that are instances of "ptolemy.data.expr.FileParameter" to
+     *  this WebServer.
      *
      *  The resourcePath should be something other than "/", because then
      *  all incoming requests will be passed to the ResourceHandler
