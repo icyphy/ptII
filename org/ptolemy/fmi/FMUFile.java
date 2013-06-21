@@ -197,7 +197,7 @@ public class FMUFile {
         }
         if (modelDescriptionFile == null) {
             throw new IOException("File \"modelDescription.xml\" is missing "
-                    + "from the fmu archive \"" + fmuFileName + "\"/");
+                    + "from the fmu archive \"" + fmuFileName + "\"");
         }
         if (fmuResourceLocation == null) {
             File fmuResourceFile = new File(modelDescriptionFile.getParent(), "resources");
@@ -207,7 +207,6 @@ public class FMUFile {
                         + "\"");
             }
         }
-
 
         // Read the modelDescription.xml file.
         Document document = null;
