@@ -91,6 +91,7 @@ public class PtidesEvent extends DEEvent {
      *  @param depth The topological depth of the destination actor.
      *  @param absoluteDeadline The absolute deadline of this pure event.
      *          This field should not be null.
+     *  @param sourceTimestamp The timestamp of the event on the source platform.
      *  @exception IllegalActionException If the actor has a priority parameter,
      *          but its value cannot be obtained, which should be an integer.
      */
@@ -120,6 +121,7 @@ public class PtidesEvent extends DEEvent {
      *          not be null.
      *  @param receiver The Receiver the event is destined to. This field
      *          should not be null.
+     *  @param sourceTimestamp The timestamp of the event on the source platform.        
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
@@ -150,6 +152,7 @@ public class PtidesEvent extends DEEvent {
      *  @param receiver The Receiver the event is destined to. This field
      *          should not be null.
      *  @param deadline Time when the event has to be processed.
+     *  @param sourceTimestamp The timestamp of the event on the source platform.
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
@@ -275,6 +278,9 @@ public class PtidesEvent extends DEEvent {
         return _receiver;
     }
 
+    /** Timestamp of the event on the source platform.
+     *  @return The timestamp.
+     */
     public final Time sourceTimestamp() {
         return _sourceTimestamp;
     }
