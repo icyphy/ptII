@@ -416,6 +416,65 @@ changequote(<<, >>)dnl
 PTJAVA_DIR_NO_CYGDRIVE="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
 
+
+
+
+
+
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where the 32-bit Java is;  if
+#	not, check to see if the PTJAVA32_DIR environment variable is set;
+#       if it is not, look for javac on the path.
+#       NOTE: If your javac compiler is in /usr/bin, then PTJAVA32_DIR is
+#       likely to be set to /usr.  Consider using PTJAVA32_HOME if
+#       you are looking for Java jar files.
+#       Note that PTJAVA_HOME is set to the jre directory, wheras
+#       PTJAVA_DIR is set to the directory above the jre directory.
+#       PTJAVA_HOME will _not_ have a trailing slash.
+#--------------------------------------------------------------------
+
+AC_ARG_WITH(java32, [  --with-java32=DIR         use 32-bit Java binaries from DIR,
+                           defaults to the value of the
+                           PTJAVA32_DIR environment variable],
+    PTJAVA32_DIR=$withval)
+
+if test -d "$PTJAVA32_DIR"; then
+	PT_MSG_STATUS([
+    PTJAVA32_DIR environment variable was set to
+    '$PTJAVA32_DIR', and there is a directory
+    at that location, so we will try it.])
+else
+    if test -z "$PTJAVA32_DIR"; then
+	PT_MSG_STATUS([PTJAVA32_DIR environment variable was not set,
+    so we search for the java compiler.])
+    else
+	AC_MSG_WARN([PTJAVA32_DIR environment variable is set to
+    '${PTJAVA32_DIR}', which is not a directory,
+    so we search for the java compiler.])
+    fi
+    java -d32 -version > /dev/null
+    retval=$?
+    if test $retval = 0; then
+        PTJAVA32_DIR=${PTJAVA_DIR}
+	PT_MSG_STATUS([Running java -d32 -version succeeded,
+    so PTJAVA32_DIR is $PTJAVA_32DIR])
+    else
+        AC_MSG_WARN([Running java -d32 -version failed,
+    perhaps you need to install a separate 32-bit JVM
+    or rerun configure with --with-java32?
+    The 32-bit JVM is only needed for FMI tests.])
+    fi
+fi
+
+# PTJAVA32_DIR without /cygdrive
+# Use changequote here to preserve square brackets
+changequote(<<, >>)dnl
+PTJAVA32_DIR_NO_CYGDRIVE="`echo "$PTJAVA32_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+changequote([, ])dnl
+
+
+
+
 #
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
@@ -1423,7 +1482,7 @@ if test ! -d "$CUNIT_USER_DIR"; then
     so we need not find CUnit for testing])
 else
     AC_MSG_CHECKING([for CUnit to be used to test the C cg templates])
-    AC_ARG_WITH(tools_jar, [  --with-cunit=DIR    use CUnit from DIR,
+    AC_ARG_WITH(cunit, [  --with-cunit=DIR    use CUnit from DIR,
                           defaults to /usr/local or $PTII/vendors/CUnit],
 	CUNIT_DIR=$withval,
 	CUNIT_DIR=/usr/local)
@@ -1813,7 +1872,7 @@ else
 	PT_MSG_RESULT([$PTDBXML_JAR])
 
         AC_MSG_CHECKING([for db.jar ])
-        AC_ARG_WITH(dbxml, [  --with-db=JAR       use db.jar from JAR,
+        AC_ARG_WITH(db, [  --with-db=JAR       use db.jar from JAR,
                           defaults to \$PTII/ptdb/lib/db.jar],
 	PTDB_JAR=$withval,
 	PTDB_JAR=$PTII/ptdb/lib/db.jar)
@@ -2388,7 +2447,7 @@ else
     fi
 
     AC_MSG_CHECKING([for Smack, used by ptango])
-    AC_ARG_WITH(jetty, [  --with-smack=JAR       use smack.jar from JAR,
+    AC_ARG_WITH(smack, [  --with-smack=JAR       use smack.jar from JAR,
                           defaults to \$PTII/lib/smack.jar],
         PTSMACK_JAR=$withval,
 	PTSMACK_JAR=$PTII/lib/smack.jar)
@@ -2402,7 +2461,7 @@ else
     fi
 
     AC_MSG_CHECKING([for Smackx, used by ptango])
-    AC_ARG_WITH(jetty, [  --with-smackx=JAR       use smackx.jar from JAR,
+    AC_ARG_WITH(smackx, [  --with-smackx=JAR       use smackx.jar from JAR,
                           defaults to \$PTII/lib/smackx.jar],
         PTSMACKX_JAR=$withval,
 	PTSMACKX_JAR=$PTII/lib/smackx.jar)
@@ -2977,7 +3036,7 @@ if test ! -d "$KIELER_USER_DIR"; then
     so we need not find KIELER.])
 else
     AC_MSG_CHECKING([for kieler jar file used by layout ])
-    AC_ARG_WITH(kieler, [  --with-kieler-jar=JARFILE       use JARFILE,
+    AC_ARG_WITH(kieler-jar, [  --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar],
 	KIELER_JAR=$withval,
 	KIELER_JAR=$PTII/lib/kieler.jar)
@@ -2985,7 +3044,7 @@ else
     if test -f "$KIELER_JAR"; then
 	PT_MSG_RESULT([$KIELER_JAR])
 	AC_MSG_CHECKING([for guava jar file used by Kieler layout ])
-	AC_ARG_WITH(guava, [  --with-guava-jar=JARFILE       use JARFILE,
+	AC_ARG_WITH(guava-jar, [  --with-guava-jar=JARFILE       use JARFILE,
                               defaults to \$PTII/lib/guava.jar],
 	GUAVA_JAR=$withval,
 	GUAVA_JAR=$PTII/lib/guava.jar)
@@ -4509,7 +4568,7 @@ if test ! -d "$PTALON_USER_DIR"; then
     so we need not find anltr.jar.])
 else
     AC_MSG_CHECKING([for anltr.jar, used by the Ptalon])
-    AC_ARG_WITH(mapss, [  --with-antlr=DIR       use antlr.jar from DIR,
+    AC_ARG_WITH(antlr, [  --with-antlr=DIR       use antlr.jar from DIR,
                           defaults to \$PTII/ptolemy/actor/ptalon/antlr'],
 	ANTLR_DIR=$withval,
 	ANTLR_DIR=$PTII/ptolemy/actor/ptalon/antlr)
@@ -4792,7 +4851,7 @@ if test ! -d "$SPACE_USER_DIR" -a ! -d "$DATABASE_USER_DIR"; then
 else
     MYSQL_TARGET_JAR=mysql-connector-java-5.1.6-bin.jar
     AC_MSG_CHECKING([for mysql jar, used by the database actors])
-    AC_ARG_WITH(ojdbc6, [  --with-mysql=/path/to/mysql.jar  path to mysql.jar
+    AC_ARG_WITH(mysql, [  --with-mysql=/path/to/mysql.jar  path to mysql.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR],
 	MYSQL_JAR=$withval,
 	MYSQL_JAR=$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR)
@@ -4874,7 +4933,7 @@ if test ! -d "$PDFRENDERER_USER_DIR"; then
     so we need not find PDFRenderer.])
 else
     AC_MSG_CHECKING([for PDFRenderer])
-    AC_ARG_WITH(pdfrendererjar, [  --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
+    AC_ARG_WITH(pdfrenderer, [  --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
                           defaults to \$PTII/lib/PDFRenderer.jar],
 	PTPDFRENDERER_JAR=$withval,
 	PTPDFRENDERER_JAR=$PTII/lib/PDFRenderer.jar)
@@ -5832,6 +5891,9 @@ AC_SUBST(PTJAVA_DIR_NO_CYGDRIVE)
 # Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
 AC_SUBST(PTJAVA_HOME)
 
+# Location of the JDK
+AC_SUBST(PTJAVA32_DIR)
+
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 AC_SUBST(PTJAVA3D_DIR)
@@ -6155,5 +6217,5 @@ AC_SUBST(WABA_CLASSES)
 AC_SUBST(WABA_DIR)
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties, chmod a+x bin/ptinvoke)
+AC_OUTPUT(mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir32, chmod a+x bin/ptinvoke)
 

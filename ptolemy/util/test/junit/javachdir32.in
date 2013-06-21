@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: javachdir 66496 2013-05-31 16:51:33Z cxh $
+# $Id$
 # Read the arguments, change to a directory and invoke java.
 
 # This script is used by the Ant junit tests in $PTII/build.xml
@@ -44,4 +44,5 @@ done
 cd $directory
 echo "javachdir: `pwd`"
 echo $@
-java -d32 $@
+# PTJAVA32_DIR is set by configure.  ptolemy/util/test/junit/javachdir32.in is read by configure and javachdir32 is created.
+@PTJAVA32_DIR@/bin/java -d32 $@
