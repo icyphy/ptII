@@ -873,6 +873,7 @@ KEYTOOL
 JAVAWS
 JARSIGNER
 JAR
+JAVA32
 JAVA
 JAVAC
 GAWK
@@ -3301,21 +3302,115 @@ $as_echo "$as_me: WARNING: PTJAVA32_DIR environment variable is set to
 $as_echo "Running java -d32 -version succeeded,
     so PTJAVA32_DIR is $PTJAVA_32DIR" >&6; }; fi
     else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Running java -d32 -version failed,
-    perhaps you need to install a separate 32-bit JVM
+        # Extract the first word of "java32", so it can be a program name with args.
+set dummy java32; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_JAVA32+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $JAVA32 in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_JAVA32="$JAVA32" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_JAVA32="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+JAVA32=$ac_cv_path_JAVA32
+if test -n "$JAVA32"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JAVA32" >&5
+$as_echo "$JAVA32" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+	JAVA32BIN=`dirname "$JAVA32"`
+	PTJAVA32_DIR=`dirname "$JAVA32BIN"`
+	if test -x "$JAVA32"; then
+	 if test "$PTJAV32_DIR" = "/"; then
+	    if test -d /usr/java; then
+		PTJAVA32_DIR=/usr/java
+	        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:  Found java32 in \"$JAVA32BIN\", /usr/java exists, so
+  we are setting PTJAVA32_DIR to '$PTJAVA32_DIR'" >&5
+$as_echo "$as_me: WARNING:  Found java32 in \"$JAVA32BIN\", /usr/java exists, so
+  we are setting PTJAVA32_DIR to '$PTJAVA32_DIR'" >&2;}
+	    fi
+	  fi
+          if test "$PTJAVA32_DIR" = "/usr" -o "$PTJAVA32_DIR" = "/usr/local"; then
+	    # $PTII/vendors/ptinyos/tinyos-1.x/contrib/ptII/ptinyos/tools/make/ptII/ptII.rules
+	    # uses -I$(PTJAVA_DIR).  If PTJAVA_DIR is /usr, then compilation of the ptinyos
+	    # demos fails.
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking PTJAVA32_DIR == /usr or /usr/local, checking for links" >&5
+$as_echo_n "checking PTJAVA32_DIR == /usr or /usr/local, checking for links... " >&6; }
+	    startdir=$PTII
+	    cd "$srcdir/config"
+	    if "$JAVAC" RootDirectory.java ; then
+	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking the value of the Java directory " >&5
+$as_echo_n "checking the value of the Java directory ... " >&6; }
+		if env CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"> /dev/null; then
+
+		    PTJAVA32_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"`
+
+		    # Use changequote to protect the square brackets in sed
+	            # Remove /cygdrive so we can compile with MSVC
+		    #PTJAVA_DIR_REAL=`echo "$PTJAVA_HOME_TMP" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+       	            if test -d "$PTJAVA32_DIR_TMP"; then
+		        PTJAVA32_DIR="$PTJAVA32_DIR_TMP"
+		        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: '$PTJAVA_DIR'" >&5
+$as_echo "'$PTJAVA_DIR'" >&6; }; fi ;
+		    else
+		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA32 RootDirectory \"$JAVA32\"' failed.
+    We will not be able to search for the canonical 32-bit Java home directory." >&5
+$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA32 RootDirectory \"$JAVA32\"' failed.
+    We will not be able to search for the canonical 32-bit Java home directory." >&2;};
+		    fi
+	        else
+		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+    We will not be able to search for the canonical 32-bit Java home directory." >&5
+$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+    We will not be able to search for the canonical 32-bit Java home directory." >&2;};
+	        fi
+	        cd "$startdir"
+            fi
+          fi
+        fi
+	if test ! -x "$PTJAVA32_DIR/bin/java"; then
+	   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Running java -d32 -version failed,
+    and $PTJAVA32_DIR/bin/java does not exist.
+    Perhaps you need to install a separate 32-bit JVM
     or rerun configure with --with-java32?
     The 32-bit JVM is only needed for FMI tests." >&5
 $as_echo "$as_me: WARNING: Running java -d32 -version failed,
-    perhaps you need to install a separate 32-bit JVM
+    and $PTJAVA32_DIR/bin/java does not exist.
+    Perhaps you need to install a separate 32-bit JVM
     or rerun configure with --with-java32?
     The 32-bit JVM is only needed for FMI tests." >&2;}
+        fi
     fi
 fi
 
 # PTJAVA32_DIR without /cygdrive
 # Use changequote here to preserve square brackets
 PTJAVA32_DIR_NO_CYGDRIVE="`echo "$PTJAVA32_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
-
 
 
 
