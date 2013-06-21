@@ -356,6 +356,11 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         }
     }
 
+    /** Set the name of the port that will receive scheduling requests
+     *  for the actor.
+     *  @param actor The actor.
+     *  @param portName The request port.
+     */
     public void setRequestPort(Actor actor, String portName) {
         _requestPorts.put(actor, portName);
     }
@@ -538,6 +543,12 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
 
     private HashMap<Actor, String> _requestPorts;
 
+    /** Attributes for actors decorated by this composite resource
+     *  scheduler. The attributes in this base class only contain 
+     *  the name of the port that will receive scheduling requests
+     *  from the director for the decorated actor.
+     *  @author Patricia Derler
+     */
     public static class CompositeResourceSchedulerAttributes extends
             ExecutionTimeResourceAttributes {
 
@@ -569,6 +580,9 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         ///////////////////////////////////////////////////////////////////
         ////                         parameters                        ////
 
+        /** The name of the port that will receive scheduling requests for 
+         *  the decorated actor.
+         */
         public Parameter requestPort;
 
         /** If attribute <i>requestPort</i> report the new value 
