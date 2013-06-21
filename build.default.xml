@@ -82,6 +82,7 @@
     <pathelement location="lib/saxon8-dom.jar" />
     <pathelement location="lib/chic.jar" />
     <pathelement location="lib/guava.jar" />
+    <pathelement location="lib/jna.jar" />
     <pathelement location="lib/junit-4.8.2.jar" />
     <pathelement location="lib/JUnitParams-0.3.0.jar"/>
     <pathelement location="lib/jython.jar" />
@@ -109,7 +110,6 @@
     <!-- Include ptolemy/moml/test so that ptolemy/moml/test/MoMLParserNoPackage.tcl passes -->
     <pathelement location="ptolemy/moml/test"/>
   </path>
-
 
   <!-- Ant patternsets. Alphabetize, please -->
   <!-- ptII.excludes should match ptII/.classpath.default -->
@@ -349,6 +349,8 @@ For example:
       <doclet name="com.sun.tools.doclets.doccheck.DocCheck" path="vendors/sun/doccheck1.2b2/doccheck.jar" />
       <packageset dir="${basedir}" defaultexcludes="yes">
 	<patternset refid="ptII.excludes" />
+	<exclude name="org/ptolemy/websensor/controller/" />
+	<exclude name="ptolemy/apps/websensor/src/main/java/org/ptolemy/websensor/controller/" />
       </packageset>	
     </javadoc>
   </target>
@@ -566,7 +568,6 @@ For example:
   <target name="run" depends="vergil"
 	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
 
-
   <target name="test"
 	  depends="build, test.pt-modules, test.short, test.32bit, test.long, test.longest"
 	  description="Build and run the all the junit tests." />
@@ -581,7 +582,6 @@ For example:
       <property name="javachdir" value="ptolemy/util/test/junit/javachdir"/>
     </ant>
   </target>
-
 
   <target name="test.32bit"
 	  description="Run the 32-bit JVM tests in auto32/..">
@@ -730,6 +730,38 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
+    <echo> Run the 32-bit tests with timeout=${timeout} </echo>
+    <junit fork="yes"
+	   forkmode="perTest"
+	   jvm="ptolemy/util/test/junit/javachdir32"
+	   maxmemory="1500m"
+	   printsummary="withOutAndErr"
+	   showoutput="no"
+	   timeout="${timeout}">
+      <classpath>
+	<path location="${instrumented.dir}" />
+	<path refid="ptII.classpath" />
+	<path refid="cobertura.classpath" />
+      </classpath>
+      <formatter type="${junit.formatter}" />
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <!-- Run the 32-bit tests-->
+	  <include name="**/junit/JUnitAuto32Test.*" />
+	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
+	</fileset>
+      </batchtest>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
+    </junit>
+
     <echo> Run the long tests with timeout=${timeout.long} </echo>
     <junit fork="yes"
 	   forkmode="perTest"
@@ -750,6 +782,7 @@ For example:
 	  <!-- Include the long running tests. -->
 	  <patternset refid="test.long.includes" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
 	  <!-- Exclude the longest running tests -->
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
