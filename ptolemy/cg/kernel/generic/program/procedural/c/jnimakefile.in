@@ -1,4 +1,4 @@
-# Template makefile from $PTII/ptolemy/codegen/c/jnimakefile.in
+# Template makefile from $PTII/kernel/generic/program/procedural/c/jnimakefile.in
 # $Id$
 # The CCodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory
