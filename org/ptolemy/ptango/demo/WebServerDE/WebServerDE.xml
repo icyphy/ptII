@@ -135,12 +135,6 @@
             </property>
         </port>
     </entity>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
-        </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-    </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
         </property>
@@ -156,12 +150,6 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-    </entity>
-    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 520.0]">
-        </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
     </entity>
     <entity name="Ptolemnizer" class="ptolemy.actor.lib.python.PythonScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="from ptolemy.data import StringToken&#10;class Main :&#10;  &quot;ptolemizer&quot;&#10;  def fire(self) :&#10;    # read input, compute, send output&#10;    t = self.in.get(0)&#10;    s = t.stringValue()&#10;    s = self.ptolemize(s)&#10;    t = StringToken(s)&#10;    self.out.broadcast(t)&#10;    return&#10;&#10;  def ptolemize(self, s) :&#10;    l = list(s)&#10;    length = len(l)&#10;    if length == 0 :&#10;      return ''&#10;    if length == 1 :&#10;      if l[0] == 't' :&#10;        return 'pt'&#10;      else :&#10;        return l[0]&#10;    if l[0] == 't' and l[1] != 'h' :&#10;      l[0] = 'pt'&#10;    i = 1&#10;    while i &lt; length - 1 :&#10;      if l[i-1] == ' ' and l[i] == 't' and l[i+1] != 'h' :&#10;        l[i] = 'pt'&#10;      i = i + 1&#10;    if l[-2] == ' ' and l[-1] == 't' :&#10;      l[-1] = 'pt'&#10;    return reduce(lambda x,y: x+y, l, '')">
@@ -232,19 +220,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 460.0]">
         </property>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
@@ -268,28 +244,28 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{-5.0, 100.0}">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{-15.0, 520.0}">
+        </vertex>
+    </relation>
     <link port="HttpActor.response" relation="relation4"/>
-    <link port="HttpActor.response" relation="relation10"/>
+    <link port="HttpActor.response" relation="relation6"/>
     <link port="HttpActor.getRequestURI" relation="relation"/>
     <link port="HttpActor.postParameters" relation="relation8"/>
-    <link port="MicrostepDelay.input" relation="relation6"/>
-    <link port="MicrostepDelay.output" relation="relation4"/>
-    <link port="FileReader.output" relation="relation6"/>
+    <link port="FileReader.output" relation="relation4"/>
     <link port="FileReader.trigger" relation="relation"/>
     <link port="RecordDisassembler.input" relation="relation8"/>
     <link port="RecordDisassembler.text" relation="relation2"/>
-    <link port="MicrostepDelay2.input" relation="relation7"/>
-    <link port="MicrostepDelay2.output" relation="relation10"/>
     <link port="Ptolemnizer.in" relation="relation2"/>
     <link port="Ptolemnizer.out" relation="relation5"/>
     <link port="StringConst.output" relation="relation3"/>
@@ -298,7 +274,7 @@
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation9"/>
     <link port="AddSubtract.plus" relation="relation11"/>
-    <link port="AddSubtract.output" relation="relation7"/>
+    <link port="AddSubtract.output" relation="relation6"/>
     <link port="StringConst2.output" relation="relation9"/>
     <link port="StringConst2.trigger" relation="relation2"/>
     <link port="StringConst3.output" relation="relation11"/>

@@ -318,6 +318,26 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         return newObject;
     }
 
+    /** Declare that the outputs do not depend on the input in a firing.
+     *  @exception IllegalActionException If the causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        _declareDelayDependency(response, getCookies, 0.0);
+        _declareDelayDependency(response, getParameters, 0.0);
+        _declareDelayDependency(response, getRequestURI, 0.0);
+        _declareDelayDependency(response, postCookies, 0.0);
+        _declareDelayDependency(response, postParameters, 0.0);
+        _declareDelayDependency(response, postRequestURI, 0.0);
+        _declareDelayDependency(setCookies, getCookies, 0.0);
+        _declareDelayDependency(setCookies, getParameters, 0.0);
+        _declareDelayDependency(setCookies, getRequestURI, 0.0);
+        _declareDelayDependency(setCookies, postCookies, 0.0);
+        _declareDelayDependency(setCookies, postParameters, 0.0);
+        _declareDelayDependency(setCookies, postRequestURI, 0.0);
+    }
+
     /** Return the relative path that this HttpService is mapped to,
      *  which is the value of the <i>path</i> parameter.
      *  This method is required by the HttpService interface.
@@ -358,7 +378,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         synchronized (this) {
             super.fire();
 
-            boolean handledCookies = false;
+            // Check for new cookies on the setCookies port.
+            if (setCookies.getWidth() > 0 && setCookies.hasToken(0)) {
+                RecordToken cookieToken = (RecordToken) setCookies.get(0);
+                _hasNewCookies = true;
+                _updateCookieCollection(cookieToken);
+            }
 
             for (int i = 0; i < response.getWidth(); i++) {
                 if (response.hasToken(i)) {
@@ -366,22 +391,6 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     if (_debugging) {
                         _debug("Received response on the input port: "
                                 + _response);
-                    }
-
-                    // Check for new cookies on the setCookies port
-                    // Only check this when the actor is ready to produce a
-                    // response.  This will ensure at most one token is consumed
-                    // from the setCookies port per response
-                    // If there are multiple tokens on the response port (since
-                    // it is a multiport), read at most one token from the
-                    // setCookies port per firing
-                    if (!handledCookies && setCookies.getWidth() > 0
-                            && setCookies.hasToken(0)) {
-                        RecordToken cookieToken = (RecordToken) setCookies
-                                .get(0);
-                        _hasNewCookies = true;
-                        _updateCookieCollection(cookieToken);
-                        handledCookies = true;
                     }
 
                     // If there is a pending request, notify it.

@@ -62,18 +62,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, -50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 0, 1146, 761}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 22, 1545, 1024}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[918, 644]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1311, 914]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7221881516006378">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0209281806952533">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{531.5500942211056, 355.39847675879395}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{554.1652896847346, 366.265625}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HTMLModelExporter creates a web page &#10;from the specified model.  &#10;Make sure directoryToExportTo is set to &#10;$TMPDIR&#10;so that the WebServer can find the image&#10;generated from the model, while searching its&#10;temporaryFileLocation which is also set to $TMPDIR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 285.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -314,7 +314,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 190.0]">
         </property>
     </property>
-    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -333,7 +333,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 50.0]">
         </property>
     </property>
-    <property name="x2" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="x2" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -352,7 +352,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 85.0]">
         </property>
     </property>
-    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -371,7 +371,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 120.0]">
         </property>
     </property>
-    <property name="x4" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="x4" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -390,7 +390,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 160.0]">
         </property>
     </property>
-    <property name="x5" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="x5" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -409,7 +409,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 200.0]">
         </property>
     </property>
-    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -428,7 +428,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 65.0]">
         </property>
     </property>
-    <property name="y2" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="y2" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -447,7 +447,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 100.0]">
         </property>
     </property>
-    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -466,7 +466,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 135.0]">
         </property>
     </property>
-    <property name="y4" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="y4" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -485,7 +485,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 175.0]">
         </property>
     </property>
-    <property name="y5" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="y5" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -555,20 +555,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 15.0]">
         </property>
     </property>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 620.0]">
         </property>
@@ -620,20 +606,6 @@
             </property>
         </port>
     </entity>
-    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 795.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
     <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="IndoorLocalizationMap.xml">
         </property>
@@ -645,7 +617,7 @@
         </property>
         <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 170.0}">
         </property>
         <port name="x1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -998,7 +970,7 @@
             </property>
         </entity>
         <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -1028,7 +1000,7 @@
             </port>
         </entity>
         <entity name="StringMatches2" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
@@ -1037,7 +1009,7 @@
             </property>
         </entity>
         <entity name="StringMatches3" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="3">
             </property>
@@ -1046,7 +1018,7 @@
             </property>
         </entity>
         <entity name="StringMatches4" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="4">
             </property>
@@ -1055,7 +1027,7 @@
             </property>
         </entity>
         <entity name="StringMatches5" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
@@ -1652,7 +1624,7 @@
         </property>
     </entity>
     <entity name="RecordDisassembler3" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 325.0]">
         </property>
         <port name="rate" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1671,19 +1643,7 @@
             </property>
         </port>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
@@ -1789,10 +1749,6 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -1813,20 +1769,24 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <link port="MicrostepDelay.input" relation="relation9"/>
-    <link port="MicrostepDelay.output" relation="relation4"/>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{30.0, 50.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-75.0, 790.0]">
+        </vertex>
+    </relation>
     <link port="RecordDisassembler.input" relation="relation2"/>
     <link port="RecordDisassembler.xCoord" relation="relation5"/>
     <link port="RecordDisassembler.yCoord" relation="relation6"/>
     <link port="RecordDisassembler.ID" relation="relation30"/>
+    <link port="HttpActor.response" relation="relation31"/>
     <link port="HttpActor.response" relation="relation4"/>
-    <link port="HttpActor.response" relation="relation3"/>
     <link port="HttpActor.getRequestURI" relation="relation19"/>
     <link port="HttpActor.getParameters" relation="relation50"/>
     <link port="HttpActor.postParameters" relation="relation2"/>
-    <link port="MicrostepDelay2.input" relation="relation7"/>
-    <link port="MicrostepDelay2.output" relation="relation3"/>
-    <link port="HTMLModelExporter.webPage" relation="relation9"/>
+    <link port="HTMLModelExporter.webPage" relation="relation31"/>
     <link port="HTMLModelExporter.x1" relation="relation"/>
     <link port="HTMLModelExporter.y1" relation="relation10"/>
     <link port="HTMLModelExporter.x2" relation="relation11"/>
@@ -1862,7 +1822,7 @@
     <link port="AssignLocation.y" relation="relation6"/>
     <link port="AssignLocation.ID" relation="relation30"/>
     <link port="AssignLocation.done" relation="relation29"/>
-    <link port="HTMLModelExporter2.webPage" relation="relation7"/>
+    <link port="HTMLModelExporter2.webPage" relation="relation4"/>
     <link port="HTMLModelExporter2.x1" relation="relation8"/>
     <link port="HTMLModelExporter2.y1" relation="relation20"/>
     <link port="HTMLModelExporter2.x2" relation="relation21"/>

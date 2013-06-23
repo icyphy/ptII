@@ -62,7 +62,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 11, 924, 718}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 22, 930, 711}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 601]">
     </property>
@@ -108,20 +108,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 50.0]">
         </property>
     </property>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 165.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 270.0]">
         </property>
@@ -178,20 +164,6 @@
             </property>
         </port>
     </entity>
-    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 405.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
         </property>
@@ -234,14 +206,6 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -254,29 +218,25 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{130.0, 160.0}">
+        </vertex>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{135.0, 395.0}">
+        </vertex>
     </relation>
-    <link port="MicrostepDelay.input" relation="relation3"/>
-    <link port="MicrostepDelay.output" relation="relation4"/>
     <link port="RecordDisassembler.input" relation="relation"/>
     <link port="RecordDisassembler.name" relation="relation5"/>
     <link port="RecordDisassembler.xCoord" relation="relation6"/>
     <link port="RecordDisassembler.yCoord" relation="relation7"/>
-    <link port="HttpActor.response" relation="relation4"/>
-    <link port="HttpActor.response" relation="relation9"/>
+    <link port="HttpActor.response" relation="relation10"/>
+    <link port="HttpActor.response" relation="relation3"/>
     <link port="HttpActor.getRequestURI" relation="relation2"/>
     <link port="HttpActor.postParameters" relation="relation"/>
-    <link port="MicrostepDelay2.input" relation="relation8"/>
-    <link port="MicrostepDelay2.output" relation="relation9"/>
-    <link port="FileReader.output" relation="relation3"/>
+    <link port="FileReader.output" relation="relation10"/>
     <link port="FileReader.trigger" relation="relation2"/>
-    <link port="HTMLModelExporter.webPage" relation="relation8"/>
+    <link port="HTMLModelExporter.webPage" relation="relation3"/>
     <link port="HTMLModelExporter.name" relation="relation5"/>
     <link port="HTMLModelExporter.xCoord" relation="relation6"/>
     <link port="HTMLModelExporter.yCoord" relation="relation7"/>
