@@ -121,10 +121,10 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         int i = 0;
         if (valuesDouble != null)
         	for (double value : valuesDouble) 
-        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; " + _eol);
+        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ");
         else if (valuesInt != null)
         	for (int value : valuesInt) 
-        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; " + _eol);
+        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ");
                 
         args.add(valuesString);
         

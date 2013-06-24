@@ -126,9 +126,9 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         StringBuffer offsetsString = new StringBuffer();
         int i = 0;
         for (double offset : offsetsDouble) 
-        	offsetsString.append("$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; " + _eol);
+        	offsetsString.append("$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; ");
                 
-        args.add(offsetsString);
+        args.add(offsetsString.toString());
         
         Parameter valuesPar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).values;
         Token valuesToken = valuesPar.getToken();
