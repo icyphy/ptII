@@ -474,7 +474,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     public Time getCurrentSourceTimestamp() {
         return _currentSourceTimestamp;
-    }
+    } 
 
     /** Compute the deadline for an actor that requests a firing at time
      *  <i>timestamp</i>.
@@ -485,7 +485,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     public Time getDeadline(Actor actor, Time timestamp)
             throws IllegalActionException {
-        Time relativeDeadline = Time.POSITIVE_INFINITY;
+        Time relativeDeadline = Time.POSITIVE_INFINITY; 
+
         for (int i = 0; i < actor.outputPortList().size(); i++) {
             for (int j = 0; j < ((IOPort) actor.outputPortList().get(i))
                     .sinkPortList().size(); j++) {
@@ -1425,13 +1426,14 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         // because the timeDelay actor is fired twice, we only schedule
                         // one firing on the resource scheduler: the second firing due to
                         // the pure event.
-                        ((queue != _pureEvents && actor instanceof TimeDelay) ||
-                        // Actor was previously scheduled and just finished.
-                        _actorsFinished.contains(actor) ||
-                        // The actor is scheduled and is instantaneously granted all 
-                        // resources.
-                        _schedule(actor, timestamp)
-                        ) && (
+                        (
+                                (actor instanceof TimeDelay && !ptidesEvent.isPureEvent()) ||
+                                // Actor was previously scheduled and just finished.
+                                _actorsFinished.contains(actor) ||
+                                // The actor is scheduled and is instantaneously granted all 
+                                // resources.
+                                _schedule(actor, timestamp)
+                            ) && (
                                 // If actor is a composite actor we check whether the
                                 // contained actors can be scheduled. 
                                 !(actor instanceof CompositeActor)
