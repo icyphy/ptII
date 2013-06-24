@@ -1185,9 +1185,21 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         ////////////////////////////////////////////
         //// model exchange version
         if (_fmiModelDescription.modelExchange){
-            _fmiCompletedIntegratorStepFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiCompletedIntegratorStep");
+            String completedIntegratorStepMethodName = _fmiModelDescription.modelIdentifier
+                + "_fmiCompletedIntegratorStep";
+              
+            try {
+                _fmiCompletedIntegratorStepFunction = _nativeLibrary
+                    .getFunction(completedIntegratorStepMethodName);
+
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
+                        "Could not find the \"" + completedIntegratorStepMethodName
+                        + "\" in \"" + _fmuFileName + "\".  "
+                        + "This can happen if the Model Exchange FMU was compiled with "
+                        + "the MODEL_IDENTIFIER #define set to a value that does not "
+                        + "match the value in modelDescription.xml");
+            }
             _fmiFreeModelInstanceFunction = _nativeLibrary
                     .getFunction(_fmiModelDescription.modelIdentifier
                             + "_fmiFreeModelInstance");
@@ -1272,16 +1284,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // The modelName may have spaces in it.
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        String fmuLocation = null;
-        try {
-            // The URL of the fmu file.
-            String fmuFileName = fmuFile.asFile().getCanonicalPath();
-
-            fmuLocation = new File(fmuFileName).toURI().toURL().toString();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to get the value of \"" + fmuFile + "\"");
-        }
         // The tool to use if we have tool coupling.
         String mimeType = "application/x-fmu-sharedlibrary";
         // Timeout in ms., 0 means wait forever.
@@ -1323,7 +1325,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
                 _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction.invoke(
                         Pointer.class, new Object[] { getFullName(),
-                            _fmiModelDescription.guid, fmuLocation, mimeType,
+                            _fmiModelDescription.guid,
+                            _fmiModelDescription.fmuResourceLocation, mimeType,
                             timeout, toBeVisible, interactive, _callbacks,
                             loggingOn });
             }
@@ -1357,7 +1360,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // Do not instantiate if true and previously instantiated.
                 _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction.invoke(
                         Pointer.class, new Object[] { getFullName(),
-                            _fmiModelDescription.guid, fmuLocation, _callbacks,
+                            _fmiModelDescription.guid, _fmiModelDescription.fmuResourceLocation, _callbacks,
                             toBeVisible, loggingOn });
             }
         }
@@ -1964,7 +1967,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     + ": " + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
-            _debug("Setting FMU states to " + values);
+            // FindBugs: Invocation of toString on an array
+            _debug("Setting FMU states to " + java.util.Arrays.toString(values));
         }
     }
     
