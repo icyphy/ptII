@@ -1,11 +1,12 @@
 /* ---------------------------------------------------------------------------*
  * Sample implementation of an FMU - increments an int counter every second.
  * (c) 2010 QTronic GmbH 
+ * See documentation/fmusdk_license.txt
  * ---------------------------------------------------------------------------*/
 
-// define class name and unique id
-#define MODEL_IDENTIFIER inc
-#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f008}"
+// Define class name and unique id. Match the values in modelDescription.xml
+#define MODEL_IDENTIFIER incME
+#define MODEL_GUID "{8c4e810f-3df3-dead-beef-176fa3c9f000}"
 
 // define model size
 #define NUMBER_OF_REALS 0

@@ -101,7 +101,7 @@ FMUDIR=..
 
 %.fmu: %.$(SHARED_LIBRARY_SUFFIX)
 	# Remove files that should not be included in the .fmu file.
-	(cd $(FMUDIR); rm -rf *.o */*.o *~)
+	(cd $(FMUDIR); rm -rf *.o */*.o *~ \#*)
 	(cd $(FMUDIR); zip -r ../$@ * -x '*/.svn/*' '*/#*#' '*/*~')
 
 dirclean:
