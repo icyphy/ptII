@@ -62,13 +62,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, -50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 22, 1545, 1024}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1311, 914]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0209281806952533">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7047778828820789">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{554.1652896847346, 366.265625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{727.6032212317667, 361.8515625}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HTMLModelExporter creates a web page &#10;from the specified model.  &#10;Make sure directoryToExportTo is set to &#10;$TMPDIR&#10;so that the WebServer can find the image&#10;generated from the model, while searching its&#10;temporaryFileLocation which is also set to $TMPDIR">
@@ -314,7 +314,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 190.0]">
         </property>
     </property>
-    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -333,7 +333,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 50.0]">
         </property>
     </property>
-    <property name="x2" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="x2" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -352,7 +352,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 85.0]">
         </property>
     </property>
-    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -371,7 +371,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 120.0]">
         </property>
     </property>
-    <property name="x4" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="x4" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -390,7 +390,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 160.0]">
         </property>
     </property>
-    <property name="x5" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="x5" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -409,7 +409,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 200.0]">
         </property>
     </property>
-    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -428,7 +428,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 65.0]">
         </property>
     </property>
-    <property name="y2" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="y2" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -447,7 +447,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 100.0]">
         </property>
     </property>
-    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -466,7 +466,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 135.0]">
         </property>
     </property>
-    <property name="y4" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="y4" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -485,7 +485,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 175.0]">
         </property>
     </property>
-    <property name="y5" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="y5" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -530,7 +530,7 @@
         </property>
     </property>
     <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Returns the current map, which will refresh itself if rate &gt; 0&#10;Expects one parameter:  rate (converted to an integer, in milliseconds)&#10;For example:  GET /guidance/refresh?rate=30000&#10;The page will refresh itself every 30 seconds (30000 milliseconds)&#10;&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Returns the current map, which will refresh itself if rate &gt; 0&#10;Expects one parameter:  rate (converted to an integer, in milliseconds)&#10;For example:  GET /guidance?rate=30000&#10;The page will refresh itself every 30 seconds (30000 milliseconds)&#10;&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 375.0]">
         </property>
@@ -808,7 +808,7 @@
     <entity name="AssignLocation" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 640.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 27, 1214, 721}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 27, 1214, 722}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 605]">
         </property>
@@ -970,7 +970,7 @@
             </property>
         </entity>
         <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -1000,7 +1000,7 @@
             </port>
         </entity>
         <entity name="StringMatches2" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
@@ -1009,7 +1009,7 @@
             </property>
         </entity>
         <entity name="StringMatches3" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="3">
             </property>
@@ -1018,7 +1018,7 @@
             </property>
         </entity>
         <entity name="StringMatches4" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="4">
             </property>
@@ -1027,7 +1027,7 @@
             </property>
         </entity>
         <entity name="StringMatches5" class="ptolemy.actor.lib.string.StringMatches">
-            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="2">
             </property>
             <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="5">
             </property>
