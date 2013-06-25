@@ -69,7 +69,7 @@
         </configure>
     </entity>
     <entity name="stepCounterPeriodInName" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/fmi/test/auto/stepCounterPeriodInName2.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stepCounterPeriodInName2.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 35.0]">
         </property>
