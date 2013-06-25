@@ -253,10 +253,10 @@ public class PtidesEvent extends DEEvent {
 
         return _timestamp.compareTo(event.timeStamp()) == 0
                 && _microstep == event.microstep()
-                || _timestamp.compareTo(event.timeStamp()) <= 0
+                /**|| _timestamp.compareTo(event.timeStamp()) <= 0
                 || _timestamp.subtract(clockSyncBound).compareTo(
                         event.timeStamp()) <= 0
-                && _timestamp.add(clockSyncBound).compareTo(event.timeStamp()) >= 0;
+                && _timestamp.add(clockSyncBound).compareTo(event.timeStamp()) >= 0**/;
     }
 
     /** Return true if this event is a pure event.
