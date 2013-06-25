@@ -438,7 +438,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
             fireContainerAt(time);
             return time;
         }
-        int newIndex = index;
+        int newIndex = _currentLogicalIndex;
         if (_currentLogicalTime != null
                 && _currentLogicalTime.compareTo(time) == 0
                 && index <= getIndex()) {
@@ -459,7 +459,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         Time environmentTime = super.getEnvironmentTime();
         if (environmentTime.compareTo(time) <= 0) {
-            fireContainerAt(time, 1);
+            fireContainerAt(time, newIndex);
         }
         return time;
     }
@@ -502,6 +502,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
         return timestamp.add(relativeDeadline);
     }
 
+    
+    
     /** Return a superdense time index for the current time,
      *  where the index is equal to the microstep.
      *  @return A superdense time index.
@@ -509,6 +511,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
      *  @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getIndex() {
+        if (_currentLogicalTime != null) {
+            return _currentLogicalIndex;
+        }
         return getMicrostep();
     }
 
@@ -749,6 +754,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     protected void _enqueueTriggerEvent(IOPort ioPort, Token token,
             Receiver receiver) throws IllegalActionException {
+        
         Actor actor = (Actor) ioPort.getContainer();
 
         if (_eventQueue == null || _disabledActors != null
@@ -763,10 +769,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                             + " time = " + getModelTime() + " microstep = "
                             + _microstep + " depth = " + depth);
         }
-
+        
         // Register this trigger event.
         PtidesEvent newEvent = new PtidesEvent(ioPort,
-                ioPort.getChannelForReceiver(receiver), getModelTime(), 1,
+                ioPort.getChannelForReceiver(receiver), getModelTime(), _currentLogicalIndex,
                 depth, token, receiver, _currentSourceTimestamp);
 
         if (ioPort.isOutput()) {
