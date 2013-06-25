@@ -174,17 +174,25 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public Parameter port;
 
-    /** The URL prefix which other web services will use to request resources 
-     *  from this web service.  For example, an HTML page requesting an image 
-     *  file.
+    /** The URL prefix used to request resources (files) from this web service.  
+     *  For example, an HTML page requesting an image file.
      *  
-     *  Used by the ResourceHandler. For example,
-     *  a web page may refer to such a resource by an absolute URL
-     *  such as
+     *  The web server creates a ResourceHandler object to accept incoming HTTP 
+     *  requests for files, such as images, and return those files.  
+     *  The ResourceHandler is assigned a URL prefix, specified in resourcePath, 
+     *  which clients use to submit requests to the ResourceHandler.
+
+     *  The resourcePath should be distinct from all other HttpActor paths in 
+     *  the model.  Otherwise, the ResourceHandler will intercept requests 
+     *  intended for an HttpActor.
+     *  
+     *  Examples:
+     *  A file can be retrieved using an absolute URL or a relative URL.  
+     *  Absolute URLs follow the pattern:
      *  <pre>
      *  protocol://hostname:portname/applicationPath/resourcePath/filename.ext
      *  </pre>
-     *  e.g.
+     *  For example:
      *  <pre>
      *  http://localhost:8078/myAppName/files/PtolemyIcon.gif
      *  </pre>
@@ -194,7 +202,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *  http://localhost:8078/files/PtolemyIcon.gif
      *  </pre>
      *  for an {@link #applicationPath} of "/" and a resourcePath of "/files".
-     *  The resource may also be referenced by the relative path
+     *  The resource may also be referenced by the relative URL
      *  <pre>
      *  /files/PtolemyIcon.gif
      *  </pre>
@@ -219,12 +227,6 @@ public class WebServer extends AbstractInitializableAttribute {
      *  To added locations to search for files, just add parameters
      *  that are instances of "ptolemy.data.expr.FileParameter" to
      *  this WebServer.
-     *
-     *  The resourcePath should be something other than "/", because then
-     *  all incoming requests will be passed to the ResourceHandler
-     *  (assuming the ResourceHandler is passed in first in the list of handlers
-     *  to the server.setHandler() method, which it needs to be,
-     *  see _setHandlers()
      */
     public StringParameter resourcePath;
 
