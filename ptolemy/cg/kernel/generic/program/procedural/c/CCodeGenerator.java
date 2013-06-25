@@ -263,9 +263,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
+            String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_initialize("
-                    + "JNIEnv *env, jobject obj) {" + _eol;
+                    + escapeName + "_initialize("
+                    + "JNIEnv *env_glob, jobject obj_glob) {"
+                    + _eol + "env = env_glob;" 
+                    + _eol + "obj = obj_glob;";
+            
         }
     }
 
@@ -305,9 +309,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
+            String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_initialize("
-                    + "JNIEnv *env, jobject obj);" + _eol;
+                    + escapeName + "_initialize("
+                    + "JNIEnv *env_glob, jobject obj_glob);" + _eol;
         }
         //return "// Don't call initialize() here, it is called in main.";
     }
@@ -377,9 +382,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
                     
+            String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
-                    + _eol + "Java_" + _sanitizedModelName + "_fire (" + _eol
-                    + "JNIEnv *env_glob, jobject obj_glob");
+                    + _eol + "Java_" + escapeName + "_fire (" + _eol
+                    + "JNIEnv *env, jobject obj");
 
             Iterator <?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -389,8 +395,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
 
             mainEntryCode.append("){" + _eol);
-            mainEntryCode.append(_eol + "env = env_glob;");
-            mainEntryCode.append(_eol + "obj = obj_glob;");
             inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
@@ -431,8 +435,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
+            String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_postfire("
+                    + escapeName + "_postfire("
                     + "JNIEnv *env, jobject obj) {" + _eol;
         }
     }
@@ -955,8 +960,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
+            String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_wrapup("
+                    + escapeName + "_wrapup("
                     + "JNIEnv *env, jobject obj) {" + _eol;
         }
     }
@@ -984,8 +990,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
+            String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_wrapup("
+                    + escapeName + "_wrapup("
                     + "JNIEnv *env, jobject obj);" + _eol;
         }
     }

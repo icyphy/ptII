@@ -463,18 +463,32 @@ public class SDFDirector
                         portNameWithChannelNumber = portName + '#' + i;
                     }
                     for (int k = 0; k < rate; k++) {
-                        code.append(_eol + "$put(" + portNameWithChannelNumber + ", ");
+                        //code.append(_eol + "$put(" + portNameWithChannelNumber + ", ");
+                        String putString = _eol + "ReceiverPut((" + CodeGeneratorAdapter.generateName(container) 
+                                + ".actor).ports[enum_" + CodeGeneratorAdapter.generateName(container) 
+                                + "_" + inputPort.getName() + "].farReceivers[" + i + "], " + _eol;
+                        code.append(_eol + putString);
 //                        code.append(compositeActorAdapter.getReference("@"
 //                                + portNameWithChannelNumber + "," + k, false));
                         if (type == PointerToken.POINTER) {
                             code.append("(void *) "
                                     + pointerToTokensFromOneChannel + "[" + k
                                     + "]");
-                        } else {
-                            code.append(pointerToTokensFromOneChannel
+                        } else if (type == BaseType.INT) {
+                            code.append("$Int_new(" + pointerToTokensFromOneChannel
                                     + "[" + k + "]");
+                        } else if (type == BaseType.DOUBLE) {
+                            code.append("$Double_new(" + pointerToTokensFromOneChannel
+                                    + "[" + k + "]");
+                        } else if (type == BaseType.BOOLEAN) {
+                            code.append("$Boolean_new(" + pointerToTokensFromOneChannel
+                                    + "[" + k + "]");
+                        } else {
+                            // FIXME: need to deal with other types
+                            throw new IllegalActionException(inputPort,
+                                    exceptionMessage);
                         }
-                        code.append(");" + _eol);
+                        code.append("));" + _eol);
                     }
 
                     if (type == BaseType.INT) {
@@ -650,8 +664,8 @@ public class SDFDirector
                 throw new IllegalActionException(outputPort, exceptionMessage);
             }
 
-            System.out.println("cg SDFDirector: outputPort width: "
-                    + outputPort.getWidthInside());
+//            System.out.println("cg SDFDirector: outputPort width: "
+//                    + outputPort.getWidthInside());
             // Create an array to contain jni objects
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
 
@@ -684,17 +698,32 @@ public class SDFDirector
                 if (outputPort.isMultiport()) {
                     portNameWithChannelNumber = portName + '#' + i;
                 }
-
+                
                 // Assign each token to the array of jni objects
                 for (int k = 0; k < rate; k++) {
 //                    String portReference = compositeActorAdapter.getReference(
 //                            "@" + portNameWithChannelNumber + "," + k, false);
-                    if (type == PointerToken.POINTER) {
-                        code.append(tokensToOneChannel + "[" + k + "] = ");
-                    } else {
-                        code.append(tokensToOneChannel + "[" + k + "] = ");
-                    }
-                    code.append("$get(" + portNameWithChannelNumber + ");" + _eol);
+                    String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
+                    String hasTokenString = "while (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + outputPort.getName() + "].receivers + " + i + "))" + _eol;
+                    code.append(hasTokenString);
+                    
+                    String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                            + "_" + outputPort.getName() + "].receivers + " + i + ")";
+                    
+                    if (type == BaseType.INT) 
+                        getString += ".payload.Int;";
+                    else if (type == BaseType.DOUBLE)
+                        getString += ".payload.Double;";
+                    else if (type == BaseType.BOOLEAN)
+                        getString += ".payload.Boolean;";
+                    else
+                        // FIXME: need to deal with other types
+                        throw new IllegalActionException(outputPort,
+                                exceptionMessage);
+                        
+                    code.append(_eol + tokensToOneChannel + "[" + k + "] = " + getString + _eol);
+                    //code.append("$get(" + portNameWithChannelNumber + ");" + _eol);
                     
                 }
 

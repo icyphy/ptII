@@ -126,7 +126,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         	for (int value : valuesInt) 
         		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ");
                 
-        args.add(valuesString);
+        args.add(valuesString.toString());
         
         long longPrivateSeed = 0;
         Parameter privateSeed = ((ptolemy.actor.lib.PoissonClock) getComponent()).privateSeed;

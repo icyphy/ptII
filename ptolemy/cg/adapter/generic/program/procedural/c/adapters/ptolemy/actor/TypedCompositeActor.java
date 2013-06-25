@@ -798,7 +798,7 @@ public class TypedCompositeActor extends
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
         
-        if ((ptolemy.actor.CompositeActor) getComponent().getContainer() == null) {
+        if (TopActor.getContainer() == null || TopActor instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             // Appending the construction of the actors
             codeStream.append(_eol + sanitizedContainerName + "_constructorActors();");
             // Appending the construction of the ports
