@@ -147,11 +147,11 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8080/room&#10;&#10;or double click on this comment.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8078/room&#10;&#10;or double click on this comment.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 175.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8080/room#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/room#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1187,8 +1187,6 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
