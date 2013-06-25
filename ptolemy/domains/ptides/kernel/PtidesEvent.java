@@ -250,13 +250,18 @@ public class PtidesEvent extends DEEvent {
         if (clockSyncBound == null) {
             clockSyncBound = 0.0;
         }
+        
+        boolean same = false;
+        if (clockSyncBound == 0.0) {
+            same = _timestamp.compareTo(event.timeStamp()) == 0
+            && _microstep == event.microstep();
+        } else {
+            same = _timestamp.subtract(clockSyncBound).compareTo(
+                    event.timeStamp()) <= 0
+                    && _timestamp.add(clockSyncBound).compareTo(event.timeStamp()) >= 0;
+        }
 
-        return _timestamp.compareTo(event.timeStamp()) == 0
-                && _microstep == event.microstep()
-                /**|| _timestamp.compareTo(event.timeStamp()) <= 0
-                || _timestamp.subtract(clockSyncBound).compareTo(
-                        event.timeStamp()) <= 0
-                && _timestamp.add(clockSyncBound).compareTo(event.timeStamp()) >= 0**/;
+        return same;
     }
 
     /** Return true if this event is a pure event.
