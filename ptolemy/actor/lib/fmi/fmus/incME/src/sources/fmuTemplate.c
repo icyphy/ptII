@@ -57,7 +57,8 @@ static fmiBoolean vrOutOfRange(ModelInstance* comp, const char* f, fmiValueRefer
     if (vr >= end) {
         comp->functions.logger(comp, comp->instanceName, fmiError, "error",
                 "%s: Illegal value reference %u.", f, vr);
-        comp->state = fmiError;
+        //comp->state = fmiError;
+        comp->state = modelError;
         return fmiTrue;
     }
     return fmiFalse;
@@ -107,7 +108,11 @@ static fmiComponent instantiateModel(char* fname, fmiString instanceName, fmiStr
     }
     if (comp->loggingOn) comp->functions.logger(NULL, instanceName, fmiOK, "log", 
             "%s: GUID=%s", fname, GUID);
-    comp->instanceName = instanceName;
+
+    // fmiStrings must be duplicated.
+    comp->instanceName = functions.allocateMemory(strlen(instanceName) + 1, sizeof(fmiString));
+    strcpy((char *)comp->instanceName, instanceName);
+
     comp->GUID = GUID;
     comp->functions = functions;
     comp->loggingOn = loggingOn;
@@ -158,9 +163,12 @@ void freeInstance(char* fname, fmiComponent c) {
     if (comp->s) {
         int i;
         for (i=0; i<NUMBER_OF_STRINGS; i++){
-            if (comp->s[i]) comp->functions.freeMemory(comp->s[i]);
+            if (comp->s[i]) comp->functions.freeMemory((void *)comp->s[i]);
         }
         comp->functions.freeMemory(comp->s);
+    }
+    if (comp->instanceName) {
+        comp->functions.freeMemory((void *)comp->instanceName);
     }
     comp->functions.freeMemory(comp);
 }
@@ -264,7 +272,7 @@ fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[], size_t nvr,
     if (comp->loggingOn)
         comp->functions.logger(c, comp->instanceName, fmiOK, "log", "fmiSetString: nvr = %d",  nvr);
     for (i=0; i<nvr; i++) {
-        char* string = comp->s[vr[i]];
+        char* string = (char *)comp->s[vr[i]];
         if (vrOutOfRange(comp, "fmiSetString", vr[i], NUMBER_OF_STRINGS))
             return fmiError;
         if (comp->loggingOn) comp->functions.logger(c, comp->instanceName, fmiOK, "log", 
@@ -280,7 +288,7 @@ fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[], size_t nvr,
                 return fmiError;
             }
         }
-        strcpy(comp->s[vr[i]], value[i]);
+        strcpy((char *)comp->s[vr[i]], value[i]);
     }
     return fmiOK;
 }
