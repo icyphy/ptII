@@ -155,6 +155,8 @@ static fmiStatus terminate(char* fname, fmiComponent c){
 // fname is freeModelInstance of freeSlaveInstance
 void freeInstance(char* fname, fmiComponent c) {
     ModelInstance* comp = (ModelInstance *)c;
+    printf("freeInstance\n");
+    fflush(stdout);
     if (!comp) return;
     if (comp->loggingOn) comp->functions.logger(c, comp->instanceName, fmiOK, "log", fname);
     if (comp->r) comp->functions.freeMemory(comp->r);
@@ -167,10 +169,14 @@ void freeInstance(char* fname, fmiComponent c) {
         }
         comp->functions.freeMemory(comp->s);
     }
+    if (comp->isPositive) {
+      comp->functions.freeMemory((void *)comp->isPositive);
+    }
     if (comp->instanceName) {
         comp->functions.freeMemory((void *)comp->instanceName);
     }
-    comp->functions.freeMemory(comp);
+    fmiCallbackFreeMemory freeMemory = comp->functions.freeMemory;
+    freeMemory(comp);
 }
 
 // ---------------------------------------------------------------------------
@@ -261,7 +267,7 @@ fmiStatus fmiSetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
 }
 
 fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString value[]){
-    int i, n;
+    int i;
     ModelInstance* comp = (ModelInstance *)c;
     if (invalidState(comp, "fmiSetString", modelInstantiated|modelInitialized))
          return fmiError;
@@ -294,7 +300,9 @@ fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[], size_t nvr,
 }
 
 fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
+#if NUMBER_OF_REALS>0
     int i;
+#endif
     ModelInstance* comp = (ModelInstance *)c;
     if (invalidState(comp, "fmiGetReal", not_modelError))
         return fmiError;
@@ -624,7 +632,9 @@ fmiStatus fmiSetTime(fmiComponent c, fmiReal time) {
 
 fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[], size_t nx){
     ModelInstance* comp = (ModelInstance *)c;
+#if NUMBER_OF_REALS>0
     int i;
+#endif
     if (invalidState(comp, "fmiSetContinuousStates", modelInitialized))
          return fmiError;
     if (invalidNumber(comp, "fmiSetContinuousStates", "nx", nx, NUMBER_OF_STATES)) 
@@ -673,7 +683,9 @@ fmiStatus fmiCompletedIntegratorStep(fmiComponent c, fmiBoolean* callEventUpdate
 }
 
 fmiStatus fmiGetStateValueReferences(fmiComponent c, fmiValueReference vrx[], size_t nx){
+#if NUMBER_OF_REALS>0
     int i;
+#endif
     ModelInstance* comp = (ModelInstance *)c;
     if (invalidState(comp, "fmiGetStateValueReferences", not_modelError))
         return fmiError;
@@ -692,7 +704,9 @@ fmiStatus fmiGetStateValueReferences(fmiComponent c, fmiValueReference vrx[], si
 }
 
 fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal states[], size_t nx){
+#if NUMBER_OF_REALS>0
     int i;
+#endif
     ModelInstance* comp = (ModelInstance *)c;
     if (invalidState(comp, "fmiGetContinuousStates", not_modelError))
         return fmiError;
@@ -729,7 +743,9 @@ fmiStatus fmiGetNominalContinuousStates(fmiComponent c, fmiReal x_nominal[], siz
 }
 
 fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[], size_t nx) {
+#if NUMBER_OF_STATES>0
     int i;
+#endif
     ModelInstance* comp = (ModelInstance *)c;
     if (invalidState(comp, "fmiGetDerivatives", not_modelError))
          return fmiError;
@@ -749,7 +765,9 @@ fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[], size_t nx) {
 }
 
 fmiStatus fmiGetEventIndicators(fmiComponent c, fmiReal eventIndicators[], size_t ni) {
+#if NUMBER_OF_EVENT_INDICATORS>0
     int i;
+#endif
     ModelInstance* comp = (ModelInstance *)c;
     if (invalidState(comp, "fmiGetEventIndicators", not_modelError))
         return fmiError;

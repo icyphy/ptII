@@ -80,7 +80,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) $(CBITSFLAGS) -shared -Wl,-soname,$@ -o $(ARCH_DIR)$@ $<
+	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ -o $(ARCH_DIR)$@ $<
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
