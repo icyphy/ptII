@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -74,6 +75,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -158,6 +160,11 @@ import com.sun.jna.ptr.PointerByReference;
  * mean that the value of an output at time <i>t</i> depends on the
  * input at time <i>t</i>.  It is irrelevant whether it depends on
  * the input at earlier times.
+ * </p><p>
+ * Note that if the display name of a port is set, display name is
+ * used in as the name of the FMU scalar variable instead of the port
+ * name. This is useful in case FMU scalar variable names contain a
+ * period, because periods are not allowed in port names.</p>
  *
  * @author Christopher Brooks, Michael Wetter, Edward A. Lee,
  * @version $Id$
@@ -886,11 +893,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         String fmuFileName = fmuFileParameter.asFile().getCanonicalPath();
         System.out.println("FMUImport.importFMU(): " + fmuFileName);
-        // This method is called by the gui to import a fmu file and create the
-        // actor.
-        // The primary issue is that we need to define the ports early on and
-        // handle
-        // changes to the ports.
+
+        // This method is called by the gui to import a fmu file and
+        // create the actor.
+
+        // The primary issue is that we need to define the ports early
+        // on and handle changes to the ports.
 
         // Calling parseFMUFile does not load the shared library.
         // Those are loaded upon the first attempt to use them.
@@ -920,9 +928,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         int maximumNumberOfPortsToDisplay = 20;
         int modelVariablesLength = fmiModelDescription.modelVariables.size();
         String hide = "  <property name=\"_hide\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\"/>\n";
-        // Include the following in a property to make it not show up in the parameter editing dialog.
+
+        // Include the following in a property to make it not show up
+        // in the parameter editing dialog.
         String hiddenStyle = "       <property name=\"style\" class=\"ptolemy.actor.gui.style.HiddenStyle\"/>\n";
-        // The following parameter is provided to output ports to allow overriding the dependencies in the FMU xml file.
+
+        // The following parameter is provided to output ports to
+        // allow overriding the dependencies in the FMU xml file.
         String dependency = "";
         String showName = "    <property name=\"_showName\" class=\"ptolemy.data.expr.SingletonParameter\"" +
         		" value=\"true\">\n" +
@@ -987,6 +999,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
                         + "    <property name=\""
                         + causality
+                        + "\"/>\n"
+                        // We set the display name to handle scalars with names that have periods
+                        // or other characters.
+                        + "    <display name=\""
+                        + StringUtilities.escapeForXML(scalar.name)
                         + "\"/>\n"
                         + "    <property name=\"_type\" "
                         + "class=\"ptolemy.actor.TypeAttribute\" value=\""
@@ -2485,8 +2502,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (scalarVariable.variability != FMIScalarVariable.Variability.parameter
                     && scalarVariable.variability != FMIScalarVariable.Variability.constant
                     && scalarVariable.causality == Causality.input) {
-                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
-
+                TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null) {
                     throw new IllegalActionException(this,
                             "FMU has an input named "
@@ -2544,8 +2560,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // FIXME: Perhaps we want to have a parameter to hide the internal variables?
             if (scalarVariable.causality == FMIScalarVariable.Causality.output
                     || scalarVariable.causality == FMIScalarVariable.Causality.internal) {
-                TypedIOPort port = (TypedIOPort) getPort(scalarVariable.name);
-
+                TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null || port.getWidth() <= 0) {
                     // Either it is not a port or not connected.
                     // Check to see if we should update the parameter.
@@ -2606,7 +2621,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         // Leave dependencies null.
                     } else {
                         for (String inputName : dependencyNames.split(" ")) {
-                            TypedIOPort inputPort = (TypedIOPort) getPort(inputName);
+                            TypedIOPort inputPort = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
                             if (inputPort == null) {
                                 throw new IllegalActionException(
                                         this,
@@ -2626,7 +2641,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // No override is given in the model.
                     // Use the dependencies declared in the FMU modelDescription file.
                     for (String inputName : scalarVariable.directDependency) {
-                        TypedIOPort inputPort = (TypedIOPort) getPort(inputName);
+                        TypedIOPort inputPort = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
                         if (inputPort == null) {
                             throw new IllegalActionException(
                                     this,
@@ -2648,6 +2663,26 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         _outputsVersion = workspace().getVersion();
         return _outputs;
+    }
+
+    /** Get the port by display name or, if the display name
+     *  is not set, then by name.  This is used to handle
+     *  variable names that have periods (".") in them.
+     *  @param portName The name of the port to find.  The name
+     *  might have a period in it, for example "foo.bar".
+     *  @return The port or null;
+     */
+    private Port _getPortByNameOrDisplayName(String portName) {
+        // RecordAssembler and RecordDisassembler use a similar design.
+        Port returnValue = null;
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            if (port.getDisplayName().equals(portName) || port.getName().equals(portName)) {
+                return port;
+            }
+        }
+        return returnValue;
     }
 
     /** Update the parameters listed in the modelDescription.xml file
