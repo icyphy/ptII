@@ -62,6 +62,10 @@ dumpbin /exports %1.dll
 
 if not exist %1.dll goto compileError
 
+rem copy the .dll to binaries/win32
+if not exist ..\..\binaries\win32 mkdir ..\binaries\win32
+cp %1.dll ..\..\binaries\win32
+
 rem create FMU dir structure with root 'fmu'
 set BIN_DIR=fmu\binaries\win32
 set SRC_DIR=fmu\sources
