@@ -49,9 +49,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  This actor differs from the RecordAssembler in that it ensures that the
  order of the fields of the record is preserved, matching the order
  of the input ports. This is probably not relevant unless you are writing
- Java code that iterates over the fields of the record.
+ Java code that iterates over the fields of the record.</p>
 
- @author Ben Leinfelder
+ <p>Note that if the display name of a port is set, display name is used in
+ the type constraints instead of name. This is useful in case fields to 
+ add to the record contain a period, because periods are not allowed in 
+ port names.</p>
+
+ @author Ben Leinfelder, Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
@@ -90,7 +95,12 @@ public class OrderedRecordAssembler extends RecordAssembler {
 
         for (int i = 0; i < size; i++) {
             IOPort port = (IOPort) portArray[i];
-            labels[i] = port.getName();
+            String displayName = port.getDisplayName();
+            if (displayName == null || displayName.equals("")) {
+                labels[i] = port.getName(); 
+            } else {
+                labels[i] = displayName;
+            }
             values[i] = port.get(0);
         }
 
