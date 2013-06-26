@@ -254,11 +254,15 @@ public class PtidesEvent extends DEEvent {
         boolean same = false;
         if (clockSyncBound == 0.0) {
             same = _timestamp.compareTo(event.timeStamp()) == 0
-            && _microstep == event.microstep();
+                && _microstep == event.microstep();
         } else {
             same = _timestamp.subtract(clockSyncBound).compareTo(
                     event.timeStamp()) <= 0
                     && _timestamp.add(clockSyncBound).compareTo(event.timeStamp()) >= 0;
+            // The microstep in Ptides describes a logical ordering. Therefore,
+            // even if the timestamps are not equal, we require the microsteps 
+            // to be the same.
+            same = same & _microstep == event.microstep();
         }
 
         return same;
