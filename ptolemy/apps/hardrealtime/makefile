@@ -47,10 +47,14 @@ PTPACKAGE = hardrealtime
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	Channel.java \
     EDF.java \
+    InputModelAttributes.java \
     Job.java \
     MultiFrameTask.java \
     PeriodicTask.java \
+    PtidesToMultiFrame.java \
+    PtidesToMultiFrameEditorFactory.java \
     Task.java \
     TaskFrame.java \
     TaskPlot.java \

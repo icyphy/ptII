@@ -42,6 +42,9 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -86,7 +89,16 @@ public class EDF extends Director {
         _jobs = new ArrayList<Job>();
         _taskPlotEditorFactory = new TaskPlotEditorFactory(this, this.uniqueName("_editorFactory"));
         _schedulableTasks = new ArrayList<Task>();
+        createPlot = new Parameter(this, "Create Plot");
+        createPlot.setTypeEquals(BaseType.BOOLEAN);
+        createPlot.setExpression("true");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** Boolean parameter that controls whether a plot of the execution is displayed. */
+    public Parameter createPlot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -128,12 +140,14 @@ public class EDF extends Director {
             }
         }
 
-        Effigy effigy = Configuration.findEffigy(toplevel());
-        if (effigy != null && effigy.numberOfOpenTableaux() > 0) {
-            JFrame jframe = effigy.entityList(Tableau.class).get(0).getFrame();
-            _taskPlotEditorFactory.createEditor(this, jframe);
-        } else {
-            throw new IllegalActionException(this, "Can't find top level effigy or any open tableaux");
+        if (((BooleanToken) createPlot.getToken()).booleanValue()) {
+            Effigy effigy = Configuration.findEffigy(toplevel());
+            if (effigy != null && effigy.numberOfOpenTableaux() > 0) {
+                JFrame jframe = effigy.entityList(Tableau.class).get(0).getFrame();
+                _taskPlotEditorFactory.createEditor(this, jframe);
+            } else {
+                throw new IllegalActionException(this, "Can't find top level effigy or any open tableaux");
+            }
         }
 
         Time modelStopTime = getModelStopTime();
@@ -177,15 +191,19 @@ public class EDF extends Director {
                 _debug("EDF: current job missed its deadline!");
             }
             // Deadline miss
-            _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
-            _taskPlotEditorFactory.getTaskPlot().addDeadlineMiss(currentTime.getDoubleValue(), _currentJob.getTask());
+            if (_taskPlotEditorFactory.getTaskPlot() != null) {
+                _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
+                _taskPlotEditorFactory.getTaskPlot().addDeadlineMiss(currentTime.getDoubleValue(), _currentJob.getTask());
+            }
             return false;
         }
 
         // Check if current job is finished
         if (_currentJob != null && _currentJob.getRemainingTime().isZero()) {
             _jobs.remove(_currentJob);
-            _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
+            if (_taskPlotEditorFactory.getTaskPlot() != null) {
+                _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
+            }
             _currentJob = null;
         }
 
@@ -196,7 +214,9 @@ public class EDF extends Director {
                 _currentJob = minimumDeadlineJob;
                 _timeCurrentJobStarted = currentTime;
             } else if (_currentJob != minimumDeadlineJob) {
-                _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
+                if (_taskPlotEditorFactory.getTaskPlot() != null) {
+                    _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
+                }
                 _currentJob = minimumDeadlineJob;
                 _timeCurrentJobStarted = currentTime;
             }
@@ -245,11 +265,22 @@ public class EDF extends Director {
      */
     public void releaseJob(Job job) {
         _jobs.add(job);
-        _taskPlotEditorFactory.getTaskPlot().addJob(job);
+        if (_taskPlotEditorFactory.getTaskPlot() != null) {
+            _taskPlotEditorFactory.getTaskPlot().addJob(job);
+        }
         if (_debugging) {
             _debug("Added job " + job);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The job that is currently executing on the processor. */
+    protected Job _currentJob;
+
+    /** The time that the current job started executing. */
+    protected Time _timeCurrentJobStarted = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -287,10 +318,8 @@ public class EDF extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Job _currentJob;
     private List<Job> _jobs;
     private List<Task> _schedulableTasks;
     private int _simulationEndTime = 20;
     private TaskPlotEditorFactory _taskPlotEditorFactory;
-    private Time _timeCurrentJobStarted = null;
 }

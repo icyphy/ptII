@@ -171,6 +171,9 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add a task frame to the multiframe task.
+     *  @param taskFrame The task frame to add.
+     */
     protected void _addTaskFrame(TaskFrame taskFrame) {
         _taskFrames.add(taskFrame);
     }

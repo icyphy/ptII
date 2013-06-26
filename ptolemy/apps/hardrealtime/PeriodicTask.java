@@ -56,11 +56,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class PeriodicTask extends TypedAtomicActor implements Task {
     /** Construct an actor with the specified container and name.
-     *  @param container
-     *  @param name
      * 
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @param container The container.
+     *  @param name The name of the actor.
+     *  @throws IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @throws NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
     public PeriodicTask(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
