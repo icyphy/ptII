@@ -175,8 +175,7 @@ void freeInstance(char* fname, fmiComponent c) {
     if (comp->instanceName) {
         comp->functions.freeMemory((void *)comp->instanceName);
     }
-    fmiCallbackFreeMemory freeMemory = comp->functions.freeMemory;
-    freeMemory(comp);
+    comp->functions.freeMemory(comp);
 }
 
 // ---------------------------------------------------------------------------
