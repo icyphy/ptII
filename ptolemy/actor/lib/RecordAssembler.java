@@ -152,7 +152,11 @@ public class RecordAssembler extends TypedAtomicActor {
 
         for (int i = 0; i < size; i++) {
             IOPort port = (IOPort) portArray[i];
-            labels[i] = port.getName();
+            if (port.getDisplayName() == null || port.getDisplayName().equals("")) {
+                labels[i] = port.getName(); 
+            } else {
+                labels[i] = port.getDisplayName();
+            }
             values[i] = port.get(0);
         }
 
@@ -185,6 +189,9 @@ public class RecordAssembler extends TypedAtomicActor {
 
         for (TypedIOPort port : _inputs) {
             if (!port.hasToken(0)) {
+                if (_debugging) {
+                    _debug("Port " + port.getName() + " does not have a token, prefire() will return false.");
+                }
                 return false;
             }
         }
