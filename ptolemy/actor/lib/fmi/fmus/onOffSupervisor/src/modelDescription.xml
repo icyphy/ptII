@@ -26,14 +26,20 @@
      valueReference="1"
      description="input on-off command"
      causality="input">
-    <Boolean/>
+    <Boolean start="false"/>
   </ScalarVariable>
   <ScalarVariable
      name="fault"
      valueReference="2"
      description="input fault indicator"
      causality="input">
-    <Boolean/>
+    <Boolean start="false"/>
   </ScalarVariable>
 </ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+  </Outputs>
+</ModelStructure>
+
 </fmiModelDescription>
