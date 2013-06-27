@@ -36,8 +36,30 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * BlockingFire is a wrapper for Ptolemy actor. It provides a basic implementation of
- * MetroIIActorInterface (@see MetroIIActorInterface#startOrResume). 
+ * BlockingFire is a wrapper for Ptolemy actor. It provides an implementation of FireMachine. 
+ * More specifically, the wrapper implements a startOrResume() function 
+ * that associates the state of FireMachine with the state of fire() of the wrapped actor as follows: 
+ * <ol>
+ * <li> START: initial state </li>
+ * <li> BEGIN represents prefire() is called and returns true. getfire() will be called. </li>
+ * <li> END represents getfire() is called and returns properly. </li>
+ * <li> FINAL: final state </li>
+ * </ol>
+ * When startOrResume() is called, the wrapper checks if the Metro event associated with the current state is notified. 
+ * If the event is notified, call related function of the wrapped actor, transition to the next state, and propose the 
+ * Metro event associated with the next state. For example, 
+ * 
+ *       action: propose FIRE_BEGIN
+ * START ---------------------------------------> BEGIN
+ * 
+ *       guard: FIRE_BEGIN is notified   
+ *       action: call fire(), propose FIRE_END
+ * BEGIN ---------------------------------------> FIRE_END
+ *  
+ *       guard: FIRE_BEGIN is not notified   
+ *       action: propose FIRE_BEGIN
+ * BEGIN ---------------------------------------> BEGIN
+ *  
  *
  * @author Liangpeng Guo
  * @version $Id$

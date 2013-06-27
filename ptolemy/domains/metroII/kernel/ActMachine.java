@@ -37,11 +37,15 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 /**
  * 
- * ActMachine is an abstract wrapper for actors. ActMachine is a FSM. The states of the FSM represent
- * the state of the wrapped actor. Each state may associate with a MetroII event and 
- * these events are supposed to be used as the interface interacting with outside. 
- * The StartOrResumable interface has to be implemented by subclass as the triggering 
- * function of the FSM, in which the transitions are going to be defined.
+ * ActMachine is an abstract wrapper for actors. ActMachine is a FSM whose states are defined by the enum type 
+ * State. Each state represents a state of the wrapped actor. 
+ * For example, The State FIRING represents the wrapped actor is being fired. 
+ * 
+ * Each state may associate with a MetroII event and
+ * these events are supposed to be used as the interface interacting with Metro directors. 
+ * For any subclass of ActMachine, the StartOrResumable interface has to be implemented. 
+ * StartOrResume() should be implemented as the triggering 
+ * function of the FSM. The FSM only reacts when StartOrResume() is called.
  * 
  * @author Liangpeng Guo
  * @version $Id$

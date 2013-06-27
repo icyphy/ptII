@@ -105,14 +105,24 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         return _counter.toString();
     }
 
+    /** Check if the debugging option is checked.
+     * 
+     * @return the state of debugging option
+     */
     public boolean debugging() {
         return _debugging;
     }
 
+    /**
+     * turn on debugging option
+     */
     public void turnOnDebugging() {
         _debugging = true;
     }
 
+    /**
+     * turn off debugging option
+     */
     public void turnOffDebugging() {
         _debugging = false;
     }
@@ -188,6 +198,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
     }
 
+    /**
+     * Return the number of mapping constraints
+     * @return the number of mapping constraints
+     */
     public int numConstraints() {
         return _mapping.edgeSize();
     }
@@ -220,6 +234,11 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
     }
 
+    /**
+     * Add a mapping constraint
+     * @param eventName1 first event in the mapping
+     * @param eventName2 second event in the mapping
+     */
     public void addMapping(String eventName1, String eventName2) {
         _eventIDDictionary.add(eventName1);
         _eventIDDictionary.add(eventName2);
@@ -235,24 +254,46 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
+    /**
+     * ConstraintCounter maintains a counter for each constraint. When increaseCount(Iterable<Integer> ids) is called,
+     * the counter of the constraint whose id is in ids is increased by the number of appearances in ids.
+     * 
+     * @author glp
+     *
+     */
     private class ConstraintCounter implements Cloneable {
 
+        /**
+         * Construct and initialize the counter for each constraint.
+         * @param size the largest possible id of the constraints + 1. 
+         */
         public ConstraintCounter(int size) {
             _size = size;
             _count = new int[_size];
-            initialize();
+            reset();
         }
         
+        /**
+         * Clone the ConstraintCounter
+         */
         public ConstraintCounter clone() throws CloneNotSupportedException {
             ConstraintCounter newObject = (ConstraintCounter) super.clone(); 
             newObject._count = (int[]) _count.clone(); 
             return newObject; 
         }
 
+        /**
+         * Convert the ConstraintCounter to string
+         */
         public String toString() {
             return Arrays.toString(_count);
         }
 
+        /**
+         * return the first id in ids whose counter is greater than 1.
+         * @param ids a vector of ids
+         * @return the first id in ids whose counter is greater than 1.
+         */
         public int firstGreaterThanOne(Iterable<Integer> ids) {
             for (Integer id : ids) {
                 if (_count[id] > 1) {
@@ -262,34 +303,63 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
             return -1;
         }
 
-        public void initialize() {
+        /**
+         * Reset the counters
+         */
+        public void reset() {
             for (int i = 0; i < _size; i++) {
                 _count[i] = 0;
             }
         }
 
+        /**
+         * The counter of the constraint whose id is in ids is increased by the number of appearances in ids.
+         * @param ids the vector of ids
+         */
         public void increaseCount(Iterable<Integer> ids) {
             for (Integer id : ids) {
                 _count[id]++;
             }
         }
 
+        /**
+         * The counter of the constraint whose id is in ids is decreased by the number of appearances in ids.
+         * @param ids the vector of ids
+         */
         public void decreaseCount(Iterable<Integer> ids) {
             for (Integer id : ids) {
                 _count[id]--;
             }
         }
 
+        /**
+         * The largest possible id + 1
+         */
         private int _size;
 
+        /**
+         * the counters
+         */
         private int[] _count;
     }
 
+    /**
+     * Whether in debugging mode or not
+     */
     private boolean _debugging = false;
 
+    /**
+     * A constraint counter
+     */
     private ConstraintCounter _counter;
 
+    /**
+     * Mapping constraints (stored in a graph)
+     */
     private Graph _mapping = new Graph();
 
+    /**
+     * A dictionary that maps an event to its id.
+     */
     private EventDictionary _eventIDDictionary = new EventDictionary();
 }

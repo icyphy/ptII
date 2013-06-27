@@ -1,4 +1,4 @@
-/* BlockingActor is a basic wrapper for Ptolemy actor to work with a MetroIIDirector.
+/* BlockingActor is a basic wrapper for Ptolemy actor.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -36,9 +36,28 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor
- * to work with a MetroIIDirector. It provides a basic implementation of
- * MetroIIActorInterface. @see MetroIIActorBasicWrapper#startOrResume
+ * MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor. 
+ * It provides an implementation of ActMachine. More specifically, the wrapper implements a startOrResume() function 
+ * that associates the state of ActMachine with the state of the wrapped actor as follows: 
+ * <ol>
+ * <li> PREFIRE_BEGIN represents prefire() will be called but not yet being called. </li>
+ * <li> PREFIRE_END_FIRE_BEGIN represents prefire() is called and returns true. getfire() will be called. </li>
+ * <li> FIRE_END_POSTFIRE_BEGIN represents getfire() is called and returns properly. postfire() will be called.</li>
+ * <li> POSTFIRE_END represents postfire() is called</li>
+ * </ol>
+ * When startOrResume() is called, the wrapper checks if the Metro event associated with the current state is notified. 
+ * If the event is notified, call related function of the wrapped actor, transition to the next state, and propose the 
+ * Metro event associated with the next state. For example, 
+ * 
+ *               guard: PREFIRE_BEGIN is notified   
+ *               action: call prefire(), propose FIRE_BEGIN
+ * PREFIRE_BEGIN ---------------------------------------> PREFIRE_END_FIRE_BEGIN
+ *  
+ *               guard: PREFIRE_BEGIN is not notified   
+ *               action: propose PREFIRE_BEGIN
+ * PREFIRE_BEGIN ---------------------------------------> PREFIRE_BEGIN
+ *  
+ *  
  *
  * @author Liangpeng Guo
  * @version $Id$

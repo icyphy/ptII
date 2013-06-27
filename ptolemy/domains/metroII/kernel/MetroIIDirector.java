@@ -90,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  * <ol>
  * <li> MetroIIActorBasicWrapper @see MetroIIActorBasicWrapper</li>
  * <li> MetroIIActorGeneralWrapper @see MetroIIActorGeneralWrapper</li>
- * <ol>
+ * </ol>
  * MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor
  * that implements prefire(), fire(), and postfire(). Wrapped by
  * MetroIIActorBasicWrapper, the actor will be blocked at three
