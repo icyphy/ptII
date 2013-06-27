@@ -79,6 +79,7 @@ test FMUImport-1.1 {Test out importFMU} {
     </port>
     <port name="der_h_" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
+        <display name="der(h)"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
@@ -105,6 +106,7 @@ test FMUImport-1.1 {Test out importFMU} {
     </port>
     <port name="der_v_" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
+        <display name="der(v)"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
