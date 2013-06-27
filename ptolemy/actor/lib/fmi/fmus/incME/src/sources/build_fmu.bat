@@ -95,11 +95,12 @@ if defined FOUND (
   if exist ..\..\..\..\%1.fmu del ..\..\..\..\%1.fmu
   7z.exe a -tzip -xr!.svn ..\..\..\..\%1.fmu ^
   modelDescription.xml model.png binaries sources documentation
-  goto cleanup
 ) else (
   echo Warning: Not building the .fmu file because 7z.exe is not found
   echo 7z.exe is available as part of the fmusdk or %PTII%\ptolemy\actor\lib\fmu\fmus\win32\7z.exe
 )
+goto cleanup
+
 
 :noCompiler
 echo No Microsoft Visual C compiler found
