@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us -->
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="helloWorld"
+  modelIdentifier="helloWorld"
+  numberOfContinuousStates="42"
+  numberOfEventIndicators="42"
+  guid="{7b2d6d2e-ac4d-4aa8-93eb-d53357dc58ec}">
+<ModelVariables>
+  <ScalarVariable
+     name="output"
+     valueReference="0"
+     description="constant 42"
+     causality="output">
+     <Real/>
+  </ScalarVariable>
+</ModelVariables>
+
+<Implementation>
+  <CoSimulation_StandAlone>
+    <Capabilities
+      canHandleVariableCommunicationStepSize="true"
+      canHandleEvents="true"/>
+  </CoSimulation_StandAlone>
+</Implementation>
+</fmiModelDescription>
