@@ -1,12 +1,36 @@
-rem@echo off 
+rem @echo off 
 rem ------------------------------------------------------------
+rem $Id: build_fmu.bat 66782 2013-06-27 21:23:40Z cxh $
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
-rem Based on (c) 2011 QTronic GmbH
+
+rem Copyright (c) 2013 The Regents of the University of California.
+rem All rights reserved.
+rem 
+rem Permission is hereby granted, without written agreement and without
+rem license or royalty fees, to use, copy, modify, and distribute this
+rem software and its documentation for any purpose, provided that the above
+rem copyright notice and the following two paragraphs appear in all copies
+rem of this software.
+rem 
+rem IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+rem FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+rem ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+rem THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+rem SUCH DAMAGE.
+rem 
+rem THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+rem INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+rem MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+rem PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+rem CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+rem ENHANCEMENTS, OR MODIFICATIONS.
+
+rem build_fmu.bat is based on (c) 2011 QTronic GmbH
 
 rem FMU SDK license 
 
-rem Copyright © 2008-2011, QTronic GmbH. All rights reserved.
+rem Copyright (c) 2008-2011, QTronic GmbH. All rights reserved.
 rem The FmuSdk is licensed by the copyright holder under the BSD License
 rem (http://www.opensource.org/licenses/bsd-license.html):
 rem Redistribution and use in source and binary forms, with or without
@@ -63,7 +87,7 @@ dumpbin /exports %1.dll
 if not exist %1.dll goto compileError
 
 rem copy the .dll to binaries/win32
-if not exist ..\..\binaries\win32 mkdir ..\binaries\win32
+if not exist ..\..\binaries\win32 mkdir ..\..\binaries\win32
 cp %1.dll ..\..\binaries\win32
 
 rem create FMU dir structure with root 'fmu'
