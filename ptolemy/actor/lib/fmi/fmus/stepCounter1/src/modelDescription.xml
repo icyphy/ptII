@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us -->
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="stepCounter1"
+  modelIdentifier="stepCounter1"
+  numberOfContinuousStates="42"
+  numberOfEventIndicators="42"
+  guid="{c157b371-f7d4-4133-8c29-8e78a9468674}">
+<ModelVariables>
+  <ScalarVariable
+     name="output"
+     valueReference="0"
+     description="current count"
+     causality="output">
+    <Real/>
+    <DirectDependency/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="p"
+      valueReference="1"
+      description="period at which increment occurs"
+      variability="parameter">
+    <Real start="1.0" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="lastSuccessfulTime"
+      valueReference="2"
+      description="last successful time for a discarded step"
+      causality="internal">
+    <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="atTransitionPoint"
+      valueReference="3"
+      description="indicator that we have already output the initial value at a transition point"
+      causality="internal">
+    <Real/>  <!-- FIXME: We really want this to be Boolean. -->
+    </ScalarVariable>
+</ModelVariables>
+
+<Implementation>
+  <CoSimulation_StandAlone>
+    <Capabilities
+      canHandleVariableCommunicationStepSize="true"
+      canHandleEvents="true"/>
+  </CoSimulation_StandAlone>
+</Implementation>
+</fmiModelDescription>
