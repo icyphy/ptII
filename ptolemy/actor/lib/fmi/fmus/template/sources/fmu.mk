@@ -12,8 +12,14 @@ ARCH = darwin64
 
 ARCH_DIR = ../binaries/$(ARCH)/
 
-# Either cs for co-simuluation or me for model exchange.
+# This is for co-simulation
 INCLUDE = -DFMI_COSIMULATION -I.
+# This is for model exhange
+#INCLUDE =  -I.
+
+# For co-simulation FMUs, modelExchange.mk does not exist.
+# For model exchange FMUs, modelExchange.mk defines INCLUDE.
+#include modelExchange.mk
 
 # The suffix for shared libraries.
 # dylib for Mac OS X, so for Linux
@@ -48,30 +54,25 @@ $(FMU_NAME):
 
 darwin64:
 	$(MAKE) ARCH=darwin64 PIC= SHARED_LIBRARY_SUFFIX=dylib $(FMU_NAME).dylib
-	#mv $(FMU_NAME).dylib ../binaries/darwin64
 
 linux32:
 	$(MAKE) ARCH=linux32 CBITSFLAGS=-m32 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so $(FMU_NAME).so
-	#mv $(FMU_NAME).so ../binaries/linux32
 
 linux64:
 	$(MAKE) ARCH=linux64 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so $(FMU_NAME).so
-	#mv $(FMU_NAME).so ../binaries/linux64
 
 win32:
 	$(MAKE) ARCH=win32 PIC= SHARED_LIBRARY_SUFFIX=dll $(FMU_NAME).dll
-	#mv $(FMU_NAME).dll ../binaries/win32
 
 win64:
 	$(MAKE) ARCH=win64 PIC= SHARED_LIBRARY_SUFFIX=dll $(FMU_NAME).dll
-	#mv $(FMU_NAME).dll ../binaries/win64
 
 #####
 
 # CBITSFLAGS is set to -m32 to build linux32 fmus
 %.o: %.c
 	echo `pwd`
-	$(CC) -g -c $(CBITSFLAGS) $(PIC) -Wall $(CSORME_INCLUDE) $(CFLAGS) $< -o $@
+	$(CC) -g -c $(CBITSFLAGS) $(PIC) -Wall $(INCLUDE) $(CFLAGS) $< -o $@
 
 
 %.so: %.o
@@ -79,7 +80,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) $(CBITSFLAGS) -shared -Wl,-soname,$@ -o $(ARCH_DIR)$@ $<
+	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $<
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
@@ -94,13 +95,13 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g -o $(ARCH_DIR)$@ $<
+	$(CC) -dynamiclib -g $(INCLUDE) -o $(ARCH_DIR)$@ $<
 
 FMUDIR=..
 
 %.fmu: %.$(SHARED_LIBRARY_SUFFIX)
 	# Remove files that should not be included in the .fmu file.
-	(cd $(FMUDIR); rm -rf *.o */*.o *~)
+	(cd $(FMUDIR); rm -rf *.o */*.o *~ \#*)
 	(cd $(FMUDIR); zip -r ../$@ * -x '*/.svn/*' '*/#*#' '*/*~')
 
 dirclean:

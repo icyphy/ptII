@@ -12,8 +12,14 @@ ARCH = darwin64
 
 ARCH_DIR = ../binaries/$(ARCH)/
 
+# This is for co-simulation
 INCLUDE = -DFMI_COSIMULATION -I.
+# This is for model exhange
 #INCLUDE =  -I.
+
+# For co-simulation FMUs, modelExchange.mk does not exist.
+# For model exchange FMUs, modelExchange.mk defines INCLUDE.
+#include modelExchange.mk
 
 # The suffix for shared libraries.
 # dylib for Mac OS X, so for Linux
@@ -48,23 +54,18 @@ $(FMU_NAME):
 
 darwin64:
 	$(MAKE) ARCH=darwin64 PIC= SHARED_LIBRARY_SUFFIX=dylib $(FMU_NAME).dylib
-	#mv $(FMU_NAME).dylib ../binaries/darwin64
 
 linux32:
 	$(MAKE) ARCH=linux32 CBITSFLAGS=-m32 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so $(FMU_NAME).so
-	#mv $(FMU_NAME).so ../binaries/linux32
 
 linux64:
 	$(MAKE) ARCH=linux64 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so $(FMU_NAME).so
-	#mv $(FMU_NAME).so ../binaries/linux64
 
 win32:
 	$(MAKE) ARCH=win32 PIC= SHARED_LIBRARY_SUFFIX=dll $(FMU_NAME).dll
-	#mv $(FMU_NAME).dll ../binaries/win32
 
 win64:
 	$(MAKE) ARCH=win64 PIC= SHARED_LIBRARY_SUFFIX=dll $(FMU_NAME).dll
-	#mv $(FMU_NAME).dll ../binaries/win64
 
 #####
 

@@ -1,4 +1,4 @@
-@echo off 
+rem@echo off 
 rem ------------------------------------------------------------
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
@@ -57,9 +57,14 @@ rem /wd4090 disables warnings about different 'const' qualifiers
 
 rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
 cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.
+rem cl /LD /wd4090 /nologo ..\%1.c /I ..\.
 dumpbin /exports %1.dll
 
 if not exist %1.dll goto compileError
+
+rem copy the .dll to binaries/win32
+if not exist ..\..\binaries\win32 mkdir ..\binaries\win32
+cp %1.dll ..\..\binaries\win32
 
 rem create FMU dir structure with root 'fmu'
 set BIN_DIR=fmu\binaries\win32
@@ -83,12 +88,12 @@ rem del %DOC_DIR%\model.png
 
 rem If the 7z.exe binary is found, then
 rem zip the directory tree and move to fmu directory 
-for %%X in (7z.exe) do (set FOUND=%%~$PATH:X)
+for %%X in (7z.exe) do set FOUND=%%~$PATH:X
 if defined FOUND (
   cd fmu
-  set FMU_FILE=..\..\..\..\%1.fmu
-  if exist %ZIP_FILE% del %FMU_FILE%
-  7z.exe a -tzip -xr!.svn %FMU_FILE% ^
+  set FMU_FILE=
+  if exist ..\..\..\..\%1.fmu del ..\..\..\..\%1.fmu
+  7z.exe a -tzip -xr!.svn ..\..\..\..\%1.fmu ^
   modelDescription.xml model.png binaries sources documentation
   goto cleanup
 ) else (

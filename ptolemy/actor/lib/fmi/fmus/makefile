@@ -31,8 +31,17 @@
 
 ME =		ptolemy/actor/lib/fmi/fmus
 
-FMUS =		helloWorld incME onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName
+# Co-Simulation FMUS.
+FMUS_CS =		helloWorld onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName
+
+# Model Exchange FMUS.
+FMUS_ME = incME
+
+# All FMUs.
+FMUS = $(FMUS_CS) $(FMUS_ME)
+
 DIRS =		fmusim2 $(FMUS)
+
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -91,11 +100,29 @@ update:
 	fi
 
 update_makefiles:
-	@if [ "x$(FMUS)" != "x" ]; then \
-		set $(FMUS); \
+	@if [ "x$(FMUS_CS)" != "x" ]; then \
+		set $(FMUS_CS); \
 		for x do \
-			echo "copying fmu.mk to $$x/src/sources"; \
-			cp fmu.mk $$x/src/sources/; \
+			echo "copying template/sources/fmu.mk to $$x/src/sources"; \
+			cp template/sources/fmu.mk $$x/src/sources/; \
+			echo "copying template/sources/build_fmu to $$x/src/sources"; \
+			cp template/sources/build_fmu $$x/src/sources/; \
+			echo "copying template/sources/build_fmu.bat to $$x/src/sources"; \
+			cp template/sources/build_fmu.bat $$x/src/sources/; \
+		done ; \
+	fi
+
+	@if [ "x$(FMUS_ME)" != "x" ]; then \
+		set $(FMUS_ME); \
+		for x do \
+			echo "copying template/sources/fmu.mk to $$x/src/sources and updating for ME"; \
+			sed 's@#include modelExchange.mk@include modelExchange.mk@' template/sources/fmu.mk > $$x/src/sources/fmu.mk; \
+			echo "copying template/sources/build_fmu to $$x/src/sources and updating for ME"; \
+			sed -e 's@include="-DFMI_COSIMULATION -I."@#include="-DFMI_COSIMULATION -I."@' \
+				-e 's@#include="-I."@include="-I."@' template/sources/build_fmu > $$x/src/sources/build_fmu.mk; \
+			echo "copying template/sources/build_fmu.bat to $$x/src/sources and updating for ME"; \
+			sed -e 's@FMI for Co-Simulation 1.0@FMI for Model Exchange 1.0@' \
+				-e 's@/DFMI_COSIMULATION@@' template/sources/build_fmu.bat > $$x/src/sources/build_fmu.bat; \
 		done ; \
 	fi
 
