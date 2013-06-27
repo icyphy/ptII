@@ -5,7 +5,6 @@
   fmiVersion="2.0"
   guid="{136ff03f-fb93-4a90-bb88-8dbf92948dde}"
   modelName="stepCounter"
-  numberOfContinuousStates="42"
   numberOfEventIndicators="42"
    >
     
