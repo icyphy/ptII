@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- GUID generated at http://guid.us -->
 <fmiModelDescription
+  description="On-Off Supervisor with Fault Management"
   fmiVersion="2.0"
-  modelName="onOffSupervisor"
   guid="{7081763b-e37f-404a-967a-9f6fe0fc6072}"
-  description="On-Off Supervisor with Fault Management">
+  modelName="onOffSupervisor"
+  numberOfContinuousStates="42"
+  numberOfEventIndicators="42"
+   >
     
   <CoSimulation
     modelIdentifier="onOffSupervisor"

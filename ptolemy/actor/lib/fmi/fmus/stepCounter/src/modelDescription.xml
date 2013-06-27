@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- GUID generated at http://guid.us -->
 <fmiModelDescription
+  description="Periodic counter with period p"
   fmiVersion="2.0"
-  modelName="stepCounter"
   guid="{136ff03f-fb93-4a90-bb88-8dbf92948dde}"
-  description="Periodic counter with period p">
+  modelName="stepCounter"
+  numberOfContinuousStates="42"
+  numberOfEventIndicators="42"
+   >
     
   <CoSimulation
     modelIdentifier="stepCounter"

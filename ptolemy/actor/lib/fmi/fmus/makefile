@@ -86,6 +86,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: suball 
 install: subinstall jars
+
+# Update the .fmu files in the ../test/auto/directory.
 update:
 	@if [ "x$(FMUS)" != "x" ]; then \
 		set $(FMUS); \
@@ -99,6 +101,7 @@ update:
 		done ; \
 	fi
 
+# Update fmu.mk, build_fmu and build_fmu.bat from the files in the template/ directory.
 update_makefiles:
 	@if [ "x$(FMUS_CS)" != "x" ]; then \
 		set $(FMUS_CS); \
@@ -123,6 +126,22 @@ update_makefiles:
 			echo "copying template/sources/build_fmu.bat to $$x/src/sources and updating for ME"; \
 			sed -e 's@FMI for Co-Simulation 1.0@FMI for Model Exchange 1.0@' \
 				-e 's@/DFMI_COSIMULATION@@' template/sources/build_fmu.bat > $$x/src/sources/build_fmu.bat; \
+		done ; \
+	fi
+
+fmucheck:
+	@if [ "x$(FMUS_CS)" != "x" ]; then \
+		set $(FMUS_CS); \
+		for x do \
+			echo "Running fmucheck on $$x/$$x.fmu"; \
+			(cd $$x; fmuCheck $$x.fmu); \
+		done ; \
+	fi
+	@if [ "x$(FMUS_ME)" != "x" ]; then \
+		set $(FMUS_ME); \
+		for x do \
+			echo $$x/$$x.fmu; \
+			(cd $$x; fmuCheck $$x.fmu); \
 		done ; \
 	fi
 
