@@ -438,14 +438,16 @@ public class PtidesDirector extends DEDirector implements Decorator {
             fireContainerAt(time);
             return time;
         }
-        int newIndex = _currentLogicalIndex;
-        if (_currentLogicalTime != null
-                && _currentLogicalTime.compareTo(time) == 0
+        int newIndex = index;
+        if (_currentLogicalTime != null) {
+            //newIndex = _currentLogicalIndex; 
+            if (_currentLogicalTime.compareTo(time) == 0
                 && index <= getIndex()) {
-            if (!(actor instanceof CompositeActor)
-                    || ((CompositeActor) actor).getDirector()
-                            .scheduleContainedActors()) {
-                newIndex = Math.max(getIndex(), index) + 1;
+                if (!(actor instanceof CompositeActor)
+                        || ((CompositeActor) actor).getDirector()
+                                .scheduleContainedActors()) {
+                    newIndex = Math.max(getIndex(), index) + 1;
+                }
             }
         }
 
@@ -603,7 +605,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                             new IllegalActionException(event.ioPort(),
                                     "Missed Deadline at platform time " +
                                     localClock.getLocalTime() + 
-                                    " with logical time " + getModelTime() + 
+                                    " with logical time " + event.timeStamp() + 
                                     " at port " + event.ioPort()
                                             + "!"));
                 }

@@ -236,7 +236,7 @@ public class PtidesPort extends MirrorPort {
      *  @param t The token.
      *  @return The timestamp.
      */
-    public Object[] getTimeStampForToken(Token t) {
+    public Object[] getTimestampForToken(Token t) {
         Object[] times = _transmittedTokenTimestamps.get(t);
         _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
         if (_transmittedTokenCnt.get(t).intValue() == 0) {
@@ -244,6 +244,21 @@ public class PtidesPort extends MirrorPort {
             _transmittedTokenCnt.remove(t);
         }
         return times;
+    }
+    
+    public int getMicrostepForToken(Token t) {
+        Integer microstep = _transmittedTokenMicrosteps.get(t);
+        if (_transmittedTokenCnt.get(t) != null) {
+            _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
+            if (_transmittedTokenCnt.get(t).intValue() == 0) {
+                _transmittedTokenMicrosteps.remove(t);
+                _transmittedTokenCnt.remove(t);
+            }
+            
+            return microstep;
+        } else {
+            return 1;
+        }
     }
 
     /** Check whether port is output and network port parameter is not set.
@@ -306,6 +321,8 @@ public class PtidesPort extends MirrorPort {
             throws IllegalActionException, NoRoomException {
         Time timestamp = ((CompositeActor) getContainer()).getDirector()
                 .getModelTime();
+        int microstep = ((PtidesDirector)((CompositeActor) getContainer()).getDirector())
+                .getIndex();
         Time sourceTimestamp = ((PtidesDirector) ((CompositeActor) getContainer())
                 .getDirector()).getCurrentSourceTimestamp();
         if (sourceTimestamp == null) {
@@ -313,6 +330,7 @@ public class PtidesPort extends MirrorPort {
         }
         if (_transmittedTokenTimestamps == null) {
             _transmittedTokenTimestamps = new HashMap();
+            _transmittedTokenMicrosteps = new HashMap();
             _transmittedTokenCnt = new HashMap();
         }
         if (_transmittedTokenTimestamps.get(token) == null) {
@@ -320,6 +338,10 @@ public class PtidesPort extends MirrorPort {
         }
         _transmittedTokenTimestamps.put(token, new Object[] { timestamp,
                 sourceTimestamp });
+        
+        
+        _transmittedTokenMicrosteps.put(token, microstep);
+        
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token)
                 .intValue() + 1);
         super.send(channelIndex, token);
@@ -400,6 +422,8 @@ public class PtidesPort extends MirrorPort {
 
 
     private HashMap<Token, Object[]> _transmittedTokenTimestamps;
+     
+    private HashMap<Token, Integer> _transmittedTokenMicrosteps;
 
     private HashMap<Token, Integer> _transmittedTokenCnt;
     

@@ -804,14 +804,17 @@ public class PtidesPlatform extends MirrorComposite {
 
                             Object[] timestamps = ((PtidesPort) ((MirrorPort) port)
                                     .getAssociatedPort())
-                                    .getTimeStampForToken(t);
+                                    .getTimestampForToken(t);
+                            
+                            int microstep = ((PtidesPort) ((MirrorPort) port)
+                                    .getAssociatedPort())
+                                    .getMicrostepForToken(t);
 
-                            Time timestamp = (Time) timestamps[0];
-                            Time sourceTimestamp = (Time) timestamps[1];
+                            Time timestamp = (Time) timestamps[0]; 
 
                             Token[] values = new Token[] {
                                     new DoubleToken(timestamp.getDoubleValue()),
-                                    new IntToken(director.getMicrostep()),
+                                    new IntToken(microstep),
                                     t };
                             RecordToken record = new RecordToken(
                                     PtidesNetworkType.LABELS, values);

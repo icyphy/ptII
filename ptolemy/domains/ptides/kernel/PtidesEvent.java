@@ -235,7 +235,7 @@ public class PtidesEvent extends DEEvent {
     }
 
     @Override
-    public boolean hasTheSameTagAs(DEEvent event) {
+    public boolean hasTheSameTagAs(DEEvent event) { 
         Actor actor = event.actor();
         if (actor == null) {
             actor = (Actor) event.ioPort().getContainer();
