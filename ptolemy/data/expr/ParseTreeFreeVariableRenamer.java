@@ -64,7 +64,13 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
         _scope = dependentVariable.getParserScope();
         _dependentVariable = dependentVariable;
         _variableToRename = variableToRename;
-        _name = name;
+        // If the variable containing a reference to the variable to be
+        // renamed is in string mode, prepend a $ to the name.
+        if(_dependentVariable.isStringMode()) {
+            _name = "$" +  name;
+        } else {
+            _name = name;
+        }
         node.visit(this);
         _scope = null;
         _variableToRename = null;
