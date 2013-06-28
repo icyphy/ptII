@@ -189,10 +189,16 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
                 double executingPriority = _getPriority(executing);
                 double newActorPriority = _getPriority(actor);
                 if (newActorPriority < executingPriority) {
-                    remainingTime = executionTime;
-                    event((NamedObj) executing,
-                            currentPlatformTime.getDoubleValue(),
-                            ExecutionEventType.PREEMPTED);
+                    if (remainingTime.getDoubleValue() == 0.0) {
+                        event((NamedObj) _currentlyExecuting.peek(),
+                                currentPlatformTime.getDoubleValue(),
+                                ExecutionEventType.STOP);
+                    } else {
+                        event((NamedObj) executing,
+                                currentPlatformTime.getDoubleValue(),
+                                ExecutionEventType.PREEMPTED);
+                    }
+                    remainingTime = executionTime; 
                     scheduleNewActor(actor, currentPlatformTime, executionTime);
                 }
             }
@@ -207,13 +213,14 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
             _remainingTimes.put(_currentlyExecuting.peek(), null);
-
             _currentlyExecuting.pop();
             if (_currentlyExecuting.size() > 0) {
                 remainingTime = _remainingTimes.get(_currentlyExecuting.peek());
-                event((NamedObj) _currentlyExecuting.peek(),
-                        currentPlatformTime.getDoubleValue(),
-                        ExecutionEventType.START);
+                if (remainingTime.getDoubleValue() > 0.0) {
+                    event((NamedObj) _currentlyExecuting.peek(),
+                            currentPlatformTime.getDoubleValue(),
+                            ExecutionEventType.START);
+                }
             }
             _lastActorFinished = true;
         }

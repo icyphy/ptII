@@ -223,11 +223,13 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
             _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
                     actorDataset + 0.6, true);
             _previousY.put(actor, actorDataset + 0.6);
-        } else if (scheduleEvent == ExecutionEventType.STOP) {
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset, true);
+        } else if (scheduleEvent == ExecutionEventType.STOP) { 
+            if (_previousY.get(actor) != actorDataset) {
+                _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                        actorDataset + 0.6, true);
+                _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
+                        actorDataset, true);
+            }
             _previousY.put(actor, (double) actorDataset);
         } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
             _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
