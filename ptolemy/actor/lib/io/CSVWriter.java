@@ -191,10 +191,16 @@ public class CSVWriter extends LineWriter {
             eol = ((StringToken) eolToken).stringValue();
         }
         if (_firstFiring) {
-            // Write the first line, which is determined by the input
-            // resolved type.
-            RecordType inputType = (RecordType) input.getType();
-            _fieldNames = inputType.labelSet();
+            // Write the first line, which is determined by the input.
+
+            // Note that we get the labelSet from the record, which
+            // may be ordered if this is an OrderedToken.
+            // We used to read the RecordType labelSet, which is wrong:
+            //RecordType inputType = (RecordType) input.getType();
+            //_fieldNames = inputType.labelSet();
+
+            _fieldNames = record.labelSet();
+
             boolean first = true;
             for (String field : _fieldNames) {
                 if (!first) {

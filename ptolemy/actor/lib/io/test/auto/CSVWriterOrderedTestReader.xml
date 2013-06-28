@@ -1,0 +1,61 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CSVWriterOrderedTestReader" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1E-6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run CSVWriterOrdered.xml first to generate CSVWriterOrderedOut.csv, &#10;then run this test.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
+        </property>
+    </property>
+    <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="CSVWriterOrderedOut.csv">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[t = 0.0, &quot;rectifier1.Capacitor1_v&quot; = 0.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 1.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 1.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 2.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 2.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 3.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 3.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 4.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 4.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 5.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 5.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 6.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 6.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 7.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 7.0, &quot;rectifier1.IdealDiode3_off&quot; = 0]}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 240.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CSVReader.output&quot;,x=90.0,y=230.0}, tail={id=&quot;Test.input&quot;,x=215.0,y=165.0}, points={165.0,220.0,165.0,165.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CSVReader.endOfFile&quot;,x=90.0,y=230.0}, tail={id=&quot;Stop.input&quot;,x=205.0,y=240.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="CSVReader.output" relation="relation"/>
+    <link port="CSVReader.endOfFile" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Stop.input" relation="relation2"/>
+</entity>
