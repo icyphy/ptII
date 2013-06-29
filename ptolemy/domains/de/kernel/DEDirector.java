@@ -239,6 +239,27 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class DEDirector extends Director implements SuperdenseTimeDirector {
+    
+    /* NOTE: This implementation of DE has a very subtle bug documented in the
+     * following test:
+     *   $PTII/ptolemy/domains/de/test/auto/knownFailedTests/DirectFeedback.xml
+     * This test exposes a subtle bug in DE that is probably not worth
+     * fixing because the only fix I can find would incur considerable
+     * overhead on every event transaction, and it is rather difficult to
+     * write an actor that will trigger the bug. The SuperdensTimeTest
+     * actor used in this test is such an actor, but as of this writing, 
+     * there are no such actor in the library.
+     * 
+     * The bug occurs when an actor declares that an output port does 
+     * not depend on any input (something that is rather hard to do
+     * correctly), and then feeds back a signal directly 
+     * from the output to an input. The bug is that an output token 
+     * produced by the actor may be visible to the actor in the very same 
+     * firing of the actor, or in postfire of the same iteration. This violates
+     * a principle in DE that when an actor firing begins, all inputs at 
+     * the current superdense time are available.
+     */
+    
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.

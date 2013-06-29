@@ -1,0 +1,85 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DirectFeedback" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Check for correct handling of direct feedback from an actor&#10;to itself, where the actor declares that the output does not&#10;depend on any input.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={567, 22, 998, 1024}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 914]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test exposes a subtle bug in DE that is probably not worth&#10;fixing because the only fix I can find would incur considerable&#10;overhead on every event transaction, and it is rather difficult to&#10;write an actor that will trigger the bug. The SuperdensTimeTest&#10;actor is such an actor, but as of this writing, there are no such&#10;actor in the library.&#10;&#10;The bug occurs when an actor declares that an output port does&#10;not depend on any input, and then feeds back a signal directly&#10;from the output to an input. The bug is that an output token&#10;produced by the actor may be visible to the actor in the very same&#10;firing of the actor, or in postfire of the same iteration. This violates&#10;a principle in DE that when an actor firing begins, all inputs at&#10;the current superdense time are available.&#10;&#10;In this example, the bug leads to incorrect behavior. The correct&#10;behavior is as follows:&#10;&#10; - First iteration, time (0.0, 1): The SingleEvent provides an input&#10;    to SuperdensTimeTest in3 with value 1. The other two inputs&#10;    are absent.  SuperdensTimeTest produces no output.&#10;&#10;- Second iteration, time (0.0, 2): In this iteration, SuperdensTimeTest&#10;   should fire twice. On the first firing, it produces the output 1.0, which&#10;   is the first rest checked for by the Test actor.  In the second firing,&#10;   it records the fed back input at in1 and the scaled fedback input&#10;   at in2, sums them, and records the output 2.0 (the sum) to produce&#10;   in the next iteration.&#10;&#10;- Third iteration, time (0.0, 3): In this iteration, SuperdensTimeTest&#10;   again should fire twice. In the first firing, it should produce the&#10;   output 2.0, the second value tested for. In the second firing, it&#10;   should see inputs with value 2.0 at in1 and in2, and record the sum, 4.0.&#10;&#10;- Fourth firing should produce value 4.0.&#10;&#10;But this is not what happens. Instead, in the second iteration, the first firing&#10;sees value 1.0 at 1.0, and absent at in2. It sees the input that it just produced&#10;in the very same firing.  This is a bug in DE.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[145.0, 210.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </property>
+    </property>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="SuperdenseTimeTest" class="ptolemy.domains.de.test.SuperdenseTimeTest">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 240.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[74.1015625, 305.83984375]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[10.0, 305.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Scale.input&quot;,x=65.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=10.0,y=305.0}, points={10.0,170.0} },{ head={id=&quot;.TimedPlotter.input&quot;,x=50.0,y=305.0}, tail={id=&quot;relation.vertex1&quot;,x=10.0,y=305.0}, points={} },{ head={id=&quot;SuperdenseTimeTest.in1&quot;,x=165.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=10.0,y=305.0}, points={115.0,160.0,115.0,120.0,10.0,120.0} },{ head={id=&quot;SuperdenseTimeTest.out&quot;,x=165.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=10.0,y=305.0}, points={270.0,170.0,270.0,120.0,10.0,120.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Scale.output&quot;,x=65.0,y=170.0}, tail={id=&quot;SuperdenseTimeTest.in2&quot;,x=165.0,y=170.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SuperdenseTimeTest.in3&quot;,x=165.0,y=170.0}, tail={id=&quot;SingleEvent.output&quot;,x=65.0,y=240.0}, points={115.0,180.0,115.0,240.0} } }">
+        </property>
+    </relation>
+    <link port="Scale.input" relation="relation"/>
+    <link port="Scale.output" relation="relation4"/>
+    <link port="SuperdenseTimeTest.in1" relation="relation"/>
+    <link port="SuperdenseTimeTest.in2" relation="relation4"/>
+    <link port="SuperdenseTimeTest.in3" relation="relation2"/>
+    <link port="SuperdenseTimeTest.out" relation="relation"/>
+    <link port="SingleEvent.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
