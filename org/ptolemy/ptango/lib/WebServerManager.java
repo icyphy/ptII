@@ -83,7 +83,7 @@ public final class WebServerManager {
         WebServerUtilities server = null;
         
         for (WebServerUtilities theServer : _servers) {
-            if (theServer.getPortNumber()== portNumber) {
+            if (theServer.getPortNumber() == portNumber) {
                 server = theServer;
                 break;
             }
