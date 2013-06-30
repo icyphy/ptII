@@ -54,11 +54,13 @@ PTCLASSALLJARS = \
 JSRCS = \
 	HTMLModelExporter.java \
 	HttpActor.java \
+	HttpPost.java \
 	HttpService.java \
 	WebServer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptango.xml \
+	HttpPostIcon.xml \
 	WebServerIcon.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.

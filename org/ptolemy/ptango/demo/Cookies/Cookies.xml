@@ -4,24 +4,26 @@
 <entity name="Cookies" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 22, 1231, 763}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 22, 1456, 905}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[997, 653]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1222, 795]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7919282511210762">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0572384606472804">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{457.50000000000006, 414.41378822197055}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{468.1914062500001, 384.78145949360567}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 60.0]">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 45.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 25.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -40,7 +42,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 15.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -50,7 +52,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8080/cookies,&#10;set the cookie named &quot;name&quot; to the value &#10;given in the request's parameters&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8078/cookies,&#10;set the cookie named &quot;name&quot; to the value &#10;given in the request's parameters&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[574.1875915527344, 326.728271484375]">
         </property>
@@ -110,7 +112,7 @@
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8080/cookies/delete,&#10;send a RecordToken with the label &quot;name&quot; and the value empty string&#10;which notifies HttpActor to delete the cookie&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8078/cookies/delete,&#10;send a RecordToken with the label &quot;name&quot; and the value empty string&#10;which notifies HttpActor to delete the cookie&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 510.0]">
         </property>
@@ -147,7 +149,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[50.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[50.0, -5.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -165,7 +167,7 @@
     <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the list of cookies in your browser, please try:&#10;Safari's Web Inspector Storage Navigator (in Developer Tools)&#10;Firebug for Firefox:  https://getfirebug.com/">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 35.0]">
         </property>
     </property>
     <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -181,7 +183,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 0.0]">
         </property>
     </property>
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -235,7 +237,7 @@
         <property name="saveToFile" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Save the new HTML page to a separate file"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[228.99998474121094, 457.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 460.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -288,7 +290,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 665.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 665.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -312,7 +314,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 575.0]">
         </property>
     </entity>
     <entity name="Expression3" class="ptolemy.actor.lib.Expression">
@@ -363,8 +365,38 @@
             </property>
         </port>
     </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 110.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 270.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 460.0}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 665.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay5" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 620.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[450.0, 620.0]">
+        <vertex name="vertex1" value="[505.0, 620.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -384,7 +416,7 @@
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[48.99998474121094, 457.5]">
+        <vertex name="vertex1" value="[50.0, 460.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -394,22 +426,32 @@
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[80.0, 665.0]">
+        <vertex name="vertex1" value="[55.0, 665.0]">
         </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HttpActor.response" relation="relation3"/>
     <link port="HttpActor.response" relation="relation13"/>
     <link port="HttpActor.getCookies" relation="relation6"/>
     <link port="HttpActor.postParameters" relation="relation17"/>
-    <link port="HttpActor.setCookies" relation="relation17"/>
-    <link port="HTMLPageAssembler.output" relation="relation3"/>
+    <link port="HttpActor.setCookies" relation="relation7"/>
+    <link port="HTMLPageAssembler.output" relation="relation2"/>
     <link port="HTMLPageAssembler.welcomeMessage" relation="relation15"/>
-    <link port="HTMLPageAssembler2.output" relation="relation13"/>
+    <link port="HTMLPageAssembler2.output" relation="relation8"/>
     <link port="HTMLPageAssembler2.welcomeMessage" relation="relation5"/>
     <link port="HttpActor2.response" relation="relation"/>
     <link port="HttpActor2.postRequestURI" relation="relation4"/>
-    <link port="HttpActor2.setCookies" relation="relation29"/>
-    <link port="Const6.output" relation="relation"/>
+    <link port="HttpActor2.setCookies" relation="relation10"/>
+    <link port="Const6.output" relation="relation9"/>
     <link port="Const6.trigger" relation="relation29"/>
     <link port="Const7.output" relation="relation29"/>
     <link port="Const7.trigger" relation="relation4"/>
@@ -417,4 +459,14 @@
     <link port="Expression3.post" relation="relation17"/>
     <link port="Expression4.output" relation="relation15"/>
     <link port="Expression4.cookies" relation="relation6"/>
+    <link port="MicrostepDelay.input" relation="relation2"/>
+    <link port="MicrostepDelay.output" relation="relation3"/>
+    <link port="MicrostepDelay2.input" relation="relation17"/>
+    <link port="MicrostepDelay2.output" relation="relation7"/>
+    <link port="MicrostepDelay3.input" relation="relation8"/>
+    <link port="MicrostepDelay3.output" relation="relation13"/>
+    <link port="MicrostepDelay4.input" relation="relation9"/>
+    <link port="MicrostepDelay4.output" relation="relation"/>
+    <link port="MicrostepDelay5.input" relation="relation29"/>
+    <link port="MicrostepDelay5.output" relation="relation10"/>
 </entity>

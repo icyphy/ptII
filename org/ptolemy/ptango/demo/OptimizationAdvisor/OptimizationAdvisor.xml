@@ -5,6 +5,8 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
+        </property>
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
@@ -20,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1292, 777}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1298, 770}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1064, 660]">
     </property>
@@ -149,7 +151,7 @@ Michael Wetter (LBNL)</text></svg></configure>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8078/room&#10;&#10;or double click on this comment.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{735.0, 175.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/room#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -237,7 +239,7 @@ Michael Wetter (LBNL)</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1302, 770}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
         </property>
@@ -414,7 +416,7 @@ Michael Wetter (LBNL)</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 280.0]">
             </property>
         </property>
-        <property name="cost" class="ptolemy.data.expr.Parameter" value="82.5600000000024">
+        <property name="cost" class="ptolemy.data.expr.Parameter" value="82.5900000000024">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1443,7 +1445,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                 <link port="controlImplementation.info" relation="infoRelation"/>
             </entity>
             <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={684, 390, 516, 378}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={684, 390, 500, 362}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 318]">
                 </property>

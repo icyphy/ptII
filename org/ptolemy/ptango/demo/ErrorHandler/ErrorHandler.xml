@@ -642,6 +642,12 @@
             </property>
         </port>
     </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 135.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -652,10 +658,14 @@
         <vertex name="vertex1" value="{50.0, 135.0}">
         </vertex>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ModalModel.getRequest" relation="relation"/>
     <link port="ModalModel.postRequest" relation="relation7"/>
-    <link port="ModalModel.reply" relation="relation2"/>
+    <link port="ModalModel.reply" relation="relation3"/>
     <link port="HttpActor.response" relation="relation2"/>
     <link port="HttpActor.getRequestURI" relation="relation"/>
     <link port="HttpActor.postParameters" relation="relation7"/>
+    <link port="MicrostepDelay.input" relation="relation3"/>
+    <link port="MicrostepDelay.output" relation="relation2"/>
 </entity>

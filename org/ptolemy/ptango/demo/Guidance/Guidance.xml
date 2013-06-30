@@ -32,7 +32,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{50.0, -55.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{25.0, -70.0}">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
@@ -62,13 +62,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, -50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1472, 1006}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1238, 896]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7047778828820789">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.006282165039929">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{727.6032212317667, 361.8515625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{526.1668312641084, 363.76562500000006}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HTMLModelExporter creates a web page &#10;from the specified model.  &#10;Make sure directoryToExportTo is set to &#10;$TMPDIR&#10;so that the WebServer can find the image&#10;generated from the model, while searching its&#10;temporaryFileLocation which is also set to $TMPDIR">
@@ -314,7 +314,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 190.0]">
         </property>
     </property>
-    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="x1" class="ptolemy.data.expr.Parameter" value="&quot;50&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -352,7 +352,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 85.0]">
         </property>
     </property>
-    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="x3" class="ptolemy.data.expr.Parameter" value="&quot;200&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -409,7 +409,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 200.0]">
         </property>
     </property>
-    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="y1" class="ptolemy.data.expr.Parameter" value="&quot;50&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -447,7 +447,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 100.0]">
         </property>
     </property>
-    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+    <property name="y3" class="ptolemy.data.expr.Parameter" value="&quot;200&quot;">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -544,7 +544,7 @@
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In a DE model, all actors must be triggered in order to fire&#10;Use the incoming request as the trigger&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -1643,6 +1643,18 @@
             </property>
         </port>
     </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 45.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 790.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -1770,12 +1782,16 @@
         </property>
     </relation>
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{30.0, 50.0}">
+        <vertex name="vertex1" value="[30.0, 45.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[-75.0, 790.0]">
         </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="RecordDisassembler.input" relation="relation2"/>
     <link port="RecordDisassembler.xCoord" relation="relation5"/>
@@ -1786,7 +1802,7 @@
     <link port="HttpActor.getRequestURI" relation="relation19"/>
     <link port="HttpActor.getParameters" relation="relation50"/>
     <link port="HttpActor.postParameters" relation="relation2"/>
-    <link port="HTMLModelExporter.webPage" relation="relation31"/>
+    <link port="HTMLModelExporter.webPage" relation="relation3"/>
     <link port="HTMLModelExporter.x1" relation="relation"/>
     <link port="HTMLModelExporter.y1" relation="relation10"/>
     <link port="HTMLModelExporter.x2" relation="relation11"/>
@@ -1822,7 +1838,7 @@
     <link port="AssignLocation.y" relation="relation6"/>
     <link port="AssignLocation.ID" relation="relation30"/>
     <link port="AssignLocation.done" relation="relation29"/>
-    <link port="HTMLModelExporter2.webPage" relation="relation4"/>
+    <link port="HTMLModelExporter2.webPage" relation="relation7"/>
     <link port="HTMLModelExporter2.x1" relation="relation8"/>
     <link port="HTMLModelExporter2.y1" relation="relation20"/>
     <link port="HTMLModelExporter2.x2" relation="relation21"/>
@@ -1860,4 +1876,8 @@
     <link port="RecordDisassembler3.rate" relation="relation49"/>
     <link port="ExpressionToToken2.input" relation="relation49"/>
     <link port="ExpressionToToken2.output" relation="relation44"/>
+    <link port="MicrostepDelay.input" relation="relation3"/>
+    <link port="MicrostepDelay.output" relation="relation31"/>
+    <link port="MicrostepDelay2.input" relation="relation7"/>
+    <link port="MicrostepDelay2.output" relation="relation4"/>
 </entity>
