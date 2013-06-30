@@ -34,7 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.jetty.util.resource.FileResource;
@@ -45,6 +45,8 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
  *  HTTP requests to objects in the model that implement
  *  {@link HttpService}. The server is set up during
  *  {@link #initialize()} and taken down during
- *  {@link #wrapup()}.  The <i>resourceBase</i>
+ *  {@link #wrapup()}.  The <i>resourceLocation</i>
  *  parameter gives a directory or URL relative to which this
  *  web server should look for resources (like image files and
  *  the like).
@@ -101,6 +103,8 @@ public class WebServer extends AbstractInitializableAttribute {
         // Set up a parameter to specify the location for reading and writing
         // resources (files).  This parameter defaults to the directory that
         // the current model is located in.
+        // FIXME: The full path is encoded. If this file is in the $PTII tree,
+        // then the path should begin with $PTII.
 
         // The Jetty web server supports searching multiple directories/URLs for
         // resources (files) to return as part of an HttpResponse.  However, if
@@ -322,16 +326,19 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public void initialize() throws IllegalActionException {
         
+        super.initialize();
+        
+        if(_debugging) {
+            _debug("Initializing web server.");
+        }
+        
         // Get the web server manager to register this application with
         if (_serverManager == null) {
             _serverManager = WebServerManager.getInstance();
         }
             
         // Get the model name, application path and temporary file location
-        String modelName = "";
-        if (toplevel() != null) {
-            modelName = toplevel().getFullName();
-        }
+        String modelName = getFullName();
         
         String applicationPathString = "/";
         if (applicationPath != null) {
@@ -344,29 +351,37 @@ public class WebServer extends AbstractInitializableAttribute {
             _appInfo = new WebApplicationInfo(modelName, applicationPathString, 
                 temporaryFileLocation);
         }catch(Exception e) {
-            throw new IllegalActionException(this, e.getMessage());
+            throw new IllegalActionException(this, e, "Failed to create WebApplicationInfo");
         }
         
         // Collect requested servlet mappings from all model objects 
         // implementing HttpService.  Check for duplicates.
-        NamedObj topLevel = toplevel();
-        Iterator objects = topLevel.containedObjectsIterator();
-        while (objects.hasNext()) {
-            NamedObj object = (NamedObj) objects.next();
-            if (object instanceof HttpService) {
-                HttpService service = (HttpService) object;
+        // NOTE: This used to use the top level, but it makes more sense to use the container.
+        // Also, now it only looks for entities, and it does not penetrate opaque composites.
+        NamedObj container = getContainer();
+        if (!(container instanceof CompositeEntity)) {
+            throw new IllegalActionException(this, "Container is required to be a CompositeEntity.");
+        }
+        List<Entity> entities = ((CompositeEntity)container).deepEntityList();
+        for (Entity entity : entities) {
+            if (entity instanceof HttpService) {
+                HttpService service = (HttpService) entity;
                 // Tell the HttpService that this is its WebServer,
                 // so that it can get, for example, critical information such
                 // as resourcePath.
                 service.setWebServer(this);
+                
+                if(_debugging) {
+                    _debug("Found web service: " + entity.getFullName());
+                }
 
                 // Add this path to the list of servlet paths
                 URI path = service.getRelativePath();
                 try {
                     _appInfo.addServletInfo(path, service.getServlet()); 
-                }catch(Exception e) {
+                } catch(Exception e) {
                     throw new IllegalActionException(this, "Actor " + 
-                    object.getName() + " requested the web service URL " 
+                    entity.getName() + " requested the web service URL " 
                     + path + " , but this URL has already been claimed " 
                     + "by another actor or by a resource in this WebServer." 
                     + "  Please specify a unique URL.");
@@ -376,8 +391,8 @@ public class WebServer extends AbstractInitializableAttribute {
                
         // Specify directories or URLs in which to look for resources.
         // These are given by all instances of FileParameter in this
-        // WebServer.
-        HashSet<FileResource> resourceLocations = new HashSet<FileResource>();
+        // WebServer. Use a LinkedHashSet to preserve the order.
+        LinkedHashSet<FileResource> resourceLocations = new LinkedHashSet<FileResource>();
         List<FileParameter> bases = attributeList(FileParameter.class);
         // To prevent duplicates, keep track of bases added.
         HashSet<URL> seen = new HashSet<URL>();
@@ -390,6 +405,9 @@ public class WebServer extends AbstractInitializableAttribute {
                         continue;
                     }
                     seen.add(baseAsURL);
+                    if (_debugging) {
+                        _debug("Adding resource location: " + baseAsURL);
+                    }
                     resourceLocations.add(new FileResource(baseAsURL));
                 }
             } catch (URISyntaxException e2) {
@@ -400,26 +418,24 @@ public class WebServer extends AbstractInitializableAttribute {
                 throw new IllegalActionException(this,
                         "Can't access resource base: " + base.stringValue());
             }
-            ;
         }
         
         // Throw an exception if resource path is not a valid URI or if a 
         // duplicate path is requested
         try {
-            _appInfo.addResourceInfo(new URI(resourcePath.getExpression()), 
+            _appInfo.addResourceInfo(new URI(resourcePath.stringValue()), 
                 resourceLocations);
         } catch(URISyntaxException e) {
             throw new IllegalActionException(this, "Resource path is not a " +
             		"valid URI.");
         } catch(Exception e2) {
-            throw new IllegalActionException(this, e2.getMessage());
+            throw new IllegalActionException(this, e2, "Failed to add resource info.");
         }
         
         try {
             _serverManager.register(_appInfo, _portNumber);
         } catch(Exception e){
-            throw new IllegalActionException(this, "Web server cannot be " +
-            		"instantiated. " + e.getMessage());
+            throw new IllegalActionException(this, e, "Failed to register web server.");
         }      
     }
 
@@ -429,10 +445,16 @@ public class WebServer extends AbstractInitializableAttribute {
      * @exception IllegalActionException if there is a problem unregistering
      * the application */
     public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        if(_debugging) {
+            _debug("Unregistering web server.");
+        }
         try {
             _serverManager.unregister(_appInfo, _portNumber);
         } catch (Exception e) {
-            throw new IllegalActionException(this, e.getMessage());
+            // Do not throw an exception here, because it will mask an exception
+            // that occurred during trying to register the server.
+            System.err.println("Warning: Failed to unregister web server.\n" + e);
         }
     }    
 
