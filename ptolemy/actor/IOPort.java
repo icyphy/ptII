@@ -488,7 +488,8 @@ public class IOPort extends ComponentPort {
                         + " is different from the outside width (" + otherWidth
                         + ") of port " + port.getFullName()
                         + ". A possible fix is to right clicking on the"
-                        + " outside relation(s) and set the width -1.");
+                        + " connected relation(s) and setting the width AUTO"
+                        + " or some fixed number.");
             }
         }
     }
