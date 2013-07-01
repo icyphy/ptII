@@ -33,10 +33,12 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// Counter
@@ -51,7 +53,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  token will be consumed from each input during each firing.  If a token
  is present on both input ports during any firing, then the increment
  and the decrement will cancel out, and only one output token will be
- produced.
+ produced. If any firing a <i>reset</i> input is present and true,
+ then the count will be reset.
 
  @author Steve Neuendorffer
  @version $Id$
@@ -79,6 +82,11 @@ public class Counter extends TypedAtomicActor {
         new Parameter(decrement, "_showName", BooleanToken.TRUE);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
+        reset = new TypedIOPort(this, "reset", true, false);
+        reset.setTypeEquals(BaseType.BOOLEAN);
+        new SingletonParameter(reset, "_showName").setToken(BooleanToken.TRUE);
+        StringAttribute cardinal = new StringAttribute(reset, "_cardinal");
+        cardinal.setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,6 +107,9 @@ public class Counter extends TypedAtomicActor {
     /** The output port with type IntToken.
      */
     public TypedIOPort output;
+    
+    /** The reset input port. This is of type boolean. */
+    public TypedIOPort reset;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -139,6 +150,14 @@ public class Counter extends TypedAtomicActor {
                 decrement.get(i);
                 _latestCount--;
                 _consumed = true;
+            }
+        }
+        
+        if (reset.getWidth() > 0) {
+            if (reset.hasToken(0)) {
+                if (((BooleanToken)reset.get(0)).booleanValue()) {
+                    _latestCount = 0;
+                }
             }
         }
 
