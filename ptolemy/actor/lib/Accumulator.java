@@ -32,6 +32,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -79,6 +80,7 @@ public class Accumulator extends Transformer {
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setMultiport(true);
         new StringAttribute(reset, "_cardinal").setExpression("SOUTH");
+        new SingletonParameter(reset, "_showName").setToken(BooleanToken.TRUE);
 
         init = new Parameter(this, "init");
         init.setExpression("0");

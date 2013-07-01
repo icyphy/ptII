@@ -31,6 +31,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -78,6 +79,7 @@ public class Average extends Transformer {
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BaseType.BOOLEAN);
         new StringAttribute(reset, "_cardinal").setExpression("SOUTH");
+        new SingletonParameter(reset, "_showName").setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
