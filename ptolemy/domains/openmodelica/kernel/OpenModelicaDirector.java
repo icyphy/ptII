@@ -100,9 +100,10 @@ public class OpenModelicaDirector extends ContinuousDirector {
         try {
 
             // Create a unique instance of OMCLogger and OMCProxy.
+
             _omcLogger = OMCLogger.getInstance();
             _omcProxy = OMCProxy.getInstance();
-            
+
             _omcProxy.initServer();
 
         } catch (ConnectException ex) {
@@ -119,11 +120,11 @@ public class OpenModelicaDirector extends ContinuousDirector {
     public boolean postfire() throws IllegalActionException {
 
         Time stopTime = getModelStopTime();
-        
+
         if (_debugging) {
             _debug("OpenModelicaDirector: Called postfire().");
         }
-        
+
         // If the stop time is infinite, then stop execution.
         if (stopTime == Time.POSITIVE_INFINITY) {
             stop();
@@ -131,8 +132,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
         } else {
             return true;
         }
-        
-        
+
     }
 
     /** Invoke the wrapup() of the super class. 
@@ -142,12 +142,13 @@ public class OpenModelicaDirector extends ContinuousDirector {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        
         try {
             _omcProxy.quitServer();
-        } catch (ConnectException ex) {
-            String loggerInfo = "OpenModelica Server quited!";
+            String loggerInfo = "OpenModelica Server quit!";
             _omcLogger.getInfo(loggerInfo);
+        } catch (ConnectException ex) {
+            throw new IllegalActionException(
+                    "Unable to quit the OpenModelica server!");
         }
     }
 

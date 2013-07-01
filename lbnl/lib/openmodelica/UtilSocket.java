@@ -51,11 +51,10 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
-
-import ptolemy.util.StringUtilities;
 
 /**    
      This file provides methods that allow clients to
@@ -65,13 +64,13 @@ import ptolemy.util.StringUtilities;
      At the end, a client should call
      closesocket() to close the socket connection.
      TODO COMPLETE THE DESCRIPTION.
-          
+
     @author Mana Mirzaei
     @version $Id$
     @since Ptolemy II 9.1
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class UtilSocket implements IUtilSocket {
 
     ///////////////////////////////////////////////////////////////////
@@ -83,8 +82,9 @@ public class UtilSocket implements IUtilSocket {
     public void closesocket() throws IOException {
 
         try {
-            if (_clientSocket.isClosed())
+            if (_clientSocket.isConnected()) {
                 _clientSocket.close();
+            }
         } catch (UnknownHostException e) {
             System.err.println("Trying to connect to unknown host: " + e);
         } catch (IOException e) {
@@ -92,7 +92,6 @@ public class UtilSocket implements IUtilSocket {
         }
 
         System.out.println("Socket is closed.");
-        StringUtilities.exit(1);
     }
 
     /** Establish the client socket.
@@ -100,15 +99,20 @@ public class UtilSocket implements IUtilSocket {
      *  creating an input stream to receive response from the server socket.
      *  @throws IOException 
      */
-    public void establishclientsocket() throws IOException {
+    public boolean establishclientsocket() throws IOException {
 
         try {
             // Create a Socket connected to the specified host and port.
             _clientSocket = new Socket(_hostName, _portNo);
 
-            _clientSocket.setSoTimeout(_timeOut);
+            //_clientSocket.setSoTimeout(_timeOut);
 
-            System.out.println("Socket is opened.");
+            System.out.println("Socket is open.");
+
+            System.out.println("Just connected to "
+                    + _clientSocket.getRemoteSocketAddress());
+
+            System.out.println("A server is running on port " + _portNo + ".");
 
             // Create an output stream to send information to the server socket.
             _output = new BufferedWriter(new OutputStreamWriter(
@@ -118,12 +122,12 @@ public class UtilSocket implements IUtilSocket {
             InputStream _inputStream = null;
             _inputStream = _clientSocket.getInputStream();
             _input = new BufferedReader(new InputStreamReader(_inputStream));
-
+            return true;
         } catch (IOException e) {
             System.err
-                    .println("Failed to open the socket / create the inputstream or output stream: "
+                    .println("Failed to set up the connection to the server / create the inputstream or outputstream: "
                             + e);
-            StringUtilities.exit(1);
+            return false;
         }
     }
 
@@ -133,14 +137,10 @@ public class UtilSocket implements IUtilSocket {
      */
     public void exchangewithsocket() throws IOException {
 
-        System.out.println("Enter the operations for sending to the server: ");
+        if (_clientSocket.isConnected()) {
 
-        if (!_clientSocket.isClosed()) {
             if (_output != null && _input != null) {
                 try {
-
-                    // The basic functions such as start,pause and changevalue of parameter only work now.
-                    // The interactive simulation hangs after 1.958. 
 
                     /*   Scanner userInput = new Scanner(System.in);
                         if(userInput.hasNext()){
@@ -148,59 +148,70 @@ public class UtilSocket implements IUtilSocket {
                            _output.writeBytes(operations);
                            System.out.println("The operation is sent! ");
                        }
-                       
                        else 
                            userInput.close();*/
 
-                    // Get input from user using GUI.
-                    String operations = JOptionPane
-                            .showInputDialog("Enter your operation: ");
+                    // Get input from user.
 
-                    System.out.println(operations
-                            + " should be sent to the server.");
+                    // The basic functions such as start,pause and changevalue of parameter only work now.
+                    // The interactive simulation hangs after 1.958. 
 
-                    // Start the simulation : "start#1#end".
-                    _output.write(operations);
+                    // Command no.1 : Start the simulation : "start#1#end".
 
-                    // TODO add comment - if write is successful
-                    // System.out.println(operations + " is sent to the server.");
+                    // Command no.2 : Pause the simulation : "pause#3#end"
 
-                    // Read response from the server.
+                    // Command no.3 : Change the value of the appended parameters and 
+                    // sets the simulation time back to the point where the user clicked in the UI : 
+                    // "changevalue#1#load.w=2.3#end"
+
                     System.out
-                            .println("Waiting for the response from the server.");
+                            .println("Enter the operations for sending to the server: ");
 
-                    String serverResponse = null;
+                    String operations = JOptionPane
+                            .showInputDialog("Enter the operation: ");
+
+                    //TODO CONDITION FOR CHECKING MESSAGE PROTOCOL
+                    while (operations.compareTo("") == 0) {
+                        System.out
+                                .println("There is no operation to send, Enter the operation again!");
+                        operations = JOptionPane
+                                .showInputDialog("No operation is entered, Enter the operation again: ");
+                    }
+
+                    //FIXME check if write is done
+                    _output.write(operations, 0, operations.length());
+                    _output.flush();
+
+                    System.out.println(operations + " is sent to the server.");
+
                     try {
+                        // Read response from the server.
+                        System.out
+                                .println("Waiting for the response back from the server.");
+
+                        String serverResponse = null;
+
                         serverResponse = _input.readLine();
-                        System.out.println("Response back to the server "
-                                + serverResponse);
+
+                        System.out.println("From Server :  " + serverResponse);
+
+                        // TODO : CHECK IF THERE IS AN ERROR IN THE RESPONSE OR NOT
                     } catch (SocketTimeoutException e) {
                         System.err.println(e);
                     }
 
-                    System.out
-                            .println("Get back response from the server successfully.");
+                    //FIXME - UNCOMMENT-> SOCKETEXCEPTION
+                    // _input.close();
+                    // _output.close();
 
-                    _input.close();
-                    _output.close();
-
-                    /*
-                     //Pause the simulation.
-                     operations = "pause#3#end";
-                     _output.writeBytes(operations);
-                     
-                     // Change the value of the appended parameters and 
-                     // sets the simulation time back to the point where the user clicked in the UI
-                      operations = "changevalue#1#load.w=2.3#end";
-                     _output.writeBytes(operations);
-                    */
                 } catch (IOException e) {
                     System.err.println("Failed to exchange data via sockets: "
                             + e);
-                    StringUtilities.exit(1);
                 }
-            }
-        }
+            } else
+                System.out.println("inputstream/outputstream is null!");
+        } else
+            System.out.println("It is not connected to the server!");
     }
 
     /** Create an instance of UtilSocket object in order to provide a global point of access to the instance.
@@ -233,6 +244,6 @@ public class UtilSocket implements IUtilSocket {
     // UtilSocket Object for accessing a unique source of instance.
     private static UtilSocket _utilSocket = null;
 
-    // 10 sec wait period.
+    // 100 sec wait period.
     private final int _timeOut = (int) TimeUnit.SECONDS.toMillis(100);
 }

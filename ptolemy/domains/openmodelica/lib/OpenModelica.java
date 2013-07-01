@@ -284,17 +284,16 @@ public class OpenModelica extends TypedAtomicActor {
 
         // Build the Modelica model and run the executable result file in both interactive
         // and non-interactive processing mode.
+
+        //FIXME problem with singelton pattern, file should be loaded once. redundant code.
         try {
-
-            //FIXME problem with singelton pattern, file should be loaded once. redundant code.
-            try {
-                _omcProxy.loadFile(fileName.getExpression(),
-                        modelName.getExpression());
-            } catch (ConnectException e) {
-                throw new IllegalActionException(
-                        "Unable to load the Modelica file/library.");
-            }
-
+            _omcProxy.loadFile(fileName.getExpression(),
+                    modelName.getExpression());
+        } catch (ConnectException e) {
+            throw new IllegalActionException(
+                    "Unable to load the Modelica file/library.");
+        }
+        try {
             _omcProxy.simulateModel(fileName.getExpression(),
                     modelName.getExpression(), fileNamePrefix.getExpression(),
                     simulationStartTime.getExpression(),
@@ -332,8 +331,11 @@ public class OpenModelica extends TypedAtomicActor {
                         "Unable to display variables/parameters in the simulation result file of "
                                 + modelName.getExpression() + " .");
             }
-            // FIXME simulationResult is not sent to the Display.
+
             // Send the value of variables/parameters to the output port of the OpenModelica actor.
+            // OpenModelicaDirector extends the Continuous director and displaying the simulation result 
+            // is not possible yet with the Continuous director and It only works with SDF director.
+            // The value of variables/parameters are only displayed in the console.
             output.send(0, new StringToken(simulationResult));
         }
 

@@ -42,12 +42,10 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
-
 import java.io.IOException;
 
 import lbnl.lib.openmodelica.UtilSocket;
 import ptolemy.kernel.util.IllegalActionException;
-
 
 /**    
     A simple simulation program to illustrate how to implement a client.
@@ -58,42 +56,45 @@ import ptolemy.kernel.util.IllegalActionException;
     After starting the simulation the keyboard entries and the results will be displayed in the same console as you are typing
     the command. For exchanging data with the OMC server the BSD socket is utilized.
     TODO COMPLETE THE DESCRIPTION    
-    
+
     @author Mana Mirzaei 
     @version $Id$
     @since Ptolemy II 9.1
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class OMCClient {
-    
+
     /** OMC which is coupled to Ptolemy II is called to initialize the
      *  OMC server and simulate the Modelica model, then exchange data via BSD socket.
      *  TODO it should be detailed.
-     * @param args Ignored by this method. 
-     * @throws IllegalActionException If a connection cannot be made.
-     * @throws IOException If the socket cannot be established.
+     * @param args
+     * @throws IllegalActionException
+     * @throws IOException
      */
-    public static void main(String[] args) throws IllegalActionException, IOException {
-        try {
-            // Create a unique instance of OMCProxy.
-            _omcProxy = OMCProxy.getInstance();
+    public static void main(String[] args) throws IllegalActionException,
+            IOException {
 
+        try {
             // Initialize the OpenModelica compiler(OMC) server.
             _omcProxy.initServer();
 
         } catch (ConnectException ex) {
-            throw new IllegalActionException(
-                    "Unable to start the OMC server!");
+            throw new IllegalActionException("Unable to start the OMC server!");
         }
 
         // Build the Modelica model and run the executable result file in an interactive processing mode.
 
         try {
-            _omcProxy.loadFile("dcmotor.mo","dcmotor");
-            _omcProxy.simulateModel("dcmotor.mo", "dcmotor",
-                    "dcmotor", "0.0", "0.1", 500, "0.0001",
-                    "dassl", "csv", ".*", " ", " ", "interactive");
+            _omcProxy.loadFile("BouncingBall.mo", "BouncingBall");
+        } catch (ConnectException e) {
+            throw new IllegalActionException(
+                    "Unable to load the Modelica file/library.");
+        }
+        try {
+            _omcProxy.simulateModel("BouncingBall.mo", "BouncingBall",
+                    "BouncingBall", "0.0", "0.1", 500, "0.0001", "dassl",
+                    "mat", ".*", "", "", "interactive");
         } catch (Throwable throwable) {
             throw new IllegalActionException(
                     "Unable to simulate BouncingBall model.");
@@ -101,29 +102,41 @@ public class OMCClient {
 
         // Create a unique instance of UtilSocket.
         _utilSocket = UtilSocket.getInstance();
-        
-        // Establish the client socket and initiate the BSD socket connection.
-        _utilSocket.establishclientsocket();
-        
-        // Use the BSD socket to exchange data with the OMC server.     
-        _utilSocket.exchangewithsocket();
-        
-        // Close the server.
-        _utilSocket.closesocket();
 
-        // Quit the OMC server.
-        try {
-            _omcProxy.quitServer();
-        } catch (ConnectException ex) {
-            new Exception("SeverError: Server is unable to quit.").printStackTrace();
+        // Establish the client socket and initiate the BSD socket connection.
+        if (!_utilSocket.establishclientsocket()) {
+            // Quit the OMC server.
+            try {
+                _omcProxy.quitServer();
+                System.out.println("OMC server quit!");
+            } catch (ConnectException ex) {
+                throw new IllegalActionException(
+                        "Unable to quit the OpenModelica server!");
+            }
+        } else {
+
+            // Use the BSD socket to exchange data with the OMC server.     
+            _utilSocket.exchangewithsocket();
+
+            // Close the server.
+            _utilSocket.closesocket();
+
+            // Quit the OMC server.
+            try {
+                _omcProxy.quitServer();
+                System.out.println("OMC server quit!");
+            } catch (ConnectException ex) {
+                throw new IllegalActionException(
+                        "Unable to quit the OpenModelica server!");
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
     // OMCProxy object for accessing a unique source of instance.
-    private static OMCProxy _omcProxy;
-    
+    private static OMCProxy _omcProxy = OMCProxy.getInstance();
+
     // UtilSocket object for accessing a unique source of instance.
-    private static UtilSocket _utilSocket = null;
+    private static UtilSocket _utilSocket = UtilSocket.getInstance();
 }

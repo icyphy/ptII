@@ -40,37 +40,36 @@
  * 
  */
 
-
 package lbnl.lib.openmodelica;
 
 import java.io.IOException;
 
 /**
     <p> The interface to the UtilSocket. </p>
-    
+
     @author Mana Mirzaei 
     @version $Id$
     @since Ptolemy II 9.1
     @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public interface IUtilSocket {
 
     /** Close the input and output stream prior to closing the socket.
      *  @throws IOException
      */
-   public void closesocket() throws IOException;
-    
-   /** Establish the client socket.
-    *  Creating an output stream to send information to the server socket besides
-    *  creating an input stream to receive response from the server socket.
-    *  @throws IOException 
-    */
-    public void establishclientsocket() throws IOException;
+    public void closesocket() throws IOException;
+
+    /** Establish the client socket.
+     *  Creating an output stream to send information to the server socket besides
+     *  creating an input stream to receive response from the server socket.
+     *  @throws IOException 
+     */
+    public boolean establishclientsocket() throws IOException;
 
     /** Exchange data through the BSD socket.
      *  @throws IOException 
      */
-   public void exchangewithsocket() throws IOException;
+    public void exchangewithsocket() throws IOException;
 
 }
