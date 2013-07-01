@@ -133,14 +133,14 @@ public class Counter extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         _latestCount = _count;
-        _consumed = false;
+        boolean consumed = false;
 
         // Check the increment port.
         for (int i = 0; i < increment.getWidth(); i++) {
             if (increment.hasToken(i)) {
                 increment.get(i);
                 _latestCount++;
-                _consumed = true;
+                consumed = true;
             }
         }
 
@@ -149,7 +149,7 @@ public class Counter extends TypedAtomicActor {
             if (decrement.hasToken(i)) {
                 decrement.get(i);
                 _latestCount--;
-                _consumed = true;
+                consumed = true;
             }
         }
         
@@ -157,12 +157,13 @@ public class Counter extends TypedAtomicActor {
             if (reset.hasToken(0)) {
                 if (((BooleanToken)reset.get(0)).booleanValue()) {
                     _latestCount = 0;
+                    consumed = true;
                 }
             }
         }
 
-        // Produce an output if we consumed an input.
-        if (_consumed) {
+        // Produce an output if we consumed an input or got a reset.
+        if (consumed) {
             Token out = new IntToken(_latestCount);
             output.send(0, out);
         }
@@ -189,6 +190,4 @@ public class Counter extends TypedAtomicActor {
     private int _count = 0;
 
     private int _latestCount = 0;
-
-    private boolean _consumed;
 }
