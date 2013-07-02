@@ -251,12 +251,14 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             // Use the local director to transfer outputs.
             getDirector().transferOutputs();
 
+            if( _tokens != null){
             for (Const mappedConst : _tokens.keySet()) {
                 mappedConst.value.setToken(_tokens.get(mappedConst));
                 mappedConst.fire(); 
             }
+            
             _tokens.clear();
-
+            }
             getDirector().fire();
 
             if (_stopRequested) {
