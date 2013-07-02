@@ -403,16 +403,23 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         try {
             // type of variable <= type of output
             Attribute attribute = getModifiedVariable();
+
             if (attribute instanceof Variable) {
+                result.add(new Inequality(input.getTypeTerm(), ((Variable) attribute).getTypeTerm()));
+                //result.add(new Inequality(((Variable) attribute).getTypeTerm(), input.getTypeTerm()));
                 result.add(new Inequality(((Variable) attribute).getTypeTerm(),
                         output.getTypeTerm()));
                 if (this.isBackwardTypeInferenceEnabled()) {
                     result.add(new Inequality(output.getTypeTerm(), 
                             ((Variable) attribute).getTypeTerm()));
                 }
+                /*if (((Variable) attribute).getName().equals("windows0")) {
+                    System.out.println("Called " + this.getName() + "._customTypeConstraints()");
+                }*/
             }
         } catch (IllegalActionException e) {
             // The variable cannot be found. Ignore it.
+            
         }
 
         return result;
@@ -431,7 +438,17 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             Token oldToken = ((Variable) variable).getToken();
 
             if (oldToken == null || !oldToken.equals(value)) {
-                ((Variable) variable).setToken(value);
+                // Convert the token to the type of the variable so
+                // that we don't change the type of the variable (the
+                // token might be a subtype). This convert will
+                // succeed because of the type constraint set in
+                // preinitialize(). 
+                //((Variable)variable).setToken(value);
+                if (((Variable)variable).getName().equals("Parameter")) {
+                    System.out.println("Here.");
+                }
+                //Type type = ((Variable)variable).getType();
+                 //((Variable) variable).setToken(type.convert(value)); //FIXME: this already happens in Variable._setToken()
 
                 // NOTE: If we don't call validate(), then the
                 // change will not propagate to dependents.

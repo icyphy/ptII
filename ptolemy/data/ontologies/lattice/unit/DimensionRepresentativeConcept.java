@@ -76,7 +76,7 @@ public abstract class DimensionRepresentativeConcept extends
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
         unitInfoRecords = new Parameter(this, "unitInfoRecords");
-        unitInfoRecords.setTypeEquals(new ArrayType(BaseType.RECORD));
+        unitInfoRecords.setTypeAtMost(new ArrayType(BaseType.RECORD));
         _unitList = new ArrayList<UnitConcept>();
     }
 

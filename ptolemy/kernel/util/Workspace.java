@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
 ///////////////////////////////////////////////////////////////////
 //// Workspace
@@ -137,7 +138,7 @@ import java.util.List;
  @Pt.ProposedRating Green (liuxj)
  @Pt.AcceptedRating Green (liuxj)
  */
-public final class Workspace implements Nameable, Serializable {
+public final class Workspace extends Observable implements Nameable, Serializable {
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 

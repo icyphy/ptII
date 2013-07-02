@@ -42,6 +42,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -92,7 +94,9 @@ public class DerivedDimensionRepresentativeConcept extends
             IllegalActionException {
         super(ontology, name);
         dimensionArray = new Parameter(this, "dimensionArray");
-        dimensionArray.setTypeEquals(new ArrayType(BaseType.RECORD));
+        String[] labels = {_dimensionLabel, _exponentLabel};
+        Type[] types = {BaseType.STRING, BaseType.INT};
+        dimensionArray.setTypeEquals(new ArrayType(new RecordType(labels, types)));
 
         _componentDimensions = new HashMap<DimensionRepresentativeConcept, Integer>();
         _componentBaseDimensions = null;
@@ -277,7 +281,7 @@ public class DerivedDimensionRepresentativeConcept extends
                             + "specification: " + dimensionName);
                 }
             }
-        } else {
+        } else { // FIXME: redundant, type system ensures this
             throw new IllegalActionException(this, "Invalid dimension record "
                     + "token: " + dimensionRecord);
         }
@@ -302,7 +306,7 @@ public class DerivedDimensionRepresentativeConcept extends
             } else {
                 return Integer.valueOf(exponentValue);
             }
-        } else {
+        } else { // FIXME: redundant, type system ensures this
             throw new IllegalActionException(this, "Invalid dimension record "
                     + "token: " + dimensionRecord);
         }
