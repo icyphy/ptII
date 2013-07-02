@@ -4,7 +4,7 @@
 <entity name="GeneratorContactorLoad" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 22, 1511, 1007}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 114, 1494, 978}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1277, 897]">
     </property>
@@ -105,7 +105,7 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1006, 88, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1678, 507, 484, 185}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -115,7 +115,7 @@
     <entity name="PID" class="ptolemy.domains.de.lib.PID">
         <property name="Kp" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
-        <property name="Ki" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="Ki" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
         <property name="Kd" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -157,7 +157,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="input to pid, drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 630, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1920, 19, 1920, 1061}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -170,8 +170,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0" max="300.0"/>
-<yRange min="0.0" max="120.0"/>
+<xRange min="1.0" max="1.0"/>
+<yRange min="-0.0" max="120.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>

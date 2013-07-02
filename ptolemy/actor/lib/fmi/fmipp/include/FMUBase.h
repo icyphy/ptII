@@ -92,6 +92,9 @@ public:
 	/** Handle events. **/
 	virtual void handleEvents( fmiTime tstop, bool completedIntegratorStep ) = 0;
 
+	/** Get state event flag. **/
+	virtual fmiBoolean getStateEventFlag() = 0;
+
 	/** Get number of continuous states. **/
 	virtual std::size_t nStates() const = 0;
 	/** Get number of event indicators. **/

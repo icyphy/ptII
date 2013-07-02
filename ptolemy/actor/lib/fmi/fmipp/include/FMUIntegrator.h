@@ -20,6 +20,7 @@ class FMUIntegrator
 public:
 
 	/** Enum IntegratorType defines the integration method:
+	 *   - eu: Forward Euler method.
 	 *   - rk: 4th order Runge-Kutta method with constant step size.
 	 *   - dp: 5th order Runge-Kutta-Dormand-Prince method with controlled step size.
 	 *   - fe: 7th order Runge-Kutta-Fehlberg method with controlled step size.
@@ -27,7 +28,7 @@ public:
 	 *   - abm: Adams-Bashforth-Moulton multistep method with adjustable order and adaptive
 	 *          step size. FIXME: Doesn't work properly, something with the step size?
 	 **/
-	enum IntegratorType { rk, dp, fe, bs, abm };
+	enum IntegratorType { eu, rk, dp, fe, bs, abm };
 
 	typedef std::vector<fmiReal> state_type;
 
@@ -44,7 +45,7 @@ public:
 	IntegratorType type() const;
 
 	/** Integrate FMU state. **/
-	void integrate( fmiReal step_size, size_t n_steps );
+	void integrate( fmiReal step_size, fmiReal dt );
 
 	/** Evaluates the right hand side of the ODE. **/
 	void operator()( const state_type& x, state_type& dx, fmiReal time );

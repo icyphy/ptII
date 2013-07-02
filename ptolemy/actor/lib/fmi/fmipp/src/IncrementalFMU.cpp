@@ -3,7 +3,6 @@
  * All rights reserved. See file FMIPP_LICENSE for details.
  * --------------------------------------------------------------*/
 
-#include <stdio.h>
 #include <iostream>
 #include <cassert>
 #include "IncrementalFMU.h"
@@ -61,8 +60,7 @@ IncrementalFMU::IncrementalFMU( const IncrementalFMU& aIncrementalFMU ) {
 
 IncrementalFMU::~IncrementalFMU()
 {
-    printf("WARNING: IncrementalFMU.cpp: IncrementalFMU destructor: not deleting fmu_\n");
-    //delete fmu_;
+	delete fmu_;
 }
 
 
@@ -92,27 +90,6 @@ bool IncrementalFMU::checkForEvent( const HistoryEntry& newestPrediction )
 
 void IncrementalFMU::handleEvent()
 {
-	// this version of handleevent changes the fmu, but it trusts the sync-function
-	// to read in the new values afterwards...
-	if ( fmu_->getStateEventFlag() ) {
-		History_reverse_iterator itPredictions = predictions_.rbegin();
-		HistoryEntry& lastPrediction = *(itPredictions);
-		HistoryEntry& beforeLastPrediction = *(itPredictions+1);
-
-		// reinitialize integration.
-		initializeIntegration( beforeLastPrediction );
-
-		// go back in time before the event happened
-		fmu_->setTime( beforeLastPrediction.time_ );
-		fmu_->raiseEvent();
-		fmu_->setStateEventFlag( fmiFalse );
-		fmu_->handleEvents( beforeLastPrediction.time_, fmiFalse );
-
-		// integrate to the event
-		fmu_->integrate( lastEventTime_, integratorStepSize_ );
-		lastPrediction.time_ = lastEventTime_;
-		fmu_->setStateEventFlag( fmiFalse );
-	}
 }
 
 
@@ -335,7 +312,6 @@ fmiTime IncrementalFMU::predictState( fmiTime t1 )
 	prediction.time_ = t1;
 
 	// Retrieve the current state of the FMU, considering altered inputs.
-	fmu_->raiseEvent();
 	fmu_->handleEvents( prediction.time_, false );
 	retrieveFMUState( prediction.state_, prediction.values_ );
 
@@ -376,8 +352,12 @@ fmiTime IncrementalFMU::predictState( fmiTime t1 )
 			// loop variable "prediction"!
 			HistoryEntry& lastPrediction = predictions_.back();
 
-			fmu_->raiseEvent();
+			// this has to be changed if the event is detected precisely
+			// and is not just within the last step !!!
+			lastPrediction.time_ = lastEventTime_ + integratorStepSize_;
+
 			fmu_->handleEvents( lastPrediction.time_, false );
+
 			retrieveFMUState( lastPrediction.state_, lastPrediction.values_ );
 
 			return lastPrediction.time_;

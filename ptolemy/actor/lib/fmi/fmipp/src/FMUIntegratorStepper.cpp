@@ -18,6 +18,25 @@ typedef FMUIntegrator::state_type state_type;
 FMUIntegratorStepper::~FMUIntegratorStepper() {}
 
 
+// Forward Euler method with constant step size.
+class Euler : public FMUIntegratorStepper
+{
+public:
+
+	void invokeMethod( FMUIntegrator* fmuint, state_type& states,
+			   fmiReal time, fmiReal step_size, fmiReal dt )
+{
+		// Runge-Kutta 4 stepper.
+		static euler< state_type > stepper; // Static: initialize only once.
+
+		// Integrator function with constant step size.
+		integrate_const( stepper, *fmuint, states, time, time+step_size, dt, *fmuint );
+	}
+
+	virtual IntegratorType type() const { return FMUIntegrator::eu; }
+};
+
+
 // 4th order Runge-Kutta method with constant step size.
 class RungeKutta : public FMUIntegratorStepper
 {
@@ -25,13 +44,13 @@ class RungeKutta : public FMUIntegratorStepper
 public:
 
 	void invokeMethod( FMUIntegrator* fmuint, state_type& states,
-			   fmiReal time, fmiReal step_size, size_t n_steps )
+			   fmiReal time, fmiReal step_size, fmiReal dt )
 	{
 		// Runge-Kutta 4 stepper.
 		static runge_kutta4< state_type > stepper; // Static: initialize only once.
 
 		// Integrator function with constant step size.
-		integrate_const( stepper, *fmuint, states, time, time+step_size, step_size/n_steps, *fmuint );
+		integrate_const( stepper, *fmuint, states, time, time+step_size, dt, *fmuint );
 	}
 
 	virtual IntegratorType type() const { return FMUIntegrator::rk; }
@@ -45,7 +64,7 @@ class DormandPrince : public FMUIntegratorStepper
 public:
 
 	void invokeMethod( FMUIntegrator* fmuint, state_type& states,
-			   fmiReal time, fmiReal step_size, size_t n_steps )
+			   fmiReal time, fmiReal step_size, fmiReal dt )
 	{
 		// Runge-Kutta-Dormand-Prince controlled stepper.
 		typedef runge_kutta_dopri5< state_type > error_stepper_type;
@@ -53,7 +72,7 @@ public:
 		static controlled_stepper_type stepper; // Static: initialize only once.
 
 		// Integrator function with adaptive step size.
-		integrate_adaptive( stepper, *fmuint, states, time, time+step_size, step_size/n_steps, *fmuint );
+		integrate_adaptive( stepper, *fmuint, states, time, time+step_size, dt, *fmuint );
 	}
 
 	virtual IntegratorType type() const { return FMUIntegrator::dp; }
@@ -67,7 +86,7 @@ class Fehlberg : public FMUIntegratorStepper
 public:
 
 	void invokeMethod( FMUIntegrator* fmuint, state_type& states,
-			   fmiReal time, fmiReal step_size, size_t n_steps )
+			   fmiReal time, fmiReal step_size, fmiReal dt )
 	{
 		// Runge-Kutta-Fehlberg controlled stepper.
 		typedef runge_kutta_fehlberg78< state_type > error_stepper_type;
@@ -75,7 +94,7 @@ public:
 		static controlled_stepper_type stepper; // Static: initialize only once.
 
 		// Integrator function with adaptive step size.
-		integrate_adaptive( stepper, *fmuint, states, time, time+step_size, step_size/n_steps, *fmuint );
+		integrate_adaptive( stepper, *fmuint, states, time, time+step_size, dt, *fmuint );
 	}
 
 	virtual IntegratorType type() const { return FMUIntegrator::fe; }
@@ -88,14 +107,14 @@ class BulirschStoer : public FMUIntegratorStepper
 public:
 
 	void invokeMethod( FMUIntegrator* fmuint, state_type& states,
-			   fmiReal time, fmiReal step_size, size_t n_steps )
+			   fmiReal time, fmiReal step_size, fmiReal dt )
 	{
 		// Bulirsch-Stoer controlled stepper.
 		typedef bulirsch_stoer< state_type > controlled_stepper_type;
 		static controlled_stepper_type stepper; // Static: initialize only once.
 
 		// Integrator function with adaptive step size.
-		integrate_adaptive( stepper, *fmuint, states, time, time+step_size, step_size/n_steps, *fmuint );
+		integrate_adaptive( stepper, *fmuint, states, time, time+step_size, dt, *fmuint );
 	}
 
 	virtual IntegratorType type() const { return FMUIntegrator::bs; }
@@ -110,16 +129,16 @@ class AdamsBashforthMoulton : public FMUIntegratorStepper
 public:
 
 	void invokeMethod( FMUIntegrator* fmuint, state_type& states,
-			   fmiReal time, fmiReal step_size, size_t n_steps )
+			   fmiReal time, fmiReal step_size, fmiReal dt )
 	{
 		// Adams-Bashforth-Moulton stepper, first argument is the order of the method.
 		adams_bashforth_moulton< 5, state_type > abm; // Static: initialize only once.
 
 		// Initialization step for the multistep method.
-		abm.initialize( *fmuint, states, time, step_size/n_steps );
+		abm.initialize( *fmuint, states, time, dt );
 
 		// Integrator function with adaptive step size.
-		integrate_adaptive( abm, *fmuint, states, time, time+step_size, step_size/n_steps, *fmuint );
+		integrate_adaptive( abm, *fmuint, states, time, time+step_size, dt, *fmuint );
 	}
 
 	virtual IntegratorType type() const { return FMUIntegrator::abm; }
@@ -130,6 +149,7 @@ public:
 FMUIntegratorStepper* FMUIntegratorStepper::createStepper( IntegratorType type )
 {
 	switch ( type ) {
+	case FMUIntegrator::eu: return new Euler;
 	case FMUIntegrator::rk: return new RungeKutta;
 	case FMUIntegrator::dp: return new DormandPrince;
 	case FMUIntegrator::fe: return new Fehlberg;

@@ -401,7 +401,7 @@ fmiReal FMU::integrate( fmiReal tstop, double deltaT )
 	lastEventTime_ = numeric_limits<fmiTime>::infinity();
 
 	if ( 0 != nStateVars_ ) {
-		integrator_->integrate( ( tstop - time_ ), ( tstop - time_ )/deltaT );
+		integrator_->integrate( ( tstop - time_ ), deltaT );
 		setTime( tstop ); // TODO: when the integrator can be stopped at the time of the last event, this has to be changed !!!
 	} else { // No continuous states -> skip integration.
 		setTime( tstop ); // TODO: event handling?
