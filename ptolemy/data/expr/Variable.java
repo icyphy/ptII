@@ -42,7 +42,6 @@ import java.util.Set;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.StructuredType;
@@ -605,9 +604,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (_needsEvaluation) {
                 _evaluate();
             }
-            if (this.getName().equals("x")) {
-                System.out.println("In getType().");
-            }
+
             return _varType;
         } catch (IllegalActionException iae) {
             // iae.printStackTrace();
@@ -1458,9 +1455,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (_debugging) {
             _debug("validate");
         }
-        if (this.getName().equals("windows0")) {
-            System.out.println("In validate().");
-        }
+
         invalidate();
 
         // Unless the expression is null, the following will have
@@ -1648,10 +1643,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
     protected void _evaluate() throws IllegalActionException {
-        if (this.getName().equals("windows0")) {
-            System.out.println("In _evaluate().");
-        }
-        
         if (_currentExpression == null
                 || (isStringMode() ? _currentExpression.equals("")
                         : _currentExpression.trim().equals(""))) {
@@ -1943,13 +1934,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // [marten 05/28/13] 
             // This doesn't seem to do anything, it substitutes 
             // unknowns for unknowns
-            if (declaredType instanceof StructuredType) {
+            /*if (declaredType instanceof StructuredType) {
                 ((StructuredType) declaredType).initialize(BaseType.UNKNOWN);
-            }
+            }*/
             
-            if (this.getName().equals("Parameter")) {
-                System.out.println("In _setVariable().");
-            }
             // declared type must be >= proposed type, convert new token (upcast)
             if (declaredType.isCompatible(newToken.getType())) {
                 newToken = declaredType.convert(newToken);
@@ -1969,10 +1957,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                   ((StructuredType) _varType)
                         .updateType((StructuredType) newToken.getType());
             } else if(_declaredType.equals(BaseType.UNKNOWN)) {
-                if (_varType.equals(BaseType.UNKNOWN) || !_varType.isCompatible(newToken.getType())) {
-                    _varType = newToken.getType();
-                }
+                // this could be either a structured or basic type
+                _varType = newToken.getType();
             } else {
+                // this can only be a basic type
                 _varType = _declaredType;
             }
                 
@@ -2523,9 +2511,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 throw new IllegalActionException("TypeTerm.setValue: The "
                         + "type is not settable.");
             }
-            if (this.toString().contains("Const2")) {
-                System.out.println("In setValue().");
-            }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("Variable$TypeTerm"
@@ -2543,7 +2528,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 // _declaredType is a StructuredType
                 ((StructuredType) _varType).updateType((StructuredType) e);
             }
-            
         }
 
         /** Override the base class to give a description of the variable

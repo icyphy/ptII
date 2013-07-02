@@ -39,7 +39,6 @@ import ptolemy.actor.util.ConstructAssociativeType;
 import ptolemy.actor.util.ExtractFieldType;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.AssociativeType;
 import ptolemy.data.type.RecordType;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -248,7 +247,7 @@ public class RecordAssembler extends TypedAtomicActor {
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
         result.add(new Inequality(new ConstructAssociativeType(_inputs,
-                _type), output.getTypeTerm()));
+                RecordType.class), output.getTypeTerm()));
 
         return result;
     }
@@ -261,10 +260,6 @@ public class RecordAssembler extends TypedAtomicActor {
         return null;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
-    Class<? extends AssociativeType> _type = RecordType.class;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

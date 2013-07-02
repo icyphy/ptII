@@ -1010,24 +1010,12 @@ public class TypedIOPort extends IOPort implements Typeable {
          *   the declared type of this port.
          */
         public void setValue(Object type) throws IllegalActionException {
-            // Cannot set value if declared type is a constant
             if (!isSettable()) {
                 throw new IllegalActionException(
                         "TypedIOPort$TypeTerm.setValue: The type is not "
                                 + "settable.");
             }
-            // The argument type must be a substitution instance for the 
-            // declared type, this means:
-            // - for basic types: the argument is equal to declared type, 
-            // or declared type is unknown
-            // - for structured types: if the shape of the structure of 
-            // argument and declared type are the same and leafs of the 
-            // structure of the argument type, which must be basic
-            // types, all are substitution instances for the corresponding
-            // element types found in the declared type
-            // So the declared type must be unknown, equal to, or identically
-            // structured as the argument type (where elements in the declared
-            // type are allowed to be left unknown).
+
             if (!_declaredType.isSubstitutionInstance((Type) type)) {
                 throw new IllegalActionException("Type conflict on port "
                         + TypedIOPort.this.getFullName() + ".\n"
@@ -1039,8 +1027,6 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             Type oldType = _resolvedType;
 
-            // The type is settable, so declared type must be unknown, or 
-            // a structured type with one or more unknown elements.
             if (_declaredType == BaseType.UNKNOWN) {
                 _resolvedType = (Type) type;
             } else {

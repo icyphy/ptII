@@ -185,7 +185,7 @@ public class ArrayType extends StructuredType implements Cloneable,
                     Token.notSupportedConversionMessage(token, toString()));
         }
 
-        if (myElementType.equals(argumentArrayToken.getElementType())) { // FIXME: do length hiding here
+        if (myElementType.equals(argumentArrayToken.getElementType())) {
             return token;
         }
 

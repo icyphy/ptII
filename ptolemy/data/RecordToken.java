@@ -158,7 +158,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             _fields.put(key, val);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -773,16 +773,9 @@ public class RecordToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The map of fields to their associated tokens.
+    /** The map of fields that has keys of type String and values of
+     *  type token.
      *  Subclasses can use alternative Map implementations (for ordering).
      */
     protected Map<String, Token> _fields = null;
-    
-    /** 
-     * 
-     *  Subclasses can use alternative Map implementations (for ordering).
-     */
-    protected Map<String, Token> _hiddenFields = null;
-
-    
 }
