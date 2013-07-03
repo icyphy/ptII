@@ -1,30 +1,86 @@
+/* MetroEventBuilder is a set of routines that create Metro events.
+
+ Copyright (c) 2012-2013 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
 package ptolemy.domains.metroII.kernel;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.util.Time;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 
+///////////////////////////////////////////////////////////////////
+////MetroEventBuilder
+
+/** 
+* MetroEventBuilder is a set of routines that create Metro events.
+*
+* @author Liangpeng Guo
+* @version $Id$
+* @since Ptolemy II 9.1
+* @Pt.ProposedRating Red (glp)
+* @Pt.AcceptedRating Red (glp)
+*
+*/
 public class MetroEventBuilder {
 
+    /**
+     * Construct an event builder
+     */
     public MetroEventBuilder() {
         // TODO Auto-generated constructor stub
     }
-    
-    static public long convert(long timeValue, double fromResolution, double toResolution) {
+
+    /**
+     * Convert a time value from one resolution to another resolution
+     * @param timeValue input time value in type 'long'
+     * @param fromResolution the resolution associated with timeValue
+     * @param toResolution the resolution it's converting to
+     * @return
+     */
+    static public long convert(long timeValue, double fromResolution,
+            double toResolution) {
         if (timeValue == Long.MAX_VALUE) {
-            return Long.MAX_VALUE; 
+            return Long.MAX_VALUE;
         }
-        
+
         double scaler = fromResolution / toResolution;
 
         assert scaler > 0 && Math.abs(scaler - (int) scaler) < 0.00001;
 
         timeValue = timeValue * ((int) scaler);
-        
-        return timeValue; 
+
+        return timeValue;
     }
 
+    /**
+     * Create a proposed Metro event
+     * @param eventName The name of the event
+     * @param timeValue The time value of the event
+     * @param resolution The resolution associated with the time value
+     * @return A Metro event with the given name and the time tag
+     */
     static public Builder newProposedEvent(String eventName, long timeValue,
             double resolution) {
         Event.Builder builder = Event.newBuilder();
@@ -48,6 +104,11 @@ public class MetroEventBuilder {
         return builder;
     }
 
+    /**
+     * Create a proposed Metro event
+     * @param eventName The name of the event
+     * @return A Metro event with the given name
+     */
     static public Builder newProposedEvent(String eventName) {
         Event.Builder builder = Event.newBuilder();
         builder.setName(eventName);
@@ -57,6 +118,12 @@ public class MetroEventBuilder {
         return builder;
     }
 
+    /**
+     * Trim the substring from the beginning to the first delimiter '.' from a given string. 
+     * Example: XXX.YYY.ZZZ -> YYY.ZZZ
+     * @param name The input string
+     * @return The trimmed string
+     */
     static public String trimModelName(String name) {
         assert name.length() > 1;
         int pos = name.indexOf(".", 1);
