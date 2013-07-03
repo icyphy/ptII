@@ -29,6 +29,7 @@ package ptolemy.data.type;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ptolemy.data.ActorToken;
 import ptolemy.data.Token;
@@ -40,16 +41,12 @@ import ptolemy.graph.DirectedAcyclicGraph;
 
 /**
  Type hierarchy for token classes.
- Note that all public methods are static and synchronized.
- There is exactly one instance of the type lattice.
- Although the type lattice is constructed once and then typically
- does not change during execution, the methods need to be synchronized
- because there are various data structures used to cache results that
- are expensive to compute. These data structures do change during
- execution. Multiple threads may be accessing the type lattice
- simultaneously and modifying these data structures. To ensure
- thread safety, the methods need to be synchronized.
-
+ <p>
+ There is exactly one instance of the type lattice. It is constructed 
+ once and then does not change during execution. A concurrent hash 
+ table is used to cache type comparison results to optimize for 
+ frequently occurring type comparisons.
+ </p>
  <p><a href="http://java.sun.com/docs/books/jls/third_edition/html/typesValues.html">The Java Language Spec, 3rd ed.</a>
  says:
  <blockquote>
@@ -75,7 +72,7 @@ import ptolemy.graph.DirectedAcyclicGraph;
  64-bit doubles.
  </menu>
 
- @author Yuhong Xiong, Steve Neuendorffer
+ @author Yuhong Xiong, Steve Neuendorffer, Marten Lohstroh
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (yuhong)
@@ -105,7 +102,7 @@ public class TypeLattice {
      *  @param token2 a Token.
      *  @return An integer.
      */
-    public synchronized static int compare(Token token1, Token token2) {
+    public static int compare(Token token1, Token token2) {
         if (token1 == null || token2 == null) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Token, Token): "
@@ -127,7 +124,7 @@ public class TypeLattice {
      *  @param type a Type.
      *  @return An integer.
      */
-    public synchronized static int compare(Token token, Type type) {
+    public static int compare(Token token, Type type) {
         if (token == null) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Token, Type): "
@@ -148,7 +145,7 @@ public class TypeLattice {
      *  @param type a Type.
      *  @return An integer.
      */
-    public synchronized static int compare(Type type, Token token) {
+    public static int compare(Type type, Token token) {
         if (token == null) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Type, Token): "
@@ -168,7 +165,7 @@ public class TypeLattice {
      *  @param type2 an instance of Type.
      *  @return An integer.
      */
-    public synchronized static int compare(Type type1, Type type2) {
+    public static int compare(Type type1, Type type2) {
         return _lattice.compare(type1, type2);
     }
 
@@ -185,21 +182,20 @@ public class TypeLattice {
      *  @param type2 The second given type.
      *  @return The least upper bound of type1 and type2.
      */
-    public synchronized static Type leastUpperBound(Type type1, Type type2) {
+    public static Type leastUpperBound(Type type1, Type type2) {
         return (Type) _lattice.leastUpperBound(type1, type2);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
+    
     // The infinite type lattice
     private static class TheTypeLattice implements CPO<Object> {
         /** Return the bottom element of the type lattice, which is UNKNOWN.
          *  @return The Type object representing UNKNOWN.
          */
         public Object bottom() {
-            synchronized (TypeLattice.class) {
                 return _basicLattice.bottom();
-            }
         }
 
         /** Compare two types in the type lattice. The arguments must be
@@ -216,7 +212,6 @@ public class TypeLattice {
          *   are not instances of Type.
          */
         public int compare(Object t1, Object t2) {
-            synchronized (TypeLattice.class) {
                 if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                     throw new IllegalArgumentException(
                             "TheTypeLattice.compare: "
@@ -225,20 +220,21 @@ public class TypeLattice {
                 }
                 // System.out.println("compare " + type1 + " and " + type2 + " = " + _lattice.compare(type1, type2));
 
+
                 if (t1 == t2) {
                     return SAME;
                 }
-                int i1 = ((Type) t1).getTypeHash();
-                int i2 = ((Type) t2).getTypeHash();
-
+                Integer val;
+                StringBuilder key = new StringBuilder(((Type) t1).toString());
+                key.append("<");
+                key.append(((Type) t2).toString());
+                
                 // Uncommment the false below to measure the impact of
                 // _lattice.compare() on ptolemy.data package performance... Run
                 // ptolemy/data/type/test/performance.xml before and after...(zk)
-                if ( /*false &&*/
-                i1 != Type.HASH_INVALID
-                        && i2 != Type.HASH_INVALID
-                        && _getCachedTypeComparisonResult(i1, i2) != Type.HASH_INVALID) {
-                    return _getCachedTypeComparisonResult(i1, i2);
+                if (//false && 
+                        (val = _getCachedTypeComparisonResult(key.toString())) != null) {
+                    return val;
                 }
 
                 Type ct1 = (Type) t1;
@@ -322,11 +318,10 @@ public class TypeLattice {
                         result = INCOMPARABLE;
                     }
                 }
-                if (i1 != Type.HASH_INVALID && i2 != Type.HASH_INVALID) {
-                    _setCachedTypeComparisonResult(i1, i2, result);
-                }
+                
+                 _setCachedTypeComparisonResult(key.toString(), result);
+                
                 return result;
-            }
         }
 
         /** Throw an exception. This operation is not supported since the
@@ -347,7 +342,6 @@ public class TypeLattice {
          *   specified arguments are not instances of Type.
          */
         public Object greatestLowerBound(Object t1, Object t2) {
-            synchronized (TypeLattice.class) {
                 if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                     throw new IllegalArgumentException(
                             "TheTypeLattice.greatestLowerBound: "
@@ -457,7 +451,6 @@ public class TypeLattice {
                         return bottom();
                     }
                 }
-            }
         }
 
         /** Return the greatest lower bound of a subset.
@@ -465,7 +458,6 @@ public class TypeLattice {
          *  @return an instance of Type.
          */
         public Object greatestLowerBound(Set<Object> subset) {
-            synchronized (TypeLattice.class) {
                 if (subset.size() == 0) {
                     return BaseType.GENERAL;
                 }
@@ -480,7 +472,6 @@ public class TypeLattice {
                 }
 
                 return glb;
-            }
         }
 
         /** Return the greatest type of a set of types, or null if the
@@ -494,7 +485,6 @@ public class TypeLattice {
          *  @return A Type or null.
          */
         public Object greatestElement(Set<Object> subset) {
-            synchronized (TypeLattice.class) {
                 // Compare each element with all of the other elements to search
                 // for the greatest one. This is a simple, brute force algorithm,
                 // but may be inefficient. A more efficient one is used in
@@ -517,7 +507,6 @@ public class TypeLattice {
                 }
                 // Otherwise, the subset does not contain a greatest element.
                 return null;
-            }
         }
 
         /** Return true.
@@ -538,7 +527,6 @@ public class TypeLattice {
          *  @return A Type or null.
          */
         public Object leastElement(Set<Object> subset) {
-            synchronized (TypeLattice.class) {
                 // Compare each element with all of the other elements to search
                 // for the least one. This is a simple, brute force algorithm,
                 // but may be inefficient. A more efficient one is used in
@@ -561,7 +549,6 @@ public class TypeLattice {
                 }
                 // Otherwise, the subset does not contain a least element.
                 return null;
-            }
         }
 
         /** Return the least upper bound of two types.
@@ -570,7 +557,6 @@ public class TypeLattice {
          *  @return an instance of Type.
          */
         public Object leastUpperBound(Object t1, Object t2) {
-            synchronized (TypeLattice.class) {
                 if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                     throw new IllegalArgumentException(
                             "TheTypeLattice.leastUpperBound: "
@@ -725,7 +711,6 @@ public class TypeLattice {
                         return top();
                     }
                 }
-            }
         }
 
         /** Return the least upper bound of a subset.
@@ -733,7 +718,6 @@ public class TypeLattice {
          *  @return an instance of Type.
          */
         public Object leastUpperBound(Set<Object> subset) {
-            synchronized (TypeLattice.class) {
                 if (subset.size() == 0) {
                     return BaseType.UNKNOWN;
                 }
@@ -748,16 +732,13 @@ public class TypeLattice {
                 }
 
                 return lub;
-            }
         }
 
         /** Return the top element of the type lattice, which is General.
          *  @return The Type object representing General.
          */
         public Object top() {
-            synchronized (TypeLattice.class) {
                 return _basicLattice.top();
-            }
         }
 
         /** Throw an exception. This operation is not supported since the
@@ -775,7 +756,6 @@ public class TypeLattice {
         ////                    private constructor                ////
         // the constructor is private so only the outer class can use it.
         private TheTypeLattice() {
-            synchronized (TypeLattice.class) {
                 _basicLattice = new DirectedAcyclicGraph();
 
                 StructuredType arrayRep = new ArrayType(BaseType.UNKNOWN)
@@ -916,7 +896,6 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.NIL, BaseType.UNSIGNED_BYTE);
 
                 assert _basicLattice.isLattice();
-            }
         }
 
         ///////////////////////////////////////////////////////////////
@@ -925,17 +904,16 @@ public class TypeLattice {
         /** Return the result for the types that have the given two
          * indexes as hashes.
          */
-        private static final int _getCachedTypeComparisonResult(int index1,
-                int index2) {
-            return _compareCache[index1][index2];
+        private static final Integer _getCachedTypeComparisonResult(String key) {
+            return _compareCache.get(key);
         }
 
         /** Set the result for the types that have the given two
          *  indexes as hashes.
          */
-        private static final void _setCachedTypeComparisonResult(int index1,
-                int index2, int value) {
-            _compareCache[index1][index2] = value;
+        private static final void _setCachedTypeComparisonResult(String key,
+                int value) {
+            _compareCache.put(key, value);
         }
 
         // If the argument is a structured type, return its representative;
@@ -956,19 +934,8 @@ public class TypeLattice {
         private DirectedAcyclicGraph _basicLattice;
 
         /** The result cache for parts of the type lattice. */
-        private static int[][] _compareCache;
-
-        static {
-            synchronized (TypeLattice.class) {
-                _compareCache = new int[Type.HASH_MAX + 1][Type.HASH_MAX + 1];
-
-                for (int i = 0; i <= Type.HASH_MAX; i++) {
-                    for (int j = 0; j <= Type.HASH_MAX; j++) {
-                        _compareCache[i][j] = Type.HASH_INVALID;
-                    }
-                }
-            }
-        }
+        private final static ConcurrentHashMap<String, Integer> _compareCache = new ConcurrentHashMap<String, Integer>();
+        
     }
 
     ///////////////////////////////////////////////////////////////////
