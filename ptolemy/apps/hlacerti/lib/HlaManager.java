@@ -562,13 +562,13 @@ implements TimeRegulator {
 		try {
 			factory = RtiFactoryFactory.getRtiFactory();
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RTIinternalError ");        
 		}
 
 		try {
 			_rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RTIinternalError ");        
 		}
 
 		// Create the Federation or raise a warning it the Federation already exits.
@@ -579,15 +579,15 @@ implements TimeRegulator {
 				_debug(this.getDisplayName() + " initialize() - WARNING: FederationExecutionAlreadyExists");
 			}
 		} catch (CouldNotOpenFED e) {
-			throw new IllegalActionException(this, e, "CouldNotOpenFED " + e.getMessage());        
+			throw new IllegalActionException(this, e, "CouldNotOpenFED ");        
 		} catch (ErrorReadingFED e) {
-			throw new IllegalActionException(this, e, "ErrorReadingFED " + e.getMessage());        
+			throw new IllegalActionException(this, e, "ErrorReadingFED ");        
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RTIinternalError ");        
 		} catch (ConcurrentAccessAttempted e) {
-			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 		} catch (MalformedURLException e) {
-			throw new IllegalActionException(this, e, "MalformedURLException " + e.getMessage());        
+			throw new IllegalActionException(this, e, "MalformedURLException ");        
 		}
 
 		_federateAmbassador = new PtolemyFederateAmbassadorInner();
@@ -596,38 +596,38 @@ implements TimeRegulator {
 		try {
 			_rtia.joinFederationExecution(_federateName, _federationName, _federateAmbassador);
 		} catch (FederateAlreadyExecutionMember e) {
-			throw new IllegalActionException(this, e, "FederateAlreadyExecutionMember " + e.getMessage());        
+			throw new IllegalActionException(this, e, "FederateAlreadyExecutionMember ");        
 		} catch (FederationExecutionDoesNotExist e) {
-			throw new IllegalActionException(this, e, "FederationExecutionDoesNotExist " + e.getMessage());        
+			throw new IllegalActionException(this, e, "FederationExecutionDoesNotExist ");        
 		} catch (SaveInProgress e) {
-			throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+			throw new IllegalActionException(this, e, "SaveInProgress ");        
 		} catch (RestoreInProgress e) {
-			throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RestoreInProgress ");        
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RTIinternalError ");        
 		} catch (ConcurrentAccessAttempted e) {
-			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 		}
 
 		// Initialize the Federate Ambassador.
 		try {
 			_federateAmbassador.initialize(_rtia);
 		} catch (NameNotFound e) {
-			throw new IllegalActionException(this, e, "NameNotFound " + e.getMessage());        
+			throw new IllegalActionException(this, e, "NameNotFound ");        
 		} catch (ObjectClassNotDefined e) {
-			throw new IllegalActionException(this, e, "ObjectClassNotDefined " + e.getMessage());        
+			throw new IllegalActionException(this, e, "ObjectClassNotDefined ");        
 		} catch (FederateNotExecutionMember e) {
-			throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());        
+			throw new IllegalActionException(this, e, "FederateNotExecutionMember ");        
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RTIinternalError ");        
 		} catch (AttributeNotDefined e) {
-			throw new IllegalActionException(this, e, "AttributeNotDefined " + e.getMessage());        
+			throw new IllegalActionException(this, e, "AttributeNotDefined ");        
 		} catch (SaveInProgress e) {
-			throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+			throw new IllegalActionException(this, e, "SaveInProgress ");        
 		} catch (RestoreInProgress e) {
-			throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RestoreInProgress ");        
 		} catch (ConcurrentAccessAttempted e) {
-			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 		}
 
 		// Initialize Federate timing values.
@@ -638,21 +638,21 @@ implements TimeRegulator {
 			try {
 				_rtia.enableTimeConstrained();
 			} catch (TimeConstrainedAlreadyEnabled e) {
-				throw new IllegalActionException(this, e, "TimeConstrainedAlreadyEnabled " + e.getMessage());        
+				throw new IllegalActionException(this, e, "TimeConstrainedAlreadyEnabled ");        
 			} catch (EnableTimeConstrainedPending e) {
-				throw new IllegalActionException(this, e, "EnableTimeConstrainedPending " + e.getMessage());        
+				throw new IllegalActionException(this, e, "EnableTimeConstrainedPending ");        
 			} catch (TimeAdvanceAlreadyInProgress e) {
-				throw new IllegalActionException(this, e, "TimeAdvanceAlreadyInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "TimeAdvanceAlreadyInProgress ");        
 			} catch (FederateNotExecutionMember e) {
-				throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());        
+				throw new IllegalActionException(this, e, "FederateNotExecutionMember ");        
 			} catch (SaveInProgress e) {
-				throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "SaveInProgress ");        
 			} catch (RestoreInProgress e) {
-				throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RestoreInProgress ");        
 			} catch (RTIinternalError e) {
-				throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RTIinternalError ");        
 			} catch (ConcurrentAccessAttempted e) {
-				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 			}
 		}
 
@@ -661,25 +661,25 @@ implements TimeRegulator {
 			try {
 				_rtia.enableTimeRegulation(_federateAmbassador.logicalTimeHLA, _federateAmbassador.lookAHeadHLA);
 			} catch (TimeRegulationAlreadyEnabled e) {
-				throw new IllegalActionException(this, e, "TimeRegulationAlreadyEnabled " + e.getMessage());        
+				throw new IllegalActionException(this, e, "TimeRegulationAlreadyEnabled ");        
 			} catch (EnableTimeRegulationPending e) {
-				throw new IllegalActionException(this, e, "EnableTimeRegulationPending " + e.getMessage());        
+				throw new IllegalActionException(this, e, "EnableTimeRegulationPending ");        
 			} catch (TimeAdvanceAlreadyInProgress e) {
-				throw new IllegalActionException(this, e, "TimeAdvanceAlreadyInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "TimeAdvanceAlreadyInProgress ");        
 			} catch (InvalidFederationTime e) {
-				throw new IllegalActionException(this, e, "InvalidFederationTime " + e.getMessage());        
+				throw new IllegalActionException(this, e, "InvalidFederationTime ");        
 			} catch (InvalidLookahead e) {
-				throw new IllegalActionException(this, e, "InvalidLookahead " + e.getMessage());        
+				throw new IllegalActionException(this, e, "InvalidLookahead ");        
 			} catch (FederateNotExecutionMember e) {
-				throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());        
+				throw new IllegalActionException(this, e, "FederateNotExecutionMember ");        
 			} catch (SaveInProgress e) {
-				throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "SaveInProgress ");        
 			} catch (RestoreInProgress e) {
-				throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RestoreInProgress ");        
 			} catch (RTIinternalError e) {
-				throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RTIinternalError ");        
 			} catch (ConcurrentAccessAttempted e) {
-				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 			}
 		}
 
@@ -692,11 +692,11 @@ implements TimeRegulator {
 				try {
 					_rtia.tick2();
 				} catch (SpecifiedSaveLabelDoesNotExist e) {
-					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist " + e.getMessage());        
+					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist ");        
 				} catch (ConcurrentAccessAttempted e) {
-					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 				} catch (RTIinternalError e) {
-					throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RTIinternalError ");        
 				}
 			}
 
@@ -704,11 +704,11 @@ implements TimeRegulator {
 				try {
 					((CertiRtiAmbassador) _rtia).tick2();
 				} catch (SpecifiedSaveLabelDoesNotExist e) {
-					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist " + e.getMessage());        
+					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist ");        
 				} catch (ConcurrentAccessAttempted e) {
-					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 				} catch (RTIinternalError e) {
-					throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RTIinternalError ");        
 				}
 			}
 
@@ -724,17 +724,17 @@ implements TimeRegulator {
 			try {
 				_rtia.enableAsynchronousDelivery();
 			} catch (AsynchronousDeliveryAlreadyEnabled e) {
-				throw new IllegalActionException(this, e, "AsynchronousDeliveryAlreadyEnabled " + e.getMessage());        
+				throw new IllegalActionException(this, e, "AsynchronousDeliveryAlreadyEnabled ");        
 			} catch (FederateNotExecutionMember e) {
-				throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());        
+				throw new IllegalActionException(this, e, "FederateNotExecutionMember ");        
 			} catch (SaveInProgress e) {
-				throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "SaveInProgress ");        
 			} catch (RestoreInProgress e) {
-				throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RestoreInProgress ");        
 			} catch (RTIinternalError e) {
-				throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RTIinternalError ");        
 			} catch (ConcurrentAccessAttempted e) {
-				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 			}
 		}
 
@@ -746,15 +746,15 @@ implements TimeRegulator {
 					byte[] rfspTag = EncodingHelpers.encodeString(_synchronizationPointName);
 					_rtia.registerFederationSynchronizationPoint(_synchronizationPointName, rfspTag);
 				} catch (FederateNotExecutionMember e) {
-					throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());        
+					throw new IllegalActionException(this, e, "FederateNotExecutionMember ");        
 				} catch (SaveInProgress e) {
-					throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+					throw new IllegalActionException(this, e, "SaveInProgress ");        
 				} catch (RestoreInProgress e) {
-					throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RestoreInProgress ");        
 				} catch (RTIinternalError e) {
-					throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RTIinternalError ");        
 				} catch (ConcurrentAccessAttempted e) {
-					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 				}
 
 				// Wait synchronization point callbacks.
@@ -762,11 +762,11 @@ implements TimeRegulator {
 					try {
 						((CertiRtiAmbassador) _rtia).tick2();
 					} catch (SpecifiedSaveLabelDoesNotExist e) {
-						throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist " + e.getMessage());        
+						throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist ");        
 					} catch (ConcurrentAccessAttempted e) {
-						throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+						throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 					} catch (RTIinternalError e) {
-						throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+						throw new IllegalActionException(this, e, "RTIinternalError ");        
 					}
 				}
 
@@ -780,11 +780,11 @@ implements TimeRegulator {
 				try {
 					((CertiRtiAmbassador) _rtia).tick2();
 				} catch (SpecifiedSaveLabelDoesNotExist e) {
-					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist " + e.getMessage());        
+					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist ");        
 				} catch (ConcurrentAccessAttempted e) {
-					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 				} catch (RTIinternalError e) {
-					throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RTIinternalError ");        
 				}
 			}
 
@@ -797,17 +797,17 @@ implements TimeRegulator {
 							+ _synchronizationPointName + " satisfied !");
 				}
 			} catch (SynchronizationLabelNotAnnounced e) {
-				throw new IllegalActionException(this, e, "SynchronizationLabelNotAnnounced " + e.getMessage());        
+				throw new IllegalActionException(this, e, "SynchronizationLabelNotAnnounced ");        
 			} catch (FederateNotExecutionMember e) {
-				throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());        
+				throw new IllegalActionException(this, e, "FederateNotExecutionMember ");        
 			} catch (SaveInProgress e) {
-				throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "SaveInProgress ");        
 			} catch (RestoreInProgress e) {
-				throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RestoreInProgress ");        
 			} catch (RTIinternalError e) {
-				throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+				throw new IllegalActionException(this, e, "RTIinternalError ");        
 			} catch (ConcurrentAccessAttempted e) {
-				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 			}
 
 			// Wait federation synchronization.
@@ -820,11 +820,11 @@ implements TimeRegulator {
 				try {
 					((CertiRtiAmbassador) _rtia).tick2();
 				} catch (SpecifiedSaveLabelDoesNotExist e) {
-					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist " + e.getMessage());        
+					throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist ");        
 				} catch (ConcurrentAccessAttempted e) {
-					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 				} catch (RTIinternalError e) {
-					throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RTIinternalError ");        
 				}
 			}
 		} // End block for synchronization point.
@@ -835,9 +835,9 @@ implements TimeRegulator {
 		try {
 			((CertiRtiAmbassador) _rtia).tick();
 		} catch (ConcurrentAccessAttempted e) {
-			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+			throw new IllegalActionException(this, e, "RTIinternalError ");        
 		}
 	}
 
@@ -925,9 +925,9 @@ implements TimeRegulator {
          try {
          _rtia.tick();
          } catch (ConcurrentAccessAttempted e) {
-         throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+         throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
          } catch (RTIinternalError e) {
-         throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+         throw new IllegalActionException(this, e, "RTIinternalError ");        
          }
 
          return _lastProposedTime;
@@ -963,25 +963,25 @@ implements TimeRegulator {
 						_rtia.timeAdvanceRequest(certiProposedTime);
 					}
 				} catch (InvalidFederationTime e) {
-					throw new IllegalActionException(this, e, "InvalidFederationTime " + e.getMessage());        
+					throw new IllegalActionException(this, e, "InvalidFederationTime ");        
 				} catch (FederationTimeAlreadyPassed e) {
-					throw new IllegalActionException(this, e, "FederationTimeAlreadyPassed " + e.getMessage());        
+					throw new IllegalActionException(this, e, "FederationTimeAlreadyPassed ");        
 				} catch (TimeAdvanceAlreadyInProgress e) {
-					throw new IllegalActionException(this, e, "TimeAdvanceAlreadyInProgress " + e.getMessage());        
+					throw new IllegalActionException(this, e, "TimeAdvanceAlreadyInProgress ");        
 				} catch (EnableTimeRegulationPending e) {
-					throw new IllegalActionException(this, e, "EnableTimeRegulationPending " + e.getMessage());        
+					throw new IllegalActionException(this, e, "EnableTimeRegulationPending ");        
 				} catch (EnableTimeConstrainedPending e) {
-					throw new IllegalActionException(this, e, "EnableTimeConstrainedPending " + e.getMessage());        
+					throw new IllegalActionException(this, e, "EnableTimeConstrainedPending ");        
 				} catch (FederateNotExecutionMember e) {
-					throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());        
+					throw new IllegalActionException(this, e, "FederateNotExecutionMember ");        
 				} catch (SaveInProgress e) {
-					throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());        
+					throw new IllegalActionException(this, e, "SaveInProgress ");        
 				} catch (RestoreInProgress e) {
-					throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RestoreInProgress ");        
 				} catch (RTIinternalError e) {
-					throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+					throw new IllegalActionException(this, e, "RTIinternalError ");        
 				} catch (ConcurrentAccessAttempted e) {
-					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+					throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 				} catch (NoSuchElementException e) {
 					// GL: FIXME: to investigate.
 					if (_debugging) {
@@ -1005,11 +1005,11 @@ implements TimeRegulator {
 					try {
 						_rtia.tick2();
 					} catch (SpecifiedSaveLabelDoesNotExist e) {
-						throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist " + e.getMessage());        
+						throw new IllegalActionException(this, e, "SpecifiedSaveLabelDoesNotExist ");        
 					} catch (ConcurrentAccessAttempted e) {
-						throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());        
+						throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");        
 					} catch (RTIinternalError e) {
-						throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());        
+						throw new IllegalActionException(this, e, "RTIinternalError ");        
 					}
 				}
 
@@ -1058,8 +1058,8 @@ implements TimeRegulator {
 		SuppliedAttributes suppAttributes = null;
 		try {
 			suppAttributes = RtiFactoryFactory.getRtiFactory().createSuppliedAttributes();
-		} catch (RTIinternalError error) {
-			throw new IllegalActionException(this, "RTIinternalError " + error.getMessage());
+		} catch (RTIinternalError e) {
+			throw new IllegalActionException(this, e, "RTIinternalError ");
 		}
 		suppAttributes.add((Integer) tObj[4], valAttribute);
 
@@ -1071,23 +1071,23 @@ implements TimeRegulator {
 		try {
 			_rtia.updateAttributeValues((Integer) tObj[5], suppAttributes, tag, ct);
 		} catch (ObjectNotKnown e) {
-			throw new IllegalActionException(this, e, "ObjectNotKnown " + e.getMessage());
+			throw new IllegalActionException(this, e, "ObjectNotKnown ");
 		} catch (AttributeNotDefined e) {
-			throw new IllegalActionException(this, e, "AttributeNotDefined " + e.getMessage());
+			throw new IllegalActionException(this, e, "AttributeNotDefined ");
 		} catch (AttributeNotOwned e) {
-			throw new IllegalActionException(this, e, "AttributeNotOwned " + e.getMessage());
+			throw new IllegalActionException(this, e, "AttributeNotOwned ");
 		} catch (FederateNotExecutionMember e) {
-			throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());
+			throw new IllegalActionException(this, e, "FederateNotExecutionMember ");
 		} catch (SaveInProgress e) {
-			throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());
+			throw new IllegalActionException(this, e, "SaveInProgress ");
 		} catch (RestoreInProgress e) {
-			throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());
+			throw new IllegalActionException(this, e, "RestoreInProgress ");
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());
+			throw new IllegalActionException(this, e, "RTIinternalError ");
 		} catch (ConcurrentAccessAttempted e) {
-			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());
+			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
 		} catch (InvalidFederationTime e) {
-			throw new IllegalActionException(this, e, "InvalidFederationTime " + e.getMessage());
+			throw new IllegalActionException(this, e, "InvalidFederationTime ");
 		}
 		if (_debugging) {
 			_debug(this.getDisplayName()
@@ -1118,19 +1118,19 @@ implements TimeRegulator {
 			try {
 				_rtia.unsubscribeObjectClass((Integer) obj[3]);
 			} catch (ObjectClassNotDefined e) {
-				throw new IllegalActionException(this, e, "ObjectClassNotDefined " + e.getMessage());
+				throw new IllegalActionException(this, e, "ObjectClassNotDefined ");
 			} catch (ObjectClassNotSubscribed e) {
-				throw new IllegalActionException(this, e, "ObjectClassNotSubscribed " + e.getMessage());
+				throw new IllegalActionException(this, e, "ObjectClassNotSubscribed ");
 			} catch (FederateNotExecutionMember e) {
-				throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());
+				throw new IllegalActionException(this, e, "FederateNotExecutionMember ");
 			} catch (SaveInProgress e) {
-				throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());
+				throw new IllegalActionException(this, e, "SaveInProgress ");
 			} catch (RestoreInProgress e) {
-				throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());
+				throw new IllegalActionException(this, e, "RestoreInProgress ");
 			} catch (RTIinternalError e) {
-				throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());
+				throw new IllegalActionException(this, e, "RTIinternalError ");
 			} catch (ConcurrentAccessAttempted e) {
-				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());
+				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
 			}
 			if (_debugging) {
 				_debug(this.getDisplayName() + " wrapup() - Unsubscribe "
@@ -1144,21 +1144,21 @@ implements TimeRegulator {
 			try {
 				_rtia.unpublishObjectClass((Integer) obj[3]);
 			} catch (ObjectClassNotDefined e) {
-				throw new IllegalActionException(this, e, "ObjectClassNotDefined " + e.getMessage());
+				throw new IllegalActionException(this, e, "ObjectClassNotDefined ");
 			} catch (ObjectClassNotPublished e) {
-				throw new IllegalActionException(this, e, "ObjectClassNotPublished " + e.getMessage());
+				throw new IllegalActionException(this, e, "ObjectClassNotPublished ");
 			} catch (OwnershipAcquisitionPending e) {
-				throw new IllegalActionException(this, e, "OwnershipAcquisitionPending " + e.getMessage());
+				throw new IllegalActionException(this, e, "OwnershipAcquisitionPending ");
 			} catch (FederateNotExecutionMember e) {
-				throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());
+				throw new IllegalActionException(this, e, "FederateNotExecutionMember ");
 			} catch (SaveInProgress e) {
-				throw new IllegalActionException(this, e, "SaveInProgress " + e.getMessage());
+				throw new IllegalActionException(this, e, "SaveInProgress ");
 			} catch (RestoreInProgress e) {
-				throw new IllegalActionException(this, e, "RestoreInProgress " + e.getMessage());
+				throw new IllegalActionException(this, e, "RestoreInProgress ");
 			} catch (RTIinternalError e) {
-				throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());
+				throw new IllegalActionException(this, e, "RTIinternalError ");
 			} catch (ConcurrentAccessAttempted e) {
-				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());
+				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
 			}
 			if (_debugging) {
 				_debug(this.getDisplayName() + " wrapup() - Unpublish "
@@ -1171,15 +1171,15 @@ implements TimeRegulator {
 		try {
 			_rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
 		} catch (FederateOwnsAttributes e) {
-			throw new IllegalActionException(this, e, "FederateOwnsAttributes " + e.getMessage());
+			throw new IllegalActionException(this, e, "FederateOwnsAttributes ");
 		} catch (FederateNotExecutionMember e) {
-			throw new IllegalActionException(this, e, "FederateNotExecutionMember " + e.getMessage());
+			throw new IllegalActionException(this, e, "FederateNotExecutionMember ");
 		} catch (InvalidResignAction e) {
-			throw new IllegalActionException(this, e, "InvalidResignAction " + e.getMessage());
+			throw new IllegalActionException(this, e, "InvalidResignAction ");
 		} catch (RTIinternalError e) {
-			throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());
+			throw new IllegalActionException(this, e, "RTIinternalError ");
 		} catch (ConcurrentAccessAttempted e) {
-			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());
+			throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
 		}
 		if (_debugging) {
 			_debug(this.getDisplayName() + " wrapup() - Resign Federation execution");
@@ -1202,9 +1202,9 @@ implements TimeRegulator {
 				}
 				canDestroyRtig = true;
 			} catch (RTIinternalError e) {
-				throw new IllegalActionException(this, e, "RTIinternalError " + e.getMessage());
+				throw new IllegalActionException(this, e, "RTIinternalError ");
 			} catch (ConcurrentAccessAttempted e) {
-				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted " + e.getMessage());
+				throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
 			}
 			if (_debugging) {
 				_debug(this.getDisplayName() + " wrapup() - "
@@ -1525,7 +1525,6 @@ implements TimeRegulator {
 
 	/** The RTIG subprocess. */
 	private CertiRtig _certiRtig;
-
 
 	///////////////////////////////////////////////////////////////////
 	////                         inner class                       ////
