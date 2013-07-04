@@ -29,18 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo
-
-DIRS =  CoSimulation \
-        CoSimulationFunctional \
-        CoSimulationNetwork1 \
-        MultiDataTypes \
-        MultiProducerConsumer \
-        SimpleProducerConsumer \
-        SynchronizeToRealTime
+ME =        ptolemy/apps/hlacerti/demo/SynchronizeToRealTime
 
 # Root of the Java directory
-ROOT =      ../../../..
+ROOT =      ../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -49,38 +41,51 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     demo
+PTPACKAGE =     SynchronizeToRealTime
+PTCLASSJAR =    $(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-        CoSimulation/CoSimulation.jar \
-        CoSimulationFunctional/CoSimulationFunctional.jar \
-        CoSimulationNetwork1/CoSimulationNetwork1.jar \
-        MultiDataTypes/MultiDataTypes.jar \
-        MultiProducerConsumer/MultiProducerConsumer.jar \
-        SimpleProducerConsumer/SimpleProducerConsumer.jar \
-        SynchronizeToRealTime/SynchronizeToRealTime.jar
+JSRCS = 
 
-PTCLASSALLJAR= $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	clockDisplayer.xml\
+	clockTransmitter.xml \
+	SynchronizeToRealTime.xml \
+	SynchronizeToRealTime.fed
 
-EXTRA_SRCS =
+EXTRA_SRCS = \
+    $(OTHER_FILES_TO_BE_JARED) \
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all jars
 
-demo: subdemo
+install: all
 
+demo: demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" clockDisplayer.xml
+	"$(PTII)/bin/ptolemy" clockTransmitter.xml
+	"$(PTII)/bin/ptolemy" SynchronizeToRealTime.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" clockDisplayer.xml
+	"$(PTII)/bin/vergil" clockTransmitter.xml
+	"$(PTII)/bin/vergil" SynchronizeToRealTime.xml
+	
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
