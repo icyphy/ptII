@@ -1,0 +1,96 @@
+/* Berkeley styling for full-screen and mobile-size pages.  
+   This could be split into two files for faster loading. */
+
+
+/* Mobile styling */
+
+/* Need the [data-role="header"] to make this selector more specific than 
+   the selectors used in the default jQuery css styling (which we use some of).
+   Selectors are applied least-specific to most-specific 
+   */
+
+*[data-role="header"], *[data-role="footer"] {
+	border: 1px solid #667396 /*{b-bar-border}*/;
+	background: #5e7aa9 /*{b-bar-background-color}*/;
+	color: #ffffff /*{b-bar-color}*/;
+}
+
+*[data-role="header"] {
+	font-weight: bold;
+}
+
+*[data-role="header"] a:link {
+	color: #ffffff;
+}
+
+*[data-role="header"] a:visited {
+	color: #a1bdd5;
+}
+
+*[data-role="footer"] {
+	font-weight: normal;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 0px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+*[data-role="content"] {
+	border: 1px solid #aaaaaa /*{b-body-border}*/;
+	color: #333333 /*{b-body-color}*/;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 1px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/ #ffffff /*{b-body-shadow-color}*/;
+	background: #f9f9f9 /*{b-body-background-color}*/;
+}
+
+*[data-role="list-divider"] {
+	background: #5e7aa9;
+	color: #ffffff;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 1px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/ #000000 /*{b-body-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #5e7aa9 /*{b-bhover-background-start}*/), to( #5e87c1 /*{b-bhover-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #5e7aa9 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #5e7aa9 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #5e7aa9 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #5e7aa9 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #5e7aa9 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/);
+}
+
+.icon-wrapper {
+		align: bottom;
+        float: left;
+        width: 90px; height: 80px;
+}
+
+.thumbnail {
+	width: 80px;
+}
+
+.ui-btn-hover {
+	border: 1px solid #bbbbbb /*{b-bhover-border}*/;
+	background: #dfdfdf /*{b-bhover-background-color}*/;
+	font-weight: bold;
+	color: #2f3e46 /*{b-bhover-color}*/;
+	text-shadow: 0 /*{b-bhover-shadow-x}*/ 1px /*{b-bhover-shadow-y}*/ 0 /*{b-bhover-shadow-radius}*/ #ffffff /*{b-bhover-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f6f6f6 /*{b-bhover-background-start}*/), to( #e0e0e0 /*{b-bhover-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #f6f6f6 /*{b-bhover-background-start}*/, #e0e0e0 /*{b-bhover-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #f6f6f6 /*{b-bhover-background-start}*/, #e0e0e0 /*{b-bhover-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #f6f6f6 /*{b-bhover-background-start}*/, #e0e0e0 /*{b-bhover-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #f6f6f6 /*{b-bhover-background-start}*/, #e0e0e0 /*{b-bhover-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #f6f6f6 /*{b-bhover-background-start}*/, #e0e0e0 /*{b-bhover-background-end}*/);
+}
+
+.ui-btn-down {
+	border: 1px solid #bbbbbb /*{b-bdown-border}*/;
+	background: #d6d6d6 /*{b-bdown-background-color}*/;
+	font-weight: bold;
+	color: #2f3e46 /*{b-bdown-color}*/;
+	text-shadow: 0 /*{b-bdown-shadow-x}*/ 1px /*{b-bdown-shadow-y}*/ 0 /*{b-bdown-shadow-radius}*/ #ffffff /*{b-bdown-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #d0d0d0 /*{b-bdown-background-start}*/), to( #dfdfdf /*{b-bdown-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #d0d0d0 /*{b-bdown-background-start}*/, #dfdfdf /*{b-bdown-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #d0d0d0 /*{b-bdown-background-start}*/, #dfdfdf /*{b-bdown-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #d0d0d0 /*{b-bdown-background-start}*/, #dfdfdf /*{b-bdown-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #d0d0d0 /*{b-bdown-background-start}*/, #dfdfdf /*{b-bdown-background-end}*/); /* Opera 11.10+ */	
+}
+
+/* Custom classes */
+.radio-group {
+    margin-left: 7.5em;
+}

@@ -1,0 +1,133 @@
+/* Need the [data-role="header"] to make this selector more specific than 
+   the selectors used in the default jQuery css styling (which we use some of).
+   Selectors are applied least-specific to most-specific 
+   */
+
+*[data-role="header"], *[data-role="footer"] {
+	border: 1px solid #4c4b49 /*{b-bar-border}*/;
+	background: #a90000 /*{b-bar-background-color}*/;
+	color: #ffffff /*{b-bar-color}*/;
+}
+
+*[data-role="header"] {
+	font-weight: bold;
+}
+
+*[data-role="footer"] {
+	font-weight: normal;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 0px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+*[data-role="content"] {
+	border: 1px solid #aaaaaa /*{b-body-border}*/;
+	color: #333333 /*{b-body-color}*/;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 1px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/ #ffffff /*{b-body-shadow-color}*/;
+	background: #f9f9f9 /*{b-body-background-color}*/;
+}
+
+*[data-role="list-divider"] {
+	border: 1px solid #aaaaaa /*{b-body-border}*/;
+	background: #a90000;
+	color: #ffffff;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 1px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/ #4c4b49 /*{b-body-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #a90000 /*{b-bhover-background-start}*/), to( #5e87c1 /*{b-bhover-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #a90000 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #a90000 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #a90000 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #a90000 /*{b-bhover-background-start}*/, #5e87c1 /*{b-bhover-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #aaa182 /*{b-bhover-background-start}*/, #aaa182/*{b-bhover-background-end}*/);
+}
+
+.copyright {
+	float: right;
+	font-size: 0.8em;
+}
+
+.canvas {
+	height: inherit;
+	width: inherit;
+}
+
+.chart {
+	width: 300px;
+	background: #ffffff;
+}
+
+.dataValue {
+	float: right;
+}
+
+.icon-wrapper {
+		align: bottom;
+        float: left;
+        width: 90px; height: 80px;
+}
+
+.thumbnail {
+	width: 80px;
+}
+
+.ui-li-static {
+	background: #f3f0e9;
+}
+
+.ui-btn-up {
+	border: 1px solid #cccccc /*{a-bup-border}*/;
+	background: #f3f0e9 /*{a-bup-background-color}*/;
+	font-weight: bold;
+	color: #040000 /*{a-bup-color}*/;
+	text-shadow: 0 /*{a-bup-shadow-x}*/ 1px /*{a-bup-shadow-y}*/ 0 /*{a-bup-shadow-radius}*/ #ffffff /*{a-bup-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f3f0e9 /*{a-bup-background-start}*/), to( #f3f0e9 /*{a-bup-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #f3f0e9 /*{a-bup-background-start}*/, #f3f0e9 /*{a-bup-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #f3f0e9 /*{a-bup-background-start}*/, #f3f0e9 /*{a-bup-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #f3f0e9 /*{a-bup-background-start}*/, #f3f0e9 /*{a-bup-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #f3f0e9 /*{a-bup-background-start}*/, #f3f0e9 /*{a-bup-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #f3f0e9 /*{a-bup-background-start}*/, #f3f0e9 /*{a-bup-background-end}*/);
+}
+.ui-btn-up:visited,
+.ui-btn-up a.ui-link-inherit {
+	color: #040000 /*{a-bup-color}*/;
+}
+
+.ui-btn-hover {
+	border: 1px solid #bbbbbb /*{a-bhover-border}*/;
+	background: #f3f0e9 /*{a-bhover-background-color}*/;
+	font-weight: bold;
+	color: #040000 /*{a-bhover-color}*/;
+	text-shadow: 0 /*{a-bhover-shadow-x}*/ 1px /*{a-bhover-shadow-y}*/ 0 /*{a-bhover-shadow-radius}*/ #ffffff /*{a-bhover-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #f3f0e9 /*{a-bhover-background-start}*/), to( #f3f0e9 /*{a-bhover-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #f3f0e9 /*{a-bhover-background-start}*/, #f3f0e9 /*{a-bhover-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #f3f0e9 /*{a-bhover-background-start}*/, #f3f0e9 /*{a-bhover-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #f3f0e9 /*{a-bhover-background-start}*/, #f3f0e9 /*{a-bhover-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #f3f0e9 /*{a-bhover-background-start}*/, #f3f0e9 /*{a-bhover-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #f3f0e9 /*{a-bhover-background-start}*/, #f3f0e9 /*{a-bhover-background-end}*/);
+}
+
+.ui-btn-hover:visited,
+.ui-btn-hover:hover,
+.ui-btn-hover a.ui-link-inherit {
+	color: #040000 /*{a-bhover-color}*/;
+}
+
+.ui-btn-down {
+	border: 1px solid #bbbbbb /*{a-bdown-border}*/;
+	background: #d6d6d6 /*{a-bdown-background-color}*/;
+	font-weight: bold;
+	color: #040000 /*{a-bdown-color}*/;
+	text-shadow: 0 /*{a-bdown-shadow-x}*/ 1px /*{a-bdown-shadow-y}*/ 0 /*{a-bdown-shadow-radius}*/ #ffffff /*{a-bdown-shadow-color}*/;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #d0d0d0 /*{a-bdown-background-start}*/), to( #dfdfdf /*{a-bdown-background-end}*/)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient( #d0d0d0 /*{a-bdown-background-start}*/, #dfdfdf /*{a-bdown-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #d0d0d0 /*{a-bdown-background-start}*/, #dfdfdf /*{a-bdown-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #d0d0d0 /*{a-bdown-background-start}*/, #dfdfdf /*{a-bdown-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #d0d0d0 /*{a-bdown-background-start}*/, #dfdfdf /*{a-bdown-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #d0d0d0 /*{a-bdown-background-start}*/, #dfdfdf /*{a-bdown-background-end}*/);	
+}
+
+.ui-btn-down:visited,
+.ui-btn-down:hover,
+.ui-btn-down a.ui-link-inherit {
+	color: #040000 /*{a-bdown-color}*/;
+}
+
