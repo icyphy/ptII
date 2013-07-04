@@ -72,7 +72,7 @@
     <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 140.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
@@ -89,7 +89,7 @@
     <entity name="val1" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 195.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -98,7 +98,7 @@
     <entity name="val2" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 250.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
@@ -115,7 +115,7 @@
     <entity name="val3" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 300.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
@@ -141,28 +141,20 @@
         <vertex name="vertex1" value="{68.0, 65.0}">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
-    <link port="val.out" relation="relation3"/>
-    <link port="string.input" relation="relation3"/>
-    <link port="val1.out" relation="relation"/>
-    <link port="val2.out" relation="relation5"/>
-    <link port="int.input" relation="relation5"/>
-    <link port="val3.out" relation="relation4"/>
-    <link port="boolean.input" relation="relation4"/>
-    <link port="double.input" relation="relation"/>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="val.output" relation="relation6"/>
+    <link port="string.input" relation="relation6"/>
+    <link port="val1.output" relation="relation3"/>
+    <link port="val2.output" relation="relation"/>
+    <link port="int.input" relation="relation"/>
+    <link port="val3.output" relation="relation5"/>
+    <link port="boolean.input" relation="relation5"/>
+    <link port="double.input" relation="relation3"/>
 </entity>

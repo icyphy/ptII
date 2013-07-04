@@ -97,7 +97,7 @@
     <entity name="val1" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 115.0]">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -106,7 +106,7 @@
     <entity name="val4" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 115.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -138,10 +138,6 @@
 </plot>?>
         </configure>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -150,9 +146,11 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <link port="val1.in" relation="relation"/>
-    <link port="val4.out" relation="relation3"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="val1.input" relation="relation2"/>
+    <link port="val4.output" relation="relation3"/>
     <link port="TimeDelay.input" relation="relation3"/>
-    <link port="TimeDelay.output" relation="relation"/>
+    <link port="TimeDelay.output" relation="relation2"/>
     <link port="prodCons4TimedPlotter.input" relation="relation3"/>
 </entity>

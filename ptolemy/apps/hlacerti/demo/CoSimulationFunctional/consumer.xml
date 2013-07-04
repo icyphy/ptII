@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, -140.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={599, 22, 662, 528}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={599, 22, 662, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[428, 418]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[428, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8075522464221928">
     </property>
@@ -74,9 +74,6 @@
     <entity name="val2" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 15.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="val, val1, val2">
@@ -103,37 +100,25 @@
     <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -75.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="val1" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -35.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[18.0, -135.0]">
         </vertex>
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <link port="val2.out" relation="relation4"/>
+    <link port="val2.output" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
-    <link port="val.out" relation="relation"/>
-    <link port="val1.out" relation="relation3"/>
+    <link port="val.output" relation="relation5"/>
+    <link port="val1.output" relation="relation"/>
 </entity>

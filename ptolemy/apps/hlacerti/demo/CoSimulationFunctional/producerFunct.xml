@@ -21,9 +21,6 @@
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="CoSimulationFunctional.fed">
             <display name="Path for .fed file"/>
         </property>
-        <property name="isCreatorSyncPt" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Is synchronization point creator ?"/>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 55.0]">
         </property>
     </property>
@@ -75,7 +72,7 @@
     <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 130.0]">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -89,7 +86,7 @@
     <entity name="val1" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 130.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
@@ -98,22 +95,18 @@
     <entity name="val2" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 130.0]">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
     </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <link port="val.in" relation="relation"/>
-    <link port="DiscreteClock.output" relation="relation"/>
-    <link port="val1.out" relation="relation2"/>
-    <link port="val2.in" relation="relation2"/>
+    <link port="val.input" relation="relation3"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="val1.output" relation="relation"/>
+    <link port="val2.input" relation="relation"/>
 </entity>

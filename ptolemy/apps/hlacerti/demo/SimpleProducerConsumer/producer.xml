@@ -30,7 +30,7 @@
         <property name="isTimeConstrained" class="ptolemy.data.expr.Parameter" value="true">
             <display name="isTimeConstrained ?"/>
         </property>
-        <property name="isCreatorSyncPt" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 60.0]">
