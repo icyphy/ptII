@@ -49,6 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	clockDisplayer.xml\
+	clockHLA.xml\
 	clockTransmitter.xml \
 	SynchronizeToRealTime.xml \
 	SynchronizeToRealTime.fed
@@ -79,11 +80,13 @@ demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" clockDisplayer.xml
+	"$(PTII)/bin/ptolemy" clockHLA.xml
 	"$(PTII)/bin/ptolemy" clockTransmitter.xml
 	"$(PTII)/bin/ptolemy" SynchronizeToRealTime.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" clockDisplayer.xml
+	"$(PTII)/bin/vergil" clockHLA.xml
 	"$(PTII)/bin/vergil" clockTransmitter.xml
 	"$(PTII)/bin/vergil" SynchronizeToRealTime.xml
 	

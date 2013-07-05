@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="clockTransmitter" class="ptolemy.actor.TypedCompositeActor">
+<entity name="clockHLA" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={836, 49, 692, 643}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 485, 735, 635}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[466, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 516]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0697653107044345">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0524997528260225">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{230.130859375, 242.4212496573465}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.05468749999997, 242.08322895791582}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -38,8 +38,8 @@
         </property>
     </property>
     <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
-        <display name="clockTransmitter"/>
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;clockTransmitter&quot;">
+        <display name="clockHLA"/>
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;clockHLA&quot;">
             <display name="Federate's name"/>
         </property>
         <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SynchronizeToRealTime&quot;">
@@ -57,7 +57,7 @@
         <property name="isTimeConstrained" class="ptolemy.data.expr.Parameter" value="true">
             <display name="isTimeConstrained ?"/>
         </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 35.0]">
@@ -70,27 +70,22 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier, Pierre Siron.&#10;(ISAE SUPAERO - ONERA)&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 175.0]">
+        </property>
+    </property>
+    <property name="SynchronizeToRealTime" class="ptolemy.actor.lib.SynchronizeToRealTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 40.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptolemy HLA/CERTI federate will publish each two units&#10;of time an update of the &quot;clockValue&quot; HLA attribute.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptolemy HLA/CERTI federate uses the synchronizeToRealTime&#10;attibute to synchronize the HLA Logical time of the Federation with &#10;the clock of the computer.&#10;&#10;No value is published here to the HLA Federation. The discrete clock&#10;is used here to avoid the termination of the simulation if no event&#10;is produced.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 210.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
-        </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 140}">
-        </property>
-    </entity>
-    <entity name="clockValue" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
-        <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;clock&quot;">
-            <display name="Object class in FOM"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 140.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -98,12 +93,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 140.0]">
         </property>
     </entity>
+    <entity name="clockHla-Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={694, 497, 530, 203}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 152]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320, 140}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="clockValue.input" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="clockHla-Display.input" relation="relation2"/>
 </entity>

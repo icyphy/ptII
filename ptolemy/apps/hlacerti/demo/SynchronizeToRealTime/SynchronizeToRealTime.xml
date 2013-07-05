@@ -44,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ClockDisplayer">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 130.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="clockDisplayer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -66,7 +66,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 105, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={768, 530, 926, 643}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -75,7 +75,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ClockTransmitter federate is the creator of the synchronization point used during the &#10;initialization of the simulation to synchronize all federates. This federate has to be launched &#10;in last position.&#10;&#10;During the execution of this simulation, you can remove the synchronizeToRealTime attribute&#10;deployed in the ClockTransmitter federate (see ClockTransmitter.xml model). This action will show&#10;the different behavior of the federate and the evolution of the HLA logical time when a federate&#10;is synchronize to its computer clock (i.e. the realtime) or not.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ClockHLA federate is the creator of the synchronization point used during the &#10;initialization of the simulation to synchronize all federates. This federate has to be launched &#10;in last position.&#10;&#10;During the execution of this simulation, you can remove the synchronizeToRealTime attribute&#10;deployed in the ClockHLA federate (see ClockHLA.xml model). This action will show&#10;the different behavior of the federates and the evolution of the HLA logical time of the federation&#10;when one federate is synchronize to its computer clock (i.e. the realtime) or not.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 205.0]">
         </property>
@@ -88,6 +88,33 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier.&#10;(ISAE SUPAERO)&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 345.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ClockHLA">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 105.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="clockHLA.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
+            </property>
         </property>
     </property>
 </entity>
