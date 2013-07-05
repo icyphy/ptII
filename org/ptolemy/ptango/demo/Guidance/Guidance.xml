@@ -583,7 +583,7 @@
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/guidance/*">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000L">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="20000L">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 145.0]">
         </property>
