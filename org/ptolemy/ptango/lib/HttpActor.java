@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -165,7 +164,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         new Parameter(setCookies, "_showName").setExpression("true");
         // For now, only allow RecordTokens.  In future, expand to other types
         // of tokens such as StringTokens representing JSON data.
-        setCookies.setTypeEquals(BaseType.RECORD);
+        setCookies.setTypeAtMost(BaseType.RECORD);
 
         // Parameters
         timeout = new Parameter(this, "timeout");
@@ -321,8 +320,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         newObject._initializeRealTime = 0L;
         newObject._URIpath = null;
         
-        newObject._requestQueue = null;
-        newObject._responseQueue = null;
+        newObject._request = null;
+        newObject._response = null;
         return newObject;
     }
 
@@ -343,7 +342,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public HttpServlet getServlet() {
         if (_debugging) {
-            _debug("Creating new servlet.");
+            _debug("*** Creating new servlet.");
         }
         // The relative path for the servlet is calculated in preinitialize
         // since the path might not be a valid URI and could throw an exception
@@ -406,19 +405,27 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             if (_timeouts > 0) {
                 // A timeout occurred. Discard the response.
                 _timeouts--;
+                _request = null;
                 if (_debugging) {
                     _debug("Discarding the response because of an earlier timeout.");
                 }
+            } else if (_request == null) {
+                // There is no pending request, so ignore the response.
+                if (_debugging) {
+                    _debug("Discarding the response because there is no pending request.");
+                }
             } else {
-                _responseQueue.add(responseData);
-                // If there is a pending request, notify it.
+                _response = responseData;
+                // Indicate that the request has been handled.
+                _request = null;
+                // Notify the servlet thread.
                 notifyAll();
             }
         }
 
         // If there is a pending request, produce outputs for that request,
         // including any cookies from that request.
-        if (_requestQueue.size() > 0) {
+        if (_request != null) {
             
             // To avoid the risk of producing two outputs at the same superdense time,
             // check the time of the last output.
@@ -441,31 +448,30 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             
             // Remove the request from the head of the queue so that
             // each request is handled no more than once.
-            HttpRequest request = _requestQueue.poll();
-            if (request.requestType == 0) {
+            if (_request.requestType == 0) {
                 if (_debugging) {
-                    _debug("Sending get request URI: " + request.requestURI);
-                    _debug("Sending get request parameters: " + request.parameters);
+                    _debug("Sending get request URI: " + _request.requestURI);
+                    _debug("Sending get request parameters: " + _request.parameters);
                 }
-                getRequestURI.send(0, new StringToken(request.requestURI));
-                getParameters.send(0, request.parameters);
-                if (request.cookies != null && request.cookies.length() > 0) {
+                getRequestURI.send(0, new StringToken(_request.requestURI));
+                getParameters.send(0, _request.parameters);
+                if (_request.cookies != null && _request.cookies.length() > 0) {
                     if (_debugging) {
-                        _debug("Sending cookies to getCookies port: " + request.cookies);
+                        _debug("Sending cookies to getCookies port: " + _request.cookies);
                     }
-                    getCookies.send(0, request.cookies);
+                    getCookies.send(0, _request.cookies);
                 }
             } else {
                 if (_debugging) {
-                    _debug("Sending post request URI: " + request.requestURI);
-                    _debug("Sending post request parameters: " + request.parameters);
+                    _debug("Sending post request URI: " + _request.requestURI);
+                    _debug("Sending post request parameters: " + _request.parameters);
                 }
-                postRequestURI.send(0, new StringToken(request.requestURI));
-                postParameters.send(0, request.parameters);
-                if (request.cookies != null && request.cookies.length() > 0) {
-                    postCookies.send(0, request.cookies);
+                postRequestURI.send(0, new StringToken(_request.requestURI));
+                postParameters.send(0, _request.parameters);
+                if (_request.cookies != null && _request.cookies.length() > 0) {
+                    postCookies.send(0, _request.cookies);
                     if (_debugging) {
-                        _debug("Sending cookies to postCookies port: " + request.cookies);
+                        _debug("Sending cookies to postCookies port: " + _request.cookies);
                     }
                 }
             }
@@ -482,16 +488,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (_requestQueue == null) {
-            _requestQueue = new LinkedList<HttpRequest>();
-        } else {
-            _requestQueue.clear();
-        }
-        if (_responseQueue == null) {
-            _responseQueue = new LinkedList<HttpResponse>();
-        } else {
-            _responseQueue.clear();
-        }
+        _request = null;
+        _response = null;
         _initializeModelTime = getDirector().getModelTime();
         _initializeRealTime = System.currentTimeMillis();
         _timeouts = 0;
@@ -531,12 +529,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     
     /** Microstep of the last output. */
     private int _lastMicrostep;
+        
+    /** The pending request. */
+    private HttpRequest _request;
     
-    /** The queue of pending requests. */
-    private LinkedList<HttpRequest> _requestQueue;
-    
-    /** The queue of pending responses. */
-    private LinkedList<HttpResponse> _responseQueue;
+    /** The pending response. */
+    private HttpResponse _response;
     
     /** Number of timeouts that have occurred, which is the number of responses
      *  to be discarded when they finally arrive.
@@ -629,40 +627,43 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             // actor. This lock _is_ released while waiting for the response,
             // allowing the fire method to execute its own synchronized blocks.
             synchronized (HttpActor.this) {
-                HttpRequest requestData = new HttpRequest();
-                _requestQueue.add(requestData);
+                _request = new HttpRequest();
                 
-                requestData.requestURI = request.getRequestURI();
-                requestData.requestType = type;
+                _request.requestURI = request.getRequestURI();
+                _request.requestType = type;
+
+                response.setContentType("text/html");
 
                 if (_debugging) {
                     _debug("**** Handling a "
                             + ((type == 0) ? "get" : "post")
                             + " request to URI "
-                            + requestData.requestURI);
+                            + _request.requestURI);
                 }
 
                 try {
-                    // Read cookies from the request and store in the queue.
-                    requestData.cookies = _readCookies(request);
+                    // Read cookies from the request and store.
+                    _request.cookies = _readCookies(request);
 
                     // Get the parameters that have been either posted or included
                     // as assignments in a get using the URL syntax ...?name=value.
                     // Note that each parameter name may have more than one value,
                     // hence the array of strings.
-                    requestData.parameters = _readParameters(request);
+                    _request.parameters = _readParameters(request);
 
                     // Figure out what time to request a firing for.
                     long elapsedRealTime = System.currentTimeMillis() - _initializeRealTime;
                     Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
                     
+                    if (_debugging) {
+                        _debug("**** Request firing at time " + timeOfRequest);
+                    }
+
                     // Note that fireAt() will modify the requested firing time if it is in the past.
                     getDirector().fireAt(HttpActor.this, timeOfRequest);
                     
-                    if (_debugging) {
-                        _debug("**** Requested firing at time " + timeOfRequest);
-                    }
                 } catch (IllegalActionException e) {
+                    _request = null;
                     _writeError(response, HttpServletResponse.SC_BAD_REQUEST,
                             e.getMessage());
                     return;
@@ -670,7 +671,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 //////////////////////////////////////////////////////
                 // Wait for a response.
                 // We are assuming every request gets exactly one response in FIFO order.
-                while (_responseQueue.size() == 0) {
+                while (_response == null) {
                     if (_debugging) {
                         _debug("**** Waiting for a response");
                     }
@@ -690,33 +691,33 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                             if (_debugging) {
                                 _debug("**** Request timed out.");
                             }
-                            response.getWriter().println("<h1> Request timed out </h1>");
+                            response.getWriter().println("Request timed out");
                             _timeouts++;
                             return;
                         }
                     } catch (InterruptedException e) {
                         if (_debugging) {
-                            _debug("Request thread interrupted.");
+                            _debug("*** Request thread interrupted.");
                         }
-                        response.getWriter().println("<h1> Get request thread interrupted </h1>");
+                        response.getWriter().println("Get request thread interrupted");
                         return;
                     }
                 }
                 
-                HttpResponse responseData = _responseQueue.poll();
-
-                response.setContentType("text/html");
                 response.setStatus(HttpServletResponse.SC_OK);
 
                 // Write all cookies to the response, if there are some new
                 // cookies to write
-                if (responseData.hasNewCookies) {
-                    _writeCookies(responseData.cookies, response);
+                if (_response.hasNewCookies) {
+                    _writeCookies(_response.cookies, response);
                 }
                 if (_debugging) {
-                    _debug("**** Responding to get request: " + responseData.response);
+                    _debug("**** Servet received response: "
+                            + _response.response);
                 }
-                response.getWriter().println(responseData.response);
+                response.getWriter().println(_response.response);
+                // Indicate response has been handled.
+                _response = null;
             }
         }
 
