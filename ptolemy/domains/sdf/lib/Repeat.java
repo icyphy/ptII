@@ -47,6 +47,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  on the output.  Note that this causes a sample rate increase by
  a factor of <i>numberOfTimes</i>,
  and hence affects the number of invocations of downstream actors.
+ If the input does not have enough tokens, then this actor does
+ nothing. If <i>blockSize</i> or <i>numberOfTimes</i> is zero,
+ then it produces no outputs.
 
  @author Shankar Rao, Steve Neuendorffer
  @version $Id$
@@ -140,10 +143,12 @@ public class Repeat extends SDFTransformer {
         numberOfTimes.update();
         int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
         int count = ((IntToken) blockSize.getToken()).intValue();
-        Token[] inputBlock = input.get(0, count);
+        if (input.hasToken(0, count)) {
+            Token[] inputBlock = input.get(0, count);
 
-        for (int i = 0; i < repetitions; i += 1) {
-            output.send(0, inputBlock, count);
+            for (int i = 0; i < repetitions; i += 1) {
+                output.send(0, inputBlock, count);
+            }
         }
     }
 }
