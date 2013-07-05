@@ -149,7 +149,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[50.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{50.0, -5.0}">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -203,9 +203,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 225.0}">
         </property>
-        <port name="postCookies" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+        <port name="setCookies" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{name=string}">
             </property>
         </port>
     </entity>
@@ -372,7 +372,7 @@
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 290.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -408,7 +408,7 @@
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[180.0, 270.0]">
+        <vertex name="vertex1" value="[185.0, 290.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
