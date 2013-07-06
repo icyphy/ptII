@@ -11,7 +11,13 @@
 </entity>
 <entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
 </entity>
+<entity name="Sequencer" class="ptolemy.actor.lib.Sequencer">
+</entity>
 <entity name="Starver" class="ptolemy.domains.pn.lib.Starver">
+</entity>
+<entity name="Stop" class="ptolemy.actor.lib.Stop">
+</entity>
+<entity name="Synchronizer" class="ptolemy.actor.lib.Synchronizer">
 </entity>
       </group>
     ?>
