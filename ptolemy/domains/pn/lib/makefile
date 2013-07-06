@@ -51,7 +51,8 @@ JSRCS = \
 	Starver.java
 
 OTHER_FILES_TO_BE_JARED = \
-	pnentities.xml
+	pnentities.xml \
+	StarverIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
