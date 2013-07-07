@@ -165,9 +165,9 @@ public class RunCompositeActor extends LifeCycleManager {
 
     /** Indicator to run the contained model a limited number of times.
      *  If this parameter has a value greater than zero, then after
-     *  firing the inside model the specified number of times,
+     *  executing the inside model the specified number of times,
      *  {@link #postfire()} will return false. This is an int that
-     *  defaults to 0.
+     *  defaults to 0, which means that there is no limit.
      */
     public Parameter firingCountLimit;
 
@@ -349,4 +349,4 @@ public class RunCompositeActor extends LifeCycleManager {
 
     /** The count of iterations. */
     private int _iteration;
-}
+    }
