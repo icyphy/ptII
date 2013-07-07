@@ -78,6 +78,8 @@ OTHER_FILES_TO_BE_JARED = \
 	CaseIcon.xml \
 	MobileFunctionIcon.xml \
 	MobileModelIcon.xml \
+	ModelReferenceIcon.xml \
+	RunCompositeActorIcon.xml \
 	hoc.xml \
 	hocSimple.xml
 
