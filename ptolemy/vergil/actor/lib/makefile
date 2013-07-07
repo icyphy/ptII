@@ -57,7 +57,8 @@ JSRCS = \
 	VisualModelReference.java
 
 OTHER_FILES_TO_BE_JARED = \
-	interactive.xml
+	interactive.xml \
+	VisualModelReferenceIcon.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
