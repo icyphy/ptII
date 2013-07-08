@@ -276,8 +276,18 @@ OTHER_FILES_TO_BE_JARED = \
     ArrayAccumulateIcon.xml \
     ArrayAppendIcon.xml \
     ArrayAverageIcon.xml \
+    ArrayContainsIcon.xml \
+    ArrayElementAsMatrixIcon.xml \
+    ArrayElementIcon.xml \
     ArrayExtractIcon.xml \
+    ArrayLengthIcon.xml \
+    ArrayLevelCrossingIcon.xml \
     ArrayMaximumIcon.xml \
+    ArrayMinimumIcon.xml \
+    ArraySumIcon.xml \
+    ArrayPeakSearchIcon.xml \
+    ArrayRemoveElementIcon.xml \
+    ArraySortIcon.xml \
     ArrayUpdateIcon.xml \
     AverageIcon.xml \
     BernoulliIcon.xml \

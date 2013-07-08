@@ -42,7 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// ArrayLevelCrossing
@@ -89,6 +89,8 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         start.setTypeEquals(BaseType.INT);
         new SingletonParameter(start.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
+        new StringAttribute(start.getPort(), "_cardinal")
+                .setExpression("SOUTH");
 
         forwards = new Parameter(this, "forwards");
         forwards.setExpression("true");
@@ -97,6 +99,10 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         threshold = new PortParameter(this, "threshold");
         threshold.setExpression("0.0");
         threshold.setTypeEquals(BaseType.DOUBLE);
+        new StringAttribute(threshold.getPort(), "_cardinal")
+                .setExpression("SOUTH");
+        new Parameter(threshold.getPort(), "_showName")
+                .setExpression("true");
 
         above = new Parameter(this, "above");
         above.setExpression("false");
@@ -111,8 +117,6 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
 
         // Ports
         array = new TypedIOPort(this, "array", true, false);
-        new SingletonAttribute(array, "_showName");
-
         output = new TypedIOPort(this, "output", false, true);
 
         // Set Type Constraints.

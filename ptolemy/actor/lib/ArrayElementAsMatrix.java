@@ -29,13 +29,16 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -81,18 +84,30 @@ public class ArrayElementAsMatrix extends Transformer {
         xOffset = new PortParameter(this, "xOffset");
         xOffset.setTypeEquals(BaseType.INT);
         xOffset.setExpression("1");
+        new Parameter(xOffset.getPort(), "_showName", BooleanToken.TRUE);
+        new StringAttribute(xOffset.getPort(), "_cardinal")
+                .setExpression("SOUTH");
 
         yOffset = new PortParameter(this, "yOffset");
         yOffset.setTypeEquals(BaseType.INT);
         yOffset.setExpression("1");
+        new Parameter(yOffset.getPort(), "_showName", BooleanToken.TRUE);
+        new StringAttribute(yOffset.getPort(), "_cardinal")
+                .setExpression("SOUTH");
 
         x = new PortParameter(this, "x");
         x.setTypeEquals(BaseType.INT);
         x.setExpression("0");
+        new Parameter(x.getPort(), "_showName", BooleanToken.TRUE);
+        new StringAttribute(x.getPort(), "_cardinal")
+                .setExpression("SOUTH");
 
         y = new PortParameter(this, "y");
         y.setTypeEquals(BaseType.INT);
         y.setExpression("0");
+        new Parameter(y.getPort(), "_showName", BooleanToken.TRUE);
+        new StringAttribute(y.getPort(), "_cardinal")
+                .setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////

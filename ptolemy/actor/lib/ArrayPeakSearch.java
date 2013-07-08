@@ -45,6 +45,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -121,10 +122,18 @@ public class ArrayPeakSearch extends TypedAtomicActor {
         startIndex = new PortParameter(this, "startIndex");
         startIndex.setExpression("0");
         startIndex.setTypeEquals(BaseType.INT);
+        new SingletonParameter(startIndex.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+        new StringAttribute(startIndex.getPort(), "_cardinal")
+                .setExpression("SOUTH");
 
         endIndex = new PortParameter(this, "endIndex");
         endIndex.setExpression("MaxInt");
         endIndex.setTypeEquals(BaseType.INT);
+        new SingletonParameter(endIndex.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+        new StringAttribute(endIndex.getPort(), "_cardinal")
+                .setExpression("SOUTH");
 
         maximumNumberOfPeaks = new Parameter(this, "maximumNumberOfPeaks");
         maximumNumberOfPeaks.setExpression("MaxInt");

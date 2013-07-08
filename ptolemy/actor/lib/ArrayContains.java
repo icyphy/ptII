@@ -70,7 +70,6 @@ public class ArrayContains extends TypedAtomicActor {
         super(container, name);
 
         array = new TypedIOPort(this, "array", true, false);
-        new Parameter(array, "_showName", BooleanToken.TRUE);
         output = new TypedIOPort(this, "output", false, true);
 
         // Set parameters.

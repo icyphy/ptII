@@ -30,6 +30,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -71,6 +72,7 @@ public class ArrayMaximum extends Transformer {
         // Create index port
         index = new TypedIOPort(this, "index", false, true);
         index.setTypeEquals(BaseType.INT);
+        new Parameter(index, "_showName").setExpression("true");
 
         // Type constraints.
         output.setTypeAtLeast(ArrayType.elementType(input));

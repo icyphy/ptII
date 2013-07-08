@@ -32,7 +32,9 @@ import java.util.Set;
 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
@@ -85,6 +87,7 @@ public class ArrayElement extends Transformer {
         index = new PortParameter(this, "index");
         index.setTypeEquals(BaseType.INT);
         index.setExpression("0");
+        new Parameter(index.getPort(), "_showName", BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
