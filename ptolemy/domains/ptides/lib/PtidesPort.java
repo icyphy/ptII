@@ -246,19 +246,14 @@ public class PtidesPort extends MirrorPort {
         return times;
     }
     
+    /** Get the microstep of the event that contained the token.
+     * @param t The token.
+     * @return The microstep.
+     */
     public int getMicrostepForToken(Token t) {
-        Integer microstep = _transmittedTokenMicrosteps.get(t);
-        if (_transmittedTokenCnt.get(t) != null) {
-            _transmittedTokenCnt.put(t, _transmittedTokenCnt.get(t).intValue() - 1);
-            if (_transmittedTokenCnt.get(t).intValue() == 0) {
-                _transmittedTokenMicrosteps.remove(t);
-                _transmittedTokenCnt.remove(t);
-            }
-            
-            return microstep;
-        } else {
-            return 1;
-        }
+        Integer microstep = _transmittedTokenMicrosteps.get(t); 
+        _transmittedTokenMicrosteps.remove(t); 
+        return microstep;
     }
 
     /** Check whether port is output and network port parameter is not set.
