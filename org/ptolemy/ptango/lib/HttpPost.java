@@ -90,7 +90,7 @@ public class HttpPost extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         // The type record is the top of the record sublattice, hence the most general record type.
         // This constraint ensures that the input will be a record token.
-        input.setTypeEquals(BaseType.RECORD);
+        input.setTypeAtMost(BaseType.RECORD);
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
         
         output = new TypedIOPort(this, "output", false, true);
