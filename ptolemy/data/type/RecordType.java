@@ -183,15 +183,15 @@ public class RecordType extends AssociativeType implements Cloneable {
     }
 
     /** Convert the argument token into a RecordToken having this
-     *  type, if lossless conversion can be done.  The argument must
-     *  be a RecordToken, and its type must be a subtype of this
-     *  record type.  The argument token must have at least the fields
-     *  of this type.  Extra fields in the argument token that are not
-     *  in this type are removed.
+     *  type, if compatible.  The argument must be a RecordToken, 
+     *  and its type must be a subtype of this record type.  The 
+     *  argument token must have at least the fields of this type.
+     *  Extra fields in the argument token that are not in this 
+     *  type are removed.
      *  @param token A token.
      *  @return An RecordToken.
-     *  @exception IllegalActionException If lossless conversion
-     *   cannot be done.
+     *  @exception IllegalActionException If token is incompatible 
+     *  with this type.
      */
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
@@ -201,11 +201,12 @@ public class RecordType extends AssociativeType implements Cloneable {
 
         RecordToken recordToken = (RecordToken) token;
 
-        //Object[] labelArray = recordToken.labelSet().toArray();
-        
-        // The commented line above preserves undeclared fields,
-        // the line below discards them.
+        // Discard undeclared fields unless no fields are declared 
+        // at all. In that case, preserve all fields.
         Object[] labelArray = labelSet().toArray();
+        if (labelArray.length < 1) {
+            labelArray = recordToken.labelSet().toArray();
+        }
 
         // Arrays that will be used to create the new token.
         String[] labelStringArray = new String[labelArray.length];
