@@ -1,4 +1,4 @@
-/*
+/* MetroFSMDirector extends FSMDirector to support Metro semantics.
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 1995-2013 The Regents of the University of California.
@@ -29,14 +29,12 @@ the copyright link on the splash page or see copyright.htm.
 package ptolemy.domains.metroII.kernel;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
-import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
@@ -46,20 +44,50 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class MetroIIFSMDirector extends FSMDirector implements
+///////////////////////////////////////////////////////////////////
+////MetroFSMDirector
+
+/** 
+* MetroFSMDirector extends FSMDirector to support Metro semantics.
+*
+* @author Liangpeng Guo
+* @version $Id: MetroFSMDirector.java 66808 2013-07-03 00:20:58Z glp $
+* @since Ptolemy II 9.1
+* @Pt.ProposedRating Red (glp)
+* @Pt.AcceptedRating Red (glp)
+*
+*/
+public class MetroFSMDirector extends FSMDirector implements
         MetroIIEventHandler {
 
-    public MetroIIFSMDirector() throws IllegalActionException,
+    /**
+     * Construct a MetroFSMDirector. 
+     * 
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    public MetroFSMDirector() throws IllegalActionException,
             NameDuplicationException {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-    public MetroIIFSMDirector(CompositeEntity container, String name)
+    /**
+     * Construct a MetroFSMDirector based on a given container and a name
+     *  @param container Container of the director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the director is not compatible
+     *   with the specified container.  May be thrown in a derived class.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */
+    public MetroFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /**
+     * YieldAdapter interface
+     */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
@@ -71,8 +99,6 @@ public class MetroIIFSMDirector extends FSMDirector implements
                 });
     }
 
-    public ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
-    public Hashtable<String, Actor> name2actor = new Hashtable<String, Actor>();
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -82,29 +108,22 @@ public class MetroIIFSMDirector extends FSMDirector implements
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIFSMDirector newObject = (MetroIIFSMDirector) super
+        MetroFSMDirector newObject = (MetroFSMDirector) super
                 .clone(workspace);
         newObject.events = new ArrayList<Event.Builder>();
-        newObject.name2actor = new Hashtable<String, Actor>();
         return newObject;
     }
 
-    public Event.Builder makeEventBuilder(String name, Event.Type t,
-            Event.Status s) {
-        Event.Builder meb = Event.newBuilder();
-        meb.setName(name);
-        meb.setStatus(s);
-        meb.setType(t);
-        return meb;
-    }
-
+    /**
+     *  Keep proposing the event associated with the current state until it's notified. 
+     *  Then call fire() 
+     */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         FSMActor controller = null;
         try {
             controller = getController();
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -134,4 +153,12 @@ public class MetroIIFSMDirector extends FSMDirector implements
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                    private fields                         ////
+    
+    /**
+     * Current MetroII event list
+     */
+    private ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
+    
 }

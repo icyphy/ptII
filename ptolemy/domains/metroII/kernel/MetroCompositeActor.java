@@ -1,4 +1,4 @@
-/*
+/* MetroCompositeActor extends the composite actor to support enclosing Metro directors. 
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 1995-2013 The Regents of the University of California.
@@ -36,6 +36,7 @@ import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Director;
+import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
@@ -44,25 +45,54 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+///////////////////////////////////////////////////////////////////
+//// MetroCompositeActor
 
-public class MetroIICompositeActor extends TypedCompositeActor implements
+/** 
+* MetroCompositeActor extends the composite actor to support enclosing Metro directors. 
+*
+* @author Liangpeng Guo
+* @version $Id: MetroCompositeActor.java 66808 2013-07-03 00:20:58Z glp $
+* @since Ptolemy II 9.1
+* @Pt.ProposedRating Red (glp)
+* @Pt.AcceptedRating Red (glp)
+*
+*/
+public class MetroCompositeActor extends TypedCompositeActor implements
         MetroIIEventHandler {
 
-    public MetroIICompositeActor() {
+    /**
+     * Construct a MetroCompositeActor
+     */
+    public MetroCompositeActor() {
         // TODO Auto-generated constructor stub
     }
 
-    public MetroIICompositeActor(Workspace workspace) {
+    /**
+     * Construct a MetroCompositeActor based on a given worksapce
+     *  @param workspace The workspace for this object.
+     */
+    public MetroCompositeActor(Workspace workspace) {
         super(workspace);
-        // TODO Auto-generated constructor stub
     }
 
-    public MetroIICompositeActor(CompositeEntity container, String name)
+    /**
+     * Construct a MetroCompositeActor based on a given container and a name
+     *  @param container Container of the director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the director is not compatible
+     *   with the specified container.  May be thrown in a derived class.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */
+    public MetroCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
     }
 
+    /**
+     * YieldAdapter interface
+     */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
@@ -74,6 +104,24 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 });
     }
 
+    /**
+     * getfire() should be identical to fire() except it calls the getfire() of 
+     * enclosed director instead of fire(). When getfire() is called, the enclosed
+     * director should be a Metro director.   
+     * 
+     *  If this actor is opaque, transfer any data from the input ports
+     *  of this composite to the ports connected on the inside, and then
+     *  invoke the fire() method of its local director.
+     *  The transfer is accomplished by calling the transferInputs() method
+     *  of the local director (the exact behavior of which depends on the
+     *  domain).  If the actor is not opaque, throw an exception.
+     *  This method is read-synchronized on the workspace, so the
+     *  fire() method of the director need not be (assuming it is only
+     *  called from here).  After the fire() method of the director returns,
+     *  send any output data created by calling the local director's
+     *  transferOutputs method.
+     *
+     */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {
@@ -86,18 +134,18 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 _workspace.getReadAccess();
 
                 // First invoke piggybacked methods.
-                //                    if (_piggybacks != null) {
-                //                        // Invoke the fire() method of each piggyback.
-                //                        for (Executable piggyback : _piggybacks) {
-                //                            piggyback.fire();
-                //                        }
-                //                    }
-                //                    if (_derivedPiggybacks != null) {
-                //                        // Invoke the fire() method of each piggyback.
-                //                        for (Executable piggyback : _derivedPiggybacks) {
-                //                            piggyback.fire();
-                //                        }
-                //                    }
+                if (_piggybacks != null) {
+                    // Invoke the fire() method of each piggyback.
+                    for (Executable piggyback : _piggybacks) {
+                        piggyback.fire();
+                    }
+                }
+                if (_derivedPiggybacks != null) {
+                    // Invoke the fire() method of each piggyback.
+                    for (Executable piggyback : _derivedPiggybacks) {
+                        piggyback.fire();
+                    }
+                }
 
                 if (!isOpaque()) {
                     throw new IllegalActionException(this,
@@ -105,7 +153,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 }
 
                 _transferPortParameterInputs();
-                
+
                 Director _director = getDirector();
                 // Use the local director to transfer inputs from
                 // everything that is not a port parameter.

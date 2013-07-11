@@ -2891,6 +2891,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
     /** The causality interface, if it has been created. */
     protected CausalityInterface _causalityInterface;
 
+    /** The derived piggybacked executables. Derived piggybacked executables
+     * are executables that are added to transparent composite actors that are
+     * contained by this composite actor. These should also piggy back on this actor.
+     * These are only filled in if this actor is a opaque composite actor.*/
+    protected transient Set<Executable> _derivedPiggybacks;
+
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */
@@ -2898,6 +2904,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** Flag that is true if there are actor firing listeners. */
     protected boolean _notifyingActorFiring = false;
+
+    /** List piggybacked objects. */
+    protected transient Set<Executable> _piggybacks;
 
     /** Keep track of all published ports accessible in this container.*/
     protected Map<String, Set<IOPort>> _publishedPorts;
@@ -2913,12 +2922,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The derived piggybacked executables. Derived piggybacked executables
-     * are executables that are added to transparent composite actors that are
-     * contained by this composite actor. These should also piggy back on this actor.
-     * These are only filled in if this actor is a opaque composite actor.*/
-    private transient Set<Executable> _derivedPiggybacks;
 
     // The director for this composite actor.
     private Director _director;
@@ -2940,9 +2943,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;
-
-    /** List piggybacked objects. */
-    private transient Set<Executable> _piggybacks;
 
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
