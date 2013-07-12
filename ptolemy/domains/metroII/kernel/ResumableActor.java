@@ -1,4 +1,4 @@
-/* GMetroIIActorGeneralWrapper is used to wrap any MetroII compatible actor with MetroIIActorInterface.
+/* ResumableActor is used to wrap any MetroII compatible actor with MetroIIActorInterface.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,6 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.domains.metroII.kernel;
 
 import java.util.LinkedList;
@@ -41,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MetroIIActorGeneralWrapper
 
 /** <p>
- * MetroIIActorGeneralWrapper is used to wrap any MetroII
+ * ResumableActor is used to wrap any MetroII
  * compatible actor with MetroIIActorInterface.
  * </p>
  *

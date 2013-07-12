@@ -64,11 +64,15 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIISystemCDirector extends Director implements
         MetroEventHandler {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct a MetroIISystemCDirector with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
     public MetroIISystemCDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -76,6 +80,14 @@ public class MetroIISystemCDirector extends Director implements
         initialize();
     }
 
+    /** Clone the object into the specified workspace. The new object
+     *  is <i>not</i> added to the directory of that workspace (you
+     *  must do this yourself if you want it there).
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIISystemCDirector newObject = (MetroIISystemCDirector) super
@@ -84,10 +96,10 @@ public class MetroIISystemCDirector extends Director implements
         return newObject;
     }
 
-    String path;
-    String pipe2server = "m2event_ptolemy_buffer";
-    String pipe2client = "m2event_metro_buffer";
-
+    /**
+     * Push Metro events into the pipe
+     * @param events
+     */
     public void pushEvents(Iterable<Event.Builder> events) {
         if (_debugging) {
             _debug("pushEvents:");
@@ -129,6 +141,10 @@ public class MetroIISystemCDirector extends Director implements
 
     }
 
+    /**
+     * Synchronize the status of events from the pipe
+     * @param events
+     */
     public void syncEvents(LinkedList<Event.Builder> events) {
         if (_debugging) {
             _debug("syncEvents:");
@@ -165,6 +181,11 @@ public class MetroIISystemCDirector extends Director implements
         }
     }
 
+    /**
+     * Check if at least one event is notified in the event vector
+     * @param events Event vector
+     * @return Whether there is at least one event notified
+     */
     public boolean atLeastOneNotified(Iterable<Event.Builder> events) {
         for (Builder event : events) {
             if (event.getStatus() == Status.NOTIFIED) {
@@ -174,10 +195,9 @@ public class MetroIISystemCDirector extends Director implements
         return false;
     }
 
-    LinkedList<Event.Builder> events;
-
-    boolean createProcess;
-
+    /**
+     * Fire the wrapped Metro-SystemC model
+     */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
 //        if (!createProcess) {
@@ -234,6 +254,9 @@ public class MetroIISystemCDirector extends Director implements
         pushEvents(events);
     }
 
+    /**
+     * YieldAdapter interface
+     */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
@@ -246,6 +269,9 @@ public class MetroIISystemCDirector extends Director implements
                 });
     }
 
+    /**
+     * Initialize the pipe connecting to Metro-SystemC
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -257,7 +283,36 @@ public class MetroIISystemCDirector extends Director implements
         }
         events = new LinkedList<Event.Builder>();
 
-        createProcess = false;
+//        createProcess = false;
 
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                    private fields                         ////
+    
+    /**
+     * Current event list
+     */
+    private LinkedList<Event.Builder> events;
+
+//    /**
+//     * Whether a process is created for the wrapped Metro-SystemC model
+//     */
+//    private boolean createProcess;
+
+    /**
+     * Path of the pipe
+     */
+    private String path;
+    
+    /**
+     * Name of the incoming pipe
+     */
+    private String pipe2server = "m2event_ptolemy_buffer";
+    
+    /**
+     * Name of the outcoming pipe
+     */
+    private String pipe2client = "m2event_metro_buffer";
+
 }
