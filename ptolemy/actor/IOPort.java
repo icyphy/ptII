@@ -1356,18 +1356,24 @@ public class IOPort extends ComponentPort {
     public List<QuantityManager> getQuantityManagers()
             throws IllegalActionException {
         //if (_qmListValid == false) {
-
+        if (_qmList == null) {
             _qmList = new ArrayList<QuantityManager>();
-            List<ResourceAttributes> list = this.attributeList(ResourceAttributes.class);
-            for (ResourceAttributes attribute : list) {
+        }
+        List<ResourceAttributes> list = this.attributeList(ResourceAttributes.class);
+        for (ResourceAttributes attribute : list) {
+            QuantityManager qm = (QuantityManager)attribute.getDecorator();
+            if (qm != null) {
                 if (attribute.enabled()) {
-                    if ((QuantityManager)attribute.getDecorator() != null) {
-                        _qmList.add((QuantityManager)attribute.getDecorator());
+                    if (!_qmList.contains(qm)) {
+                        _qmList.add(qm);
                         attribute.validateSettables();
-                    } 
+                    }
+                } else {
+                    _qmList.remove(qm);
                 }
             }
-            _qmListValid = true;
+        }
+        _qmListValid = true;
         //}
         return _qmList;
     }
