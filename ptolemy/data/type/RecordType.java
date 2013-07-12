@@ -54,8 +54,8 @@ import ptolemy.util.StringUtilities;
  type with a subset of the fields.  For example, {x = double, y = int}
  is a subtype of {x = double}. When a record of type
  {x = double, y = int} is converted to one of type {x = double},
- the extra field is discarded. The converted record, therefore,
- will have exactly the fields in the type.
+ the extra field is preserved. The converted record, therefore,
+ may have more fields than the type indicates, but not fewer.
  <p>
  A consequence of this is that all record types are subtypes
  of the empty record type. Hence, to require that a typeable
@@ -187,7 +187,7 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  and its type must be a subtype of this record type.  The 
      *  argument token must have at least the fields of this type.
      *  Extra fields in the argument token that are not in this 
-     *  type are removed.
+     *  type are preserved.
      *  @param token A token.
      *  @return An RecordToken.
      *  @exception IllegalActionException If token is incompatible 
@@ -201,12 +201,13 @@ public class RecordType extends AssociativeType implements Cloneable {
 
         RecordToken recordToken = (RecordToken) token;
 
-        // Discard undeclared fields unless no fields are declared 
-        // at all. In that case, preserve all fields.
-        Object[] labelArray = labelSet().toArray();
-        if (labelArray.length < 1) {
-            labelArray = recordToken.labelSet().toArray();
-        }
+        // Undeclared fields are preserved.
+        // If we don't do this, it would not be possible to express
+        // type constraints to accommodate actors that operate 
+        // on the entirety of any received record, which may be just 
+        // any record, or a record that must least contains a certain 
+        // set of labels.
+        Object[] labelArray = recordToken.labelSet().toArray();
 
         // Arrays that will be used to create the new token.
         String[] labelStringArray = new String[labelArray.length];
