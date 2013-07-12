@@ -1,5 +1,5 @@
-/* MetroCompositeActor extends the composite actor to support enclosing Metro directors. 
-
+/* MetroModalModel extends ModalModel to support enclosing MetroFSMDirector.
+ 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,56 +37,59 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 ///////////////////////////////////////////////////////////////////
-//// MetroCompositeActor
+////MetroModalModel
 
 /** 
-* MetroCompositeActor extends the composite actor to support enclosing Metro directors. 
+* MetroModalModel extends ModalModel to support enclosing Metr.oFSMDirector
 *
 * @author Liangpeng Guo
-* @version $Id: MetroCompositeActor.java 66808 2013-07-03 00:20:58Z glp $
+* @version $Id$
 * @since Ptolemy II 9.1
 * @Pt.ProposedRating Red (glp)
 * @Pt.AcceptedRating Red (glp)
 *
 */
-public class MetroCompositeActor extends TypedCompositeActor implements
+public class MetroModalModel extends ModalModel implements
         MetroEventHandler {
 
-    /**
-     * Construct a MetroCompositeActor
+    /** Construct a modal model in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public MetroCompositeActor() {
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
-     * Construct a MetroCompositeActor based on a given worksapce
-     *  @param workspace The workspace for this object.
-     */
-    public MetroCompositeActor(Workspace workspace) {
+    public MetroModalModel(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
-    /**
-     * Construct a MetroCompositeActor based on a given container and a name
-     *  @param container Container of the director.
-     *  @param name Name of this director.
-     *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.  May be thrown in a derived class.
-     *  @exception NameDuplicationException If the container is not a
-     *   CompositeActor and the name collides with an entity in the container.
+    /** Construct a modal model with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
-    public MetroCompositeActor(CompositeEntity container, String name)
+    public MetroModalModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
     /**
@@ -104,9 +107,7 @@ public class MetroCompositeActor extends TypedCompositeActor implements
     }
 
     /**
-     * getfire() should be identical to fire() except it calls the getfire() of 
-     * enclosed director instead of fire(). When getfire() is called, the enclosed
-     * director should be a Metro director.   
+     * getfire() should be identical to getfire() of MetroCompositeActor. 
      * 
      *  If this actor is opaque, transfer any data from the input ports
      *  of this composite to the ports connected on the inside, and then
@@ -196,6 +197,18 @@ public class MetroCompositeActor extends TypedCompositeActor implements
             e.printStackTrace();
         }
 
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    private methods                        ////
+    
+    /**
+     * Update the expression with 'MetroFSMDirector' instead of 'FSMDirector'
+     */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        directorClass
+                .setExpression("ptolemy.domains.metroII.kernel.MetroFSMDirector");
     }
 
 }

@@ -25,7 +25,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 public class MetroSequentialSDFDirector extends SDFDirector implements
-        MetroIIEventHandler {
+        MetroEventHandler {
 
     public MetroSequentialSDFDirector() throws IllegalActionException,
             NameDuplicationException {
@@ -71,7 +71,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
             _pendingIteration.clear();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                if (actor instanceof MetroIIEventHandler) {
+                if (actor instanceof MetroEventHandler) {
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
                 } else {

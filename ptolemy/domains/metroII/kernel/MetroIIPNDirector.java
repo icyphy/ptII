@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  */
 
 public class MetroIIPNDirector extends PNDirector implements
-        MetroIIEventHandler {
+        MetroEventHandler {
 
     /** Construct a director in the given container with the given name.
      *  If the container argument must not be null, or a

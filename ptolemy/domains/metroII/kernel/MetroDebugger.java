@@ -115,7 +115,7 @@ public class MetroDebugger implements Cloneable {
     }
 
     /**
-     * Print out the details of a Metro event
+     * Print out the details o Must be slow witted tof a Metro event
      * @param event the event to be printed out
      */
     public void printMetroEvent(Builder event) {

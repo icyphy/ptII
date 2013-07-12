@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 public class MetroIIDEDirectorForPtides extends DEDirector implements
-        MetroIIEventHandler {
+        MetroEventHandler {
 
     public MetroIIDEDirectorForPtides(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -97,7 +97,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
             _actorDictionary.clear();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                if (actor instanceof MetroIIEventHandler) {
+                if (actor instanceof MetroEventHandler) {
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
                 } else {

@@ -96,7 +96,7 @@ public class ResumableActor extends ActMachine {
                  * Each thread is encapsulated by a YieldAdapterIterable, which is used to iterate
                  * the events proposed by the thread.
                  */
-                final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroIIEventHandler) actor())
+                final YieldAdapterIterable<Iterable<Event.Builder>> results = ((MetroEventHandler) actor())
                         .adapter();
                 _eventIterator = results.iterator();
                 setState(State.FIRING);
