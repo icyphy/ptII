@@ -60,6 +60,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -250,16 +251,13 @@ public class IOPort extends ComponentPort {
      *      be created.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
-        if (attribute instanceof Parameter) {
-            Token parameterToken = ((Parameter) attribute).getToken();
-            if (parameterToken != null) {
-                if (parameterToken instanceof ObjectToken
-                        && ((ObjectToken) parameterToken).getValue() instanceof QuantityManager) {
-                    // Invalidate list of quantity managers.
-                    _qmListValid = false;
-                }
+            throws IllegalActionException { 
+        if (attribute instanceof ResourceAttributes) {
+            Decorator decorator = ((ResourceAttributes)attribute).getDecorator();
+            if (decorator != null && decorator instanceof QuantityManager) {  
+                // Invalidate list of quantity managers.
+                _qmListValid = false;
+                createReceivers();
             }
         }
         super.attributeChanged(attribute);

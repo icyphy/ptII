@@ -571,7 +571,7 @@ public class BasicSwitch extends AtomicQuantityManager {
      *  are going out of the switch.  
      *  @author Patricia Derler
      */
-    public static class BasicSwitchAttributes extends ResourceAttributes {
+    public static class BasicSwitchAttributes extends QMAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.

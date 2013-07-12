@@ -443,7 +443,7 @@ public class Bus extends AtomicQuantityManager {
      *  
      *  @author Patricia Derler
      */
-    public static class BusAttributes extends ResourceAttributes {
+    public static class BusAttributes extends QMAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -485,15 +485,17 @@ public class Bus extends AtomicQuantityManager {
          *  Not thrown in this class.
          */
         public void attributeChanged(Attribute attribute)
-                throws IllegalActionException {
+                throws IllegalActionException { 
             if (attribute == messageLength) {
-                IOPort port = (IOPort) getContainer();
-                Bus bus = (Bus) getDecorator();
-                if (bus != null) {
-                Token token = messageLength.getToken();
-                if (token != null) {
-                    bus.setMessageLength(port, ((ScalarToken)token).doubleValue());
-                }
+                if (enabled()) {
+                    IOPort port = (IOPort) getContainer(); 
+                    Bus bus = (Bus) getDecorator();
+                    if (bus != null) {
+                        Token token = messageLength.getToken();
+                        if (token != null) {
+                            bus.setMessageLength(port, ((ScalarToken)token).doubleValue());
+                        } 
+                    }
                 }
             } else {
                 super.attributeChanged(attribute);

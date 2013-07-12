@@ -42,6 +42,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.QuantityManagerListener;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.QuantityManagerListener.EventType;
@@ -288,7 +289,7 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
      * 
      *  @author Patricia Derler
      */
-    public static class QMAttributes extends DecoratorAttributes {
+    public static class QMAttributes extends ResourceAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -296,10 +297,9 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
          *  @throws IllegalActionException If the superclass throws it.
          *  @throws NameDuplicationException If the superclass throws it.
          */
-        public QMAttributes(NamedObj target, AtomicQuantityManager decorator)
+        public QMAttributes(NamedObj target, Decorator decorator)
                 throws IllegalActionException, NameDuplicationException {
-            super(target, decorator);
-            _init();
+            super(target, decorator); 
         }
 
         /** Constructor to use when parsing a MoML file.
@@ -310,33 +310,29 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
          */
         public QMAttributes(NamedObj target, String name)
                 throws IllegalActionException, NameDuplicationException {
-            super(target, name);
-            _init();
+            super(target, name); 
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         parameters                        ////
 
-        /** The enable parameter specifies whether the decorated actor uses
-         *  the decorator.
-         *  This is a boolean that defaults to false.
-         */
-        public Parameter enable;  
 
         ///////////////////////////////////////////////////////////////////
-        ////                        private methods                    ////
+        ////                        public methods                     ////
 
-        /** Create the parameters.
+        /** If attribute is <i>messageLength</i> report the new value 
+         *  to the quantity manager. 
+         *  @param attribute The changed parameter.
+         *  @exception IllegalActionException If the parameter set is not valid.
+         *  Not thrown in this class.
          */
-        private void _init() {
-            try {
-                enable = new Parameter(this, "enable");
-                enable.setExpression("false");
-                enable.setTypeEquals(BaseType.BOOLEAN);  
-            } catch (KernelException ex) {
-                // This should not occur.
-                throw new InternalErrorException(ex);
+        public void attributeChanged(Attribute attribute)
+                throws IllegalActionException {
+            IOPort port = (IOPort) getContainer();
+            if (attribute == enable) {
+                port.createReceivers();
             }
+            super.attributeChanged(attribute);
         }
     }
 

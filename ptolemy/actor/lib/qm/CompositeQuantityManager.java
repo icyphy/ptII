@@ -473,9 +473,12 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
+            IOPort port = (IOPort) getContainer();
+            if (attribute == enable) {
+                port.createReceivers();
+            }
             if (attribute == inputPort) {
                 _inputPort = ((StringToken)((Parameter)attribute).getToken()).stringValue();
-                IOPort port = (IOPort) getContainer();
                 CompositeQuantityManager compositeQM = (CompositeQuantityManager) getDecorator();
                 if (compositeQM != null) {
                     compositeQM.setInputPortName(port, _inputPort);
