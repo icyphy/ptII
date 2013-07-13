@@ -42,16 +42,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  This actor implements multiway rendezvous on all channels
- of the input port, collects the tokens, and then performs
- a multiway rendezvous on all channels of the output port,
- sending the collected data. A token provided on an
- input channel is sent to the corresponding output channel.
- If there are fewer output channels than input channels, then
- the corresponding input data are discarded.
- If there are fewer input channels than output channels,
- then the last input channel provides the token for the
- remaining ones. If there are no input channels,
- then an exception is thrown.
+ of the input port. Specifically, it provides an
+ implementation of barrier synchronization.
+The actor will accept inputs only when the sending actors on all input
+channels are ready to send.
 
  @author Edward A. Lee
  @version $Id$
