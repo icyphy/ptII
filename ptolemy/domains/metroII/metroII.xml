@@ -6,11 +6,6 @@
     <?moml
       <group>
         <doc>MetroII three-phase semantics, which allows interfacing with SystemC models.</doc>
-		<entity name="MetroIIModalModel" class="ptolemy.domains.metroII.kernel.MetroIIModalModel" >
-	  		<property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory"/>
-  			<input source="ptolemy/configs/modalController.xml"/>
-		</entity>
-
 		<input source="ptolemy/domains/metroII/directors.xml"/>
       </group>
     ?>
