@@ -1,4 +1,4 @@
-# Makefile that drives the ptango tests.
+# Makefile for the JUnit Ptango tests.
 #
 # @Authors: Christopher Brooks
 #
@@ -30,28 +30,28 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/ptango/lib
-
-DIRS =
+ME =		
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-# auto/SequenceToArray2.xml uses mapss.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar
+# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
+# JNA_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
-
-JSRCS =
+JSRCS = \
+	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS =
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = \
+	dummy.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -60,13 +60,11 @@ JSIMPLE_TESTS =
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	$(JSIMPLE_TESTS) \
-	#$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl junit
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -77,7 +75,9 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+# JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
+tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.ptolemy.ptango.test.junit.JUnitTclTest)
 
 test_java: jclass
 
@@ -85,13 +85,10 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-# We remove certain files from /tmp before and after running.
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto
-	-$(JTCLSH) alljtests.tcl
-	(cd junit; $(MAKE))
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) alljtests.tcl
 
-# 'make clean' removes $(KRUFT)
-KRUFT =
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
