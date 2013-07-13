@@ -28,7 +28,6 @@
 package org.ptolemy.ptango.lib;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -58,9 +57,8 @@ import ptolemy.kernel.util.StringAttribute;
  record is encoded by {@link URLEncoder#encode} and provided
  as a value for the post parameter whose name is the name of
  the record field. The field name is also encoded like the value.
- Note that an HTTP get is accomplished simply using a
- {@link FileReader} actor.
 
+ @see HttpGet
  @author  Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.4

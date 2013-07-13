@@ -91,7 +91,7 @@ import ptolemy.kernel.util.Workspace;
  *  it data to either the {@link #response} or {@link #setCookies}
  *  input port (or both) with the response to HTTP request.
  *  If that response does not arrive within <i>timeout</i>
- *  (default 10000) milliseconds, then this actor will a issue
+ *  (default 30000) milliseconds, then this actor will a issue
  *  timeout response and will discard the response when it eventually
  *  arrives.
  *  <p>
@@ -168,7 +168,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
         // Parameters
         timeout = new Parameter(this, "timeout");
-        timeout.setExpression("10000L");
+        timeout.setExpression("30000L");
         timeout.setTypeEquals(BaseType.LONG);
 
         requestedCookies = new Parameter(this, "requestedCookies");
@@ -274,7 +274,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
     /** The time in milliseconds to wait after producing the details
      *  of a request on the output ports for a response to appear at
-     *  the input ports. This is a long that defaults to 10,000.
+     *  the input ports. This is a long that defaults to 30,000.
      *  If this time expires before an input is received, then this actor
      *  will issue a generic timeout response to the HTTP request.
      */
@@ -402,14 +402,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             }
         }
         if (responseFound) {
-            if (_timeouts > 0) {
-                // A timeout occurred. Discard the response.
-                _timeouts--;
-                _request = null;
-                if (_debugging) {
-                    _debug("Discarding the response because of an earlier timeout.");
-                }
-            } else if (_request == null) {
+            if (_request == null) {
                 // There is no pending request, so ignore the response.
                 if (_debugging) {
                     _debug("Discarding the response because there is no pending request.");
@@ -492,7 +485,6 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         _response = null;
         _initializeModelTime = getDirector().getModelTime();
         _initializeRealTime = System.currentTimeMillis();
-        _timeouts = 0;
         _lastOutputTime = null;
     }
     
@@ -536,11 +528,6 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     /** The pending response. */
     private HttpResponse _response;
     
-    /** Number of timeouts that have occurred, which is the number of responses
-     *  to be discarded when they finally arrive.
-     */
-    private int _timeouts;
-
     /** The URI for the relative path from the "path" parameter.
      *  A URI is used here to make sure the "path" parameter conforms to
      *  all of the URI naming conventions.
@@ -680,11 +667,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         // Unfortunately, we can't tell whether the timeout
                         // occurred unless we record the current time.
                         long startTime = System.currentTimeMillis();
-                        long timeoutValue = 10000L;
+                        long timeoutValue = 30000L;
                         try {
                             timeoutValue = ((LongToken) timeout.getToken()).longValue();
                         } catch (IllegalActionException e) {
-                            // Ignore and use default of 10 seconds.
+                            // Ignore and use default of 30 seconds.
                         }
                         HttpActor.this.wait(timeoutValue);
                         if (System.currentTimeMillis() - startTime >= timeoutValue) {
@@ -692,7 +679,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                                 _debug("**** Request timed out.");
                             }
                             response.getWriter().println("Request timed out");
-                            _timeouts++;
+                            // Indicate that there is no longer a pending request or response.
+                            _request = null;
+                            _response = null;
                             return;
                         }
                     } catch (InterruptedException e) {
@@ -700,6 +689,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                             _debug("*** Request thread interrupted.");
                         }
                         response.getWriter().println("Get request thread interrupted");
+                        // Indicate that there is no longer a pending request or response.
+                        _request = null;
+                        _response = null;
                         return;
                     }
                 }

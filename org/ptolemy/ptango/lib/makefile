@@ -54,12 +54,14 @@ PTCLASSALLJARS = \
 JSRCS = \
 	HTMLModelExporter.java \
 	HttpActor.java \
+	HttpGet.java \
 	HttpPost.java \
 	HttpService.java \
 	WebServer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptango.xml \
+	HttpGetIcon.xml \
 	HttpPostIcon.xml \
 	WebServerIcon.xml
 

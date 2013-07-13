@@ -10,6 +10,9 @@
 	<entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
 	</entity>
 
+	<entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
+	</entity>
+
 	<entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
 	</entity>
 
