@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS =  doc lib #demo
+DIRS =  doc lib test #demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
