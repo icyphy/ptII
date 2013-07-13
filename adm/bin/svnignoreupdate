@@ -8,7 +8,17 @@ svnIgnoreJarFile=/tmp/svnignoreupdate.svnIgnoreJarFile.$$
 
 svn status | egrep '^\?' | awk '{print $2}' > $statusFile
 
-classDirs=`egrep ".class$" $statusFile | xargs -n 1 dirname | sort | uniq`
+binariesDirs=`egrep "binaries$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for binariesDir in $binariesDirs
+do
+    echo $binariesDir
+    svn propget svn:ignore $binariesDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo 'binaries' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $binariesDir
+done
+
+
+classDirs=`egrep "\.class$" $statusFile | xargs -n 1 dirname | sort | uniq`
 for classDir in $classDirs
 do
     echo $classDir
@@ -16,6 +26,16 @@ do
     echo '*.class' >> $svnIgnoreFile
     svn propset svn:ignore -F $svnIgnoreFile $classDir
 done
+
+fmuDirs=`egrep "\.fmu$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for fmuDir in $fmuDirs
+do
+    echo $fmuDir
+    svn propget svn:ignore $fmuDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo '*.fmu' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $fmuDir
+done
+
 
 alljtestsDirs=`egrep "alljtests.tcl$" $statusFile | xargs -n 1 dirname | sort | uniq`
 for alljtestsDir in $alljtestsDirs
