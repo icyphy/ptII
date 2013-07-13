@@ -7,7 +7,7 @@
       <group>
         <doc>MetroII directors.</doc>
 		<property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector" />
-		<property name="MetroIIFSMDirector" class="ptolemy.domains.metroII.kernel.MetroIIFSMDirector" />
+		<property name="MetroFSMDirector" class="ptolemy.domains.metroII.kernel.MetroFSMDirector" />
 		<property name="MetroIIDEDirector" class="ptolemy.domains.metroII.kernel.MetroIIDEDirector" />
 		<property name="MetroIIPtidesDirector" class="ptolemy.domains.metroII.kernel.MetroIIPtidesDirector" />
 		<property name="MetroSDFDirector(Sequential)" class="ptolemy.domains.metroII.kernel.MetroSequentialSDFDirector" />
