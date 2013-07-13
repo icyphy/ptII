@@ -59,15 +59,12 @@ JSRCS = \
     FireMachine.java \
     Graph.java \
     MappingConstraintSolver.java \
-    MappingConstraintSolverTest.java \
     MetroDebugger.java \
     MetroEventBuilder.java \
-    MetroIICompositeActor.java \
     MetroIIDEDirector.java \
     MetroIIDEDirectorForPtides.java \
     MetroIIDirector.java \
     MetroIIEventHandler.java \
-    MetroIIFSMDirector.java \
     MetroIIMirrorComposite.java \
     MetroIIModalModel.java \
     MetroIIPNDirector.java \
