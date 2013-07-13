@@ -64,9 +64,7 @@ JSRCS = \
     MetroIIDEDirector.java \
     MetroIIDEDirectorForPtides.java \
     MetroIIDirector.java \
-    MetroIIEventHandler.java \
     MetroIIMirrorComposite.java \
-    MetroIIModalModel.java \
     MetroIIPNDirector.java \
     MetroIIPNQueueReceiver.java \
     MetroIIPtidesDirector.java \
