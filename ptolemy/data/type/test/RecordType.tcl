@@ -102,7 +102,7 @@ test RecordType-2.0 {Test convert} {
 
     list [[$empRT convert $r1] toString] [[$sdRT convert $r1] toString] \
         [[[$r1 getType] convert $r1] toString]
-} {{{}} {{name = "foo", value = 1.0}} {{extra = 2.5, name = "foo", value = 1}}}
+} {{{extra = 2.5, name = "foo", value = 1}} {{extra = 2.5, name = "foo", value = 1.0}} {{extra = 2.5, name = "foo", value = 1}}}
 
 ######################################################################
 ####
@@ -124,7 +124,7 @@ test RecordType-2.0.5 {Test convert: Converting from something with more records
         [[[$r5 getType] convert $r5] toString] \
         [[[$r5 getType] convert $r1] toString] "\n" \
 	$errMsg
-} {{{}} {{name = "foo", value = 1.0}} {{name = "foo", value = 1}} {{name = "foo", value = 1}} {
+} {{{name = "foo", value = 1}} {{name = "foo", value = 1.0}} {{name = "foo", value = 1}} {{extra = 2.5, name = "foo", value = 1}} {
 } {java.lang.IllegalArgumentException: Conversion is not supported from ptolemy.data.RecordToken '{name = "foo", value = 1}' to the type {extra = double, name = string, value = int}.}}
 
 #######################################################################
