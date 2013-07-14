@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/ptango/lib
+ME =		ptolemy/ptango/test
 
 DIRS =
 
@@ -74,9 +74,6 @@ OPTIONAL_FILES =
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
-
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
@@ -92,6 +89,10 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto
 
 # 'make clean' removes $(KRUFT)
 KRUFT =
+
+all install:
+	@echo "Run make tests to run the tests."
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
