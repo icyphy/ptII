@@ -150,68 +150,24 @@ public class HttpGet extends LimitedFiringSource {
             
             // If a timeout has been specified, set it.
             int timeoutValue = ((IntToken)timeout.getToken()).intValue();
-            /* Unfortunately, the following doesn't really work because we need a shorter
-             * timeout in order to be able to stop the model when the stop button is pushed.
-             * 
             if (timeoutValue >= 0) {
                 _connection.setConnectTimeout(timeoutValue);
                 _connection.setReadTimeout(timeoutValue);
             }
-            */
             
-            // This will make a maximum three-second delay when pushing the stop button.
-            // Arbitrary granularity on timeout.
-            // Regrettably, timeouts don't work with Sun's URLConnection class.
-            //   See: http://www.twmacinta.com/myjava/ucon_timeout.php
-            // If you set these timeouts (only the second has any effect), then
-            // after a timeout, at least communication will be lost (dropped).
-            // I don't have a fix.  URLConnection is crap.
-            /*
-            _connection.setConnectTimeout(_TIMEOUT);
-            _connection.setReadTimeout(_TIMEOUT);
-            */
-
-            long startTime = System.currentTimeMillis();
             while (inputStreamReader == null) {
                 try {
                     inputStreamReader = new InputStreamReader(_connection.getInputStream());
                 } catch (SocketTimeoutException ex) {
                     if (_debugging) {
-                        _debug("*** Fine-grain timeout occurred.");
+                        _debug("*** Timeout occurred.");
                     }
-                    long currentTime = System.currentTimeMillis();
-                    if (timeoutValue > 0 && (currentTime - startTime) > timeoutValue) {
-                        // A timeout occurred.
-                        String response = timeoutResponse.stringValue();
-                        if (response.trim().equals("")) {
-                            throw new IllegalActionException(this, "HTTP Get timed out.");
-                        }
-                        output.send(0, new StringToken(response));
-                        return;
+                    String response = timeoutResponse.stringValue();
+                    if (response.trim().equals("")) {
+                        throw new IllegalActionException(this, "HTTP Get timed out.");
                     }
-                    // A timeout did not occur.
-                    if (_stopRequested) {
-                        if (_debugging) {
-                            _debug("Stop requested.");
-                        }
-                        // A stop has been requested.
-                        return;
-                    }
-                    if (_debugging) {
-                        _debug("Haven't reached timeout parameter value. Re-opening connection and trying again.");
-                    }
-                    // Strangely, before trying again, we seem to have to create
-                    // a new URLConnection. The old one is in permanent timeout state
-                    // and will just timeout again immediately.
-                    if (_connection instanceof HttpURLConnection) {
-                        // FIXME: Does nothing!!!!!!!!!!!!!!
-                        ((HttpURLConnection)_connection).disconnect();
-                    }
-                    _connection = theURL.openConnection();
-                    /* See comment above.
-                    _connection.setConnectTimeout(_TIMEOUT);
-                    _connection.setReadTimeout(_TIMEOUT);
-                    */
+                    output.send(0, new StringToken(response));
+                    return;
                 }
             }
             if (_debugging) {
@@ -272,11 +228,4 @@ public class HttpGet extends LimitedFiringSource {
 
     /** The URL connection, if it exists. */
     private URLConnection _connection;
-    
-    /** The amount of time to wait for each connection before retrying.
-     *  This affects the length of the delay in stopping the model when
-     *  you hit the stop button. It is in milliseconds.
-     *  Sadly, this doesn't work with URLConnection.
-     */
-    // private static int _TIMEOUT = 30000;
 }

@@ -640,6 +640,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
                     // Figure out what time to request a firing for.
                     long elapsedRealTime = System.currentTimeMillis() - _initializeRealTime;
+                    // Assume model time is in seconds, not milliseconds.
+                    elapsedRealTime = elapsedRealTime / 1000;
                     Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
                     
                     if (_debugging) {

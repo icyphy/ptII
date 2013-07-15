@@ -91,7 +91,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 90.0]">
         </property>
     </entity>
     <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
@@ -154,7 +154,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[111.5, 154.5]">
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
@@ -177,8 +177,111 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[241.5, 154.5]">
         </property>
+    </entity>
+    <entity name="FilterEmptyResponses" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 90.0]">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The server responds with empty strings&#10;to keep the connection alive and responsive.&#10;Filter these, as we don't want to display them&#10;to the user. Also, trim white space around the&#10;response.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, -15.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.554054054054054">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{221.00000000000003, 154.3739130434783}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 120.0}">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 245.0}">
+            </property>
+        </port>
+        <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
+            <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 120.0}">
+            </property>
+        </entity>
+        <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+            <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <doc>Output a comparison function of two strings</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 190.0}">
+            </property>
+        </entity>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 120.0}">
+            </property>
+        </entity>
+        <entity name="Discard" class="ptolemy.actor.lib.Discard">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 190.0}">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringCompare.output&quot;,x=210.0,y=190.0}, tail={id=&quot;BooleanSwitch.control&quot;,x=300.0,y=120.0}, points={300.0,190.0} } }">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BooleanSwitch.trueOutput&quot;,x=300.0,y=120.0}, tail={id=&quot;Discard.input&quot;,x=410.0,y=190.0}, points={410.0,110.0} } }">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;output._location&quot;,x=400.0,y=245.0}, tail={id=&quot;BooleanSwitch.falseOutput&quot;,x=300.0,y=120.0}, points={375.0,245.0,375.0,130.0} } }">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{160.0, 120.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=160.0,y=120.0}, tail={id=&quot;BooleanSwitch.input&quot;,x=300.0,y=120.0}, points={} },{ head={id=&quot;StringCompare.firstString&quot;,x=210.0,y=190.0}, tail={id=&quot;relation5.vertex1&quot;,x=160.0,y=120.0}, points={160.0,180.0} },{ head={id=&quot;StringFunction.output&quot;,x=80.0,y=120.0}, tail={id=&quot;relation5.vertex1&quot;,x=160.0,y=120.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;input._location&quot;,x=15.0,y=120.0}, tail={id=&quot;StringFunction.input&quot;,x=80.0,y=120.0}, points={} } }">
+            </property>
+        </relation>
+        <link port="input" relation="relation"/>
+        <link port="output" relation="relation4"/>
+        <link port="StringFunction.input" relation="relation"/>
+        <link port="StringFunction.output" relation="relation5"/>
+        <link port="StringCompare.firstString" relation="relation5"/>
+        <link port="StringCompare.output" relation="relation2"/>
+        <link port="BooleanSwitch.input" relation="relation5"/>
+        <link port="BooleanSwitch.control" relation="relation2"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation3"/>
+        <link port="BooleanSwitch.falseOutput" relation="relation4"/>
+        <link port="Discard.input" relation="relation3"/>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -195,22 +298,24 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{165.0, 90.0}">
+        <vertex name="vertex1" value="[70.0, 90.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[410.0, 90.0]">
+        <vertex name="vertex1" value="{320.0, 90.0}">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="InteractiveShell.input" relation="relation4"/>
     <link port="InteractiveShell.output" relation="relation3"/>
-    <link port="Display.input" relation="relation9"/>
+    <link port="Display.input" relation="relation7"/>
     <link port="HttpPost.input" relation="relation5"/>
     <link port="HttpPost.output" relation="relation6"/>
     <link port="SampleDelay.input" relation="relation"/>
@@ -226,5 +331,7 @@
     <link port="StringConst.trigger" relation="relation3"/>
     <link port="HttpGet.output" relation="relation9"/>
     <link port="HttpGet.trigger" relation="relation10"/>
+    <link port="FilterEmptyResponses.input" relation="relation9"/>
+    <link port="FilterEmptyResponses.output" relation="relation7"/>
     <link relation1="relation8" relation2="relation9"/>
 </entity>
