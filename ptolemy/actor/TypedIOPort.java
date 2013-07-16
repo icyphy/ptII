@@ -317,7 +317,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     public Token convert(Token token) throws IllegalActionException {
         Type type = getType();
 
-        if (type.equals(token.getType())) {
+        if (type.equals(token.getType()) || this.isDynamic()) {
             return token;
         } else {
             try {
@@ -429,6 +429,13 @@ public class TypedIOPort extends IOPort implements Typeable {
         return false;
     }
 
+    /** Indicates whether conversion of received tokens is disabled.
+     *  @return True if conversion is disabled, or false if otherwise.
+     */
+    public boolean isDynamic() {
+        return this._dynamic;
+    }
+    
     /** Remove a type listener from this port.  If the listener is
      *  not attached to this port, do nothing.
      *  @param listener The TypeListener to be removed.
@@ -592,6 +599,13 @@ public class TypedIOPort extends IOPort implements Typeable {
         super.sendInside(channelIndex, token);
     }
 
+    /** Set to true in order to disable conversion of received tokens.
+     *  @param dynamic
+     */
+    public void setDynamic(boolean dynamic) {
+        this._dynamic = dynamic;
+    }
+    
     /** Constrain the type of this port to be equal to or greater
      *  than the type of the specified Typeable object.
      *  <p>Actors that call this method should have a clone() method that
@@ -893,6 +907,16 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     protected Type _resolvedType = BaseType.UNKNOWN;
 
+    /** Indicates whether or not the types associated with this port should 
+     *  be interpreted as an interface type or not. By default, all tokens 
+     *  that are received on a TypedIOPort are converted to the associated 
+     *  type. In the case where an actor needs to use Java's dynamic dispatch
+     *  mechanism instead of the default automatic type conversion scheme,
+     *  this variable must be set to true. If set to true, received tokens
+     *  will not be converted.
+     */
+    private boolean _dynamic = false;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1003,7 +1027,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         public boolean isValueAcceptable() {
             return isTypeAcceptable();
         }
-
+        
         /** Set the type of this port.
          *  @param type A Type.
          *  @exception IllegalActionException If the new type violates
