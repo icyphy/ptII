@@ -406,6 +406,9 @@ public class BasicSwitch extends AtomicQuantityManager {
         }
         Time currentTime = getDirector().getModelTime();
         
+        System.out.println("inputs=" + _ioPortToSwitchInPort.toString());
+        System.out.println("outputs=" + _ioPortToSwitchOutPort.toString());
+
         int inputPortID = _getPortID(receiver, true);
         
         Time lastTimeStamp = currentTime;
