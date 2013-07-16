@@ -14,38 +14,43 @@
   </entity>
   
   <entity name="CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
-<property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+      <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+      </property>
     </property>
-</property>
-<entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
-    <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]"></property>
-</entity>
-<entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
-	<property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]"></property>
-</entity>
 
-</entity>
+    <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
+      <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]"></property>
+    </entity>
 
-<entity name="CQMInputPort" class="ptolemy.actor.lib.qm.CQMInputPort">
-</entity>
+    <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
+	  <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]"></property>
+    </entity>
+  </entity>
 
-<entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
-</entity>
+  <entity name="CQMInputPort" class="ptolemy.actor.lib.qm.CQMInputPort">
+  </entity>
+
+  <entity name="CQMOutputPort" class="ptolemy.actor.lib.qm.CQMOutputPort">
+  </entity>
 
   <entity name="CrossbarSwitch" class="ptolemy.actor.lib.qm.CrossbarSwitch"> 
   </entity>
 
-  
-  
   <entity name="TTESwitch" class="ptolemy.actor.lib.qm.TTESwitch"> 
   </entity>
 
+  <entity name="AFDX_ESs" class="ptolemy.actor.lib.qm.AFDXESs">
+   <doc>A quantity manager that manages all AFDX End-Systems.</doc>
+  </entity>
+  
+  <entity name="AFDX_SW" class="ptolemy.actor.lib.qm.AFDXSwitch"> 
+  </entity>
+ 
+ <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
+ </entity>
 
-
-
-
-<entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
+<!--entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
    <doc>A quantity manager that simulate a CAN bus.</doc>
  </entity>
 
@@ -56,16 +61,6 @@
      <property name="displayWidth" value="60"/>
    </property>
  </entity>
- 
- <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
-  </entity>
-
-<!--entity name="AFDX_ESs" class="ptolemy.actor.lib.qm.AFDXESs">
-   <doc>A quantity manager that manages all AFDX End-Systems.</doc>
-</entity>
-  
-<entity name="AFDX_SW" class="ptolemy.actor.lib.qm.AFDXSwitch"> 
-</entity>
  
 <entity name="AFDX_VL" class="ptolemy.actor.lib.qm.AFDXVlCfg">
    <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
