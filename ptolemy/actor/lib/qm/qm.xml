@@ -47,28 +47,12 @@
   <entity name="AFDX_SW" class="ptolemy.actor.lib.qm.AFDXSwitch"> 
   </entity>
  
- <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
- </entity>
+  <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor"> 
+  </entity>
 
-<!--entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
+  <entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
    <doc>A quantity manager that simulate a CAN bus.</doc>
- </entity>
-
- <entity name="CanBusPriority" class="ptolemy.actor.lib.qm.CanBusPriority">
-   <doc>A actor (used with the CanBus quantity manager) that attributes a given priority to a given output signal.</doc>
-   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-     <property name="attributeName" value="CanId"/>
-     <property name="displayWidth" value="60"/>
-   </property>
- </entity>
- 
-<entity name="AFDX_VL" class="ptolemy.actor.lib.qm.AFDXVlCfg">
-   <doc>An actor (used with the AFDX quantity manager) that configure an AFDX end-system for a given module.</doc>
-   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-     <property name="attributeName" value="AFDXcfg"/>
-     <property name="displayWidth" value="60"/>
-   </property>
- </entity-->
+  </entity>
 
       </group>
     ?>
