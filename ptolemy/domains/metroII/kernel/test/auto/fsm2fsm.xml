@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 221.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mapping: &#10;MetroIIModalModel2.state1 &lt;-&gt;  MetroIIModalModel.state1&#10;MetroIIModalModel2.state3 &lt;-&gt;  MetroIIModalModel.state2&#10;Effect:&#10;MetroIIModalModel2.state1 and MetroIIModalModel.state1 are synchronized&#10;MetroIIModalModel2.state3 and MetroIIModalModel.state2 are synchronized&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mapping: &#10;MetroModalModel2.state1 &lt;-&gt;  MetroModalModel.state1&#10;MetroModalModel2.state3 &lt;-&gt;  MetroModalModel.state2&#10;Effect:&#10;MetroModalModel2.state1 and MetroModalModel.state1 are synchronized&#10;MetroModalModel2.state3 and MetroModalModel.state2 are synchronized&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 5.0]">
         </property>
@@ -36,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 235.0]">
         </property>
     </entity>
-    <entity name="MetroIIModalModel" class="ptolemy.domains.metroII.kernel.MetroIIModalModel">
+    <entity name="MetroModalModel" class="ptolemy.domains.metroII.kernel.MetroModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 285.0]">
@@ -194,7 +194,7 @@ Then delete this annotation.</text>
         <link port="state.output" relation="outputRelation"/>
         <link port="state2.output" relation="outputRelation"/>
     </entity>
-    <entity name="MetroIIModalModel2" class="ptolemy.domains.metroII.kernel.MetroIIModalModel">
+    <entity name="MetroModalModel2" class="ptolemy.domains.metroII.kernel.MetroModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 180.0]">
@@ -412,6 +412,6 @@ Then delete this annotation.</text>
     </relation>
     <link port="Display.input" relation="relation"/>
     <link port="Display.input" relation="relation3"/>
-    <link port="MetroIIModalModel.output" relation="relation3"/>
-    <link port="MetroIIModalModel2.output" relation="relation"/>
+    <link port="MetroModalModel.output" relation="relation3"/>
+    <link port="MetroModalModel2.output" relation="relation"/>
 </entity>
