@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.qm;
 
 import ptolemy.actor.Actor;
-import ptolemy.domains.de.kernel.DEReceiver;
+import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -55,30 +55,30 @@ public class AFDXVlink {
      * @param source
      * @throws IllegalActionException
      */
-   /* public AFDXVlink (Receiver receiver) throws IllegalActionException {
+    public AFDXVlink (Receiver source) throws IllegalActionException {
         // 'vlink' parameter and value.
-        Parameter vlParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).)
+        Parameter vlParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("vlink");
         this._name = ((StringToken) vlParam.getToken()).stringValue();
         
         // 'bag' parameter and value.
-        Parameter bagParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).source)
+        Parameter bagParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("bag");
         this._bag = ((DoubleToken) bagParam.getToken()).doubleValue() / 1000;
         
         // 'frameSize' parameter and value.
-        Parameter tsParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).source)
+        Parameter tsParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("frameSize");
         this._frameSize = ((IntToken) tsParam.getToken()).intValue();
         
         // 'schedulerMux' parameter and value.
-        Parameter smParam = (Parameter) ((NamedObj) ((DEReceiver) receiver).source)
+        Parameter smParam = (Parameter) ((NamedObj) ((IntermediateReceiver) source).source)
                 .getAttribute("schedulerMux");
         this._schedulerMux = ((StringToken) smParam.getToken()).stringValue();
         
         // 'source' connected to the vlink. 
-        this._source = ((DEReceiver) receiver).source;
-    }*/
+        this._source = ((IntermediateReceiver) source).source;
+    }
     
     /** Constructor.
      * @param nm The name of the virtual-link.
@@ -95,12 +95,6 @@ public class AFDXVlink {
         this._schedulerMux = sched;
     }
     
-    /** Constructor.
-     */
-    public AFDXVlink () {
-        //this._source = src;
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -110,41 +104,40 @@ public class AFDXVlink {
         return _name;
     }
     
-    public void setName(String nm) {
-        this._name = nm;
+    public void setName(String name) {
+         _name = name;
     }
     
     public Double getBag() {
         return _bag;
     }
     
-    public void setBag(Double b) {
-        // GL: FIXME: XXX: we need to think how to not hide the bag conversion
-        this._bag = b / 1000;
-    }
+    public void setBag(Double bag) {
+        _bag = bag;
+   }
     
     public int getFrameSize() {
         return _frameSize;
     }
     
-    public void setFrameSize(int fs) {
-        this._frameSize = fs;
-    }
+    public void setFrameSize(int size) {
+        _frameSize = size;
+   }
     
     public Actor getSource() {
         return _source;
     }
     
-    public void setSource(Actor src) {
-        this._source = src;
+    public void setSource(Actor source) {
+    	_source = source;
     }
 
     public String getSchedulerMux() {
         return _schedulerMux;
     }
     
-    public void setSchedulerMux(String sched) {
-        this._schedulerMux = sched;
+    public void setSchedulerMux(String name) {
+    	_schedulerMux = name;
     }
     
     public String toString() {
