@@ -77,14 +77,14 @@ The content for a channel can be a string or an array of strings. HTML scripts,
 such as JavaScript, can also be part of the content. For a long content, it is
 better to first store the content in a separated file, then read this file using
 the FileReader actor to provide the content to the port. A demo is available at
-$ptII\ptolemy\vergil\basic\export\html\demo\PageAssembler. If the content is
+$PTII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml. If the content is
 provided through a StringConst actor, only the tags defined in the standard Java
 library (javax.swing.text.html.HTML.Tag) can be supported. If the content is
 read from a file, then all valid HTML tags can be supported. Unknown tags are
 ignored without throwing any exceptions.
 </p>
 <p>
-The content of the final HTML page is broadcasted to the output port, and saved
+The content of the final HTML page is sent to the output port and saved
 to a file if specified.
 </p>
 <p>
