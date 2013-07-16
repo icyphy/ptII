@@ -81,7 +81,7 @@
             </property>
         </property>
         <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-            <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+            <property name="port" class="ptolemy.data.expr.Parameter" value="8077">
             </property>
             <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/files">
             </property>
@@ -126,7 +126,7 @@
         <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="22">
             </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8077">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
             </property>
