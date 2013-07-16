@@ -38,7 +38,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
@@ -87,8 +86,8 @@ import ptolemy.kernel.util.Workspace;
  *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating 
- *  @Pt.AcceptedRating
+ *  @Pt.ProposedRating Yellow (glasnier)
+ *  @Pt.AcceptedRating Yellow (glasnier)
  */
 public class AFDXSwitch extends AtomicQuantityManager {
 

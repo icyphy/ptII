@@ -74,7 +74,9 @@ import ptolemy.kernel.util.Workspace;
  *       
  *  @author Gilles Lasnier
  *  @version $Id$
- *  @since Ptolemy II 0.2
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Yellow (glasnier)
+ *  @Pt.AcceptedRating Yellow (glasnier)
  */
 public class AFDXESs extends AtomicQuantityManager {
 

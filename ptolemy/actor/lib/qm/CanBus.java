@@ -46,10 +46,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.QuantityManagerListener.EventType;
-import ptolemy.actor.lib.qm.AtomicQuantityManager.QMAttributes;
-import ptolemy.actor.lib.qm.BasicSwitch.BasicSwitchAttributes;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -110,10 +108,9 @@ import ptolemy.kernel.util.Workspace;
  *
  *  @author D. Marciano, G. Lasnier, P. Derler
  *  @version $Id$
-   @since Ptolemy II 0.2
-
-   @Pt.ProposedRating Red (derler)
-   @Pt.AcceptedRating Red (derler)
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Yellow (glasnier)
+ *  @Pt.AcceptedRating Yellow (glasnier)
  */
 public class CanBus extends AtomicQuantityManager {
 

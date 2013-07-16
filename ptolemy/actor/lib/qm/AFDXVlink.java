@@ -47,7 +47,9 @@ import ptolemy.kernel.util.NamedObj;
  *       
  *  @author G. Lasnier
  *  @version $Id$
-   @since Ptolemy II 0.2
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Yellow (glasnier)
+ *  @Pt.AcceptedRating Yellow (glasnier)
  */
 public class AFDXVlink {
     
