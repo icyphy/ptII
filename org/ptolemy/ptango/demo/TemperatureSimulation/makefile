@@ -1,4 +1,4 @@
-# Makefile for the patngo temperature simulation demo.
+# Makefile for the ptango temperature simulation demo.
 #
 # @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
 # @Author: Christopher Brooks (makefile only)
@@ -46,6 +46,14 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = 
+    EPlusScaife.idf \
+    EPlusScaife.osm \ 
+    EPlusScaife.skp \
+    EPlusSimulation.xml \
+    scaifethermalzones.png \
+    USA_PA_Pittsburgh.Intl.AP.725200_TMY3.ddy \
+    USA_PA_Pittsburgh.Intl.AP.725200_TMY3.epw \
+    USA_PA_Pittsburgh.Intl.AP.725200_TMY3.stat 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 
