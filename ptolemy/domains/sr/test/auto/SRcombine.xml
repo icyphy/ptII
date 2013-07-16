@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SyncFeedback" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+<entity name="SRcombine" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 22, 1024, 578}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={214, 242, 1036, 647}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 471]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 520]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1557913351017">
     </property>
@@ -16,8 +16,6 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="7">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -97,15 +95,15 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 100.0]">
         </property>
     </entity>
     <entity name="Combine" class="ptolemy.domains.sr.lib.Combine">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 45}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 45.0]">
         </property>
     </entity>
     <entity name="IsPresent2" class="ptolemy.actor.lib.logic.IsPresent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 35.0]">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -118,7 +116,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.67724609375, 87.0556640625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 85.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -129,7 +127,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 40.0]">
         </property>
     </entity>
     <entity name="c" class="ptolemy.actor.lib.Sequence">
@@ -168,11 +166,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 135.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 70.0]">
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
@@ -188,6 +186,19 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 0.0]">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -210,13 +221,15 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="a.output" relation="relation7"/>
     <link port="b.output" relation="relation8"/>
@@ -231,7 +244,7 @@
     <link port="Combine.output" relation="relation"/>
     <link port="Combine.value" relation="relation14"/>
     <link port="IsPresent2.input" relation="relation"/>
-    <link port="IsPresent2.output" relation="relation12"/>
+    <link port="IsPresent2.output" relation="relation13"/>
     <link port="Const.output" relation="relation5"/>
     <link port="Const.trigger" relation="relation3"/>
     <link port="Const2.output" relation="relation4"/>
@@ -242,8 +255,10 @@
     <link port="Const3.output" relation="relation11"/>
     <link port="Const3.trigger" relation="relation10"/>
     <link port="AddSubtract.plus" relation="relation12"/>
-    <link port="AddSubtract.plus" relation="relation14"/>
     <link port="AddSubtract.plus" relation="relation13"/>
+    <link port="AddSubtract.plus" relation="relation14"/>
+    <link port="AddSubtract.plus" relation="relation15"/>
     <link port="AddSubtract.output" relation="relation6"/>
-    <link port="StringConst.output" relation="relation13"/>
+    <link port="StringConst.output" relation="relation15"/>
+    <link port="StringConst2.output" relation="relation12"/>
 </entity>

@@ -107,6 +107,7 @@ public abstract class AbstractConvertibleToken extends Token {
             Token result = rightArgument.addReverse(this);
             return result;
         } else {
+            // FIXME: do conversion here?
             throw new IllegalActionException(notSupportedIncomparableMessage(
                     "add", this, rightArgument));
         }
@@ -561,16 +562,9 @@ public abstract class AbstractConvertibleToken extends Token {
             AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
                     .convert(rightArgument);
 
-            try {
-                Token result = _subtract(convertedArgument);
-                return result;
-            } catch (IllegalActionException ex) {
-                // If the type-specific operation fails, then create a
-                // better error message that has the types of the
-                // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "subtract", this, rightArgument));
-            }
+            Token result = _subtract(convertedArgument);
+            return result;
+
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.subtractReverse(this);
             return result;
