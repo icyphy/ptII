@@ -41,6 +41,9 @@ if {[string compare listToStrings [info procs listToStrings]] == 1} then {
     source $PTII/util/testsuite/enums.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then { 
+    source [file join $PTII util testsuite jdktools.tcl]
+}
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -48,7 +51,10 @@ if {[string compare listToStrings [info procs listToStrings]] == 1} then {
 ####
 # 
 test KeyReader-1.1 {Try to read in a non-existant key} {
-    catch {createAndExecute "KeyReaderBad.xml"} errorMessage
+    # We capture standard error and ignore it.
+    jdkCaptureErr {
+	catch {createAndExecute "KeyReaderBad.xml"} errorMessage
+    } stderr
     regsub -all {URL is: '.*foo.keystore} $errorMessage {URL is: 'XXX/foo.keystore} r
     list $r
 } {{ptolemy.kernel.util.IllegalActionException: Failed to get key store alias 'barf' or certificate from Keystore: 'foo.keystore', which exists and is readable,  as a URL is: 'XXX/foo.keystore'
