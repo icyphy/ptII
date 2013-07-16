@@ -111,8 +111,10 @@ public class AFDXSwitch extends AtomicQuantityManager {
 
 		_inputTokens = new HashMap<Integer, LinkedList<TimedEvent>>();
 		_outputTokens = new HashMap<Integer, LinkedList<TimedEvent>>();
+        _ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
 		_switchFabricQueue = new LinkedList<TimedEvent>();
-		_actorPorts = new HashMap<Actor, Integer>();
+		//_actorPorts = new HashMap<Actor, Integer>();
 		_tokenCount = 0;
 
 		bitRate = new Parameter(this, "bitRate");
@@ -234,10 +236,12 @@ public class AFDXSwitch extends AtomicQuantityManager {
 	 */
 	public Object clone(Workspace workspace) throws CloneNotSupportedException {
 		AFDXSwitch newObject = (AFDXSwitch) super.clone(workspace);
-		newObject._actorPorts = new HashMap();
+		//newObject._actorPorts = new HashMap();
 		newObject._nextFireTime = null;
 		newObject._inputTokens = new HashMap();
 		newObject._outputTokens = new HashMap();
+        _ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
 		newObject._switchFabricQueue = new LinkedList<TimedEvent>();
 		return newObject;
 	}
@@ -295,7 +299,6 @@ public class AFDXSwitch extends AtomicQuantityManager {
             }
         }
 		 */
-		System.out.println("initialize _actorPorts" + _actorPorts.toString());
 
 		for (int i = 0; i < _numberOfPorts; i++) {
 			_inputTokens.put(i, new LinkedList<TimedEvent>());
@@ -371,17 +374,19 @@ public class AFDXSwitch extends AtomicQuantityManager {
 					} else {
 						actor = (Actor) receiver.getContainer().getContainer();
 					}
-					int actorPort = _actorPorts.get(actor);
+					//int actorPort = _actorPorts.get(actor);
+                    int outputPortID = _getPortID(receiver, false);
+
 					Time lastTimeStamp = currentTime;
-					if (_outputTokens.get(actorPort).size() > 0) {
-						Object[] last = (Object[]) _outputTokens.get(actorPort).getLast().contents;
+					if (_outputTokens.get(outputPortID).size() > 0) {
+						Object[] last = (Object[]) _outputTokens.get(outputPortID).getLast().contents;
 						if ( ((AFDXVlink) last[2]).getSource()
 								.equals(((AFDXVlink) output[2]).getSource())
 								&& ((Time) last[3]).compareTo(output[3]) == 0 ) {
 							multicast = true;
 						}
 
-						lastTimeStamp = _outputTokens.get(actorPort).getLast().timeStamp;
+						lastTimeStamp = _outputTokens.get(outputPortID).getLast().timeStamp;
 					}
 
 					if (multicast) {
@@ -392,7 +397,7 @@ public class AFDXSwitch extends AtomicQuantityManager {
 						computedTimeStamp = lastTimeStamp
 								.add(vl.getFrameSize()/(_bitRate*1000000));
 					}
-					_outputTokens.get(actorPort)
+					_outputTokens.get(outputPortID)
 					.add(new TimedEvent(computedTimeStamp, event.contents));
 
 					_switchFabricQueue.remove(event);
@@ -467,26 +472,18 @@ public class AFDXSwitch extends AtomicQuantityManager {
 			tok = ((RecordToken) token).get("payload");
 		}
 
-		IntermediateReceiver ir = (IntermediateReceiver) source;
+        int inputPortID = _getPortID(receiver, true);
 
-		int actorPortId = 0;
-		if (ir.source != null) {
-			Actor sender = ir.source;
-			actorPortId = _actorPorts.get(sender);
-		} else {
-			throw new IllegalActionException(this, "The receiver " + receiver
-					+ "does not have a source");
-		}
-
+        
 		Time lastTimeStamp = currentTime;
-		if (_inputTokens.get(actorPortId).size() > 0) {
+		if (_inputTokens.get(inputPortID).size() > 0) {
 			if (currentTime.compareTo(
-					(Time) ((Object[]) _inputTokens.get(actorPortId).getLast().contents)[3]) 
+					(Time) ((Object[]) _inputTokens.get(inputPortID).getLast().contents)[3]) 
 					== 0) {
 				multicast = true;
 			}
 
-			lastTimeStamp = _inputTokens.get(actorPortId).getLast().timeStamp;
+			lastTimeStamp = _inputTokens.get(inputPortID).getLast().timeStamp;
 		}        
 
 		if (multicast) {
@@ -497,7 +494,7 @@ public class AFDXSwitch extends AtomicQuantityManager {
 			// GL: XXX: FIXME: .add(_inputBufferDelay);
 		}
 
-		_inputTokens.get(actorPortId).add(
+		_inputTokens.get(inputPortID).add(
 				new TimedEvent(computedTimeStamp,
 						new Object[] {receiver, tok , vl , currentTime}));
 
@@ -518,11 +515,7 @@ public class AFDXSwitch extends AtomicQuantityManager {
 	 *  @param portIn The id of the switch port. 
 	 */
 	public void setPortIn(Port port, int portIn) {
-		Actor actor = (Actor) ((IOPort) port).getContainer();
-		_actorPorts.put(actor, portIn);
-
-
-		//_ioPortToSwitchInPort.put((IOPort)port, portIn);  
+		_ioPortToSwitchInPort.put((IOPort)port, portIn);  
 	} 
 
 	/** Set the id of the switch output that is sending tokens to this actor port.
@@ -530,10 +523,7 @@ public class AFDXSwitch extends AtomicQuantityManager {
 	 * @param portOut The id of the switch port. 
 	 */
 	public void setPortOut(Port port, int portOut) {
-		Actor actor = (Actor) ((IOPort) port).getContainer();
-		_actorPorts.put(actor, portOut);
-
-		//_ioPortToSwitchOutPort.put((IOPort)port, portOut);
+		_ioPortToSwitchOutPort.put((IOPort)port, portOut);
 	} 
 
 	/** Reset the quantity manager and clear the tokens.
@@ -572,6 +562,26 @@ public class AFDXSwitch extends AtomicQuantityManager {
 
 	///////////////////////////////////////////////////////////////////
 	////                         protected methods                 ////
+	
+    /** Return the IO of the switch port where this receiver is
+     *  connected to. The port ID's are set via parameters.
+     *  @param receiver The actor receiver.
+     *  @param input Whether the port is an input port.
+     *  @return The port ID.
+     */
+    protected int _getPortID(Receiver receiver, boolean input) {
+        NamedObj containerPort = receiver.getContainer();
+        while (!(receiver.getContainer() instanceof Port)) {
+            containerPort = containerPort.getContainer();
+        }
+        Port port = (Port) containerPort;
+        
+        if (input) {
+            return _ioPortToSwitchInPort.get(port);
+        } else {
+            return _ioPortToSwitchOutPort.get(port);
+        }
+    }
 
 	/** Get next fire time for a set of tokens which is either the minimum
 	 *  next fire time passed as an argument or the smallest timestamp of
@@ -615,7 +625,7 @@ public class AFDXSwitch extends AtomicQuantityManager {
 	protected double _technologicalDelay;
 
 	/** Mapping of actors to switch ports. */
-	protected HashMap<Actor, Integer> _actorPorts;
+	//protected HashMap<Actor, Integer> _actorPorts;
 
 	/** Next time a token is sent and the next token can be processed. */
 	protected Time _nextFireTime;
@@ -625,6 +635,18 @@ public class AFDXSwitch extends AtomicQuantityManager {
 
 	/** Tokens to be sent to outputs. */
 	protected HashMap<Integer, LinkedList<TimedEvent>> _outputTokens;
+	
+    /** Tokens sent to ports mediated by this quantity manager 
+     *  are rerouted to the switch ports with the IDs specified in this 
+     *  map.
+     */
+    protected HashMap<Port, Integer> _ioPortToSwitchInPort;
+    
+    /** Tokens set to ports mediated by this quantity manager are
+     *  processed by this quantity manager and then forwarded 
+     *  to the port through the switch port with ID specified here.
+     */
+    protected HashMap<Port, Integer> _ioPortToSwitchOutPort;
 
 	/** Number of switch ports. */
 	protected int _numberOfPorts;
@@ -653,7 +675,7 @@ public class AFDXSwitch extends AtomicQuantityManager {
 	 *  are going out of the switch.  
 	 *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
 	 */
-	public static class AfdxSwitchAttributes extends ResourceAttributes {
+	public static class AfdxSwitchAttributes extends QMAttributes {
 
 		/** Constructor to use when editing a model.
 		 *  @param container The object being decorated.
