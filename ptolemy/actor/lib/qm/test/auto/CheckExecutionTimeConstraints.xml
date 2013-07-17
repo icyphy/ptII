@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CQMForExecutionTimeAssertions" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CheckExecutionTimeConstraints" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 55}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 139, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 68, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -50,7 +50,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 110.0]">
         </property>
         <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
@@ -65,11 +65,27 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 100.0}">
             </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
         </entity>
         <entity name="in2" class="ptolemy.actor.lib.qm.CQMInputPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 210.0}">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </property>
         </entity>
         <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
@@ -93,6 +109,14 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 185.0}">
             </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -106,29 +130,77 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 210.0]">
             </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 100.0}">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </property>
         </entity>
         <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 210.0}">
             </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 150.0]">
             </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
         </entity>
         <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 100.0]">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </property>
         </entity>
         <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, true, false, true, true, false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 185.0]">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </property>
         </entity>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -213,6 +285,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in1">
                 </property>
             </property>
@@ -225,6 +299,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in2">
                 </property>
@@ -253,6 +329,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in2">
                 </property>
             </property>
@@ -275,6 +353,8 @@
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
         <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
@@ -333,7 +413,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5916401629, 2.9386344215, 4.5425952209, 6.5402720056, 8.9608941904, 10.6364007966, 12.89619177, 14.9840041345, 16.517890606, 18.9867020708, 21.067249735, 22.5916401629, 25.0461657546, 27.099487761, 28.8239955795}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5950626958, 2.9386344215, 4.5425952209, 6.5402720056, 8.9608941904, 10.6364007966, 12.89619177, 14.9840041345, 16.517890606, 18.9867020708, 21.067249735, 22.5916401629, 25.0461657546, 27.099487761, 28.8239955795}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.06364007966E-8">
         </property>
