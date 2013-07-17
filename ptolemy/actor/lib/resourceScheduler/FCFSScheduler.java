@@ -102,9 +102,9 @@ public class FCFSScheduler extends AtomicResourceScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time _schedule(Actor actor, Time currentPlatformTime,
+    public Time schedule(Actor actor, Time currentPlatformTime,
             Time deadline, Time executionTime) throws IllegalActionException {
-        super._schedule(actor, currentPlatformTime, deadline, executionTime);
+        super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;

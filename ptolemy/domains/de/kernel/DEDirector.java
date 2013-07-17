@@ -41,6 +41,7 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
@@ -2340,6 +2341,17 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  event.
      */
     protected void _noActorToFire() throws IllegalActionException {
+    }
+    
+    @Override
+    protected boolean _schedule(Actor actor, Time timestamp)
+            throws IllegalActionException { 
+        boolean schedule = super._schedule(actor, timestamp);
+        if (!schedule) {
+            ResourceScheduler scheduler = _getResourceScheduler(actor);
+            fireAt((Actor) scheduler, getModelTime().add(_nextScheduleTime.get(scheduler)));
+        }
+        return schedule;
     }
 
     /** Actors and their matching events currently in execution and waiting

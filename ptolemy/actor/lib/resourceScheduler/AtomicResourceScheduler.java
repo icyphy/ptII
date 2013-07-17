@@ -179,20 +179,6 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         return _getEntitiesToDecorate(container);
     }
     
-    private List<NamedObj> _getEntitiesToDecorate(CompositeEntity container) {
-        List<NamedObj> toDecorate = new ArrayList<NamedObj>();
-        List entities = container.entityList();
-        for (Object entity : entities) {
-            if (!(entity instanceof ResourceScheduler)) {
-                toDecorate.add((NamedObj) entity);
-                if (entity instanceof CompositeEntity) {
-                    toDecorate.addAll(_getEntitiesToDecorate((CompositeEntity) entity));
-                }
-            }
-        }
-        return toDecorate;
-    }
-
     /** Plot a new execution event for an actor (i.e. an actor
      *  started/finished execution, was preempted or resumed).
      * @param actor The actor.
@@ -257,6 +243,12 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      */
     public Time getTime(double time) throws IllegalActionException {
         return new Time(((CompositeActor) getContainer()).getDirector(), time);
+    }
+    
+    @Override
+    public void fire() throws IllegalActionException { 
+        super.fire();
+        schedule(getDirector().getModelTime());
     }
 
     /** Initialize local variables.
@@ -360,7 +352,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
 
         event(this, environmentTime.getDoubleValue(), ExecutionEventType.START);
         event(this, environmentTime.getDoubleValue(), ExecutionEventType.STOP);
-        return _schedule(actor, environmentTime, deadline, new Time(director,
+        return schedule(actor, environmentTime, deadline, new Time(director,
                 executionTime));
     }
 
@@ -445,7 +437,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
-    protected Time _schedule(Actor actor, Time environmentTime, Time deadline,
+    protected Time schedule(Actor actor, Time environmentTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         return null;
     }
@@ -497,6 +489,20 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
 
     ///////////////////////////////////////////////////////////////////
     //                          private variables                    //
+
+    private List<NamedObj> _getEntitiesToDecorate(CompositeEntity container) {
+        List<NamedObj> toDecorate = new ArrayList<NamedObj>();
+        List entities = container.entityList();
+        for (Object entity : entities) {
+            if (!(entity instanceof ResourceScheduler)) {
+                toDecorate.add((NamedObj) entity);
+                if (entity instanceof CompositeEntity) {
+                    toDecorate.addAll(_getEntitiesToDecorate((CompositeEntity) entity));
+                }
+            }
+        }
+        return toDecorate;
+    }
 
     /** Previous positions of the actor data set. */
     private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>();

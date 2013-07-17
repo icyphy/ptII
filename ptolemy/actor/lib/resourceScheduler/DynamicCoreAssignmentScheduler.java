@@ -101,9 +101,9 @@ public class DynamicCoreAssignmentScheduler extends AtomicResourceScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time _schedule(Actor actor, Time currentPlatformTime,
+    public Time schedule(Actor actor, Time currentPlatformTime,
             Time deadline, Time executionTime) throws IllegalActionException {
-        super._schedule(actor, currentPlatformTime, deadline, executionTime);
+        super.schedule(actor, currentPlatformTime, deadline, executionTime);
         Time minimumRemainingTime = null;
         // Check if is already executing somewhere.
         for (NamedObj schedulerActor : _actors) {
@@ -111,7 +111,7 @@ public class DynamicCoreAssignmentScheduler extends AtomicResourceScheduler {
             if (scheduler.getRemainingTime(actor) != null
                     && scheduler.getRemainingTime(actor).getDoubleValue() > 0.0) {
                 // This actor is currently executing on this scheduler.
-                Time time = scheduler._schedule(actor, currentPlatformTime,
+                Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
                 event(scheduler, currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);
@@ -133,7 +133,7 @@ public class DynamicCoreAssignmentScheduler extends AtomicResourceScheduler {
             }
             Time remainingTime = _remainingTimeOnCore.get(scheduler);
             if (remainingTime == null || remainingTime.getDoubleValue() == 0.0) {
-                Time time = scheduler._schedule(actor, currentPlatformTime,
+                Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
                 event(scheduler, currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);

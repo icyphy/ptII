@@ -116,15 +116,35 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time _schedule(Actor actor, Time currentPlatformTime, Time deadline,
+    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         if (!_currentlyExecuting.contains(actor)) {
             _deadlines.put(actor, deadline);
         }
-        Time time = super._schedule(actor, currentPlatformTime, deadline,
-                executionTime);
+        Time time = super.schedule(actor, currentPlatformTime, deadline,
+                executionTime); 
         if (lastScheduledActorFinished()) {
             _deadlines.put(actor, null);
+            getDirector().resumeActor(actor);
+        }
+        return time;
+    }
+    
+    
+    /** Perform rescheduling actions when no new actor requests to be
+     *  scheduled.
+     * @param environmentTime The outside time.
+     * @return Relative time when this Scheduler has to be executed
+     *    again to perform rescheduling actions.
+     * @exception IllegalActionException Thrown in subclasses.   
+     */
+    @Override
+    public Time schedule(Time environmentTime) throws IllegalActionException {
+        Actor actor = _currentlyExecuting.peek();
+        Time time = super.schedule(actor, environmentTime, null, null);
+        if (lastScheduledActorFinished()) {
+            _deadlines.put(actor, null);
+            getDirector().resumeActor(actor);
         }
         return time;
     }
