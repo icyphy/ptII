@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Sequencing" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 659, 737}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 893, 741}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 631]">
     </property>
@@ -92,11 +92,11 @@
         </property>
     </entity>
     <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 495.0]">
@@ -109,18 +109,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 185.0]">
         </property>
     </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 285.0]">
         </property>
     </entity>
-    <entity name="Barrier2" class="ptolemy.domains.rendezvous.lib.Barrier">
+    <entity name="Barrier" class="ptolemy.domains.rendezvous.lib.Barrier">
         <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
             </property>
@@ -130,7 +130,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[172.5, 240.0]">
         </property>
     </entity>
-    <entity name="Buffer2" class="ptolemy.domains.rendezvous.lib.Buffer">
+    <entity name="Buffer" class="ptolemy.domains.rendezvous.lib.Buffer">
         <property name="BufferIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
             </property>
@@ -140,7 +140,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 285.0]">
         </property>
     </entity>
-    <entity name="Merge2" class="ptolemy.domains.rendezvous.lib.Merge">
+    <entity name="Merge" class="ptolemy.domains.rendezvous.lib.Merge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 190.0]">
         </property>
     </entity>
@@ -199,14 +199,14 @@
     <link port="Ramp3.output" relation="relation"/>
     <link port="Ramp4.output" relation="relation2"/>
     <link port="Ramp1.output" relation="relation5"/>
-    <link port="Ramp.output" relation="relation6"/>
-    <link port="Barrier2.input" relation="relation5"/>
-    <link port="Barrier2.input" relation="relation6"/>
-    <link port="Buffer2.input" relation="relation6"/>
-    <link port="Buffer2.output" relation="relation7"/>
-    <link port="Merge2.output" relation="relation8"/>
-    <link port="Merge2.input" relation="relation5"/>
-    <link port="Merge2.input" relation="relation7"/>
+    <link port="Ramp2.output" relation="relation6"/>
+    <link port="Barrier.input" relation="relation5"/>
+    <link port="Barrier.input" relation="relation6"/>
+    <link port="Buffer.input" relation="relation6"/>
+    <link port="Buffer.output" relation="relation7"/>
+    <link port="Merge.output" relation="relation8"/>
+    <link port="Merge.input" relation="relation5"/>
+    <link port="Merge.input" relation="relation7"/>
     <link port="Display2.input" relation="relation8"/>
     <link port="Commutator.input" relation="relation"/>
     <link port="Commutator.input" relation="relation2"/>
