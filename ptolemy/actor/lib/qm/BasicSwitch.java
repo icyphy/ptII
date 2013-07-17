@@ -404,10 +404,7 @@ public class BasicSwitch extends AtomicQuantityManager {
         if (getDirector() instanceof DEDirector && token == null) {
             return;
         }
-        Time currentTime = getDirector().getModelTime();
-        
-        System.out.println("inputs=" + _ioPortToSwitchInPort.toString());
-        System.out.println("outputs=" + _ioPortToSwitchOutPort.toString());
+        Time currentTime = getDirector().getModelTime(); 
 
         int inputPortID = _getPortID(receiver, true);
         
