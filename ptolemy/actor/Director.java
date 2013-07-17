@@ -1975,7 +1975,7 @@ public class Director extends Attribute implements Executable {
      *  @return the resource scheduler.
      * @throws IllegalActionException 
      */
-    private ResourceScheduler _getResourceScheduler(Actor actor) throws IllegalActionException {
+    protected ResourceScheduler _getResourceScheduler(Actor actor) throws IllegalActionException {
         if (_schedulerForActor == null) {
             _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
         }
