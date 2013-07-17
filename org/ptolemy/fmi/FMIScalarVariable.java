@@ -486,9 +486,13 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      */
     private void _getValue(Pointer fmiComponent, Object valueBuffer,
-            Class typeClass) {
+			   Class typeClass) {
         if (_fmiGetFunction == null) {
-            _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet" + _typeName);
+	    try {
+		_fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet" + _typeName);
+	    } catch (IOException ex) {
+		throw new RuntimeException("Failed to find the native library.", ex);
+	    }
 	}
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
     }
@@ -502,9 +506,13 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      */
     private void _setValue(Pointer fmiComponent, Object valueBuffer,
-            Class typeClass) {
+			   Class typeClass) {
         if (_fmiSetFunction == null) {
-            _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet" + _typeName);
+	    try {
+		_fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet" + _typeName);
+	    } catch (IOException ex) {
+		throw new RuntimeException("Failed to find the native library.", ex);
+	    }
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
     }
