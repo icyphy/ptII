@@ -50,6 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 /**
  Post the contents of input record to a specified URL.
@@ -114,6 +115,18 @@ public class HttpPost extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HttpPost newObject = (HttpPost) super.clone(workspace);
+        newObject.input.setTypeAtMost(BaseType.RECORD);
+        return newObject;
+    }
 
     /** If there is an input, then post to the specified URL the
      *  data on the input record, wait for a response, and output

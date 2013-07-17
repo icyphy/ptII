@@ -322,6 +322,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         
         newObject._request = null;
         newObject._response = null;
+        
+        newObject.setCookies.setTypeAtMost(BaseType.RECORD);
+        
         return newObject;
     }
 
