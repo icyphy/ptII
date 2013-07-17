@@ -1375,8 +1375,7 @@ public class IOPort extends ComponentPort {
                     if (s > sequenceNumber) {
                         sequenceNumber = s;
                     }
-                } else {
-                    System.out.println(attribute);
+                } else { 
                     attribute.sequenceNumber.setToken(new IntToken(-1));
                 }
             }
