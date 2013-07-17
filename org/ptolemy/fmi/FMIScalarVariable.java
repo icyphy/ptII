@@ -488,21 +488,8 @@ public class FMIScalarVariable {
     private void _getValue(Pointer fmiComponent, Object valueBuffer,
             Class typeClass) {
         if (_fmiGetFunction == null) {
-            // Function has not been loaded yet.
-            NativeLibrary nativeLibrary;
-            try {
-                nativeLibrary = fmiModelDescription.getNativeLibrary();
-            } catch (IOException e) {
-                // FIXME: Don't use runtime exception.
-                throw new RuntimeException("Platform not supported.", e);
-            }
-            _fmiGetFunction = nativeLibrary
-                    .getFunction(fmiModelDescription.modelIdentifier
-                            + "_fmiGet" + _typeName);
-            _fmiSetFunction = nativeLibrary
-                    .getFunction(fmiModelDescription.modelIdentifier
-                            + "_fmiSet" + _typeName);
-        }
+            _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet" + _typeName);
+	}
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
     }
 
@@ -517,17 +504,7 @@ public class FMIScalarVariable {
     private void _setValue(Pointer fmiComponent, Object valueBuffer,
             Class typeClass) {
         if (_fmiSetFunction == null) {
-            // Function has not been loaded yet.
-            NativeLibrary nativeLibrary;
-            try {
-                nativeLibrary = fmiModelDescription.getNativeLibrary();
-            } catch (IOException e) {
-                // FIXME: Don't use runtime exception.
-                throw new RuntimeException("Platform not supported.", e);
-            }
-            _fmiSetFunction = nativeLibrary
-                    .getFunction(fmiModelDescription.modelIdentifier
-                            + "_fmiSet" + _typeName);
+            _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet" + _typeName);
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
     }

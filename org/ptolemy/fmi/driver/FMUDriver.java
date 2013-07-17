@@ -56,6 +56,7 @@ public abstract class FMUDriver {
      *  modelIdentifier is prepended to the value of this parameter to
      *  yield the function name.
      *  @return the function.
+     *  @deprecated Call FMIModelDescription.getFmiFunction() instead.
      */
     public Function getFunction(String name) {
         // This is syntactic sugar.

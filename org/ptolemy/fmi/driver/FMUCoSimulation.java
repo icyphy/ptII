@@ -184,7 +184,7 @@ public class FMUCoSimulation extends FMUDriver {
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
         //loggingOn = (byte) 0;
 
-        Function instantiateSlave = getFunction("_fmiInstantiateSlave");
+        Function instantiateSlave = fmiModelDescription.getFmiFunction("fmiInstantiateSlave");
 	System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object[] { _modelIdentifier, fmiModelDescription.guid,
@@ -219,7 +219,7 @@ public class FMUCoSimulation extends FMUDriver {
             // Loop until the time is greater than the end time.
             double time = startTime;
 
-            Function doStep = getFunction("_fmiDoStep");
+            Function doStep = fmiModelDescription.getFmiFunction("fmiDoStep");
             while (time < endTime) {
                 if (enableLogging) {
                     System.out.println("FMUCoSimulation: about to call "
@@ -240,7 +240,7 @@ public class FMUCoSimulation extends FMUDriver {
 
 	    // Don't throw an exception while freeing a slave.  Some
 	    // fmiTerminateSlave calls free the slave for us.
-	    Function freeSlave = getFunction("_fmiFreeSlaveInstance");
+	    Function freeSlave = fmiModelDescription.getFmiFunction("fmiFreeSlaveInstance");
 	    int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
 						      new Object[] { fmiComponent })).intValue();
 	    if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {

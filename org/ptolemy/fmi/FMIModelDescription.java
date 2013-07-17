@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
 
 ///////////////////////////////////////////////////////////////////
@@ -157,6 +158,56 @@ public class FMIModelDescription {
 	return _fmuAllocateMemory;
     }
 
+
+    /** Get the native function from the native library.
+     *	
+     *  <p>A FMI 1.0 FMU will have functions like MyModel_fmiGetReal().</p>
+     *
+     *  <p>A FMI 2.0 FMU that is shipped with C source code or with a
+     *  static library, will have functions like MyModel_fmiGetReal().</p>
+     *
+     *  <p>However, a FMI 2.0 FMU that is shipped with a shared
+     *  library (and without C source code), will have functions like
+     *  fmiGetReal().</p>
+     *
+     *  <p>This method tries both formats.  The leading modelIdentifier is 
+     *  tried first because we believe that FMUs should be shipped with source code.
+     *  If the function name with the leading modelIdentifier is not found, then
+     *  just the functionName is tried.</p>
+     *
+     *  @param functionName The name of the function, without a leading underscore.
+     *  @return The function.
+     *  @exception UnsatisfiedLinkError If the function is not found using either format.
+     *  @exception IOException If the native library cannot be found.
+     */
+    public  Function getFmiFunction(String functionName) throws UnsatisfiedLinkError, IOException {
+	// A different implementation would try to guess which
+	// function is named depending on if there is C code present
+	// and whether there is a dynamic library present.  However,
+	// for Java, it is unlikely that a static library is being
+	// accessed and determining whether source is present to
+	// determine the function name is asinine (cxh, 7/16/13)
+	if (_nativeLibrary == null) {
+	    getNativeLibrary();
+	}
+	Function function = null;
+	String name1 = modelIdentifier + "_" + functionName;
+	try {
+	    function = _nativeLibrary.getFunction(name1);
+	} catch (UnsatisfiedLinkError error) {
+	    try {
+		function = _nativeLibrary
+		    .getFunction(functionName);
+	    } catch (UnsatisfiedLinkError error2) {
+		UnsatisfiedLinkError linkError = new UnsatisfiedLinkError("Could not find the function, \""
+					       + name1 + "\" or \""
+					       + function + "\" in " + _nativeLibrary);
+		linkError.initCause(error);
+		throw linkError;
+	    }
+	}
+	return function;
+    }
 
     /** Get the native library of C functions for the current platform.
      *  @return The library of functions for the current platform.
