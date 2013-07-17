@@ -57,6 +57,7 @@ JSRCS = \
 	HTMLPageAssembler.java
 
 OTHER_FILES_TO_BE_JARED = \
+	HTMLPageAssemblerIcon.xml \
 	htmlExportConfiguration.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
