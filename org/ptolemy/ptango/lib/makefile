@@ -61,6 +61,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ptango.xml \
+	HTMLModelExporterIcon.xml \
+	HttpActorIcon.xml \
 	HttpGetIcon.xml \
 	HttpPostIcon.xml \
 	WebServerIcon.xml
