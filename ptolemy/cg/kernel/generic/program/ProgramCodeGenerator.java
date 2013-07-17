@@ -907,7 +907,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** Return the set of modified variables.
      *  @return The set of modified variables.
      *  @exception IllegalActionException Not thrown in this base class.
-     *  @see #setModifiedVariables(Set<Parameter>)
+     *  @see #setModifiedVariables(Set)
      */
     final public Set<Parameter> getModifiedVariables()
             throws IllegalActionException {
