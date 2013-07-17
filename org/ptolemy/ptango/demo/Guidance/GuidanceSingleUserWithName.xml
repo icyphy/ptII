@@ -62,13 +62,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 22, 930, 711}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 22, 1168, 549}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 601]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[934, 439]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7425749272714972">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9754683387441481">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{498.90624999999994, 430.20526603498536}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{510.61865234375, 252.07601492745536}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a GET request, return a welcome page">
@@ -198,6 +198,18 @@
             </property>
         </port>
     </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 160.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 395.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -226,6 +238,10 @@
         <vertex name="vertex1" value="{135.0, 395.0}">
         </vertex>
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="RecordDisassembler.input" relation="relation"/>
     <link port="RecordDisassembler.name" relation="relation5"/>
     <link port="RecordDisassembler.xCoord" relation="relation6"/>
@@ -234,10 +250,14 @@
     <link port="HttpActor.response" relation="relation3"/>
     <link port="HttpActor.getRequestURI" relation="relation2"/>
     <link port="HttpActor.postParameters" relation="relation"/>
-    <link port="FileReader.output" relation="relation10"/>
+    <link port="FileReader.output" relation="relation4"/>
     <link port="FileReader.trigger" relation="relation2"/>
-    <link port="HTMLModelExporter.webPage" relation="relation3"/>
+    <link port="HTMLModelExporter.webPage" relation="relation8"/>
     <link port="HTMLModelExporter.name" relation="relation5"/>
     <link port="HTMLModelExporter.xCoord" relation="relation6"/>
     <link port="HTMLModelExporter.yCoord" relation="relation7"/>
+    <link port="MicrostepDelay.input" relation="relation4"/>
+    <link port="MicrostepDelay.output" relation="relation10"/>
+    <link port="MicrostepDelay2.input" relation="relation8"/>
+    <link port="MicrostepDelay2.output" relation="relation3"/>
 </entity>
