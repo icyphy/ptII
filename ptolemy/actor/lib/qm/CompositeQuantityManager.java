@@ -45,6 +45,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.qm.AtomicQuantityManager.QMAttributes;
 import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
@@ -431,7 +432,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      * 
      *  @author Patricia Derler
      */
-    public static class CQMAttributes extends ResourceAttributes {
+    public static class CQMAttributes extends QMAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -465,6 +466,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
          */
         public Parameter inputPort; 
         
+        
+        
         /** React to a change in the input port attribute.
          *  @param attribute The attribute that changed.
          *  @exception IllegalActionException If the change is not acceptable
@@ -474,19 +477,14 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();
-            if (attribute == enable) {
-                port.createReceivers(); 
-                port.invalidateQMList();
-            }
             if (attribute == inputPort) {
                 _inputPort = ((StringToken)((Parameter)attribute).getToken()).stringValue();
                 CompositeQuantityManager compositeQM = (CompositeQuantityManager) getDecorator();
                 if (compositeQM != null) {
                     compositeQM.setInputPortName(port, _inputPort);
                 }
-            } else {
-                super.attributeChanged(attribute);
             } 
+            super.attributeChanged(attribute);
         } 
         
         /** Add names of available CQMInputPort in CompositeQM as
