@@ -69,7 +69,8 @@ public interface IUtilSocket {
 
     /** Exchange data through the BSD socket.
      *  @throws IOException 
+     * @throws Exception 
      */
-    public void exchangewithsocket() throws IOException;
+    public void exchangewithsocket() throws IOException, Exception;
 
 }
