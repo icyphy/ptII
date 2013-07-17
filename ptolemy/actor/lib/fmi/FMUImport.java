@@ -1202,78 +1202,44 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         ////////////////////////////////////////////
         //// model exchange version
         if (_fmiModelDescription.modelExchange){
-            String completedIntegratorStepMethodName = _fmiModelDescription.modelIdentifier
-                + "_fmiCompletedIntegratorStep";
-              
             try {
-                _fmiCompletedIntegratorStepFunction = _nativeLibrary
-                    .getFunction(completedIntegratorStepMethodName);
-
+                _fmiCompletedIntegratorStepFunction = _getFmiFunction("fmiCompletedIntegratorStep");
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                        "Could not find the \"" + completedIntegratorStepMethodName
-                        + "\" in \"" + _fmuFileName + "\".  "
+                        "Could not find the \"fmiCompletedIntegratorStep()\" function in \""
+                        + _fmuFileName + "\".  "
                         + "This can happen if the Model Exchange FMU was compiled with "
                         + "the MODEL_IDENTIFIER #define set to a value that does not "
                         + "match the value in modelDescription.xml");
             }
-            _fmiFreeModelInstanceFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiFreeModelInstance");
-            _fmiGetContinuousStatesFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiGetContinuousStates");
-            _fmiSetContinuousStates = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiSetContinuousStates");
-            _fmiGetDerivativesFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiGetDerivatives");
+            _fmiFreeModelInstanceFunction = _getFmiFunction("fmiFreeModelInstance");
+            _fmiGetContinuousStatesFunction = _getFmiFunction("fmiGetContinuousStates");
+            _fmiSetContinuousStates = _getFmiFunction("fmiSetContinuousStates");
+            _fmiGetDerivativesFunction = _getFmiFunction("fmiGetDerivatives");
             // Optional function? The standard is not clear
             try {
-                _fmiGetEventIndicatorsFunction = _nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiGetEventIndicators");
+                _fmiGetEventIndicatorsFunction = _getFmiFunction("fmiGetEventIndicators");
             } catch (UnsatisfiedLinkError ex) {
                 // The FMU has not provided the function.
                 _fmiGetEventIndicatorsFunction = null;
             }
-            _fmiInitializeFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiInitialize");
-            _fmiInstantiateModelFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiInstantiateModel");
-            _fmiSetTimeFunction = _nativeLibrary.getFunction(
-                    _fmiModelDescription.modelIdentifier + "_fmiSetTime");
-            _fmiTerminateFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiTerminate");
+            _fmiInitializeFunction = _getFmiFunction("fmiInitialize");
+            _fmiInstantiateModelFunction = _getFmiFunction("fmiInstantiateModel");
+            _fmiSetTimeFunction = _getFmiFunction("fmiSetTime");
+            _fmiTerminateFunction = _getFmiFunction("fmiTerminate");
             _checkFmiModelExchange();
         } else {
             ////////////////////////////////////////////
             //// co-simulation version
-            _fmiDoStepFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiDoStep");
-            _fmiFreeSlaveInstanceFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiFreeSlaveInstance");
-            _fmiInitializeSlaveFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiInitializeSlave");
-            _fmiInstantiateSlaveFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiInstantiateSlave");
-            _fmiTerminateSlaveFunction = _nativeLibrary
-                    .getFunction(_fmiModelDescription.modelIdentifier
-                            + "_fmiTerminateSlave");
+            _fmiDoStepFunction = _getFmiFunction("fmiDoStep");
+            _fmiFreeSlaveInstanceFunction = _getFmiFunction("fmiFreeSlaveInstance");
+            _fmiInitializeSlaveFunction = _getFmiFunction("fmiInitializeSlave");
+            _fmiInstantiateSlaveFunction = _getFmiFunction("fmiInstantiateSlave");
+            _fmiTerminateSlaveFunction = _getFmiFunction("fmiTerminateSlave");
 
             // Optional function.
             try {
-                _fmiGetRealStatusFunction = _nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiGetRealStatus");
+                _fmiGetRealStatusFunction = _getFmiFunction("fmiGetRealStatus");
             } catch (UnsatisfiedLinkError ex) {
                 // The FMU has not provided the function.
                 _fmiGetRealStatusFunction = null;
@@ -1281,15 +1247,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (_fmiModelDescription.canGetAndSetFMUstate) {
                 // Retrieve the following FMI 2.0 functions for
                 // getting and setting state.
-                _fmiFreeFMUstateFunction = _nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiFreeFMUstate");
-                _fmiGetFMUstateFunction = _nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiGetFMUstate");
-                _fmiSetFMUstate = _nativeLibrary
-                        .getFunction(_fmiModelDescription.modelIdentifier
-                                + "_fmiSetFMUstate");
+                _fmiFreeFMUstateFunction = _getFmiFunction("fmiFreeFMUstate");
+                _fmiGetFMUstateFunction = _getFmiFunction("fmiGetFMUstate");
+                _fmiSetFMUstate = _getFmiFunction("fmiSetFMUstate");
             } else {
                 _fmiFreeFMUstateFunction = null;
                 _fmiGetFMUstateFunction = null;
@@ -2163,9 +2123,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // step size so that we can call fireAt() and ensure that the FMU is invoked
             // at the specified time.
             if (_fmiModelDescription.canProvideMaxStepSize) {
-                Function maxStepSizeFunction = _nativeLibrary.getFunction(
-                        _fmiModelDescription.modelIdentifier
-                        + "_fmiGetMaxStepSize");
+                Function maxStepSizeFunction = _getFmiFunction("fmiGetMaxStepSize");
                 DoubleBuffer maxStepSize = DoubleBuffer.allocate(1);
                 int providesMaxStepSize = ((Integer) maxStepSizeFunction.invoke(
                         Integer.class,
@@ -2472,6 +2430,54 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         } else {
             throw new IllegalActionException("Type " + type + " not supported.");
         }
+    }
+
+    /** Get the native function from the native library.
+     *	
+     *  <p>A FMI 1.0 FMU will have functions like MyModel_fmiGetReal().</p>
+     *
+     *  <p>A FMI 2.0 FMU that is shipped with C source code or with a
+     *  static library, will have functions like MyModel_fmiGetReal().</p>
+     *
+     *  <p>However, a FMI 2.0 FMU that is shipped with a shared
+     *  library (and without C source code), will have functions like
+     *  fmiGetReal().</p>
+     *
+     *  <p>This method tries both formats.  The leading modelIdentifier is 
+     *  tried first because we believe that FMUs should be shipped with source code.
+     *  If the function name with the leading modelIdentifier is not found, then
+     *  just the functionName is tried.</p>
+     *
+     *  @param functionName The name of the function, without a leading underscore.
+     *  @return The function.
+     *  @exception UnsatisfiedLinkError If the function is not found using either format.
+     */
+    private Function _getFmiFunction(String functionName) throws UnsatisfiedLinkError {
+	// A different implementation would try to guess which
+	// function is named depending on if there is C code present
+	// and whether there is a dynamic library present.  However,
+	// for Java, it is unlikely that a static library is being
+	// accessed and determining whether source is present to
+	// determine the function name is asinine (cxh, 7/16/13)
+	Function function = null;
+	String name1 = _fmiModelDescription.modelIdentifier
+	    + "_" + functionName;
+	try {
+	    function = _nativeLibrary.getFunction(_fmiModelDescription.modelIdentifier
+						  +"_" + functionName);
+	} catch (UnsatisfiedLinkError error) {
+	    try {
+		function = _nativeLibrary
+		    .getFunction(functionName);
+	    } catch (UnsatisfiedLinkError error2) {
+		UnsatisfiedLinkError linkError = new UnsatisfiedLinkError("Could not find the function, \""
+					       + name1 + "\" or \""
+					       + function + "\" in " + _nativeLibrary);
+		linkError.initCause(error);
+		throw linkError;
+	    }
+	}
+	return function;
     }
 
     /** Return a list of inputs of the FMU.
