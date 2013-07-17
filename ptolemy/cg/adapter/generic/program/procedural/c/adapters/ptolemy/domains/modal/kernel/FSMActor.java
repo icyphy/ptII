@@ -76,12 +76,12 @@ public class FSMActor
      *  @param component The associated component.
      *  @exception IllegalActionException If thrown by the parent
      *  class.
+     *  @exception NameDuplicationException If thrown by the parent
+     *  class.
      */
     public FSMActor(ptolemy.domains.modal.kernel.FSMActor component)
             throws NameDuplicationException, IllegalActionException {
-
         super(component);
-
     }
 
     ///////////////////////////////////////////////////////////////////

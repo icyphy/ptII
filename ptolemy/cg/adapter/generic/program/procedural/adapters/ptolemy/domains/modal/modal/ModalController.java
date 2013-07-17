@@ -63,7 +63,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
-     *  @param component The associated component.
+     *  @param component The associated modal controller component.
      */
     public ModalController(ptolemy.domains.modal.modal.ModalController component) {
         super(component);
@@ -621,6 +621,12 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+
+    /** The associated modal controller component. */
     protected ptolemy.domains.modal.modal.ModalController _myController;
 
 }

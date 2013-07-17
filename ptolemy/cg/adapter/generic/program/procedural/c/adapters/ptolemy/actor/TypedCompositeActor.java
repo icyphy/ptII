@@ -668,7 +668,7 @@ public class TypedCompositeActor extends
     }
     
     /**
-     * Generate the initialize code for this composite actor
+     * Generate the initialize code for this composite actor.
      *
      * @return The generated initialize code.
      * @exception IllegalActionException If thrown while appending to the
@@ -691,7 +691,7 @@ public class TypedCompositeActor extends
     }
     
     /**
-     * Generate the postfire code for this composite actor
+     * Generate the postfire code for this composite actor.
      *
      * @return The generated postfire code.
      * @exception IllegalActionException If thrown while appending to the
@@ -713,7 +713,7 @@ public class TypedCompositeActor extends
     }
 
     /**
-     * Generate the prefire code for this composite actor
+     * Generate the prefire code for this composite actor.
      *
      * @return The generated prefire code.
      * @exception IllegalActionException If thrown while appending to the

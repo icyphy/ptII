@@ -111,7 +111,7 @@ public class DEDirector extends Director {
 //                .booleanValue();
     }
 
-    /** Generate The functions' declaration code for this director
+    /** Generate The functions' declaration code for this director.
      *
      *  @return The functions' declaration function code.
      *  @exception IllegalActionException If thrown while generating code.
@@ -690,8 +690,11 @@ public class DEDirector extends Director {
     
 
     
-    /** We override the super method, because in DE the declaration
-     * of the variables are in the actor's files
+    /** Generate the variable declaration. 
+     *
+     * <p> We override the super
+     * method, because in DE the declaration of the variables are in
+     * the actor's files.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
@@ -997,7 +1000,7 @@ public class DEDirector extends Director {
     }
     
     /** Returns the sanitized name of this director
-     *  adapter
+     *  adapter.
      * 
      * @return The name of the director
      */
@@ -1521,10 +1524,11 @@ public class DEDirector extends Director {
      */
     protected HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>> _referencedParameters = new HashMap<NamedProgramCodeGeneratorAdapter, HashSet<Parameter>>();
 
-    /** A variable to keep track of the sanitized name of the director
-     * 
+    /** The sanitized name of the director.
      */
     protected String _sanitizedDirectorName;
+    // FIXME: move the declaration of _sanitizedDirectorName up the class hierarchy.
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

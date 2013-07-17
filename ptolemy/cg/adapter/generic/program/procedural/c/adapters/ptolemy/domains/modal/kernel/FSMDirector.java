@@ -65,7 +65,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     ///////////////////////////////////////////////////////////////////
     ////                         Public methods                    ////
     
-    /** Generate The functions' declaration code for this director
+    /** Generate The functions' declaration code for this director.
     *
     *  @return The functions' declaration function code.
     *  @exception IllegalActionException If thrown while generating code.
@@ -293,7 +293,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }
     
     /** We override the super method, because the declaration
-     * of the variables are in the actor's files
+     * of the variables are in the actor's files.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
@@ -320,10 +320,9 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }
 
     
-    /** Returns the sanitized name of this director
-     *  adapter
+    /** Returns the sanitized name of this director adapter.
      * 
-     * @return The name of the director
+     * @return The sanitized name of the director
      */
     public String getSanitizedDirectorName() {
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
@@ -331,7 +330,10 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                         protected members                 ////
     
+    /** The sanitized name of the director.
+     */
     protected String _sanitizedDirectorName;
+    // FIXME: move the declaration of _sanitizedDirectorName up the class hierarchy.
 }

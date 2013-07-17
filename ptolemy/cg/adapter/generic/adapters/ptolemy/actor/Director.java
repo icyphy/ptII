@@ -449,6 +449,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer. 
      *  This method returns the declarations for the param actor only.
+     *  @param adapter The adapter for which to generate variable declarations.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
@@ -490,6 +491,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     
     /** Generate variable initialization for the referenced parameters.
      *  for the adapter given in argument
+     *  @param adapter The adapter for which to generate variable initialization.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
