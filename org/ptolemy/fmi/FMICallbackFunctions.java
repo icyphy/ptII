@@ -120,7 +120,7 @@ public class FMICallbackFunctions extends Structure {
      *           new FMULibrary.FMUFreeMemory(),
      *           new FMULibrary.FMUStepFinished());
      *
-     *   Function instantiateSlave = getFunction("_fmiInstantiateSlave");
+     *   Function instantiateSlave = fmiModelDescription.getFmiFunction("fmiInstantiateSlave");
      *
      *   Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
      *            new Object[] { _modelIdentifier, fmiModelDescription.guid,
