@@ -87,7 +87,7 @@ public class SDFDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Generate The functions' declaration code for this director
+    /** Generate The functions' declaration code for this director.
     *
     *  @return The functions' declaration function code.
     *  @exception IllegalActionException If thrown while generating code.
@@ -317,6 +317,7 @@ public class SDFDirector
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
 
+	// Initialize _sanitizedDirectoryName
         getSanitizedDirectorName();
 
         _updatePortBufferSize();
@@ -893,7 +894,7 @@ public class SDFDirector
     }
     
     /** Returns the sanitized name of this director
-     *  adapter
+     *  adapter.
      * 
      * @return The name of the director
      */
@@ -959,6 +960,12 @@ public class SDFDirector
 
         return processCode(code.toString());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** The sanitized directory name. */
+    protected String _sanitizedDirectorName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1110,8 +1117,6 @@ public class SDFDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private members                        ////
     
-    protected String _sanitizedDirectorName;
-
     private int _portNumber = 0;
 
     private boolean _doubleFlag;

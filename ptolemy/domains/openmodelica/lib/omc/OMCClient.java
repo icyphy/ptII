@@ -68,7 +68,7 @@ public class OMCClient {
     /** OMC which is coupled to Ptolemy II is called to initialize the
      *  OMC server and simulate the Modelica model, then exchange data via BSD socket.
      *  TODO it should be detailed.
-     * @param args
+     * @param args Not used.
      * @throws IllegalActionException
      * @throws IOException
      */

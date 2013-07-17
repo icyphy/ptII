@@ -648,6 +648,9 @@ public class TemplateParser {
 
     /** Init the TemplateParser with the associated
      *  given component and the given adapter.
+     *  <p>Calling this method sets the code generator to that of the adapter.
+     *  Note that calling {@link #setCodeGenerator(ProgramCodeGeneratorAdapter)}
+     *  also sets the code generator.
      *  @param component The associated component.
      *  @param adapter The associated adapter.
      */
@@ -1203,6 +1206,8 @@ public class TemplateParser {
     }
 
     /** Set the associated code generator.
+     *  Note that calling {@link #init(Object, ProgramCodeGeneratorAdapter)} 
+     *  also sets the code generator.
      *  @param codeGenerator The code generator associated with this class.
      *  @see #_getCodeGenerator()
      */
@@ -1528,6 +1533,22 @@ public class TemplateParser {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     protected fields                      ////
+
+    /** The ProgramCodeGenerator, set by calling 
+     *	{@link #init(Object, ProgramCodeGeneratorAdapter)} or
+     *  {@link #setCodeGenerator(ProgramCodeGeneratorAdapter)}.
+     */
+    protected ProgramCodeGenerator _codeGenerator;
+
+    /** The compoent, set by calling 
+     *	{@link #init(Object, ProgramCodeGeneratorAdapter)}.
+     */
+    protected Object _component;
+
+    // FIXME: Why is _component and Object?
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /**
@@ -1807,14 +1828,10 @@ public class TemplateParser {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    protected ProgramCodeGenerator _codeGenerator;
-
     /**
      * The code stream associated with this adapter.
      */
     private CodeStream _codeStream = null;
-
-    protected Object _component;
 
     /** The parse tree to use with expressions. */
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;

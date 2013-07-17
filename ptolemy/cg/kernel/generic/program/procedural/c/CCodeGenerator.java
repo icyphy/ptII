@@ -1136,8 +1136,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     ////                         protected methods                 ////
 
     /** Add include directories specified by the actors in this model.
+     *  Each element in the Set of include directories has "-I" prepended
+     *  and then {@link #addInclude(String)} is called.
+     *  @param adapter The adapter that has the include directories.
      *  @exception IllegalActionException If thrown when getting an actor's
      *   include directories.
+     *  @see ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter#getIncludeDirectories()
      */
     protected void _addActorIncludeDirectories(NamedProgramCodeGeneratorAdapter adapter) throws IllegalActionException {
         
@@ -1149,6 +1153,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     }
 
     /** Add libraries specified by the actors in this model.
+     *  @param adapter The adapter that has library directories.
      *  @exception IllegalActionException If thrown when getting an actor's
      *   libraries.
      */
@@ -1607,11 +1612,16 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  Then we write the code
      *  
      *  @param actor The actor that needs to be generated
+     *  @param directorAdapter The adapter of the director.  This
+     *  adapter is used to generate variable declarations for the
+     *  director.
+     *  @param container Not used by this method.
      *  @param includesDirectory The directory path of the includes files
      *  @param srcDirectory The directory path of the sources files
      *  @exception IllegalActionException If anything goes wrong during the generation.
      */
-    protected void _generateAndWriteActorCode(NamedObj actor, NamedProgramCodeGeneratorAdapter directorAdapter, 
+    protected void _generateAndWriteActorCode(NamedObj actor,
+             NamedProgramCodeGeneratorAdapter directorAdapter, 
             CompositeEntity container, String includesDirectory, String srcDirectory) 
             throws IllegalActionException {
         /////////////////////////////////////////////
@@ -2152,6 +2162,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     
     /** Generate include files. FIXME: State what is included.
+     *  @param adapter The adapter that has the header files.
      *  @return The #include statements, surrounded by #ifndef to ensure
      *   that the files are included only once.
      *  @exception IllegalActionException If the adapter class for some actor
@@ -2269,6 +2280,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  </dl>
 
      *  @param container The composite actor for which we generate the makefile
+     *  @param currentDirectory The director in which the makefile is to be written.
      *  @exception IllegalActionException  If there is a problem reading
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
