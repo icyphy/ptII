@@ -486,6 +486,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     }
 
     /** Iterate the specified actor once.
+     *  @param actor The actor to be iterated once.
      *  @return True if either prefire() returns false
      *   or postfire() returns true.
      *  @exception IllegalActionException If the actor throws it.
@@ -543,6 +544,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
      *  is empty and any pending fireAt() time requests
      *  are in the future. NOTE: This method is used
      *  only if activeObjects = false.
+     *  @param actor The actor to be run.
      *  @return The earliest pending fireAt time in the
      *   future, or TIME.POSITIVE_INFINITY if there is none.
      *  @exception IllegalActionException If the actor throws it.

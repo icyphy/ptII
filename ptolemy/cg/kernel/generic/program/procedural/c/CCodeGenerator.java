@@ -2162,7 +2162,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     
     /** Generate include files. FIXME: State what is included.
-     *  @param adapter The adapter that has the header files.
+     *  @param actorAapter The adapter that has the header files.
      *  @return The #include statements, surrounded by #ifndef to ensure
      *   that the files are included only once.
      *  @exception IllegalActionException If the adapter class for some actor
