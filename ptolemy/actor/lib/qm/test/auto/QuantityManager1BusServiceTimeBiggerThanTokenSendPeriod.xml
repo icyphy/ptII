@@ -80,6 +80,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
@@ -156,6 +158,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
@@ -215,23 +219,15 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-        </property>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -239,16 +235,12 @@
         </property>
         <vertex name="vertex1" value="{325.0, 150.0}">
         </vertex>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{325.0, 220.0}">
         </vertex>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <link port="CompositeActor.port" relation="relation"/>
     <link port="CompositeActor2.port" relation="relation"/>

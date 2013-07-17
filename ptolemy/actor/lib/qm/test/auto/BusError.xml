@@ -232,6 +232,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
@@ -413,6 +415,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
@@ -442,6 +446,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -512,6 +518,16 @@
             <property name="input"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.qm.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -578,28 +594,20 @@
         </property>
     </entity>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[-335.0, -315.0]">
         </vertex>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[-385.0, -340.0]">
         </vertex>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{-360.0, -370.0}">
         </vertex>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <link port="SubstationA.sync" relation="relation18"/>
     <link port="SubstationA.sync2" relation="relation10"/>
