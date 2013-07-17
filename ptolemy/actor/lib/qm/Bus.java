@@ -44,6 +44,7 @@ import ptolemy.actor.QuantityManagerListener.EventType;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
@@ -487,7 +488,7 @@ public class Bus extends AtomicQuantityManager {
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException { 
             if (attribute == messageLength) {
-                if (enabled()) {
+                if (((BooleanToken)enable.getToken()).booleanValue()) {
                     IOPort port = (IOPort) getContainer(); 
                     Bus bus = (Bus) getDecorator();
                     if (bus != null) {

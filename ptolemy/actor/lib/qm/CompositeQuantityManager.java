@@ -475,7 +475,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();
             if (attribute == enable) {
-                port.createReceivers();
+                port.createReceivers(); 
+                port.invalidateQMList();
             }
             if (attribute == inputPort) {
                 _inputPort = ((StringToken)((Parameter)attribute).getToken()).stringValue();

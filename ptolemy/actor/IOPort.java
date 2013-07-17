@@ -49,7 +49,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import ptolemy.actor.lib.qm.AtomicQuantityManager.QMAttributes;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -60,6 +62,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -251,10 +254,11 @@ public class IOPort extends ComponentPort {
      *      be created.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         if (attribute instanceof ResourceAttributes) {
-            Decorator decorator = ((ResourceAttributes)attribute).getDecorator();
-            if (decorator != null && decorator instanceof QuantityManager) {  
+            Decorator decorator = ((ResourceAttributes) attribute)
+                    .getDecorator();
+            if (decorator != null && decorator instanceof QuantityManager) {
                 // Invalidate list of quantity managers.
                 _qmListValid = false;
                 createReceivers();
@@ -1347,33 +1351,68 @@ public class IOPort extends ComponentPort {
      *  A quantity manager is a {@link Parameter} whose value is an
      *  {@link ObjectToken} that references an object that implements
      *  the {@link QuantityManager} interface.
+     *  Update the sequence number of quantity managers.
      *  @return The list of quantity managers.
      *  @exception IllegalActionException Thrown if the token of the parameter
      *      containing the quantity manager object cannot be retrieved.
      */
     public List<QuantityManager> getQuantityManagers()
             throws IllegalActionException {
-        //if (_qmListValid == false) {
-        if (_qmList == null) {
-            _qmList = new ArrayList<QuantityManager>();
-        }
-        List<ResourceAttributes> list = this.attributeList(ResourceAttributes.class);
-        for (ResourceAttributes attribute : list) {
-            QuantityManager qm = (QuantityManager)attribute.getDecorator();
-            if (qm != null) {
-                if (attribute.enabled()) {
-                    if (!_qmList.contains(qm)) {
-                        _qmList.add(qm);
-                        attribute.validateSettables();
+        try {
+            _workspace.getWriteAccess(); 
+            if (_qmList == null) {
+                _qmList = new ArrayList<QuantityManager>();
+            } 
+            HashMap<Integer, QMAttributes> _qmMap = new HashMap<Integer, QMAttributes>();
+            int sequenceNumber = 1;
+            List<QMAttributes> qmlist = this.attributeList(QMAttributes.class);
+            List<QMAttributes> enabledAttributes = new ArrayList();
+            for (int i = 0; i < qmlist.size(); i++) {
+                QMAttributes attribute = qmlist.get(i);
+                if (((BooleanToken)attribute.enable.getToken()).booleanValue()) {
+                    enabledAttributes.add(attribute);
+                    int s = ((IntToken)attribute.sequenceNumber.getToken()).intValue();
+                    if (s > sequenceNumber) {
+                        sequenceNumber = s;
                     }
                 } else {
-                    _qmList.remove(qm);
+                    System.out.println(attribute);
+                    attribute.sequenceNumber.setToken(new IntToken(-1));
                 }
             }
+            sequenceNumber = sequenceNumber + 1;
+            for (int i = 0; i < enabledAttributes.size(); i++) {
+                final QMAttributes attribute = enabledAttributes.get(i);
+                final int seqNum = sequenceNumber;
+                QuantityManager qm = (QuantityManager) attribute.getDecorator();
+                int oldSeqNum = ((IntToken) attribute.sequenceNumber.getToken()).intValue();
+                if (oldSeqNum == -1 && qm != null && !_qmList.contains(qm)) {
+                    attribute.sequenceNumber.setToken(new IntToken(seqNum)); 
+                    _qmMap.put(seqNum, attribute); 
+                    sequenceNumber = sequenceNumber + 1;
+                } else {   
+                    _qmMap.put(oldSeqNum, attribute);  
+                    
+                }
+            } 
+            _qmList.clear();
+            Iterator<Integer> iterator = _qmMap.keySet().iterator();
+            int i = 1;
+            while (iterator.hasNext()) {
+                
+                 QMAttributes attribute = _qmMap.get(iterator.next()); 
+                attribute.sequenceNumber.setToken(new IntToken(i));
+                i = i + 1;
+                _qmList.add((QuantityManager) attribute.getDecorator());
+            } 
+            _qmListValid = true;
+            return _qmList; 
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            _workspace.doneWriting();
         }
-        _qmListValid = true;
-        //}
-        return _qmList;
+        return null; 
     }
 
     /** If the port is an input, return the receivers that receive data
@@ -2216,6 +2255,10 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    public void invalidateQMList() {
+        _qmListValid = false;
+    }
+    
     /** Return true if the port is an input.  The port is an input
      *  if either setInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is

@@ -46,6 +46,7 @@ import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.QuantityManagerListener.EventType;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -58,6 +59,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /** This abstract class implements functionality to monitor the activity of a
@@ -300,6 +302,7 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
         public QMAttributes(NamedObj target, Decorator decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(target, decorator); 
+            _init();
         }
 
         /** Constructor to use when parsing a MoML file.
@@ -311,10 +314,18 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
         public QMAttributes(NamedObj target, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(target, name); 
+            _init();
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         parameters                        ////
+        
+        /** The sequenceNumber indicates the order in which quantity managers
+         *  are used. It defaults to the integer value -1 to indicate that 
+         *  this quantity manager is not used. After enabling the quantity
+         *  manager, this sequence number gets updated automatically.
+         */
+        public Parameter sequenceNumber;
 
 
         ///////////////////////////////////////////////////////////////////
@@ -331,8 +342,15 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
             IOPort port = (IOPort) getContainer();
             if (attribute == enable) {
                 port.createReceivers();
+                port.invalidateQMList();
             }
             super.attributeChanged(attribute);
+        }
+        
+        private void _init() throws IllegalActionException, NameDuplicationException {
+            sequenceNumber = new Parameter(this, "sequenceNumber", new IntToken(-1));
+            sequenceNumber.setPersistent(true);
+            sequenceNumber.setVisibility(Settable.EXPERT);
         }
     }
 
