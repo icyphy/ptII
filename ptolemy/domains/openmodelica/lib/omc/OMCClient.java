@@ -96,7 +96,7 @@ public class OMCClient {
                     "BouncingBall", "0.0", "0.1", 500, "0.0001", "dassl",
                     "mat", ".*", "", "", "interactive");
         } catch (Throwable throwable) {
-            throw new IllegalActionException(
+            throw new IllegalActionException(null, throwable,
                     "Unable to simulate BouncingBall model.");
         }
 
@@ -110,14 +110,18 @@ public class OMCClient {
                 _omcProxy.quitServer();
                 System.out.println("OMC server quit!");
             } catch (ConnectException ex) {
-                throw new IllegalActionException(
+                throw new IllegalActionException(null, ex,
                         "Unable to quit the OpenModelica server!");
             }
         } else {
 
-            // Use the BSD socket to exchange data with the OMC server.     
-            _utilSocket.exchangewithsocket();
-
+	    try {
+		// Use the BSD socket to exchange data with the OMC server.     
+		_utilSocket.exchangewithsocket();
+	    } catch (Throwable throwable) {
+		throw new IllegalActionException(null, throwable,
+						 "Failed to exchange data with the OMC server.");
+	    }
             // Close the server.
             _utilSocket.closesocket();
 
@@ -126,7 +130,7 @@ public class OMCClient {
                 _omcProxy.quitServer();
                 System.out.println("OMC server quit!");
             } catch (ConnectException ex) {
-                throw new IllegalActionException(
+                throw new IllegalActionException(null, ex,
                         "Unable to quit the OpenModelica server!");
             }
         }
