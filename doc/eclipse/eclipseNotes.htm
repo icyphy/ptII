@@ -19,6 +19,7 @@
  <li><a href="#debugTclTests">Debugging Tcl Tests</a></li>
  <li><a href="#Troubleshooting">Troubleshooting</a></li>
  <li><a href="#AddingAnActor">Adding an actor in Eclipse</a></li>
+ <li><a href="#AddingAFile">Adding a File</a></li>
 </ul>
 
 <h2><a name="VersionControl">VersionControl</a></h2>
@@ -177,6 +178,15 @@ JSRCS = \
 <li>	Right click on the actor and choose Save Actor in Library. Now if you open the User Library (left side) you can see the Bmh actor there.
 <li>	In the case after all of these steps it doesn't work, restart your eclipse and make sure you have saved your xml file and there are Bmh.java and Bmh.class there. If again it doesn't work, there should be something wrong regarding your Ptolemy installation in eclipse. Hope not!!
 </ol>
+
+<h2><a name="AddingAFile">Adding a File</a></h2>
+See the style guide at <a href="../coding/style_index.htm" target="_top"><code>$PTII/doc/coding/style_index.htm</code></a> for details, but the main tasks are:
+<ol>
+<li>Add the file to the <code>makefile</code>.</li>
+
+<li>Run <code>ant</code>.  If the core of Ptolemy II depends on the
+new file, then it may be necessary to add the new file to
+<code>$PTII/pt-modules/projects/pt-akore/pt-jar.files</code>.  This file is used to build the jar file uses for Eclipse Ptolemy modules.</li>  The ant rule will build the jar files.</li>
 
 </body>
 </html>

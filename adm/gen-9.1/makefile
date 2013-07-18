@@ -2792,6 +2792,10 @@ update_moog:
 	scp -Bprq $(HUDSON_PTII)/doc/coding/ant.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/ant.htm
 	scp -Bprq $(HUDSON_PTII)/doc/coding/performance.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/performance.htm
 	scp -Bprq $(HUDSON_PTII)/doc/coding/svn-config-auto-props.txt moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/svn-config-auto-props.txt
+	scp -Bprq $(HUDSON_PTII)/doc/coding/style.css moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/style.css
+	scp -Bprq $(HUDSON_PTII)/doc/coding/style.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/style.htm
+	scp -Bprq $(HUDSON_PTII)/doc/coding/style.pdf moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/style.pdf
+	scp -Bprq $(HUDSON_PTII)/doc/coding/style_index.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/style_index.htm
 	scp -Bprq $(HUDSON_PTII)/doc/coding/eclipse.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/eclipse.htm
 	scp -Bprq $(HUDSON_PTII)/doc/coding/eclipseSimple.htm moog:$(PTEXTERNAL_NIGHTLY)/doc/coding/eclipse.htm
 	(cd $(HUDSON_PTII)/doc/; tar -cf - eclipse footer.htm ) | ssh moog "cd $(PTEXTERNAL_NIGHTLY)/doc; tar -xf -"
