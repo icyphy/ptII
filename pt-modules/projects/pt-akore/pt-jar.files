@@ -27,6 +27,7 @@
 /ptolemy/actor/NoTokenException.java
 /ptolemy/actor/PubSubPort.java
 /ptolemy/actor/PublisherPort.java
+/ptolemy/actor/QMAttributes.java
 /ptolemy/actor/QuantityManager.java
 /ptolemy/actor/QuasiTransparentDirector.java
 /ptolemy/actor/Receiver.java
