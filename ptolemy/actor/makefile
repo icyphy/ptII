@@ -103,6 +103,7 @@ JSRCS = \
 	NoTokenException.java \
 	PublisherPort.java \
 	PubSubPort.java \
+	QMAttributes.java \
 	QuantityManager.java \
 	QuantityManagerListener.java \
 	QuasiTransparentDirector.java \
