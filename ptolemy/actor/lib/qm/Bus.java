@@ -37,6 +37,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
+import ptolemy.actor.QMAttributes;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.ResourceAttributes;

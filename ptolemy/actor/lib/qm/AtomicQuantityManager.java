@@ -39,6 +39,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.NoRoomException;
+import ptolemy.actor.QMAttributes;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.QuantityManagerListener;
 import ptolemy.actor.Receiver;
@@ -281,77 +282,5 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
 
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       inner classes                       ////
-    
-    /** Attributes for ports decorated by this composite quantity manager.
-     *  A port on an actor decorated by a composite quantity manager must
-     *  specify the port in the CQM that input tokens are routed to.
-     * 
-     *  @author Patricia Derler
-     */
-    public static class QMAttributes extends ResourceAttributes {
-
-        /** Constructor to use when editing a model.
-         *  @param target The object being decorated.
-         *  @param decorator The decorator.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
-         */
-        public QMAttributes(NamedObj target, Decorator decorator)
-                throws IllegalActionException, NameDuplicationException {
-            super(target, decorator); 
-            _init();
-        }
-
-        /** Constructor to use when parsing a MoML file.
-         *  @param target The object being decorated.
-         *  @param name The name of this attribute.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
-         */
-        public QMAttributes(NamedObj target, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(target, name); 
-            _init();
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         parameters                        ////
-        
-        /** The sequenceNumber indicates the order in which quantity managers
-         *  are used. It defaults to the integer value -1 to indicate that 
-         *  this quantity manager is not used. After enabling the quantity
-         *  manager, this sequence number gets updated automatically.
-         */
-        public Parameter sequenceNumber;
-
-
-        ///////////////////////////////////////////////////////////////////
-        ////                        public methods                     ////
-
-        /** If attribute is <i>messageLength</i> report the new value 
-         *  to the quantity manager. 
-         *  @param attribute The changed parameter.
-         *  @exception IllegalActionException If the parameter set is not valid.
-         *  Not thrown in this class.
-         */
-        public void attributeChanged(Attribute attribute)
-                throws IllegalActionException {
-            IOPort port = (IOPort) getContainer();
-            if (attribute == enable) {
-                port.createReceivers();
-                port.invalidateQMList();
-            }
-            super.attributeChanged(attribute);
-        }
-        
-        private void _init() throws IllegalActionException, NameDuplicationException {
-            sequenceNumber = new Parameter(this, "sequenceNumber", new IntToken(-1));
-            sequenceNumber.setPersistent(true);
-            sequenceNumber.setVisibility(Settable.EXPERT);
-        }
-    }
 
 }

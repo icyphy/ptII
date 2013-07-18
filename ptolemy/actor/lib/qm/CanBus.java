@@ -45,6 +45,7 @@ import java.util.TreeMap;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
+import ptolemy.actor.QMAttributes;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.QuantityManagerListener.EventType;
 import ptolemy.actor.Receiver;

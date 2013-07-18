@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ptolemy.actor.lib.qm.AtomicQuantityManager.QMAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -61,8 +60,7 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Attribute; 
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -1399,7 +1397,7 @@ public class IOPort extends ComponentPort {
             int i = 1;
             while (iterator.hasNext()) {
                 
-                 QMAttributes attribute = _qmMap.get(iterator.next()); 
+                QMAttributes attribute = _qmMap.get(iterator.next()); 
                 attribute.sequenceNumber.setToken(new IntToken(i));
                 i = i + 1;
                 _qmList.add((QuantityManager) attribute.getDecorator());
