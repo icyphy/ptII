@@ -254,6 +254,7 @@ public class ExportModelJUnitTest {
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
+		"EPlus70Actuator.xml", // Hangs in a strange way after running.o
                 "ElectricPowerSystem.xml", // Just has links to other demos.
                 "ExecDemos", // hangs
                 "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
