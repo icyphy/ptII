@@ -562,9 +562,17 @@ public abstract class AbstractConvertibleToken extends Token {
             AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
                     .convert(rightArgument);
 
-            Token result = _subtract(convertedArgument);
-            return result;
-
+            try {
+                Token result = convertedArgument._subtract(this);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex, notSupportedMessage(
+                        "subtract", this, rightArgument));
+            }
+           
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.subtractReverse(this);
             return result;
