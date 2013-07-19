@@ -50,6 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.actor.lib.VisualModelReference;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
@@ -297,6 +298,19 @@ public class HTMLModelExporter extends VisualModelReference {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the attribute.
+     *  @param workspace The workspace in which to place the cloned attribute.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @see java.lang.Object#clone()
+     *  @return The cloned attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HTMLModelExporter newObject = (HTMLModelExporter) super.clone(workspace);
+        newObject._defaultColor = null;
+        newObject._parameters = new ExportParameters();
+        return newObject;
     }
 
     public void fire() throws IllegalActionException {
