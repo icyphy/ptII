@@ -63,13 +63,11 @@ OTHER_FILES_TO_BE_JARED = \
 JSRCS = \
 	AFDXESs.java \
 	AFDXSwitch.java \
-	AFDXVlCfg.java \
 	AFDXVlink.java \
 	AtomicQuantityManager.java \
 	BasicSwitch.java \
 	Bus.java \
 	CanBus.java \
-	CanBusPriority.java \
 	CQMInputPort.java \
 	CQMOutputPort.java \
 	CompositeQuantityManager.java \
