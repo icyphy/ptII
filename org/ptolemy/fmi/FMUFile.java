@@ -189,7 +189,7 @@ public class FMUFile {
                 }
             }
             if (fileName.endsWith("resources") || fileName.endsWith("resources/")) {
-                fmuResourceLocation = file.toURI().toString();
+                fmuResourceLocation = file.toURI().toURL().toString();
                 if (modelDescriptionFile != null) {
                     break;
                 }
@@ -201,11 +201,34 @@ public class FMUFile {
         }
         if (fmuResourceLocation == null) {
             File fmuResourceFile = new File(modelDescriptionFile.getParent(), "resources");
-            fmuResourceLocation = fmuResourceFile.toURI().toString();
-            if (!fmuResourceFile.mkdirs()) {
-                throw new IOException("Could not create directory \"" + fmuResourceFile
+            fmuResourceLocation = fmuResourceFile.toURI().toURL().toString();
+            if (!fmuResourceFile.isDirectory()) {
+                if (fmuResourceFile.exists()) {
+                    if (fmuResourceFile.delete()) {
+                        throw new IOException("Could not delete file \"" + fmuResourceFile
+                        + "\" before creating a directory with the same name.");
+                    }
+                }
+                if (!fmuResourceFile.mkdirs()) {
+                    throw new IOException("Could not create directory \"" + fmuResourceFile
                         + "\"");
+                }
             }
+        }
+
+        // FMI 2.0beta4 requires file:// even though file:/C:/ is legitimate.
+        // See https://trac.fmi-standard.org/ticket/146
+        if (fmuResourceLocation.startsWith("file:/")
+                && !fmuResourceLocation.startsWith("file://")) {
+            fmuResourceLocation = "file://" + fmuResourceLocation.substring(6);
+            System.out.println("FMUFile: fmuResource did started with file:/, not file://, now it is " + fmuResourceLocation);
+        }
+
+
+        // Remove any trailing slash.
+        if (fmuResourceLocation.endsWith("/")) {
+            fmuResourceLocation = fmuResourceLocation.substring(0, 
+                    fmuResourceLocation.length()-1);
         }
 
         // Read the modelDescription.xml file.
@@ -244,6 +267,23 @@ public class FMUFile {
         // Handle the root attributes
         if (root.hasAttribute("fmiVersion")) {
             fmiModelDescription.fmiVersion = root.getAttribute("fmiVersion");
+            double fmiVersion = 0.0;
+            try {
+                fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
+            } catch (NumberFormatException ex) {
+                IOException exception =  new IOException(
+                        "Invalid fmiVersion \""
+                        + fmiModelDescription.fmiVersion
+                        + "\". Required to be of the form n.m, "
+                        + "where n and m are natural numbers.");
+                exception.initCause(ex);
+                throw exception;
+            }
+            // Under FMI 1.0, the fmuLocation parameter refers to the location 
+            // of the fmu.
+            if (fmiVersion < 2.0 && fmiModelDescription.fmuResourceLocation.endsWith("resources")) {
+                fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation.substring(0, fmiModelDescription.fmuResourceLocation.length() - "resources".length() - 1); // +1 is to get rid of the /
+            }
         }
         if (root.hasAttribute("modelIdentifier")) {
             fmiModelDescription.modelIdentifier = root
