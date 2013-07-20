@@ -115,7 +115,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 295.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 47, 1173, 678}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 90, 1173, 678}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[945, 561]">
     </property>
@@ -163,12 +163,12 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Please edit according to your OS.  &#10;Windows: &quot;RunEPlus.bat&quot;&#10;Unix (and Mac?): &quot;runenergyplus&quot;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Please edit according to your OS.  &#10;Windows: &quot;RunEPlus.bat&quot;&#10;Unix and Mac: &quot;runenergyplus&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 205.0]">
         </property>
     </property>
-    <property name="TRooLowCoo" class="ptolemy.data.expr.Parameter" value="TRooHigCoo - 3">
+    <property name="TRooLowCoo" class="ptolemy.data.expr.Parameter" value="TRooHigCoo - 2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -187,7 +187,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 180.0]">
         </property>
     </property>
-    <property name="TRooHigCoo" class="ptolemy.data.expr.Parameter" value="23">
+    <property name="TRooHigCoo" class="ptolemy.data.expr.Parameter" value="25">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -212,7 +212,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 90.0]">
         </property>
     </property>
-    <property name="TNightCoo" class="ptolemy.data.expr.Parameter" value="27">
+    <property name="TNightCoo" class="ptolemy.data.expr.Parameter" value="TRooHigCoo">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -238,7 +238,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
     </property>
     <entity name="RunTime" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;22.177 seconds&quot;">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -257,7 +257,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
     </entity>
     <entity name="SimulationTime" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;1 days&quot;">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -1095,18 +1095,24 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
         <entity name="VAVBox" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 320.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 84, 1119, 615}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 26, 1119, 673}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[891, 498]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[891, 556]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8760825765761">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8582746478873249">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{628.2997249990352, 656.7738792373957}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{712.3478260869564, 723.5652173913043}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model implements the five VAV terminal boxes. The implementation in done&#10;in the CompositeClassDefinition, which is five times instantiated and &#10;parameterized for the different VAV terminal boxes.&#10;">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 380.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TOutside is not exported - not working correctly in this model.&#10;Web page uses hourly average instead.&#10;">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[950.0, 415.0]">
                 </property>
             </property>
             <port name="TRoo" class="ptolemy.actor.TypedIOPort">
@@ -1985,7 +1991,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <entity name="VAVPeri1" class="CompositeClassDefinition">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 655.0]">
                 </property>
-                <property name="ACHMax" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="ACHMax" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
                 <property name="VRoo" class="ptolemy.data.expr.Parameter" value="1074.48">
                 </property>
@@ -2009,7 +2015,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <entity name="VAVPeri2" class="CompositeClassDefinition">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 710.0}">
                 </property>
-                <property name="ACHMax" class="ptolemy.data.expr.Parameter" value="3">
+                <property name="ACHMax" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
                 <property name="VRoo" class="ptolemy.data.expr.Parameter" value="907.61">
                 </property>
@@ -2057,7 +2063,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <entity name="VAVPeri4" class="CompositeClassDefinition">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 830.0]">
                 </property>
-                <property name="ACHMax" class="ptolemy.data.expr.Parameter" value="3">
+                <property name="ACHMax" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
                 <property name="VRoo" class="ptolemy.data.expr.Parameter" value="936.10">
                 </property>
@@ -2139,7 +2145,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <entity name="Temperatures" class="ptolemy.actor.lib.gui.TimedPlotter">
                 <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TOutside, TRoom224, TRoom222, TRoom220, TRoom219, TRoom214, TRoom212, TRoom208, TRoom206, TRoom205, TRoom203, TRoom202, THallway, HeatSetpoint, CoolSetpoint, TSupply">
+                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TOut, TRoom224, TRoom222, TRoom220, TRoom219, TRoom214, TRoom212, TRoom208, TRoom206, TRoom205, TRoom203, TRoom202, THallway, HeatSetpoint, CoolSetpoint, TSupply">
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 22, 903, 492}, maximized=false}">
                 </property>
@@ -2164,7 +2170,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
                 </configure>
             </entity>
             <entity name="TRoo2" class="ptolemy.actor.lib.VectorDisassembler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[332.0, 550.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 550.0]">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
                 </property>
@@ -2178,7 +2184,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <entity name="massFlowRates" class="ptolemy.actor.lib.gui.TimedPlotter">
                 <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TOutside, TRoom224, TRoom222, TRoom220, TRoom219, TRoom214, TRoom212, TRoom208, TRoom206, TRoom205, TRoom203, TRoom202, THallway">
+                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TRoom224, TRoom222, TRoom220, TRoom219, TRoom214, TRoom212, TRoom208, TRoom206, TRoom205, TRoom203, TRoom202, THallway">
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 133, 903, 492}, maximized=false}">
                 </property>
@@ -2197,7 +2203,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
 <xLabel>time in s</xLabel>
 <yLabel>mass flow rates in kg/s</yLabel>
 <xRange min="0.0" max="86400.0"/>
-<yRange min="0.10744799999999999" max="1.0"/>
+<yRange min="0.10744799999999999" max="0.9890781105506469"/>
 <noGrid/>
 </plot>?>
                 </configure>
@@ -2337,7 +2343,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
                 </entity>
             </entity>
             <entity name="VAVPeri11" class="CompositeClassDefinition">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 1295.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 1295.0}">
                 </property>
                 <property name="ACHMax" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
@@ -2387,6 +2393,83 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
                         </entity>
                     </entity>
                 </entity>
+            </entity>
+            <entity name="CSVWriter" class="ptolemy.actor.lib.io.CSVWriter">
+                <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="pages/temperatures.csv">
+                </property>
+                <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 440.0]">
+                </property>
+            </entity>
+            <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 480.0]">
+                </property>
+                <port name="CoolSetpoint" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="THallway" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom202" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom203" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom205" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom206" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom208" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom212" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom214" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom219" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom220" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom222" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="TRoom224" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -2484,26 +2567,6 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
-            <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
             <relation name="relation17" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -2511,7 +2574,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
                 </vertex>
             </relation>
             <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="5">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="12">
                 </property>
             </relation>
             <relation name="relation30" class="ptolemy.actor.TypedIORelation">
@@ -2578,45 +2641,95 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             </relation>
             <relation name="relation53" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation61" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+                <vertex name="vertex1" value="[515.0, 630.0]">
+                </vertex>
             </relation>
-            <relation name="relation54" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
+            <relation name="relation60" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[300.0, 450.0]">
+                </vertex>
             </relation>
-            <relation name="relation55" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation62" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-            </relation>
-            <relation name="relation56" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation57" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation58" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
+                <vertex name="vertex1" value="[500.0, 620.0]">
+                </vertex>
             </relation>
             <relation name="relation59" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+                <vertex name="vertex1" value="[485.0, 610.0]">
+                </vertex>
             </relation>
-            <relation name="relation60" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation58" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+                <vertex name="vertex1" value="[470.0, 600.0]">
+                </vertex>
             </relation>
-            <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation57" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+                <vertex name="vertex1" value="[455.0, 590.0]">
+                </vertex>
+            </relation>
+            <relation name="relation56" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[440.0, 580.0]">
+                </vertex>
+            </relation>
+            <relation name="relation55" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[425.0, 570.0]">
+                </vertex>
+            </relation>
+            <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[410.0, 560.0]">
+                </vertex>
+            </relation>
+            <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[395.0, 550.0]">
+                </vertex>
+            </relation>
+            <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[380.0, 540.0]">
+                </vertex>
+            </relation>
+            <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[365.0, 530.0]">
+                </vertex>
+            </relation>
+            <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[350.0, 520.0]">
+                </vertex>
             </relation>
             <relation name="relation36" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+                <vertex name="vertex1" value="[295.0, 475.0]">
+                </vertex>
+            </relation>
+            <relation name="relation54" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[295.0, 515.0]">
+                </vertex>
+            </relation>
+            <relation name="relation35" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="TRoo" relation="relation17"/>
             <link port="TRooSet" relation="relation16"/>
@@ -2624,7 +2737,7 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <link port="mNormalized" relation="relation30"/>
             <link port="CSup_flow" relation="relation21"/>
             <link port="Q_flow" relation="relation22"/>
-            <link port="TOut" relation="relation19"/>
+            <link port="TOut" relation="relation60"/>
             <link port="VAVPeri1.TRoo" relation="relation"/>
             <link port="VAVPeri1.TRooSet" relation="relation16"/>
             <link port="VAVPeri1.m_flow" relation="relation6"/>
@@ -2700,38 +2813,38 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <link port="QRooms.input" relation="relation50"/>
             <link port="QRooms.input" relation="relation51"/>
             <link port="QRooms.output" relation="relation22"/>
-            <link port="Temperatures.input" relation="relation19"/>
-            <link port="Temperatures.input" relation="relation25"/>
-            <link port="Temperatures.input" relation="relation26"/>
-            <link port="Temperatures.input" relation="relation27"/>
-            <link port="Temperatures.input" relation="relation28"/>
+            <link port="Temperatures.input" relation="relation60"/>
             <link port="Temperatures.input" relation="relation29"/>
-            <link port="Temperatures.input" relation="relation54"/>
+            <link port="Temperatures.input" relation="relation28"/>
+            <link port="Temperatures.input" relation="relation27"/>
+            <link port="Temperatures.input" relation="relation26"/>
+            <link port="Temperatures.input" relation="relation25"/>
             <link port="Temperatures.input" relation="relation55"/>
             <link port="Temperatures.input" relation="relation56"/>
             <link port="Temperatures.input" relation="relation57"/>
             <link port="Temperatures.input" relation="relation58"/>
             <link port="Temperatures.input" relation="relation59"/>
-            <link port="Temperatures.input" relation="relation60"/>
-            <link port="Temperatures.input" relation="relation35"/>
+            <link port="Temperatures.input" relation="relation62"/>
+            <link port="Temperatures.input" relation="relation61"/>
             <link port="Temperatures.input" relation="relation36"/>
+            <link port="Temperatures.input" relation="relation54"/>
             <link port="Temperatures.input" relation="relation18"/>
             <link port="TRoo2.input" relation="relation17"/>
-            <link port="TRoo2.output" relation="relation25"/>
-            <link port="TRoo2.output" relation="relation26"/>
-            <link port="TRoo2.output" relation="relation27"/>
-            <link port="TRoo2.output" relation="relation28"/>
             <link port="TRoo2.output" relation="relation29"/>
-            <link port="TRoo2.output" relation="relation54"/>
+            <link port="TRoo2.output" relation="relation28"/>
+            <link port="TRoo2.output" relation="relation27"/>
+            <link port="TRoo2.output" relation="relation26"/>
+            <link port="TRoo2.output" relation="relation25"/>
             <link port="TRoo2.output" relation="relation55"/>
             <link port="TRoo2.output" relation="relation56"/>
             <link port="TRoo2.output" relation="relation57"/>
             <link port="TRoo2.output" relation="relation58"/>
             <link port="TRoo2.output" relation="relation59"/>
-            <link port="TRoo2.output" relation="relation60"/>
+            <link port="TRoo2.output" relation="relation62"/>
+            <link port="TRoo2.output" relation="relation61"/>
             <link port="TRooSP.input" relation="relation16"/>
-            <link port="TRooSP.output" relation="relation35"/>
             <link port="TRooSP.output" relation="relation36"/>
+            <link port="TRooSP.output" relation="relation54"/>
             <link port="massFlowRates.input" relation="relation23"/>
             <link port="TRooSP2.input" relation="relation31"/>
             <link port="TRooSP2.output" relation="relation23"/>
@@ -2770,6 +2883,21 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
             <link port="VAVPeri12.m_flow" relation="relation53"/>
             <link port="VAVPeri12.TSup" relation="relation18"/>
             <link port="VAVPeri12.Q_flow" relation="relation51"/>
+            <link port="CSVWriter.input" relation="relation35"/>
+            <link port="RecordAssembler.output" relation="relation35"/>
+            <link port="RecordAssembler.CoolSetpoint" relation="relation54"/>
+            <link port="RecordAssembler.THallway" relation="relation61"/>
+            <link port="RecordAssembler.TRoom202" relation="relation62"/>
+            <link port="RecordAssembler.TRoom203" relation="relation59"/>
+            <link port="RecordAssembler.TRoom205" relation="relation58"/>
+            <link port="RecordAssembler.TRoom206" relation="relation57"/>
+            <link port="RecordAssembler.TRoom208" relation="relation56"/>
+            <link port="RecordAssembler.TRoom212" relation="relation55"/>
+            <link port="RecordAssembler.TRoom214" relation="relation25"/>
+            <link port="RecordAssembler.TRoom219" relation="relation26"/>
+            <link port="RecordAssembler.TRoom220" relation="relation27"/>
+            <link port="RecordAssembler.TRoom222" relation="relation28"/>
+            <link port="RecordAssembler.TRoom224" relation="relation29"/>
         </entity>
         <entity name="TOut" class="ptolemy.actor.lib.VectorDisassembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 340.0]">
@@ -3356,8 +3484,8 @@ The supply air temperature setpoint is ramped up or down over a two-hour window.
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="86400.0"/>
+<yRange min="3.0" max="67.81998039157736"/>
 </plot>?>
                     </configure>
                 </entity>
@@ -5003,8 +5131,8 @@ limiter, which is input into a linear set point scheduler.</text></svg></configu
 <title>DayTimeTemperatures</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="23.25" max="24.0"/>
+<yRange min="0.0" max="205.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.5" offset="0.25"/>
 </plot>?>

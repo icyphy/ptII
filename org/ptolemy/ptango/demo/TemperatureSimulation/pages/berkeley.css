@@ -11,13 +11,33 @@
 
 *[data-role="header"], *[data-role="footer"] {
 	border: 1px solid #667396 /*{b-bar-border}*/;
-	background: #5e7aa9 /*{b-bar-background-color}*/;
 	color: #ffffff /*{b-bar-color}*/;
 }
 
 *[data-role="header"] {
 	font-weight: bold;
+	
+	/* Copied from UCB style guidelines  http://www.berkeley.edu/webstyle/ */ 
+	width: 100%;
+	background-color:#2a2f60;
+	background-image:url(banr2.jpg);
+	background-repeat: no-repeat;
+	position:relative;
+	text-align:left;
+	
 }
+
+*[data-role="header"] img {
+	float: right;
+}
+
+*[data-role="header"] h1 {
+	position: relative;
+	top: 0px;
+	left: 10px;
+	height: 39px;
+}
+
 
 *[data-role="header"] a:link {
 	color: #ffffff;
@@ -28,6 +48,7 @@
 }
 
 *[data-role="footer"] {
+	background: #2a2f60;
 	font-weight: normal;
 	text-shadow: 0 /*{b-body-shadow-x}*/ 0px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/;
 	padding-left: 4px;
@@ -90,7 +111,3 @@
 	background-image:      -o-linear-gradient( #d0d0d0 /*{b-bdown-background-start}*/, #dfdfdf /*{b-bdown-background-end}*/); /* Opera 11.10+ */	
 }
 
-/* Custom classes */
-.radio-group {
-    margin-left: 7.5em;
-}

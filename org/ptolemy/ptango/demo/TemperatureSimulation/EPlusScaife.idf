@@ -3,11 +3,14 @@
 Version,
   7.2;                                    !- Version Identifier
   
-!Beth added
+! Beth added to .idf file generated from Sketchup
+! Please see the EnergyPlus ExternalInterface user guide for more info:
+! http://apps1.eere.energy.gov/buildings/energyplus/pdfs/externalinterfaces_application_guide.pdf
 ExternalInterface,
     PtolemyServer;           !- Name of External Interface
 	
-	Timestep,30;			 ! In original: Timestep,4;
+	Timestep,30;			 ! Number of timesteps per hour that data is 
+							 ! exchanged between EnergyPlus and Ptolemy
 	
 
 !-   ===========  ALL OBJECTS IN CLASS: EXTERNALINTERFACE:SCHEDULE ===========
@@ -229,9 +232,9 @@ Sizing:Parameters,
 RunPeriod,
   Run Period 1,                           !- Name
   7,                                      !- Begin Month
-  1,                                      !- Begin Day of Month
+  15,                                      !- Begin Day of Month
   7,                                      !- End Month
-  1,                                      !- End Day of Month
+  15,                                      !- End Day of Month
   Monday,                                 !- Day of Week for Start Day
   No,                                     !- Use Weather File Holidays and Special Days
   No,                                     !- Use Weather File Daylight Saving Period
