@@ -332,13 +332,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  ports. If the FMU explicitly declares input dependencies
      *  for a particular output, then then it only depends on those
      *  inputs that it declares.
-     *  @override
      *  @exception IllegalActionException Not thrown in this base
      *  class, derived classes should throw this exception if the
      *  delay dependency cannot be computed.
      *  @see #getCausalityInterface()
      *  @see #_declareDelayDependency(IOPort, IOPort, double)
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Iterate through the outputs, and for any output that declares
         // dependencies, indicate a delay dependency for any inputs that
@@ -1116,9 +1116,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Return false if any output has been found that not depend
      *  directly on an input.
-     *  @override
      *  @return False if this actor can be fired without all inputs being known.
      */
+    @Override
     public boolean isStrict() {
         return _isStrict;
     }
@@ -2446,7 +2446,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  An input has both a declared ScalarVariable in the model description
      *  file with causality declared to be "input" and a port with the same
      *  name contained by this actor. Each returned input contains a
-     *  reference to the port and a reference to the {@link ScalarVariable}.
+     *  reference to the port and a reference to the {@link FMIScalarVariable}.
      *  @return A list of inputs of the FMU.
      *  @exception IllegalActionException If no port matching the name
      *   of a variable declared as an input is found.
@@ -2499,7 +2499,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  name contained by this actor. If the port exists but is not connected
      *  to anything (its width is zero), then it this output is not included
      *  in the returned list. Each returned output contains a
-     *  reference to the port, a reference to the {@link ScalarVariable},
+     *  reference to the port, a reference to the {@link FMIScalarVariable},
      *  and a set of input port on which the output declares that it depends
      *  (or a null if it makes no such dependency declaration).
      *  @return A list of outputs of the FMU.

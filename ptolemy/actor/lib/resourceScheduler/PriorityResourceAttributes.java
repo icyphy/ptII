@@ -42,7 +42,7 @@ import ptolemy.kernel.util.Settable;
 
 /**
 Container for decorator attributes that are provided to actors by
-a {@link ResourceScheduler}.
+a {@link ptolemy.actor.ResourceScheduler}.
 
  @author  Edward A. Lee
  @version $Id$

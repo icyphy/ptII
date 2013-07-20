@@ -46,18 +46,19 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 public class MetroEventBuilder {
 
     /**
-     * Construct an event builder
+     * Construct an event builder.
      */
     public MetroEventBuilder() {
         // TODO Auto-generated constructor stub
     }
 
     /**
-     * Convert a time value from one resolution to another resolution
+     * Convert a time value from one resolution to another resolution.
+     * Note that this method may result in a loss of precision.
      * @param timeValue input time value in type 'long'
      * @param fromResolution the resolution associated with timeValue
      * @param toResolution the resolution it's converting to
-     * @return
+     * @return the new time value.
      */
     static public long convert(long timeValue, double fromResolution,
             double toResolution) {
@@ -75,7 +76,7 @@ public class MetroEventBuilder {
     }
 
     /**
-     * Create a proposed Metro event
+     * Create a proposed Metro event.
      * @param eventName The name of the event
      * @param timeValue The time value of the event
      * @param resolution The resolution associated with the time value
@@ -105,7 +106,7 @@ public class MetroEventBuilder {
     }
 
     /**
-     * Create a proposed Metro event
+     * Create a proposed Metro event.
      * @param eventName The name of the event
      * @return A Metro event with the given name
      */

@@ -1,6 +1,5 @@
-
-
-/* An FFT.
+/* This actor performs Maximum-Likelihood classification of the partially-observed
+Bayesian Network models.
 
 Copyright (c) 1998-2013 The Regents of the University of California.
 All rights reserved.
@@ -43,12 +42,14 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException; 
-///////////////////////////////////////////////////////////////////
-////FFT
 import ptolemy.kernel.util.StringAttribute;
 
+///////////////////////////////////////////////////////////////////
+//// ClassifyObservations
+
+
 /**
-<p>This actor performs Maximum-Likelihood classification of the partially-observed
+This actor performs Maximum-Likelihood classification of the partially-observed
 Bayesian Network models. ClassifyObservations is designed to work with <i>
 ExpectationMaximization<\i>, which provides the Maximum-Likelihood model parameters
 from which the observations are assumed to be drawn. The output is an integer array 
@@ -76,12 +77,11 @@ governing the Markovian process representing the hidden state evolution. The <i>
  International Computer Science Institute 4.510 (1998): 126.
 
  @see ptolemy.demo.FaultModels.lib.ExpectationMaximization
- @see ptolemy.demo.FaultModels.HiddenMarkovModelAnalysis
 
  @author Ilge Akkaya
- @version  
+ @version $Id$ 
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating Red (ilgea)
  */
 public class ClassifyObservations extends TypedAtomicActor {
    /** Construct an actor with the given container and name.

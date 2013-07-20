@@ -479,11 +479,6 @@ public class AFDXESs extends AtomicQuantityManager {
         _scheduleRefire();
     }
 
-    /** XXX
-     *  
-     *  @param 
-     *  @exception IllegalActionException .
-     */
     public void setVlinkName(IOPort port, String name)
             throws IllegalActionException {
         AFDXVlink vl;

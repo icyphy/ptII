@@ -1,4 +1,4 @@
-/* A fixed priority scheduler resource manager.s
+/* A fixed priority scheduler resource managers.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -65,7 +65,7 @@ with the following parameters:
      Priority -1 means higher priority than any non-negative number.
 </ul>
 
-For usage and supported directors {@link ResourceScheduler}.
+For usage and supported directors {@link ptolemy.actorResourceScheduler}.
 
 When using this ResourceScheduler in the Ptides domain, the platform
 time in Ptides will be used to schedule execution times. When

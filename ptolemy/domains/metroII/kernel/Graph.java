@@ -79,7 +79,7 @@ public class Graph implements Cloneable {
      * 
      * @param id1 ID of the first event.
      * @param id2 ID of the second event.
-     * @return
+     * @return true if there is a mapping constraint.
      */
     public boolean contains(int id1, int id2) {
         if (id1 >= _nodeConnection.size() || id2 >= _nodeConnection.size()) {

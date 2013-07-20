@@ -649,7 +649,7 @@ public class TemplateParser {
     /** Init the TemplateParser with the associated
      *  given component and the given adapter.
      *  <p>Calling this method sets the code generator to that of the adapter.
-     *  Note that calling {@link #setCodeGenerator(ProgramCodeGeneratorAdapter)}
+     *  Note that calling {@link #setCodeGenerator(ProgramCodeGenerator)}
      *  also sets the code generator.
      *  @param component The associated component.
      *  @param adapter The associated adapter.
@@ -1537,7 +1537,7 @@ public class TemplateParser {
 
     /** The ProgramCodeGenerator, set by calling 
      *	{@link #init(Object, ProgramCodeGeneratorAdapter)} or
-     *  {@link #setCodeGenerator(ProgramCodeGeneratorAdapter)}.
+     *  {@link #setCodeGenerator(ProgramCodeGenerator)}.
      */
     protected ProgramCodeGenerator _codeGenerator;
 

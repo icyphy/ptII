@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// MetroIISRDirector
+// FIXME: needs a class comment.
 
 public class MetroIISRDirector extends SRDirector implements
         MetroEventHandler {
@@ -122,7 +123,7 @@ public class MetroIISRDirector extends SRDirector implements
     ////                         public methods                    ////
 
     /**
-     * YieldAdapter interface
+     * YieldAdapter interface.
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
@@ -222,10 +223,8 @@ public class MetroIISRDirector extends SRDirector implements
     }
 
     /**
-     * Create a MetroII event
+     * Create a MetroII event.
      * @param name MetroII event name
-     * @param t MetroII event type
-     * @param s MetroII event status
      * @return MetroII event builder
      */
     private Event.Builder makeEventBuilder(String name) {
@@ -240,12 +239,12 @@ public class MetroIISRDirector extends SRDirector implements
     ////                         private variables                 ////
 
     /**
-     * Lookup table for actor by MetroII event name
+     * Lookup table for actor by MetroII event name.
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
 
     /**
-     * Current MetroII event list
+     * Current MetroII event list.
      */
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 
