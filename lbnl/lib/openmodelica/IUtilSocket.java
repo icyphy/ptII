@@ -44,8 +44,9 @@ package lbnl.lib.openmodelica;
 
 import java.io.IOException;
 
+//FIXME: what is a UtilSocket and how would I use it?
 /**
-    <p> The interface to the UtilSocket. </p>
+    The interface to the UtilSocket.
 
     @author Mana Mirzaei 
     @version $Id$
@@ -58,19 +59,26 @@ public interface IUtilSocket {
     /** Close the input and output stream prior to closing the socket.
      *  @throws IOException
      */
+    // FIXME: Use camelCase here, so change closesocket to closeSocket
     public void closesocket() throws IOException;
 
-    /** Establish the client socket.
-     *  Creating an output stream to send information to the server socket besides
-     *  creating an input stream to receive response from the server socket.
-     *  @throws IOException 
+    /** Establish the client socket.  Creating an output stream to
+     *  send information to the server socket besides creating an
+     *  input stream to receive response from the server socket.
+     *  @return true if the client socket was established.
+     *  @throws IOException If there is a problem establishing the
+     *  client socket.
      */
+    // FIXME: Use camelCase here.
     public boolean establishclientsocket() throws IOException;
 
     /** Exchange data through the BSD socket.
-     *  @throws IOException 
-     * @throws Exception 
+     * @throws IOException If there is a problem exchanging data with
+     * the socket.
+     * @throws Exception If there is a problem exchanging data with
+     * the socket.
      */
+    // FIXME: Use camelCase here.
     public void exchangewithsocket() throws IOException, Exception;
 
 }

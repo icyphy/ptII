@@ -316,6 +316,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  disabled.  A plot with such lines is also known as a stem plot.
      *  @param on If true, draw a stem plot.
      *  @param dataset The dataset to which this should apply.
+     *  @see #getImpulses()
      */
     public void setImpulses(boolean on, int dataset);
 

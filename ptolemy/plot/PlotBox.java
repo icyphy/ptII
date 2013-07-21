@@ -1426,6 +1426,16 @@ out.println("\\begin{document}");
         super.setBackground(_background);
     }
 
+    /** Set the background color.
+     *  This is syntactic sugar for use in implementations that separate
+     *  the graphical display from the computational engine.
+     *  Implements the {@link PlotBoxInterface}.
+     *  @param background The background Color.
+     */
+    public void setBackground(Object background) {
+        setBackground((Color) background);
+    }
+
     /** Move and resize this component. The new location of the top-left
      *  corner is specified by x and y, and the new size is specified by
      *  width and height. This overrides the base class method to make
@@ -1635,6 +1645,14 @@ out.println("\\begin{document}");
         _colors = colors;
     }
 
+    /** Set the array of colors
+     *  Implements the {@link PlotBoxInterface}.
+     *  @param colors The array of Colors.
+     */	
+    public void setColors(Object[] colors) {
+         setColors((Color[]) colors);
+    }
+
     /** Set the file to read when init() is called.
      *  @param filespec the file to be read
      *  @see #getDataurl()
@@ -1662,6 +1680,14 @@ out.println("\\begin{document}");
 
         _foreground = foreground;
         super.setForeground(_foreground);
+    }
+
+    /** Set the foreground color.
+     *  Implements the {@link PlotBoxInterface}.
+     *  @param foreground The foreground Color.
+     */	
+    public void setForeground(Object foreground) {
+	setForeground((Color) foreground);
     }
 
     /** Control whether the grid is drawn.
@@ -1698,6 +1724,14 @@ out.println("\\begin{document}");
         _plotImage = null;
 
         _specifiedPlotRectangle = rectangle;
+    }
+
+    /** Set the plot rectangle.
+     *  Implements the {@link PlotBoxInterface}.
+     *  @param rectangle The Rectangle.
+     */	
+    public void setPlotRectangle(Object rectangle) {
+	setPlotRectangle((Rectangle) rectangle);
     }
 
     /** Set the size of the plot.  This overrides the base class to make
@@ -2092,6 +2126,10 @@ out.println("\\begin{document}");
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    // If you change PTPLOT_RELEASE, modify the version numbers in:
+    // doc/main.htm, doc/changes.htm, doc/install.htm, doc/download/index.htm
+    /** The version of PtPlot. */
     public static final String PTPLOT_RELEASE = "5.8.beta";
 
     ///////////////////////////////////////////////////////////////////
@@ -2907,6 +2945,7 @@ out.println("\\begin{document}");
      *  Everything else is ignored. Return true if the line is recognized.
      *  It is not synchronized, so its caller should be.
      *  @param line A line of text.
+     *  @return True if the line was recognized.
      */
     protected boolean _parseLine(String line) {
         // If you modify this method, you should also modify write()
@@ -3037,17 +3076,17 @@ out.println("\\begin{document}");
     }
 
     /** Set the visibility of the Fill button.
-     *  This is deprecated.  Use setButtons().
-     *  @deprecated
+     *  @param visibility True if the fill button is to be visible.
+     *  @deprecated Use #setButtons(boolean) instead.
      */
-    protected void _setButtonsVisibility(boolean vis) {
+    protected void _setButtonsVisibility(boolean visibility) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
-        _printButton.setVisible(vis);
-        _fillButton.setVisible(vis);
-        _formatButton.setVisible(vis);
-        _resetButton.setVisible(vis);
+        _printButton.setVisible(visibility);
+        _fillButton.setVisible(visibility);
+        _formatButton.setVisible(visibility);
+        _resetButton.setVisible(visibility);
     }
 
     /** Set the padding multiple.
@@ -3180,6 +3219,9 @@ out.println("\\begin{document}");
      */
     protected volatile double _padding = 0.05;
 
+    /** An offscreen buffer for improving plot performance. */
+    protected transient BufferedImage _plotImage = null;
+
     /** True if the x range have been given. */
     protected transient boolean _xRangeGiven = false;
 
@@ -3239,7 +3281,7 @@ out.println("\\begin{document}");
     /** Whether to draw the axes using a logarithmic scale. */
     protected boolean _ylog = false;
 
-    // For use in calculating log base 10. A log times this is a log base 10.
+    /** For use in calculating log base 10. A log times this is a log base 10. */
     protected static final double _LOG10SCALE = 1 / Math.log(10);
 
     /** Whether to draw a background grid. */
@@ -3321,10 +3363,11 @@ out.println("\\begin{document}");
     /** Indicator whether to use _colors. */
     protected volatile boolean _usecolor = true;
 
-    // Default _colors, by data set.
-    // There are 11 colors so that combined with the
-    // 10 marks of the Plot class, we can distinguish 110
-    // distinct data sets.
+    /** The default colors, by data set.
+     *  There are 11 colors so that combined with the
+     *  10 marks of the Plot class, we can distinguish 110
+     *  distinct data sets.
+     */
     static protected Color[] _colors = { new Color(0xff0000), // red
             new Color(0x0000ff), // blue
             new Color(0x00aaaa), // cyan-ish
@@ -4411,9 +4454,6 @@ out.println("\\begin{document}");
     // First values specified to setXRange() and setYRange().
     double _originalYhigh = 0.0;
 
-    // An offscreen buffer for improving plot performance.
-    protected transient BufferedImage _plotImage = null;
-
     // A button for printing the plot
     private transient JButton _printButton = null;
 
@@ -4600,17 +4640,30 @@ out.println("\\begin{document}");
         }
     }
 
+    /** Handle mouse pressed events to provide zoom functionality. */
     public class ZoomListener implements MouseListener {
+	/** Request the focus.
+	 *  @param event The event, ignored by this method.
+	 */
         public void mouseClicked(MouseEvent event) {
             requestFocus();
         }
 
+	/** Ignored.
+	 *  @param event The event, ignored by this method.
+	 */
         public void mouseEntered(MouseEvent event) {
         }
 
+	/** Ignored.
+	 *  @param event The event, ignored by this method.
+	 */
         public void mouseExited(MouseEvent event) {
         }
 
+	/** Handle mouse button 1 events.  See the class comment for details.
+	 *  @param event The event.
+	 */
         public void mousePressed(MouseEvent event) {
             // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4072703
             // BUTTON1_MASK still not set for MOUSE_PRESSED events
@@ -4642,6 +4695,9 @@ out.println("\\begin{document}");
             //                 + ")");
         }
 
+	/** Handle mouse button 1 events.  See the class comment for details.
+	 *  @param event The event.
+	 */
         public void mouseReleased(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0
                     && (event.getModifiers() & InputEvent.BUTTON3_MASK) == 0
@@ -4651,7 +4707,12 @@ out.println("\\begin{document}");
         }
     }
 
+    /** Draw the zoom box.
+     */
     public class DragListener implements MouseMotionListener {
+	/** Handle mouse drag events.  See the class comment for details.
+	 *  @param event The event.
+	 */
         public void mouseDragged(MouseEvent event) {
             // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
             // not work on mouse drags.  It does work on MouseListener
@@ -4663,11 +4724,19 @@ out.println("\\begin{document}");
             }
         }
 
+	/** Ignored.
+	 *  @param event The event, ignored by this method.
+	 */
         public void mouseMoved(MouseEvent event) {
         }
     }
 
+    /** Handle key pressed events.
+     */	
     class CommandListener implements KeyListener {
+	/** Handle key pressed events.  See the class comment for details.
+	 *  @param e The event.
+	 */
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -4766,6 +4835,9 @@ out.println("\\begin{document}");
             }
         }
 
+	/** Handle key released events.  See the class comment for details.
+	 *  @param e The event.
+	 */
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -4784,8 +4856,11 @@ out.println("\\begin{document}");
             }
         }
 
-        // The keyTyped method is broken in jdk 1.1.4.
-        // It always gets "unknown key code".
+        /** Ignored by this class.
+	 *  The keyTyped method is broken in jdk 1.1.4.
+         *  It always gets "unknown key code".
+	 * @param e Ignored by this method.
+	 */
         public void keyTyped(KeyEvent e) {
         }
 
@@ -4830,23 +4905,7 @@ out.println("\\begin{document}");
         private Set<PlotBox> _listeners = new HashSet<PlotBox>();
     }
 
-    // True if we have printed the securityExceptionMessage.
+    /** True if we have printed the securityExceptionMessage. */
     private static boolean _printedSecurityExceptionMessage = false;
-
-    public void setBackground(Object background) {
-        setBackground((Color) background);
-    }
-
-    public void setColors(Object[] colors) {
-        setColors((Color[]) colors);
-    }
-
-    public void setForeground(Object foreground) {
-        setForeground((Color) foreground);
-    }
-
-    public void setPlotRectangle(Object rectangle) {
-        setPlotRectangle((Rectangle) rectangle);
-    }
-
 }
+

@@ -46,25 +46,29 @@ import ptolemy.util.StringUtilities;
 
 /**
  PlotApplication is a versatile two-dimensional data plotter application.
- It can read files compatible with the Ptolemy plot
+ <p>It can read files compatible with the Ptolemy plot
  file format (currently only ASCII).  For a description of the file
  format, see the Plot and PlotBox classes.
- Command-line options include:
+ Command-line options include:</p>
+
  <dl>
 
- <dt><code>-help</code></a>
- <dt>Print the usage, including all command-line options
+ <dt><code>-help</code></a></dt>
+ <dd>Print the usage, including all command-line options
  that exist for backward compatibility and then exit.
- The help menu choice will display the same information.
- <dt><code>-test</code></a>
- <dt>Display the plot, then exit after 2 seconds.
+ The help menu choice will display the same information.</dd>
 
- <dt><code>-version</code></a>
- <dt>Print the program version and then exit.
+ <dt><code>-test</code></a></dt>
+ <dd>Display the plot, then exit after 2 seconds.</dd>
+
+ <dt><code>-version</code></a></dt>
+ <dd>Print the program version and then exit.
  While ptplot is running,
- the version menu choice will display the same information.
- <dt><code>-</code></a>
- <dt>Read the plot data from standard in.
+ the version menu choice will display the same information.</dd>
+
+ <dt><code>-</code></a></dt>
+ <dd>Read the plot data from standard in.</dd>
+
  </dl>
 
  <p>
@@ -74,32 +78,34 @@ import ptolemy.util.StringUtilities;
  of the pxgraph application, plus some more to allow for cross-platform
  reading.  It is not possible to read pxgraph files
  using the "Open" menu command (because of the cross-platform problems).
- The additional command-line arguments are:
+ The additional command-line arguments are:</p>
+
  <dl>
 
- <dt><code>-bigendian</code></a>
- <dt>Data files are in big-endian, or network binary format.
+ <dt><code>-bigendian</code></a></dt>
+ <dd>Data files are in big-endian, or network binary format.
  If you are on a little-endian machine, such as a machine
  with an Intel x86 chip, and you would like to read a binary
  format file created on a big-endian machine, such as a Sun SPARC,
- use the <code>-bigendian</code> flag.
+ use the <code>-bigendian</code> flag.</dd>
 
- <dt><code>-littleendian</code></a>
- <dt>Data files are in little-endian, or x86 binary format.
+ <dt><code>-littleendian</code></a></dt>
+ <dd>Data files are in little-endian, or x86 binary format.
  If you are on a big-endian machine, such as a Sun Sparc,
  and you would like to read a binary
  format file created on a little-endian machine, such as Intel x86
- machine, then use the <code>-littleendian</code> flag.
+ machine, then use the <code>-littleendian</code> flag.</dd>
  </dl>
+
  <p>
- To compile and run this application, do the following:
+ To compile and run this application, do the following:</p>
  <pre>
  javac -classpath ../.. PlotApplication.java
  java -classpath ../.. ptolemy.plot.PlotApplication
  </pre>
  <p>
  This assumes a particular directory structure.  If this is not what you
- have, then alter the above accordingly.
+ have, then alter the above accordingly.</p>
 
  @see Plot
  @see PlotBox
@@ -176,6 +182,8 @@ public class PlotApplication extends PlotFrame {
     ////                         public methods                    ////
 
     /** Create a new plot window and map it to the screen.
+     *	@param args The command line arguments.  See the class comment
+     *  for details.
      */
     public static void main(final String[] args) {
         try {
@@ -244,6 +252,8 @@ public class PlotApplication extends PlotFrame {
 
     /** Parse the command-line
      *  arguments and make calls to the Plot class accordingly.
+     *	@param args The command line arguments.  See the class comment
+     *  for details.
      *  @return The number of arguments read.
      *  @exception CmdLineArgException If a command line argument cannot
      *  be parsed.

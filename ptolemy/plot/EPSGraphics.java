@@ -309,6 +309,10 @@ public class EPSGraphics extends Graphics {
         return null;
     }
 
+    /** Get the current color.
+     *  @return The current color.
+     *  @see #setColor(Color)
+     */
     public Color getColor() {
         return _currentColor;
     }
@@ -348,6 +352,7 @@ public class EPSGraphics extends Graphics {
     /** Set the current color.  Since we are generating gray scale
      *  postscript, set a line style. Set the gray level to zero (black).
      *  @param c The desired current color.
+     *  @see #getColor()
      */
     public void setColor(Color c) {
         if (c == Color.black) {

@@ -600,10 +600,10 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     /** Set to true in order to disable conversion of received tokens.
-     *  @param dynamic
+     *  @param dynamic True in order to disable conversion of received tokens.
      */
     public void setDynamic(boolean dynamic) {
-        this._dynamic = dynamic;
+        _dynamic = dynamic;
     }
     
     /** Constrain the type of this port to be equal to or greater

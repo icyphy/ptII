@@ -41,11 +41,15 @@ package ptolemy.plot;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class CmdLineArgException extends Exception {
+    /** Construct a command line argument exception. */
     public CmdLineArgException() {
         super();
     }
 
-    public CmdLineArgException(String s) {
-        super(s);
+    /** Construct a command line argument exception.
+     *  @param detail The description of the exception.
+     */
+    public CmdLineArgException(String detail) {
+        super(detail);
     }
 }

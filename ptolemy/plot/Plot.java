@@ -446,7 +446,8 @@ public class Plot extends PlotBox implements PlotInterface {
      *  plotted point down to the x axis.
      *  A plot with such lines is also known as a stem plot.
      *  @return True if this is an impulse plot
-     *  @see #setImpulses
+     *  @see #setImpulses(boolean)
+     *  @see #setImpulses(boolean, int)
      */
     public boolean getImpulses() {
         // FindBugs reports "Unsynchronize get method, synchronized
@@ -714,6 +715,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  disabled.  A plot with such lines is also known as a stem plot.
      *  @param on If true, draw a stem plot.
      *  @param dataset The dataset to which this should apply.
+     *  @see #getImpulses
      */
     public synchronized void setImpulses(boolean on, int dataset) {
         // Ensure replot of offscreen buffer.

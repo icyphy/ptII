@@ -304,7 +304,7 @@ public class Histogram extends PlotBox {
 
     /** Set the width and offset of the bars.  Both are specified
      *  as a fraction of a bin width.  The offset is the amount by which the
-     *  i < sup>th</sup> data set is shifted to the right, so that it
+     *  i <sup>th</sup> data set is shifted to the right, so that it
      *  peeks out from behind the earlier data sets.
      *  @param width The width of the bars.
      *  @param offset The offset per data set.
@@ -734,13 +734,19 @@ public class Histogram extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial The current dataset. */
+    /**  The current dataset.
+     *	 @serial
+     */
     protected int _currentdataset = -1;
 
-    /** @serial A vector of datasets. */
+    /**  A vector of datasets.
+     *	 @serial
+     */
     protected Vector _points = new Vector();
 
-    /** @serial A vector of histogram data. */
+    /**  A vector of histogram data.
+     *	 @serial
+     */
     protected Vector _histogram = new Vector();
 
     ///////////////////////////////////////////////////////////////////
