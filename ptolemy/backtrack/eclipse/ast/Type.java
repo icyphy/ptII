@@ -343,6 +343,7 @@ public class Type {
                 && ((Type) object)._fullName.equals(_fullName)) {
             return true;
         }
+	return false;
     }
 
     /** Convert the name of the Java run-time representation back to
