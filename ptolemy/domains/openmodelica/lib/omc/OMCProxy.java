@@ -216,7 +216,7 @@ public class OMCProxy implements IOMCProxy {
                             + proc.exitValue();
                     _omcLogger.getInfo(loggerInfo);
                 } else {
-                    new throw Exception(
+                    throw new Exception(
                             "OpenModelicaDirector.getOMCLogger was null! OpenModelica subprocess exited with code "
                                     + proc.exitValue());
                 }
