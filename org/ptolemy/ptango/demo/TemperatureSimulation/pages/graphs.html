@@ -46,16 +46,22 @@
  	<!-- Content -->
 	<div>
 		<div id="info">
-
-		<!-- Toggle radio group from jQueryUI -->
+			<div id="text"> Change cooling setpoint: </div>
+			<!-- Toggle radio group and checkbox from jQueryUI -->
 			<!--  Click handlers are registered in graphs.js to take advantage
 			      of jQuery's this object to retrieve id of item clicked -->
 			<div id="radio-group" class="radio-group">
-				<input type="radio" id="radio21" name="radio"/><label for="radio21" id="radio21label"> 21&deg;C</label>
-				<input type="radio" id="radio23" name="radio" checked="checked" "/><label for="radio23" id="radio23label">23&deg;C</label>
-				<input type="radio" id="radio25" name="radio" /><label for="radio25" id="radio25label">25&deg;C</label>
-			</div>   
+				<input type="radio" id="radio21" name="radio"/>
+					<label for="radio21" id="radio21Label"> 21&deg;C</label>
+				<input type="radio" id="radio23" name="radio" checked="checked"/>
+					<label for="radio23" id="radio23Label">23&deg;C</label>
+				<input type="radio" id="radio25" name="radio" />
+					<label for="radio25" id="radio25Label">25&deg;C</label>
+			</div>  
 			
+			<input type="checkbox" id="checkbox" />
+				<label for="checkbox" id="checkboxLabel"> Show Floorplan</label>
+
 		</div>
 		
 		<div id="temperature-graph"> 
@@ -71,27 +77,6 @@
 			<li> </li>
 		</ul>
 	</footer>
-	
-	<!-- Data streams 
-	
-	   "Path": "/corytstat/cool_setting",
-    "uuid": "41a39f73-55a0-5aa2-a7f0-49d921d41267",
-	
-	    "Path": "/corytstat/heat_setting",
-    "uuid": "9c81c66c-7f39-5a54-ac20-7e1c0693e1ca",
-	
-	    "Path": "/corytstat/hvac_state",
-    "uuid": "f079c5bb-d8fd-55ea-add2-09d447f0f34b",
-	
-	    "Path": "/corytstat/zone_temp",
-    "uuid": "b5434792-761f-57a8-a90a-c60b77c236c7",
-	
-	    "Path": "/gpe/elt-B/ABC/true_power",
-    "Readings": "[[1364879497000L, 3.6000000000000001]]",
-    "uuid": "be11bd83-c9e7-587a-999c-d70ece600e9d",
-	-->
-	
-	
 	
 	</body>
 </html>

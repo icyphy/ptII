@@ -17,6 +17,22 @@ var xScale,
 	yAxis,
 	minMaxPadding = 0.5;
 
+//Colors for the data series.  Specified by the name used in the export. 
+var colorData = { "CoolSetpoint" : {color: "lightblue"},
+                  "THallway" : {color: "darkgray"},
+                  "TRoom202" : {color: "coral"},
+                  "TRoom203" : {color: "darkorange"},
+                  "TRoom205" : {color: "gold"},
+                  "TRoom206" : {color: "yellowgreen"},
+                  "TRoom208" : {color: "limegreen"},
+                  "TRoom212" : {color: "mediumaquamarine"},
+                  "TRoom214" : {color: "mediumturquoise"},
+                  "TRoom219" : {color: "steelblue"},
+                  "TRoom220" : {color: "slateblue"},
+                  "TRoom222" : {color: "chocolate"},
+                  "TRoom224" : {color: "sienna"},
+};
+
 // Colors and text for the legend. 
 // Uses CSS named colors:  http://www.w3.org/TR/SVG/types.html#ColorKeywords
 // Could alternatively use RGB for custom colors
@@ -50,22 +66,6 @@ var legendData = [ {label: "Cooling Setpoint",
 					color: "sienna"}	
 					];
 
-// Colors for the data series.  Specified by the name used in the export. 
-var colorData = { "CoolSetpoint" : {color: "lightblue"},
-                  "THallway" : {color: "darkgray"},
-                  "TRoom202" : {color: "coral"},
-                  "TRoom203" : {color: "darkorange"},
-                  "TRoom205" : {color: "gold"},
-                  "TRoom206" : {color: "yellowgreen"},
-                  "TRoom208" : {color: "limegreen"},
-                  "TRoom212" : {color: "mediumaquamarine"},
-                  "TRoom214" : {color: "mediumturquoise"},
-                  "TRoom219" : {color: "steelblue"},
-                  "TRoom220" : {color: "slateblue"},
-                  "TRoom222" : {color: "chocolate"},
-                  "TRoom224" : {color: "sienna"},
-};
-
 // Average hourly outside temperature for July, starting at midnight 00:00
 // Copied from USA_PA_Pittsburgh.Intl.AP.725700_TMY3.stat
 // In Celsius
@@ -85,26 +85,60 @@ var imageHeight = 500,
 // Whitespace padding around graph
 var padding = 30; 
 
-// Function for computing the lines on the graph and the lines themselves
-var lineFunction,
-    lines,
-    outsideTempLineFunction,
-    outsideTempLine;
-
+// True if it is the first time page is viewed. Used for create graph vs. update
 var firstView = true;
+
+// Functions for computing the lines on the graph and the lines themselves
+var lines,
+    lineFunction,
+    outsideTempLine,
+    outsideTempLineFunction,
+    showVerticalLine = false,
+    verticalLine,
+    verticalLineFunction,
+    verticalLineGroup;
+
+// Endpoints for the vertical line selector
+
+var verticalLineData = [{"x": 3*padding + 1, "y" : padding}, 
+          				{"x": 3*padding + 1, "y" : imageHeight - 3*padding}];
+
+var verticalLineGroupData = [{"x" : 0, "y" : 0}];
+
+// Draggability for vertical line
+// Based on https://github.com/mbostock/d3/wiki/Drag-Behavior
+// and http://bl.ocks.org/mbostock/1557377
+var dragLine = d3.behavior.drag()
+			 .origin(Object)	// Preserves the offset between the mouse
+			 					// position and the object's position
+			 					// Useful for larger objects
+			 .on("drag", function(d) {
+					d.x += d3.event.dx;	 // Only update the x direction 
+										 // (drag left and right only)
+					if (d.x < 0) {d.x = 0};
+					if (d.x > imageWidth - 7*padding) 
+						{d.x = imageWidth - 7*padding};
+					verticalLineGroupData[0].x = d.x;
+					d3.select(this).attr("transform", function(d,i) {
+						return "translate(" + [d.x, d.y] + ")"
+					});
+			 });
 
 // Function executed once page is loaded
 $(document).ready(function() {
 	// Register click handlers
-	$("#radio21label").click(readData);
-	$("#radio23label").click(readData);
-	$("#radio25label").click(readData);
+	$("#radio21Label").click(readData);
+	$("#radio23Label").click(readData);
+	$("#radio25Label").click(readData);
+	$("#checkboxLabel").click(showHideVerticalLine);
 	
 	// Formatting for radio buttons.  From jQueryUI
 	// Ensure page starts with middle button (23 degrees C) checked
 	// Trigger a click event to check this button and kick off data import
+	$("#checkbox").prop("checked", false);
+	$("#checkbox").button();
 	$("#radio-group").buttonset();
-	$("#radio23label").trigger("click");
+	$("#radio23Label").trigger("click");
 });
 
 // Create an SVG element showing the temperature graph
@@ -277,6 +311,12 @@ function createGraph() {
 	  .attr("x", padding)
       .attr("y", function(d, i){ return i *  20 + squareSize - 2;})
       .text(function(d) {return d.label;});
+    
+    // Add vertical line for synching with floorplan temperature map
+    verticalLineFunction = d3.svg.line()
+		.x(function(d) {return d.x; })
+		.y(function(d) {return d.y; })
+		.interpolate("linear");
 }
 
 // Read the appropriate data file according to the chosen cooling setpoint
@@ -302,11 +342,11 @@ function readData(){
 		// For subsequent views, update existing graph, so we can animate 
 		// the transition
 		
-		if(this.id == ("radio21label")) {
+		if(this.id == ("radio21Label")) {
 			filename = "temperatures21setpoint.csv";
-		} else if (this.id == "radio23label") {
+		} else if (this.id == "radio23Label") {
 			filename = "temperatures23setpoint.csv";
-		} else if (this.id == "radio25label") {
+		} else if (this.id == "radio25Label") {
 			filename = "temperatures25setpoint.csv";
 		} else { alert("Please select a cooling setpoint.")}
 		
@@ -321,6 +361,40 @@ function readData(){
 	}
 		
 }
+
+// Show or hide the vertical line to link line chart with floorpan map 
+function showHideVerticalLine() {
+	if (showVerticalLine) {
+		verticalLineGroup = svg.selectAll(".verticalLineGroup")
+			.data(verticalLineData);
+		
+		verticalLineGroup.remove();
+		
+		showVerticalLine = false;
+		
+	} else {
+		
+		verticalLineGroup = svg.selectAll(".verticalLineGroup")
+			.data(verticalLineGroupData)
+			.enter()
+			.append("svg:g")
+			.attr("class", "verticalLineGroup")
+			.attr("opacity", 0.6)
+			.call(dragLine);
+		
+		verticalLine = verticalLineGroup.selectAll(".verticalLine")
+			.data(verticalLineData)
+			.enter()
+			.append("path")
+			 .attr("class", "verticalLine")
+			 .attr("d", verticalLineFunction(verticalLineData))
+			 .attr("stroke-width", 12)
+			 .attr("stroke", "yellow");
+		
+		showVerticalLine = true;
+	}
+}
+
 
 // Update the graph to show the new data
 function updateGraph(){
