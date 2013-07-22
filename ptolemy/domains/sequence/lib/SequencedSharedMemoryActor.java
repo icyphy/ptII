@@ -425,7 +425,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
 
         // FindBugs was reportingthat initialVar could be null.
         if (initialVar == null) {
-            throw new InternalErrorException(this, "initialVar is null?");
+            throw new InternalErrorException(this, null, "initialVar is null?");
         } else {
             // Set value of parameter equal to the initial value
             // Note that if a default value has been assigned to the initial value, it will be overwritten
