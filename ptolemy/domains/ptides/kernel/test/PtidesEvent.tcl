@@ -313,7 +313,7 @@ test PtidesEvent-5.1 {hasTheSameTagAs} {
 	[$event3_1 hasTheSameTagAs $event5_1b] \
 	[$event5_1a hasTheSameTagAs $event3_1] \
 	[$event5_1b hasTheSameTagAs $event3_1]
-} {1 1 1 1 1 1}
+} {1 1 0 1 0 1}
 
 test PtidesEvent-6.1 {hasTheSameTagAndDepthAs} {
 
@@ -324,4 +324,4 @@ test PtidesEvent-6.1 {hasTheSameTagAndDepthAs} {
 	[$event3_1 hasTheSameTagAndDepthAs $event5_1b] \
 	[$event5_1a hasTheSameTagAndDepthAs $event3_1] \
 	[$event5_1b hasTheSameTagAndDepthAs $event3_1]
-} {1 1 1 0 1 0}
+} {1 1 0 0 0 0}
