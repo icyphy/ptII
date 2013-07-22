@@ -231,6 +231,13 @@ public class FMUFile {
                     fmuResourceLocation.length()-1);
         }
 
+        if (fmuResourceLocation.indexOf("%20") != -1) {
+            System.out.println("FMUFile: The fmuResourceLocation \""
+                    + fmuResourceLocation + "\" contains one or more \"%20\"."
+                    + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
+            fmuResourceLocation = fmuResourceLocation.replace("%20", " ");
+        }
+
         // Read the modelDescription.xml file.
         Document document = null;
         try {
@@ -378,6 +385,8 @@ public class FMUFile {
                     fmiModelDescription.canGetAndSetFMUstate = Boolean
                             .parseBoolean(cosimulation.getAttribute("canGetAndSetFMUstate"));
                 }
+
+                // canProvideMaxStepSize and fmiGetMaxStepSize() are IBM/UCB extensions to FMI 2.0.
                 if (cosimulation.hasAttribute("canProvideMaxStepSize")) {
                     fmiModelDescription.canProvideMaxStepSize = Boolean
                             .parseBoolean(cosimulation.getAttribute("canProvideMaxStepSize"));
