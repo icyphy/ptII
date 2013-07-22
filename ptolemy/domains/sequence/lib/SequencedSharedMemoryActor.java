@@ -423,10 +423,14 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
         var.setTypeAtLeast(initialVar);
         output.setTypeAtLeast(var);
 
-        // Set value of parameter equal to the initial value
-        // Note that if a default value has been assigned to the initial value, it will be overwritten
-        _setValue(var, initialVar.getToken());
-
+        // FindBugs was reportingthat initialVar could be null.
+        if (initialVar == null) {
+            throw new InternalErrorException(this, "initialVar is null?");
+        } else {
+            // Set value of parameter equal to the initial value
+            // Note that if a default value has been assigned to the initial value, it will be overwritten
+            _setValue(var, initialVar.getToken());
+        }
     }
 
     /** When the actor name is changed, update the referenced variables
