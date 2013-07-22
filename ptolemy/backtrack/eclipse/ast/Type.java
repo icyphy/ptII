@@ -322,13 +322,27 @@ public class Type {
 
     /** Test if this type is semantically equal to the given type.
      *
-     *  @param type The type to be tested.
+     *  @param object The type to be tested.
      *  @return <tt>true</tt> if the two types equal; <tt>false</tt>
      *   otherwise.
      */
-    public boolean equals(Type type) {
-        return (_primitiveNum == type._primitiveNum)
-                && _fullName.equals(type._fullName);
+    public boolean equals(Object object) {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        if (object == this) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
+        // This test rules out subclasses.
+        if (object.getClass() != getClass()) {
+            return false;
+        }
+        
+        if (_primitiveNum == ((Type)object)._primitiveNum
+                && ((Type) object)._fullName.equals(_fullName)) {
+            return true;
+        }
     }
 
     /** Convert the name of the Java run-time representation back to
