@@ -1214,6 +1214,13 @@ public class OMCProxy implements IOMCProxy {
             _fOMCThread.start();
             _fOMCThreadHasBeenScheduled = true;
 
+            // FIXME: FindBugs says:
+            // OMCProxy.java:1217, ML_SYNC_ON_UPDATED_FIELD, Priority: Normal
+            // Method synchronizes on an updated field
+            // This method synchronizes on an object referenced from a
+            // mutable field. This is unlikely to have useful
+            // semantics, since different threads may be synchronizing
+            // on different objects.
             synchronized (_fOMCThread) {
                 try {
                     _fOMCThread.wait(10000);
