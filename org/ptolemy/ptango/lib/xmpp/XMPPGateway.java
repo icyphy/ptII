@@ -489,7 +489,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                 // After use, set password to null for security
                 _password = null;
             }
-        } catch (Exception ex) {
+        } catch (XMPPException ex) {
             throw new IllegalActionException(this, ex,
                     "Unable to login to XMPP server.");
         }
