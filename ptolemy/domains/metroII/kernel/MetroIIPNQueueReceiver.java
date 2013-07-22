@@ -36,16 +36,31 @@ import ptolemy.data.Token;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
+// FIXME: Class Comment.  What does this class do?  Why is it necessary to subclass PNQueueReceiver.
+
 public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
+    // FIXME: FindBugs says:
+    // "PNQueueReceiver.java:-1, MF_CLASS_MASKS_FIELD, Priority: Normal
+    // Class defines field that masks a superclass field
+    // This class defines a field with the same name as a visible
+    // instance field in a superclass. This is confusing, and may
+    // indicate an error if methods update or access one of the fields
+    // when they wanted the other."
+    // The issue here is that PNQueueReceiver has a _director field
+
+    // FIXME: Put protected fields after public.
     /** The director in charge of this receiver. */
     protected MetroIIPNDirector _director;
 
+    // FIXME: comment?
     public MetroIIPNDirector getDirector() {
         return _director;
     }
 
+    // FIXME: comment?
     public Token get() {
+        // FIXME: rename t to token.  We tend not to use single letter variable names except for things like i,j,k.
         Token t = super.get();
         try {
             _director.proposeMetroIIEvent(".get.end");
@@ -59,6 +74,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         return t;
     }
 
+    // FIXME: comment?
     public void put(Token token) {
         try {
             _director.proposeMetroIIEvent(".put.begin");
@@ -73,6 +89,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         super.put(token);
     }
 
+    // FIXME: comment?
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
         if (port == null) {
@@ -102,5 +119,4 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
             _director = (MetroIIPNDirector) director;
         }
     }
-
 }
