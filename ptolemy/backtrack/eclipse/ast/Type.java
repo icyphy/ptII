@@ -491,6 +491,24 @@ public class Type {
         return type;
     }
 
+    /** Return the hash code for the Type object. If two Type
+     *  objects contains the same primitiveNum, classObject
+     *  and fullName, then they have the same
+     *  hashcode.
+     *  @return The hash code for this Type object.
+     */
+    public int hashCode() {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = _primitiveNum;
+        if (_classObject != null) {
+            hashCode = 31 * hashCode + _classObject.hashCode();
+        }
+        if (_fullName != null) {
+            hashCode = 31 * hashCode + _fullName.hashCode();
+        }
+        return hashCode;
+    }
+
     /** Test if this type is an array type.
      *
      *  @return <tt>true</tt> if this type is an array type;
