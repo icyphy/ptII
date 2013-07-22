@@ -209,7 +209,7 @@ public class MetroIIDirector extends Director {
         if (attribute == mappingFileName) {
             StringToken mappingFileNameToken = (StringToken) mappingFileName
                     .getToken();
-            if (mappingFileNameToken == null || mappingFileNameToken.equals("")) {
+            if (mappingFileNameToken == null || mappingFileNameToken.stringValue().equals("")) {
                 mappingFileName = null;
             } else {
 
