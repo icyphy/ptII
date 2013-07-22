@@ -116,7 +116,7 @@ public class EditablePlot extends Plot {
      *  a two-dimensional array, where the first index specifies
      *  X or Y data (index 0 or 1 respectively), and the second
      *  index specifies the point.
-     *  @param int The dataset.
+     *  @param dataset The dataset.
      *  @return The data in the specified dataset.
      */
     public double[][] getData(int dataset) {
