@@ -445,6 +445,8 @@ public class TestMigrateModelsManager {
     private void _cleanup(String directoryPath) {
         FileUtilities.deleteDirectory(directoryPath);
         File file = new File(directoryPath);
-        file.delete();
+        if (file.exists() && !file.delete()) {
+            System.out.println("Could not delete " + directoryPath);
+        }
     }
 }
