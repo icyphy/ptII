@@ -182,7 +182,8 @@ public class SensorController
      * @return  The set of sensors associated with this sensor controller.
      */
     public Sensor[] getSensors() {
-        return (Sensor[]) sensors.toArray();
+        // Avoid FindBugs BC_IMPOSSIBLE_CAST
+        return sensors.toArray(new Sensor[sensors.size()]);
     }
     
     /** Removes the given sensor from the sensor controller's set, if present.
