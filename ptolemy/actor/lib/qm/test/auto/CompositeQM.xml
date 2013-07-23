@@ -96,12 +96,12 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {CompositeQuantityManager}">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {C}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -215,18 +215,18 @@
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {CompositeQuantityManager}">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {C}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in2">
                 </property>
             </property>
         </port>
@@ -265,7 +265,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -284,7 +284,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -304,7 +304,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -326,7 +326,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -345,7 +345,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -365,7 +365,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -385,7 +385,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -404,7 +404,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -426,7 +426,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -446,7 +446,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -465,7 +465,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -485,7 +485,7 @@
             <property name="input"/>
             <property name="multiport"/>
             <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeQuantityManager">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -496,12 +496,12 @@
             </property>
         </port>
     </entity>
-    <entity name="CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+    <entity name="C" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 450}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 455.0}">
         </property>
         <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
@@ -510,21 +510,39 @@
             </property>
         </entity>
         <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 240.0]">
             </property>
         </entity>
         <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 200.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 240.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
+        <entity name="in2" class="ptolemy.actor.lib.qm.CQMInputPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 275.0]">
+            </property>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 250}">
+            </property>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="in.output" relation="relation"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in.output" relation="relation3"/>
         <link port="out.input" relation="relation2"/>
         <link port="TimeDelay.input" relation="relation"/>
         <link port="TimeDelay.output" relation="relation2"/>
+        <link port="in2.output" relation="relation4"/>
+        <link port="Merge.input" relation="relation3"/>
+        <link port="Merge.input" relation="relation4"/>
+        <link port="Merge.output" relation="relation"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
