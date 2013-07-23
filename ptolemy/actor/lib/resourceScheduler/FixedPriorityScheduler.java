@@ -168,10 +168,13 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
      */
     @Override
     public Time schedule(Time environmentTime) throws IllegalActionException {
-        Actor actor = _currentlyExecuting.peek();
-        Time time = super.schedule(actor, environmentTime, null, null);
-        if (lastScheduledActorFinished()) { 
-            getDirector().resumeActor(actor);
+        Time time = Time.POSITIVE_INFINITY;
+        if (_currentlyExecuting.size() > 0) {
+            Actor actor = _currentlyExecuting.peek();
+            time = super.schedule(actor, environmentTime, null, null);
+            if (lastScheduledActorFinished()) { 
+                getDirector().resumeActor(actor);
+            }
         }
         return time;
     }
