@@ -98,8 +98,12 @@ helloWorld.fmu: $(FMU_SRCS)
 update: helloWorld.fmu
 	cp helloWorld.fmu ../../test/auto/helloWorld.fmu 
 
-test:
+test: run check
+run:
 	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUCoSimulation helloWorld.fmu
+
+check:
+	
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
