@@ -67,9 +67,14 @@ public class FMIRealType extends FMIType {
     }
 
     /** Return the string value of the base element.
-     *  @return The string value.
+     *  @return The string value.  If the element does not have a start
+     *  element, then the string "NaN" is returned.
      */
     public String toString() {
+        if (start == null) {
+            // Dymola had a system.p_start parameter that had no start value.
+            return "NaN";
+        }
         return Double.toString(start);
     }
 
