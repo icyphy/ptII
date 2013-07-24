@@ -388,7 +388,6 @@ public class MetroIIPNDirector extends PNDirector implements
     /**
      * Create a MetroII event with the given name and type.
      * @param name Name of the MetroII event
-     * @param t Type of the MetroII event
      * @return newly created MetroII event
      */
     private Event.Builder _makeEventBuilder(String name) {
