@@ -572,34 +572,34 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @return identifier string.
      */
     public String getIdentifier() {
-        String id = "";
+        StringBuffer id = new StringBuffer();
         if (_nodeType == NodeType.PERMUTATION) {
             if (_permutation == null) {
-                id = "";
+                //id = "";
             } else if (_permutation.length == 0) {
-                id = "[]";
+                id.append("[]");
             } else {
-                id += "[" + (_permutation[0] + 1);
+                id.append("[" + (_permutation[0] + 1));
                 for (int n = 1; n < _permutation.length; ++n) {
-                    id += " " + (_permutation[n] + 1);
+                    id.append(" " + (_permutation[n] + 1));
                 }
-                id += "]";
+                id.append("]");
             }
         } else if (_nodeType == NodeType.SPLIT) {
-            id += "[ < " + _outputs.size() + " ]";
+            id.append("[ < " + _outputs.size() + " ]");
         } else if (_nodeType == NodeType.MERGE) {
-            id += "[ " + _inputs.size() + " > ]";
+            id.append("[ " + _inputs.size() + " > ]");
         } else if (isCap()) {
-            id += "T";
+            id.append("T");
         } else if (isIncoming()) {
-            id += "in";
+            id.append("in");
         } else if (isOutgoing()) {
-            id += "out";
+            id.append("out");
         } else if (isRepresentative()) {
-            id += _label;
+            id.append(_label);
         }
 
-        return id;
+        return id.toString();
     }
 
     /** Get whether the node has been visited.
@@ -873,33 +873,33 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      * @return Description of Node.
      */
     public String description(String prefix, String suffix) {
-        String desc = prefix + "Node: " + getName() + " {" + suffix;
+        StringBuffer desc = new StringBuffer(prefix + "Node: " + getName() + " {" + suffix);
         String indent = "....";
 
         if (isRepresentative() && _isRepresented) {
-            desc += prefix + indent + "Representing: " + _represented.getName()
-                    + suffix;
+            desc.append(prefix + indent + "Representing: " + _represented.getName()
+                    + suffix);
         } else {
-            desc += prefix + indent + "Pure syntactic node" + suffix;
+            desc.append(prefix + indent + "Pure syntactic node" + suffix);
         }
 
-        desc += prefix + indent + "Initial: " + _isInitial + suffix + prefix
+        desc.append(prefix + indent + "Initial: " + _isInitial + suffix + prefix
                 + indent + "Terminal: " + _isTerminal + suffix + prefix
-                + indent + "Isolated: " + _isIsolated + suffix;
+                + indent + "Isolated: " + _isIsolated + suffix);
 
-        desc += prefix + indent + "inputs: {" + suffix;
+        desc.append(prefix + indent + "inputs: {" + suffix);
         for (Port port : _inputs) {
-            desc += prefix + indent + "...." + port.getName() + suffix;
+            desc.append(prefix + indent + "...." + port.getName() + suffix);
         }
-        desc += prefix + indent + "}" + suffix;
+        desc.append(prefix + indent + "}" + suffix);
 
-        desc += prefix + indent + "outputs: {" + suffix;
+        desc.append(prefix + indent + "outputs: {" + suffix);
         for (Port port : _outputs) {
-            desc += prefix + indent + "...." + port.getName() + suffix;
+            desc.append(prefix + indent + "...." + port.getName() + suffix);
         }
-        desc += prefix + "}" + suffix;
+        desc.append(prefix + "}" + suffix);
 
-        return desc;
+        return desc.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -962,18 +962,18 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
         int permlen = permutation.length;
         int pheight = permlen * 35;
-        String svgicon = "<svg>\n" + "<rect x=\"-20\" y=\"" + -pheight
+        StringBuffer svgIcon = new StringBuffer("<svg>\n" + "<rect x=\"-20\" y=\"" + -pheight
                 + "\" width=\"40\" height=\"" + 2 * pheight
-                + "\" style=\"fill:red\"/>\n";
+                + "\" style=\"fill:red\"/>\n");
 
         for (int n = 0; n < permlen; ++n) {
             int m = permutation[n];
-            svgicon += "<line x1=\"-18\" y1=\"" + (n * 70 + 35 - pheight)
+            svgIcon.append("<line x1=\"-18\" y1=\"" + (n * 70 + 35 - pheight)
                     + "\" x2=\"18\" y2=\"" + (m * 70 + 35 - pheight)
-                    + "\" />\n";
+                    + "\" />\n");
         }
 
-        svgicon += "</svg>\n";
+        svgIcon.append("</svg>\n");
 
         // Try and set position of ports
         Token t = new DoubleToken(6.0);
@@ -985,37 +985,37 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
             new Variable(port, "_portSpread", t);
         }
 
-        return svgicon;
+        return svgIcon.toString();
     }
 
     /** Generate icon for mediator node.
      *  @return svg code for generated icon.
      */
     protected String _makeMediatorIcon() {
-        String svgicon = "<svg>\n";
+        StringBuffer svgIcon = new StringBuffer("<svg>\n");
         int ins = _inputs.size();
         int outs = _outputs.size();
 
         if (ins == 1 && outs > 1) {
-            svgicon += "<polygon points=\"20,-20 -20,0 20,20\" style=\"fill:red\"/>\n";
+            svgIcon.append("<polygon points=\"20,-20 -20,0 20,20\" style=\"fill:red\"/>\n");
             double vinc = 30.0 / (outs - 1);
             for (int n = 0; n < outs; ++n) {
-                svgicon += "<line x1=\"-18\" y1=\"0\" x2=\"18\" y2=\""
-                        + (n * vinc - 15.0) + "\" />\n";
+                svgIcon.append("<line x1=\"-18\" y1=\"0\" x2=\"18\" y2=\""
+                        + (n * vinc - 15.0) + "\" />\n");
             }
         } else if (outs == 1 && ins > 1) {
-            svgicon += "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n";
+            svgIcon.append("<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n");
             double vinc = 30.0 / (ins - 1);
             for (int n = 0; n < ins; ++n) {
-                svgicon += "<line x1=\"-18\" y1=\"" + (n * vinc - 15.0)
-                        + "\" x2=\"18\" y2=\"0\" />\n";
+                svgIcon.append("<line x1=\"-18\" y1=\"" + (n * vinc - 15.0)
+                        + "\" x2=\"18\" y2=\"0\" />\n");
             }
         } else {
-            svgicon += "<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n";
+            svgIcon.append("<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n");
         }
 
-        svgicon += "</svg>\n";
-        return svgicon;
+        svgIcon.append("</svg>\n");
+        return svgIcon.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

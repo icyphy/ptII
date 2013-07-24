@@ -920,14 +920,14 @@ public class SyntacticGraph extends CompositeEntity {
      *  @return code generated from syntactic graph.
      */
     public String generateCode() {
-        String code = "";
+        StringBuffer code = new StringBuffer(); 
         for (SyntacticNode node : _nodes) {
             if (node.isRepresentative()) {
-                code += "" + getLabelFromNode(node) + " = \t"
-                        + node.getRepresented().getName() + "\n";
+                code.append("" + getLabelFromNode(node) + " = \t"
+                        + node.getRepresented().getName() + "\n");
             }
         }
-        code += "\n";
+        code.append("\n");
 
         int nfeeds = _feedIns.size();
 
@@ -941,7 +941,7 @@ public class SyntacticGraph extends CompositeEntity {
         _exprName.bind(expression);
         _exprName.setName("Expr_1");
 
-        return code + _exprName.generateDefinitionCode() + "\n";
+        return code.toString() + _exprName.generateDefinitionCode() + "\n";
     }
 
     /** Determine whether feedback has been removed.
@@ -1084,20 +1084,20 @@ public class SyntacticGraph extends CompositeEntity {
     ////                         static methods                    ////
 
     /** Join a list of strings with a given infix.
-     *  @param strs List of strings.
-     *  @param infx Infix to join strings with.
+     *  @param stringList List of strings.
+     *  @param infix Infix to join strings with.
      *  @return String containing joined strings.
      */
-    public static String stringJoin(List<String> strs, String infx) {
-        String acc = "";
-        ListIterator<String> striter = strs.listIterator();
-        if (striter.hasNext()) {
-            acc += striter.next();
-            while (striter.hasNext()) {
-                acc += infx + striter.next();
+    public static String stringJoin(List<String> stringList, String infix) {
+        StringBuffer results = new StringBuffer();
+        ListIterator<String> strings = stringList.listIterator();
+        if (strings.hasNext()) {
+            results.append(strings.next());
+            while (strings.hasNext()) {
+                results.append(infix + strings.next());
             }
         }
-        return acc;
+        return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

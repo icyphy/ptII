@@ -568,7 +568,7 @@ public class TypedCompositeActor extends
                 if (!port.isOutsideConnected())
                     continue;
                 Receiver[][] farReceivers = port.getRemoteReceivers();
-                String enumFarReceivers = _eol + "enum {";
+                StringBuffer enumFarReceivers = new StringBuffer(_eol + "enum {");
                 int channel = 0;
                 for (int k = 0 ; k < farReceivers.length ; k++) {
                     // Fix for the case of a disconnected outside and connected inside port
@@ -593,13 +593,13 @@ public class TypedCompositeActor extends
                         int farChannelNumber = r.getContainer().getChannelForReceiver(r);
                         args.add(Integer.toString(farChannelNumber));
                         codeStream.appendCodeBlock("FarReceiverSetBlock", args, true);
-                        enumFarReceivers += sanitizedActorName + "_" + port.getName() + "_" + 
-                                farActorName + "_" + r.getContainer().getName() + "_" + farChannelNumber + ", ";
+                        enumFarReceivers.append(sanitizedActorName + "_" + port.getName() + "_" + 
+                                farActorName + "_" + r.getContainer().getName() + "_" + farChannelNumber + ", ");
                     }
                 }
                 if (enumFarReceivers.length() > 7) {
-                    enumFarReceivers = enumFarReceivers.substring(0, enumFarReceivers.length() - 2);
-                    enumFarReceivers += "};" + _eol;
+                    enumFarReceivers = new StringBuffer(enumFarReceivers.toString().substring(0, enumFarReceivers.length() - 2));
+                    enumFarReceivers.append("};" + _eol);
                     _enumPortNumbersDefinition += enumFarReceivers;
                 }
                 

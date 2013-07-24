@@ -178,19 +178,22 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
                     + "not supported yet.");
         }
         
-        String valuesString = "";
+        StringBuffer valuesString = new StringBuffer();
         i = 0;
-        if (valuesDouble != null)
-            for (double value : valuesDouble) 
-                valuesString += "$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ";
-        else if (valuesInt != null)
-            for (int value : valuesInt) 
-                valuesString += "$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ";
-        else if (valuesBool != null)
-            for (boolean value : valuesBool) 
-                valuesString += "$actorSymbol(values)["+ i++ +"] = " + Boolean.toString(value) + "; ";
-            
-        args.add(valuesString);
+        if (valuesDouble != null) {
+            for (double value : valuesDouble) {
+                valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ");
+            }
+        } else if (valuesInt != null) {
+            for (int value : valuesInt) { 
+                valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ");
+            }
+        } else if (valuesBool != null) {
+            for (boolean value : valuesBool) {
+                valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Boolean.toString(value) + "; ");
+            }
+        }            
+        args.add(valuesString.toString());
         
         codeStream.appendCodeBlock("initBlock", args);
         
