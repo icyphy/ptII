@@ -78,8 +78,12 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
-tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test1 test2 #test_jsimple
+test1:
 	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.domains.metroII.kernel.test.junit.JUnitTclTest)
+
+test2:
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.domains.metroII.kernel.test.junit.MappingConstraintSolverTest)
 
 test_java: jclass
 
