@@ -58,7 +58,7 @@ public class MappingConstraintSolverTest {
      * Events: A, B, D, E, F, G
      * Expected results: A,B,D,E,G are notified, F is waiting
      */
-    //@Test
+    @org.junit.Test
     public void test() {
         MappingConstraintSolver solver = new MappingConstraintSolver();
         solver.addMapping("A", "B");
