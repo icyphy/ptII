@@ -40,6 +40,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
@@ -7041,12 +7042,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             } else if (source != null && candidateSource != null) {
                 // Have to convert to a URL to check whether the
                 // same file is being specified.
-                URL sourceURL = fileNameToURL(source, _base);
-                URL candidateSourceURL = fileNameToURL(candidateSource, _base);
+                URI sourceURI = fileNameToURL(source, _base).toURI();
+                URI candidateSourceURI = fileNameToURL(candidateSource, _base).toURI();
 
                 // FIXME: URL.equals() is very expensive?  See:
                 // http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
-                if (sourceURL.equals(candidateSourceURL)) {
+                if (sourceURI.equals(candidateSourceURI)) {
                     return candidate;
                 }
             }
