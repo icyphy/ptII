@@ -176,7 +176,6 @@ public class FMUModelExchange extends Transformer {
             String fmuFileName = fmuFile.asFile().toString();
 
             // Unzip the FMU file.
-            List<File> files = null;
             try {
                 _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             } catch (IOException ex) {
@@ -197,11 +196,11 @@ public class FMUModelExchange extends Transformer {
             if (_tmpPath == null) {
                 throw new IllegalActionException(this, "Did not find sentinel file "
                         + sentinelFileName + "."
-                        + (files == null || files.size() <= 0
+                        + (_fmiModelDescription.files.size() <= 0
                                 ? "No files were unzipped from the FMU file "
                                 + fmuFileName + "."
                                 : "The first file in the fmuFile " + fmuFileName
-                                + " was " + files.get(0) + ".")); 
+                                + " was " + _fmiModelDescription.files.get(0) + ".")); 
             }
             
 
