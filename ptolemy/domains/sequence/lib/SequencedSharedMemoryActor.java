@@ -420,7 +420,10 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
         if (input.isOutsideConnected()) {
             var.setTypeAtLeast(input);
         }
-        var.setTypeAtLeast(initialVar);
+        // FindBugs says that initialVar could be null.
+        if (initialVar != null) {
+            var.setTypeAtLeast(initialVar);
+        }
         output.setTypeAtLeast(var);
 
         // FindBugs was reportingthat initialVar could be null.
