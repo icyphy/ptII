@@ -28,6 +28,8 @@
 package ptolemy.domains.metroII.kernel.test.junit;
 
 import java.util.ArrayList;
+
+import junit.framework.TestCase;
 import static org.junit.Assert.assertEquals;
 
 import ptolemy.domains.metroII.kernel.MappingConstraintSolver;
@@ -51,7 +53,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
  * @Pt.AcceptedRating Red (glp)
  *
 */
-public class MappingConstraintSolverTest {
+public class MappingConstraintSolverTest extends TestCase {
 
     /**
      * Constraints: A<>B, C<>D, E<>D, D<>F, A<>C, C<>D, D<>E, D<>C
@@ -90,6 +92,14 @@ public class MappingConstraintSolverTest {
 
         solver.resolve(eventList);
 
+        System.out.println(eventA.getStatus());
+        System.out.println(eventB.getStatus());
+        System.out.println(eventC.getStatus());
+        System.out.println(eventD.getStatus());
+        System.out.println(eventE.getStatus());
+        System.out.println(eventF.getStatus());
+        System.out.println(eventG.getStatus());
+        
         assertEquals(Event.Status.NOTIFIED, eventA.getStatus());
         assertEquals(Event.Status.NOTIFIED, eventB.getStatus());
         assertEquals(Event.Status.PROPOSED, eventC.getStatus());
