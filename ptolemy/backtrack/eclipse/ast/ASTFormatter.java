@@ -924,17 +924,18 @@ public class ASTFormatter extends ASTVisitor {
         for (it = node.bodyDeclarations().iterator(); it.hasNext();) {
             BodyDeclaration d = (BodyDeclaration) it.next();
 
-            if (prev instanceof EnumConstantDeclaration) {
-                // enum constant declarations do not include punctuation
-                if (d instanceof EnumConstantDeclaration) {
-                    // enum constant declarations are separated by commas
-                    _output(", ");
-                } else {
-                    // semicolon separates last enum constant declaration from
-                    // first class body declarations
-                    _output("; ");
-                }
-            }
+            // FindBugs reported: A known null value is checked to see if it is an instance of a type
+//             if (prev instanceof EnumConstantDeclaration) {
+//                 // enum constant declarations do not include punctuation
+//                 if (d instanceof EnumConstantDeclaration) {
+//                     // enum constant declarations are separated by commas
+//                     _output(", ");
+//                 } else {
+//                     // semicolon separates last enum constant declaration from
+//                     // first class body declarations
+//                     _output("; ");
+//                 }
+//             }
 
             d.accept(this);
         }
@@ -2121,17 +2122,18 @@ public class ASTFormatter extends ASTVisitor {
         for (it = node.bodyDeclarations().iterator(); it.hasNext();) {
             BodyDeclaration d = (BodyDeclaration) it.next();
 
-            if (prev instanceof EnumConstantDeclaration) {
-                // enum constant declarations do not include punctuation
-                if (d instanceof EnumConstantDeclaration) {
-                    // enum constant declarations are separated by commas
-                    _output(", ");
-                } else {
-                    // semicolon separates last enum constant declaration from
-                    // first class body declarations
-                    _output("; ");
-                }
-            }
+            // FindBugs reports: A known null value is checked to see if it is an instance of a type
+//             if (prev instanceof EnumConstantDeclaration) {
+//                 // enum constant declarations do not include punctuation
+//                 if (d instanceof EnumConstantDeclaration) {
+//                     // enum constant declarations are separated by commas
+//                     _output(", ");
+//                 } else {
+//                     // semicolon separates last enum constant declaration from
+//                     // first class body declarations
+//                     _output("; ");
+//                 }
+//             }
 
             d.accept(this);
         }
