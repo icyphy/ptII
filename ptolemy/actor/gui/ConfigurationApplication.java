@@ -622,8 +622,8 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public static Configuration readConfiguration(URL specificationURL)
             throws Exception {
-        if (_initialSpecificationURL == null) {
-            _initialSpecificationURL = specificationURL;
+        if (_initialSpecificationURI == null) {
+            _initialSpecificationURI = specificationURL.toURI();
         }
         MoMLParser parser = new MoMLParser();
         parser.reset();
@@ -967,10 +967,10 @@ public class ConfigurationApplication implements ExecutionListener {
                         if (!configurationName.equals("jxta")) {
                             URL specificationURL = specToURL(configurationFileName);
                             Configuration configuration;
-                            // URL.equals() is very expensive?  See:
+                            // URL.equals() is very expensive so we convert to a URI first  See:
                             //http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
-                            if (specificationURL
-                                    .equals(_initialSpecificationURL)) {
+                            if (specificationURL.toURI()
+                                    .equals(_initialSpecificationURI)) {
                                 // Avoid rereading the configuration, which will result
                                 // in the old configuration being removed, which exits the app.
                                 configuration = _configuration;
@@ -1710,6 +1710,9 @@ public class ConfigurationApplication implements ExecutionListener {
     // List of parameter values seen on the command line.
     private List _parameterValues = new LinkedList();
 
-    // URL from which the configuration was read.
-    private static URL _initialSpecificationURL;
+    /** URI from which the configuration was read.  We use a URI to
+     * avoid URL.equals(),which is very expensive?  See FindBugs and
+     * http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
+     */
+    private static URI _initialSpecificationURI;
 }
