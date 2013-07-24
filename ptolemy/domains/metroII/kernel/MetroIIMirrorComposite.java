@@ -68,7 +68,7 @@ import ptolemy.moml.HandlesInternalLinks;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)
  */
-public class MetroIIMirrorComposite extends MetroCompositeActor implements
+public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         HandlesInternalLinks {
 
     /** Create an actor with a name and a container.
@@ -605,7 +605,7 @@ public class MetroIIMirrorComposite extends MetroCompositeActor implements
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class MetroIIMirrorCompositeContents extends MetroCompositeActor {
+    public static class MetroIIMirrorCompositeContents extends MetroIICompositeActor {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 

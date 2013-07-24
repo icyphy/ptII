@@ -399,6 +399,12 @@ public class MetroIIDEDirector extends DEDirector implements
 
                     if (actorAndState.getFirst() != null
                             && !(actorAndState.getFirst() instanceof MetroEventHandler)) {
+                        if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                            System.out.println("Fire actor: "
+                                    + actorAndState.getFirst().getFullName() + " "
+                                    + this.getModelTime() + " "
+                                    + this.getMicrostep());
+                        }
                         actorAndState.getFirst().fire();
                         actorAndState.getFirst().postfire();
                         continue; 

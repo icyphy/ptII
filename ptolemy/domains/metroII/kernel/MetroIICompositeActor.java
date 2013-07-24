@@ -1,4 +1,4 @@
-/* MetroCompositeActor extends the composite actor to support enclosing Metro directors. 
+/* MetroIICompositeActor extends the composite actor to support enclosing Metro directors. 
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -48,35 +48,35 @@ import ptolemy.kernel.util.Workspace;
 //// MetroCompositeActor
 
 /** 
-* MetroCompositeActor extends the composite actor to support enclosing Metro directors. 
+* MetroIICompositeActor extends the composite actor to support enclosing Metro directors. 
 *
 * @author Liangpeng Guo
-* @version $Id: MetroCompositeActor.java 66808 2013-07-03 00:20:58Z glp $
+* @version $Id$
 * @since Ptolemy II 9.1
 * @Pt.ProposedRating Red (glp)
 * @Pt.AcceptedRating Red (glp)
 *
 */
-public class MetroCompositeActor extends TypedCompositeActor implements
+public class MetroIICompositeActor extends TypedCompositeActor implements
         MetroEventHandler {
 
     /**
-     * Construct a MetroCompositeActor
+     * Construct a MetroIICompositeActor
      */
-    public MetroCompositeActor() {
+    public MetroIICompositeActor() {
         // TODO Auto-generated constructor stub
     }
 
     /**
-     * Construct a MetroCompositeActor based on a given worksapce
+     * Construct a MetroIICompositeActor based on a given worksapce
      *  @param workspace The workspace for this object.
      */
-    public MetroCompositeActor(Workspace workspace) {
+    public MetroIICompositeActor(Workspace workspace) {
         super(workspace);
     }
 
     /**
-     * Construct a MetroCompositeActor based on a given container and a name
+     * Construct a MetroIICompositeActor based on a given container and a name
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
@@ -84,7 +84,7 @@ public class MetroCompositeActor extends TypedCompositeActor implements
      *  @exception NameDuplicationException If the container is not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public MetroCompositeActor(CompositeEntity container, String name)
+    public MetroIICompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
