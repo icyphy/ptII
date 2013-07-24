@@ -65,7 +65,7 @@ with the following parameters:
      Priority -1 means higher priority than any non-negative number.
 </ul>
 
-For usage and supported directors {@link ptolemy.actorResourceScheduler}.
+For usage and supported directors {@link ptolemy.actor.ResourceScheduler}.
 
 When using this ResourceScheduler in the Ptides domain, the platform
 time in Ptides will be used to schedule execution times. When
