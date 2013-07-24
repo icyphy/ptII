@@ -959,11 +959,29 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // // been overridden.
                 // parameter.setDerivedLevel(1);
 
-                // FIXME: Need to sanitize the value.
-                parameterMoML.append("  <property name=\""
-                        + StringUtilities.sanitizeName(scalar.name)
-                        + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                        + scalar.type + "\"/>\n");
+                switch (scalar.causality) {
+                case output:
+                case input:
+                    portCount++;
+                    parameterMoML.append("  <property name=\""
+                            + StringUtilities.sanitizeName(scalar.name)
+                            + "\" class=\"ptolemy.data.expr.PortParameter\" value =\""
+                            + scalar.type + "\"/>\n");
+                    break;
+                case internal:
+                    // Internal variables are outputs that get hidden.
+                case none:
+                    // FIXME: Need to sanitize the value.
+                    parameterMoML.append("  <property name=\""
+                            + StringUtilities.sanitizeName(scalar.name)
+                            + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
+                            + scalar.type + "\" "
+                            + (scalar.causality == Causality.internal ? hide : "")
+                            +"/>\n");
+                    break;
+
+                }
+                continue;
             } else {
                 // Ports
 
