@@ -1357,60 +1357,64 @@ public class IOPort extends ComponentPort {
      */
     public List<QuantityManager> getQuantityManagers()
             throws IllegalActionException {
-        try {
-            _workspace.getWriteAccess(); 
-            if (_qmList == null) {
-                _qmList = new ArrayList<QuantityManager>();
-            } 
-            HashMap<Integer, QMAttributes> _qmMap = new HashMap<Integer, QMAttributes>();
-            int sequenceNumber = 1;
-            List<QMAttributes> qmlist = this.attributeList(QMAttributes.class);
-            List<QMAttributes> enabledAttributes = new ArrayList();
-            for (int i = 0; i < qmlist.size(); i++) {
-                QMAttributes attribute = qmlist.get(i);
-                if (((BooleanToken)attribute.enable.getToken()).booleanValue()) {
-                    enabledAttributes.add(attribute);
-                    int s = ((IntToken)attribute.sequenceNumber.getToken()).intValue();
-                    if (s > sequenceNumber) {
-                        sequenceNumber = s;
-                    }
-                } else { 
-                    attribute.sequenceNumber.setToken(new IntToken(-1));
-                }
-            }
-            sequenceNumber = sequenceNumber + 1;
-            for (int i = 0; i < enabledAttributes.size(); i++) {
-                final QMAttributes attribute = enabledAttributes.get(i);
-                final int seqNum = sequenceNumber;
-                QuantityManager qm = (QuantityManager) attribute.getDecorator();
-                int oldSeqNum = ((IntToken) attribute.sequenceNumber.getToken()).intValue();
-                if (oldSeqNum == -1 && qm != null && !_qmList.contains(qm)) {
-                    attribute.sequenceNumber.setToken(new IntToken(seqNum)); 
-                    _qmMap.put(seqNum, attribute); 
-                    sequenceNumber = sequenceNumber + 1;
-                } else {   
-                    _qmMap.put(oldSeqNum, attribute);  
-                    
-                }
-            } 
-            _qmList.clear();
-            Iterator<Integer> iterator = _qmMap.keySet().iterator();
-            int i = 1;
-            while (iterator.hasNext()) {
+        if (_qmList == null) {
+            _qmList = new ArrayList<QuantityManager>();
+        } 
+        
+        HashMap<Integer, QMAttributes> _qmMap = new HashMap<Integer, QMAttributes>();
+        int sequenceNumber = 1;
+        List<QMAttributes> qmlist = this.attributeList(QMAttributes.class);
+        if (qmlist.size() > 0) {
+            try {
+                _workspace.getWriteAccess(); 
+            
+                List<QMAttributes> enabledAttributes = new ArrayList();
                 
-                QMAttributes attribute = _qmMap.get(iterator.next()); 
-                attribute.sequenceNumber.setToken(new IntToken(i));
-                i = i + 1;
-                _qmList.add((QuantityManager) attribute.getDecorator());
-            } 
-            _qmListValid = true;
-            return _qmList; 
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            _workspace.doneWriting();
+                for (int i = 0; i < qmlist.size(); i++) {
+                    QMAttributes attribute = qmlist.get(i);
+                    if (((BooleanToken)attribute.enable.getToken()).booleanValue()) {
+                        enabledAttributes.add(attribute);
+                        int s = ((IntToken)attribute.sequenceNumber.getToken()).intValue();
+                        if (s > sequenceNumber) {
+                            sequenceNumber = s;
+                        }
+                    } else { 
+                        attribute.sequenceNumber.setToken(new IntToken(-1));
+                    }
+                }
+                sequenceNumber = sequenceNumber + 1;
+                for (int i = 0; i < enabledAttributes.size(); i++) {
+                    final QMAttributes attribute = enabledAttributes.get(i);
+                    final int seqNum = sequenceNumber;
+                    QuantityManager qm = (QuantityManager) attribute.getDecorator();
+                    int oldSeqNum = ((IntToken) attribute.sequenceNumber.getToken()).intValue();
+                    if (oldSeqNum == -1 && qm != null && !_qmList.contains(qm)) {
+                        attribute.sequenceNumber.setToken(new IntToken(seqNum)); 
+                        _qmMap.put(seqNum, attribute); 
+                        sequenceNumber = sequenceNumber + 1;
+                    } else {   
+                        _qmMap.put(oldSeqNum, attribute);  
+                        
+                    }
+                } 
+                _qmList.clear();
+                Iterator<Integer> iterator = _qmMap.keySet().iterator();
+                int i = 1;
+                while (iterator.hasNext()) {
+                    
+                    QMAttributes attribute = _qmMap.get(iterator.next()); 
+                    attribute.sequenceNumber.setToken(new IntToken(i));
+                    i = i + 1;
+                    _qmList.add((QuantityManager) attribute.getDecorator());
+                } 
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                _workspace.doneWriting();
+            }
         }
-        return null; 
+        _qmListValid = true;
+        return _qmList;  
     }
 
     /** If the port is an input, return the receivers that receive data
