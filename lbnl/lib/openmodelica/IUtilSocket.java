@@ -43,10 +43,10 @@
 package lbnl.lib.openmodelica;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
-//FIXME: what is a UtilSocket and how would I use it?
 /**
-    The interface to the UtilSocket.
+    <p> The interface to the UtilSocket. </p>
 
     @author Mana Mirzaei 
     @version $Id$
@@ -56,29 +56,66 @@ import java.io.IOException;
  */
 public interface IUtilSocket {
 
-    /** Close the input and output stream prior to closing the socket.
-     *  @throws IOException
+    /** Close the socket.
+     *  @throws IOException If an I/O error occurs at the time of closing the socket.
      */
-    // FIXME: Use camelCase here, so change closesocket to closeSocket
     public void closesocket() throws IOException;
 
-    /** Establish the client socket.  Creating an output stream to
-     *  send information to the server socket besides creating an
-     *  input stream to receive response from the server socket.
-     *  @return true if the client socket was established.
-     *  @throws IOException If there is a problem establishing the
-     *  client socket.
+    /** Establish the client socket and set up streams for exchanging data between the client and the server. 
+     * @return 
+     *  @throws IOException If an I/O error occurs when creating the socket.
+     *  @throws UnknownHostException If the IP address of the host could not be determined.
      */
-    // FIXME: Use camelCase here.
-    public boolean establishclientsocket() throws IOException;
+    public void establishclientsocket() throws IOException,
+    UnknownHostException;
 
-    /** Exchange data through the BSD socket.
-     * @throws IOException If there is a problem exchanging data with
-     * the socket.
-     * @throws Exception If there is a problem exchanging data with
-     * the socket.
+    /**  There are two modules, control and transfer, in the OpenModelica Interactive (OMI) which are designated for a communication over TCP/IP.
+     *   This network communication technology is used to send and receive messages between the client, Ptolemy II and the server, OMC. 
+     *
+     *   Control module is the interface between OMI and a UI that is implemented as a single thread to support parallel 
+     *   tasks and independent reactivity. Control module is considered the major controlling and communication 
+     *   instance at simulation initialization phase besides managing simulation properties during simulation runtime. 
+     *   A client permanently sends operations as messages to the Control unit. It also reacts to the feedback from other 
+     *   internal OMI components and sends messages back to the client, such as error or status messages. 
+     *  
+     *   Transfer module gets simulation results from a result manager and sends them to the UI upon starting a simulation. 
+     *   This module employs filter mask property containing names of all properties whose result values are significant to the UI.
+     *
+     *   The following commands are available message from the UI to OMI(Request-Reply):
+     *   
+     *   ---------------------------------------------------------------------------------------------------------
+     *   UI Request                     Description                            OMI::Control Reply
+     *   ---------------------------------------------------------------------------------------------------------
+     *   start#SEQ#end                 Starts or continues the simulation      done#SEQ#end
+     *   ---------------------------------------------------------------------------------------------------------
+     *   pause#SEQ#end                 Pauses the running simulation           done#SEQ#end
+     *   ---------------------------------------------------------------------------------------------------------
+     *   changevalue#1#load.w=2.3#end  Change the value of the appended 
+     *                                 parameters and sets the simulation 
+     *                                 time back to the point where the user 
+     *                                 clicked in the UI.
+     *   ---------------------------------------------------------------------------------------------------------
+     *                                 
+     *  The following commands are available messages from OMI::Transfer to UI. TODO COMPLETE AFTER FIXING THE CODE - GETTING BACK THE RESULT BACK FROM 
+     *  SERVER TO THE UI.
+     *                                 
+     *   ---------------------------------------------------------------------------------------------------------                              
+     *   OMI::Transfer                   Description                                       UI
+     *   ---------------------------------------------------------------------------------------------------------                            
+     *   result#ID#Tn#                   
+     *   var1=Val:var2=Val# 
+     *   par1=Val:par2=Val# 
+     *   end
+     *  ---------------------------------------------------------------------------------------------------------
+     *   result#ID#Tn# 
+     *   1=Val:2=Val# 
+     *   1=Val:2=Val# 
+     *   end
+     *   ---------------------------------------------------------------------------------------------------------
+     *          
+     *   For the time being, the interactive simulation hangs after 1.958, OpenModelica Developer team are trying to fix this issue.
+     *   @throws IOException If an I/O error occurs when client and server are exchanging the message.
      */
-    // FIXME: Use camelCase here.
-    public void exchangewithsocket() throws IOException, Exception;
+    public void exchangewithsocket() throws IOException;
 
 }

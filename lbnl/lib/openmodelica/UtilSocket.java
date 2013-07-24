@@ -43,24 +43,19 @@
 package lbnl.lib.openmodelica;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import ptolemy.util.StringUtilities;
-
 /**    
-     This file provides methods that allow clients to
-     establish a socket connection. Clients typically call
-     the method establishclientsocket() once, 
-     and then call the method exchangewithsocket().
-     At the end, a client call
-     closesocket() to close the socket connection.
-     TODO COMPLETE THE DESCRIPTION.
+    <p> UtilSocket establishes the connection from the client to the middleware by <i>establishclientsocket</i>.  
+    The return value is a Boolean, which refers that if the connection is established or not. 
+    Then, <i>exchangewithsocket</i> writes data to the socket and reads data from the socket. 
+    Finally, the socket connection is closed by <i>closesocket</i>. </p>
 
     @author Mana Mirzaei
     @version $Id$
@@ -74,123 +69,154 @@ public class UtilSocket implements IUtilSocket {
     ////                        public methods                    ////
 
     /** Close the socket.
-     *  @throws IOException
+     *  @throws IOException If an I/O error occurs at the time of closing the socket.
      */
     public void closesocket() throws IOException {
 
         try {
-            if (_clientSocket.isConnected()) 
+            if (_clientSocket.isConnected())
                 _clientSocket.close();
         } catch (IOException e) {
-            System.err.println("IOException:  " + e);
+            throw new IOException(e.getMessage());
         }
-
-        System.out.println("Client Socket is closed.");
+        System.out.println("Socket is closed.");
     }
 
-    /** Establish the client socket.
-     *  Set up input/output streams for exchanging data between the server and the client. 
-     *  @throws IOException 
+    /** Establish the client socket. Set up streams for exchanging data between the client and the server. 
+     *  @throws IOException If an I/O error occurs when creating the socket.
+     *  @throws UnknownHostException If the IP address of the host could not be determined.
      */
-    public boolean establishclientsocket() throws IOException {
+    public void establishclientsocket() throws IOException,
+    UnknownHostException {
+
+        // The name of the host.
+        String hostName = "localhost";
+
+        // Port number of the OMC server. 10500->10502
+        int portNo = 10501;
 
         try {
-            // Create a connection.
-            _clientSocket = new Socket(_hostName, _portNo);
+            // Set up a connection.
+            _clientSocket = new Socket(hostName,portNo);
 
             System.out
             .println("Connected to " + _clientSocket.getInetAddress());
 
             // Set up an input stream to receive the response/simulation result back from the server.
-            _fromServer = new Scanner(_clientSocket.getInputStream());
+            _fromServer = new BufferedReader(new InputStreamReader(
+                    _clientSocket.getInputStream()));
 
             // Set up an output stream to send the request/operation to the server. 
-            _toServer = new PrintWriter(new OutputStreamWriter(
+            _toServer = new BufferedWriter(new OutputStreamWriter(
                     _clientSocket.getOutputStream()));
-
-            // Set up an input stream to send the request/operation from the client.
-            _fromClient = new BufferedReader(new InputStreamReader(System.in));
-
-            //_clientSocket.setSoTimeout(_timeOut);
         } catch (UnknownHostException e) {
-            System.err.println("Unknown host: " + _hostName);
-            StringUtilities.exit(1);
-            return false;
+            throw new UnknownHostException(e.getMessage());
         } catch (IOException e) {
-            System.err.println("Couldn't get IO for the connection to: "
-                    + _hostName + " !");
-            StringUtilities.exit(1);
-            return false;
+            e.printStackTrace();
+            throw new IOException(
+                    "An I/O error occurs when creating the socket!"
+                            + e.getMessage());
         }
-
-        return true;
     }
 
-    /** Exchange data through the BSD socket.
-     *  TODO COMPLETE THE DETAILS
-     * @throws Exception 
+    /**  There are two modules, control and transfer, in the OpenModelica Interactive (OMI) which are designated for a communication over TCP/IP.
+     *   This network communication technology is used to send and receive messages between the client, Ptolemy II and the server, OMC. 
+     *
+     *   Control module is the interface between OMI and a UI that is implemented as a single thread to support parallel 
+     *   tasks and independent reactivity. Control module is considered the major controlling and communication 
+     *   instance at simulation initialization phase besides managing simulation properties during simulation runtime. 
+     *   A client permanently sends operations as messages to the Control unit. It also reacts to the feedback from other 
+     *   internal OMI components and sends messages back to the client, such as error or status messages. 
+     *  
+     *   Transfer module gets simulation results from a result manager and sends them to the UI upon starting a simulation. 
+     *   This module employs filter mask property containing names of all properties whose result values are significant to the UI.
+     *
+     *   The following commands are available message from the UI to OMI(Request-Reply):
+     *   
+     *   ---------------------------------------------------------------------------------------------------------
+     *   UI Request                     Description                            OMI::Control Reply
+     *   ---------------------------------------------------------------------------------------------------------
+     *   start#SEQ#end                 Starts or continues the simulation      done#SEQ#end
+     *   ---------------------------------------------------------------------------------------------------------
+     *   pause#SEQ#end                 Pauses the running simulation           done#SEQ#end
+     *   ---------------------------------------------------------------------------------------------------------
+     *   changevalue#1#load.w=2.3#end  Change the value of the appended 
+     *                                 parameters and sets the simulation 
+     *                                 time back to the point where the user 
+     *                                 clicked in the UI.
+     *   ---------------------------------------------------------------------------------------------------------
+     *                                 
+     *  The following commands are available messages from OMI::Transfer to UI. TODO COMPLETE AFTER FIXING THE CODE - GETTING BACK THE RESULT BACK FROM 
+     *  SERVER TO THE UI.
+     *                                 
+     *   ---------------------------------------------------------------------------------------------------------                              
+     *   OMI::Transfer                   Description                                       UI
+     *   ---------------------------------------------------------------------------------------------------------                            
+     *   result#ID#Tn#                   
+     *   var1=Val:var2=Val# 
+     *   par1=Val:par2=Val# 
+     *   end
+     *  ---------------------------------------------------------------------------------------------------------
+     *   result#ID#Tn# 
+     *   1=Val:2=Val# 
+     *   1=Val:2=Val# 
+     *   end
+     *   ---------------------------------------------------------------------------------------------------------
+     *          
+     *   For the time being, the interactive simulation hangs after 1.958, OpenModelica Developer team are trying to fix this issue.
+     *   @throws IOException If an I/O error occurs when client and server are exchanging the message.
      */
-    public void exchangewithsocket() throws Exception {
+    public void exchangewithsocket() throws IOException {
 
-        // Server is running since there is a connection.        
         if (_clientSocket.isConnected()) {
             if (_toServer != null && _fromServer != null) {
                 try {
+                    System.out.println("Enter the request : ");
 
-                    // In parallel, read the user's input and pass it on to the omc server.
-                    // The user's inputs are the following commands:
-                    // The basic functions such as start,pause and changevalue of parameter only work now.
-                    // The interactive simulation hangs after 1.958. 
+                    // FIXME WHY GETTING INPUT FROM KEYBOARD IS NOT WORKING. Get input from the user to send to the omc server.
+                    // TODO ASK IF THERE IS A NEED TO CHECK IF THE COMMAND COMPLIES WITH THE COMMAND PROTOCOL - LIKE LETTER CASE.
 
-                    // Command no.1 : Start the simulation : "start#1#end".
-                    // Command no.2 : Pause the simulation : "pause#3#end".
-                    // Command no.3 : Change the value of the appended parameters and 
-                    // sets the simulation time back to the point where the user clicked in the UI : 
-                    // "changevalue#1#load.w=2.3#end".
+                    // Set up an input stream to get the request/operation from the client.
+                    // Scanner _fromClient = new Scanner(System.in);
+                    // String _clientRequest = _fromClient.next();
 
-                    // TODO CHECK FOR MESSAGE PROTOCOL - small/capital case
+                    String _clientRequest = "start#1#end";
+
+                    if (_clientRequest != null) {
+                        System.out.println("Request from the client :  "
+                                + _clientRequest);
+                        _toServer.write(_clientRequest);
+                        _toServer.flush();
+                        System.out.println(_clientRequest
+                                + " sent to the server!");
+                    }
 
                     System.out
-                    .println("Enter the operation to send to the omc server : ");
+                    .println("Waiting for the response from the omc server :  ");
 
-                    // FIXME Get operation from the user.
-                    //String sentOperation = _fromClient.readLine();
-                    String sentOperation = "start#1#end";
+                    // int bufferSize = _clientSocket.getReceiveBufferSize() // result 8192 
+                    char[] serverBuffer = new char[8192];
 
-                    if (sentOperation != null) {
-                        System.out.println("From Client :  " + sentOperation);
-                        _toServer.println(sentOperation);
-                        if (!_toServer.checkError())
-                            System.out.println("Sent " + sentOperation
-                                    + " operation to the server!");
-                        else
-                            throw new Exception(
-                                    "There is an error in writting the request on an outputstream of the client!");
+                    // FIXME IT IS NOT POSSIBLE TO HAVE THE RESPONSE BACK FROM THE OMC SERVER.
+                    // Read simulation result from the server char by char until there is no char to read and write them to the console.
+                    while (_fromServer.read(serverBuffer) != -1) {
+                        // for (char readChar : serverBuffer) OR serverBuffer[i]
+                        System.out.println("Response from the server : "
+                                + serverBuffer.toString());
                     }
 
-                    // Read characters from the server until the
-                    // stream closes and write them to the console.
-
-                    // FIXME HANG HERE
-                    while (_fromServer.hasNextLine()) {
-
-                        System.out.println("From server :  "
-                                + _fromServer.nextLine());
-
-                        // TODO : CHECK IF THERE IS AN ERROR IN THE RESPONSE OR NOT
-                    }
-
-                } catch (IOException e) {
-                    System.err.println("Failed to exchange: " + e);
-                } finally {
+                    // Close the streams.
                     _toServer.close();
                     _fromServer.close();
-                    System.out.println("Closed all streams!");
+                    System.out.println("Streams closed!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new IOException(e.getMessage());
                 }
             } else
-                System.out.println("inputstream/outputstream is null!");
+                throw new IOException("Null Stream!");
         } else
-            System.out.println("Not connected to the server!");
+            throw new IOException("Not connected to the omc server!");
     }
 
     /** Create an instance of UtilSocket object in order to provide a global point of access to the instance.
@@ -208,23 +234,11 @@ public class UtilSocket implements IUtilSocket {
     // The client socket.
     private Socket _clientSocket = null;
 
-    // Set up an input stream to send the request/operation from the client.
-    private BufferedReader _fromClient = null;
-
     // Set up an input stream to receive the response/simulation result back from the server.
-    private Scanner _fromServer = null;
-
-    // The name of the host.
-    private String _hostName = "127.0.0.1";
-
-    // Port number of the OMC server. 10500-10502
-    private int _portNo = 10501;
-
-    // 100 sec wait period.
-    // private final int _timeOut = (int) TimeUnit.SECONDS.toMillis(100);
+    private BufferedReader _fromServer = null;
 
     // Set up an output stream to send the request/operation to the server.
-    private PrintWriter _toServer = null;
+    private BufferedWriter _toServer = null;
 
     // UtilSocket Object for accessing a unique source of instance.
     private static UtilSocket _utilSocket = null;

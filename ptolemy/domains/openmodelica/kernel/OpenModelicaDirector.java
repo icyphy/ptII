@@ -92,7 +92,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
     /** Invoke the preinitialize() of the super class.  Preinitialize
      *  the OpenModelica actor and initialize the OpenModelica
      *  Compiler(OMC).
-     *  @exception IllegalActionException If the preinitialize() of
+     *  @throws IllegalActionException If the preinitialize() of
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -100,22 +100,20 @@ public class OpenModelicaDirector extends ContinuousDirector {
         try {
 
             // Create a unique instance of OMCLogger and OMCProxy.
-
             _omcLogger = OMCLogger.getInstance();
             _omcProxy = OMCProxy.getInstance();
-
             _omcProxy.initServer();
-
-        } catch (ConnectException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Unable to start the OpenModelica server!");
+        } catch (ConnectException e) {
+            e.printStackTrace();
+            throw new IllegalActionException(
+                    "Unable to start the OpenModelica server!" + e.getMessage());
         }
     }
 
     /** Return false if a stop has been requested or
      *  if the system has finished executing.
      *  @return Check if the director has detected a stop has been requested return false.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @throws IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
 
@@ -137,18 +135,18 @@ public class OpenModelicaDirector extends ContinuousDirector {
 
     /** Invoke the wrapup() of the super class. 
      *  Leave and quit OpenModelica environment.
-     *  @exception IllegalActionException If the wrapup() of
+     *  @throws IllegalActionException If the wrapup() of
      *  OpenModelica actor throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         try {
             _omcProxy.quitServer();
-            String loggerInfo = "OpenModelica Server quit!";
+            String loggerInfo = "OpenModelica Server stopped!";
             _omcLogger.getInfo(loggerInfo);
-        } catch (ConnectException ex) {
+        } catch (ConnectException e) {
             throw new IllegalActionException(
-                    "Unable to quit the OpenModelica server!");
+                    "Unable to stop the OpenModelica server!" + e.getMessage());
         }
     }
 

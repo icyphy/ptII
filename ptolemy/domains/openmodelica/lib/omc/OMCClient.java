@@ -1,4 +1,4 @@
-/* Simple simulation program to illustrate the implementation of a client.
+/* The simulation program that is launched by the System Command actor.
  *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
@@ -48,14 +48,11 @@ import lbnl.lib.openmodelica.UtilSocket;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**    
-    A simple simulation program to illustrate how to implement a client.
-    OpenModelica Compiler(OMC) which is coupled to Ptolemy II is called to initialize the
-    OMC server and simulate the Modelica model. The generated simulation runtime file which
-    is located in $TMPDIR/$USERNAME/OpenModelica is run by this flag "-interactive -port 10500".  
-    The simulation runtime will be waiting until a UI client in Ptolemy II has been connected to its port.
-    After starting the simulation the keyboard entries and the results will be displayed in the same console as you are typing
-    the command. For exchanging data with the OMC server the BSD socket is utilized.
-    TODO COMPLETE THE DESCRIPTION    
+   <p> OMCClient is the simulation program that is launched by the System Command actor.
+    System Command actor in <i>OpenModelica.xml</i> model in <i>lbnl/demo/OpenModelica</i> 
+    causes Ptolemy II to call the command java at each time step, with the values 
+    <i>-cp ../../.. ptolemy.domains.openmodelica.lib.omc.OMCClient</i>. 
+   </p>       
 
     @author Mana Mirzaei 
     @version $Id$
@@ -65,74 +62,58 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class OMCClient {
 
-    /** OMC which is coupled to Ptolemy II is called to initialize the
-     *  OMC server and simulate the Modelica model, then exchange data via BSD socket.
-     *  TODO it should be detailed.
-     * @param args Not used.
+    /** OpenModelica Compiler(OMC) which is coupled to Ptolemy II is called to initialize the
+     *  OMC server and simulate the Modelica model afterward. The generated simulation runtime file is generated in 
+     *  <i>$TMPDIR/$USERNAME/OpenModelica</i> runs by <i>-interactive</i> flag. After starting the simulation the keyboard 
+     *  entries and the results are displayed in the same console as you are typing the command. 
+     *  The simulation runtime will be waiting until a UI client in Ptolemy II has been connected to its port.
+     *  OMCClient establishes a connection through calling the method <i>establishclientsocket()</i>. Then it calls the method <i>exchangewithsocket()</i> to exchange 
+     *  messages between the client Ptolemy II and the server OMC. Parameters are changeable while simulating interactively using OpenModelica Interactive(OMI), 
+     *  which is an important modification/addition to the semantics of the Modelica language. Thus, all properties using the prefix parameter can be
+     *  changed during an interactive simulation. In the final step, client calls <i>closesocket()</i> to close the socket upon figuring 
+     *  out there is no more data to read from the OMC server.
+     * @param args
      * @throws IllegalActionException
-     * @throws IOException
+     * @throws IOException If an I/O error occurs at the time of creating/closing the socket or exchanging data
+     * between the client and the server.
      */
     public static void main(String[] args) throws IllegalActionException,
-            IOException {
+    IOException {
 
         try {
             // Initialize the OpenModelica compiler(OMC) server.
             _omcProxy.initServer();
 
-        } catch (ConnectException ex) {
-            throw new IllegalActionException("Unable to start the OMC server!");
-        }
-
-        // Build the Modelica model and run the executable result file in an interactive processing mode.
-
-        try {
+            // Load the Modelica file - BouncingBall.mo and the Modelica library.
             _omcProxy.loadFile("BouncingBall.mo", "BouncingBall");
-        } catch (ConnectException e) {
-            throw new IllegalActionException(
-                    "Unable to load the Modelica file/library.");
-        }
-        try {
+
+            // Build the Modelica model and run the executable result file in an interactive processing mode. [run by -interactive flag]
             _omcProxy.simulateModel("BouncingBall.mo", "BouncingBall",
                     "BouncingBall", "0.0", "0.1", 500, "0.0001", "dassl",
                     "mat", ".*", "", "", "interactive");
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(null, throwable,
-                    "Unable to simulate BouncingBall model.");
+        } catch (ConnectException e) {
+            e.printStackTrace();
+            throw new IllegalActionException(e.getMessage());
         }
 
         // Create a unique instance of UtilSocket.
         _utilSocket = UtilSocket.getInstance();
 
-        // Establish the client socket and initiate the BSD socket connection.
-        if (!_utilSocket.establishclientsocket()) {
-            // Quit the OMC server.
-            try {
-                _omcProxy.quitServer();
-                System.out.println("OMC server quit!");
-            } catch (ConnectException ex) {
-                throw new IllegalActionException(null, ex,
-                        "Unable to quit the OpenModelica server!");
-            }
-        } else {
+        // Establish the client socket and initiate the connection.
+        _utilSocket.establishclientsocket();
 
-	    try {
-		// Use the BSD socket to exchange data with the OMC server.     
-		_utilSocket.exchangewithsocket();
-	    } catch (Throwable throwable) {
-		throw new IllegalActionException(null, throwable,
-						 "Failed to exchange data with the OMC server.");
-	    }
-            // Close the server.
-            _utilSocket.closesocket();
+        // Use the BSD socket to exchange data with the OMC server.          
+        _utilSocket.exchangewithsocket();
 
-            // Quit the OMC server.
-            try {
-                _omcProxy.quitServer();
-                System.out.println("OMC server quit!");
-            } catch (ConnectException ex) {
-                throw new IllegalActionException(null, ex,
-                        "Unable to quit the OpenModelica server!");
-            }
+        // Close the socket.
+        _utilSocket.closesocket();
+
+        // Stop the OMC server.
+        try {
+            _omcProxy.quitServer();
+            System.out.println("OMC server stopped!");
+        } catch (ConnectException e) {
+            throw new IllegalActionException(e.getMessage());
         }
     }
 

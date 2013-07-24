@@ -7,7 +7,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 110.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 744}, maximized=false}">
@@ -21,9 +21,9 @@
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the implementation of a simulation&#10;program-OpenModelica Compiler(OMC) that communicates&#10;with Ptolemy II through BSD sockets.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OMCClient is the simulation program that is launched by the System Command actor.&#10;System Command actor causes Ptolemy II to call the command java at each time step &#10;with the values -cp ../../.. ptolemy.domains.openmodelica.lib.omc.OMCClient. &#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -10.0]">
         </property>
     </property>
     <entity name="SystemCommand" class="lbnl.actor.lib.SystemCommand">
@@ -31,7 +31,7 @@
         </property>
         <property name="programArguments" class="ptolemy.data.expr.Parameter" value="&quot;-cp ../../.. ptolemy.domains.openmodelica.lib.omc.OMCClient&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 240.0]">
         </property>
     </entity>
 </entity>

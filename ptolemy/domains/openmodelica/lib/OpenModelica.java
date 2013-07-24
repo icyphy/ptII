@@ -31,6 +31,8 @@
  */
 package ptolemy.domains.openmodelica.lib;
 
+import java.io.IOException;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -248,9 +250,9 @@ public class OpenModelica extends TypedAtomicActor {
     }
 
     /** Evaluate the expression and send its result to the output.
-     *  @exception IllegalActionException If the evaluation of the expression
-     *   triggers it, or the evaluation yields a null result, or the evaluation
-     *   yields an incompatible type, or if there is no director.
+     *  @throws IllegalActionException If the evaluation of the expression
+     *  triggers it, or the evaluation yields a null result, or the evaluation
+     *  yields an incompatible type, or if there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -264,7 +266,8 @@ public class OpenModelica extends TypedAtomicActor {
                     modelName.getExpression());
         } catch (ConnectException e) {
             throw new IllegalActionException(
-                    "Unable to load the Modelica file/library.");
+                    "Unable to load the Modelica file/library!"
+                            + e.getMessage());
         }
 
         if (input.getWidth() > 0) {
@@ -278,21 +281,24 @@ public class OpenModelica extends TypedAtomicActor {
                         modelName.getExpression());
             } catch (ConnectException e) {
                 throw new IllegalActionException(
-                        "Unable to modify variables value before running the simulation.");
+                        "Unable to modify variables value before running the simulation!"
+                                + e.getMessage());
             }
         }
 
         // Build the Modelica model and run the executable result file in both interactive
         // and non-interactive processing mode.
 
-        //FIXME problem with singelton pattern, file should be loaded once. redundant code.
+        //FIXME problem with singleton pattern, file should be loaded once. redundant code.
         try {
             _omcProxy.loadFile(fileName.getExpression(),
                     modelName.getExpression());
         } catch (ConnectException e) {
             throw new IllegalActionException(
-                    "Unable to load the Modelica file/library.");
+                    "Unable to load the Modelica file/library!"
+                            + e.getMessage());
         }
+
         try {
             _omcProxy.simulateModel(fileName.getExpression(),
                     modelName.getExpression(), fileNamePrefix.getExpression(),
@@ -303,10 +309,16 @@ public class OpenModelica extends TypedAtomicActor {
                     outputFormat.getExpression(),
                     variableFilter.getExpression(), cflags.getExpression(),
                     simflags.getExpression(), processingType.getExpression());
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Unable to simulate the " + modelName.getExpression()
-                            + " model.");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (ConnectException e) {
+            e.printStackTrace();
+            throw new IllegalActionException(
+                    "Unable to simulate/build the model!" + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalActionException(
+                    "Unable to simulate/build the model!" + e.getMessage());
         }
 
         if ((processingType.getExpression().compareTo("batch") == 0)
@@ -320,7 +332,8 @@ public class OpenModelica extends TypedAtomicActor {
                         modelName.getExpression());
             } catch (ConnectException e) {
                 throw new IllegalActionException(
-                        "Unable to load the Modelica file/library.");
+                        "Unable to load the Modelica file/library!"
+                                + e.getMessage());
             }
 
             try {
@@ -329,7 +342,8 @@ public class OpenModelica extends TypedAtomicActor {
             } catch (ConnectException e) {
                 throw new IllegalActionException(
                         "Unable to display variables/parameters in the simulation result file of "
-                                + modelName.getExpression() + " .");
+                                + modelName.getExpression() + " !"
+                                + e.getMessage());
             }
 
             // Send the value of variables/parameters to the output port of the OpenModelica actor.
@@ -348,7 +362,8 @@ public class OpenModelica extends TypedAtomicActor {
                 throw new IllegalActionException(
                         "Unable to plot the plt format of "
                                 + modelName.getExpression()
-                                + " simulation result file.");
+                                + " simulation result file!"
+                                + e.getMessage());
             }
         }
     }

@@ -61,7 +61,7 @@ public interface IOMCProxy {
     /**  Build the Modelica model by sending buildModel(className) to the OMC.
      *   @param modelName The Name of the model which should be built.
      *   @return CompilerResult The result of sending buildModel(className) command to the OMC.
-     *   @exception ConnectException If buildModel command couldn't
+     *   @throws ConnectException If buildModel command couldn't
      *   be sent to the OMC.
      */
     public CompilerResult buildModel(String modelName) throws ConnectException;
@@ -77,7 +77,7 @@ public interface IOMCProxy {
     public String displaySimulationResult(String fileName, String modelName) throws ConnectException, IllegalActionException;
 
     /** Initialize the communication with the (OpenModelica compiler)OMC.
-     *  @exception ConnectException If we're unable to start communicating with
+     *  @throws ConnectException If we're unable to start communicating with
      *  the server.
      */
     public void initServer() throws ConnectException;
@@ -118,7 +118,7 @@ public interface IOMCProxy {
             throws ConnectException;
 
     /** Leave and quit OpenModelica environment.
-     *  @exception ConnectException If quit command couldn't
+     *  @throws ConnectException If quit command couldn't
      *  be sent to the OMC.
      */
     public void quitServer() throws ConnectException;
