@@ -150,7 +150,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
             int nodeId = _eventIDDictionary.getID(eventName);
             if (nodeId < 0) {
                 if (event.getType() == Event.Type.DEFAULT_NOTIFIED) {
-                    event.setStatus(Event.Status.NOTIFIED);
+                    event.setStatus(Event.Status.PROPOSED);
                 } else if (event.getType() == Event.Type.DEFAULT_WAITING) {
                     event.setStatus(Event.Status.WAITING);
                 } else {
@@ -170,8 +170,8 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
                     int eventId2 = idPair.getSecond();
                     Event.Builder e1 = id2event.get(eventId1);
                     Event.Builder e2 = id2event.get(eventId2);
-                    e1.setStatus(Event.Status.NOTIFIED);
-                    e2.setStatus(Event.Status.NOTIFIED);
+                    e1.setStatus(Event.Status.PROPOSED);
+                    e2.setStatus(Event.Status.PROPOSED);
 
                     assert !e1.hasTime() && !e2.hasTime();
 
