@@ -392,13 +392,14 @@ public class OMCProxy implements IOMCProxy {
             throws ConnectException, IllegalActionException {
         String loggerInfo = null;
 
-        System.out.println("SYSTEMPATH " + _systemPath);
+        //System.out.println("SYSTEMPATH " + _systemPath);
 
         //FIXME
-        _testFilePath = "C:/Users/mana/Documents/workspacePtII/ptII/ptolemy/domains/openmodelica/demo/OpenModelica/"
-                + fileName;
-        /*_testFilePath = _systemPath
-                + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;*/
+        //_testFilePath = "C:/Users/mana/Documents/workspacePtII/ptII/ptolemy/domains/openmodelica/demo/OpenModelica/"
+        //        + fileName;
+
+        _testFilePath = _systemPath
+                + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
 
         File file = new File(_testFilePath.toString());
 
