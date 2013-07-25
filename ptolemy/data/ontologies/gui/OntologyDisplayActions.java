@@ -176,7 +176,11 @@ public class OntologyDisplayActions extends NodeControllerFactory {
 
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
-                ((OntologySolver) container).invokeSolver();
+                try {
+                    ((OntologySolver) container).invokeSolver();
+                } catch (IllegalActionException e1) {
+                    MessageHandler.error("Cannot invoke solver.", e1);
+                }
             }
         }
     }

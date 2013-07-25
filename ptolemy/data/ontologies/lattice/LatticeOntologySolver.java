@@ -52,7 +52,6 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -452,10 +451,10 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** Resolve the concept values for the toplevel entity that contains this
      *  solver, given the model analyzer that invokes this.
-     *  @exception KernelException If there is an exception thrown during the OntologySolver
+     *  @exception IllegalActionException If there is an exception thrown during the OntologySolver
      *   resolution.
      */
-    public void resolveConcepts() throws KernelException {
+    public void resolveConcepts() throws IllegalActionException {
         NamedObj toplevel = _toplevel();
 
         _resolveConcepts(toplevel, _initialConstraintList);

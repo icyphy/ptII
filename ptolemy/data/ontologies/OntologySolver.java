@@ -29,8 +29,6 @@ import java.util.List;
 
 import ptolemy.domains.tester.lib.Testable;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -169,12 +167,11 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /** Invoke the solver directly, and display any concepts resolved by this
-     * solver.
-     * @return True if the invocation succeeds; otherwise false which means an
-     * error has occurred during the process.
+     *  solver.
+     *  @throws IllegalActionException If there is no ontology.
      */
-    public boolean invokeSolver() {
-        return invokeSolver(true);
+    public void invokeSolver() throws IllegalActionException {
+        invokeSolver(true);
     }
 
     /** Invoke the solver directly, with a choice as to whether or not this
@@ -183,26 +180,20 @@ public abstract class OntologySolver extends OntologySolverBase implements
      *  @param displayProperties  True if the solver should display its
      *          properties; false otherwise (for example, if it is called
      *          from another solver)
-     *  @return True if the invocation succeeds; otherwise false which means an
-     *   error has occurred during the process.
+     *  @throws IllegalActionException If there is no ontology.
      */
-    public boolean invokeSolver(boolean displayProperties) {
-        boolean success = false;
-        try {
-            initialize();
-            resolveConcepts();
-            checkErrors();
-
-            if (displayProperties) {
-                displayConcepts();
-            }
-
-        } catch (KernelException e) {
-            reset();
-            throw new InternalErrorException(e);
+    public void invokeSolver(boolean displayProperties) throws IllegalActionException {
+        Ontology ontology = getOntology();
+        if (ontology == null) {
+            throw new IllegalActionException(this, "No ontology has been given.");
         }
+        initialize();
+        resolveConcepts();
+        checkErrors();
 
-        return success;
+        if (displayProperties) {
+            displayConcepts();
+        }
     }
 
     /**

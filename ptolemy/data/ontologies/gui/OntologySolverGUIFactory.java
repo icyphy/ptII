@@ -34,6 +34,7 @@ import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 ////OntologySolverGUIFactory
 
@@ -80,7 +81,11 @@ public class OntologySolverGUIFactory extends EditorFactory {
         OntologySolver solver = (OntologySolver) getContainer();
         try {
             workspace().getWriteAccess();
-            solver.invokeSolver();
+            try {
+                solver.invokeSolver();
+            } catch (IllegalActionException e1) {
+                MessageHandler.error("Cannot invoke solver.", e1);
+            }
         } finally {
             workspace().doneWriting();
         }

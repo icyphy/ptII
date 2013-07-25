@@ -461,9 +461,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     /** Execute the OntologySolver's algorithm to resolve
      *  which Concepts in the Ontology are assigned to each object in the
      *  model.
-     *  @exception KernelException If the ontology resolution fails.
+     *  @exception IllegalActionException If the ontology resolution fails.
      */
-    public abstract void resolveConcepts() throws KernelException;
+    public abstract void resolveConcepts() throws IllegalActionException;
 
     /** Set the shared utility object to the given object.
      *  @param solverUtilities The given ontology solver utilities object.
@@ -600,8 +600,12 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         // FIXME: Is it a good idea to hard code the adapters string in the package name?
         // 12/17/09 Charles Shelton
         // This was missing adapters directory for the correct package name.
+        Ontology ontology = solver.getOntology();
+        if (ontology == null) {
+            throw new IllegalActionException(solver, "No ontology has been given.");
+        }
         return solver.getClass().getPackage().getName() + ".adapters."
-                + solver.getOntology().getName();
+                + ontology.getName();
     }
 
     /**
