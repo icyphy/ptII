@@ -976,8 +976,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             + StringUtilities.sanitizeName(scalar.name)
                             + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
                             + scalar.type + "\" "
-                            + (scalar.causality == Causality.internal ? hide : "")
-                            +"/>\n");
+                            +"/>\n"
+                            //+ (scalar.causality == Causality.internal ? hide : "")
+                            //+ "</property>\n"
+                                         );
                     break;
 
                 }
