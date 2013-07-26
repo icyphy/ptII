@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FMIPPIncME" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FMIPPIncME1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={720, 112, 934, 634}, maximized=false}">
@@ -27,17 +27,17 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Under Mac OS X, this model uses libincrementalFMU_wrap.dylib&#10;and libfmipp.so in $PTII/lib.  ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Under Mac OS X, this model uses libincrementalFMU_wrap.dylib&#10;and libfmipp.so in $PTII/lib.  &#10;&#10;The output should be the count in seconds.  Perhaps the problem has to do with integer conversion&#10;&#10;To run this fmu, run&#10;java -classpath $PTII:${PTII}/lib/jna.jar org.ptolemy.fmi.driver.FMUModelExchange $PTII/ptolemy/actor/lib/fmi/test/auto/incME1.fmu 5.0 0.5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
         </property>
     </property>
     <entity name="FMUModelExchange" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/incME.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/incME1.fmu">
         </property>
         <property name="inputNames" class="ptolemy.data.expr.Parameter" value="">
         </property>
-        <property name="outputNames" class="ptolemy.data.expr.Parameter" value="x">
+        <property name="outputNames" class="ptolemy.data.expr.Parameter" value="counter">
         </property>
         <property name="startValues" class="ptolemy.data.expr.Parameter" value="">
         </property>
@@ -47,31 +47,51 @@
         </property>
         <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 130.0}">
-        </property>
-    </entity>
-    <entity name="MatrixToSequence" class="ptolemy.domains.sdf.lib.MatrixToSequence">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 130.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[0.0],[1.0],[2.0]}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.681561585988528E145">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1E-7">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 132.5]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FMUModelExchange.output&quot;,x=110.0,y=130.0}, tail={id=&quot;MatrixToSequence.input&quot;,x=230.0,y=130.0}, points={} } }">
+    <entity name="MatrixToSequence" class="ptolemy.domains.sdf.lib.MatrixToSequence">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 365}">
         </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={590, 353, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{465, 370}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="39.0"/>
+<yRange min="-1.727233711018889E-77" max="-1.727233711018889E-77"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[250.0, 130.0]">
+        </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="FMUModelExchange.output" relation="relation3"/>
-    <link port="MatrixToSequence.input" relation="relation3"/>
+    <link port="FMUModelExchange.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="MatrixToSequence.input" relation="relation2"/>
     <link port="MatrixToSequence.output" relation="relation"/>
-    <link port="Test.input" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation"/>
 </entity>
