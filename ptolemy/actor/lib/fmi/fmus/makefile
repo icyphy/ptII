@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/fmi/fmus
 
 # Co-Simulation FMUS.
-FMUS_CS =		bouncingBallME dqME helloWorld onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName
+FMUS_CS =		bouncingBallME dqME helloWorld onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName valuesME vanDerPolME
 
 # Model Exchange FMUS.
 FMUS_ME = incME
@@ -58,13 +58,18 @@ PTPACKAGE = 	fmus
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	bouncingBallME/bouncingBallME.jar \
+	dqME/dqME.jar \
 	helloWorld/helloWorld.jar \
 	incME/incME.jar \
 	onOffSupervisor/onOffSupervisor.jar \
 	stepCounter/stepCounter.jar \
 	stepCounter1/stepCounter1.jar \
 	stepCounterExtendedFMI/stepCounterExtendedFMI.jar \
-	stepCounterPeriodInName/stepCounterPeriodInName.jar
+	stepCounterPeriodInName/stepCounterPeriodInName.jar \
+	valuesME/valuesME.jar \
+	vanDerPolME/vanDerPolME.jar
+
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

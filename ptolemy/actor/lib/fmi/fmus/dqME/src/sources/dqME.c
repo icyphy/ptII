@@ -8,7 +8,7 @@
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
-#define MODEL_IDENTIFIER dq
+#define MODEL_IDENTIFIER dqME
 #define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f000}"
 
 // define model size

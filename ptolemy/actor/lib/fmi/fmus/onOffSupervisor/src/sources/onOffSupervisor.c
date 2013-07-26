@@ -35,7 +35,7 @@
 #define MODEL_GUID "{7081763b-e37f-404a-967a-9f6fe0fc6072}"
 
 // Used by FMI 2.0.  See FMIFuctions.h
-#define FMIAPI_FUNCTION_PREFIX onOffSupervisor_
+//#define FMIAPI_FUNCTION_PREFIX onOffSupervisor_
 #ifdef _MSC_VER
 #define FMIAPI __declspec( dllexport )
 #else

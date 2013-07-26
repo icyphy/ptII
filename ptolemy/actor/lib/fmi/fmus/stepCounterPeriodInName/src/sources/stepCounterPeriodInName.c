@@ -39,8 +39,8 @@
 // The following was generated at http://guid.us
 #define MODEL_GUID "{136ff03f-fb93-4a90-bb88-8dbf92948ddf}"
 
-// Used by FMI 2.0.  See FMIFuctions.h
-#define FMIAPI_FUNCTION_PREFIX stepCounterPeriodInName_
+// Used by FMI 2.0.  See fmiFunctions.h
+//#define FMIAPI_FUNCTION_PREFIX stepCounterPeriodInName_
 #define FMIAPI
 
 // include fmu header files, typedefs and macros
