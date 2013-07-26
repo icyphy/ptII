@@ -100,13 +100,13 @@ public class OMCClient {
         _utilSocket = UtilSocket.getInstance();
 
         // Establish the client socket and initiate the connection.
-        _utilSocket.establishclientsocket();
+        _utilSocket.establishSocket();
 
         // Use the BSD socket to exchange data with the OMC server.          
-        _utilSocket.exchangewithsocket();
+        _utilSocket.exchangeData();
 
         // Close the socket.
-        _utilSocket.closesocket();
+        _utilSocket.closeSocket();
 
         // Stop the OMC server.
         try {

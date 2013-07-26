@@ -70,7 +70,7 @@ public class UtilSocket implements IUtilSocket {
     /** Close the socket.
      *  @throws IOException If an I/O error occurs at the time of closing the socket.
      */
-    public void closesocket() throws IOException {
+    public void closeSocket() throws IOException {
 
         try {
             if (_clientSocket.isConnected())
@@ -85,7 +85,7 @@ public class UtilSocket implements IUtilSocket {
      *  @throws IOException If an I/O error occurs when creating the socket.
      *  @throws UnknownHostException If the IP address of the host could not be determined.
      */
-    public void establishclientsocket() throws IOException,
+    public void establishSocket() throws IOException,
     UnknownHostException {
 
         // The name of the host.
@@ -165,7 +165,7 @@ public class UtilSocket implements IUtilSocket {
      *   For the time being, the interactive simulation hangs after 1.958, OpenModelica Developer team are trying to fix this issue.
      *   @throws IOException If an I/O error occurs when client and server are exchanging the message.
      */
-    public void exchangewithsocket() throws IOException {
+    public void exchangeData() throws IOException {
 
         if (_clientSocket.isConnected()) {
             if (_toServer != null && _fromServer != null) {

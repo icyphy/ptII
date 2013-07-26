@@ -59,13 +59,13 @@ public interface IUtilSocket {
     /** Close the socket.
      *  @throws IOException If an I/O error occurs at the time of closing the socket.
      */
-    public void closesocket() throws IOException;
+    public void closeSocket() throws IOException;
 
     /** Establish the client socket and set up streams for exchanging data between the client and the server. 
      *  @throws IOException If an I/O error occurs when creating the socket.
      *  @throws UnknownHostException If the IP address of the host could not be determined.
      */
-    public void establishclientsocket() throws IOException,
+    public void establishSocket() throws IOException,
     UnknownHostException;
 
     /**  There are two modules, control and transfer, in the OpenModelica Interactive (OMI) which are designated for a communication over TCP/IP.
@@ -115,6 +115,6 @@ public interface IUtilSocket {
      *   For the time being, the interactive simulation hangs after 1.958, OpenModelica Developer team are trying to fix this issue.
      *   @throws IOException If an I/O error occurs when client and server are exchanging the message.
      */
-    public void exchangewithsocket() throws IOException;
+    public void exchangeData() throws IOException;
 
 }
