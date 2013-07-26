@@ -1,0 +1,77 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMIPPIncME" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={720, 112, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 55.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that uses the inc Model Exchange FMU from FMUSDK.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Under Mac OS X, this model uses libincrementalFMU_wrap.dylib&#10;and libfmipp.so in $PTII/lib.  ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
+        </property>
+    </property>
+    <entity name="FMUModelExchange" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/incME.fmu">
+        </property>
+        <property name="inputNames" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="outputNames" class="ptolemy.data.expr.Parameter" value="x">
+        </property>
+        <property name="startValues" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="lookAheadHorizon" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="lookAheadStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="integratorStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="MatrixToSequence" class="ptolemy.domains.sdf.lib.MatrixToSequence">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154, 2.681561585988519E154}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.681561585988528E145">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 130.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FMUModelExchange.output&quot;,x=110.0,y=130.0}, tail={id=&quot;MatrixToSequence.input&quot;,x=230.0,y=130.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="FMUModelExchange.output" relation="relation3"/>
+    <link port="MatrixToSequence.input" relation="relation3"/>
+    <link port="MatrixToSequence.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
