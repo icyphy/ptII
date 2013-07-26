@@ -38,6 +38,8 @@
 #define BUFSIZE 4096
 
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
 #include "FMIPPConfig.h"
 #include "ModelManager.h"
 
@@ -92,7 +94,11 @@ FMU_functions* ModelManager::getModel( const std::string& fmuPath,
 	std::string dllPath = fmuPath +  "/binaries/win32/" + modelName + ".dll";
 #elif defined(__APPLE__)
 	std::string dllPath = fmuPath +  "/binaries/darwin-x86_64/" + modelName + ".so";
-	//std::string dllPath = fmuPath + "/binaries/darwin64/" + modelName + ".dylib";
+        // darwin-x86_64 is used by OpenModelica.  The standard is to use darwin64.
+        std::ifstream file(dllPath.c_str());
+        if (!file) {
+            dllPath = fmuPath + "/binaries/darwin64/" + modelName + ".dylib";
+        }
 #else
 	std::string dllPath = fmuPath + "/binaries/linux64/" + modelName + ".so";
 #endif
