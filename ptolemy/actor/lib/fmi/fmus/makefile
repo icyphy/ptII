@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/fmi/fmus
 
 # Co-Simulation FMUS.
-FMUS_CS =		bouncingBallME helloWorld onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName
+FMUS_CS =		bouncingBallME dqME helloWorld onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName
 
 # Model Exchange FMUS.
 FMUS_ME = incME
