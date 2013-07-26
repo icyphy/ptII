@@ -53,9 +53,8 @@ import java.util.Scanner;
 
 /**    
     <p> UtilSocket establishes the connection from the client to the middleware by <i>establishclientsocket</i>.  
-    The return value is a Boolean, which refers that if the connection is established or not. 
     Then, <i>exchangewithsocket</i> writes data to the socket and reads data from the socket. 
-    Finally, the socket connection is closed by <i>closesocket</i>. </p>
+    Finally, the connection is closed by <i>closesocket</i>. </p>
 
     @author Mana Mirzaei
     @version $Id$
@@ -180,7 +179,7 @@ public class UtilSocket implements IUtilSocket {
                     // Scanner _fromClient = new Scanner(System.in);
                     // String _clientRequest = _fromClient.next();
 
-                    String _clientRequest = "start#1#end";
+                    String _clientRequest = "\"start#1#end\"";
 
                     if (_clientRequest != null) {
                         System.out.println("Request from the client :  "
@@ -199,10 +198,12 @@ public class UtilSocket implements IUtilSocket {
 
                     // FIXME IT IS NOT POSSIBLE TO HAVE THE RESPONSE BACK FROM THE OMC SERVER.
                     // Read simulation result from the server char by char until there is no char to read and write them to the console.
+                    int i = 0;
                     while (_fromServer.read(serverBuffer) != -1) {
                         // for (char readChar : serverBuffer) OR serverBuffer[i]
                         System.out.println("Response from the server : "
-                                + serverBuffer.toString());
+                                + serverBuffer[i]);
+                        i ++;
                     }
 
                     // Close the streams.

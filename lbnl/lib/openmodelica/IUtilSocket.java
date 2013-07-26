@@ -62,7 +62,6 @@ public interface IUtilSocket {
     public void closesocket() throws IOException;
 
     /** Establish the client socket and set up streams for exchanging data between the client and the server. 
-     * @return 
      *  @throws IOException If an I/O error occurs when creating the socket.
      *  @throws UnknownHostException If the IP address of the host could not be determined.
      */
