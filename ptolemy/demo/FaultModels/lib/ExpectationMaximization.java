@@ -1,8 +1,6 @@
-
-
 /* Parameter Estimation for Graphical Models.
 
-Copyright (c) 1998-2013 The Regents of the University of California.
+Copyright (c) 2013 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -60,54 +58,58 @@ import ptolemy.util.MessageHandler;
 ////ExpectationMaximization
 
 /**
-<p>This actor implements the Expectation-Maximization(EM) algorithm for
-parameter estimation in graphical stochastic models. Two types of fundamental
-types of Bayesian Network models: <i>Mixture Model(MM)<\i> and <i>Hidden Markov 
-Model(HMM)<\i> are supported. The input is an array of observations of arbitrary
-length and the outputs are the parameter estimates for the chosen model.</p>
-<p>
-The output ports reflect the parameter estimates of Gaussian MM or HMM. The Mixture
-Model is parameterized by <i>M</i> states, each distributed according to a distribution
-specified by the <i>emissionDistribution</i> parameter. Currently, the actor supports
-Gaussian emissions.
-The <i>mean<\i>  is a double array output containing the mean estimates and 
-<i>sigma</i> is a double array output containing standard deviation estimates of 
-each mixture component. If the <i>modelType<\i> is HMM, then an additional output, 
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix 
-governing the Markovian process representing the hidden state evolution. 
-If the <i>modelType<\i> is MM, this port outputs a double array with the prior 
-probability estimates of the mixture components.
-</p>
-<p>
-The user-defined parameters are initial guesses for the model parameters, given by
-<i>m0</i>, the mean vector guess, <i>s0</i>, the standard deviation vector guess, 
-<i>prior</i>, the prior state distribution guess, <i>A0</i>, the transition 
-matrix guess ( only for HMM). <i>iterations</i> is the number of EM iterations 
-allowed until convergence. 
-The actor iterates over the parameter estimates using the EM algorithm. If, at any
-point, the estimates become NaN, the user is notified that the algorithm did not
-converge and is given the option to randomize initial guesses to reiterate.
+<p>This actor implements the Expectation-Maximization(EM) algorithm
+for parameter estimation in graphical stochastic models. Two types of
+fundamental types of Bayesian Network models: <i>Mixture Model(MM)<\i>
+and <i>Hidden Markov Model(HMM)<\i> are supported. The input is an
+array of observations of arbitrary length and the outputs are the
+parameter estimates for the chosen model.</p>
+
+<p> The output ports reflect the parameter estimates of Gaussian MM or
+HMM. The Mixture Model is parameterized by <i>M</i> states, each
+distributed according to a distribution specified by the
+<i>emissionDistribution</i> parameter. Currently, the actor supports
+Gaussian emissions.  The <i>mean<\i> is a double array output
+containing the mean estimates and <i>sigma</i> is a double array
+output containing standard deviation estimates of each mixture
+component. If the <i>modelType<\i> is HMM, then an additional output,
+<i>transitionMatrix<\i> is provided, which is an estimate of the
+transition matrix governing the Markovian process representing the
+hidden state evolution.  If the <i>modelType<\i> is MM, this port
+outputs a double array with the prior probability estimates of the
+mixture components.  </p>
+
+<p> The user-defined parameters are initial guesses for the model
+parameters, given by <i>m0</i>, the mean vector guess, <i>s0</i>, the
+standard deviation vector guess, <i>prior</i>, the prior state
+distribution guess, <i>A0</i>, the transition matrix guess ( only for
+HMM). <i>iterations</i> is the number of EM iterations allowed until
+convergence.  The actor iterates over the parameter estimates using
+the EM algorithm. If, at any point, the estimates become NaN, the user
+is notified that the algorithm did not converge and is given the
+option to randomize initial guesses to reiterate.
 
 
  <p>
  <b>References</b>
- <p>[1]
- Jordan, Michael I., et al. <i>An introduction to variational methods for graphical 
- models</i>, Springer Netherlands, 1998.
- <p>[2]
- Bilmes, Jeff A. <i>A gentle tutorial of the EM algorithm and its application 
- to parameter estimation for Gaussian mixture and hidden Markov models.</i> 
- International Computer Science Institute 4.510 (1998): 126.
+
+ <p>[1] Jordan, Michael I., et al. <i>An introduction to variational
+ methods for graphical models</i>, Springer Netherlands, 1998.</p>
+
+ <p>[2] Bilmes, Jeff A. <i>A gentle tutorial of the EM algorithm and
+ its application to parameter estimation for Gaussian mixture and
+ hidden Markov models.</i> International Computer Science Institute
+ 4.510 (1998): 126.</p>
 
  @see ptolemy.demo.FaultModels.lib.ClassifyObservations
- @see ptolemy.demo.FaultModels.HiddenMarkovModelAnalysis
 
  @author Ilge Akkaya
- @version  
+ @version $Id$ 
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating Red (ilgea)
  */
 public class ExpectationMaximization extends TypedAtomicActor {
+
    /** Construct an actor with the given container and name.
     *  @param container The container.
     *  @param name The name of this actor
