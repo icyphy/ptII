@@ -1,3 +1,0 @@
-loadModel(Modelica);
-loadFile("Simple.mo");
-translateModelFMU(Simple);

@@ -1,4 +1,3 @@
-all: clean build
 ################################################################
 # About: 
 # ======
@@ -8,7 +7,7 @@ all: clean build
 # Usage:
 # ======
 #
-#	$ Make -f makefile.cygwin.omc 
+#	$ make -f makefile.linux run
 #
 ################################################################
 
@@ -19,65 +18,4 @@ all: clean build
 
 
 MODELID=Simple
-FMIPPHOME=/home/wolfi/fmipp
-EXPAT=/usr
-
-
-CC=gcc
-CPP=g++
-MACROS=-DOPENMODELICA -DBUILD_FMI_DLL
-OPTFLAGS=-O0 -g
-CFLAGS=$(MACROS)$
-DBGFLAGS=-g
-INC=-I$(FMIPPHOME)/include -I$(EXPAT)/include
-#LDFLAGS=-L$(FMIPPHOME)/lib  -Lbinaries/linux64/ -l$(MODELID) -lfmipp -lexpat -ldl
-LDFLAGS=-L$(FMIPPHOME)/lib -lfmipp -lexpat -ldl
-#LDFLAGS=-L$(FMIPPHOME)/lib -lfmipp -lexpat -ldl
-
-# see makefile.win .. 
-
-################################################################
-# help menu 
-################################################################
-help: 
-	@echo "Targets"
-	@echo "======="
-	@echo ""
-	@echo "	build:		build exe without debuging"
-	@echo "	run:		run the executable"
-	@echo "	clean:		clean all objects"
-	@echo ""
-#	@echo "Macros"
-#	@echo "======"
-
-
-################################################################
-# Source files and Objects 
-################################################################
-CSRC=
-CPPSRC=main.cpp
-OBJECTS=main.o
-
-################################################################
-# Build targets 
-################################################################
-
-# Targets 
-TARGET=a.exe
-
-build: main.o 
-#	$(CPP) $(OPTFLAGS) main.o -o  $(TARGET) $(LDFLAGS)  	
-	$(CPP) $(OPTFLAGS) main.o -o  $(TARGET) $(LDFLAGS)
-
-main.o:  main.cpp 
-	$(CPP) -c $(CFLAGS) $(INC)  $(OPTFLAGS) main.cpp
-
-run:
-	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):$(PWD)/binaries/linux64/"  ./$(TARGET)
-
-clean:
-	rm -f $(OBJECTS) $(TARGET) 
-
-depend: 
-	makedepend -- $(SRC)
-
+include ../../exampleMakefile.linux

@@ -1,0 +1,105 @@
+################################################################
+# About: 
+# ======
+#       exampleMakefile.linux is included in a makefile.linux file.
+#
+# Usage:
+# ======
+#
+#	Typical use is to create a file named makefile.linux which contains:
+#	MODELID=Simple
+#	include ../../exampleMakefile.linux
+#       Then, run
+#	$ make -f makefile.linux
+#
+################################################################
+
+
+################################################################
+# Software, Compiler and flags 
+################################################################
+
+
+FMIPPHOME=../../..
+EXPAT=/usr
+
+
+CC=gcc
+CPP=g++
+MACROS=-DOPENMODELICA -DBUILD_FMI_DLL
+OPTFLAGS=-O0 -g
+CFLAGS=$(MACROS)$
+DBGFLAGS=-g
+INC=-I$(FMIPPHOME)/include -I$(EXPAT)/include
+#LDFLAGS=-L$(FMIPPHOME)/lib  -Lbinaries/linux64/ -l$(MODELID) -lfmipp -lexpat -ldl
+LDFLAGS=-L$(PTII)/lib -lfmipp -lexpat -ldl
+#LDFLAGS=-L$(FMIPPHOME)/lib -lfmipp -lexpat -ldl
+
+# see makefile.win .. 
+
+################################################################
+# help menu 
+################################################################
+help: 
+	@echo "Targets"
+	@echo "======="
+	@echo ""
+	@echo "	build:		build exe without debuging"
+	@echo "	run:		run the executable"
+	@echo "	clean:		clean all objects"
+	@echo ""
+#	@echo "Macros"
+#	@echo "======"
+
+
+################################################################
+# Source files and Objects 
+################################################################
+CSRC=
+CPPSRC=main.cpp
+OBJECTS=main.o
+
+################################################################
+# Build targets 
+################################################################
+
+# Targets 
+TARGET=a.exe
+
+FMU_SO=binaries/linux64/$(MODELID).so
+
+build:  $(TARGET)
+
+$(TARGET): main.o
+	$(CPP) $(OPTFLAGS) main.o -o  $(TARGET) $(LDFLAGS)
+
+main.o:  main.cpp 
+	$(CPP) -c $(CFLAGS) $(INC)  $(OPTFLAGS) main.cpp
+
+run:  $(TARGET) $(FMU_SO)
+	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):$(PWD)/binaries/linux64/"  ./$(TARGET)
+
+valgrind: $(TARGET) $(FMU_SO)
+	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):$(PWD)/binaries/linux64/"  valgrind ./$(TARGET)
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)
+	rm -rf binaries
+
+depend: 
+	makedepend -- $(SRC)
+
+
+$(FMU_SO): $(MODELID).mo $(MODELID).mos
+	omc $(MODELID).mos
+	if [ ! -d binaries/linux64 ]; then \
+	   mkdir -p binaries/linux64; \
+	fi
+	cp $(MODELID).so $@
+
+$(MODELID).mos: 
+	if [ ! -f $@ ]; then \
+		echo "loadModel(Modelica);" > $@ ; \
+		echo "loadFile(\"$(MODELID).mo\");" >> $@ ; \
+		echo "translateModelFMU($(MODELID));" >> $@ ; \
+	fi
