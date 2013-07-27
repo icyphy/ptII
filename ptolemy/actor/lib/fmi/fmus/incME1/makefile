@@ -29,72 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/fmus/incME1
 
-DIRS =
+FMU_NAME = incME1
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../../..
+include ../fmus.mk
 
-CLASSPATH =	$(ROOT)
-
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
-
-# Used to build jar files
-PTPACKAGE = 	incME1
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# PTCLASSALLJARS =
-# PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
-JSRCS =
-
-OTHER_FILES_TO_BE_JARED = \
-	incME1.fmu
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT = incME1.fmu
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	src
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-FMU_SRCS = \
-	src/documentation/* \
-	src/modelDescription.xml \
-	src/model.png \
-	src/sources/* \
-
-all: jclass incME1.fmu
-
-
-install: jclass incME1.fmu jars
-	@echo "Optionally run 'make update' to update the test/auto directory."
-
-incME1.fmu: $(FMU_SRCS)
-	(cd src/sources; $(MAKE))
-
-# We don't check in incME1.fmu because it will be different on each platform
-# Instead, run make update to update the test directory.
-update: incME1.fmu
-	cp incME1.fmu ../../test/auto/incME1.fmu 
-
-test:
-	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange incME1.fmu
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
