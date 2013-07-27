@@ -1,1 +1,3 @@
-# Empty file to be replaced when Christopher gets back to his laptop.
+# For Model Exchange, we *don't* define -DFMI_COSIMULATION.
+INCLUDE =  -I.
+
