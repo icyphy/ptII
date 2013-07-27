@@ -34,27 +34,27 @@
 		<!-- jQueryMobile not available through Google CDN -->
 		<!-- <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"> </script> --> 
 		
-		<!--  Heat map graphic uses the d3 library --> 
+		<!--  Graphics uses the d3 library --> 
 		<script src="http://d3js.org/d3.v3.min.js"> </script>
 		
 		<!-- Javascript / XMPP library used to connect to Sensor Andrew -->
 		<script src="strophe.js"> </script>
 		
-		<!--  tempmap.js must precede sensorandrew.js, since tempmap.js
-		      defines rooms object that sensorandrew.js uses -->
+		<!--  tempmap.js must precede index.js and sensorandrew.js, 
+			  since tempmap.js defines objects that the others use -->
 		<script src="tempmap.js"> </script>
+		<script src="index.js"> </script>
 		<script src="sensorandrew.js"> </script>
 		<title> Scaife Hall Building Information </title>
 	</head>
 
 	<body>
 	
-	<!-- Header -->
+	<!-- Header --> 
 	<header data-role="header"> 
-		<h1> Scaife Hall Building Information </h1>
-	</header>		
- 	
-
+		<img id="logo" src="carnegiemellon-logo.gif" alt="Carnegie Mellon" width="231" height="66"/>
+		<h1> Scaife Hall Building Information </h1> 		
+	</header>	
  	
  	<!-- Content -->
 	<div>

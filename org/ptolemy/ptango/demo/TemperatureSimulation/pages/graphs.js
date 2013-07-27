@@ -17,7 +17,7 @@ var xScale,
 	yAxis,
 	minMaxPadding = 0.5;
 
-//Colors for the data series.  Specified by the name used in the export. 
+// Colors for the data series.  Specified by the name used in the export. 
 var colorData = { "CoolSetpoint" : {color: "lightblue"},
                   "THallway" : {color: "darkgray"},
                   "TRoom202" : {color: "coral"},
@@ -78,9 +78,11 @@ var outsideTemp = [{name: "outsideTemp",
 // The SVG element in the HTML page
 var svg;
 
-//Image dimensions.  Assumes a fixed-size image
-var imageHeight = 500,
-	imageWidth = 700;
+// Chart dimensions.  Assumes a fixed-size object
+var chartHeight = 500,
+	chartWidth = 700;
+
+var floorplanWidth = 500;
 
 // Whitespace padding around graph
 var padding = 30; 
@@ -93,7 +95,7 @@ var lines,
     lineFunction,
     outsideTempLine,
     outsideTempLineFunction,
-    showVerticalLine = false,
+    showFloorplan = false,
     verticalLine,
     verticalLineFunction,
     verticalLineGroup;
@@ -101,9 +103,11 @@ var lines,
 // Endpoints for the vertical line selector
 
 var verticalLineData = [{"x": 3*padding + 1, "y" : padding}, 
-          				{"x": 3*padding + 1, "y" : imageHeight - 3*padding}];
+          				{"x": 3*padding + 1, "y" : chartHeight - 3*padding}];
 
 var verticalLineGroupData = [{"x" : 0, "y" : 0}];
+
+var verticalLineIndex = 0;
 
 // Draggability for vertical line
 // Based on https://github.com/mbostock/d3/wiki/Drag-Behavior
@@ -116,13 +120,26 @@ var dragLine = d3.behavior.drag()
 					d.x += d3.event.dx;	 // Only update the x direction 
 										 // (drag left and right only)
 					if (d.x < 0) {d.x = 0};
-					if (d.x > imageWidth - 7*padding) 
-						{d.x = imageWidth - 7*padding};
+					if (d.x > chartWidth - 7*padding) 
+						{d.x = chartWidth - 7*padding};
 					verticalLineGroupData[0].x = d.x;
+					
+					// Remember index in case user changes setpoint
+					verticalLineIndex = Math.floor(d.x * 1.465);
+					
+					// Update temperature map
+					// d.x from 0 to 490
+					// data from 0 to 718
+					setTemperatures(verticalLineIndex);
+					
 					d3.select(this).attr("transform", function(d,i) {
 						return "translate(" + [d.x, d.y] + ")"
+				    
 					});
 			 });
+
+// Remove once room shapes are working
+var startX = chartWidth + 6*padding, startY = 0;
 
 // Function executed once page is loaded
 $(document).ready(function() {
@@ -130,7 +147,7 @@ $(document).ready(function() {
 	$("#radio21Label").click(readData);
 	$("#radio23Label").click(readData);
 	$("#radio25Label").click(readData);
-	$("#checkboxLabel").click(showHideVerticalLine);
+	$("#checkboxLabel").click(showHideFloorplan);
 	
 	// Formatting for radio buttons.  From jQueryUI
 	// Ensure page starts with middle button (23 degrees C) checked
@@ -167,7 +184,7 @@ function createGraph() {
 	// X axis is a time-scale axis showing hours of one day
 	xScale = d3.time.scale()
 		.domain([startDate, endDate])
-		.range([3*padding, imageWidth - 4*padding]);
+		.range([3*padding, chartWidth - 4*padding]);
 	
 	// Y axis is a linear axis with range auto-scaled to max and min of outside
 	// temperature, plus a little extra
@@ -177,7 +194,7 @@ function createGraph() {
 			 	+ minMaxPadding,
 		     d3.min(outsideTemp, function(d) {return d3.min(d.values); })
 		     	- minMaxPadding]) 
-		.range([1 + padding, imageHeight - 3*padding]);
+		.range([1 + padding, chartHeight - 3*padding]);
 	
 	// Uncomment to scale to max and min of room data (vs outside temp)
 	/*
@@ -187,15 +204,25 @@ function createGraph() {
 			 	+ minMaxPadding,
 		     d3.min(formattedData, function(d) {return d3.min(d.values); })
 		     	- minMaxPadding]) 
-		.range([1 + padding, imageHeight - 3*padding]);
+		.range([1 + padding, chartHeight - 3*padding]);
 		*/
 	
 	// Create the SVG element to hold the graph
 	svg = d3.select('#temperature-graph')
 				.append('svg')
-				.attr('width', imageWidth + 5*padding)
-				.attr('height', imageHeight);
-
+				.attr('width', chartWidth + 5*padding + floorplanWidth)
+				.attr('height', chartHeight);
+	
+    // Create floorplan map, but hide it to start
+	// Uses functions from tempmap.js
+	// Do this first since room overlay doesn't seem to work if done
+	// at the end?
+	initializeMap(498, 282, chartWidth + 6*padding, 0, 500, 21.0, 25.0);
+	addImage(svg);
+	drawRooms(svg);
+	drawGradient(svg);
+	hideMap();
+	
 	// Draw a line for setpoint, outside temperature, each room and hallway
 	// Samples are every 2 minutes
 	
@@ -249,7 +276,7 @@ function createGraph() {
 	
 	svg.append("g")
 		.attr("class", "axis")
-		.attr("transform", "translate(0, " + (imageHeight - 3*padding) + ")")
+		.attr("transform", "translate(0, " + (chartHeight - 3*padding) + ")")
 		.call(xAxis);
 	
 	// Add axis label.  Use unicode representation for degree symbol in text
@@ -258,8 +285,8 @@ function createGraph() {
 	
 	svg.append("text")
 		.attr("class", "axisLabel")
-		.attr("x", imageWidth / 2)
-		.attr("y", imageHeight - padding)
+		.attr("x", chartWidth / 2)
+		.attr("y", chartHeight - padding)
 		.style("text-anchor", "middle")
 		.text("Time");
 	
@@ -276,7 +303,7 @@ function createGraph() {
 	
 	svg.append("text")
 		.attr("class", "axisLabel")
-		.attr("x", -(imageHeight / 2) + padding)
+		.attr("x", -(chartHeight / 2) + padding)
 		.attr("y", padding)
 		.attr("transform", "rotate(-90)")
 		.style("text-anchor", "middle")
@@ -289,7 +316,7 @@ function createGraph() {
 	
 	var legend = svg.append("g")
 	  .attr("class", "legend")
-	  .attr("transform", "translate(" + (imageWidth - 2*padding) + ", " + padding + ")")
+	  .attr("transform", "translate(" + (chartWidth - 2*padding) + ", " + padding + ")")
 	  .attr("height", 100)
 	  .attr("width", 100);  
    
@@ -311,12 +338,37 @@ function createGraph() {
 	  .attr("x", padding)
       .attr("y", function(d, i){ return i *  20 + squareSize - 2;})
       .text(function(d) {return d.label;});
-    
+		
     // Add vertical line for synching with floorplan temperature map
     verticalLineFunction = d3.svg.line()
 		.x(function(d) {return d.x; })
 		.y(function(d) {return d.y; })
 		.interpolate("linear");
+    
+    // Create the vertical line and hide it
+	// Create the vertical line
+	verticalLineGroup = svg.selectAll(".verticalLineGroup")
+		.data(verticalLineGroupData)
+		.enter()
+		.append("svg:g")
+		.attr("class", "verticalLineGroup")
+		.attr("opacity", 0.6)
+		.call(dragLine);
+	
+	verticalLine = verticalLineGroup.selectAll(".verticalLine")
+		.data(verticalLineData)
+		.enter()
+		.append("path")
+		 .attr("class", "verticalLine")
+		 .attr("d", verticalLineFunction(verticalLineData))
+		 .attr("stroke-width", 16)
+		 .attr("stroke", "yellow");
+	
+	verticalLineGroup.style("display", "none");
+	
+	// Set room temperatues on the overlay to array index 1 of data
+	// First data point (index 0) is abnormally high, so don't use it
+	setTemperatures(0);
 }
 
 // Read the appropriate data file according to the chosen cooling setpoint
@@ -362,36 +414,36 @@ function readData(){
 		
 }
 
+/* Set temperatures of rooms data structure in tempmap.js to index i of data */
+function setTemperatures(i) {
+	setRoomTemperature(202, data[i].TRoom202); 
+	setRoomTemperature(203, data[i].TRoom203); 
+	setRoomTemperature(205, data[i].TRoom205); 
+	setRoomTemperature(206, data[i].TRoom206); 
+	setRoomTemperature(208, data[i].TRoom208); 
+	setRoomTemperature(212, data[i].TRoom212); 
+	setRoomTemperature(214, data[i].TRoom214);
+	setRoomTemperature(219, data[i].TRoom219);
+	setRoomTemperature(220, data[i].TRoom220); 
+	setRoomTemperature(222, data[i].TRoom222); 
+	setRoomTemperature(224, data[i].TRoom224); 
+	
+	updateMap(svg);
+}
+
 // Show or hide the vertical line to link line chart with floorpan map 
-function showHideVerticalLine() {
-	if (showVerticalLine) {
-		verticalLineGroup = svg.selectAll(".verticalLineGroup")
-			.data(verticalLineData);
+function showHideFloorplan() {
+	if (showFloorplan) {
+		verticalLineGroup.style("display", "none");
+		hideMap();
 		
-		verticalLineGroup.remove();
-		
-		showVerticalLine = false;
+		showFloorplan = false;
 		
 	} else {
+		verticalLineGroup.style("display", "inline");
+		showMap();
 		
-		verticalLineGroup = svg.selectAll(".verticalLineGroup")
-			.data(verticalLineGroupData)
-			.enter()
-			.append("svg:g")
-			.attr("class", "verticalLineGroup")
-			.attr("opacity", 0.6)
-			.call(dragLine);
-		
-		verticalLine = verticalLineGroup.selectAll(".verticalLine")
-			.data(verticalLineData)
-			.enter()
-			.append("path")
-			 .attr("class", "verticalLine")
-			 .attr("d", verticalLineFunction(verticalLineData))
-			 .attr("stroke-width", 12)
-			 .attr("stroke", "yellow");
-		
-		showVerticalLine = true;
+		showFloorplan = true;
 	}
 }
 
@@ -418,6 +470,9 @@ function updateGraph(){
 		.transition()
 		.duration(1000)
 		.attr("d", function(d) {return lineFunction(d.values); });
+	
+	// Update room map
+	setTemperatures(verticalLineIndex);
 	
 }
 

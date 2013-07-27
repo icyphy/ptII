@@ -31,20 +31,19 @@
 	float: right;
 }
 
-*[data-role="header"] h1 {
-	position: relative;
-	top: 0px;
-	left: 10px;
-	height: 39px;
-}
-
-
 *[data-role="header"] a:link {
 	color: #ffffff;
 }
 
 *[data-role="header"] a:visited {
 	color: #a1bdd5;
+}
+
+*[data-role="header"] h1 {
+	position: relative;
+	top: 0px;
+	left: 10px;
+	height: 39px;
 }
 
 *[data-role="footer"] {

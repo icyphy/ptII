@@ -11,7 +11,22 @@
 
 *[data-role="header"] {
 	font-weight: bold;
+	position:relative;
+	text-align:left;
+	width: 100%;
 }
+
+*[data-role="header"] img {
+	float: right;
+}
+
+*[data-role="header"] h1 {
+	position: relative;
+	top: 0px;
+	left: 10px;
+	height: 36px;
+}
+
 
 *[data-role="footer"] {
 	font-weight: normal;

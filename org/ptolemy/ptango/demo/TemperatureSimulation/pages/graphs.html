@@ -26,8 +26,11 @@
 		<!--  Used for toggle checkboxes -->
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script> 
 		
-		<!--  Heat map graphic uses the d3 library -->  
+		<!--  Graphics use the d3 library -->  
+		<!--  tempmap.js must precede graphs.js, since tempmap.js defines 
+			  objects used in graphs.js -->
 		<script src="http://d3js.org/d3.v3.min.js"> </script>
+		<script src="tempmap.js"> </script>
 		<script src="graphs.js"> </script> 
 
 		<title> Scaife Hall Building Information </title>
@@ -37,7 +40,7 @@
 	
 	<!-- Header -->
 	<header data-role="header"> 
-		<img id="berkeleyimg" src="berkeley-text.gif" alt="UC Berkeley" width="210" height="70"/>
+		<img id="logo" src="berkeley-text.gif" alt="UC Berkeley" width="210" height="70"/>
 		<h1> Scaife Hall Building Simulation </h1> 		
 	</header>		
  	

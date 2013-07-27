@@ -2,7 +2,6 @@
    Based in part on "Implementing Responsive Design" by Tim Kadlec */
 
 /* Styling for standard elements */
-l
 html {
 	/* Specify root element size as a percentage due to IE problem with ems. */
 	font-size: 100%; /* Typically 16px */
@@ -71,7 +70,7 @@ nav {
 }
 */
 
-#berkeleyimg {
+#logo {
 	 border: 0;
 	 align: right;
 	 float: right;

@@ -1,7 +1,9 @@
 var BOSH_SERVICE = 'http://sensor.andrew.cmu.edu:5280/http-bind';
 
-var JID = 'benzhang@sensor.andrew.cmu.edu';
-var PASS = 'benzhang2012';
+// NOTE:  A Sensor Andrew ID and password are needed to connect
+// Please enter this information here
+var JID = 'id';
+var PASS = 'password';
 
 // The rooms object is defined in tempmap.js
 // This object is a set of key, value pairs where the key is the sensor id
@@ -50,11 +52,29 @@ function onConnect(status)
 }
 
 // Callback method when any node visible to this user account publishes data
-// TODO:  Create account for demo?  Subscribe this user to only nodes we 
-// want in demo?
+// Nodes of interest:
+// Room 202 only has lightswitch
+
+// ID   Nickname 			Device name				Event node								Serial number
+// 320 	208 Projector 		FireFly3 Environmental 	679a64b8d78ab1d599fd55b73b8e5cbe_data 	0xA
+// 1581 	Thermometer Digital 	BMP085 	0000-00-00 00:00:00
+// Use ID 1581
+
+// 322 	212 Environmental 	FireFly3 Environmental 	f51a3e3ae15bd09ab36345ce832b398f_data 	0x7
+// 1607 	Thermometer Digital 	BMP085 	0000-00-00 00:00:00
+// Use ID 1607
+
+// 323 	214 Projector 		FireFly3 Environmental 	b1f7eee1ccecf0af4f7434cac974f072_data 	0x8
+// 1620 	Thermometer Digital 	BMP085
+// Use ID 1620
+
+// There is no room 218?  Assigned to room 219.
+// 321 	218 Projector 		FireFly3 Environmental 	f1191d89077341c6ed5a5f51fd6f4145_data 	0x9
+// 1594 	Thermometer Digital 	BMP085 	0000-00-00 00:00:00
+// Use ID 1594
 function onMessage(msg) {
 
-	alert("message");
+	// alert("message");
 	var i, j;
 	
     // Sample data: (but this was for one specific node - looks like code is getting all nodes?  How to filter on the data event node id?)
@@ -72,26 +92,17 @@ function onMessage(msg) {
 	
 	for(i=0;i<transducerVals.length; i++){
 		id = transducerVals[i].getAttribute('id');
-		// alert(id);
 		if (rooms.hasOwnProperty(id)) {
-			// alert("found" + id);
-			rooms[id].temperature =  
-				transducerVals[i].getAttribute('typedValue');
-			//  'time':(new Date()).getTime()
+			// Show number to one decimal place
+			var temperature = 
+				Number(transducerVals[i].getAttribute('typedValue'))
+				.toFixed(1);
+			rooms[id].temperature =  temperature;
 		}
 	}		
 	
-	// Update temperature text
-	// roomInfoGroup defined in tempmap.js
-	roomInfoGroup.selectAll(".roomTempRect")
-		.data(d3.entries(rooms))
-		.transition()
-		.duration(interval)
-		.attr("fill", function(d) {return rgb(d.value.temperature)});
-
-	roomInfoGroup.selectAll(".roomTempLabel")
-		.data(d3.entries(rooms))
-		.text(function (d) {return d.value.temperature});
+	// Update labels immediately
+	updateLabels();
 
     // we must return true to keep the handler alive.  
     // returning false would remove it after it finishes.
