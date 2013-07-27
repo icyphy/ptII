@@ -73,10 +73,13 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class) $(PTLIB) $(PTLIB2)
 
-OPTFLAGS = -O3
+# Under Linux, -O3 will cause a crash.
+#OPTFLAGS = -O3
+OPTFLAGS = -g
+WARNINGFLAGS = -Wall
 OBJECTS=src/stack.o src/xml_parser.o src/FMU.o src/FMUIntegrator.o src/FMUIntegratorStepper.o src/History.o src/IncrementalFMU.o src/ModelManager.o
 
-CFLAGS= -DBUILD_FMI_DLL $(PTJNI_SHAREDLIBRARY_CFLAG) -Iinclude -I$(PTBOOST_INCLUDE_DIR)
+CFLAGS= $(WARNINGFLAGS) -DBUILD_FMI_DLL $(PTJNI_SHAREDLIBRARY_CFLAG) -Iinclude -I$(PTBOOST_INCLUDE_DIR)
 
 PTLIB=libfmipp.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 PTLIB2=libIncrementalFMU_wrap.$(PTJNI_SHAREDLIBRARY_SUFFIX)
