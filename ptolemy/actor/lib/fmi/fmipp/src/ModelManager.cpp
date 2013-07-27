@@ -108,7 +108,9 @@ FMU_functions* ModelManager::getModel( const std::string& fmuPath,
 	std::string descriptionPath = fmuPath + "/modelDescription.xml";
 	description->modelDescription = parse( descriptionPath.c_str() );
 
-	loadDll( dllPath, description );
+	if (loadDll( dllPath, description ) == 0) {
+	  return NULL;
+	}
 
 	modelManager_->modelDescriptions_[modelName] = description;
 	return description;
@@ -132,7 +134,9 @@ FMU_functions* ModelManager::getModel( const std::string& xmlPath,
 	std::string descriptionPath = xmlPath + "/" + modelName + ".xml";
 	description->modelDescription = parse( descriptionPath.c_str() );
 
-	loadDll( fullDllPath, description );
+	if (loadDll( fullDllPath, description )) {
+	  return NULL;
+	}
 
 	modelManager_->modelDescriptions_[modelName] = description;
 	return description;
