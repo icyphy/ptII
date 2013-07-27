@@ -32,10 +32,10 @@
 ME =		ptolemy/actor/lib/fmi/fmus
 
 # Co-Simulation FMUS.
-FMUS_CS =		bouncingBallME1 dqME1 helloWorld incME1 onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName valuesME1 vanDerPolME1
+FMUS_CS =	helloWorld onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName
 
 # Model Exchange FMUS.
-FMUS_ME = incME
+FMUS_ME = 	bouncingBallME1 dqME1 incME1 valuesME1 vanDerPolME1
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)

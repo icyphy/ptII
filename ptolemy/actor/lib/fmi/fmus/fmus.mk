@@ -97,7 +97,7 @@ update: $(FMU_NAME).fmu
 	if [  -f ../../test/auto/$(FMU_NAME).fmu ]; then  \
 	    mv $(FMU_NAME).fmu $(FMU_NAME).new.fmu; \
 	    cp ../../test/auto/$(FMU_NAME).fmu .; \
-	    $(ROOT)/bin/updateFMU $(FMU_NAME).fmu; \
+	    $(ROOT)/bin/updateFmu $(FMU_NAME).fmu; \
 	    rm $(FMU_NAME).new.fmu; \
         fi 
 	cp $(FMU_NAME).fmu ../../test/auto/$(FMU_NAME).fmu
