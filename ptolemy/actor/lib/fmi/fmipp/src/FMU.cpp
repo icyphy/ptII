@@ -31,10 +31,10 @@ FMU::FMU( const string& modelName )
 
 	ModelManager& manager = ModelManager::getModelManager();
 	fmuFun_ = manager.getModel("./", modelName);
-	readModelDescription();
-
+	if (fmuFun_ != NULL) {
+	   readModelDescription();
+	}
 	integrator_ = new FMUIntegrator( this, FMUIntegrator::rk );
-
 #ifdef FMI_DEBUG
 	cout << "[FMU::ctor] DONE." << endl; fflush( stdout );
 #endif
@@ -50,9 +50,10 @@ FMU::FMU( const string& fmuPath,
 
 	ModelManager& manager = ModelManager::getModelManager();
 	fmuFun_ = manager.getModel( fmuPath, modelName );
-	readModelDescription();
-
-	integrator_ = new FMUIntegrator( this, FMUIntegrator::rk );
+	if (fmuFun_ != NULL) {
+	  readModelDescription();
+	}
+	  integrator_ = new FMUIntegrator( this, FMUIntegrator::rk );
 
 #ifdef FMI_DEBUG
 	cout << "[FMU::ctor] DONE." << endl;
