@@ -181,7 +181,7 @@ public class FMUModelExchange extends Transformer {
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "Failed to unzip \"" + fmuFileName + "\".");
             }
-            
+
             // Set _tmpPath to the directory that contains modelDescription.xml
             _tmpPath = null;
             String sentinelFileName = "modelDescription.xml";
@@ -443,6 +443,16 @@ public class FMUModelExchange extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
+	// We use this method to make sure that the shared library
+	// exists before invoking C++.  A side effect is that this
+	// will try to build the shared library.
+	try {
+	    _fmiModelDescription.getNativeLibrary();
+	} catch (Throwable throwable) {
+	    throw new IllegalActionException(this, throwable,
+				    "Failed to load the shared library for \""
+				    + _fmiModelDescription +"\"");
+	}
         _fmu = new IncrementalFMU(_tmpPath,
                 _fmiModelDescription.modelIdentifier);
 
