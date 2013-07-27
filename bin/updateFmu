@@ -23,7 +23,7 @@ do
     unzip -o ../$file
 done
 
-zip -r -u -q ../$1 .
+zip -r -u ../$1 .
 cd ..
 
 ls -l $1
