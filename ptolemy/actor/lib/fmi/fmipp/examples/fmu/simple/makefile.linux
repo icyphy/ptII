@@ -64,21 +64,32 @@ OBJECTS=main.o
 # Targets 
 TARGET=a.exe
 
-build: main.o 
-#	$(CPP) $(OPTFLAGS) main.o -o  $(TARGET) $(LDFLAGS)  	
+build:  $(TARGET)
+
+$(TARGET): main.o binaries/linux64/Simple.so
 	$(CPP) $(OPTFLAGS) main.o -o  $(TARGET) $(LDFLAGS)
 
 main.o:  main.cpp 
 	$(CPP) -c $(CFLAGS) $(INC)  $(OPTFLAGS) main.cpp
 
-run:  #binaries/linux64/Simple.so
+run:  $(TARGET)
 	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):$(PWD)/binaries/linux64/"  ./$(TARGET)
 
-binaries/linux64/Simple.so: ../../../test/auto/Simple.fmu 
-	unzip $^
+valgrind: $(TARGET)
+	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):$(PWD)/binaries/linux64/"  valgrind ./$(TARGET)
+
 clean:
 	rm -f $(OBJECTS) $(TARGET)
 	rm -rf binaries
 
 depend: 
 	makedepend -- $(SRC)
+
+
+binaries/linux64/Simple.so: Simple.mo
+	omc Simple.mos
+	if [ ! -d binaries/linux64 ]; then \
+	   mkdir -p binaries/linux64; \
+	fi
+	cp Simple.so $@
+
