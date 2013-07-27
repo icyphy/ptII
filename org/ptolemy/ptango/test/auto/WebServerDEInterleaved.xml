@@ -52,7 +52,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -5.0]">
             </property>
-            <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/ptolemnizer#in_browser">
+            <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8077/ptolemnizer#in_browser">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -429,14 +429,14 @@
             </property>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="http://localhost:8078/ptolemnizer">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="http://localhost:8077/ptolemnizer">
             </property>
             <doc>Read an entire file and output as a string</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 210.0}">
             </property>
         </entity>
         <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8078/ptolemnizer">
+            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8077/ptolemnizer">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 145.0]">
             </property>
@@ -560,14 +560,14 @@
             </property>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="http://localhost:8078/ptolemnizer">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="http://localhost:8077/ptolemnizer">
             </property>
             <doc>Read an entire file and output as a string</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 210.0}">
             </property>
         </entity>
         <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8078/ptolemnizer">
+            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8077/ptolemnizer">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 145.0]">
             </property>
