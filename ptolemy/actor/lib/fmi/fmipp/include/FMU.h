@@ -166,7 +166,7 @@ private:
 
 	void readModelDescription();
 
-	static const int maxEventIterations_ = 5;
+	static const unsigned int maxEventIterations_ = 5;
 
 };
 

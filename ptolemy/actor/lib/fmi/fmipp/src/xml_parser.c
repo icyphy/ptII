@@ -280,8 +280,8 @@ ScalarVariable* getVariableByName( ModelDescription* md, const char* name )
 int sameBaseType( Elm t1, Elm t2 )
 {
 	return t1==t2 ||
-		t1==elm_Enumeration && t2==elm_Integer ||
-		t2==elm_Enumeration && t1==elm_Integer;
+	  (t1==elm_Enumeration && t2==elm_Integer) ||
+	  (t2==elm_Enumeration && t1==elm_Integer);
 }
 
 
@@ -340,7 +340,6 @@ const char * getVariableAttributeString( ModelDescription* md,
 					 fmiValueReference vr, Elm type, Att a )
 {
 	const char* value;
-	const char* declaredType;
 	Type* tp;
 	ScalarVariable* sv = getVariable( md, vr, type );
 	if ( !sv ) return NULL;
@@ -879,9 +878,12 @@ void freeElement( void* element )
 	Element* e = (Element*) element;
 	if ( !e ) return;
 	// free attributes
-	for ( i=0; i<e->n; i+=2 )
-		free( e->attributes[i+1] );
-	if ( e->attributes ) free( e->attributes );
+	for ( i=0; i<e->n; i+=2 ) {
+	  free((void *) e->attributes[i+1] );
+	}
+	if ( e->attributes ) {
+	  free( e->attributes );
+	}
 	// free child nodes
 	switch ( getAstNodeType( e->type ) ) {
         case astListElement:
@@ -936,7 +938,7 @@ ModelDescription* validate( ModelDescription* md )
 	if ( md->modelVariables )
 		for ( i=0; md->modelVariables[i]; ++i ) {
 			ScalarVariable* sv = (ScalarVariable*) md->modelVariables[i];
-			char* declaredType = getString( sv->typeSpec, att_declaredType );
+			char* declaredType = (char *)getString( sv->typeSpec, att_declaredType );
 			Type* decltype = getDeclaredType( md, declaredType );
 			if ( declaredType && decltype==NULL ) {
 				printf( "Warning: Declared type %s of variable %s not found in modelDescription.xml\n", declaredType, getName( sv ) );
@@ -992,7 +994,7 @@ ModelDescription* parse( const char* xmlPath )
 		if ( !XML_Parse( parser, text, n, done ) ) {
 			printf( "Parse error in file %s at line %d:\n%s\n",
 				xmlPath,
-				XML_GetCurrentLineNumber( parser ),
+				(int)XML_GetCurrentLineNumber( parser ),
 				XML_ErrorString( XML_GetErrorCode( parser ) ) );
 			while ( ! stackIsEmpty( stack ) ) md = stackPop( stack );
 			if ( md ) freeElement( md );
