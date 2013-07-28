@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FileServer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 928, 617}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 35.0}">
+        </property>
+    </property>
+    <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 175.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DE director&#10;stopWhenQueueIsEmpty &#10;parameter is set to false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 60.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model starts up a WebServer which&#10;acts as a file server for all files in &#10;the TemperatureSimulation directory.&#10;&#10;Please run the model, then point your browser to:&#10;http://localhost:8078/pages/index.html &#10;and&#10;http://localhost:8078/pages/graphs.html&#10;for live data and simulation data, respectively.&#10;&#10;Namely, we want access to the pages/temperatures.csv file.&#10;The temperature map web page fetches this file using&#10;an XMLHttpRequest (XHR).  Browsers block access to &#10;the local filesystem for security reasons, so we use&#10;the Ptolemy web server to serve this file.&#10;https://github.com/mbostock/d3/wiki/Requests">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 15.0]">
+        </property>
+    </property>
+</entity>
