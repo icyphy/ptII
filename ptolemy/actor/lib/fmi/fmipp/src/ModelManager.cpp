@@ -238,7 +238,7 @@ void* ModelManager::getAdr( int* s, FMU_functions *fmuFun, const char* functionN
 
 	if ( !fp ) {
 		printf ( "WARNING: Function %s not found.\n", name ); fflush( stdout );
-		*s = 0; // mark dll load as 'failed'
+		//*s = 0; // mark dll load as 'failed'
 	}
 
 	return fp;
