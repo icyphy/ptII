@@ -106,7 +106,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
         } catch (ConnectException e) {
             e.printStackTrace();
             throw new IllegalActionException(
-                    "Unable to start the OpenModelica server!" + e.getMessage());
+                    "ServerError : Unable the OpenModelica server is unable to start!" + e.getMessage());
         }
     }
 
@@ -145,8 +145,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
             String loggerInfo = "OpenModelica Server stopped!";
             _omcLogger.getInfo(loggerInfo);
         } catch (ConnectException e) {
-            throw new IllegalActionException(
-                    "Unable to stop the OpenModelica server!" + e.getMessage());
+            new IllegalActionException("SeverError: Server is unable to stop.").printStackTrace();
         }
     }
 

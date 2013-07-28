@@ -113,7 +113,8 @@ public class OMCClient {
             _omcProxy.quitServer();
             System.out.println("OMC server stopped!");
         } catch (ConnectException e) {
-            throw new IllegalActionException(e.getMessage());
+            e.printStackTrace();
+            throw new IllegalActionException("SeverError: Server is unable to stop.");
         }
     }
 

@@ -257,10 +257,10 @@ public class OpenModelica extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        // Create a unique instance of OMCCommand.
+        // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
 
-        // load the Modelica library and file.
+        // Load the Modelica library and file.
         try {
             _omcProxy.loadFile(fileName.getExpression(),
                     modelName.getExpression());
@@ -271,12 +271,13 @@ public class OpenModelica extends TypedAtomicActor {
         }
 
         if (input.getWidth() > 0) {
-            // Read the value of input port which reads init value of the Ramp.
+
+            // Read the value of input port -init value of the Ramp.
             IntToken inputPortValue = (IntToken) input.get(0);
 
-            // Return the components which the model is composed of and modify the value of parameters/variables before running the simulation.
+            // Return the components of the model and modify the value of parameters/variables before running the simulation.
+            System.out.println("------Variable Modification-------");
             try {
-                System.out.println("------Variable Modification-------");
                 _omcProxy.modifyVariables(inputPortValue,
                         modelName.getExpression());
             } catch (ConnectException e) {
@@ -286,10 +287,7 @@ public class OpenModelica extends TypedAtomicActor {
             }
         }
 
-        // Build the Modelica model and run the executable result file in both interactive
-        // and non-interactive processing mode.
-
-        //FIXME problem with singleton pattern, file should be loaded once. redundant code.
+        // Load the Modelica library and file.
         try {
             _omcProxy.loadFile(fileName.getExpression(),
                     modelName.getExpression());
@@ -299,6 +297,8 @@ public class OpenModelica extends TypedAtomicActor {
                             + e.getMessage());
         }
 
+        // Build the Modelica model and run the executable result file in both interactive
+        // and non-interactive processing mode.
         try {
             _omcProxy.simulateModel(fileName.getExpression(),
                     modelName.getExpression(), fileNamePrefix.getExpression(),
@@ -323,10 +323,10 @@ public class OpenModelica extends TypedAtomicActor {
 
         if ((processingType.getExpression().compareTo("batch") == 0)
                 && (outputFormat.getExpression().compareTo("csv") == 0)) {
-            String simulationResult = null;
-            // Read a result file, returning a matrix corresponding to the variables and given size.
 
-            //FIXME problem with singelton pattern, file should be loaded once. redundant code.
+            String simulationResult = null;
+
+            // Load the Modelica library and file.
             try {
                 _omcProxy.loadFile(fileName.getExpression(),
                         modelName.getExpression());
@@ -336,6 +336,7 @@ public class OpenModelica extends TypedAtomicActor {
                                 + e.getMessage());
             }
 
+            // Display the value of variables/parameters of the modelica file.
             try {
                 simulationResult = _omcProxy.displaySimulationResult(
                         fileName.getExpression(), modelName.getExpression());
@@ -362,8 +363,7 @@ public class OpenModelica extends TypedAtomicActor {
                 throw new IllegalActionException(
                         "Unable to plot the plt format of "
                                 + modelName.getExpression()
-                                + " simulation result file!"
-                                + e.getMessage());
+                                + " simulation result file!" + e.getMessage());
             }
         }
     }
