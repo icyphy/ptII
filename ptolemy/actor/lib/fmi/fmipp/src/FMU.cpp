@@ -3,9 +3,9 @@
  * All rights reserved. See file FMIPP_LICENSE for details.
  * --------------------------------------------------------------*/
 
-#ifdef FMI_DEBUG
+//#ifdef FMI_DEBUG
 #include <iostream>
-#endif
+//#endif
 
 #include <stdio.h>
 #include <stdarg.h>

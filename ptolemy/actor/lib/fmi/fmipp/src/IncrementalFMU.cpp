@@ -135,7 +135,8 @@ int IncrementalFMU::init( const string& instanceName,
 	assert( lookAheadStepSize > 0. );
 	assert( integratorStepSize > 0. );
 
-	fmiStatus status = fmu_->instantiate( instanceName, fmiFalse );
+	fmiBoolean loggingOn = fmiFalse;
+	fmiStatus status = fmu_->instantiate( instanceName, loggingOn );
 
 	if ( status != fmiOK ) return 0;
 
@@ -150,10 +151,15 @@ int IncrementalFMU::init( const string& instanceName,
 	// FMU has found a solution ...
 
 	HistoryEntry init( startTime, fmu_->nStates(), nOutputs_ );
-	getContinuousStates( init.state_ );
+	// incME1.fmu has numberOfContinuousStates="0"
+	if (fmu_->nStates() > 0) {
+	  getContinuousStates( init.state_ );
+	}
 	getOutputs( init.values_ );
 
-	initializeIntegration( init ); // Set values (but don't integrate afterwards) ...
+	if (fmu_->nStates() > 0) {
+	  initializeIntegration( init ); // Set values (but don't integrate afterwards) ...
+	}
 	fmu_->raiseEvent(); // ... then raise an event ...
 	fmu_->handleEvents( startTime, false ); // ... and finally take proper actions.
 	retrieveFMUState( init.state_, init.values_ ); // Then retrieve the result and ...
@@ -285,7 +291,10 @@ fmiTime IncrementalFMU::updateState( fmiTime t0, fmiTime t1 )
 	}
 
 	// somewhere i have to do this, ask EW which functions he overloads, so we can solve this better!!!
-	initializeIntegration( currentState_ );
+	// incME1.fmu has numberOfContinuousStates="0"
+	if (fmu_->nStates() > 0) {
+	  initializeIntegration( currentState_ );
+	}
 	fmu_->setTime( t1 );
 
 	return t1;
@@ -316,7 +325,9 @@ fmiTime IncrementalFMU::predictState( fmiTime t1 )
 	retrieveFMUState( prediction.state_, prediction.values_ );
 
 	// Initialize integration.
-	initializeIntegration( prediction );
+	if (fmu_->nStates() > 0) {
+	  initializeIntegration( prediction );
+	}
 
 	// Set the initial prediction.
 	predictions_.push_back( prediction );
@@ -372,7 +383,9 @@ fmiTime IncrementalFMU::predictState( fmiTime t1 )
 
 void IncrementalFMU::retrieveFMUState( fmiReal* result, fmiReal* values ) const
 {
-	fmu_->getContinuousStates(result);
+        if (fmu_->nStates() > 0) {
+	    fmu_->getContinuousStates(result);
+        }
 	for ( size_t i = 0; i < nOutputs_; ++i ) {
 		fmu_->getValue(outputRefs_[i], values[i]);
 	}
