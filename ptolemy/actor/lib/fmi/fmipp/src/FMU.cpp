@@ -145,8 +145,11 @@ fmiStatus FMU::instantiate(const string& instanceName, fmiBoolean loggingOn)
 
 #ifdef FMI_DEBUG
 	// General information ...
-	cout << "[FMU::instantiate] Types Platform: " << fmuFun_->getModelTypesPlatform()
-	     << ", FMI Version:  " << fmuFun_->getVersion() << endl; fflush( stdout );
+	if (fmuFun_->getModelTypesPlatform != NULL
+	    && fmuFun_->getVersion != NULL) {
+	  cout << "[FMU::instantiate] Types Platform: " << fmuFun_->getModelTypesPlatform()
+	       << ", FMI Version:  " << fmuFun_->getVersion() << endl; fflush( stdout );
+	}
 #endif
 
 	// Basic settings: @todo from a menu.
@@ -445,10 +448,10 @@ void FMU::handleEvents( fmiTime tStop, bool completedIntegratorStep )
 #ifdef FMI_DEBUG
 	if ( callEventUpdate_ || stateEvent_ || timeEvent_ || raisedEvent_ )
 		cout << "[FMU::handleEvents] An event occured: "
-		     << "  event_update : " << callEventUpdate_
-		     << " , stateEvent : "  << stateEvent_
-		     << " , timeEvent : "  << timeEvent_
-		     << " , raisedEvent : " << raisedEvent_ << endl;  fflush( stdout );
+		     << "  event_update : " << (callEventUpdate_ ? "true" : "false")
+		     << " , stateEvent : "  << (stateEvent_ ? "true" : "false")
+		     << " , timeEvent : "  << (timeEvent_ ? "true" : "false")
+		     << " , raisedEvent : " << (raisedEvent_ ? "true" : "false") << endl;  fflush( stdout );
 #endif
 
 	if ( callEventUpdate_ || stateEvent_ || timeEvent_ || raisedEvent_ ) {
