@@ -69,7 +69,7 @@ var rooms = {
 		                   {"x":324, "y":921}],
 		    "temperature" : 21.2
 		},
-		"1594": {
+		"1719": {
 			"name": "219", 
 		    "vertices" : [ {"x":46, "y":916} , {"x":224, "y":916}, 
 		                   {"x":224, "y":920} , {"x":320, "y":920}, 
@@ -77,14 +77,14 @@ var rooms = {
 		                   {"x":46, "y":916}],
 		    "temperature" : 21.2
 		},
-		"-9": {
+		"1732": {
 			"name": "220", 
 		    "vertices" : [ {"x":46, "y":642} , {"x":224, "y":642}, 
 		                   {"x":224, "y":912} , {"x":46, "y":912}, 
 		                   {"x":46, "y":642}],
 		    "temperature" : 21.2
 		},
-		"-10": {
+		"1745": {
 			"name": "222", 
 		    "vertices" : [ {"x":46, "y":367} , {"x":224, "y":367}, 
 		                   {"x":224, "y":638} , {"x":46, "y":638}, 
@@ -187,7 +187,7 @@ function drawGradient(svg) {
 			
 	gradient.append("svg:stop")
 	    .attr("offset", "0%")
-	    .attr("stop-color", "rgb(" + (255 - tempAdjustment) + ",0,0")
+	    .attr("stop-color", "rgb(" + (255 - tempAdjustment) + ",0,0)")
 	    .attr("stop-opacity", opacity);
 	
 	gradient.append("svg:stop")
@@ -195,7 +195,7 @@ function drawGradient(svg) {
 	    .attr("stop-color", "rgb(0,0," + (255 - tempAdjustment) + ")")
 	    .attr("stop-opacity", opacity);
 	
-	gradientGroup.append("svg:rect")
+	gradientGroup.append("rect")
 	    .attr("width", gradientWidth)
 	    .attr("height", 11*labelPadding)
 	    .style("fill", "url(#gradient)");	
@@ -278,6 +278,7 @@ function drawRoomInfo() {
 	
 	roomInfoGroup.selectAll(".roomInfoLabel")
 		.data(d3.entries(rooms))
+		.sort(function(a,b) {return d3.ascending(a.value.name, b.value.name);})
 		.enter()
 		.append("text")
 			.attr("class", "roomInfoLabel")

@@ -68,10 +68,21 @@ function onConnect(status)
 // 1620 	Thermometer Digital 	BMP085
 // Use ID 1620
 
-// There is no room 218?  Assigned to room 219.
-// 321 	218 Projector 		FireFly3 Environmental 	f1191d89077341c6ed5a5f51fd6f4145_data 	0x9
-// 1594 	Thermometer Digital 	BMP085 	0000-00-00 00:00:00
-// Use ID 1594
+// Room 219
+// 334 		FireFly3 Environmental 	7495920b39d01f774e0782cf65031532_data 	0x18
+// 1719 	Thermometer Digital 	BMP085 	0000-00-00 00:00:00
+// Use ID 1719
+
+// Room 220
+// 335 		FireFly3 Environmental 	b0b0b76749275629cbe9d9c7bf8847f9_data 	0x1b
+// 1732 	Thermometer Digital 	BMP085 	0000-00-00 00:00:00
+// Use ID 1732
+
+// Room 222
+// 336 		FireFly3 Environmental 	a5ed2cdcc39a52b0aa94e724a0adbc79_data 	0x1a
+// 1745 	Thermometer Digital 	BMP085 	0000-00-00 00:00:00
+// Use ID 1745
+
 function onMessage(msg) {
 
 	// alert("message");
