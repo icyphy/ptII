@@ -1,0 +1,22 @@
+################################################################
+# About: 
+# ======
+#	A help makefile for building fmu applications 
+#       platform: cygwin, gcc and omc  
+#
+# Usage:
+# ======
+#
+#	$ make -f makefile.linux run
+#
+################################################################
+
+
+################################################################
+#Software, Compiler and flags 
+################################################################
+
+
+MODELID=dqME1
+KRUFT = documentation model.png modelDescription.xml sources
+include ../../exampleMakefile.linux
