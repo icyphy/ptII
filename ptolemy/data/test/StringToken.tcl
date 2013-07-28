@@ -391,9 +391,9 @@ test StringToken-13.12 {Test convert from RecordToken} {
     set t [java::new {ptolemy.data.RecordToken String} "{name = \"bar\", value = 6}"]
     set msg {}
     set result {}
-    set result [[java::call ptolemy.data.StringToken convert $t] toString]
-    list $result
-} {{"{name = \"bar\", value = 6}"}}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.RecordToken '{name = "bar", value = 6}' to the type string because the type of the token is higher or incomparable with the given type.}}
 
 test StringToken-14.1 {Test embedded double quotes} {
     set tok1 [java::new {ptolemy.data.StringToken} {has embedded "}]

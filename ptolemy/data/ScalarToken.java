@@ -139,7 +139,7 @@ public abstract class ScalarToken extends Token implements
             // then we try reversing the add.
             return rightArgument.addReverse(this);
         } else {
-            // Items being multiplied are incomparable.
+            // Items being added are incomparable.
             // However, addition may still be possible because
             // the LUB of the types might support it. E.g., [double]+complex,
             // where the LUB is [complex].

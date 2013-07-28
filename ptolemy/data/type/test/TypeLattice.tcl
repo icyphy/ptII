@@ -389,11 +389,11 @@ test TypeLattice-3.4 {compare different structured types} {
     list [java::call ptolemy.data.type.TypeLattice compare $doubleArrayType $r] [java::call ptolemy.data.type.TypeLattice compare $r $doubleArrayType]
 } {2 2}
 
-test TypeLattice-3.4.1 {array of strings is greater than a record type} {
+test TypeLattice-3.4.1 {array of strings is incomparable with a record type} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
-    set vt [java::field ptolemy.data.type.BaseType DOUBLE]
+    set vt [java::new ptolemy.data.type.ArrayType $str]
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
@@ -401,9 +401,9 @@ test TypeLattice-3.4.1 {array of strings is greater than a record type} {
     set strArrayType [java::new ptolemy.data.type.ArrayType $str]
     set lattice [java::new ptolemy.data.type.TypeLattice]
     list [java::call ptolemy.data.type.TypeLattice compare $strArrayType $r] [java::call ptolemy.data.type.TypeLattice compare $r $strArrayType]
-} {1 -1}
+} {2 2}
 
-test TypeLattice-3.4.2 {string is greater than a record type} {
+test TypeLattice-3.4.2 {string is incomparable with a record type} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
@@ -414,7 +414,7 @@ test TypeLattice-3.4.2 {string is greater than a record type} {
     set str [java::field ptolemy.data.type.BaseType STRING]
     set lattice [java::new ptolemy.data.type.TypeLattice]
     list [java::call ptolemy.data.type.TypeLattice compare $str $r] [java::call ptolemy.data.type.TypeLattice compare $r $str]
-} {1 -1}
+} {2 2}
 
 test TypeLattice-3.5 {compare array types and basic types} {
     set type1 [java::field ptolemy.data.type.BaseType INT]
@@ -466,7 +466,7 @@ test TypeLattice-3.8  {compare user and general} {
     list [[java::call ptolemy.data.type.TypeLattice leastUpperBound $type1 $type2] toString] [[java::call ptolemy.data.type.TypeLattice leastUpperBound $type2 $type1] toString] [[$lattice greatestLowerBound $type1 $type2] toString] [[$lattice greatestLowerBound $type2 $type1] toString]
 } {general general arrayType(int) arrayType(int)}
 
-test TypeLattice-3.9 {LUB of record and array of strings is array of strings} {
+test TypeLattice-3.9 {records and arrays are incomparable} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
@@ -478,20 +478,7 @@ test TypeLattice-3.9 {LUB of record and array of strings is array of strings} {
     set arrayStrings [java::new ptolemy.data.type.ArrayType $str]
     set lattice [java::call ptolemy.data.type.TypeLattice lattice]
     list [[java::call ptolemy.data.type.TypeLattice leastUpperBound $record $arrayStrings] toString] [[java::call ptolemy.data.type.TypeLattice leastUpperBound $arrayStrings $record] toString] [[$lattice greatestLowerBound $record $arrayStrings] toString] [[$lattice greatestLowerBound $arrayStrings $record] toString]
-} {arrayType(string) arrayType(string) {{name = string, value = double}} {{name = string, value = double}}}
-
-test TypeLattice-3.9.1 {LUB of record and array of doubles is array of strings} {
-    set l [java::new {String[]} {2} {{name} {value}}]
-
-    set string [java::field ptolemy.data.type.BaseType STRING]
-    set double [java::field ptolemy.data.type.BaseType DOUBLE]
-    set v [java::new {ptolemy.data.type.Type[]} 2 [list $string $double]]
-
-    set record [java::new {ptolemy.data.type.RecordType} $l $v]
-    set arrayDoubles [java::new ptolemy.data.type.ArrayType $double]
-    set lattice [java::call ptolemy.data.type.TypeLattice lattice]
-    list [[java::call ptolemy.data.type.TypeLattice leastUpperBound $record $arrayDoubles] toString] [[java::call ptolemy.data.type.TypeLattice leastUpperBound $arrayDoubles $record] toString] [[$lattice greatestLowerBound $record $arrayDoubles] toString] [[$lattice greatestLowerBound $arrayDoubles $record] toString]
-} {arrayType(string) arrayType(string) unknown unknown}
+} {arrayType(general) arrayType(general) unknown unknown}
 
 test TypeLattice-4.0 {compare scalar and array} {
     set int [java::field ptolemy.data.type.BaseType INT]

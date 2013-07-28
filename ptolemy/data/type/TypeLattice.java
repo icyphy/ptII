@@ -881,7 +881,7 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.ARRAY_BOTTOM, arrayRep);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ARRAY_BOTTOM);
 
-                _basicLattice.addEdge(recordRep, BaseType.STRING);
+                _basicLattice.addEdge(recordRep, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);
 
                 _basicLattice.addEdge(unionRep, BaseType.GENERAL);

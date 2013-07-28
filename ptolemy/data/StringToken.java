@@ -111,36 +111,6 @@ public class StringToken extends AbstractConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to ensure that a string can be added
-     *  to anything, even if the base class fails to convert the argument
-     *  to a StringToken.
-     *  @param rightArgument The token to add to this token.
-     *  @return A new StringToken containing the result.
-     *  @exception IllegalActionException Not thrown in this class
-     */
-    public final Token add(Token rightArgument) {
-        try {
-            return super.add(rightArgument);
-        } catch (IllegalActionException ex) {
-            return new StringToken(_value + rightArgument.toString());
-        }
-    }
-
-    /** Override the base class to ensure that a string can be added
-     *  to anything, even if the base class fails to convert the argument
-     *  to a StringToken.
-     *  @param leftArgument The token to add to this token.
-     *  @return A new StringToken containing the result.
-     *  @exception IllegalActionException Not thrown in this class
-     */
-    public final Token addReverse(ptolemy.data.Token leftArgument) {
-        try {
-            return super.addReverse(leftArgument);
-        } catch (IllegalActionException ex) {
-            return new StringToken(leftArgument.toString() + _value);
-        }
-    }
-
     /** Convert the specified token into an instance of StringToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,
