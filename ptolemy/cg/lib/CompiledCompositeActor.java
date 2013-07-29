@@ -408,9 +408,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 // Cast to Object() to suppress Java 1.5 warning
                 _initializeMethod.invoke(_objectWrapper, (Object[]) null);
             } catch (Throwable throwable) {
+                System.out.println("Failed to invoke " + _initializeMethod
+                        + " " + throwable.getCause());
                 throw new IllegalActionException(this, throwable,
-                        "Failed to invoke the initialize method on"
-                                + " the wrapper class.");
+                        "Failed to invoke the initialize method \""
+                        + _initializeMethod + "\" on"
+                        + " the wrapper class.");
             }
 
         }
