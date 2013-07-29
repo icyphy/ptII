@@ -4,32 +4,26 @@
 <entity name="RecordAssemblerDisplayNameTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 40, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 40, 920, 631}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.431628087920638">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{317.98437500000006, 281.6408967391304}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value=" 89677">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1E-6">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 130.0}">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The RecordAssembler has a port that has the displayName set to a value that includes a period.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 30.0]">
-        </property>
-    </property>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 330.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -55,7 +49,7 @@
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 360.0}">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -79,7 +73,7 @@
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 255.0}">
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
@@ -87,32 +81,34 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 195.0}">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 255.0}">
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 340}">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.t&quot;,x=385.0,y=235.0}, tail={id=&quot;CurrentTime.output&quot;,x=220.0,y=320.0}, points={285.0,265.0,285.0,320.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.t&quot;,x=390.0,y=330.0}, tail={id=&quot;CurrentTime.output&quot;,x=220.0,y=360.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.diode&quot;,x=385.0,y=235.0}, tail={id=&quot;Expression.output&quot;,x=220.0,y=195.0}, points={285.0,245.0,285.0,195.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.diode&quot;,x=390.0,y=330.0}, tail={id=&quot;Expression.output&quot;,x=220.0,y=195.0}, points={295.0,340.0,295.0,195.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.capacitor&quot;,x=385.0,y=235.0}, tail={id=&quot;Ramp.output&quot;,x=235.0,y=255.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=230.0,y=255.0}, tail={id=&quot;RecordAssembler.capacitor&quot;,x=390.0,y=330.0}, points={280.0,255.0,280.0,350.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.input&quot;,x=220.0,y=195.0}, tail={id=&quot;Sequence.output&quot;,x=115.0,y=195.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.input&quot;,x=220.0,y=195.0}, tail={id=&quot;Sequence.output&quot;,x=120.0,y=195.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.output&quot;,x=385.0,y=235.0}, tail={id=&quot;Test.input&quot;,x=540.0,y=255.0}, points={} } }">
-        </property>
     </relation>
     <link port="RecordAssembler.output" relation="relation5"/>
     <link port="RecordAssembler.diode" relation="relation4"/>
@@ -123,5 +119,5 @@
     <link port="Expression.input" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Sequence.output" relation="relation2"/>
-    <link port="Test.input" relation="relation5"/>
+    <link port="Display.input" relation="relation5"/>
 </entity>
