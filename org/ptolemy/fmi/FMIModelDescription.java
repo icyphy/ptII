@@ -161,10 +161,10 @@ public class FMIModelDescription {
 
     /** Return the canonical native library path.
      *  If the shared library names by
-     *  {@link FMUFile.fmuSharedlibrary(FMIModelDescription)} exists,
-     *  then it is returned.  If it does not exist, then
-     *  {@link FMUBuilder.build(File)} is invoked, which may build
-     *  the shared library.
+     *  {@link org.ptolemy.fmi.FMUFile#fmuSharedlibrary(FMIModelDescription)}
+     *  exists, then it is returned.  If it does not exist, then
+     *  {@link org.ptolemy.fmi.FMUBuilder#build(File)}
+     *  is invoked, which may build the shared library.
      *  @return The canonical native library path.
      *  @exception IOException If the FMU file does not contain binaries
      *   for the current platform.
@@ -272,8 +272,8 @@ public class FMIModelDescription {
 
     /** Get the native library of C functions for the current platform.
      *  A side effect is that if the native library does not exist, then
-     *  {@link FMUBuilder.build(File)} is invoked, which may build
-     *  the shared library.
+     *  {@link org.ptolemy.fmi.FMUBuilder#build(File)} is invoked,
+     *  which may build the shared library.
      *  @return The library of functions for the current platform.
      *  @exception IOException If the FMU file does not contain binaries
      *   for the current platform.
