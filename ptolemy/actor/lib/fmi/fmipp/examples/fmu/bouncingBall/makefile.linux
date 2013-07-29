@@ -19,4 +19,19 @@
 
 MODELID=bouncingBallME1
 KRUFT = documentation model.png modelDescription.xml sources
+OTHER_SRCS=dqME1/modelDescription.xml bouncingBallME1/modelDescription.xml
 include ../../exampleMakefile.linux
+
+
+bouncingBallME1/modelDescription.xml:
+	if [ ! -d bouncingBallME1 ]; then \
+	   mkdir bouncingBallME1; \
+	   cd bouncingBallME1; unzip ../../../../../test/auto/bouncingBallME1.fmu; \
+	fi
+
+dqME1/modelDescription.xml:
+	if [ ! -d dqME1 ]; then \
+	   mkdir dqME1; \
+	   cd dqME1; unzip ../../../../../test/auto/dqME1.fmu; \
+	fi
+	
