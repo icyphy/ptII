@@ -159,6 +159,67 @@ public class FMIModelDescription {
     }
 
 
+    /** Return the canonical native library path.
+     *  If the shared library names by
+     *  {@link FMUFile.fmuSharedlibrary(FMIModelDescription)} exists,
+     *  then it is returned.  If it does not exist, then
+     *  {@link FMUBuilder.build(File)} is invoked, which may build
+     *  the shared library.
+     *  @return The canonical native library path.
+     *  @exception IOException If the FMU file does not contain binaries
+     *   for the current platform.
+     */
+    public String getNativeLibraryPath() throws IOException {
+        // The following should not be done until at least the modelIdentifier
+        // has been set in fmiModelDescription.
+        if (modelIdentifier == null || modelIdentifier.trim().equals("")) {
+            // FIXME: Don't use runtime exception.
+            throw new RuntimeException("No modelIdentifier is given");
+        }
+
+        // Get the name of the shared library file for the current platform.
+        String sharedLibrary = FMUFile.fmuSharedLibrary(this);
+
+	File sharedLibraryFile = new File(sharedLibrary);
+	if (!sharedLibraryFile.exists()) {
+            List<String> binariesFiles = new LinkedList<String>();
+            for (File file : files) {
+                if (file.toString().indexOf("binaries") != -1) {
+                    binariesFiles.add(file.toString() + "\n");
+                }
+            }
+            String message = "Current platform not supported by this FMU. "
+                    + "Attempted to load \"" + sharedLibrary
+                    + "\" shared library, " + "The fmu file contains the "
+                    + "following files with 'binaries' in the path:\n"
+                    + binariesFiles;
+            if (!sharedLibraryFile.exists()) {
+                FMUBuilder builder = new FMUBuilder();
+                boolean isBuildOK = false;
+                try {
+                    isBuildOK = builder.build(sharedLibraryFile);
+                    System.out.println("FMU Builder messages:\n"
+                            + builder.buffer);
+                } catch (Throwable throwable2) {
+		    // Java 1.5 does not support IOException(String, Throwable).
+		    // We sometimes compile this with gcj, which is Java 1.5
+                    IOException exception = new IOException("Failed to build \""
+                            + sharedLibraryFile + "\".\nThe build was:\n"
+			    + builder.buffer + "\n" + message);
+		    exception.initCause(throwable2);
+		    throw exception;
+
+                }
+                if (!isBuildOK) {
+                    throw new IOException("It was not possible to build \""
+                            + sharedLibraryFile + "\": " + builder.buffer
+                            + "\n" + message);
+		}
+	    }
+	}
+	return sharedLibraryFile.getCanonicalPath();
+    }
+
     /** Get the native function from the native library.
      *	
      *  <p>A FMI 1.0 FMU will have functions like MyModel_fmiGetReal().</p>
@@ -210,6 +271,9 @@ public class FMIModelDescription {
     }
 
     /** Get the native library of C functions for the current platform.
+     *  A side effect is that if the native library does not exist, then
+     *  {@link FMUBuilder.build(File)} is invoked, which may build
+     *  the shared library.
      *  @return The library of functions for the current platform.
      *  @exception IOException If the FMU file does not contain binaries
      *   for the current platform.
@@ -218,80 +282,22 @@ public class FMIModelDescription {
         if (_nativeLibrary != null) {
             return _nativeLibrary;
         }
-        // The following should not be done until at least the modelIdentifier
-        // has been set in fmiModelDescription.
-        if (modelIdentifier == null || modelIdentifier.trim().equals("")) {
-            // FIXME: Don't use runtime exception.
-            throw new RuntimeException("No modelIdentifier is given");
-        }
-
-        // Get the name of the shared library file for the current platform.
-        String sharedLibrary = FMUFile.fmuSharedLibrary(this);
-
-        // Load the shared library
-        try {
-            _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
-        } catch (Throwable throwable) {
-            List<String> binariesFiles = new LinkedList<String>();
-            for (File file : files) {
-                if (file.toString().indexOf("binaries") != -1) {
-                    binariesFiles.add(file.toString() + "\n");
-                }
-            }
-            String message = "Current platform not supported by this FMU. "
-                    + "Attempted to load \"" + sharedLibrary
-                    + "\" shared library, " + "The fmu file contains the "
-                    + "following files with 'binaries' in the path:\n"
-                    + binariesFiles;
-            File sharedLibraryFile = new File(sharedLibrary);
-            if (!sharedLibraryFile.exists()) {
-                FMUBuilder builder = new FMUBuilder();
-                boolean isBuildOK = false;
-                try {
-                    isBuildOK = builder.build(sharedLibraryFile);
-                    System.out.println("FMU Builder messages:\n"
-                            + builder.buffer);
-                } catch (Throwable throwable2) {
-		    // Java 1.5 does not support IOException(String, Throwable).
-		    // We sometimes compile this with gcj, which is Java 1.5
-                    IOException exception = new IOException("Failed to build \""
-                            + sharedLibraryFile + "\".\nThe build was:\n"
-                            + builder.buffer + "\n" + message
-			    + "\nThe initial exception was: " + throwable);
-		    exception.initCause(throwable2);
-		    throw exception;
-
-                }
-                if (!isBuildOK) {
-		    // Java 1.5 does not support IOException(String, Throwable).
-		    // We sometimes compile this with gcj, which is Java 1.5
-                    IOException exception = new IOException("It was not possible to build \""
-                            + sharedLibraryFile + "\": " + builder.buffer
-                            + "\n" + message);
-		    exception.initCause(throwable);
-		    throw exception;
-                } else {
-                    try {
-                        _nativeLibrary = NativeLibrary
-                                .getInstance(sharedLibrary);
-                    } catch (Throwable throwable3) {
-			// Java 1.5 does not support
-			// IOException(String, Throwable).  We
-			// sometimes compile this with gcj, which is
-			// Java 1.5
-                        IOException exception = new IOException("Attempted to build shared "
+	String sharedLibrary = getNativeLibraryPath();
+	try {
+	    _nativeLibrary = NativeLibrary
+		.getInstance(sharedLibrary);
+	} catch (Throwable throwable3) {
+	    // Java 1.5 does not support
+	    // IOException(String, Throwable).  We
+	    // sometimes compile this with gcj, which is
+	    // Java 1.5
+	    IOException exception = new IOException("Attempted to build shared "
                                 + "library for the current "
                                 + "platform because " + sharedLibrary
-                                + " was not found.  "
-                                + "However, loading the library failed?\n"
-                                + "The original error was: " + message + "\n"
-							      + throwable);
+			        + " was not found.");
 			exception.initCause(throwable3);
 			throw exception;
-                    }
-                }
-            }
-        }
+	}
         return _nativeLibrary;
     }
 
