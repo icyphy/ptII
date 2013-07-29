@@ -447,11 +447,15 @@ public class FMUModelExchange extends Transformer {
 	// exists before invoking C++.  A side effect is that this
 	// will try to build the shared library.
 	try {
-	    _fmiModelDescription.getNativeLibrary();
+	    // FIXME: One strange bug is that if we call getNativeLibrary()
+	    // here, then the shared library is loaded and the jvm starts
+	    // segfaulting in the tests?  So, we just get the path.
+	    // _fmiModelDescription.getNativeLibrary();
+	    _fmiModelDescription.getNativeLibraryPath();
 	} catch (Throwable throwable) {
 	    throw new IllegalActionException(this, throwable,
-				    "Failed to load the shared library for \""
-				    + _fmiModelDescription +"\"");
+					     "Failed to find or build the shared library for \""
+					     + _fmiModelDescription +"\"");
 	}
         _fmu = new IncrementalFMU(_tmpPath,
                 _fmiModelDescription.modelIdentifier);
