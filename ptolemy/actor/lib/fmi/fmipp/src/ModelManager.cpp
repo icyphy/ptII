@@ -109,6 +109,9 @@ FMU_functions* ModelManager::getModel( const std::string& fmuPath,
 	description->modelDescription = parse( descriptionPath.c_str() );
 
 	if (loadDll( dllPath, description ) == 0) {
+#ifdef FMI_DEBUG
+	std::cout << "ModelManager GetModel, returning null."<< std::endl; fflush (stdout);
+#endif
 	  return NULL;
 	}
 
@@ -127,18 +130,27 @@ FMU_functions* ModelManager::getModel( const std::string& xmlPath,
 		return itFind->second;
 	}
 
-	std::string fullDllPath = dllPath + "/" + modelName + ".dll";
+	//std::string fullDllPath = dllPath + "/" + modelName + ".dll";
+	std::string fullDllPath = dllPath;
 
 	FMU_functions* description = new FMU_functions;
 
-	std::string descriptionPath = xmlPath + "/" + modelName + ".xml";
+	//std::string descriptionPath = xmlPath + "/" + modelName + ".xml";
+	std::string descriptionPath = xmlPath;
+
 	description->modelDescription = parse( descriptionPath.c_str() );
 
-	if (loadDll( fullDllPath, description )) {
+	if (loadDll( fullDllPath, description ) == 0) {
+#ifdef FMI_DEBUG
+	  std::cout << "ModelManager GetModel, returning null."<< std::endl; fflush (stdout);
+#endif
 	  return NULL;
 	}
 
 	modelManager_->modelDescriptions_[modelName] = description;
+#ifdef FMI_DEBUG
+	std::cout << "ModelManager GetModel, returning description: " << description << std::endl; fflush (stdout);
+#endif
 	return description;
 }
 
@@ -161,6 +173,9 @@ int ModelManager::loadDll( std::string dllPath, FMU_functions* fmuFun )
 	HANDLE h = dlopen( dllPath.c_str(), RTLD_LAZY );
 #endif
 
+#ifdef FMI_DEBUG
+	std::cout << "ModelManager() start:" << dllPath << std::endl; fflush(stdout);
+#endif
 	if ( !h ) {
 		printf( "ERROR: Could not load %s\n", dllPath.c_str() ); fflush(stdout);
 		return 0; // failure
@@ -192,6 +207,9 @@ int ModelManager::loadDll( std::string dllPath, FMU_functions* fmuFun )
 	fmuFun->getStringStatus         = (fGetStringStatus)    getAdr( &x, fmuFun, "fmiGetStringStatus" );
 
 #else // FMI for Model Exchange 1.0
+#ifdef FMI_DEBUG
+	std::cout << "ModelManager Model Exchange 1.0, s:" << s << std::endl; fflush (stdout);
+#endif
 	fmuFun->getModelTypesPlatform   = (fGetModelTypesPlatform) getAdr( &s, fmuFun, "fmiGetModelTypesPlatform" );
 	fmuFun->instantiateModel        = (fInstantiateModel)   getAdr( &s, fmuFun, "fmiInstantiateModel" );
 	fmuFun->freeModelInstance       = (fFreeModelInstance)  getAdr( &s, fmuFun, "fmiFreeModelInstance" );
@@ -207,6 +225,10 @@ int ModelManager::loadDll( std::string dllPath, FMU_functions* fmuFun )
 	fmuFun->getStateValueReferences = (fGetStateValueReferences)getAdr( &s, fmuFun, "fmiGetStateValueReferences" );
 	fmuFun->terminate               = (fTerminate)          getAdr( &s, fmuFun, "fmiTerminate" );
 #endif
+#ifdef FMI_DEBUG
+	std::cout << "ModelManager Get Version s:" << s << std::endl; fflush (stdout);
+#endif
+
 	fmuFun->getVersion              = (fGetVersion)         getAdr( &s, fmuFun, "fmiGetVersion" );
 	fmuFun->setDebugLogging         = (fSetDebugLogging)    getAdr( &s, fmuFun, "fmiSetDebugLogging" );
 	fmuFun->setReal                 = (fSetReal)            getAdr( &s, fmuFun, "fmiSetReal" );
@@ -217,7 +239,9 @@ int ModelManager::loadDll( std::string dllPath, FMU_functions* fmuFun )
 	fmuFun->getInteger              = (fGetInteger)         getAdr( &s, fmuFun, "fmiGetInteger" );
 	fmuFun->getBoolean              = (fGetBoolean)         getAdr( &s, fmuFun, "fmiGetBoolean" );
 	fmuFun->getString               = (fGetString)          getAdr( &s, fmuFun, "fmiGetString" );
-
+#ifdef FMI_DEBUG
+	std::cout << "ModelManager end s:" << s << std::endl; fflush (stdout);
+#endif
 	return s;
 }
 
@@ -238,7 +262,7 @@ void* ModelManager::getAdr( int* s, FMU_functions *fmuFun, const char* functionN
 
 	if ( !fp ) {
 		printf ( "WARNING: Function %s not found.\n", name ); fflush( stdout );
-		//*s = 0; // mark dll load as 'failed'
+		*s = 0; // mark dll load as 'failed'
 	}
 
 	return fp;
