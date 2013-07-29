@@ -80,7 +80,7 @@ $(TARGET).efence: main.o
 main.o:  main.cpp 
 	$(CPP) -c $(CFLAGS) $(INC)  $(OPTFLAGS) main.cpp
 
-run:  $(TARGET) $(FMU_SO)
+run:  $(TARGET) $(FMU_SO) $(OTHER_SRCS)
 	LD_LIBRARY_PATH="$(LD_LIBRARY_PATH):$(PWD)/binaries/linux64/"  ./$(TARGET)
 
 valgrind: $(TARGET) $(FMU_SO)
