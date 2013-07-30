@@ -64,6 +64,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+KRUFT = *.jar *.jnlp *.jnlp.fixed *.htm doc
+
 all: jclass
 install: jclass jars
 
