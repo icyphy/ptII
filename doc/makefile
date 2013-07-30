@@ -572,6 +572,7 @@ ALLPACKAGES = \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
 	doc.doclets \
+	org.ptolemy.machineImprovisation \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.anomaly \
 	ptolemy.actor.lib.net \
