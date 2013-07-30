@@ -166,24 +166,24 @@ public class Stop extends Sink {
             // To support multithreaded domains, also have to call
             // stopFire() to request that all actors conclude ongoing firings.
             getDirector().stopFire();
-            /*
-            Nameable container = getContainer();
 
-            if (container instanceof CompositeActor) {
-                Manager manager = ((CompositeActor) container).getManager();
+//             Nameable container = getContainer();
 
-                if (manager != null) {
-                    manager.finish();
-                } else {
-                    throw new IllegalActionException(this,
-                            "Cannot stop without a Manager.");
-                }
-            } else {
-                throw new IllegalActionException(this,
-                        "Cannot stop without a container that is a "
-                                + "CompositeActor.");
-            }
-            */
+//             if (container instanceof CompositeActor) {
+//                 Manager manager = ((CompositeActor) container).getManager();
+
+//                 if (manager != null) {
+//                     manager.finish();
+//                 } else {
+//                     throw new IllegalActionException(this,
+//                             "Cannot stop without a Manager.");
+//                 }
+//             } else {
+//                 throw new IllegalActionException(this,
+//                         "Cannot stop without a container that is a "
+//                                 + "CompositeActor.");
+//             }
+
         }
 
         return !result;
