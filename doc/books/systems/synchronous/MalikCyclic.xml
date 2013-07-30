@@ -1,0 +1,143 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MalikCyclic" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={601, 60, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0567785126488562">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.6201171875, 333.2055961277174}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model:&#10;- does not work under SDF&#10;- works under SR (multiplexors are non-strict)&#10;- does not work under DDF&#10;  (however, replacing the multiplexors with selects&#10;   makes the model work under DDF).&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 385.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From Sharad Malik's &quot;Analysis of Cyclic Combinational Circuits&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 505.0]">
+        </property>
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 135.0]">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.05">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 125.0}">
+        </property>
+    </entity>
+    <entity name="BooleanMultiplexor" class="ptolemy.actor.lib.BooleanMultiplexor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 215.0}">
+        </property>
+    </entity>
+    <entity name="BooleanMultiplexor2" class="ptolemy.actor.lib.BooleanMultiplexor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 135.0}">
+        </property>
+    </entity>
+    <entity name="BooleanMultiplexor3" class="ptolemy.actor.lib.BooleanMultiplexor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 255.0}">
+        </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={439, 651, 528, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[528, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 235.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="49.0"/>
+<yRange min="-0.9996190864138589" max="2.717694102130342"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="UnaryMathFunction" class="ptolemy.actor.lib.UnaryMathFunction">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+        <doc>Create a sequence of bernoulli random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 310.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[450.0, 185.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[430.0, 205.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[135.0, 310.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[135.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{155.0, 125.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation8"/>
+    <link port="BooleanMultiplexor.trueInput" relation="relation3"/>
+    <link port="BooleanMultiplexor.falseInput" relation="relation2"/>
+    <link port="BooleanMultiplexor.select" relation="relation4"/>
+    <link port="BooleanMultiplexor.output" relation="relation"/>
+    <link port="BooleanMultiplexor2.trueInput" relation="relation8"/>
+    <link port="BooleanMultiplexor2.falseInput" relation="relation3"/>
+    <link port="BooleanMultiplexor2.select" relation="relation5"/>
+    <link port="BooleanMultiplexor2.output" relation="relation9"/>
+    <link port="BooleanMultiplexor3.trueInput" relation="relation2"/>
+    <link port="BooleanMultiplexor3.falseInput" relation="relation8"/>
+    <link port="BooleanMultiplexor3.select" relation="relation4"/>
+    <link port="BooleanMultiplexor3.output" relation="relation6"/>
+    <link port="SequencePlotter.input" relation="relation"/>
+    <link port="TrigFunction.input" relation="relation9"/>
+    <link port="TrigFunction.output" relation="relation2"/>
+    <link port="UnaryMathFunction.input" relation="relation6"/>
+    <link port="UnaryMathFunction.output" relation="relation3"/>
+    <link port="Bernoulli.output" relation="relation4"/>
+    <link relation1="relation4" relation2="relation5"/>
+</entity>

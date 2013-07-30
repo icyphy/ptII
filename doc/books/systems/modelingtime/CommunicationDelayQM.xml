@@ -1,0 +1,190 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CommunicationDelayQM" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+    </property>
+    <entity name="Bus" class="ptolemy.actor.lib.qm.Bus">
+        <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[343.0, 70.0]">
+        </property>
+    </entity>
+    <entity name="ComputeMaximum" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 145.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 60}">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 140.0]">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 190.0]">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            </property>
+        </port>
+        <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 145}">
+            </property>
+        </entity>
+        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={696, 51, 500, 344}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 135.0]">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 140}">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 190.0]">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation2"/>
+        <link port="Maximum.input" relation="relation4"/>
+        <link port="Maximum.input" relation="relation5"/>
+        <link port="Maximum.maximumValue" relation="relation3"/>
+        <link port="TimedPlotter.input" relation="relation3"/>
+        <link port="ZeroOrderHold.input" relation="relation"/>
+        <link port="ZeroOrderHold.output" relation="relation4"/>
+        <link port="ZeroOrderHold2.input" relation="relation2"/>
+        <link port="ZeroOrderHold2.output" relation="relation5"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.01">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="SineWave2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 190.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 35}">
+            </property>
+        </property>
+        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 110.0]">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 155.0]">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            </property>
+        </port>
+        <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave">
+            <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="pi">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 110.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port_0" relation="relation2"/>
+        <link port="port" relation="relation"/>
+        <link port="TriggeredSinewave.trigger" relation="relation"/>
+        <link port="TriggeredSinewave.output" relation="relation2"/>
+    </entity>
+    <entity name="SineWave1" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 110.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 35}">
+            </property>
+        </property>
+        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 110.0]">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 155.0]">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: Bus">
+            </property>
+        </port>
+        <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 110.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port_0" relation="relation2"/>
+        <link port="port" relation="relation"/>
+        <link port="TriggeredSinewave.trigger" relation="relation"/>
+        <link port="TriggeredSinewave.output" relation="relation2"/>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[155.0, 145.0]">
+        </vertex>
+    </relation>
+    <link port="ComputeMaximum.port" relation="relation"/>
+    <link port="ComputeMaximum.port2" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="SineWave2.port_0" relation="relation2"/>
+    <link port="SineWave2.port" relation="relation3"/>
+    <link port="SineWave1.port_0" relation="relation"/>
+    <link port="SineWave1.port" relation="relation3"/>
+</entity>

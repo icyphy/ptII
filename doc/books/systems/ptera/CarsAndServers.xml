@@ -1,0 +1,468 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CarsAndServers" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 34, 902, 460}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[689, 350]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.5, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates hierarchical composition between DE (at the top-level) and&#10;Ptera (as components within DE).&#10;&#10;The CarGenerator component is a Ptera model (look inside to see its internal design) that&#10;generates signals representing car arrivals. The Servers component is another Ptera model&#10;that simulates the behavior of the queues and servers. Each time the number of available&#10;servers or the number of cars in the queue is changed, the Servers component outputs&#10;both numbers to the Plotter, which plots the data in a separate window.&#10;&#10;After running this model, a plot pops up that shows the system is unstable.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 140.0]">
+        </property>
+    </property>
+    <entity name="CarGenerator" class="ptolemy.domains.ptera.kernel.PteraModalModel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 100.0]">
+        </property>
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+            <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 140.0]">
+                </property>
+            </port>
+            <entity name="Init" class="ptolemy.domains.ptera.kernel.Event">
+                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 70.0]">
+                </property>
+            </entity>
+            <entity name="Arrive" class="ptolemy.domains.ptera.kernel.Event">
+                <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="output = 1">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 140.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.40139819363242896">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.352041532116509">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="1.0 + 5.0 * random()">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1463480251872538">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.054228352933925056">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="1.0 + 5.0 * random()">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </relation>
+            <link port="Init.outgoingPort" relation="relation"/>
+            <link port="Arrive.incomingPort" relation="relation"/>
+            <link port="Arrive.incomingPort" relation="relation2"/>
+            <link port="Arrive.outgoingPort" relation="relation2"/>
+        </entity>
+        <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </relation>
+        <link port="output" relation="outputRelation"/>
+        <link port="_Controller.output" relation="outputRelation"/>
+    </entity>
+    <entity name="Servers" class="ptolemy.domains.ptera.kernel.PteraModalModel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 100.0]">
+        </property>
+        <port name="carInput" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="serversOutput" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="queueOutput" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+            <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+            </property>
+            <property name="Servers" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 145.0]">
+                </property>
+            </property>
+            <property name="Queue" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 165.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 175, 813, 550}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 439]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 219.5}">
+            </property>
+            <port name="carInput" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 215.0]">
+                </property>
+            </port>
+            <port name="serversOutput" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 240.0]">
+                </property>
+            </port>
+            <port name="queueOutput" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 290.0]">
+                </property>
+            </port>
+            <entity name="Init" class="ptolemy.domains.ptera.kernel.Event">
+                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Servers = 3;&#10;  Queue = 0">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 45.0]">
+                </property>
+            </entity>
+            <entity name="Enter" class="ptolemy.domains.ptera.kernel.Event">
+                <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Queue = Queue + 1;&#10;  serversOutput = Servers;&#10;  queueOutput = Queue">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="Start" class="ptolemy.domains.ptera.kernel.Event">
+                <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Servers = Servers - 1;&#10;  Queue = Queue - 1;&#10;  serversOutput = Servers;&#10;  queueOutput = Queue">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 270.0]">
+                </property>
+            </entity>
+            <entity name="Leave" class="ptolemy.domains.ptera.kernel.Event">
+                <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Servers = Servers + 1;&#10;  serversOutput = Servers;&#10;  queueOutput = Queue">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 390.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.33938073167833943">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.2794938507738565">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="carInput">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.38743103820562635">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5240459391471406">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="5.0 + 20.0*random()">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Queue &gt; 0">
+                    <display name="condition"/>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.35721235649316474">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7256288951974086">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Servers &gt; 0">
+                    <display name="condition"/>
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.37324795718079734">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4262802633231528">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.0154057312258904">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.0946837525679327">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="carInput">
+                </property>
+            </relation>
+            <link port="Init.outgoingPort" relation="relation"/>
+            <link port="Enter.incomingPort" relation="relation"/>
+            <link port="Enter.incomingPort" relation="relation5"/>
+            <link port="Enter.outgoingPort" relation="relation4"/>
+            <link port="Enter.outgoingPort" relation="relation5"/>
+            <link port="Start.incomingPort" relation="relation3"/>
+            <link port="Start.incomingPort" relation="relation4"/>
+            <link port="Start.outgoingPort" relation="relation2"/>
+            <link port="Leave.incomingPort" relation="relation2"/>
+            <link port="Leave.outgoingPort" relation="relation3"/>
+        </entity>
+        <relation name="carInputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </relation>
+        <relation name="serversOutputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </relation>
+        <relation name="queueOutputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </relation>
+        <link port="carInput" relation="carInputRelation"/>
+        <link port="serversOutput" relation="serversOutputRelation"/>
+        <link port="queueOutput" relation="queueOutputRelation"/>
+        <link port="_Controller.carInput" relation="carInputRelation"/>
+        <link port="_Controller.serversOutput" relation="serversOutputRelation"/>
+        <link port="_Controller.queueOutput" relation="queueOutputRelation"/>
+    </entity>
+    <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 449, 554, 351}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 307]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 95.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Available Servers (red) and Queue Size (blue)</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="3.5966897407" max="297.8779005489"/>
+<yRange min="0.0" max="25.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
+    <link port="CarGenerator.output" relation="relation"/>
+    <link port="Servers.carInput" relation="relation"/>
+    <link port="Servers.serversOutput" relation="relation2"/>
+    <link port="Servers.queueOutput" relation="relation3"/>
+    <link port="Plotter.input" relation="relation2"/>
+    <link port="Plotter.input" relation="relation3"/>
+</entity>

@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BlockingFireActors" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 347, 947, 627}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[713, 517]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference">
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <doc>Produce strings from an interactive shell on the screen</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 50.0]">
+        </property>
+    </entity>
+</entity>

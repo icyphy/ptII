@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SRActors2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 79, 816, 232}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 122]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 247.5}">
+    </property>
+    <entity name="Pre" class="ptolemy.domains.sr.lib.Pre">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="When" class="ptolemy.domains.sr.lib.When">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="Current" class="ptolemy.domains.sr.lib.Current">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialValue">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 55.0]">
+        </property>
+    </entity>
+</entity>

@@ -1,0 +1,166 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IterateFiles" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 942, 405}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 295]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0392960409364866">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{351.9604734872018, 6.405008426006475}">
+    </property>
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -40.0]">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+            <display name="Show parameters"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 315.0}">
+        </property>
+    </property>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$HOME/Tmp/Test">
+        </property>
+        <property name="pattern" class="ptolemy.data.expr.StringParameter" value=".*.xml">
+        </property>
+        <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 75.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="ptolemy.actor.lib.gui.SequencePlotter">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="ptolemy.actor.lib.Test">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;!DOCTYPE entity PUBLIC &quot;-//UC Berkeley//DTD MoML 1//EN&quot;&#10;    &quot;http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd&quot;&gt;&#10;&lt;entity name=&quot;IfThenElse&quot; class=&quot;ptolemy.actor.TypedCompositeActor&quot;&gt;&#10;    &lt;property name=&quot;_createdBy&quot; class=&quot;ptolemy.kernel.attributes.VersionAttribute&quot; value=&quot;8.1.devel&quot;&gt;&#10;    &lt;/property&gt;&#10;    &lt;property name=&quot;_windowProperties&quot; class=&quot;ptolemy.actor.gui.WindowPropertiesAttribute&quot; value=&quot;{bounds={3, 22, 901, 344}, maximized=false}&quot;&gt;&#10;    &lt;/property&gt;&#10;    &lt;property name=&quot;_vergilSize&quot; class=&quot;ptolemy.actor.gui.SizeAttribute&quot; value=&quot;[688, 234]&quot;&gt;&#10;    &lt;/property&gt;&#10;    &lt;property name=&quot;_vergilZoomFactor&quot; class=&quot;ptolemy.data.expr.ExpertParameter&quot; value=&quot;1.0&quot;&gt;&#10;    &lt;/property&gt;&#10;    &lt;property name=&quot;_vergilCenter&quot; class=&quot;ptolemy.data.expr.ExpertParameter&quot; value=&quot;{344.0, 117.0}&quot;&gt;&#10;    &lt;/property&gt;&#10;    &lt;property name=&quot;DDF Director&quot; class=&quot;ptolemy.domains.ddf.kernel.DDFDirector&quot;&gt;&#10;        &lt;property name=&quot;iterations&quot; class=&quot;ptolemy.data.expr.Parameter&quot; value=&quot;40&quot;&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[75.0, 40.0]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/property&gt;&#10;    &lt;property name=&quot;LocalPreferences&quot; class=&quot;ptolemy.actor.gui.PtolemyPreferences&quot;&gt;&#10;        &lt;property name=&quot;_showParameters&quot; class=&quot;ptolemy.data.expr.StringParameter&quot; value=&quot;Overridden parameters only&quot;&gt;&#10;            &lt;display name=&quot;Show parameters&quot;/&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[495.0, 320.0]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/property&gt;&#10;    &lt;entity name=&quot;Ramp&quot; class=&quot;ptolemy.actor.lib.Ramp&quot;&gt;&#10;        &lt;doc&gt;Create a sequence of tokens with increasing value&lt;/doc&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[80.0, 115.0]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/entity&gt;&#10;    &lt;entity name=&quot;SequencePlotter&quot; class=&quot;ptolemy.actor.lib.gui.SequencePlotter&quot;&gt;&#10;        &lt;property name=&quot;_windowProperties&quot; class=&quot;ptolemy.actor.gui.WindowPropertiesAttribute&quot; value=&quot;{bounds={509, 366, 500, 344}, maximized=false}&quot;&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_plotSize&quot; class=&quot;ptolemy.actor.gui.SizeAttribute&quot; value=&quot;[500, 300]&quot;&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[561.5, 116.5]&quot;&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;requiredFiringsPerIteration&quot; class=&quot;ptolemy.data.expr.Parameter&quot; value=&quot;1&quot;&gt;&#10;        &lt;/property&gt;&#10;        &lt;configure&gt;&#10;&lt;?plotml &lt;!DOCTYPE plot PUBLIC &quot;-//UC Berkeley//DTD PlotML 1//EN&quot;&#10;&quot;http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd&quot;&gt;&#10;&lt;plot&gt;&#10;&lt;title&gt;SequencePlotter&lt;/title&gt;&#10;&lt;xLabel&gt;&lt;/xLabel&gt;&#10;&lt;yLabel&gt;&lt;/yLabel&gt;&#10;&lt;xRange min=&quot;0.0&quot; max=&quot;8.0&quot;/&gt;&#10;&lt;yRange min=&quot;-7.0&quot; max=&quot;8.0&quot;/&gt;&#10;&lt;default connected=&quot;no&quot; marks=&quot;dots&quot; stems=&quot;yes&quot;/&gt;&#10;&lt;/plot&gt;?&gt;&#10;        &lt;/configure&gt;&#10;    &lt;/entity&gt;&#10;    &lt;entity name=&quot;Bernoulli&quot; class=&quot;ptolemy.actor.lib.Bernoulli&quot;&gt;&#10;        &lt;doc&gt;Create a sequence of bernoulli random variables&lt;/doc&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[80.0, 205.0]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/entity&gt;&#10;    &lt;entity name=&quot;BooleanSwitch&quot; class=&quot;ptolemy.actor.lib.BooleanSwitch&quot;&gt;&#10;        &lt;property name=&quot;BooleanSwitchIcon&quot; class=&quot;ptolemy.vergil.icon.EditorIcon&quot;&gt;&#10;            &lt;property name=&quot;_windowProperties&quot; class=&quot;ptolemy.actor.gui.WindowPropertiesAttribute&quot; value=&quot;{bounds = {5, 136, 815, 516}, maximized = false}&quot;&gt;&#10;            &lt;/property&gt;&#10;            &lt;property name=&quot;_vergilSize&quot; class=&quot;ptolemy.actor.gui.SizeAttribute&quot; value=&quot;[600, 400]&quot;&gt;&#10;            &lt;/property&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[160.0, 115.0]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/entity&gt;&#10;    &lt;entity name=&quot;Scale&quot; class=&quot;ptolemy.actor.lib.Scale&quot;&gt;&#10;        &lt;property name=&quot;factor&quot; class=&quot;ptolemy.data.expr.Parameter&quot; value=&quot;-1&quot;&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_icon&quot; class=&quot;ptolemy.vergil.icon.AttributeValueIcon&quot;&gt;&#10;            &lt;property name=&quot;attributeName&quot; class=&quot;ptolemy.kernel.util.StringAttribute&quot; value=&quot;factor&quot;&gt;&#10;            &lt;/property&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[316.5, 76.5]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/entity&gt;&#10;    &lt;entity name=&quot;Scale2&quot; class=&quot;ptolemy.actor.lib.Scale&quot;&gt;&#10;        &lt;property name=&quot;_icon&quot; class=&quot;ptolemy.vergil.icon.AttributeValueIcon&quot;&gt;&#10;            &lt;property name=&quot;attributeName&quot; class=&quot;ptolemy.kernel.util.StringAttribute&quot; value=&quot;factor&quot;&gt;&#10;            &lt;/property&gt;&#10;        &lt;/property&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[316.5, 161.5]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/entity&gt;&#10;    &lt;entity name=&quot;BooleanSelect&quot; class=&quot;ptolemy.actor.lib.BooleanSelect&quot;&gt;&#10;        &lt;property name=&quot;_location&quot; class=&quot;ptolemy.kernel.util.Location&quot; value=&quot;[456.5, 116.5]&quot;&gt;&#10;        &lt;/property&gt;&#10;    &lt;/entity&gt;&#10;    &lt;relation name=&quot;relation&quot; class=&quot;ptolemy.actor.TypedIORelation&quot;&gt;&#10;    &lt;/relation&gt;&#10;    &lt;relation name=&quot;relation2&quot; class=&quot;ptolemy.actor.TypedIORelation&quot;&gt;&#10;    &lt;/relation&gt;&#10;    &lt;relation name=&quot;relation5&quot; class=&quot;ptolemy.actor.TypedIORelation&quot;&gt;&#10;        &lt;vertex name=&quot;vertex1&quot; value=&quot;{160.0, 205.0}&quot;&gt;&#10;        &lt;/vertex&gt;&#10;    &lt;/relation&gt;&#10;    &lt;relation name=&quot;relation6&quot; class=&quot;ptolemy.actor.TypedIORelation&quot;&gt;&#10;    &lt;/relation&gt;&#10;    &lt;relation name=&quot;relation8&quot; class=&quot;ptolemy.actor.TypedIORelation&quot;&gt;&#10;    &lt;/relation&gt;&#10;    &lt;relation name=&quot;relation3&quot; class=&quot;ptolemy.actor.TypedIORelation&quot;&gt;&#10;    &lt;/relation&gt;&#10;    &lt;relation name=&quot;relation4&quot; class=&quot;ptolemy.actor.TypedIORelation&quot;&gt;&#10;    &lt;/relation&gt;&#10;    &lt;link port=&quot;Ramp.output&quot; relation=&quot;relation6&quot;/&gt;&#10;    &lt;link port=&quot;SequencePlotter.input&quot; relation=&quot;relation4&quot;/&gt;&#10;    &lt;link port=&quot;Bernoulli.output&quot; relation=&quot;relation5&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSwitch.input&quot; relation=&quot;relation6&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSwitch.control&quot; relation=&quot;relation5&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSwitch.trueOutput&quot; relation=&quot;relation&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSwitch.falseOutput&quot; relation=&quot;relation2&quot;/&gt;&#10;    &lt;link port=&quot;Scale.input&quot; relation=&quot;relation&quot;/&gt;&#10;    &lt;link port=&quot;Scale.output&quot; relation=&quot;relation8&quot;/&gt;&#10;    &lt;link port=&quot;Scale2.input&quot; relation=&quot;relation2&quot;/&gt;&#10;    &lt;link port=&quot;Scale2.output&quot; relation=&quot;relation3&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSelect.trueInput&quot; relation=&quot;relation8&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSelect.falseInput&quot; relation=&quot;relation3&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSelect.control&quot; relation=&quot;relation5&quot;/&gt;&#10;    &lt;link port=&quot;BooleanSelect.output&quot; relation=&quot;relation4&quot;/&gt;&#10;&lt;/entity&gt;&#10;">
+        </property>
+        <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 35.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, 7.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-12.0">
+                </property>
+                <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="arrowWidth" class="ptolemy.data.expr.Parameter" value="6.0">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&quot; ... x ... &quot;">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, -20.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&quot; ... y ... &quot;">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, 4.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
+            </property>
+        </property>
+    </entity>
+    <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" class="ptolemy.actor.parameters.FilePortParameter" value="/Users/eal/Tmp/Test/IfThenElseTest.xml">
+        </property>
+        <doc>Write an entire file from a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, -25.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value=".xml">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="Test.xml">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="/Users/eal/Tmp/Test/IfThenElse.xml">
+        </property>
+        <property name="replaceAll" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -95.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[290.0, 55.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DirectoryListing.output" relation="relation"/>
+    <link port="ArrayToSequence.input" relation="relation"/>
+    <link port="ArrayToSequence.output" relation="relation5"/>
+    <link port="FileReader.output" relation="relation2"/>
+    <link port="FileReader.fileOrURL" relation="relation5"/>
+    <link port="StringReplace.stringToEdit" relation="relation2"/>
+    <link port="StringReplace.output" relation="relation4"/>
+    <link port="FileWriter.input" relation="relation4"/>
+    <link port="FileWriter.filename" relation="relation3"/>
+    <link port="StringReplace2.stringToEdit" relation="relation5"/>
+    <link port="StringReplace2.output" relation="relation3"/>
+</entity>

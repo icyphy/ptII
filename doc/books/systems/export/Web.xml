@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Web" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={485, 22, 1064, 211}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[830, 101]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.065985438753353">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.62063842024537, 41.21475987346626}">
+    </property>
+    <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
+        </property>
+    </entity>
+    <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 35.0]">
+        </property>
+    </entity>
+</entity>

@@ -1,0 +1,112 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UnionTypes" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 25.0}">
+        </property>
+    </property>
+    <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 10.0}">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+            <display name="Show parameters"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 370.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 919, 451}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[685, 341]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1634179353678658">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.09351647418478, 139.2532651154891}">
+    </property>
+    <entity name="UnionMerge" class="ptolemy.actor.lib.UnionMerge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 120.0}">
+        </property>
+        <port name="a" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="b" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1235, 521, 129, 283}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 240.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 110.0}">
+        </property>
+    </entity>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 245.0}">
+        </property>
+    </entity>
+    <entity name="UnionDisassembler" class="ptolemy.actor.lib.UnionDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 55.0]">
+        </property>
+        <port name="b" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1230, 135, 128, 233}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 75.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;UnionMerge.a&quot;,x=195.0,y=120.0}, tail={id=&quot;DiscreteClock.output&quot;,x=55.0,y=110.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;UnionMerge.b&quot;,x=195.0,y=120.0}, tail={id=&quot;PoissonClock.output&quot;,x=55.0,y=245.0}, points={125.0,130.0,125.0,245.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{325.0, 120.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=455.0,y=240.0}, tail={id=&quot;relation4.vertex1&quot;,x=325.0,y=120.0}, points={325.0,240.0} },{ head={id=&quot;UnionMerge.output&quot;,x=195.0,y=120.0}, tail={id=&quot;relation4.vertex1&quot;,x=325.0,y=120.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="UnionMerge.output" relation="relation4"/>
+    <link port="UnionMerge.a" relation="relation2"/>
+    <link port="UnionMerge.b" relation="relation3"/>
+    <link port="Display.input" relation="relation4"/>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="PoissonClock.output" relation="relation3"/>
+    <link port="UnionDisassembler.input" relation="relation4"/>
+    <link port="UnionDisassembler.b" relation="relation"/>
+    <link port="Display2.input" relation="relation"/>
+</entity>

@@ -1,0 +1,518 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="WebServerOverview" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Rectangle12" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 525.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="49.99999999999997">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 457.5]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="64.99999999999997">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Rectangle9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="337.5, 382.5">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="305.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="545.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 942, 751}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 641]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.152276295133438">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{186.87874659400546, 380.8058583106268}">
+    </property>
+    <property name="Do Nothing Director" class="ptolemy.actor.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 700.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A graphic illustrating the operation of a web server.  ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 685.0]">
+        </property>
+    </property>
+    <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 325.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="285.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="359.99999999999994">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Web server">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 115.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HttpRequest">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 110.0]">
+        </property>
+    </property>
+    <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 140.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-100.0">
+        </property>
+    </property>
+    <property name="Rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 300.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="260.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="150.00000000000003">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,1.0,1.0}">
+        </property>
+    </property>
+    <property name="Rectangle5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 445.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="260.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Handlers:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ServletContextHandler">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 230.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ContextHandler">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 400.0]">
+        </property>
+    </property>
+    <property name="Rectangle6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 275.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="245.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="45.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Servlet1 (Ptolemy II actor)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 255.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Web application 1 (Ptolemy II model)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
+        </property>
+    </property>
+    <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="/app1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 170.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="/servlet1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 275.0]">
+        </property>
+    </property>
+    <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="24">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=". . .">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[322.5, 355.0]">
+        </property>
+    </property>
+    <property name="Rectangle8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 455.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="245.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="65.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+    </property>
+    <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ResourceHandler">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 425.0]">
+        </property>
+    </property>
+    <property name="Annotation17" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="/files">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 445.0]">
+        </property>
+    </property>
+    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 565.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="285.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+    </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Web application 2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 525.0]">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="/app2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 545.0]">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation18" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Handlers">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 580.0]">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Rectangle10" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 590.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="45.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="30.000000000000007">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,1.0,1.0}">
+        </property>
+    </property>
+    <property name="Annotation19" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="24">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=". . .">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 635.0]">
+        </property>
+    </property>
+    <property name="Rectangle11" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 590.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="45.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="30.000000000000007">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.6,1.0}">
+        </property>
+    </property>
+    <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 325.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+    </property>
+    <property name="Annotation20" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HttpResponse">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 300.0]">
+        </property>
+    </property>
+    <property name="Annotation21" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET http://localhost:8078/app1/servlet2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 165.0]">
+        </property>
+    </property>
+    <property name="Annotation22" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Web page &#10;(e.g. HTML,&#10;Javascript)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 430.0]">
+        </property>
+    </property>
+    <property name="Annotation23" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="     Data &#10;(e.g. JSON)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 505.0]">
+        </property>
+    </property>
+    <property name="Rectangle13" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 580.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="49.99999999999997">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation24" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="     File &#10;(e.g. .gif)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 560.0]">
+        </property>
+    </property>
+    <property name="Annotation25" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Body - one or combination of:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation26" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="URL and method: ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 145.0]">
+        </property>
+    </property>
+    <property name="Annotation27" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="plus optional info:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 195.0]">
+        </property>
+    </property>
+    <property name="Annotation28" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="parameters and cookies">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 220.0]">
+        </property>
+    </property>
+    <property name="Annotation29" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Status and header:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 345.0]">
+        </property>
+    </property>
+    <property name="Annotation30" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="200 OK, contentType = text/html">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 370.0]">
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="C:/SWEP/IoT/Berkeley/docs">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 725.0]">
+        </property>
+    </property>
+    <property name="Annotation31" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="http://localhost:8080">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 115.0]">
+        </property>
+    </property>
+    <property name="Annotation32" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Application path:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 170.0}">
+        </property>
+    </property>
+    <property name="Annotation33" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Application path:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 545.0]">
+        </property>
+    </property>
+    <property name="Annotation34" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Path:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 275.0]">
+        </property>
+    </property>
+    <property name="Rectangle7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 330.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="245.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="45.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Servlet2 (Ptolemy II actor)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[214.99999999999994, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="/servlet2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[254.99999999999994, 330.0]">
+        </property>
+    </property>
+    <property name="Annotation35" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Path:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[214.99999999999994, 330.0]">
+        </property>
+    </property>
+    <property name="Annotation36" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Resource path:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 445.0]">
+        </property>
+    </property>
+    <property name="Annotation37" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="directory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 465.0]">
+        </property>
+    </property>
+    <property name="Annotation38" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Resource location:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 465.0]">
+        </property>
+    </property>
+</entity>

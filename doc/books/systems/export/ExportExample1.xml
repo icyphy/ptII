@@ -1,0 +1,75 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExportExample1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 808, 286}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[595, 176]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2125907990315">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.8424520766824, 79.0718849840308}">
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="3.44">
+            <display name="Object spacing"/>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This overrides the default mouseover action to&#10;write 'I am a Ramp actor!' below the model image,&#10;and to clear it on mouse out.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 35.0]">
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 65.0]">
+        </property>
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText('I am a Ramp actor!')">
+            <property name="height" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+            <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeMyText(text) {&#10;    document.getElementById(&quot;below&quot;).innerHTML = text;&#10;};">
+            </property>
+            <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;below&quot;&gt;&lt;/p&gt;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175, 245}">
+            </property>
+        </property>
+        <property name="IconScript2" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText('')">
+            <property name="height" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseout">
+            </property>
+            <property name="script" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="endText" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 240}">
+            </property>
+        </property>
+    </entity>
+</entity>

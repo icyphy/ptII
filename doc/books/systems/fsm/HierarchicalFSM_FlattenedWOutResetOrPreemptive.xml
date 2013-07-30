@@ -1,0 +1,804 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HierarchicalFSM_FlattenedWOutResetOrPreemptive" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    </property>
+    <property name="heatOnThreshold" class="ptolemy.data.expr.Parameter" value="18.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 15.0]">
+        </property>
+    </property>
+    <property name="heatOffThreshold" class="ptolemy.data.expr.Parameter" value="22.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 35.0]">
+        </property>
+    </property>
+    <property name="heatingRate" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 15.0]">
+        </property>
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 237, 794, 460}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 175.0}">
+    </property>
+    <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 35.0]">
+        </property>
+    </property>
+    <property name="initialTemp" class="ptolemy.data.expr.Parameter" value="15.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 55.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 115.0}">
+        </property>
+        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+            <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+                <display name="Show parameters"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 290.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 440, 797, 250}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[584, 140]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.0, 70.0}">
+        </property>
+        <port name="temperature" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 45.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="heat" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 30.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+            <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+            </property>
+            <doc>Create a sequence of gaussian random variables</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 95.0]">
+            </property>
+        </entity>
+        <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="initialTemp">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 45.0]">
+            </property>
+        </entity>
+        <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{initialTemp}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 45.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="temperature" relation="relation3"/>
+        <link port="heat" relation="relation"/>
+        <link port="Gaussian.output" relation="relation2"/>
+        <link port="Accumulator.input" relation="relation"/>
+        <link port="Accumulator.input" relation="relation2"/>
+        <link port="Accumulator.output" relation="relation4"/>
+        <link port="SampleDelay.input" relation="relation4"/>
+        <link port="SampleDelay.output" relation="relation3"/>
+    </entity>
+    <entity name="SequencePlotter2" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={832, 467, 498, 228}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[498, 184]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 215.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Heating/Cooling Rate</title>
+<xLabel>time</xLabel>
+<yLabel>rate</yLabel>
+<xRange min="0.0" max="199.0"/>
+<yRange min="-0.05" max="0.1"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={829, 235, 498, 228}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[498, 184]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 115.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Temperature</title>
+<xLabel>time</xLabel>
+<yLabel>temperature</yLabel>
+<xRange min="0.0" max="199.0"/>
+<yRange min="15.0" max="22.69550662036847"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 165.0]">
+        </property>
+        <port name="temperature" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="heat" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="fault" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <property name="count" class="ptolemy.data.expr.Parameter" value="10">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={296, 58, 1026, 885}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 774]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1265759241197">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{534.8278779059207, 348.0537265094683}">
+            </property>
+            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                    <display name="Background Color"/>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 770.0]">
+                </property>
+            </property>
+            <port name="temperature" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 75.0]">
+                </property>
+            </port>
+            <port name="heat" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 80.0]">
+                </property>
+            </port>
+            <port name="fault" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 115.0]">
+                </property>
+            </port>
+            <entity name="heating" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[321.9776306152344, 96.8137776851654]">
+                </property>
+            </entity>
+            <entity name="cooling" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 240.0]">
+                </property>
+            </entity>
+            <entity name="heating2" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 95.0]">
+                </property>
+            </entity>
+            <entity name="cooling2" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 240.0]">
+                </property>
+            </entity>
+            <entity name="heating3" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 455.0]">
+                </property>
+            </entity>
+            <entity name="cooling3" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 590.0]">
+                </property>
+            </entity>
+            <entity name="heating4" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[639.1478881835938, 445.9275703430176]">
+                </property>
+            </entity>
+            <entity name="cooling4" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 590.0]">
+                </property>
+            </entity>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &#10;  &gt;= heatOffThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.19576180148098024">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.562181592258053">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature&#10;  &lt;= heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2068182609076737">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.578856693997348">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &#10;  &gt;= heatOffThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.270126629514137">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.044190606909536">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature&#10;  &gt; heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2169777136664632">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7095781496104746">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation8" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  heat = coolingRate">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  count = count + 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.13644070074356948">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5386353467914626">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation9" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature&#10;  &lt;= heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.6497018552606983">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4852535542502208">
+                </property>
+            </relation>
+            <relation name="relation10" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.270126629514137">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.044190606909536">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation11" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &gt; heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3723304754719776">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0711434015687853">
+                </property>
+            </relation>
+            <relation name="relation12" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = 0">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.23686231671165506">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.05188813355105286">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation13" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3964556208827302">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.595679040472052">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation14" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &gt;= 10">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.007154271590523415">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.135339923633347">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation15" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &gt;= 10">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.2765397987167525">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.498909734969336">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &#10;  &gt;= heatOffThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.19576180148098024">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.562181592258053">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature&#10;  &lt;= heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.23920584305643197">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5430222791551889">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &#10;  &lt; heatOffThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1884984753992502">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.051272693319434">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation16" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature&#10;  &gt; heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.304477848756624">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.030127293506284583">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation17" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="&#10;  heat = coolingRate">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.13644070074356948">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5386353467914626">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation18" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature&#10;  &lt;= heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.6190218106531193">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4897839973439433">
+                </property>
+            </relation>
+            <relation name="relation19" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = heatingRate">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3218470753124167">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.802814998026391">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation20" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  temperature &gt; heatOnThreshold">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="heat = coolingRate">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3568927239000077">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.39828870096632346">
+                </property>
+            </relation>
+            <relation name="relation21" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &gt;= 10">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.02414121294784255">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.1212261809969224">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation22" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &gt;= 10">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3686534944460415">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.552972749497364">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation23" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4274430591853427">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6548977772907234">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <relation name="relation24" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fault">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.21845028918897158">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.011647982553518892">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </relation>
+            <link port="heating.incomingPort" relation="relation5"/>
+            <link port="heating.incomingPort" relation="relation6"/>
+            <link port="heating.incomingPort" relation="relation14"/>
+            <link port="heating.outgoingPort" relation="relation4"/>
+            <link port="heating.outgoingPort" relation="relation6"/>
+            <link port="heating.outgoingPort" relation="relation12"/>
+            <link port="cooling.incomingPort" relation="relation4"/>
+            <link port="cooling.incomingPort" relation="relation7"/>
+            <link port="cooling.incomingPort" relation="relation22"/>
+            <link port="cooling.outgoingPort" relation="relation5"/>
+            <link port="cooling.outgoingPort" relation="relation7"/>
+            <link port="cooling.outgoingPort" relation="relation13"/>
+            <link port="heating2.incomingPort" relation="relation9"/>
+            <link port="heating2.incomingPort" relation="relation10"/>
+            <link port="heating2.incomingPort" relation="relation12"/>
+            <link port="heating2.outgoingPort" relation="relation8"/>
+            <link port="heating2.outgoingPort" relation="relation10"/>
+            <link port="heating2.outgoingPort" relation="relation14"/>
+            <link port="cooling2.incomingPort" relation="relation8"/>
+            <link port="cooling2.incomingPort" relation="relation11"/>
+            <link port="cooling2.incomingPort" relation="relation23"/>
+            <link port="cooling2.outgoingPort" relation="relation9"/>
+            <link port="cooling2.outgoingPort" relation="relation11"/>
+            <link port="cooling2.outgoingPort" relation="relation15"/>
+            <link port="heating3.incomingPort" relation="relation2"/>
+            <link port="heating3.incomingPort" relation="relation3"/>
+            <link port="heating3.incomingPort" relation="relation15"/>
+            <link port="heating3.outgoingPort" relation="relation"/>
+            <link port="heating3.outgoingPort" relation="relation3"/>
+            <link port="heating3.outgoingPort" relation="relation23"/>
+            <link port="cooling3.incomingPort" relation="relation"/>
+            <link port="cooling3.incomingPort" relation="relation16"/>
+            <link port="cooling3.incomingPort" relation="relation21"/>
+            <link port="cooling3.outgoingPort" relation="relation2"/>
+            <link port="cooling3.outgoingPort" relation="relation16"/>
+            <link port="cooling3.outgoingPort" relation="relation24"/>
+            <link port="heating4.incomingPort" relation="relation18"/>
+            <link port="heating4.incomingPort" relation="relation19"/>
+            <link port="heating4.incomingPort" relation="relation13"/>
+            <link port="heating4.outgoingPort" relation="relation17"/>
+            <link port="heating4.outgoingPort" relation="relation19"/>
+            <link port="heating4.outgoingPort" relation="relation22"/>
+            <link port="cooling4.incomingPort" relation="relation17"/>
+            <link port="cooling4.incomingPort" relation="relation20"/>
+            <link port="cooling4.incomingPort" relation="relation24"/>
+            <link port="cooling4.outgoingPort" relation="relation18"/>
+            <link port="cooling4.outgoingPort" relation="relation20"/>
+            <link port="cooling4.outgoingPort" relation="relation21"/>
+        </entity>
+        <relation name="temperatureRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="heatRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="faultRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="temperature" relation="temperatureRelation"/>
+        <link port="heat" relation="heatRelation"/>
+        <link port="fault" relation="faultRelation"/>
+        <link port="_Controller.temperature" relation="temperatureRelation"/>
+        <link port="_Controller.heat" relation="heatRelation"/>
+        <link port="_Controller.fault" relation="faultRelation"/>
+    </entity>
+    <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <doc>Create a sequence of bernoulli random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 175.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[185.0, 115.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[300.0, 215.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Temperature Model.temperature" relation="relation2"/>
+    <link port="Temperature Model.heat" relation="relation"/>
+    <link port="SequencePlotter2.input" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="ModalModel.temperature" relation="relation2"/>
+    <link port="ModalModel.heat" relation="relation"/>
+    <link port="ModalModel.fault" relation="relation3"/>
+    <link port="Bernoulli.output" relation="relation3"/>
+</entity>

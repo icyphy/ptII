@@ -1,0 +1,74 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="String" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={614, 261, 936, 276}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 166]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.277047983285015">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.658203125, 199.90162477355074}">
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250, 215}">
+        </property>
+    </property>
+    <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+        <doc>Output a comparison function of two strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
+        <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="StringIndexOf" class="ptolemy.actor.lib.string.StringIndexOf">
+        <doc>Output the length of an input string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 35.0}">
+        </property>
+    </entity>
+    <entity name="StringLength" class="ptolemy.actor.lib.string.StringLength">
+        <doc>Output the length of an input string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="StringSplit" class="ptolemy.actor.lib.string.StringSplit">
+        <doc>Split a string into an array of strings</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
+        <doc>Output a substring of an input string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 100.0]">
+        </property>
+    </entity>
+</entity>
