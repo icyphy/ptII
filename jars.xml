@@ -3281,6 +3281,13 @@
 	<include name="ptolemy/domains/continuous/demo/Transmission/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/*.txt"/>
+      </fileset>
+     <fileset dir="${basedir}">
+	<include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/*.xml"/>
+      </fileset>
+
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/continuous/demo/V2V/*.xml"/>
       </fileset>
     </jar>
