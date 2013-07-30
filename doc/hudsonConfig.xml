@@ -290,6 +290,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
           <pluginName>[WARNINGS] </pluginName>
           <defaultEncoding></defaultEncoding>
           <canRunOnFailed>false</canRunOnFailed>
+          <useStableBuildAsReference>false</useStableBuildAsReference>
           <useDeltaValues>false</useDeltaValues>
           <thresholds>
             <unstableTotalAll></unstableTotalAll>
@@ -303,12 +304,19 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
           </thresholds>
           <shouldDetectModules>false</shouldDetectModules>
           <dontComputeNew>true</dontComputeNew>
+          <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
           <parserConfigurations/>
-          <consoleLogParsers>
-            <string>JavaDoc Tool</string>
-            <string>Maven</string>
-            <string>Java Compiler (javac)</string>
-          </consoleLogParsers>
+          <consoleParsers>
+            <hudson.plugins.warnings.ConsoleParser>
+              <parserName>JavaDoc Tool</parserName>
+            </hudson.plugins.warnings.ConsoleParser>
+            <hudson.plugins.warnings.ConsoleParser>
+              <parserName>Maven</parserName>
+            </hudson.plugins.warnings.ConsoleParser>
+            <hudson.plugins.warnings.ConsoleParser>
+              <parserName>Java Compiler (javac)</parserName>
+            </hudson.plugins.warnings.ConsoleParser>
+          </consoleParsers>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
@@ -594,6 +602,7 @@ $WORKSPACE/adm/bin/killXServer</command>
           <pluginName>[FINDBUGS] </pluginName>
           <defaultEncoding></defaultEncoding>
           <canRunOnFailed>false</canRunOnFailed>
+          <useStableBuildAsReference>false</useStableBuildAsReference>
           <useDeltaValues>false</useDeltaValues>
           <thresholds>
             <unstableTotalAll></unstableTotalAll>
@@ -607,6 +616,7 @@ $WORKSPACE/adm/bin/killXServer</command>
           </thresholds>
           <shouldDetectModules>false</shouldDetectModules>
           <dontComputeNew>true</dontComputeNew>
+          <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
           <pattern>reports/ptII-findbugs.xml</pattern>
           <isRankActivated>false</isRankActivated>
         </originalValue>
@@ -656,7 +666,39 @@ $WORKSPACE/adm/bin/killXServer</command>
   <keepDependencies>false</keepDependencies>
   <createdBy>cxh</createdBy>
   <creationTime>1340923181338</creationTime>
-  <properties/>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Build:eal</permission>
+      <permission>hudson.model.Item.Build:cxh</permission>
+      <permission>hudson.model.Item.Build:cxbrooks</permission>
+      <permission>hudson.model.Item.Build:marten</permission>
+      <permission>hudson.model.Run.Delete:eal</permission>
+      <permission>hudson.model.Run.Delete:cxh</permission>
+      <permission>hudson.model.Run.Delete:cxbrooks</permission>
+      <permission>hudson.model.Run.Delete:marten</permission>
+      <permission>hudson.model.Item.Workspace:eal</permission>
+      <permission>hudson.model.Item.Workspace:cxh</permission>
+      <permission>hudson.model.Item.Workspace:cxbrooks</permission>
+      <permission>hudson.model.Item.Workspace:marten</permission>
+      <permission>hudson.model.Run.Update:eal</permission>
+      <permission>hudson.model.Run.Update:cxh</permission>
+      <permission>hudson.model.Run.Update:cxbrooks</permission>
+      <permission>hudson.model.Run.Update:marten</permission>
+      <permission>hudson.model.Item.Read:anonymous</permission>
+      <permission>hudson.model.Item.Read:eal</permission>
+      <permission>hudson.model.Item.Read:cxh</permission>
+      <permission>hudson.model.Item.Read:cxbrooks</permission>
+      <permission>hudson.model.Item.Read:marten</permission>
+      <permission>hudson.model.Item.Configure:eal</permission>
+      <permission>hudson.model.Item.Configure:cxh</permission>
+      <permission>hudson.model.Item.Configure:cxbrooks</permission>
+      <permission>hudson.model.Item.Configure:marten</permission>
+      <permission>hudson.model.Item.Delete:eal</permission>
+      <permission>hudson.model.Item.Delete:cxh</permission>
+      <permission>hudson.model.Item.Delete:cxbrooks</permission>
+      <permission>hudson.model.Item.Delete:marten</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
   <cascadingChildrenNames class="java.util.concurrent.CopyOnWriteArraySet"/>
   <cascading-job-properties class="java.util.concurrent.CopyOnWriteArraySet">
     <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
