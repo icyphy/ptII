@@ -54,13 +54,13 @@ EXTRA_SRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	variables.dtd
-	
+
 MISC_FILES =
 
 OPTIONAL_FILES =
 
 all: suball
-install: subinstall
+install: subinstall jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

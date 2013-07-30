@@ -47,7 +47,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	jar/jar.xml
+	jar/jar.jar
 
 EXTRA_SRCS =
 
@@ -58,7 +58,7 @@ MISC_FILES =
 OPTIONAL_FILES =
 
 all: suball
-install: subinstall
+install: subinstall jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
