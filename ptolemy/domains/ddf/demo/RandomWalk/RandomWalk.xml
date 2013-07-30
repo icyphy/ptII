@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RandomWalk" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 22, 657, 459}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 22, 891, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 353]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -113,7 +113,7 @@
             </property>
         </port>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
-            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="numberOfSteps">
+            <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="numberOfSteps">
             </property>
             <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
@@ -125,7 +125,7 @@
             </property>
         </entity>
         <entity name="Repeat2" class="ptolemy.domains.sdf.lib.Repeat">
-            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="numberOfSteps">
+            <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="numberOfSteps">
             </property>
             <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -142,9 +142,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 210.0]">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">

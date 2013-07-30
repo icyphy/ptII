@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MapReduceDDF" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 81, 929, 533}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 81, 948, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[714, 426]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[714, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -149,9 +149,9 @@
         <property name="className" class="ptolemy.actor.parameters.PortParameter" value="&quot;ptolemy.actor.ptalon.lib.WordCount&quot;">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
             </property>
         </property>
         <port name="className" class="ptolemy.actor.parameters.ParameterPort">
@@ -265,6 +265,18 @@
                 <link port="_AuxDiscard.input" relation="relation"/>
                 <link port="Split.lineInput" relation="relation2"/>
                 <link port="merge.output" relation="relation3"/>
+                <port name="lineInput">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 140.0]">
+                    </property>
+                </port>
+                <port name="endOfFile">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 200.0]">
+                    </property>
+                </port>
+                <port name="output">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 200.0]">
+                    </property>
+                </port>
             </entity>
         </entity>
         <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
@@ -326,6 +338,10 @@
                         </vertex>
                     </relation>
                     <link port="endOfFile" relation="relation"/>
+                    <port name="endOfFile">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -448,6 +464,12 @@
                     <link port="Map.doneReading" relation="relation"/>
                     <link port="Split.keys" relation="relation2"/>
                     <link port="Split.values" relation="relation3"/>
+                    <port name="endOfFile">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 210.0}">
+                        </property>
+                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="endOfFile">
+                        </property>
+                    </port>
                 </entity>
             </entity>
             <entity name="LinkStorageOutput" class="ptolemy.actor.gt.TransformationRule">
@@ -500,6 +522,18 @@
 </configure>
                         </property>
                     </entity>
+                    <port name="outputKeys">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 140.0]">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                    </port>
+                    <port name="outputValues">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 235.0]">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -550,6 +584,22 @@
                     <link port="outputValues" relation="relation2"/>
                     <link port="storage.outputKey" relation="relation"/>
                     <link port="storage.outputValue" relation="relation2"/>
+                    <port name="outputKeys">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 150.0]">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="outputKeys">
+                        </property>
+                    </port>
+                    <port name="outputValues">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 245.0]">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="outputValues">
+                        </property>
+                    </port>
                 </entity>
             </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -642,6 +692,10 @@
                         </vertex>
                     </relation>
                     <link port="endOfFile" relation="relation"/>
+                    <port name="endOfFile">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -724,6 +778,12 @@
                     <link port="Reduce.doneReceiving" relation="relation"/>
                     <link port="Reduce.output" relation="relation2"/>
                     <link port="merge.input" relation="relation2"/>
+                    <port name="endOfFile">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 210.0}">
+                        </property>
+                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="endOfFile">
+                        </property>
+                    </port>
                 </entity>
             </entity>
             <entity name="LinkWorkerInput" class="ptolemy.actor.gt.TransformationRule">
@@ -776,6 +836,18 @@
 </configure>
                         </property>
                     </entity>
+                    <port name="inputKey">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                    </port>
+                    <port name="inputValue">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -826,6 +898,22 @@
                     <link port="inputValue" relation="relation2"/>
                     <link port="worker.inputKey" relation="relation"/>
                     <link port="worker.inputValue" relation="relation2"/>
+                    <port name="inputKey">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 135.0}">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="inputKey">
+                        </property>
+                    </port>
+                    <port name="inputValue">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 250.0}">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="inputValue">
+                        </property>
+                    </port>
                 </entity>
             </entity>
             <entity name="LinkMapAndReduce" class="ptolemy.actor.gt.TransformationRule">
@@ -1170,7 +1258,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 155.0}">
                         </property>
                     </entity>
-                    <entity name="sampler" class="ptolemy.domains.de.lib.Sampler">
+                    <entity name="sampler" class="ptolemy.domains.de.lib.MostRecent">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 235.0}">
                         </property>
                     </entity>
@@ -1182,6 +1270,10 @@
                     </relation>
                     <link port="merge.output" relation="mergeOut"/>
                     <link port="sampler.trigger" relation="mergeOut"/>
+                    <port name="input">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 225.0}">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -1203,7 +1295,7 @@
                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="merge">
                         </property>
                     </entity>
-                    <entity name="sampler" class="ptolemy.domains.de.lib.Sampler">
+                    <entity name="sampler" class="ptolemy.domains.de.lib.MostRecent">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 245.0}">
                         </property>
                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="sampler">
@@ -1234,6 +1326,12 @@
                     <link port="sampler.output" relation="relation"/>
                     <link port="sampler.trigger" relation="mergeOut"/>
                     <link port="and.input" relation="relation"/>
+                    <port name="input">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 235.0}">
+                        </property>
+                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="input">
+                        </property>
+                    </port>
                 </entity>
             </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -1331,7 +1429,7 @@
         </property>
     </entity>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$(CLASSPATH)/ptolemy/actor/gt/demo/MapReduce/ReadTest.map">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$(CLASSPATH)/ptolemy/actor/gt/demo/MapReduce/ReadTest.map">
         </property>
         <doc>Read one line at a time from a text file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 140.0]">

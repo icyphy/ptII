@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IfThenElseFSM" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 5, 849, 466}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 868, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[634, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[634, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -623,7 +623,7 @@
         </property>
     </entity>
     <entity name="FSM ModalModel +1/-1 Gain" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 150.0]">
         </property>
@@ -645,7 +645,7 @@
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -694,7 +694,7 @@ is an input on the control port.
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 120.0]">
                 </property>
@@ -704,7 +704,7 @@ is an input on the control port.
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 120.0]">
                 </property>
@@ -716,13 +716,14 @@ is an input on the control port.
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.04655809091592047">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -732,13 +733,14 @@ is an input on the control port.
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.0947655813842436">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="gainMinus.incomingPort" relation="relation2"/>
@@ -748,9 +750,9 @@ is an input on the control port.
         </entity>
         <entity name="gainMinus" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
                 </property>
             </property>
             <port name="ramp" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -789,9 +791,9 @@ is an input on the control port.
         </entity>
         <entity name="gainPlus" class="ptolemy.domains.modal.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
                 </property>
             </property>
             <port name="ramp" class="ptolemy.domains.modal.modal.RefinementPort">

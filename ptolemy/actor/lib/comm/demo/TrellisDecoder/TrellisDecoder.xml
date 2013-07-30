@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TrellisDecoder" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1013, 652}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1034, 652}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 542]">
     </property>
@@ -303,11 +303,11 @@
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
@@ -352,7 +352,7 @@
         <link port="MultiplyDivide.divide" relation="relation5"/>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
-    <entity name="Errors on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="Errors on Coded Channel" class="ptolemy.actor.lib.gui.MonitorValue">
         <property name="value" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <doc>Monitor and display values</doc>
@@ -365,7 +365,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="720.0, 205.0">
         </property>
     </entity>
-    <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.gui.MonitorValue">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0015">
         </property>
         <doc>Monitor and display values</doc>
@@ -480,11 +480,11 @@
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
@@ -529,7 +529,7 @@
         <link port="MultiplyDivide.divide" relation="relation5"/>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
-    <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.gui.MonitorValue">
         <property name="value" class="ptolemy.data.expr.Parameter" value="67">
         </property>
         <doc>Monitor and display values</doc>
@@ -542,7 +542,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="640.0, 405.0">
         </property>
     </entity>
-    <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.gui.MonitorValue">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0335">
         </property>
         <doc>Monitor and display values</doc>
