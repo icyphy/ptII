@@ -2,14 +2,12 @@
 CHAPTER=expressions
 EXAMPLE_MODELS = \
 	ActorToken.xml \
-	FunctionComplex.xml \
-	FunctionSimple.xml \
 	StringParameter.xml \
-	test/auto/FunctionComplex.xml \
-	test/auto/NilTypes.xml \
-	test/auto/UnionTypes.xml \
+	Units.xml \
+	units.xml \
+	FunctionSimple.xml \
+	FunctionComplex.xml \
 	This.xml \
-	UnionTypes.xml \
-	units.xml 
+	UnionTypes.xml 
 
 include ../chapter.mk

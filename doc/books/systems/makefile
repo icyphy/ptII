@@ -47,12 +47,19 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	architecture/architecture.jar \
+	continuous/continuous.jar \
 	dataflow/dataflow.jar \
-	intro/intro.jar \
+	discreteevents/discreteevents.jar \
+	expressions/expressions.jar \
 	fsm/fsm.jar \
+	intro/intro.jar \
 	modal/modal.jar \
 	modelingtime/modelingtime.jar \
+	plotter/plotter.jar \
+	pn/pn.jar \
 	synchronous/synchronous.jar \
+	types/types.jar \
 	vergil/vergil.jar
 
 

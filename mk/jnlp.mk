@@ -1803,16 +1803,20 @@ book_dist_jnlp_update: $(JNLP_FILE_FIXED)
 # Update the website.
 
 # Files to be updated, including the .htm files
-JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(JNLP_HTM) $(JNLP_VERGIL_HTM) doc/deployJava.js doc/deployJava.txt $(HTML_MODEL)
+# index.htm and toc.htm are created by rules in $PTII/mk/ptcommon.mk
+INDEX_CHAPTER =           $(JNLP_MODEL_DIRECTORY)/index.htm
+TOC_CHAPTER =           $(JNLP_MODEL_DIRECTORY)/toc.htm
+JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(JNLP_HTM) $(JNLP_VERGIL_HTM) doc/deployJava.js $(HTML_MODEL) $(INDEX_CHAPTER) $(TOC_CHAPTER)
 
 # Files to be updated, not including the .htm files
 #JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) doc/deployJava.js doc/deployJava.txt
 
-book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL)
+book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 	pwd
 	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xpf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
-	ssh $(WEBSERVER_USER)@$(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html"
+	# Make the html file executable so that Server Side Includes (SSIs) work.
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html $(DIST_DIR)/$(INDEX_CHAPTER) $(DIST_DIR)/$(TOC_CHAPTER)"
 	# Replace link to applet with link to image.  Some files have a .htm file that link to the applet
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); sed -e 's@$(JNLP_MODEL)Vergil.htm@$(JNLP_MODEL)/index.html@' -e 's@>applet</a>@>HTML Version</a> - browsable only, not executable@' $(JNLP_HTM) > $(JNLP_HTM).tmp"
 	#-ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); diff $(JNLP_HTM).tmp $(JNLP_HTM)"
