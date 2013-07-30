@@ -40,6 +40,7 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -395,18 +396,138 @@ public class MetroIIDEDirector extends DEDirector implements
                                 + this.getModelTime() + " "
                                 + this.getMicrostep());
                     }
+                    System.out.println(_eventQueue); 
                     int result = actorAndState.getSecond();
 
                     if (actorAndState.getFirst() != null
                             && !(actorAndState.getFirst() instanceof MetroEventHandler)) {
-                        if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                            System.out.println("Fire actor: "
-                                    + actorAndState.getFirst().getFullName() + " "
-                                    + this.getModelTime() + " "
-                                    + this.getMicrostep());
-                        }
-                        actorAndState.getFirst().fire();
-                        actorAndState.getFirst().postfire();
+
+                        Actor actorToFire = actorAndState.getFirst(); 
+                        boolean refire; 
+
+                        do {
+                            refire = false;
+
+                            // NOTE: There are enough tests here against the
+                            // _debugging variable that it makes sense to split
+                            // into two duplicate versions.
+                            if (_debugging) {
+                                // Debugging. Report everything.
+                                // If the actor to be fired is not contained by the container,
+                                // it may just be deleted. Put this actor to the
+                                // list of disabled actors.
+                                if (!((CompositeEntity) getContainer())
+                                        .deepContains((NamedObj) actorToFire)) {
+                                    _debug("Actor no longer under the control of this director. Disabling actor.");
+                                    _disableActor(actorToFire);
+                                    break;
+                                }
+
+                                _debug(new FiringEvent(this, actorToFire,
+                                        FiringEvent.BEFORE_PREFIRE));
+
+//                                if (!actorToFire.prefire()) {
+//                                    _debug("*** Prefire returned false.");
+//                                    break;
+//                                }
+
+                                _debug(new FiringEvent(this, actorToFire,
+                                        FiringEvent.AFTER_PREFIRE));
+
+                                _debug(new FiringEvent(this, actorToFire,
+                                        FiringEvent.BEFORE_FIRE));
+                                actorToFire.fire();
+                                _debug(new FiringEvent(this, actorToFire,
+                                        FiringEvent.AFTER_FIRE));
+
+                                _debug(new FiringEvent(this, actorToFire,
+                                        FiringEvent.BEFORE_POSTFIRE));
+
+                                if (!actorToFire.postfire()) {
+                                    _debug("*** Postfire returned false:",
+                                            ((Nameable) actorToFire).getName());
+
+                                    // This actor requests not to be fired again.
+                                    _disableActor(actorToFire);
+                                    break;
+                                }
+
+                                _debug(new FiringEvent(this, actorToFire,
+                                        FiringEvent.AFTER_POSTFIRE));
+                            } else {
+                                // No debugging.
+                                // If the actor to be fired is not contained by the container,
+                                // it may just be deleted. Put this actor to the
+                                // list of disabled actors.
+                                if (!((CompositeEntity) getContainer())
+                                        .deepContains((NamedObj) actorToFire)) {
+                                    _disableActor(actorToFire);
+                                    break;
+                                }
+
+//                                if (!actorToFire.prefire()) {
+//                                    break;
+//                                }
+
+                                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                                    System.out.println("Fire actor: "
+                                            + actorAndState.getFirst().getFullName() + " "
+                                            + this.getModelTime() + " "
+                                            + this.getMicrostep());
+                                }
+                                actorToFire.fire();
+
+                                // NOTE: It is the fact that we postfire actors now that makes
+                                // this director not comply with the actor abstract semantics.
+                                // However, it's quite a redesign to make it comply, and the
+                                // semantics would not be backward compatible. It really needs
+                                // to be a new director to comply.
+                                if (!actorToFire.postfire()) {
+                                    // This actor requests not to be fired again.
+                                    _disableActor(actorToFire);
+                                    break;
+                                }
+                            }
+
+                            // Check all the input ports of the actor to see whether there
+                            // are more input tokens to be processed.
+                            // FIXME: This particular situation can only occur if either the
+                            // actor failed to consume a token, or multiple
+                            // events with the same destination were queued with the same tag.
+                            // In theory, both are errors. One possible fix for the latter
+                            // case would be to requeue the token with a larger microstep.
+                            // A possible fix for the former (if we can detect it) would
+                            // be to throw an exception. This would be far better than
+                            // going into an infinite loop.
+                            Iterator<?> inputPorts = actorToFire.inputPortList().iterator();
+
+                            while (inputPorts.hasNext() && !refire) {
+                                IOPort port = (IOPort) inputPorts.next();
+
+                                // iterate all the channels of the current input port.
+                                for (int i = 0; i < port.getWidth(); i++) {
+                                    if (port.hasToken(i)) {
+                                        if (_debugging) {
+                                            _debug("Port named " + port.getName()
+                                                    + " still has input on channel " + i
+                                                    + ". Refire the actor.");
+                                        }
+                                        // refire only if can be scheduled.
+                                        if (!_resourceScheduling ||  
+                                                _schedule(actorToFire, getModelTime())) {
+                                            refire = true;
+                    
+                                            // Found a channel that has input data,
+                                            // jump out of the for loop.
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        } while (refire); // close the do {...} while () loop
+                        
+//                        actorAndState.getFirst().fire();
+//                        actorAndState.getFirst().postfire();
                         continue; 
                     }
 
