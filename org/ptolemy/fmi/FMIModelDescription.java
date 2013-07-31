@@ -161,7 +161,7 @@ public class FMIModelDescription {
 
     /** Return the canonical native library path.
      *  If the shared library names by
-     *  {@link org.ptolemy.fmi.FMUFile#fmuSharedlibrary(FMIModelDescription)}
+     *  {@link org.ptolemy.fmi.FMUFile#fmuSharedLibrary(FMIModelDescription)}
      *  exists, then it is returned.  If it does not exist, then
      *  {@link org.ptolemy.fmi.FMUBuilder#build(File)}
      *  is invoked, which may build the shared library.
