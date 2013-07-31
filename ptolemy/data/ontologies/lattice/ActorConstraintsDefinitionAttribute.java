@@ -226,20 +226,40 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                                 createConstraintParameterName((NamedObj) actorPort));
                         // Include no constraints by default.
                         constraintExpression.setExpression(NO_CONSTRAINTS);
+                        
+                        // Make suggestions.
+                        constraintExpression.addChoice(NO_CONSTRAINTS);
+                        constraintExpression.addChoice(IGNORE);
+                        constraintExpression.addChoice(GTE);
+                        constraintExpression.addChoice(LTE);
+                        constraintExpression.addChoice(EQ);
+
                         _constraintTermExpressions.add(constraintExpression);
                     }
 
-                    for (Object actorAttribute : tempActorInstance
-                            .attributeList()) {
-                        if (!((Attribute) actorAttribute).getName().startsWith(
-                                "_")) {
+                    List<Attribute> attributes = tempActorInstance.attributeList();
+                    for (Attribute actorAttribute : attributes) {
+                        // If the attribute is not visible, skip it.
+                        if (!(attribute instanceof Settable)
+                                || !((Settable)attribute).getVisibility().equals(Settable.FULL)) {
+                            continue;
+                        }
+                        // Also skip the attribute if the name starts with an underscore.
+                        if (!actorAttribute.getName().startsWith("_")) {
                             StringParameter constraintExpression = new StringParameter(
                                     this,
                                     createConstraintParameterName((NamedObj) actorAttribute));
                             // Include no constraints by default.
                             constraintExpression.setExpression(NO_CONSTRAINTS);
-                            _constraintTermExpressions
-                                    .add(constraintExpression);
+
+                            // Make suggestions.
+                            constraintExpression.addChoice(NO_CONSTRAINTS);
+                            constraintExpression.addChoice(IGNORE);
+                            constraintExpression.addChoice(GTE);
+                            constraintExpression.addChoice(LTE);
+                            constraintExpression.addChoice(EQ);
+                            
+                            _constraintTermExpressions.add(constraintExpression);
                         }
                     }
                     tempActorInstance.setContainer(null);
