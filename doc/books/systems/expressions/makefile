@@ -4,7 +4,6 @@ EXAMPLE_MODELS = \
 	ActorToken.xml \
 	StringParameter.xml \
 	Units.xml \
-	units.xml \
 	FunctionSimple.xml \
 	FunctionComplex.xml \
 	This.xml \
