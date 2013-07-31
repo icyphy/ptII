@@ -1,8 +1,6 @@
+/** A Factor Oracle (FO) builder from an input sequence.
 
-
-
-
-/**Copyright (c) 1998-2013 The Regents of the University of California.
+Copyright (c) 2013 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -55,19 +53,22 @@ import ptolemy.moml.MoMLChangeRequest;
 
 
 
-/* A Factor Oracle (FO) builder from an input sequence. Given an input of type String, recognizes
- * a set of alphabet by recognizing the distinct characters in the symbol and builds a factor
- * oracle data structure. 
+/* A Factor Oracle (FO) builder from an input sequence. Given an input
+ * of type String, recognizes a set of alphabet by recognizing the
+ * distinct characters in the symbol and builds a factor oracle data
+ * structure.
  * 
- * In the future, this actor will be replaced by an on-line algorithm which adds to the data
- * structure as more symbols are received at the input and the string requirement will be
- * replaced by a music sequence specification.
+ * <p>In the future, this actor will be replaced by an on-line algorithm
+ * which adds to the data structure as more symbols are received at
+ * the input and the string requirement will be replaced by a music
+ * sequence specification.</p>
  * 
-<p>This actor builds a factor oracle data structure that represents a finite acyclic automaton that 
-contains at least all the suffixes of a given input sequence. 
+ * <p>This actor builds a factor oracle data structure that represents
+ * a finite acyclic automaton that contains at least all the suffixes of
+ * a given input sequence.</p>
 
  @author Ilge Akkaya
- @version  
+ @version  $Id$
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */

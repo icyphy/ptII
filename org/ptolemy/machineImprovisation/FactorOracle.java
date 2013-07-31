@@ -1,15 +1,8 @@
+/* Build a factor oracle data structure that represents a finite acyclic
+automaton that contains at least all the suffixes of a given input
+sequence.
 
-
-/* A Factor Oracle (FO) builder. Builds the FO data structure for the input string
- * provided as a parameter to the constructor. It interprets each character of the string 
- * as a 'symbol' in the sequence to build an alphabet of symbols and to construct the probabilistic
- * finite automaton for this string input. 
- * 
- * In the future, this actor should be replaced by an on-line algorithm which adds to the data
- * structure as more symbols are received at the input and the string requirement will be
- * replaced by a music sequence specification.
-
-Copyright (c) 1998-2013 The Regents of the University of California.
+Copyright (c) 2013 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -59,13 +52,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
 
 /**
-<p>Build a factor oracle data structure that represents a finite acyclic automaton that 
-contains at least all the suffixes of a given input sequence. 
-
- @author Ilge Akkaya
- @version  
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ * Build a factor oracle data structure that represents a finite acyclic
+ * automaton that contains at least all the suffixes of a given input
+ * sequence.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (ilgea)
  */
 public class FactorOracle extends FSMActor {
    /** Construct an actor with the given container and name.
