@@ -1,51 +1,58 @@
 /***preinitBlock***/
-CQLinkedList* $actorSymbol(pendingOutputs);
+PblList* $actorSymbol(pendingOutputs);
 $targetType(delay) $actorSymbol(delay);
-$include("$ModelName()_CalendarQueue.h")
+$include("_CalendarQueue.h")
+
+struct PendingEvent {
+	Time timestamp;
+	Token token;
+	int microstep;
+};
 /**/
 
 /***initBlock($delayInit)***/
-$actorSymbol(pendingOutputs) = newCQLinkedList();
+$actorSymbol(pendingOutputs) = pblListNewLinkedList();
 $actorSymbol(delay) = $delayInit;
 /**/
 
 /***fireBlock***/
-CQCell* currentCell = NULL;
-if (CQLinkedListIsEmpty($actorSymbol(pendingOutputs)))
+struct Director* director = (*(actor->getDirector))(actor);
+struct PendingEvent* currentCell = NULL;
+if (pblListIsEmpty($actorSymbol(pendingOutputs)))
 	return;
 
-currentCell = malloc(sizeof(CQCell));
-if (currentCell == NULL) {
-	perror("Allocation problem (TimeDelayFire)");
-	exit(1);
-}
-currentCell->content = CQLinkedListGet($actorSymbol(pendingOutputs));
+currentCell = pblListPeek($actorSymbol(pendingOutputs));
 // if it is time to fire
-if (currentCell->content->timestamp == $DirectorName()->currentModelTime
-		&& currentCell->content->microstep >= $DirectorName()->currentMicrostep) {
-	$put(output#0, currentCell->content->token.payload.$cgType(input));
-	CQLinkedListTake($actorSymbol(pendingOutputs));
+if (currentCell->timestamp == (*(director->getModelTime))(director)
+		&& currentCell->microstep >= (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director)) {
+	$put(output#0, currentCell->token.payload.$cgType(input));
+	pblListPoll($actorSymbol(pendingOutputs));
 }
 /**/
 
 /***postfireBlock***/
+struct Director* director = (*(actor->getDirector))(actor);
 if ($hasToken(input)) {
-	Time fireTime = $DirectorName()->currentModelTime + $actorSymbol(delay);
+	Time fireTime = (*(director->getModelTime))(director) + $actorSymbol(delay);
 	int microstep = 1;
 	if ($actorSymbol(delay) == 0)
-		microstep = $DirectorName()->currentMicrostep+1;
-	DEEvent * newEvent = newDEEventWithParam($DirectorName()->currentActor, NULL,
-			$DirectorName()->currentActor->depth,
-			microstep, $DirectorName()->currentActor->priority, fireTime);
+		microstep = (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director)+1;
+	struct PendingEvent* newEvent = malloc(sizeof(struct PendingEvent));
+	if (newEvent == NULL) {
+		fprintf(stderr, "Allocation problem : TimeDelay_postfire");
+		exit(1);
+	}
+	newEvent->microstep = microstep;
+	newEvent->timestamp = fireTime;
 	newEvent->token.payload.$cgType(input) = $get(input);
 	newEvent->token.type = TYPE_$cgType(input);
-	CQLinkedListInsert($actorSymbol(pendingOutputs), newEvent);
-	$fireAt($ModelName()_$actorName(), fireTime, microstep);
+	pblListPush($actorSymbol(pendingOutputs), newEvent);
+	$fireAt(actor, fireTime, microstep);
 }
 /**/
 
 /***wrapupBlock***/
-CQLinkedListDelete($actorSymbol(pendingOutputs));
+pblListFree($actorSymbol(pendingOutputs));
 /**/
 
 

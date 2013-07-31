@@ -150,6 +150,17 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     public Set<String> getHeaderFiles() throws IllegalActionException {
         return new HashSet<String>();
     }
+    
+    /** Generate the constructor code for the specified director
+     * This is only used in the C Code generation
+     * Therefore in this base class returns an empty string
+     * 
+     * @return an empty string in this base class
+     * @throws IllegalActionException Not thrown in this base class.
+     */
+    public String generateConstructorCode() throws IllegalActionException {
+        return "";
+    }
 
     /** Generate a main loop for an execution under the control of
      *  this director.  In this base class, this simply delegates

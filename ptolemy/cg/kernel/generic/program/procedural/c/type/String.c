@@ -98,7 +98,10 @@ Token String_negate(Token thisToken, ...) {
 Token String_new(char* s) {
     Token result;
     result.type = TYPE_String;
-    result.payload.String = strdup(s);
+    if (!s)
+    	result.payload.String = "";
+    else
+    	result.payload.String = strdup(s);
     return result;
 }
 /**/

@@ -159,6 +159,7 @@ Token convert_IntArray_Array(Token token) {
 
 /*** convert_IntArray_DoubleArray() ***/
 Token convert_IntArray_DoubleArray(Token token) {
+#ifdef TYPE_IntArray
         int i;
         int length = token.payload.IntArray->size;
         Token result = $new(DoubleArray(length, 0));
@@ -166,6 +167,8 @@ Token convert_IntArray_DoubleArray(Token token) {
                 DoubleArray_set(result, i, (double) IntArray_get(token, i));
         }
         return result;
+#endif
+        return token;
 }
 /**/
 

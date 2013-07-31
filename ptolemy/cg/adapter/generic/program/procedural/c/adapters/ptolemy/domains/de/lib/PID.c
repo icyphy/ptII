@@ -1,24 +1,14 @@
 /***preinitBlock***/
-/** Proportional gain of the controller. Default value is 1.0.
-**/
+struct TimedEvent {
+	Time timestamp;
+	Token token;
+};
+
 Token $actorSymbol(Kp);
-
-/** Integral gain of the controller. Default value is 0.0,
-*  which disables integral control.
-**/
 Token $actorSymbol(Ki);
-
-/** Derivative gain of the controller. Default value is 0.0, which disables
-*  derivative control. If Kd=0.0, this actor can receive discontinuous
-*  signals as input; otherwise, if Kd is nonzero and a discontinuous signal
-*  is received, an exception will be thrown.
-*/
 Token $actorSymbol(Kd);
-$include("$ModelName()_DEEvent.h")
-DEEvent * $actorSymbol(currentInput);
-
-DEEvent * $actorSymbol(lastInput);
-
+struct TimedEvent * $actorSymbol(currentInput);
+struct TimedEvent * $actorSymbol(lastInput);
 double $actorSymbol(accumulated);
 
 /**/
@@ -37,10 +27,16 @@ $actorSymbol(currentInput) = NULL;
 
 /***customFireBlock***/
 // Consume input, generate output only if input provided.
+struct Director* director = (*(actor->getDirector))(actor);
 if ($hasToken(input)) {
-	Time currentTime = $DirectorName()->currentModelTime;
+	Time currentTime = (*(director->getModelTime))(director);
 	double currentToken = $get(input);
-	$actorSymbol(currentInput) = newDEEventWithParam(NULL, NULL, 0, 0, 0, currentTime);
+	$actorSymbol(currentInput) = malloc(sizeof(struct TimedEvent));
+	if ($actorSymbol(currentInput) == NULL) {
+		fprintf(stderr, "Allocation Error : PID_Fire");
+		exit(-1);
+	}
+	$actorSymbol(currentInput)->timestamp = currentTime;
 	$actorSymbol(currentInput)->token.type = TYPE_Double;
 	$actorSymbol(currentInput)->token.payload.Double = currentToken;
 
@@ -74,8 +70,8 @@ if ($hasToken(input)) {
 		if (Double_isCloseTo(timeGap, zeroDoubleToken, epsilonDoubleToken).payload.Boolean) {
 			if (!Double_isCloseTo($actorSymbol(Kd), zeroDoubleToken, epsilonDoubleToken).payload.Boolean
 					&& currentToken == lastToken) {
-				perror("PID controller recevied discontinuous input.");
-				exit(1);
+				fprintf(stderr, "PID controller recevied discontinuous input.");
+				exit(-1);
 			}
 		}
 		// Otherwise, the signal is continuous and we add
@@ -100,24 +96,26 @@ if ($hasToken(input)) {
 }
 /**/
 
-/***postFireBlock($resetConnected)***/
-//If reset port is connected and has a token, reset state.
-if ($resetConnected) {
-	if ($hasToken(reset#0)) {
-		// Consume reset token.
-		$get(reset#0);
+/***resetConnectedBlock***/
+if ($hasToken(reset#0)) {
+	// Consume reset token.
+	$get(reset#0);
 
-		// Reset the current input.
-		if ($actorSymbol(currentInput) != NULL)
-			free($actorSymbol(currentInput));
+	// Reset the current input.
+	if ($actorSymbol(currentInput) != NULL)
+		free($actorSymbol(currentInput));
 
-		// Reset accumulation.
-		$actorSymbol(accumulated) = 0.0;
-	}
+	// Reset accumulation.
+	$actorSymbol(accumulated) = 0.0;
 }
+/**/
+
+/***postFireBlock***/
+if ($actorSymbol(lastInput))
+	free($actorSymbol(lastInput));
 $actorSymbol(lastInput) = $actorSymbol(currentInput);
 $actorSymbol(currentInput) = NULL;
-return;
+return true;
 /**/
 
 /***wrapupBlock***/

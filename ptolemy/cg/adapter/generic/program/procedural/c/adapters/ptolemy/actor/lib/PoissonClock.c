@@ -22,7 +22,7 @@ $valuesList
 
 Time currentTime = 0.0;
 $actorSymbol(seed) = 0;
-$actorSymbol(needNew) = false;
+$actorSymbol(needNew) = true;
 $actorSymbol(randomNumber) = 0.0;
 $actorSymbol(outputProduced) = false;
 // We have to recode the random function to have the same behavior as java Random
@@ -35,11 +35,11 @@ else
 		$actorSymbol(seed) = ($privateSeed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
 
 if ($fireAtStart) {
-	$fireAt($ModelName()_$actorName(), currentTime, 0);
+	$fireAt(actor, currentTime, 0);
 }
 else {
 	$actorSymbol(randomNumber) = -log(1.0 - nextDouble()) * $actorSymbol(meanTime);
-	$fireAt($ModelName()_$actorName(), currentTime + $actorSymbol(randomNumber), 0);
+	$fireAt(actor, currentTime + $actorSymbol(randomNumber), 0);
 }
 
 $actorSymbol(phase) = 0;
@@ -63,13 +63,14 @@ boolean triggerInputPresent = false;
 
 // It is time to produce an output if the current time equals
 // or exceeds the next firing time (it should never exceed).
-boolean timeForOutput = $DirectorName()->currentModelTime - $actorSymbol(nextFiringTime) >= 0;
+struct Director* director = (*(actor->getDirector))(actor);
+boolean timeForOutput = (*(director->getModelTime))(director) - $actorSymbol(nextFiringTime) >= 0;
 
 if (!timeForOutput && !triggerInputPresent) {
 	// It is too early.
 	return;
 }
-if ($DirectorName()->currentMicrostep < 1 && !triggerInputPresent) {
+if ((*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director) < 1 && !triggerInputPresent) {
 	// The time matches, but the microstep is too early.
 	return;
 }
@@ -85,18 +86,19 @@ $actorSymbol(outputProduced) = true;
 
 /***postfireBlock($offsetSize)***/
 $actorSymbol(needNew) = true;
+struct Director* director = (*(actor->getDirector))(actor);
 if ($actorSymbol(outputProduced)) {
 	// An output was produced in this iteration.
 	$actorSymbol(outputProduced) = false;
 	$actorSymbol(phase)++;
 	$actorSymbol(phase) %= $offsetSize;
 
-	$actorSymbol(nextFiringTime) = $DirectorName()->currentModelTime + $actorSymbol(randomNumber);
-	$fireAt($ModelName()_$actorName(), $actorSymbol(nextFiringTime), 0);
-} else if ($DirectorName()->currentModelTime - $actorSymbol(nextFiringTime) >= 0) {
+	$actorSymbol(nextFiringTime) = (*(director->getModelTime))(director) + $actorSymbol(randomNumber);
+	$fireAt(actor , $actorSymbol(nextFiringTime), 0);
+} else if ((*(director->getModelTime))(director) - $actorSymbol(nextFiringTime) >= 0) {
 	// Output was not produced, but time matches, which
 	// means the microstep was too early. Request a refiring.
-	$fireAt($ModelName()_$actorName(), $DirectorName()->currentModelTime, 0);
+	$fireAt(actor, (*(director->getModelTime))(director), 0);
 }
 
 return true;

@@ -95,9 +95,9 @@ public class PID extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
 
         LinkedList args = new LinkedList();
-        boolean resetConnected = (((ptolemy.domains.de.lib.PID) getComponent()).reset.getWidth() > 0);
-        args.add(Boolean.toString(resetConnected));
-
+        if (((ptolemy.domains.de.lib.PID) getComponent()).reset.isOutsideConnected())
+            codeStream.appendCodeBlock("resetConnectedBlock", args);
+        
         codeStream.appendCodeBlock("postFireBlock", args);
         return processCode(codeStream.toString());
     }

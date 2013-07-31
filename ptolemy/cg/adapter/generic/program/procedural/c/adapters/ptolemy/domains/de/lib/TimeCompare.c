@@ -1,23 +1,13 @@
 /***preinitBlock***/
-$structure(DoubleQueue)
-
-/** A boolean parameter to decide whether inputs at input2 should be ignored
-if they lead to negative outputs. */
 boolean $actorSymbol(nonnegative);
-
-/** The list to store the time stamps received at input1 but have never been
-compared. */
-DoubleQueue $actorSymbol(input1TimeStamps);
-
-/** The list to store the time stamps received at input2 but have never been
-compared. */
-DoubleQueue $actorSymbol(input2TimeStamps);
+PblList* $actorSymbol(input1TimeStamps);
+PblList* $actorSymbol(input2TimeStamps);
 /**/
 
-/***initializeBlock***/
+/***initBlock***/
 $actorSymbol(nonnegative) = $val(nonnegative);
-DoubleQueueClear(&$actorSymbol(input1TimeStamps));
-DoubleQueueClear(&$actorSymbol(input2TimeStamps));
+$actorSymbol(input1TimeStamps) = pblListNewLinkedList();
+$actorSymbol(input2TimeStamps) = pblListNewLinkedList();
 /**/
 
 /*** prefireBlock ***/
@@ -25,41 +15,59 @@ return ($hasToken(input1) || $hasToken(input2));
 /**/
 
 /***fireBlock***/
-Time currentTime = $DirectorName()->currentModelTime;
-
+struct Director* director = (*(actor->getDirector))(actor);
 while ($hasToken(input1)) {
 	$get(input1);
-	DoubleQueuePut(&$actorSymbol(input1TimeStamps), currentTime);
+	Time* dynCurrentTime = malloc(sizeof(Time));
+	if (!dynCurrentTime) {
+		fprintf(stderr, "Allocation Error : TimeCompare_fire");
+		exit(-1);
+	}
+	*dynCurrentTime = (*(director->getModelTime))(director);
+	pblListAdd($actorSymbol(input1TimeStamps), dynCurrentTime);
 }
 
 while ($hasToken(input2)) {
 	$get(input2);
-	DoubleQueuePut(&$actorSymbol(input2TimeStamps), currentTime);
+	Time* dynCurrentTime = malloc(sizeof(Time));
+	if (!dynCurrentTime) {
+		fprintf(stderr, "Allocation Error : TimeCompare_fire");
+		exit(-1);
+	}
+	*dynCurrentTime = (*(director->getModelTime))(director);
+	pblListAdd($actorSymbol(input2TimeStamps), dynCurrentTime);
 }
 
-while (DoubleQueueHasToken(&$actorSymbol(input1TimeStamps)) && DoubleQueueHasToken(&$actorSymbol(input2TimeStamps))) {
-	double input1 = DoubleQueueGet(&$actorSymbol(input1TimeStamps));
-	double input2 = DoubleQueueTake(&$actorSymbol(input2TimeStamps));
+while (!pblListIsEmpty($actorSymbol(input1TimeStamps)) && !pblListIsEmpty($actorSymbol(input2TimeStamps))) {
+	double* dynInput1 = pblListPeek($actorSymbol(input1TimeStamps));
+	double* dynInput2 = pblListPoll($actorSymbol(input2TimeStamps));
+	double input1 = *dynInput1;
+	double input2 = *dynInput2;
+	free(dynInput2);
 
 	double difference = input2 - input1;
 
 	if ($actorSymbol(nonnegative)) {
-		while (difference < 0.0 && DoubleQueueHasToken(&$actorSymbol(input2TimeStamps))) {
-			input2 = DoubleQueueTake(&$actorSymbol(input2TimeStamps));
+		while (difference < 0.0 && !pblListIsEmpty($actorSymbol(input2TimeStamps))) {
+			dynInput2 = pblListPoll($actorSymbol(input2TimeStamps));
+			double input2 = *dynInput2;
+			free(dynInput2);
 			difference = input2 - input1;
 		}
 		if (difference >= 0.0) {
-			DoubleQueueTake(&$actorSymbol(input1TimeStamps));
+			pblListPoll($actorSymbol(input1TimeStamps));
+			free(dynInput1);
 			$put(output, difference);
 		}
 	} else {
-		DoubleQueueTake(&$actorSymbol(input1TimeStamps));
+		pblListPoll($actorSymbol(input1TimeStamps));
+		free(dynInput1);
 		$put(output, difference);
 	}
 }
 /**/
 
 /*** wrapupBlock ***/
-DoubleQueueClear(&$actorSymbol(input1TimeStamps));
-DoubleQueueClear(&$actorSymbol(input2TimeStamps));
+pblListFree($actorSymbol(input1TimeStamps));
+pblListFree($actorSymbol(input2TimeStamps));
 /**/

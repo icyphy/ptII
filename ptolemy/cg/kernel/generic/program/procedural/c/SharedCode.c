@@ -9,7 +9,7 @@ typedef char* string;
 /* Infinity is a valid Ptolemy identifier. */
 #define Infinity HUGE_VAL
 
-#ifdef linux
+#ifdef __linux__
 /* Linux tends to have NAN. */
 #define NaN (__builtin_nanf (""))
 #else /*linux*/

@@ -57,6 +57,32 @@ Token DoubleArray_clone(Token thisToken, ...) {
 // @param token The token to be converted.
 // @param targetType The type to convert the elements of the given token to.
 Token DoubleArray_convert(Token token, ...) {
+	switch (token.type) {
+		case TYPE_DoubleArray:
+			break;
+#ifdef TYPE_Int
+		case TYPE_Int:
+			token = $convert_Double_DoubleArray(InttoDouble(token.payload.Int));
+			break;
+#endif
+#ifdef TYPE_Double
+		case TYPE_Double:
+			token = $convert_Double_DoubleArray(token.payload.Double);
+			break;
+#endif
+#ifdef TYPE_IntArray
+		case TYPE_IntArray:
+			token = $convert_IntArray_DoubleArray(token);
+			break;
+#endif
+
+			// FIXME: not finished
+		default:
+			fprintf(stderr, "DoubleArray_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+			exit(-1);
+			break;
+	}
+	return token;
 //    int i;
 //    Token result;
 //    Token element;

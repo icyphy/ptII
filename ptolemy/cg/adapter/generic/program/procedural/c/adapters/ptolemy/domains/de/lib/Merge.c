@@ -19,21 +19,19 @@ $actorSymbol(discardEvents) = $discardEvents;
 
 
 /***prefireBlock***/
-// Return false if there was a firing at the current time and
-// microstep that produced an output token and there are more
-// tokens on other channels that are waiting to be produced at
-// the same time but future microsteps.
+struct Director* director = (*(actor->getDirector))(actor);
 if($actorSymbol(moreTokensOnOtherChannels)
-		&& $DirectorName()->currentModelTime == $actorSymbol(previousModelTime)
-		&& $DirectorName()->currentMicrostep == $actorSymbol(previousMicrostep)) {
+		&& (*(director->getModelTime))(director) == $actorSymbol(previousModelTime)
+		&& (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director) == $actorSymbol(previousMicrostep)) {
 	return false;
 }
 return true;
 /**/
 
 /***fireBeginBlock***/
-$actorSymbol(previousModelTime) = $DirectorName()->currentModelTime;
-$actorSymbol(previousMicrostep) = $DirectorName()->currentMicrostep;
+struct Director* director = (*(actor->getDirector))(actor);
+$actorSymbol(previousModelTime) = (*(director->getModelTime))(director);
+$actorSymbol(previousMicrostep) = (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director);
 $actorSymbol(moreTokensOnOtherChannels) = false;
 
 Token firstAvailableToken;
@@ -72,7 +70,8 @@ if ($hasToken(input#$channel)) {
 		} else {
 			// Refiring the actor to handle the other tokens
 			// that are still in channels
-			$fireAt($ModelName()_$actorName(), $DirectorName()->currentModelTime, $DirectorName()->currentMicrostep+1);
+			$fireAt(actor, (*(director->getModelTime))(director),
+					(*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director)+1);
 			$actorSymbol(moreTokensOnOtherChannels) = true;
 			return;
 		}

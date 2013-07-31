@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -98,7 +99,10 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         } else {
             Type type = actor.output.getType();
             if (!getCodeGenerator().isPrimitive(type)) {
-                initArgs.add("$tokenFunc($get(output)::zero())");
+                if (getCodeGenerator() instanceof CCodeGenerator)
+                    initArgs.add("$new(" + getCodeGenerator().codeGenType(type) + "(0))");
+                else
+                    initArgs.add("$tokenFunc($get(output)::zero())");
             } else {
                 // FIXME: this seems wrong, why doesn't zero work here?
                 //$PTII/bin/ptcg -language java ./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/AddSubtract.xml

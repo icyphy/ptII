@@ -27,11 +27,11 @@ $actorSymbol(enabled) = true;
 $actorSymbol(triggered) = true;
 $actorSymbol(outputProduced) = false;
 $actorSymbol(stopTime) = $stopTime;
-$actorSymbol(cycleStartTime) = $DirectorName()->currentModelTime;
+struct Director* director = (*(actor->getDirector))(actor);
+$actorSymbol(cycleStartTime) = (*(director->getModelTime))(director);
 $actorSymbol(nextOutputTime) = $actorSymbol(cycleStartTime) + $actorSymbol(offsets)[$actorSymbol(phase)];
 $actorSymbol(nextOutputIndex) = 1;
-
-$fireAt($ModelName()_$actorName(), $actorSymbol(nextOutputTime), $actorSymbol(nextOutputIndex));
+(*(director->fireAt))(director, (struct Actor*)actor, $actorSymbol(nextOutputTime), $actorSymbol(nextOutputIndex));
 /**/
 
 /***startConnectedInit***/
@@ -44,7 +44,7 @@ $actorSymbol(enabled) = false;
 if ($hasToken(start#0)) {
 	(void)$get(start#0);
 	// Restart everything.
-	$ModelName()_$actorName()_initialize();
+	(*(actor->initialize))(actor);
 	$actorSymbol(enabled) = true;
 }
 /**/
@@ -78,16 +78,18 @@ if (!$actorSymbol(enabled)) {
 	return;
 }
 
-double comparison = $actorSymbol(nextOutputTime) - $DirectorName()->currentModelTime;
+struct Director* director = (*(actor->getDirector))(actor);
+double comparison = $actorSymbol(nextOutputTime) - (*(director->getModelTime))(director);
 if (comparison > 0) {
 	return;
 } else if (comparison == 0) {
 	// It is the right time to produce an output. Check
 	// the index.
-	if ($actorSymbol(nextOutputIndex) > $DirectorName()->currentMicrostep) {
+	if ($actorSymbol(nextOutputIndex) > (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director)) {
 		// We have not yet reached the requisite index.
 		// Request another firing at the current time.
-		$fireAt($ModelName()_$actorName(), $DirectorName()->currentModelTime, $DirectorName()->currentMicrostep + 1);
+		(*(director->fireAt))(director, (struct Actor*)actor, (*(director->getModelTime))(director),
+				(*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director) + 1);
 		return;
 	}
 	// At this point, the time matches the next output, and
@@ -109,7 +111,8 @@ if (comparison > 0) {
 /**/
 
 /***postfireBlock($offsetSize, $triggerConnected)***/
-if ($DirectorName()->currentModelTime > $actorSymbol(stopTime)) {
+struct Director* director = (*(actor->getDirector))(actor);
+if ((*(director->getModelTime))(director) > $actorSymbol(stopTime)) {
 	return true;
 }
 if ($actorSymbol(outputProduced)) {
@@ -130,7 +133,8 @@ if ($actorSymbol(outputProduced)) {
 		$actorSymbol(nextOutputTime) = nextOutputTime;
 		$actorSymbol(nextOutputIndex) = 1;
 	}
-	$fireAt($ModelName()_$actorName(), $actorSymbol(nextOutputTime), $actorSymbol(nextOutputIndex));
+	(*(director->fireAt))(director, (struct Actor*)actor, $actorSymbol(nextOutputTime),
+			$actorSymbol(nextOutputIndex));
 
 	$actorSymbol(outputProduced) = false;
 	if ($triggerConnected) {

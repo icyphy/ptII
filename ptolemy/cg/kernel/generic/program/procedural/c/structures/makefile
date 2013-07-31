@@ -55,7 +55,17 @@ PTCLASSALLJARS =
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	DoubleQueue.c 
+	DoubleQueue.c \
+	pbl.c \
+	pbl.h \
+	pblCollection.c \
+	pblhash.c \
+	pblHeap.c \
+	pblIterator.c \
+	pblList.c \
+	pblMap.c \
+	pblPriorityQueue.c \
+	pblSet.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

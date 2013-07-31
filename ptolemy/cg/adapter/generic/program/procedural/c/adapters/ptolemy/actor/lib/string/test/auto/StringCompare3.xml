@@ -2,17 +2,25 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StringCompare3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 100.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 47, 815, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 47, 816, 649}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 497]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -22,6 +30,10 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test PortParameters.&#10;In this case, we want to use the Parameter value&#10;of the secondString Parameter in StringCompare.&#10;The tricky bit is that the port is not connected.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
+        </property>
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315, 125}">
         </property>
     </property>
     <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
@@ -34,6 +46,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 235.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
         <doc>Create a constant sequence with a string value.</doc>
@@ -45,6 +61,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 225.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true}">
@@ -52,6 +72,10 @@
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 235.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

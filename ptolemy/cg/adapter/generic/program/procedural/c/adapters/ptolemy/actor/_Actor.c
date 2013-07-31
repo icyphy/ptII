@@ -1,46 +1,32 @@
-#include "$ModelName()__Actor.h"
+#include "_Actor.h"
 
-// Sets the actor with some parameters
-void ActorSet(Actor * actor, CompositeActor * container, int nbPorts, int depth, int priority,
-		void (*preinitializeFunction)(void), void (*initializeFunction)(void),
-		boolean (*prefireFunction)(void), void (*fireFunction)(void),
-		boolean (*postfireFunction)(void), void (*wrapupFunction)(void)) {
-
-	if (actor == NULL) {
-		perror("Trying to set a null actor !");
-		exit(1);
+struct Actor* Actor_New() {
+	struct Actor* newActor = malloc(sizeof(struct Actor));
+	if (newActor == NULL) {
+		fprintf(stderr, "Allocation error : Actor_New\n");
+		exit(-1);
 	}
+	Actor_Init(newActor);
+	newActor->free = Actor_New_Free;
 
-	actor->container = container;
-	actor->depth = depth;
-	actor->fireFunction = fireFunction;
-	actor->initializeFunction = initializeFunction;
-	actor->nbPorts = nbPorts;
-	if ((actor->ports = calloc (nbPorts, sizeof(IOPort))) == NULL) {
-		perror("Allocation problem (ActorSet)");
-		exit(1);
-	}
-	actor->postfireFunction = postfireFunction;
-	actor->prefireFunction = prefireFunction;
-	actor->preinitializeFunction = preinitializeFunction;
-	actor->priority = priority;
-	actor->wrapupFunction = wrapupFunction;
-
-	return;
+	return newActor;
 }
+void Actor_Init(struct Actor* actor) {
+	actor->typeActor = ACTOR;
 
-// Delete properly an actor
-void ActorDelete(Actor * a) {
-	if (a == NULL)
-		return;
-
-	if (a->ports != NULL) {
-		int i;
-		for (i = 0 ; i < a->nbPorts ; i++)
-			IOPortDelete(a->ports + i);
-	}
-	free (a->ports);
-
-	return;
+	actor->fire = NULL;
+	actor->getDirector = NULL;
+	actor->getExecutiveDirector = NULL;
+	actor->initialize = NULL;
+	actor->iterate = NULL;
+	actor->inputPortList = NULL;
+	actor->outputPortList = NULL;
+	actor->postfire = NULL;
+	actor->prefire = NULL;
+	actor->preinitialize = NULL;
+	actor->wrapup = NULL;
 }
-
+void Actor_New_Free(struct Actor* actor) {
+	if (actor)
+		free(actor);
+}

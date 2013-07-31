@@ -1,63 +1,75 @@
-#include "$ModelName()__Receiver.h"
+#include "_Receiver.h"
 
-// Sets the remoteReceiver field to the receiver in parameter
-void ReceiverSetReceiver(Receiver * r, IOPort * port) {
-	if (r == NULL) {
-		perror("Trying to set a NULL receiver !");
-		exit(1);
+// Constructors of the basic receiver
+struct Receiver* Receiver_New() {
+	struct Receiver* newReceiver = malloc(sizeof(struct Receiver));
+	if (newReceiver == NULL) {
+		fprintf(stderr, "Allocation error : Receiver_New ($ModelName()__Receiver.c)\n");
+		exit(-1);
 	}
-	r->port = port;
-	return;
-}
-// Sets the remoteReceiver field to the far receiver in parameter
-void ReceiverSetRemoteFarReceiver(Receiver ** r, Receiver * remote) {
-	*r = remote;
-	return;
+	Receiver_Init(newReceiver);
+	newReceiver->free = Receiver_New_Free;
+
+	return newReceiver;
 }
 
-// Clears the queue
-void ReceiverClear(Receiver * r) {
-	if (r == NULL) {
-		perror("Trying to clear a NULL receiver !");
-		exit(1);
-	}
-	QueueClear(&(r->events));
-	return;
+// Initialisation method
+void Receiver_Init(struct Receiver* r) {
+	r->typeReceiver = RECEIVER;
+	r->container = NULL;
+
+	r->getModelTime = Receiver_GetModelTime;
+	r->clear = NULL;
+	r->elementList = NULL;
+	r->get = NULL;
+	r->hasRoom = NULL;
+	r->hasRoom1 = NULL;
+	r->hasToken = NULL;
+	r->hasToken1 = NULL;
+	r->put = NULL;
+	r->putArray = Receiver_PutArray;
+	r->putArrayToAll = Receiver_PutArrayToAll;
+	r->putToAll = Receiver_PutToAll;
 }
 
-// Returns the first element of the queue
-Token ReceiverGet(Receiver * r) {
-	if (!ReceiverHasToken(r))
-		return emptyToken;
-
-	Token * p_result = (Token*)QueueTake(&(r->events));
-	Token result = *p_result;
-	if (p_result != NULL)
-		free(p_result);
-	return result;
+// Destructors
+void Receiver_New_Free(struct Receiver* r) {
+	if (r)
+		free(r);
 }
 
-// Returns a boolean which says if there are token in the receiver
-bool ReceiverHasToken(Receiver * r) {
-	if (r == NULL) {
-		return false;
-	}
-	return (!QueueIsEmpty(&(r->events)));
+// Other methods
+Time Receiver_GetModelTime(struct Receiver* r) {
+	struct CompositeActor* containerActor = (struct CompositeActor*)(r->container->container);
+	struct Director* containerDirector = (struct Director*)(containerActor->_director);
+	return (*(containerDirector->getModelTime))(containerDirector);
 }
+void Receiver_PutArray(struct Receiver* r, Token* tokenArray, int numberOfTokens) {
+	// If there is no container, then perform no conversion.
+	if (r->container == NULL) {
+		for (int i = 0; i < numberOfTokens; i++) {
+			(*(r->put))(r, tokenArray[i]);
+		}
+	} else {
+		for (int i = 0; i < numberOfTokens; i++) {
+			(*(r->put))(r, tokenArray[i]);
+		}
+	}
+}
+void Receiver_PutArrayToAll(struct Receiver* r, Token* tokens,
+		int numberOfTokens, PblList* receivers) {
 
-// Puts an event in the queue
-void ReceiverPut(Receiver * r, Token t) {
-	if (r == NULL) {
-		perror("Trying to put an event in a NULL receiver !");
-		exit(1);
+	PblIterator* receiversIterator = pblIteratorNew(receivers);
+	while (pblIteratorHasNext(receiversIterator)) {
+		struct Receiver* receiver = pblIteratorNext(receiversIterator);
+		//struct IOPort* container = receiver->container;
+		(*(receiver->putArray))(receiver, tokens, numberOfTokens);
 	}
-	// FIXME : need to free this malloc on get
-	Token * toPut = malloc(sizeof(Token));
-	if (toPut == NULL) {
-		perror("Allocation Error (ReceiverPut)");
-		exit(1);
+}
+void Receiver_PutToAll(struct Receiver* r, Token token, PblList* receivers) {
+	PblIterator* receiversIterator = pblIteratorNew(receivers);
+	while (pblIteratorHasNext(receiversIterator)) {
+		struct Receiver* receiver = pblIteratorNext(receiversIterator);
+		(*(receiver->put))(receiver, token);
 	}
-	*toPut = t;
-	QueuePut(&(r->events), toPut);
-	return;
 }

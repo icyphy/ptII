@@ -6,28 +6,33 @@
 #ifndef ACTOR_H_
 #define ACTOR_H_
 
-#include "$ModelName()__IOPort.h"
-#include "$ModelName()_types.h"
+#include "_IOPort.h"
+#include "_types.h"
 
+#define ACTOR 0
 
 struct Actor {
-	IOPort * ports;
-	CompositeActor * container;
-	int nbPorts;
-	int depth;
-	int priority;
-	void (*preinitializeFunction)(void);
-	void (*initializeFunction)(void);
-	boolean (*prefireFunction)(void);
-	void (*fireFunction)(void);
-	boolean (*postfireFunction)(void);
-	void (*wrapupFunction)(void);
+	int typeActor;
+
+	struct CompositeActor* container;
+
+	void (*free)(struct Actor*);
+
+	void (*fire)(struct Actor*);
+	struct Director* (*getDirector)(struct Actor*);
+	struct Director* (*getExecutiveDirector)(struct Actor*);
+	void (*initialize)(struct Actor*);
+	int (*iterate)(struct Actor*, int);
+	PblList* (*inputPortList)(struct Actor*);
+	PblList* (*outputPortList)(struct Actor*);
+	bool (*postfire)(struct Actor*);
+	bool (*prefire)(struct Actor*);
+	void (*preinitialize)(struct Actor*);
+	void (*wrapup)(struct Actor*);
 };
 
-void ActorSet(Actor * actor, CompositeActor * container, int nbPorts, int depth, int priority,
-		void (*preinitializeFunction)(void), void (*initializeFunction)(void),
-		boolean (*prefireFunction)(void), void (*fireFunction)(void),
-		boolean (*postfireFunction)(void), void (*wrapupFunction)(void));
-void ActorDelete(Actor * a);
+struct Actor* Actor_New();
+void Actor_Init(struct Actor* actor);
+void Actor_New_Free(struct Actor* actor);
 
 #endif

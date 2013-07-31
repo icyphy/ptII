@@ -43,7 +43,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.cg.kernel.generic.CGException;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -153,7 +152,7 @@ public class TemplateParser {
                     .replace("]", "_X_RBRACKET_X_").replace("+", "_X_PLUS_X_")
                     .replace("\\", "_X_BACKSLASH_X_")
                     .replace("/", "_X_FORWARDSLASH_X_")
-                    .replace("^", "_X_CARET_X_");
+                    .replace("^", "_X_CARET_X_").replace(",", "_X_COMA_X_");
         } else {
             return name;
         }
@@ -1234,7 +1233,7 @@ public class TemplateParser {
                     .replace("_X_RBRACKET_X_", "]").replace("_X_PLUS_X_", "+")
                     .replace("_X_BACKSLASH_X_", "\\")
                     .replace("_X_FORWARDSLASH_X_", "/")
-                    .replace("_X_CARET_X_", "^");
+                    .replace("_X_CARET_X_", "^").replace("_X_COMA_X_", ",");
         } else {
             return name;
         }
@@ -1650,8 +1649,9 @@ public class TemplateParser {
                     "Parameters are only supported for"
                             + "actors, but this component is not one.");
         }
-        
-        return "(*(" + parameters.get(0) + ".container->director->fireAtFunction))(&" + parameter +");";
+        String result = "struct Director* director = (*(actor->getDirector))(actor);";
+        result += "(*(director->fireAt))(director, (struct Actor*)" + parameter + ");";
+        return result;
     }
     
     private String _replaceGetMacro(String parameter)

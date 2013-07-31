@@ -6,41 +6,71 @@
 #ifndef DIRECTOR_H_
 #define DIRECTOR_H_
 
-#include "$ModelName()__IOPort.h"
-#include "$ModelName()_CalendarQueue.h"
-#include "$ModelName()__Actor.h"
-#include "$ModelName()__CompositeActor.h"
+#include "_IOPort.h"
+#include "_Actor.h"
+#include "_CompositeActor.h"
+#include "_LocalClock.h"
 
+#define DIRECTOR 0
 
 struct Director {
-	Time startTime;
-	Time stopTime;
-	CompositeActor * containerActor;
-	Actor * currentActor;
-	Time currentModelTime;
-	int currentMicrostep;
-	bool isInitializing;
-	void (*preinitializeFunction)(void);
-	void (*initializeFunction)(void);
-	boolean (*prefireFunction)(void);
-	void (*fireFunction)(void);
-	boolean (*postfireFunction)(void);
-	void (*wrapupFunction)(void);
-	void (*transferInputs)(void);
-	void (*transferOutputs)(void);
+	int typeDirector;
 
-	// FIXME : DE Specific
-	void (*fireAtFunction)(Actor *, Time, int);
-	CalendarQueue cqueue;
-	bool noMoreActorToFire;
-	bool stopWhenQueueIsEmpty;
-	bool exceedStopTime;
+	struct CompositeActor* container;
 
-	// FIXME : SDF Specific
-	int iterations;
-	int iterationsCount;
+	struct LocalClock* localClock;
+	Time _startTime;
+	Time _stopTime;
 
+	void (*free)(struct Director*);
+
+	void (*fire)(struct Director*);
+	Time (*fireAt)(struct Director*, struct Actor*, Time, int);
+	Time (*fireContainerAt)(struct Director*, Time, int);
+	Time (*getEnvironmentTime)(struct Director*);
+	Time (*getGlobalTime)(struct Director*);
+	Time (*getModelStartTime)(struct Director*);
+	Time (*getModelStopTime)(struct Director*);
+	Time (*getModelTime)(struct Director*);
+	void (*initialize)(struct Director*);
+	void (*initialize1)(struct Director*, struct Actor*);
+	bool (*isEmbedded)(struct Director*);
+	int (*iterate)(struct Director*, int);
+	bool (*postfire)(struct Director*);
+	bool (*prefire)(struct Director*);
+	void (*preinitialize)(struct Director*);
+	void (*preinitialize1)(struct Director*, struct Actor*);
+	bool (*transferInputs)(struct Director*, struct IOPort*);
+	bool (*transferOutputs)(struct Director*);
+	bool (*transferOutputs1)(struct Director*, struct IOPort*);
+	void (*wrapup)(struct Director*);
+	bool (*isTopLevel)(struct Director*);
 };
 
+struct Director* Director_New();
+void Director_Init(struct Director* director);
+void Director_New_Free(struct Director* director);
 
-#endif /* DEDIRECTOR_H_ */
+void Director_Fire(struct Director* director);
+Time Director_FireAt(struct Director* director, struct Actor*, Time time, int microstep);
+Time Director_FireContainerAt(struct Director* director, Time time, int microstep);
+Time Director_GetEnvironmentTime(struct Director* director);
+Time Director_GetGlobalTime(struct Director* director);
+Time Director_GetModelStartTime(struct Director* director);
+Time Director_GetModelStopTime(struct Director* director);
+Time Director_GetModelTime(struct Director* director);
+void Director_Initialize(struct Director* director);
+void Director_Initialize1(struct Director* director, struct Actor* actor);
+bool Director_IsEmbedded(struct Director* director);
+int Director_Iterate(struct Director* director, int count);
+bool Director_Postfire(struct Director* director);
+bool Director_Prefire(struct Director* director);
+void Director_Preinitialize(struct Director* director);
+void Director_Preinitialize1(struct Director* director, struct Actor* actor);
+bool Director_TransferInputs(struct Director* director, struct IOPort* port);
+bool Director_TransferOutputs(struct Director* director);
+bool Director_TransferOutputs1(struct Director* director, struct IOPort* port);
+void Director_Wrapup(struct Director* director);
+bool Director_IsTopLevel(struct Director* director);
+
+#endif /* DIRECTOR_H_ */

@@ -1,6 +1,4 @@
 /***preinitBlock***/
-$include(<float.h>)
-// The time when the previous input arrives.
 Time $actorSymbol(previousTime);
 /**/
 
@@ -13,8 +11,8 @@ $actorSymbol(previousTime) = -DBL_MAX;
 if ($hasToken(input)) {
 	$get(input);
 }
-
-Time currentTime = $DirectorName()->currentModelTime;
+struct Director* director = (*(actor->getDirector))(actor);
+Time currentTime = (*(director->getModelTime))(director);
 
 if ($actorSymbol(previousTime) != -DBL_MAX) {
 	Time outToken = currentTime - $actorSymbol(previousTime);
@@ -23,5 +21,6 @@ if ($actorSymbol(previousTime) != -DBL_MAX) {
 /**/
 
 /***postfireBlock***/
-$actorSymbol(previousTime) = $DirectorName()->currentModelTime;
+struct Director* director = (*(actor->getDirector))(actor);
+$actorSymbol(previousTime) = (*(director->getModelTime))(director);
 /**/

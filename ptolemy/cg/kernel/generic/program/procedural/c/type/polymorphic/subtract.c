@@ -89,9 +89,7 @@ Token subtract_Double_Array(double a1, Token a2) {
 /**/
 
 /*** subtract_Double_Double() ***/
-inline double subtract_Double_Double(double a1, double a2) {
-    return a1 - a2;
-}
+#define subtract_Double_Double(a1, a2) ((a1) - (a2))
 /**/
 
 /*** subtract_Double_Int() ***/

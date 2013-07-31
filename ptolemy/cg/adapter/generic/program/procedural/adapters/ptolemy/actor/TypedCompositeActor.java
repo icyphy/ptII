@@ -213,7 +213,7 @@ public class TypedCompositeActor extends
      *   the actor.
      */
     @Override
-    final public String generateVariableInitialization()
+    public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         // code.append(_eol + getCodeGenerator().comment(1, "Composite actor "

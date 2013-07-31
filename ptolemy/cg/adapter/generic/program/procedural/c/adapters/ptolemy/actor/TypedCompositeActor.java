@@ -988,10 +988,20 @@ public class TypedCompositeActor extends
      */
     @Override
     public String generateVariableDeclaration() throws IllegalActionException {
-        CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream.clear();
+        return "";
+    }
+    
+    /** Generate variable initialization for the referenced parameters.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter associated with
+     *   an actor throws it while generating variable declarations for
+     *   the actor.
+     */
+    @Override
+    public String generateVariableInitialization()
+            throws IllegalActionException {
         
-        return processCode(codeStream.toString());
+        return "";
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
