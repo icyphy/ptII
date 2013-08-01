@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
+import ptolemy.actor.QMAttributes;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.ResourceAttributes;
@@ -621,8 +622,7 @@ public class AFDXESs extends AtomicQuantityManager {
      *  AFDXESs. XXX  
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
-    public static class AFDXESsAttributes extends ResourceAttributes {
-
+    public static class AFDXESsAttributes extends QMAttributes {
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.
          *  @param decorator The decorator.
