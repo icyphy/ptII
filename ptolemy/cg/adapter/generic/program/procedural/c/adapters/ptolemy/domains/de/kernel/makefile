@@ -57,10 +57,14 @@ JSRCS = \
 	DEReceiver.java
 
 OTHER_FILES_TO_BE_JARED = \
-	CalendarQueue.c \
-	CalendarQueue.h \
-	DEEvent.c \
-	DEEvent.h 
+	_CalendarQueue.c \
+	_CalendarQueue.h \
+	_DEDirector.c \
+	_DEDirector.h \
+	_DEEvent.c \
+	_DEEvent.h \
+	_DEReceiver.c \
+	_DEReceiver.h
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
