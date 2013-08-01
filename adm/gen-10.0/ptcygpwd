@@ -1,0 +1,12 @@
+#!/bin/sh
+# $Id: ptcygpwd 52715 2009-03-19 02:05:15Z cxh $
+
+# Print the pwd without the /cygdrive/c, which 
+# Java can't understand.
+
+case "`uname -s`" in
+    CYGWIN_NT-*)
+	cygpath -m `pwd`;;
+    *)
+	echo `pwd`;;
+esac

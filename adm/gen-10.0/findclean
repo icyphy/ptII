@@ -1,0 +1,5 @@
+#! /bin/sh
+# $Id: findclean 47965 2008-01-26 17:29:50Z cxh $
+# Remove cruft from the current directory
+find . \( -name "#*" -o -name codeDoc -o -name CVS  \)  -exec rm -rf {} \;
+find . \( -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name core -o -name .cvsignore -o -name "*~" -o -name "*.out" \)  -exec rm {} \;

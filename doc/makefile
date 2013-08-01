@@ -54,7 +54,7 @@ CLASSPATH =	.$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)
 
 # Used to build jar files
 PTPACKAGE = 	doc
-PTVERSION =	8.1
+PTVERSION =	10.0
 PTCLASSJAR =
 
 # Files in this directory (but not the subdirectories) that should go
