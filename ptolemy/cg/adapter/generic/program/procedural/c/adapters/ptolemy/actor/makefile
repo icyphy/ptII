@@ -67,8 +67,6 @@ OTHER_FILES_TO_BE_JARED = \
 	_Director.h \
 	_IOPort.c \
 	_IOPort.h \
-	_Queue.c \
-	_Queue.h \
 	_Receiver.c \
 	_Receiver.h \
 	TypedCompositeActor.c
