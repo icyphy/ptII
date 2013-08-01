@@ -40,6 +40,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -176,6 +177,17 @@ public class MetroIIPtidesPort extends MirrorPort {
         return times;
     }
 
+    /** Get the microstep of the event that contained the token.
+     * @param t The token.
+     * @return The microstep.
+     */
+    public int getMicrostepForToken(Token t) {
+        Integer microstep = _transmittedTokenMicrosteps.get(t); 
+        _transmittedTokenMicrosteps.remove(t); 
+        return microstep;
+    }
+
+    
     /**
      *  @return True if port is an actuator port.
      */
@@ -223,6 +235,8 @@ public class MetroIIPtidesPort extends MirrorPort {
             throws IllegalActionException, NoRoomException {
         Time timestamp = ((CompositeActor) getContainer()).getDirector()
                 .getModelTime();
+        int microstep = ((MetroIIPtidesDirector)((CompositeActor) getContainer()).getDirector())
+                .getIndex();
         Time sourceTimestamp = ((MetroIIPtidesDirector) ((CompositeActor) getContainer())
                 .getDirector()).getCurrentSourceTimestamp();
         if (sourceTimestamp == null) {
@@ -230,6 +244,7 @@ public class MetroIIPtidesPort extends MirrorPort {
         }
         if (_transmittedTokenTimestamps == null) {
             _transmittedTokenTimestamps = new HashMap();
+            _transmittedTokenMicrosteps = new HashMap();
             _transmittedTokenCnt = new HashMap();
         }
         if (_transmittedTokenTimestamps.get(token) == null) {
@@ -237,14 +252,14 @@ public class MetroIIPtidesPort extends MirrorPort {
         }
         _transmittedTokenTimestamps.put(token, new Object[] { timestamp,
                 sourceTimestamp });
+
+        _transmittedTokenMicrosteps.put(token, microstep);
+
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token)
                 .intValue() + 1);
         super.send(channelIndex, token);
     }
 
-    protected HashMap<Token, Object[]> _transmittedTokenTimestamps;
-
-    protected HashMap<Token, Integer> _transmittedTokenCnt;
 
 
     /** Change visibility of parameters depending on the type of
@@ -317,4 +332,11 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     private boolean _isNetworkPort;
 
+    private HashMap<Token, Object[]> _transmittedTokenTimestamps;
+
+    private HashMap<Token, Integer> _transmittedTokenMicrosteps;
+
+    private HashMap<Token, Integer> _transmittedTokenCnt;
+
+    
 }

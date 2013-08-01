@@ -62,6 +62,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
+import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
@@ -811,15 +812,17 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                     .getAssociatedPort())
                                     .getTimeStampForToken(t);
 
+                            int microstep = ((MetroIIPtidesPort) ((MirrorPort) port)
+                                    .getAssociatedPort())
+                                    .getMicrostepForToken(t);
+
                             Time timestamp = (Time) timestamps[0];
-                            Time sourceTimestamp = (Time) timestamps[1];
 
                             Token[] values = new Token[] {
                                     new DoubleToken(timestamp.getDoubleValue()),
-                                    new IntToken(director.getMicrostep()),
-                                    t,
-                                    new DoubleToken(
-                                            sourceTimestamp.getDoubleValue()) };
+                                    new IntToken(microstep),
+                                    t };
+
                             RecordToken record = new RecordToken(
                                     PtidesNetworkType.LABELS, values);
                             try {

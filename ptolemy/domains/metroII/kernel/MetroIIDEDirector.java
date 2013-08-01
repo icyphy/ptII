@@ -396,7 +396,7 @@ public class MetroIIDEDirector extends DEDirector implements
                                 + this.getModelTime() + " "
                                 + this.getMicrostep());
                     }
-                    System.out.println(_eventQueue); 
+                    // System.out.println(_eventQueue); 
                     int result = actorAndState.getSecond();
 
                     if (actorAndState.getFirst() != null
