@@ -58,6 +58,7 @@ JSIMPLE_TESTS = \
 	ParseTreeFreeVariableCollector.tcl \
 	ParseTreeWriter.tcl \
 	PtParser.tcl \
+	Rename.tcl \
 	ScopeExtendingAttribute.tcl \
 	StringParameter.tcl \
 	UtilityFunctions.tcl \
