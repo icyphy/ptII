@@ -1007,6 +1007,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                                     ((Variable) listener)._parseTree,
                                     (Variable) listener, this, name);
                             ParseTreeWriter writer = new ParseTreeWriter();
+                            // Set the ParseTreeWriter to write expressions in
+                            // string mode if the listener is in string mode so
+                            // referenced variables are correctly renamed. See:
+                            // https://projects.ecoinformatics.org/ecoinfo/issues/5723
+                            writer.setStringMode(((Variable) listener).isStringMode());
                             ((Variable) listener)
                                     .setExpression(writer
                                             .parseTreeToExpression(((Variable) listener)._parseTree));

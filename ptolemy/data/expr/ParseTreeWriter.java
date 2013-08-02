@@ -32,6 +32,7 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -90,6 +91,14 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         }
 
         return writer.toString();
+    }
+    
+    /** Specify whether the expression to write is in string mode.
+     *  FIXME string mode has only been implemented for leaf and sum nodes.
+     *  @param stringMode True to put the expression to write in string mode. 
+     */
+    public void setStringMode(boolean stringMode) {
+        _isStringMode = stringMode;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,7 +178,12 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
 
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _writer.print(node.getToken().toString());
+            ptolemy.data.Token token = node.getToken();
+            if(_isStringMode && (token instanceof StringToken)) {
+                _writer.print(((StringToken)token).stringValue());
+            } else {
+                _writer.print(token.toString());
+            }
         } else {
             _writer.print(node.getName());
         }
@@ -282,9 +296,13 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
 
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
-        _writer.print("(");
+        if (!_isStringMode) {
+            _writer.print("(");
+        }
         _printChildrenSeparated(node, node.getLexicalTokenList());
-        _writer.print(")");
+        if (!_isStringMode) {
+            _writer.print(")");
+        }
     }
 
     public void visitUnaryNode(ASTPtUnaryNode node)
@@ -317,7 +335,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
 
             for (int i = 1; i < node.jjtGetNumChildren(); i++) {
                 Token separator = (Token) separators.next();
-                _writer.print(separator.image);
+                if (!_isStringMode || separator.image != null) {
+                    _writer.print(separator.image);
+                }
                 _printChild(node, i);
             }
         }
@@ -334,4 +354,8 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             }
         }
     }
+    
+    /** Indicates if string mode is on. */
+    private boolean _isStringMode = false;
+    
 }
