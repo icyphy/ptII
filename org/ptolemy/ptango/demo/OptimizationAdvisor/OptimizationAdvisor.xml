@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OptimizationAdvisor" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
         </property>
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
@@ -22,9 +22,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1298, 770}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 9, 1292, 684}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1064, 660]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1064, 567]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0987410259078139">
     </property>
@@ -186,11 +186,6 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 155.0]">
         </property>
-        <port name="getParameters" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
         <port name="getCookies" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
@@ -239,7 +234,7 @@ Michael Wetter (LBNL)</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1302, 770}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
         </property>
@@ -485,7 +480,7 @@ Michael Wetter (LBNL)</text></svg></configure>
             </property>
         </port>
         <entity name="RoomSimulator" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[177.5, 227.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 225.0}">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -534,7 +529,7 @@ Modified by Baobing (Brian) Wang</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 150.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
             </property>
@@ -1189,6 +1184,8 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2484,7 +2481,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
         <display name="ParseParameters&#10;."/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[511.0, 159.75]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={676, 405, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 134, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -2645,7 +2642,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
     <entity name="Initiation" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 145.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 160, 928, 640}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 128, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
