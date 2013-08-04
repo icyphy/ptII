@@ -56,6 +56,8 @@ PTCLASSALLJARS = \
 
 #	demo/demo.jar
 
+OTHER_FILES_TO_BE_JARED = \
+	jettysandbox.policy
 
 all: suball
 install: subinstall jars
@@ -63,7 +65,8 @@ install: subinstall jars
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = $(DIRS)
+MISC_FILES = $(DIRS) \
+	jettysandbox.policy
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
