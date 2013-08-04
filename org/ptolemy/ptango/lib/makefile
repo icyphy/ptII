@@ -57,7 +57,10 @@ JSRCS = \
 	HttpGet.java \
 	HttpPost.java \
 	HttpService.java \
-	WebServer.java
+	WebServer.java \
+	WebApplicationInfo.java \
+	WebServerManager.java \
+	WebServerUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptango.xml \
@@ -83,7 +86,11 @@ OPTIONAL_FILES = \
 	'HTMLModelExporter$$1.class' \
 	'HttpActor$$ActorServlet.class' \
 	'WebServer$$1.class' \
-	'WebServer$$RunnableServer.class'
+	'WebServer$$RunnableServer.class' \
+	'HttpActor$$HttpRequest.class' \
+	'HttpActor$$HttpResponse.class' \
+	'WebServerUtilities$$1.class' \
+	'WebServerUtilities$$RunnableServer.class'
 
 KRUFT =
 
