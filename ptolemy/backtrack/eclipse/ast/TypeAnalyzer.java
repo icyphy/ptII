@@ -1619,7 +1619,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
         if (table.containsKey(name)) {
             Type type = table.get(name);
-            Integer hashCode = new Integer(i);
+            Integer hashCode = Integer.valueOf(i);
             Class ownerClass = _classScopeRelation.get(hashCode);
             Type owner = (ownerClass == null) ? null : Type
                     .createType(ownerClass.getName());
@@ -1791,7 +1791,7 @@ public class TypeAnalyzer extends ASTVisitor {
     private void _recordFields() {
         Class c = _state.getCurrentClass();
         Hashtable<String, Type> table = _state.getVariableStack().peek();
-        Integer hashCode = new Integer(_state.getVariableStack().size() - 1);
+        Integer hashCode = Integer.valueOf(_state.getVariableStack().size() - 1);
         _classScopeRelation.put(hashCode, c);
 
         while (c != null) {
@@ -2040,7 +2040,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @see #_recordFields()
      */
     private void _unrecordFields() {
-        Integer hashCode = new Integer(_state.getVariableStack().size() - 1);
+        Integer hashCode = Integer.valueOf(_state.getVariableStack().size() - 1);
         _classScopeRelation.remove(hashCode);
     }
 

@@ -55,7 +55,7 @@ public class MapTest3 {
 
         // Test clear() function.
         for (int i = 0; i < iteration; i++) {
-            map.put(new Integer(i), new Integer(iteration - i));
+            map.put(Integer.valueOf(i), Integer.valueOf(iteration - i));
         }
 
         long handle1 = map.$GET$CHECKPOINT().createCheckpoint();
@@ -65,7 +65,7 @@ public class MapTest3 {
 
         // Test keySet() and clear() of the key set.
         for (int i = 0; i < iteration; i++) {
-            map.put(new Integer(i), new Integer(iteration - i));
+            map.put(Integer.valueOf(i), Integer.valueOf(iteration - i));
         }
 
         long handle2 = map.$GET$CHECKPOINT().createCheckpoint();
@@ -75,7 +75,7 @@ public class MapTest3 {
 
         // Test entrySet() and clear() of the entry set.
         for (int i = 0; i < iteration; i++) {
-            map.put(new Integer(i), new Integer(iteration - i));
+            map.put(Integer.valueOf(i), Integer.valueOf(iteration - i));
         }
 
         @SuppressWarnings("unused")
@@ -86,7 +86,7 @@ public class MapTest3 {
 
         // Test removal with iterator().
         for (int i = 0; i < iteration; i++) {
-            map.put(new Integer(i), new Integer(iteration - i));
+            map.put(Integer.valueOf(i), Integer.valueOf(iteration - i));
         }
 
         @SuppressWarnings("unused")

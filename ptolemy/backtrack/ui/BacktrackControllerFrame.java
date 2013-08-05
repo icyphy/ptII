@@ -346,7 +346,7 @@ public class BacktrackControllerFrame extends TableauFrame {
             HandleTableElement element = _data.get(rowIndex);
             switch (columnIndex) {
             case 0:
-                return new Long(element.getHandle());
+                return Long.valueOf(element.getHandle());
             case 1:
                 return null; // TODO: We cannot count element number.
             case 2:

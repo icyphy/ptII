@@ -77,33 +77,33 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         caseSensitiveLiterals = true;
         setCaseSensitive(true);
         literals = new Hashtable();
-        literals.put(new ANTLRHashString("for", this), new Integer(25));
-        literals.put(new ANTLRHashString("outport", this), new Integer(8));
-        literals.put(new ANTLRHashString("transparent", this), new Integer(15));
-        literals.put(new ANTLRHashString("optional", this), new Integer(37));
-        literals.put(new ANTLRHashString("parameter", this), new Integer(10));
-        literals.put(new ANTLRHashString("false", this), new Integer(21));
-        literals.put(new ANTLRHashString("true", this), new Integer(20));
-        literals.put(new ANTLRHashString("preserve", this), new Integer(39));
-        literals.put(new ANTLRHashString("actor", this), new Integer(12));
-        literals.put(new ANTLRHashString("remove", this), new Integer(38));
-        literals.put(new ANTLRHashString("import", this), new Integer(19));
-        literals.put(new ANTLRHashString("next", this), new Integer(27));
-        literals.put(new ANTLRHashString("inport", this), new Integer(7));
-        literals.put(new ANTLRHashString("reference", this), new Integer(16));
-        literals.put(new ANTLRHashString("port", this), new Integer(4));
-        literals.put(new ANTLRHashString("initially", this), new Integer(26));
-        literals.put(new ANTLRHashString("actorparameter", this), new Integer(
+        literals.put(new ANTLRHashString("for", this), Integer.valueOf(25));
+        literals.put(new ANTLRHashString("outport", this), Integer.valueOf(8));
+        literals.put(new ANTLRHashString("transparent", this), Integer.valueOf(15));
+        literals.put(new ANTLRHashString("optional", this), Integer.valueOf(37));
+        literals.put(new ANTLRHashString("parameter", this), Integer.valueOf(10));
+        literals.put(new ANTLRHashString("false", this), Integer.valueOf(21));
+        literals.put(new ANTLRHashString("true", this), Integer.valueOf(20));
+        literals.put(new ANTLRHashString("preserve", this), Integer.valueOf(39));
+        literals.put(new ANTLRHashString("actor", this), Integer.valueOf(12));
+        literals.put(new ANTLRHashString("remove", this), Integer.valueOf(38));
+        literals.put(new ANTLRHashString("import", this), Integer.valueOf(19));
+        literals.put(new ANTLRHashString("next", this), Integer.valueOf(27));
+        literals.put(new ANTLRHashString("inport", this), Integer.valueOf(7));
+        literals.put(new ANTLRHashString("reference", this), Integer.valueOf(16));
+        literals.put(new ANTLRHashString("port", this), Integer.valueOf(4));
+        literals.put(new ANTLRHashString("initially", this), Integer.valueOf(26));
+        literals.put(new ANTLRHashString("actorparameter", this), Integer.valueOf(
                 13));
-        literals.put(new ANTLRHashString("is", this), new Integer(24));
+        literals.put(new ANTLRHashString("is", this), Integer.valueOf(24));
         literals.put(new ANTLRHashString("danglingPortsOkay", this),
-                new Integer(28));
+                Integer.valueOf(28));
         literals.put(new ANTLRHashString("attachDanglingPorts", this),
-                new Integer(29));
-        literals.put(new ANTLRHashString("relation", this), new Integer(14));
-        literals.put(new ANTLRHashString("if", this), new Integer(22));
-        literals.put(new ANTLRHashString("negate", this), new Integer(36));
-        literals.put(new ANTLRHashString("else", this), new Integer(23));
+                Integer.valueOf(29));
+        literals.put(new ANTLRHashString("relation", this), Integer.valueOf(14));
+        literals.put(new ANTLRHashString("if", this), Integer.valueOf(22));
+        literals.put(new ANTLRHashString("negate", this), Integer.valueOf(36));
+        literals.put(new ANTLRHashString("else", this), Integer.valueOf(23));
     }
 
     public Token nextToken() throws TokenStreamException {

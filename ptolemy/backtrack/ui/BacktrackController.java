@@ -109,7 +109,7 @@ public class BacktrackController {
                 Checkpoint checkpoint = rollbackObject.$GET$CHECKPOINT();
                 if (!checkpoints.contains(checkpoint)) {
                     long timestamp = checkpoint.createCheckpoint();
-                    checkpointsAndHandles.put(checkpoint, new Long(timestamp));
+                    checkpointsAndHandles.put(checkpoint, Long.valueOf(timestamp));
                     checkpoints.add(checkpoint);
                 }
             }
@@ -135,7 +135,7 @@ public class BacktrackController {
      */
     public boolean rollback(long handle, boolean trim) {
         HashMap<Checkpoint, Long> checkpointsAndHandles = _checkpoints
-                .get(new Long(handle));
+                .get(Long.valueOf(handle));
         if (checkpointsAndHandles == null) {
             return false;
         } else {

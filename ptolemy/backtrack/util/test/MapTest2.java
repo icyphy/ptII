@@ -53,12 +53,12 @@ public class MapTest2 {
         long[] handles = new long[iteration];
 
         for (int i = 0; i < iteration; i++) {
-            map.put(new Integer(i), new Integer(iteration - i));
+            map.put(Integer.valueOf(i), Integer.valueOf(iteration - i));
         }
 
         for (int i = 0; i < iteration; i++) {
             handles[i] = map.$GET$CHECKPOINT().createCheckpoint();
-            map.remove(new Integer(i));
+            map.remove(Integer.valueOf(i));
         }
 
         System.out.println(map);

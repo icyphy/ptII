@@ -93,7 +93,7 @@ public class TypeAnalyzerState {
         } else {
             _previousClasses.push(new CurrentClassElement(_currentClass));
         }
-        _anonymousCounts.push(new Integer(0));
+        _anonymousCounts.push(Integer.valueOf(0));
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
     }
@@ -192,7 +192,7 @@ public class TypeAnalyzerState {
         while (!table.containsKey(name) && (i >= 1)) {
             i--;
 
-            if (!variablesOnly || !_classScopes.contains(new Integer(i))) {
+            if (!variablesOnly || !_classScopes.contains(Integer.valueOf(i))) {
                 table = _variableStack.get(i);
             }
         }
@@ -233,7 +233,7 @@ public class TypeAnalyzerState {
         }
 
         return table.containsKey(name)
-                && !_classScopes.contains(new Integer(i));
+                && !_classScopes.contains(Integer.valueOf(i));
     }
 
     /** Leave a block declaration.
@@ -298,7 +298,7 @@ public class TypeAnalyzerState {
      *  @see #unsetClassScope()
      */
     public void setClassScope() {
-        _classScopes.add(new Integer(_variableStack.size() - 1));
+        _classScopes.add(Integer.valueOf(_variableStack.size() - 1));
     }
 
     /** Get the current class (the class currently being inspected).
@@ -346,7 +346,7 @@ public class TypeAnalyzerState {
      *  @see #setClassScope()
      */
     public void unsetClassScope() {
-        _classScopes.remove(new Integer(_variableStack.size() - 1));
+        _classScopes.remove(Integer.valueOf(_variableStack.size() - 1));
     }
 
     /** A table to hold the current class, which is the only object in the

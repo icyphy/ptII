@@ -54,7 +54,7 @@ public class MapTest1 {
 
         for (int i = 0; i < iteration; i++) {
             handles[i] = map.$GET$CHECKPOINT().createCheckpoint();
-            map.put(new Integer(i), new Integer(iteration - i));
+            map.put(Integer.valueOf(i), Integer.valueOf(iteration - i));
         }
 
         System.out.println(map);
