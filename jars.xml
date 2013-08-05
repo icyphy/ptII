@@ -3002,10 +3002,16 @@
 	 destfile="${basedir}/org/ptolemy/ptango/ptango.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/lib/*.class"/>
+        <include name="ptolemy/cg/lib/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/lib/*.xml"/>
+        <include name="ptolemy/cg/lib/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/lib/xmpp/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/lib/xmpp/*.xml"/>
       </fileset>
     </jar>
 
@@ -3015,31 +3021,61 @@
 	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/*.xml"/>
+        <include name="ptolemy/cg/demo/Chat/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/*.gif"/>
+        <include name="ptolemy/cg/demo/Cookies/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/*.htm*"/>
+        <include name="ptolemy/cg/demo/Cookies/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/*.png"/>
+        <include name="ptolemy/cg/demo/EPlus70Actuator/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/*.txt"/>
+        <include name="ptolemy/cg/demo/EPlus70Actuator/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/data/*.txt"/>
+        <include name="ptolemy/cg/demo/ErrorHandler/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/pages/*.css"/>
+        <include name="ptolemy/cg/demo/Guidance/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/pages/*.html"/>
+        <include name="ptolemy/cg/demo/Guidance/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/*/pages/*.png"/>
+        <include name="ptolemy/cg/demo/OptimizationAdvisor/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/OptimizationAdvisor/files/*.html"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/SmartRoom/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/SmartRoom/pages/*.html"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/TemperatureSimulation/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/TemperatureSimulation/pages/*.html"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/UCBPower/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/UCBPower/pages/*.html"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/UCBPowerPtera/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/WebServerDE/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/demo/WebServerDE/pages/*.html"/>
       </fileset>
     </jar>
 

@@ -1,7 +1,6 @@
 #!/bin/sh
 # Convert a ptII subdirectory tree to an ant rule to create a jar
 #
-cd $PTII/ptolemy/cg; 
 
 findit() {
    find . -name "$1" | grep -v package.html | grep -v test | grep -v junit | xargs -n 1 dirname | sort | uniq | \
