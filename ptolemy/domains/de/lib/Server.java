@@ -278,7 +278,7 @@ public class Server extends DETransformer {
     ////                         inner classes                     ////
 
     /** A data structure containing a token and a service time. */
-    private class Job {
+    private static class Job {
         public Job(Token payload, double serviceTime) {
             this.payload = payload;
             this.serviceTime = serviceTime;
