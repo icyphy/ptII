@@ -33,6 +33,6 @@ EXAMPLE_MODELS = \
 	ThreadedComposite.xml \
 	TimedDisplays.xml \
 	Wireless.xml \
-	Zeno.xml
+	Zeno.xml 
 
 include ../chapter.mk
