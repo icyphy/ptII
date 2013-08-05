@@ -2086,7 +2086,7 @@ public class TypeAnalyzer extends ASTVisitor {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class TypeAndOwner {
+    private static class TypeAndOwner {
         /** Construct a type and owner tuple.
          *
          *  @param type The type.

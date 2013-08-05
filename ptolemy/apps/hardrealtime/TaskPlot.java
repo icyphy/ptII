@@ -247,7 +247,7 @@ public class TaskPlot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    private class Execution {
+    private static class Execution {
         public Execution(double start, double end) {
             this.start = start;
             this.end = end;

@@ -261,7 +261,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      * @author glp
      *
      */
-    private class ConstraintCounter implements Cloneable {
+    private static class ConstraintCounter implements Cloneable {
 
         /**
          * Construct and initialize the counter for each constraint.

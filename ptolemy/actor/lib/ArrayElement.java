@@ -166,7 +166,7 @@ public class ArrayElement extends Transformer {
      *  fields have the same type as the provided argument.
      *  @author Marten Lohstroh
      */
-    private class ArrayTypeFunction extends MonotonicFunction {
+    private static class ArrayTypeFunction extends MonotonicFunction {
 
         /** Construct a ArrayElementTypeFunction whose argument is the
          *  type of the specified object.

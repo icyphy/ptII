@@ -109,7 +109,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
     }
 
-    public class Pair<F, S> {
+    public static class Pair<F, S> {
         private F first; //first member of pair
         private S second; //second member of pair
 

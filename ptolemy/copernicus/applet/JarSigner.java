@@ -667,7 +667,7 @@ public class JarSigner {
             writeMethod.invoke(sigFile, os);
         }
 
-        private class Block {
+        private static class Block {
 
             private Object block;
 

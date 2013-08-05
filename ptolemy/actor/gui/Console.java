@@ -79,7 +79,7 @@ public class Console extends Tableau {
 
     /** The frame that is created by an instance of Console.
      */
-    public class ConsoleFrame extends TextEditor {
+    public static class ConsoleFrame extends TextEditor {
         /** Construct a frame to display Console.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.

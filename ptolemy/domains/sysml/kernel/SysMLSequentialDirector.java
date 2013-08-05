@@ -786,7 +786,7 @@ public class SysMLSequentialDirector extends Director implements
     ////                         inner classes                     ////
 
     /** Data structure for storing inputs in the director's queue. */
-    private class Input {
+    private static class Input {
         public boolean isChangeEvent;
         public SysMLSequentialReceiver receiver;
         public Token token;
@@ -810,7 +810,7 @@ public class SysMLSequentialDirector extends Director implements
     }
 
     /** Data structure for a refire request. */
-    private class RefireRequest implements Comparable {
+    private static class RefireRequest implements Comparable {
         public Actor actor;
         public Time time;
         public int microstep;
@@ -863,7 +863,7 @@ public class SysMLSequentialDirector extends Director implements
     }
 
     /** Data structure for storing a superdense time. */
-    public class SuperdenseTime {
+    public static class SuperdenseTime {
         /** The time. */
         public Time time;
         /** The microstep.. */

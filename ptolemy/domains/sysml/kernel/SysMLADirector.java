@@ -915,7 +915,7 @@ public class SysMLADirector extends ProcessDirector {
     ////                         inner classes                     ////
 
     /** Data structure for data associated with an actor. */
-    private class ActorData {
+    private static class ActorData {
         /** Fire at times by actor. */
         public PriorityQueue<Time> fireAtTimes = new PriorityQueue<Time>();
 
@@ -927,7 +927,7 @@ public class SysMLADirector extends ProcessDirector {
     }
 
     /** Data structure for storing inputs in an actor's queue. */
-    private class Input {
+    private static class Input {
         public SysMLAReceiver receiver;
         public Token token;
         public boolean isChangeEvent;

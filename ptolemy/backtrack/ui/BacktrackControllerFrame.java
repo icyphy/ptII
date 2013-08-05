@@ -265,7 +265,7 @@ public class BacktrackControllerFrame extends TableauFrame {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class HandleTableElement {
+    private static class HandleTableElement {
 
         /** Return the checkpoint handle.
          *
@@ -310,7 +310,7 @@ public class BacktrackControllerFrame extends TableauFrame {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class HandleTableModel extends AbstractTableModel {
+    private static class HandleTableModel extends AbstractTableModel {
 
         /** Return the number of columns in the list.
          *
@@ -400,7 +400,7 @@ public class BacktrackControllerFrame extends TableauFrame {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class ModelSelectorElement {
+    private static class ModelSelectorElement {
 
         /** Get the frame of the Ptolemy model.
          *

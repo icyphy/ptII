@@ -411,7 +411,7 @@ public class LocalClassLoader extends URLClassLoader {
      *
      *  @author Thomas Feng
      */
-    public class ClassImport {
+    public static class ClassImport {
         /** Get the simple class name.
          *
          *  @return The simple class name.
