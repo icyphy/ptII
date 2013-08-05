@@ -704,7 +704,7 @@ JNLPS =	vergilBCVTB.jnlp \
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
 	@echo "To run the jnlp file, run \"make jnlp_run\""
 
-jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
+#jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
 	rm -rf $(JNLPS) $(SIGNED_DIR)
 jnlp_distclean: jnlp_clean
@@ -1713,7 +1713,7 @@ JNLP_HTML_EXPORT =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL)
 JNLP_FILE =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL).jnlp
 
 # The main .htm file that is produced by $PTII/bin/copernicus that has links to the other files.
-JNLP_HTM =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL).htm
+JNLP_HTML =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL).htm
 
 # The main .htm file that is produced by $PTII/bin/copernicus that has the applet.
 JNLP_VERGIL_HTM =		$(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL)Vergil.htm
@@ -1733,8 +1733,8 @@ book: $(JNLP_FILE_FIXED)
 book_clean:
 	rm -f $(JNLP_FILE_FIXED) 
 book_real_clean:
-	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE) $(JNLP_HTM)
-	rm -rf $(JNLP_HTML_EXPORT)
+	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE) $(JNLP_HTML)
+	rm -rf $(JNLP_HTMLL_EXPORT)
 
 # Create the .jnlp file, but don't fix it yet:
 # make -n JNLP_MODEL_DIRECTORY=doc/papers/y12/designContracts JNLP_MODEL=DCMotorTol KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat $HOME/.certpw`" KEYPASSWORD="-storepass `cat $HOME/.certpw`" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics jnlp_file
@@ -1803,10 +1803,10 @@ book_dist_jnlp_update: $(JNLP_FILE_FIXED)
 # Update the website.
 
 # Files to be updated, including the .htm files
-# index.htm and toc.htm are created by rules in $PTII/mk/ptcommon.mk
-INDEX_CHAPTER =           $(JNLP_MODEL_DIRECTORY)/index.htm
+# index.html and toc.htm are created by rules in $PTII/mk/ptcommon.mk
+INDEX_CHAPTER =           $(JNLP_MODEL_DIRECTORY)/index.html
 TOC_CHAPTER =           $(JNLP_MODEL_DIRECTORY)/toc.htm
-JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(JNLP_HTM) $(JNLP_VERGIL_HTM) doc/deployJava.js $(HTML_MODEL) $(INDEX_CHAPTER) $(TOC_CHAPTER)
+JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(JNLP_HTML) $(JNLP_VERGIL_HTM) doc/deployJava.js $(HTML_MODEL) $(INDEX_CHAPTER) $(TOC_CHAPTER)
 
 # Files to be updated, not including the .htm files
 #JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) doc/deployJava.js doc/deployJava.txt
@@ -1815,12 +1815,12 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 	pwd
 	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xpf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
-	# Make the html file executable so that Server Side Includes (SSIs) work.
-	ssh $(WEBSERVER_USER)@$(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html $(DIST_DIR)/$(INDEX_CHAPTER) $(DIST_DIR)/$(TOC_CHAPTER)"
 	# Replace link to applet with link to image.  Some files have a .htm file that link to the applet
-	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); sed -e 's@$(JNLP_MODEL)Vergil.htm@$(JNLP_MODEL)/index.html@' -e 's@>applet</a>@>HTML Version</a> - browsable only, not executable@' $(JNLP_HTM) > $(JNLP_HTM).tmp"
-	#-ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); diff $(JNLP_HTM).tmp $(JNLP_HTM)"
-	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_HTM).tmp $(JNLP_HTM)"
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); sed -e 's@$(JNLP_MODEL)Vergil.htm@$(JNLP_MODEL)/index.html@' -e 's@>applet</a>@>HTML Version</a> - browsable only, not executable@' $(JNLP_HTML) > $(JNLP_HTML).tmp"
+	#-ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); diff $(JNLP_HTML).tmp $(JNLP_HTML)"
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_HTML).tmp $(JNLP_HTML)"
+	# Make the html file executable so that Server Side Includes (SSIs) work.
+	ssh $(WEBSERVER_USER)@$(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTML) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html $(DIST_DIR)/$(INDEX_CHAPTER) $(DIST_DIR)/$(TOC_CHAPTER) $(DIST_DIR)/$(INDEX_CHAPTER) $(DIST_DIR)/$(TOC_CHAPTER)"
 	#ssh $(WEBSERVER_USER)@$(WEBSERVER) "chgrp -R ptolemy $(DIST_DIR)"
 
 

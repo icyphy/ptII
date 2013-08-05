@@ -17,7 +17,6 @@
 <p>
 @sanitizedModelName@ is available in two formats:
 <ul>
- <li> As a Web Start Application: 
 <!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
 <script src="@codeBase@/doc/deployJava.js"></script>
 <script >
@@ -28,8 +27,6 @@
 <!-- <li> As a a href="@sanitizedModelName@Vergil.htm">applet</a>.</li> -->
 <li> An <a href="@sanitizedModelName@/index.html">HTML Version</a> - browsable only, not executable.</li>
 </ul>  
-The Java Web Start version is preferred, though browsers with versions of Java
-earlier than Java 1.6.0_13 may only work with the applet version.
 See <a href="@codeBase@/doc/webStartHelp.htm">Web Start Help</a> for details.
 <!-- /PT DEPLOYJAVA CONVERTER -->
 

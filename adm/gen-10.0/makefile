@@ -632,8 +632,8 @@ src_jar: #$(PTII_SRC)
 	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
 	# Fix up experimentalDirector.xml
 	egrep -v "openmodelica" \
-		src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirector.xml \
-		> src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirector.xml_tmp
+		src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml \
+		> src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml_tmp
 	mv src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirector.xml_tmp \
 	        src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirector.xml+tmp
 	# Fix up doc/makefile

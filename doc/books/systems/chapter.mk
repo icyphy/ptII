@@ -69,5 +69,9 @@ KRUFT = *.jar *.jnlp *.jnlp.fixed *.htm doc
 all: jclass
 install: jclass jars
 
-# We don't include common.mk since we don't use the compiler here
+# The main target for this file is "jnlps", which is defined in $PTII/mk/ptcommon.mk
+# For how to call this for the Ptolemy book, see ptbook/workspace/makefile.
+# For an example that is in the ptII repo, see the $PTII/mk/jnlp.mk file.
+
+# We don't include common.mk since we don't use the compiler here.
 include $(ROOT)/mk/ptno-compile.mk
