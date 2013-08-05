@@ -1090,7 +1090,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                             && !(parent instanceof EditParametersDialog)) {
                         parent = parent.getParent();
                     }
-                    if (parent instanceof EditParametersDialog) {
+                    if (parent != null) {
                         query.changed(attributeName);
                         attribute.validate();
                         EditParametersDialog dialog = (EditParametersDialog) parent;

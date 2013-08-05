@@ -92,7 +92,7 @@ public class WidgetLoader {
             return widget;
         }
         widget = new NamedObjectIconWidget(scene, element);
-        assert widget instanceof NamedObjectWidgetInterface : "The widget must implement NamedObjectWidgetInterface";
+        //assert widget instanceof NamedObjectWidgetInterface : "The widget must implement NamedObjectWidgetInterface";
         return widget;
     }
 

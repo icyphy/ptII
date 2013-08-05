@@ -651,7 +651,7 @@ public class ConfigurationApplication implements ExecutionListener {
         // in the directory.
         ComponentEntity directory = configuration.getDirectory();
 
-        if (directory instanceof ModelDirectory) {
+        if (directory != null) {
             PtolemyEffigy effigy = null;
             try {
                 effigy = new PtolemyEffigy((ModelDirectory) directory,

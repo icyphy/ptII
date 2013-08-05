@@ -548,7 +548,7 @@ public class TabScenePanel implements ContentPrototype {
                             new Parameter(namedObj,
                                     HomerConstants.ENABLED_NODE,
                                     new BooleanToken(dialog.getEnabled()));
-                        } else if (enabled instanceof Parameter) {
+                        } else {
                             enabled.setToken(new BooleanToken(dialog
                                     .getEnabled()));
                         }
