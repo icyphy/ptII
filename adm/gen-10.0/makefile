@@ -308,7 +308,7 @@ $(PTIIDIST):
 	mv /tmp/cosimulation_tmp.xml \
 		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
-	egrep -v "apps.xml|corba.xml|mail.xml" \
+	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml" \
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
 		> /tmp/defaultFullConfiguration_tmp.xml
 	mv /tmp/defaultFullConfiguration_tmp.xml \
