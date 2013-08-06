@@ -4,7 +4,7 @@
 <entity name="ConstAbstractInterpretation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="ConstAbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+    <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/data/ontologies/lattice/adapters/constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
@@ -13,31 +13,32 @@
         </property>
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.multiply&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.falseInput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.input&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.left&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.divide&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.trueInput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.factor&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.columnsDisplayed&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.scaleOnLeft&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.value&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.control&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.right&quot;}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 305.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 209, 1038, 803}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 209, 1031, 528}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 693]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 418]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.433230834482">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5082903880472973">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.1407523690239, 402.3942673141892}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows the power of the (augmented) abstract&#10;interpretation lattice to propagate constant information&#10;throughout the model.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 265.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.54765600401447, 404.54543844458436}">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 225}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 310.0]">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{495, 595}">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -51,7 +52,7 @@
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 420.0]">
         </property>
         <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -105,7 +106,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 455.0}">
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
@@ -118,7 +119,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 520.0]">
         </property>
     </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">

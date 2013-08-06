@@ -44,9 +44,9 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 92, 942, 751}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 17, 936, 758}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 641]">
     </property>
@@ -430,9 +430,9 @@
         </property>
     </property>
     <property name="Annotation31" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="http://localhost:8080">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="http://localhost:8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 115.0}">
         </property>
     </property>
     <property name="Annotation32" class="ptolemy.vergil.kernel.attributes.TextAttribute">

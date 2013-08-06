@@ -2,15 +2,22 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="FiniteDimensionOntology" extends="ptolemy.data.ontologies.Ontology">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 0, 1576, 713}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 168, 1554, 707}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1361, 604]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1320, 597]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="3.0517578125">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.9261083743842367">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{240.75, 191.2604872727273}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{240.84680134680133, 190.30387205387203}">
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 325.0]">
+        </property>
     </property>
     <entity name="Time" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
@@ -129,7 +136,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,1.0,1.0}">
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

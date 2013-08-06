@@ -446,7 +446,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 360.0]">
         </property>
     </entity>
     <entity name="[fix]" class="ptolemy.data.ontologies.FlatScalarTokenRepresentativeConcept">
@@ -792,15 +792,15 @@
         </property>
     </relation>
     <relation name="relation36" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5137029245387783">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5780785728304426">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.413103819419563">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.408743869671759">
         </property>
     </relation>
     <relation name="relation37" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6847791133020831">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.37207706301883475">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.4725080944410958">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.429991832367735">
         </property>
     </relation>
     <relation name="relation41" class="ptolemy.data.ontologies.ConceptRelation">
@@ -974,7 +974,6 @@
     <link port="[boolean].belowPort" relation="relation30"/>
     <link port="[boolean].abovePort" relation="relation31"/>
     <link port="string.belowPort" relation="relation34"/>
-    <link port="string.belowPort" relation="relation37"/>
     <link port="string.abovePort" relation="relation35"/>
     <link port="general.belowPort" relation="relation35"/>
     <link port="general.belowPort" relation="relation36"/>
@@ -982,6 +981,7 @@
     <link port="general.belowPort" relation="relation43"/>
     <link port="general.belowPort" relation="relation44"/>
     <link port="general.belowPort" relation="relation52"/>
+    <link port="general.belowPort" relation="relation37"/>
     <link port="xml.belowPort" relation="relation46"/>
     <link port="xml.abovePort" relation="relation44"/>
     <link port="event.belowPort" relation="relation41"/>
