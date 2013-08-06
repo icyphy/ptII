@@ -115,6 +115,8 @@ public class AddSubtract
         args.add("");
         args.add(outputType);
         args.add(plusType);
+        
+        codeStream.append(_eol + "bool triggered = false;" + _eol);
 
         for (int i = 0; i < actor.plus.getWidth(); i++) {
             args.set(0, Integer.valueOf(i).toString());

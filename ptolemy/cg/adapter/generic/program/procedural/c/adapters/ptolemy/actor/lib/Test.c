@@ -23,7 +23,10 @@ $actorSymbol(toleranceToken) = $new(Double($param(tolerance)));
 /**/
 
 /***ComplexBlock($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 $actorSymbol(numberOfTokensSeen)++;
 
 /* Complex $actorSymbol(), ComplexBlock($channel) which has only one channel */
@@ -39,7 +42,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***ComplexBlockMultiChannel($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -60,7 +66,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***IntBlock($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 $actorSymbol(numberOfTokensSeen)++;
 
 /* IB $actorSymbol(), intBlock($channel) which has only one channel */
@@ -81,7 +90,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 
 
 /***IntBlockMultiChannel($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -103,7 +115,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 
 
 /***DoubleBlock($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 $actorSymbol(numberOfTokensSeen)++;
 
 /* $actorSymbol(), DoubleBlock($channel) which has only one channel */
@@ -123,7 +138,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***DoubleBlockMultiChannel($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -146,7 +164,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
 /**/
 
 /***BooleanBlock($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 $actorSymbol(numberOfTokensSeen)++;
 if (($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && (!$param(correctValues, $actorSymbol(numberOfTokensSeen))
@@ -162,7 +183,10 @@ if (($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***BooleanBlockMultiChannel($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -180,7 +204,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***StringBlock($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 $actorSymbol(numberOfTokensSeen)++;
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && strcmp($actorSymbol(inputToken),$param(correctValues, $actorSymbol(numberOfTokensSeen)))) {
@@ -193,7 +220,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***StringBlockMultiChannel($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -210,7 +240,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***TokenBlock($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 $actorSymbol(numberOfTokensSeen)++;
 /* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
@@ -270,7 +303,10 @@ if (($type(input) != TYPE_Array
 /**/
 
 /***TokenBlockMultiChannel($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -283,29 +319,15 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
             $actorSymbol(numberOfTokensSeen),
             $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
             $tokenFunc(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)::toString()).payload.String);
-//     throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
-//             + $actorSymbol(numberOfTokensSeen)
-//             + ".\n Value was: \""
-//             + $actorSymbol(inputToken)
-//             + "\". Should have been: \""
-//             + Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)
-//             + "\"");
-//       }
-//    } else {
-//    throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
-//            + $actorSymbol(numberOfTokensSeen)
-//            + ".\n Value was: '"
-//            + $tokenFunc($actorSymbol(inputToken)::toString()).payload
-//            + "'. Should have been: \""
-//            + Array_toString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)).payload
-//            + "\"");
-      }
    exit(-1);
 }
 /**/
 
 /***UnsignedByteBlock($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 $actorSymbol(numberOfTokensSeen)++;
 
 /* UB $actorSymbol(), UnsignedByteBlock($channel) which has only one channel */
@@ -325,7 +347,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***UnsignedByteBlockMultiChannel($channel)***/
-$actorSymbol(inputToken) = $get(input#$channel);
+if ($hasToken(input#$channel))
+	$actorSymbol(inputToken) = $get(input#$channel);
+else
+	return;
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
