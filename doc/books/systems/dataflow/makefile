@@ -5,36 +5,21 @@ EXAMPLE_MODELS = \
 	AllToAllSequence.xml \
 	BetterFibonacci.xml \
 	Case.xml \
-	DataflowSDFExample.xml \
-	DataflowSDFInconsistent.xml \
-	DesignPattern.xml \
 	DynamicRates.xml \
 	Eratosthenes.xml \
 	Fibonacci.xml \
 	HammingNumbers.xml \
 	IfThenElse.xml \
-	IOActors2.xml \
-	IOActors.xml \
 	IterateFilesSolution.xml \
 	IterateFiles.xml \
-	LogicGate.xml \
-	Logic.xml \
 	Loop.xml \
 	MaximumEntropySpectrum.xml \
-	MultirateActors.xml \
-	NotSwitchSelect.xml \
 	PetriNetNotation.xml \
 	PetriNet.xml \
 	RunLengthCoder.xml \
 	SampleDelay.xml \
-	SignalProcessing.xml \
 	SoundSpectrum.xml \
 	SpectrumOfNoisySinusoid.xml \
-	SpectrumSupport.xml \
-	Spectrum.xml \
-	String.xml \
-	SwitchSelect.xml \
-	Test.xml \
 	Unbounded.xml 
 
 include ../chapter.mk

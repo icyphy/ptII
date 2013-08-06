@@ -6,7 +6,6 @@ EXAMPLE_MODELS = \
 	ContinuousTransferFunctionEquiv.xml \
 	ContinuousTransferFunction.xml \
 	Derivative.xml \
-	Dynamics.xml \
 	FixedPointNoLimitation.xml \
 	ForwardEuler.xml \
 	ImpulseResponse.xml \
@@ -22,10 +21,7 @@ EXAMPLE_MODELS = \
 	OscillatorSolution.xml \
 	PeriodicSamplerIntegrator.xml \
 	PiecewiseContinuous.xml \
-	SignalGenerators.xml \
 	TestTrigger.xml \
-	ToContinuous.xml \
-	ToDiscrete.xml \
 	TrapezoidalMethod.xml 
 
 include ../chapter.mk
