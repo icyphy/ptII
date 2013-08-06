@@ -562,6 +562,10 @@ public class ConfigurationApplication implements ExecutionListener {
             // this test may be run from any directory or from within Eclipse.
             File canonicalModelFile = FileUtilities.nameToFile(modelFileName,
                     null);
+            if (canonicalModelFile == null) {
+                throw new IOException("Could not find \""+ modelFileName
+                        + "\".");
+            }
             String canonicalModelFileName = canonicalModelFile
                     .getCanonicalPath();
 
