@@ -126,7 +126,11 @@ public abstract class KernelMain {
         long startTime = System.currentTimeMillis();
 
         // Create instance classes for the actors.
-        initialize(toplevel);
+        try {
+            initialize(toplevel);
+        } catch (Throwable ex) {
+            System.out.println("initialize() failed: " + ex);
+        }
 
         if (attribute.getParameter("outputDirectory").indexOf(" ") != -1) {
             throw new Exception("The outputDirectory contains one or more "

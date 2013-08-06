@@ -175,8 +175,12 @@ public class CodeGeneratorUtilities {
             if (input.indexOf("@help:all@") != -1) {
                 allResults.append(key + " = " + entries.getValue() + "\n");
             } else {
+                String value = entries.getValue();
+                if (value == null) {
+                    value = "";
+                }
                 input = StringUtilities.substitute(input, key,
-                        entries.getValue());
+                        value);
             }
         }
 
