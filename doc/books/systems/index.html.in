@@ -10,6 +10,9 @@
 <!--#include virtual="toc.htm" -->
 <!--#include virtual="/ssi/toppostmenu.htm" -->
 <h2>Chapters</h2>
+Below are links to the demonstrations associated with each chapter of
+<p> Claudius Ptolemaeus, Editor. "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/" target="_top">System Design, Modeling, and Simulation</a>," 2013. 
+
 <ul>
 <!-- Update with ls -1F | egrep '/$' | awk '{print "<li> <a href=\"" $1 "index.html\">" substr($1, 0, length($1)-1) "</a></li>"}' -->
 <li> <a href="architecture/index.html">Architecture</a></li>
