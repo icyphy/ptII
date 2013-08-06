@@ -21,7 +21,6 @@ EXAMPLE_MODELS = \
 	FinalStatesSR.xml \
 	FinalStates.xml \
 	FixedPointFSM.xml \
-	FSMNotationTable.xml \
 	HierarchicalFSM_FlattenedWOutPreemptive.xml \
 	HierarchicalFSM_FlattenedWOutResetOrPreemptive.xml \
 	HierarchicalFSM_FlattenedWOutReset.xml \

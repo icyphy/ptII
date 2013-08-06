@@ -29,7 +29,6 @@ EXAMPLE_MODELS = \
 	PtidesSchema.xml \
 	PtidesSimple.xml \
 	PtidesSTP.xml \
-	QuantityManagers.xml \
 	ResourceSchedulers.xml \
 	ResourceScheduler.xml \
 	SimplePtides.xml \

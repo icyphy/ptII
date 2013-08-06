@@ -5,8 +5,6 @@ EXAMPLE_MODELS = \
 	Fibonacci2.xml \
 	Fibonacci.xml \
 	FSK.xml \
-	FSMEditor.xml \
-	FSM.xml \
 	Heartbeat.xml \
 	History.xml \
 	Hysteresis.xml \
@@ -14,21 +12,16 @@ EXAMPLE_MODELS = \
 	ModalDelay.xml \
 	ModalHDFMultirate.xml \
 	ModalModelExample.xml \
-	ModalModel.xml \
 	ModalSDFMultirate.xml \
 	ModalSDF.xml \
-	PreemptiveTransition.xml \
 	Preemptive.xml \
 	RefinementOutput.xml \
 	ResetFinal.xml \
 	ResettableTimer.xml \
-	ResetTransition.xml \
 	Reset.xml \
-	SimpleFSMStructure.xml \
 	SpontaneousFSMPreemptive.xml \
 	SpontaneousFSM.xml \
 	Termination.xml \
-	Timeout.xml \
-	TransitionRefinement.xml 
+	Timeout.xml
 
 include ../chapter.mk

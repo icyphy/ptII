@@ -4,8 +4,6 @@ EXAMPLE_MODELS = \
 	DesignProcess.xml \
 	Feedback.xml \
 	FlatModel.xml \
-	GeneratorDiscreteInterface.xml \
-	GeneratorRegulatorProtector.xml \
 	Generator.xml \
 	MoCTaxonomy.xml \
 	Model2.xml \
