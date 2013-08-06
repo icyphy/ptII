@@ -12,8 +12,6 @@ EXAMPLE_MODELS = \
 	FeedbackAComposite.xml \
 	FeedbackA.xml \
 	FeedbackC.xml \
-	FeedbackF.xml \
-	FeedbackG.xml \
 	GuardedCount.xml \
 	IfThenElseSR.xml \
 	IsAbsent.xml \
@@ -25,10 +23,7 @@ EXAMPLE_MODELS = \
 	NonStrictAndInLoop.xml \
 	NotInLoop.xml \
 	PeriodicController.xml \
-	ScaleInLoop.xml \
 	Sporadic.xml \
-	SRActors2.xml \
-	SRActors.xml \
 	TokenRing.xml 
 
 include ../chapter.mk

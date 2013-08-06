@@ -18,7 +18,6 @@ EXAMPLE_MODELS = \
 	GeneratorResourceScheduler.xml \
 	HeartBeatDetector.xml \
 	LineFaultModelWithBetterCQM.xml \
-	LineFaultModelWithCQM.xml
 	LineFaultModelWithCQM.xml \
 	LineFaultModelWithDelays.xml \
 	LineFaultModelWithPacketDrop.xml \

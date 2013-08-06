@@ -4,7 +4,6 @@ EXAMPLE_MODELS = \
 	DesignProcess.xml \
 	Feedback.xml \
 	FlatModel.xml \
-	Generator.xml \
 	MoCTaxonomy.xml \
 	Model2.xml \
 	ModelFromJava.xml \

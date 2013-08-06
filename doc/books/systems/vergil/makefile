@@ -4,9 +4,6 @@ EXAMPLE_MODELS = \
 	AddingStringsException.xml \
 	AddingStrings.xml \
 	ApplyFunction.xml \
-	ArrayActors.xml \
-	ArrayConstructors.xml \
-	ArrayLibrary.xml \
 	ChannelBadDesign.xml \
 	ChannelGoodDesign.xml \
 	ChannelSingle.xml \
@@ -18,15 +15,13 @@ EXAMPLE_MODELS = \
 	ChannelWithOverrides.xml \
 	ChannelWithSublassWithOverrides.xml \
 	ChannelWithSublass.xml \
-	Channel.xml \
 	FeedbackDE.xml \
 	HelloWorld.xml \
-	Math.xml \
-	Sinks.xml \
-	Sources.xml \
 	SpectrumOfNoisySinusoid.xml \
-	TestMath.xml \
 	TestSources.xml \
 	WidthInference.xml 
+
+EXAMPLE_SUBMODELS = \
+	Channel.xml
 
 include ../chapter.mk

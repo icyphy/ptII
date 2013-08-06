@@ -9,7 +9,6 @@ EXAMPLE_MODELS = \
 	BalancedFIR.xml \
 	Balanced.xml \
 	Barrier.xml \
-	BlockingFireActors.xml \
 	ChatClient.xml \
 	DiscardFirstN.xml \
 	DiscardFirst.xml \
