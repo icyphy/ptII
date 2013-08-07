@@ -4362,7 +4362,9 @@ public class IOPort extends ComponentPort {
         if (isInput()) {
             for (int i = qmList.size() - 1; i >= 0; i--) {
                 QuantityManager quantityManager = qmList.get(i);
-                result = quantityManager.createIntermediateReceiver(result);
+                if (quantityManager != null) {
+                    result = quantityManager.createIntermediateReceiver(result);
+                }
             }
             if (result instanceof IntermediateReceiver) {
                 IntermediateReceiver intermediateReceiver = (IntermediateReceiver) result;
