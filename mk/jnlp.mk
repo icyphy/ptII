@@ -452,6 +452,7 @@ FULL_ONLY_JNLP_JARS = \
 	contrib/contrib.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
+	org/ptango/ptango.jar \
 	$(PTFMI_JARS) \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
@@ -1243,7 +1244,7 @@ jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
-	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)
+	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
