@@ -43,6 +43,7 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.BrowserEffigy;
@@ -81,21 +82,25 @@ import ptolemy.vergil.basic.export.html.ExportHTMLAction;
  */
 public class ExportModel {
     /** Export an image of a model to a file or directory.
-     *  The image is written to a file or directory with the same name as the model.
-     *  If formatName starts with "HTM" or "htm", then a directory with the
-     *  same name as the basename of the model is created.
-     *  If the formatName is "GIF", "gif", "PNG" or "png", then a file
-     *  with the same basename as the basename of the model is created.
+
+     *  <p>The image is written to a file or directory with the same name
+     *  as the model.  If formatName starts with "HTM" or "htm", then
+     *  a directory with the same name as the basename of the model is
+     *  created.  If the formatName is "GIF", "gif", "PNG" or "png",
+     *  then a file with the same basename as the basename of the
+     *  model is created.</p>
      *
      *  <p>The time out defaults to 30 seconds.</p>
      *
-     *  @param copyJavaScriptFiles True if the javascript files should be copied.
-     *  Used only if <i>formatName</i> starts with "htm" or "HTM".
+     *  @param copyJavaScriptFiles True if the javascript files should
+     *  be copied.  Used only if <i>formatName</i> starts with "htm"
+     *  or "HTM".
      *
-     *  @param force If true, then remove the image file or htm directory to be created
-     *  in advance before creating the image file or htm directory.  This parameter
-     *  is primarily used to avoid prompting the user with questions about overwriting files
-     *  after this command is invoked.
+     *  @param force If true, then remove the image file or htm
+     *  directory to be created in advance before creating the image
+     *  file or htm directory.  This parameter is primarily used to
+     *  avoid prompting the user with questions about overwriting
+     *  files after this command is invoked.
      *
      *  @param formatName The file format of the file to be generated.
      *  One of "GIF", "gif", "HTM", "htm", "PNG", "png".
@@ -303,15 +308,36 @@ public class ExportModel {
                         composite
                                 .setModelErrorHandler(new BasicModelErrorHandler());
                         _timer = new Timer(true);
-                        final Manager finalManager = manager;
+                        final Director finalDirector = composite.getDirector();
                         TimerTask doTimeToDie = new TimerTask() {
                             public void run() {
                                 System.out
                                         .println("ExportHTMLTimer went off after "
                                                 + timeOut
-                                                + " ms., calling manager.stop()");
+                                                + " ms., calling getDirector().finish and getDirector().stopFire()");
 
-                                finalManager.stop();
+                                // NOTE: This used to call stop() on
+                                // the manager, but that's not the
+                                // right thing to do. In particular,
+                                // this could be used inside a
+                                // RunCompositeActor, and it should
+                                // only stop the inside execution, not
+                                // the outside one.  It's also not
+                                // correct to call stop() on the
+                                // director, because stop() requests
+                                // immediate stopping. To give
+                                // determinate stopping, this actor
+                                // needs to complete the current
+                                // iteration.
+
+                                // The Stop actor has similar code.
+                                finalDirector.finish();
+
+                                // To support multithreaded domains,
+                                // also have to call stopFire() to
+                                // request that all actors conclude
+                                // ongoing firings.
+                                finalDirector.stopFire();
                             }
                         };
                         _timer.schedule(doTimeToDie, timeOut);
