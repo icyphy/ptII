@@ -1419,6 +1419,14 @@ public class Director extends Attribute implements Executable {
      *  This causes a call to stop() on all actors contained by
      *  the container of this director, and sets a flag
      *  so that the next call to postfire() returns false.
+     *
+     *  <p> The stop() method requests immediate stopping.  To give
+     *  determinate stopping, call finish() so that the
+     *  current iteration is completed.</p>
+     *
+     *  <p>In multithreaded domains, Director.stopFire() is called
+     *  to request that all actors conclude ongoing firings.</p>
+     *
      */
     public void stop() {
         // Set _stopRequested first before looping through actors below
