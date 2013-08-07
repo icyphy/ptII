@@ -5,6 +5,9 @@ Claudius Ptolemaeus, Editor, System Design, Modeling, and Simulation Using Ptole
 
 As of July, 2013, the book is not yet available.
 
+
+Below are models that have problems running.
+
 #####
 doc/books/systems/continuous/ContinuousInsideDESimplified.xml
 fails to run with
@@ -223,6 +226,9 @@ input
 
 #####
 doc/books/systems/types/ArrayLengthError.xml
+
+This model probably supposed to fail.  What should we do about it?
+
 ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.ArrayToken '{1, 2}' and ptolemy.data.ArrayToken '{1, 2, 3}'
 Because:
 The length of the argument (3) is not the same as the length of this token (2).
@@ -298,3 +304,15 @@ ptolemy.kernel.util.IllegalActionException: Cannot have minimumDelay > delay tru
   at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1840)
   at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:456)
   at ptolemy.actor.CompositeActor.fire(CompositeActor.java:450)
+
+#####
+doc/books/systems/vergil/AddStringsException.xml
+
+This model probably supposed to fail.  What should we do about it?
+
+Caused by: ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"0"' and ptolemy.data.StringToken '"Hello World"'
+       at ptolemy.data.StringToken._subtract(StringToken.java:360)
+       at ptolemy.data.AbstractConvertibleToken.subtractReverse(AbstractConvertibleToken.java:611)
+       at ptolemy.data.ScalarToken.subtract(ScalarToken.java:1126)
+       at ptolemy.actor.lib.AddSubtract.fire(AddSubtract.java:195)
+
