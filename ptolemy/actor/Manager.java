@@ -1262,6 +1262,21 @@ public class Manager extends NamedObj implements Runnable {
      *  This will result in stop() being called on the top level
      *  CompositeActor, although not necessarily immediately.
      *  This is basically an alias for finish().
+     *
+     *  <p> Note that in general, it is best to get that director
+     *  and call finish() and stopFire() on the director than
+     *  it is to call Manager.stop().<p>
+     * 
+     *  <p> The reason that it is better to call Director.finish()
+     *  is that if Manager.stop() is called inside a RunCompositeActor
+     *  then only the inside execution will be stopped, not
+     *  the outside one.  It is also not correct to call stop()
+     *  on the directory because Director.stop() requests immediate
+     *  stopping.  To give determinate stopping, call Director.finish()
+     *  so that the current iteration is completed.</p>
+     *
+     *  <p>In multithreaded domains, Director.stopFire is called
+     *  to request that all actors conclude ongoing firings.</p>
      */
     public void stop() {
         finish();
