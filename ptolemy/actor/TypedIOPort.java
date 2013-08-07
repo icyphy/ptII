@@ -317,7 +317,8 @@ public class TypedIOPort extends IOPort implements Typeable {
     public Token convert(Token token) throws IllegalActionException {
         Type type = getType();
 
-        if (type.equals(token.getType()) || this.isDynamic()) {
+        // Do not convert if automatic type conversion is disabled.
+        if (type.equals(token.getType()) || !this.getAutomaticTypeConversion()) {
             return token;
         } else {
             try {
@@ -429,11 +430,11 @@ public class TypedIOPort extends IOPort implements Typeable {
         return false;
     }
 
-    /** Indicates whether conversion of received tokens is disabled.
-     *  @return True if conversion is disabled, or false if otherwise.
+    /** Indicates whether conversion of received tokens is enabled or not.
+     *  @return True if conversion is enabled, or false otherwise.
      */
-    public boolean isDynamic() {
-        return this._dynamic;
+    public boolean getAutomaticTypeConversion() {
+        return _automaticTypeConversion;
     }
     
     /** Remove a type listener from this port.  If the listener is
@@ -599,13 +600,20 @@ public class TypedIOPort extends IOPort implements Typeable {
         super.sendInside(channelIndex, token);
     }
 
-    /** Set to true in order to disable conversion of received tokens.
-     *  @param dynamic True in order to disable conversion of received tokens.
+    /** Allow actors to disable automatic type conversion on their input 
+     *  ports in case they do not need it. For example, AddSubtract and 
+     *  Display accept any token type, because they make use of methods 
+     *  that are inherited by all token types. Disabling automatic type
+     *  conversion lets actors use Java's dynamic dispatch mechanism 
+     *  instead. If set to false, received tokens will not be 
+     *  converted.
+     *  @param automaticTypeConversion False in order to disable 
+     *  conversion of received tokens, true otherwise.
      */
-    public void setDynamic(boolean dynamic) {
-        _dynamic = dynamic;
+    public void setAutomaticTypeConversion(boolean automaticTypeConversion) {
+        _automaticTypeConversion = automaticTypeConversion;
     }
-    
+
     /** Constrain the type of this port to be equal to or greater
      *  than the type of the specified Typeable object.
      *  <p>Actors that call this method should have a clone() method that
@@ -907,15 +915,10 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     protected Type _resolvedType = BaseType.UNKNOWN;
 
-    /** Indicates whether or not the types associated with this port should 
-     *  be interpreted as an interface type or not. By default, all tokens 
-     *  that are received on a TypedIOPort are converted to the associated 
-     *  type. In the case where an actor needs to use Java's dynamic dispatch
-     *  mechanism instead of the default automatic type conversion scheme,
-     *  this variable must be set to true. If set to true, received tokens
-     *  will not be converted.
+    /** By default set to true, meaning received tokens will be converted. 
+     *  If set to false, received tokens will not be converted.
      */
-    private boolean _dynamic = false;
+    private boolean _automaticTypeConversion = true;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -114,6 +114,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
+        input.setAutomaticTypeConversion(false);
 
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setExpression("10");
