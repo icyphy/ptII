@@ -634,8 +634,8 @@ src_jar: #$(PTII_SRC)
 	egrep -v "openmodelica" \
 		src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml \
 		> src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml_tmp
-	mv src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirector.xml_tmp \
-	        src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirector.xml+tmp
+	mv src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml_tmp \
+	        src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml
 	# Fix up doc/makefile
 	egrep -v "giotto.cgc|openmodelica" \
 		src_jar/ptII$(VERSION)/doc/makefile \
