@@ -32,8 +32,8 @@
 ME =		doc/books/systems
 
 # Sub directories to run make in.
-DIRS =		architecture continuous dataflow discreteevents expressions fsm \
-		intro modal modelingtime plotter pn synchronous types vergil
+DIRS =		architecture continuous dataflow discreteevents export expressions fsm \
+		intro modal modelingtime ontologies plotter pn ptera synchronous types vergil
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -51,13 +51,16 @@ PTCLASSALLJARS = \
 	continuous/continuous.jar \
 	dataflow/dataflow.jar \
 	discreteevents/discreteevents.jar \
+	export/export.jar \
 	expressions/expressions.jar \
 	fsm/fsm.jar \
 	intro/intro.jar \
 	modal/modal.jar \
 	modelingtime/modelingtime.jar \
+	ontologies/ontologis.jar \
 	plotter/plotter.jar \
 	pn/pn.jar \
+	ptera/ptera.jar \
 	synchronous/synchronous.jar \
 	types/types.jar \
 	vergil/vergil.jar
