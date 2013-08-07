@@ -449,8 +449,10 @@ public class IOPortController extends AttributeController {
                         } else {
                             object = qmList.get(qmList.size() - 1);
                         }
-                        ColorAttribute color = (ColorAttribute)((NamedObj) object).getAttribute(QuantityManager.decoratorHighlightColorName);
-                        
+                        ColorAttribute color = null;
+                        if (object != null) {
+                            color = (ColorAttribute)((NamedObj) object).getAttribute(QuantityManager.decoratorHighlightColorName);
+                        }
                         if (color != null) {
                             fill = color.asColor();
                         } else {
