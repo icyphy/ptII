@@ -59,6 +59,13 @@ Token Scalar_clone(Token thisToken, ...) {
 /*** Scalar_convert() ***/
 Token Scalar_convert(Token token, ...) {
     switch (token.type) {
+#ifdef TYPE_Boolean
+    case TYPE_Boolean:
+    	token.type = TYPE_Scalar;
+    	token.payload.Scalar = (token.payload.Boolean == true ? 1 : 0);
+    	break;
+#endif
+
 #ifdef TYPE_String
     case TYPE_String:
         // FIXME: Is this safe?

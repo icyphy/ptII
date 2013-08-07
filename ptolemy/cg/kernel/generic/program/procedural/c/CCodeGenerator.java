@@ -523,7 +523,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer typeMembers = new StringBuffer();
         codeH.append("#define TYPE_Token -1 " + _eol);
         codeH.append("#define TYPE_Unknown -1 " + _eol);
-        codeH.append("#define TYPE_Scalar -1 " + _eol);
+        if (!types.contains("Scalar"))
+            codeH.append("#define TYPE_Scalar -1 " + _eol);
 
         for (int i = 0; i < typesArray.length; i++) {
             
