@@ -61,28 +61,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-/** A {@link QuantityManager} actor that, when its
+/** A {@link BasicSwitch} actor that, when its
  *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
- *  according to a service rule. This quantity manager is used on
- *  input ports by setting a parameter with an ObjectToken that refers
- *  to this QuantityManager at the port. Note that the name of this
- *  parameter is irrelevant.
+ *  according to the delays and contention on input buffers, output buffers, 
+ *  and switch fabric delays.
  *
- *  <p>This quantity manager implements a simple switch. It has a parameter
- *  specifying the number of ports. On each port, an actor is connected.
- *  Note that these ports are not represented as ptolemy actor ports.
- *  This actor can send tokens to the switch and receive tokens from the
- *  switch. The mapping of ports to actors is done via parameters of this
- *  quantity manager.
- *
- *  <p>Internally, this switch has a buffer for every input, a buffer
- *  for the switch fabric and a buffer for every output. The delays
- *  introduced by the buffers are configured via parameters. Tokens are
- *  processed simultaneously on the buffers.
- *
- *  <p> This switch implements a very basic switch fabric consisting
- *  of a FIFO queue.
+ *  <p>This quantity manager implements a simple switch which has a parametrizable 
+ *  number of ports. Note that these ports are not visually represented 
+ *  as Ptolemy actor ports. The first token received by this actor is delayed for
+ *  <i>inputBufferDelay</i> + <i>switchFabricDelay</i> + <i>outputBufferDelay</i>
+ *  time units. Tokens received on the same switch input are buffered in a FIFO queue.
+ *  Similarly, tokens for the same output are buffered in FIFO queues. The switch 
+ *  fabric in this switch acts as a FIFO queue as well. Tokens on different input
+ *  and output ports are processed in parallel, tokens in the switch fabric are 
+ *  processed one after the other.</p> 
+ *  
+ *  <p>To use this actor, drag it into a model. Input ports get decorated with
+ *  {@link BasicSwitchAttributes} which describe the path a token takes through
+ *  the switch: the switch input port number and the switch output port
+ *  number.</p>
  *
  *  @author Patricia Derler
  *  @version $Id$
@@ -92,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class BasicSwitch extends AtomicQuantityManager {
 
-    /** Construct a Bus with a name and a container.
+    /** Construct a BasicSwitch with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -146,14 +144,17 @@ public class BasicSwitch extends AtomicQuantityManager {
     /** Number of ports on the switch. This parameter must contain an
      *  IntToken.  The value defaults to 4. */
     public Parameter numberOfPorts;
+    
     /** Time it takes for a token to be put into the input queue.
      *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
     public Parameter inputBufferDelay;
+    
     /** Time it takes for a token to be put into the output queue.
      *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
     public Parameter outputBufferDelay;
+    
     /** Time it takes for a token to be processed by the switch fabric.
      *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
@@ -233,7 +234,7 @@ public class BasicSwitch extends AtomicQuantityManager {
      *   null if the specified target is not an Actor.
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof IOPort) {
+        if (target instanceof IOPort && ((IOPort)target).isInput()) {
             try {
                 return new BasicSwitchAttributes(target, this);
             } catch (KernelException ex) {
@@ -429,8 +430,7 @@ public class BasicSwitch extends AtomicQuantityManager {
         }
     }
     
-    /** Make sure that this quantity manager is only used in the DE domain.
-     *  FIXME: this actor should be used in other domains later as well.
+    /** Make sure that this quantity manager is only used in the DE domain. 
      *  @param container The container of this actor.
      *  @exception IllegalActionException If thrown by the super class or if the
      *  director of this actor is not a DEDirector.
