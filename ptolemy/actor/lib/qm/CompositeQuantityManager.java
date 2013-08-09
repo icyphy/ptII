@@ -45,7 +45,7 @@ import ptolemy.actor.QuantityManagerListener;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.Const; 
+import ptolemy.actor.lib.Const;
 import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
@@ -74,10 +74,7 @@ import ptolemy.kernel.util.Workspace;
 *  When an intermediate receiver sends a token to an input port of this
 *  quantity manager, the original receiver and the token are encoded in a
 *  RecordToken. When such a token arrives at an output port, the original token
-*  is extracted and sent to the original receiver.
-*  <p>
-*  A color parameter is used to perform highlighting on the ports that use this
-*  quantity manager.
+*  is extracted and sent to the original receiver. 
 *
 *  @author Patricia Derler
 *  @version $Id$
@@ -85,9 +82,10 @@ import ptolemy.kernel.util.Workspace;
 *  @Pt.ProposedRating Yellow (derler)
 *  @Pt.AcceptedRating Red (derler)
 */
-public class CompositeQuantityManager extends TypedCompositeActor implements QuantityManager, Decorator {
+public class CompositeQuantityManager extends TypedCompositeActor implements
+        QuantityManager, Decorator {
 
-    /** Construct a CompositeQM in the specified workspace with
+    /** Construct a CompositeQuantityManager in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
      *  use the default workspace.  You should set the local director or
@@ -100,13 +98,13 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public CompositeQuantityManager(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public CompositeQuantityManager(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initialize();
     }
 
-    /** Construct a CompositeQM with a name and a container.
+    /** Construct a CompositeQuantityManager with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -127,7 +125,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         super(container, name);
         _initialize();
     }
-    
+
     /** This parameter indicates whether the tokens received via the 
      *  ImmediateReceivers are immediately forwarded to the wrapped 
      *  receivers or whether they are delayed by this quantity manager
@@ -138,7 +136,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to the change of the <i>justMonitor</i> attribute by
      *  updating internal variables.
      *  @param attribute The attribute that changed.
@@ -147,9 +145,10 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      */
     @Override
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         if (attribute == justMonitor) {
-            _justMonitor = ((BooleanToken)justMonitor.getToken()).booleanValue();
+            _justMonitor = ((BooleanToken) justMonitor.getToken())
+                    .booleanValue();
         }
         super.attributeChanged(attribute);
     }
@@ -161,11 +160,12 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @return A new CompositeQM.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CompositeQuantityManager newObject = (CompositeQuantityManager) super.clone(workspace);
+        CompositeQuantityManager newObject = (CompositeQuantityManager) super
+                .clone(workspace);
         newObject._parameters = new HashMap<IOPort, List<Attribute>>();
         return newObject;
     }
-    
+
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
@@ -206,18 +206,19 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object object : container.deepEntityList()) {
             if (object instanceof Actor) {
-                for (Object port : ((Actor)object).inputPortList()) {
+                for (Object port : ((Actor) object).inputPortList()) {
                     list.add((NamedObj) port);
                 }
             }
         }
         return list;
     }
-    
+
     /** Override the fire and change the transferring tokens
      * from and to input/output placeholders.
      */
-    public void fire() throws IllegalActionException {super.fire();
+    public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
             _debug("Calling fire() at " + getDirector().getModelTime());
         }
@@ -252,31 +253,33 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             // Use the local director to transfer outputs.
             getDirector().transferOutputs();
 
-            if( _tokens != null){
-            for (Const mappedConst : _tokens.keySet()) {
-                mappedConst.value.setToken(_tokens.get(mappedConst));
-                mappedConst.fire(); 
-            }
-            
-            _tokens.clear();
+            if (_tokens != null) {
+                for (Const mappedConst : _tokens.keySet()) {
+                    mappedConst.value.setToken(_tokens.get(mappedConst));
+                    mappedConst.fire();
+                }
+
+                _tokens.clear();
             }
             getDirector().fire();
 
             if (_stopRequested) {
                 return;
-            } 
+            }
             if (!_justMonitor) {
                 for (Object entity : entityList()) {
                     if (entity instanceof CQMOutputPort) {
-                        CQMOutputPort outputPort = ((CQMOutputPort)entity);
+                        CQMOutputPort outputPort = ((CQMOutputPort) entity);
                         while (outputPort.hasToken()) {
-                            RecordToken recordToken = (RecordToken) outputPort.takeToken();
-                            Receiver receiver = (Receiver) ((ObjectToken) recordToken.get("receiver")).getValue();
+                            RecordToken recordToken = (RecordToken) outputPort
+                                    .takeToken();
+                            Receiver receiver = (Receiver) ((ObjectToken) recordToken
+                                    .get("receiver")).getValue();
                             Token token = recordToken.get("token");
                             receiver.put(token);
                         }
                     }
-                } 
+                }
             }
         } finally {
             _workspace.doneReading();
@@ -289,7 +292,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     public boolean isGlobalDecorator() {
         return true;
     }
-    
+
     /** Add a quantity manager monitor to the list of listeners.
      *  @param monitor The quantity manager monitor.
      */
@@ -299,11 +302,11 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         }
         _listeners.add(monitor);
     }
-    
-    /** Reset.
+
+    /** Reset - nothing to do here.
      */
     public void reset() {
-        // FIXME what to do here?
+        // nothing to do here.
     }
 
     /** Override the base class to first set the container, then establish
@@ -318,8 +321,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
-    public void setContainer(CompositeEntity container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
@@ -336,11 +339,11 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  @param port The actorport.  
      *  @param inputPortName The name of the CQMInputPort. 
      */
-    public void setInputPortName(Port port, String inputPortName) { 
+    public void setInputPortName(Port port, String inputPortName) {
         if (_cqmInputPortName == null) {
             _cqmInputPortName = new HashMap<Port, String>();
         }
-        _cqmInputPortName.put(port, inputPortName); 
+        _cqmInputPortName.put(port, inputPortName);
     }
 
     /** Initiate a send of the specified token to the specified
@@ -354,27 +357,27 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         String name = _cqmInputPortName.get(receiver.getContainer());
-        CQMInputPort port = (CQMInputPort) getEntity(name); 
+        CQMInputPort port = (CQMInputPort) getEntity(name);
         if (port == null) {
-            throw new IllegalActionException(this, 
-                    "CQMInputPort with name " + name 
-                    + " specified by " + receiver.getContainer()
+            throw new IllegalActionException(this, "CQMInputPort with name "
+                    + name + " specified by " + receiver.getContainer()
                     + " missing");
         }
         if (_tokens == null) {
             _tokens = new HashMap<CQMInputPort, Token>();
         }
         if (token != null) {
-            RecordToken recordToken = new RecordToken(
-                    new String[]{"receiver", "token"}, 
-                    new Token[]{new ObjectToken(receiver), token});
+            RecordToken recordToken = new RecordToken(new String[] {
+                    "receiver", "token" }, new Token[] {
+                    new ObjectToken(receiver), token });
             _tokens.put(port, recordToken);
             if (_justMonitor) {
                 receiver.put(token);
             }
-    
-            ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(this);
-    
+
+            ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(
+                    this);
+
             if (_debugging) {
                 _debug("At time " + getDirector().getModelTime()
                         + ", initiating send to "
@@ -399,14 +402,15 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      */
     private void _initialize() throws IllegalActionException,
             NameDuplicationException {
-        ColorAttribute color = new ColorAttribute(this, decoratorHighlightColorName);
+        ColorAttribute color = new ColorAttribute(this,
+                decoratorHighlightColorName);
         color.setExpression("{1.0,0.6,0.0,1.0}");
-        
+
         justMonitor = new Parameter(this, "justMonitor");
         justMonitor.setTypeEquals(BaseType.BOOLEAN);
         justMonitor.setExpression("false");
         _justMonitor = false;
-        
+
         _parameters = new HashMap<IOPort, List<Attribute>>();
     }
 
@@ -414,21 +418,21 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     ////                         private variables                 ////
 
     private HashMap<CQMInputPort, Token> _tokens;
-    
+
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
 
     private HashMap<Port, String> _cqmInputPortName;
-    
+
     private boolean _justMonitor;
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** Attributes for ports decorated by this composite quantity manager.
      *  A port on an actor decorated by a composite quantity manager must
-     *  specify the port in the CQM that input tokens are routed to.
+     *  specify the port in the CompositeQuantityManager 
+     *  that input tokens are routed to.
      * 
      *  @author Patricia Derler
      */
@@ -464,10 +468,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         /** Input port in the composite quantity manager that receives
          *  tokens from decorated actor ports.
          */
-        public Parameter inputPort; 
-        
-        
-        
+        public Parameter inputPort;
+
         /** React to a change in the input port attribute.
          *  @param attribute The attribute that changed.
          *  @exception IllegalActionException If the change is not acceptable
@@ -478,37 +480,39 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();
             if (attribute == inputPort) {
-                _inputPort = ((StringToken)((Parameter)attribute).getToken()).stringValue();
+                _inputPort = ((StringToken) ((Parameter) attribute).getToken())
+                        .stringValue();
                 CompositeQuantityManager compositeQM = (CompositeQuantityManager) getDecorator();
                 if (compositeQM != null) {
                     compositeQM.setInputPortName(port, _inputPort);
                 }
-            } 
+            }
             super.attributeChanged(attribute);
-        } 
-        
+        }
+
         /** Add names of available CQMInputPort in CompositeQM as
          *  choices to inputPort.
          *  @exception InteralErrorException Thrown if CompositeQM
          *    cannot be accessed.  
          */
         @Override
-        public void updateContent() throws InternalErrorException { 
+        public void updateContent() throws InternalErrorException {
             super.updateContent();
             try {
-                if (getDecorator() != null) { 
+                if (getDecorator() != null) {
                     inputPort.removeAllChoices();
-                 
-                    List cqmInputPorts = ((CompositeQuantityManager)getDecorator()).entityList(CQMInputPort.class);
+
+                    List cqmInputPorts = ((CompositeQuantityManager) getDecorator())
+                            .entityList(CQMInputPort.class);
                     for (Object cqmInputPort : cqmInputPorts) {
-                        String name = ((CQMInputPort)cqmInputPort).getName();
+                        String name = ((CQMInputPort) cqmInputPort).getName();
                         inputPort.addChoice(name);
-                    }  
+                    }
                 }
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
             }
-        } 
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                        private methods                    ////
@@ -517,13 +521,13 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
          */
         private void _init() {
             try {
-                inputPort = new StringParameter(this, "inputPort"); 
+                inputPort = new StringParameter(this, "inputPort");
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
             }
         }
-        
-        private String _inputPort; 
+
+        private String _inputPort;
     }
 }
