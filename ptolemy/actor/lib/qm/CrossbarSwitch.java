@@ -47,15 +47,15 @@ import ptolemy.kernel.util.Workspace;
 /** This actor is an {@link QuantityManager} that, when its
  *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
- *  according to a service rule. This quantity manager is used on
- *  input ports by setting a parameter with an ObjectToken that refers
- *  to this QuantityManager at the port. Note that the name of this
- *  parameter is irrelevant.
- *
- *  <p>This quantity manager implements a crossbar switch.
- *
- *  <p> FIXME: add explanation
- *
+ *  according to a delays on input buffers, delays on output buffers 
+ *  and delays in the switch fabric of a crossbar switch. This actor is
+ *  used the same way as the {@link BasicSwitch}; just the switch fabric
+ *  implemented here is different. I.e. this switch can potentially exhibit
+ *  better throughput performance as some tokens can be processed in parallel
+ *  by the switch fabric. For more information on how a crossbar switch works
+ *  please refer to the {@link http://en.wikipedia.org/wiki/Crossbar_switch}, 
+ *  General Properties.
+ *  
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.1
