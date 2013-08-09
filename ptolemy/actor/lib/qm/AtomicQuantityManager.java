@@ -63,12 +63,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-/** This abstract class implements functionality to monitor the activity of a
- *  quantity manager as well as assign a color attribute to a quantity manager.
- *  This color is used to perform highlighting on the ports that use this
- *  quantity manager.
- *  <p>
- *  Listeners can register for events happening in this quantity manager. Events are
+/** This abstract class implements functionality of an atomic
+ *  quantity manager.  
+ *  Listeners can register with this actor for events happening in this quantity 
+ *  manager. Events are
  *  created when, for instance, tokens are received or tokens are sent. These
  *  events are implemented in derived classes.
  *
@@ -81,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
 public abstract class AtomicQuantityManager extends TypedAtomicActor
         implements QuantityManager, Decorator {
 
-    /** Construct an actor in the specified workspace with an empty
+    /** Construct an AtomicQuantityManager in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
      *  The object is added to the workspace directory.
@@ -92,7 +90,7 @@ public abstract class AtomicQuantityManager extends TypedAtomicActor
         super(workspace);
     }
 
-    /** Construct a MonitoredQuantityManager with a name and a container.
+    /** Construct an AtomicQuantityManager with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
