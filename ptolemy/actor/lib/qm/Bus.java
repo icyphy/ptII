@@ -164,7 +164,7 @@ public class Bus extends AtomicQuantityManager {
      *   null if the specified target is not an Actor.
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof IOPort) {
+        if (target instanceof IOPort && ((IOPort)target).isInput()) {
             try {
                 return new BusAttributes(target, this);
             } catch (KernelException ex) {
