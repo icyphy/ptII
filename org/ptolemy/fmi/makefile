@@ -67,6 +67,7 @@ JSRCS = \
 	FMUFile.java \
 	FMULibrary.java \
 	FMULog.java \
+	FMULogUtilities.java \
 	NativeSizeT.java
 
 OTHER_FILES_TO_BE_JARED = build.xml \
