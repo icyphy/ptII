@@ -78,6 +78,7 @@ JSRCS = \
 	TextFieldContainerJavaSE.java \
 	TimedPlotter.java \
 	TimedScope.java \
+	UsesInvokeAndWait.java \
 	XYPlotter.java \
 	XYScope.java
 

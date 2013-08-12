@@ -54,7 +54,9 @@ import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.lib.gui.UsesInvokeAndWait;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -284,6 +286,12 @@ public class ExportModel {
         }
 
         if (run) {
+            if (!_runnable(model[0])) {
+                System.out.println("Model \"" + model[0].getFullName() 
+                        + "\" contains actors such cannot be run "
+                        + " as part of the export process from ExportModel. "
+                        + "To export run this model and export it, use vergil."); 
+            } else {
             // Optionally run the model.
             Runnable runAction = new Runnable() {
                 public void run() {
@@ -354,6 +362,7 @@ public class ExportModel {
             };
             SwingUtilities.invokeAndWait(runAction);
             _sleep();
+            }
         }
 
         if (save) {
@@ -897,4 +906,29 @@ public class ExportModel {
 
     /** The Timer used to terminate a run. */
     private static Timer _timer = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+
+    /** Return true if the model is runnable from this context.
+     *  Models that invoke SwingUtilities.invokeAndWait()
+     *  are not runnable here.  To export such a model, use 
+     *  vergil.
+     *  @param model The model to be checked.
+     *  @return true if the model is runnable.
+     */
+    private boolean _runnable(CompositeEntity model) {
+        // Check for actors that implement UsesInvokeAndWait.
+        Iterator atomicEntities = model.allAtomicEntityList().iterator();
+        while (atomicEntities.hasNext()) {
+            Entity entity = (Entity)atomicEntities.next();
+            if (entity instanceof UsesInvokeAndWait){
+                System.out.println(entity.getFullName() 
+                        + " invoked SwingUtilities.invokeAndWait()");
+                return false;
+            } 
+        }
+        return true;
+    }
+
 }
