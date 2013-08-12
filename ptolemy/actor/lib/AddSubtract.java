@@ -99,10 +99,10 @@ public class AddSubtract extends TypedAtomicActor {
         super(container, name);
         plus = new TypedIOPort(this, "plus", true, false);
         plus.setMultiport(true);
-        plus.setAutomaticTypeConversion(true);
+        plus.setAutomaticTypeConversion(false);
         minus = new TypedIOPort(this, "minus", true, false);
         minus.setMultiport(true);
-        minus.setAutomaticTypeConversion(true);
+        minus.setAutomaticTypeConversion(false);
         output = new TypedIOPort(this, "output", false, true);
 
         output.setTypeAtLeast(plus);
