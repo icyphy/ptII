@@ -9,6 +9,30 @@ As of July, 2013, the book is not yet available.
 Below are models that have problems running.
 
 #####
+Perhaps models that have InteractiveShells should not be run?
+
+discreteevents/InteractiveShell.xml
+discreteevents/ThreadedComposite.xml
+export/ChatClient.xml
+export/ChatClient2.xml
+export/ChatClient3.xml
+modal/ErrorTransition.xml
+modal/RefinementOutput.xml
+modal/Termination.xml
+pn/AreYouReady.xml
+pn/ChatClient.xml
+pn/LocalChat.xml
+pn/RemoteChat.xml
+types/ExpressionEvaluator.xml
+types/ExpressionEvaluatorBackward.xml
+types/ExpressionEvaluatorCoerced.xml
+types/ExpressionEvaluatorGeneral.xml
+types/ExpressionEvaluatorTighter.xml
+types/ExpressionEvaluatorTypeConflict.xml
+
+ExportModel invokes invokeAndWait, as does the InteractiveShell.
+
+#####
 doc/books/systems/continuous/ContinuousInsideDESimplified.xml
 fails to run with
 
@@ -174,8 +198,6 @@ The model has this comment:
   which you can access by clicking on this comment.
 
 So, it will not run when we are exporting html.  
-
-Perhaps models that have InteractiveShells should not be run?
 
 
 #####
