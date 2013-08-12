@@ -452,7 +452,7 @@ FULL_ONLY_JNLP_JARS = \
 	contrib/contrib.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
-	org/ptango/ptango.jar \
+	org/ptolemy/ptango/ptango.jar \
 	$(PTFMI_JARS) \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
