@@ -76,7 +76,8 @@ else
 	    SPELLCMD=$ASPELL
 	    # First line of ptlocaldict must be
 	    # personal_ws-1.1 en 719
-	    SPELLARGS="-C --run-together-limit=10 -a list --personal=$LOCALFILE --repl=$PTII/util/testsuite/aspell.en.prepl"
+	    #SPELLARGS="-C --run-together-limit=10 -a list --personal=$LOCALFILE --repl=$PTII/util/testsuite/aspell.en.prepl"
+	    SPELLARGS="-C --run-together-limit=10 -a list --personal=$LOCALFILE"
 	    cat ${1+"$@"} | $SPELLCMD $SPELLARGS | \
 		awk '{if ($1 == "&") {print $2}}' | \
 		sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | \
