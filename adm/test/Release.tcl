@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2009-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -112,6 +112,9 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     if {[glob -nocomplain {*.class}] != {}} {
 	exec rm [glob -nocomplain {*.class}]
     } 
+    puts "Removing doc/books/systems because building jnlp files creates files and directories."
+    exec rm -rf doc/books/systems
+    exec svn update doc/books/systems
     set result {}
     set status [exec svn status]
     set data [split $status "\n"]
