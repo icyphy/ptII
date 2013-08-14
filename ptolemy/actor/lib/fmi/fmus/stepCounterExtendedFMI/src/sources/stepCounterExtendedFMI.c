@@ -298,7 +298,7 @@ fmiComponent fmiInstantiateSlave(
     // Need to allocate memory and copy the string because JNA stores the string
     // in a temporary buffer that gets GC'd.
     component->instanceName = (char*)functions->allocateMemory(1 + strlen(instanceName), sizeof(char));
-    strcpy(component->instanceName, instanceName);
+    strcpy((char *)component->instanceName, instanceName);
 
     // FIXME: Use logger instead when this works.
     // functions->logger(component, instanceName, fmiOK, "message",
