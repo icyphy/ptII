@@ -21,15 +21,13 @@
 
 // array of value references of states
 #if NUMBER_OF_REALS>0
-fmiValueReference vrStates[NUMBER_OF_STATES] = STATES; 
+// Linux: declare vrStates to be static so that we get the local definition.
+static fmiValueReference vrStates[NUMBER_OF_STATES] = STATES; 
 #endif
 
 #ifndef max
 #define max(a,b) ((a)>(b) ? (a) : (b))
 #endif
-// ---------------------------------------------------------------------------
-// Private helpers used below to validate function arguments
-// ---------------------------------------------------------------------------
 
 static fmiBoolean invalidState(ModelInstance* comp, const char* f, int statesExpected){
     if (!comp) 
@@ -57,7 +55,6 @@ static fmiBoolean vrOutOfRange(ModelInstance* comp, const char* f, fmiValueRefer
     if (vr >= end) {
         comp->functions.logger(comp, comp->instanceName, fmiError, "error",
                 "%s: Illegal value reference %u.", f, vr);
-        //comp->state = fmiError;
         comp->state = modelError;
         return fmiTrue;
     }
@@ -68,7 +65,7 @@ static fmiBoolean vrOutOfRange(ModelInstance* comp, const char* f, fmiValueRefer
 // Private helpers used below to implement functions
 // ---------------------------------------------------------------------------
 
-fmiStatus setString(fmiComponent comp, fmiValueReference vr, fmiString value){
+static fmiStatus setString(fmiComponent comp, fmiValueReference vr, fmiString value){
     return fmiSetString(comp, &vr, 1, &value);
 }
 
@@ -155,8 +152,6 @@ static fmiStatus terminate(char* fname, fmiComponent c){
 // fname is freeModelInstance of freeSlaveInstance
 void freeInstance(char* fname, fmiComponent c) {
     ModelInstance* comp = (ModelInstance *)c;
-    printf("freeInstance\n");
-    fflush(stdout);
     if (!comp) return;
     if (comp->loggingOn) comp->functions.logger(c, comp->instanceName, fmiOK, "log", fname);
     if (comp->r) comp->functions.freeMemory(comp->r);
@@ -165,7 +160,7 @@ void freeInstance(char* fname, fmiComponent c) {
     if (comp->s) {
         int i;
         for (i=0; i<NUMBER_OF_STRINGS; i++){
-            if (comp->s[i]) comp->functions.freeMemory((void *)comp->s[i]);
+            if (comp->s[i]) comp->functions.freeMemory((void*)comp->s[i]);
         }
         comp->functions.freeMemory(comp->s);
     }
@@ -277,7 +272,7 @@ fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[], size_t nvr,
     if (comp->loggingOn)
         comp->functions.logger(c, comp->instanceName, fmiOK, "log", "fmiSetString: nvr = %d",  nvr);
     for (i=0; i<nvr; i++) {
-        char* string = (char *)comp->s[vr[i]];
+        const char* string = comp->s[vr[i]];
         if (vrOutOfRange(comp, "fmiSetString", vr[i], NUMBER_OF_STRINGS))
             return fmiError;
         if (comp->loggingOn) comp->functions.logger(c, comp->instanceName, fmiOK, "log", 
@@ -285,7 +280,7 @@ fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[], size_t nvr,
         if (nullPointer(comp, "fmiSetString", "value[i]", value[i]))
             return fmiError;
         if (string==NULL || strlen(string) < strlen(value[i])) {
-            if (string) comp->functions.freeMemory(string);
+            if (string) comp->functions.freeMemory((void*)string);
             comp->s[vr[i]] = comp->functions.allocateMemory(1+strlen(value[i]), sizeof(char));
             if (!comp->s[vr[i]]) {
                 comp->state = modelError;
@@ -293,7 +288,7 @@ fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[], size_t nvr,
                 return fmiError;
             }
         }
-        strcpy((char *)comp->s[vr[i]], value[i]);
+        strcpy((char*) comp->s[vr[i]], value[i]);
     }
     return fmiOK;
 }
@@ -471,19 +466,30 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
     ModelInstance* comp = (ModelInstance *)c;
     fmiCallbackLogger log = comp->functions.logger;
     double h = communicationStepSize / 10;
-    int k,i;
+#if NUMBER_OF_EVENT_INDICATORS>0  || NUMBER_OF_REALS>0
+    int i;
+#endif
+    int k;
     const int n = 10; // how many Euler steps to perform for one do step
+#if NUMBER_OF_REALS>0
     double prevState[max(NUMBER_OF_STATES, 1)];
+#endif
+#if NUMBER_OF_EVENT_INDICATORS>0
     double prevEventIndicators[max(NUMBER_OF_EVENT_INDICATORS, 1)];
     int stateEvent = 0;
+#endif
 
     if (invalidState(comp, "fmiDoStep", modelInitialized))
          return fmiError;
 
+    // FMUSDK 1.0.2 had a bug where there were commas after each 
+    // of the strings below.  Under win32 with MSVC, this caused bad
+    // values to be printed for currentCommunicationPoint and the
+    // remaining strings not to be printed.
     if (comp->loggingOn) log(c, comp->instanceName, fmiOK, "log", "fmiDoStep: "
-       "currentCommunicationPoint = %g, ", 
-       "communicationStepSize = %g, ", 
-       "newStep = fmi%s", 
+       "currentCommunicationPoint = %g, "
+       "communicationStepSize = %g, "
+       "newStep = fmi%s"
        currentCommunicationPoint, communicationStepSize, newStep ? "True" : "False");
     
     // Treat also case of zero step, i.e. during an event iteration
@@ -598,7 +604,7 @@ fmiStatus fmiGetStringStatus(fmiComponent c, const fmiStatusKind s, fmiString*  
 static fmiBoolean invalidNumber(ModelInstance* comp, const char* f, const char* arg, int n, int nExpected){
     if (n != nExpected) {
         comp->state = modelError;
-        comp->functions.logger(comp, comp->instanceName, fmiError, "error", 
+        comp->functions.logger(comp, comp->instanceName, fmiError, "error",
                 "%s: Invalid argument %s = %d. Expected %d.", f, arg, n, nExpected);
         return fmiTrue;
     }

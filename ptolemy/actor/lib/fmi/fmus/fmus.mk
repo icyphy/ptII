@@ -103,7 +103,7 @@ update: $(FMU_NAME).fmu
 	cp $(FMU_NAME).fmu ../../test/auto/$(FMU_NAME).fmu
 
 test:
-	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu
+	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu  1.0 0.1 true
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

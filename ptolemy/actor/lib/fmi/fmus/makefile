@@ -107,7 +107,7 @@ update:
 	fi
 
 # Update fmu.mk, build_fmu and build_fmu.bat from the files in the template/ directory.
-update_makefiles:
+update_files:
 	@if [ "x$(FMUS_CS)" != "x" ]; then \
 		set $(FMUS_CS); \
 		for x do \
@@ -131,6 +131,8 @@ update_makefiles:
 			echo "copying template/sources/build_fmu.bat to $$x/src/sources and updating for ME"; \
 			sed -e 's@FMI for Co-Simulation 1.0@FMI for Model Exchange 1.0@' \
 				-e 's@/DFMI_COSIMULATION@@' template/sources/build_fmu.bat > $$x/src/sources/build_fmu.bat; \
+			echo "copyng template/sources/fmuTemplate.c to $$x/src/sources"; \
+			cp template/sources/fmuTemplate.c $$x/src/sources/fmuTemplate.c; \
 		done ; \
 	fi
 
