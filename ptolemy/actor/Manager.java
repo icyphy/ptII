@@ -705,7 +705,8 @@ public class Manager extends NamedObj implements Runnable {
      *  Set the state of the manager to ITERATING.
      *  This method is read synchronized on the workspace.
      *
-     *  @return True if postfire() returns true, otherwise, return false.
+     *  @return True if postfire() is not called, otherwise, return
+     *  the value returned by postfire(). 
      *
      *  @exception KernelException If the model throws it, or if there
      *   is no container.
@@ -715,17 +716,7 @@ public class Manager extends NamedObj implements Runnable {
             throw new IllegalActionException(this, "No model to execute!");
         }
 
-        // We return true if and only if postfire() returns true.  If
-        // prefire() returns false, then this method returns false.
-        // For example, ClassesIllustrated contains a
-        // DoNothingDirector.  If ClassesIllustrated is exported to
-        // html using:
-        // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 ptolemy/configs/doc/ClassesIllustrated.xml $PTII/ptolemy/configs/doc/ClassesIllustrated
-        // then the export would hang because
-        // DoNothingDirector.prefire() was returning false, but this
-        // method was returning true.
-
-        boolean result = false;
+        boolean result = true;
 
         long startTime = new Date().getTime();
         // Execute the change requests before acquiring read access on the
@@ -785,6 +776,13 @@ public class Manager extends NamedObj implements Runnable {
 
             _actorsToInitialize.clear();
 
+            // Note that if prefire() returns false, then postfire()
+            // is *not* called and this method will return true, which
+            // indicate to a caller of this method that iterate()
+            // could be called again. This is because if prefire
+            // returns false, it means "I don't want to be fired now."
+            // If postfire returns false, it means "I don't want to
+            // ever be fired again."
             if (_container.prefire()) {
                 _container.fire();
                 result = _container.postfire();
