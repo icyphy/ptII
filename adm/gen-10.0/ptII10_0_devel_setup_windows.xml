@@ -485,7 +485,7 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/org/json"/>
             <file src="../../jar_dist/org/ptolemy/ptango/ptango.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/ptango"/>
-            <file src="../../jar_dist/org/ptolemy/fmi.jar"
+            <file src="../../jar_dist/org/ptolemy/fmi/fmi.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/fmi"/>
             <file src="../../jar_dist/ptolemy/actor/gui/run/run.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/gui/run"/>
