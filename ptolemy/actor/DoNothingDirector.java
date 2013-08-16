@@ -29,6 +29,7 @@ package ptolemy.actor;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
@@ -72,7 +73,6 @@ public class DoNothingDirector extends Director {
     }
 
     public void fire() {
-        // FIXME: should this call stopFire()?
     }
 
     public void initialize() {
@@ -87,13 +87,16 @@ public class DoNothingDirector extends Director {
     }
 
     public void preinitialize() {
-        // FIXME: It might make sense to call finish()
-        // and/or stopFire() here. 
         // When exporting the ClassesIllustrated model, the
         // model would run forever because the value returned
         // by prefire() was not being checked in Manager.
         // If finish() is called then the bug would have
         // been avoided.
+        Nameable container = getContainer();
+
+        if (container instanceof CompositeActor) {
+            ((CompositeActor)container).getManager().finish();
+        }
     }
 
     public boolean transferInputs(IOPort port) {
