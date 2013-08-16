@@ -72,6 +72,7 @@ public class DoNothingDirector extends Director {
     }
 
     public void fire() {
+        // FIXME: should this call stopFire()?
     }
 
     public void initialize() {
@@ -86,6 +87,13 @@ public class DoNothingDirector extends Director {
     }
 
     public void preinitialize() {
+        // FIXME: It might make sense to call finish()
+        // and/or stopFire() here. 
+        // When exporting the ClassesIllustrated model, the
+        // model would run forever because the value returned
+        // by prefire() was not being checked in Manager.
+        // If finish() is called then the bug would have
+        // been avoided.
     }
 
     public boolean transferInputs(IOPort port) {
@@ -94,8 +102,5 @@ public class DoNothingDirector extends Director {
 
     public boolean transferOutputs(IOPort port) {
         return false;
-    }
-
-    public void wrapup() {
     }
 }
