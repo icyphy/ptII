@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.actor.lib.anomaly;
+package org.ptolemy.machineLearning.hmm;
 
 import java.util.HashMap;
 

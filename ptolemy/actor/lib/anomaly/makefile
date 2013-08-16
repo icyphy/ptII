@@ -1,10 +1,9 @@
-# Makefile for Ptolemy II anomaly detection actors.
-#
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# Makefile org sources from outside of Ptolemy
 #
 # @Version: $Id$
+# @Author: Ilge Akkaya
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2007-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,45 +25,61 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                                               PT_COPYRIGHT_VERSION_2
-#                                               COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =            ptolemy/actor/lib/anomaly
+# Root of Ptolemy II directory
+ROOT = ../../../..
 
-DIRS = 		#test #demo
+DIRS = demo
 
-# Root of the Java directory
-ROOT =          ../../../..
+# $(ME) is used in ptdir.mk
+ME = org/ptolemy/machineLearning/hmm
 
-# JYTHON_JAR is set in $PTII/mk/ptII.mk by running configure
-CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)
+CLASSPATH =	$(ROOT)
+
+# True source directory
+VPATH =	$(ROOT)/$(ME)
 
 # Get configuration info
-CONFIG =        $(ROOT)/mk/ptII.mk
+CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     anomaly
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-OTHER_FILES_TO_BE_JARED = \
-	PacketDropFaultGenerator.java \
-	StuckAtFaultGenerator.java
+PTPACKAGE = hmm
+PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	HMMExponentialClassifier.java\
+	HMMExponentialEstimator.java\
+	HMMGaussianClassifier.java\
+	HMMGaussianEstimator.java\
+	HMMMultinomialClassifier.java\
+	HMMMultinomialEstimator.java\
+	ObservationClassifier.java\
+	ParameterEstimator.java
+	
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+OTHER_FILES_TO_BE_JARED = \
+	HMMExponentialClassifierIcon.xml\
+	HMMExponentialEstimatorIcon.xml\
+	HMMGaussianClassifierIcon.xml\
+	HMMGaussianEstimatorIcon.xml\
+	HMMMultinomialClassifierIcon.xml\
+	HMMMultinomialEstimatorIcon.xml
+
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = #test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-        doc
+	
 
 JCLASS = $(JSRCS:%.java=%.class)
 
