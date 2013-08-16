@@ -60,7 +60,7 @@ test WatchDog-1.0 {create a 1 second watchDog} {
     list \
 	    [regexp "util.testsuite.WatchDog went off after 1000ms" \
 	    $results] \
-	    [java::field $watchDog watchDogWentOff]
+	[java::field [java::cast ptolemy.util.test.WatchDog $watchDog] watchDogWentOff]
 } {1 1}
 
 
@@ -74,6 +74,6 @@ test WatchDog-2.0 {create a 2 second watchDog, but cancel after 1 second} {
 	puts $results
     list \
 	    [regexp "util.testsuite.WatchDog.cancel().*canceling" $results] \
-	    [java::field $watchDog watchDogWentOff]
+	[java::field [java::cast ptolemy.util.test.WatchDog $watchDog] watchDogWentOff]
 } {1 0}
 
