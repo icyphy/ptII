@@ -705,7 +705,8 @@ public class Manager extends NamedObj implements Runnable {
      *  Set the state of the manager to ITERATING.
      *  This method is read synchronized on the workspace.
      *
-     *  @return True if postfire() returns true.
+     *  @return True if postfire() returns true, otherwise, return false.
+     *
      *  @exception KernelException If the model throws it, or if there
      *   is no container.
      */
@@ -714,7 +715,17 @@ public class Manager extends NamedObj implements Runnable {
             throw new IllegalActionException(this, "No model to execute!");
         }
 
-        boolean result = true;
+        // We return true if and only if postfire() returns true.  If
+        // prefire() returns false, then this method returns false.
+        // For example, ClassesIllustrated contains a
+        // DoNothingDirector.  If ClassesIllustrated is exported to
+        // html using:
+        // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 ptolemy/configs/doc/ClassesIllustrated.xml $PTII/ptolemy/configs/doc/ClassesIllustrated
+        // then the export would hang because
+        // DoNothingDirector.prefire() was returning false, but this
+        // method was returning true.
+
+        boolean result = false;
 
         long startTime = new Date().getTime();
         // Execute the change requests before acquiring read access on the
