@@ -2,20 +2,20 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GeneratorRegulatorProtector" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1335, 882}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1170, 655}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1446, 914]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[936, 545]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.8289435469052846">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4800406319566015">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.5763598416758, 236.13720703124997}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.8292494158879, 226.919921875}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 80.0]">
         </property>
     </property>
     <property name="OVT" class="ptolemy.data.expr.Parameter" value="115.0">
@@ -38,21 +38,23 @@
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtector">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/ptII/doc/books/systems/intro/GeneratorRegulatorProtector">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </property>
-        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="">
         </property>
-        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="gif">
+        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="png">
         </property>
         <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -96,14 +98,78 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 160.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute this model using WebStart, click here.">
         </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 445.0]">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/intro/GeneratorRegulatorProtectorWS/index.html#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/intro/GeneratorRegulatorProtectorWS/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{45, 100}">
+            </property>
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator, Regulator, Protector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A discrete-event model with a generator, a controller, and an over-voltage protector.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 390.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a chapter overview, click here.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 105.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/intro/index.html#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/intro/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 115}">
+            </property>
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -187,13 +253,21 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 414, 934, 635}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={594, 552, 872, 414}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[638, 303]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1875217441725618">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.52099609375, 242.70110931396482}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Supervisory controller.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 240.0]">
+                </property>
             </property>
             <port name="onOff" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -311,23 +385,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 525.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 452, 878, 415}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 412, 878, 446}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 305]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 336]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2135225499665652">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.205914258117245">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{665.6951410658307, 612.6731791242164}">
-        </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                <display name="Background Color"/>
-            </property>
-            <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-                <display name="Show parameters"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 770.0]">
-            </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{664.87109375, 632.0616867113564}">
         </property>
         <property name="T" class="ptolemy.data.expr.Parameter" value="5.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -414,6 +478,14 @@
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sample period">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 540.0]">
+            </property>
+        </property>
+        <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A discrete interface to the continuous generator model.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 745.0]">
             </property>
         </property>
         <port name="drive" class="ptolemy.actor.TypedIOPort">
@@ -527,23 +599,24 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 533.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 861, 460}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={530, 473, 861, 554}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 350]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 444]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.520687339658052">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5095089737953706">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{625.87109375, 663.8970561594202}">
-            </property>
-            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                    <display name="Background Color"/>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 770.0]">
-                </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{603.37109375, 640.6498873075363}">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 525.0]">
+                </property>
+            </property>
+            <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simplified model of a gas-powered generator.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 735.0]">
                 </property>
             </property>
             <port name="drive" class="ptolemy.actor.TypedIOPort">
@@ -733,25 +806,23 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 145.0]">
             </property>
         </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                <display name="Background Color"/>
-            </property>
-            <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-                <display name="Show parameters"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 425.0]">
-            </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={579, 477, 878, 436}, maximized=false}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 326]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4586530760426453">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{243.5195711484679, 293.08447265625}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The voltage controller.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
+            </property>
         </property>
         <port name="voltage" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
