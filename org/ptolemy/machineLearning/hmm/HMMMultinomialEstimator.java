@@ -204,7 +204,7 @@ private double[][] _B;
 private double[][] _B0;
 private int _nCategories;
 
-double[][] A_new;
-double[][] B_new;
-double[] prior_new;
+private double[][] A_new;
+private double[][] B_new;
+private double[] prior_new;
 }

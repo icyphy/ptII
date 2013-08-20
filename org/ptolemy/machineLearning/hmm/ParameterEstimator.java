@@ -126,6 +126,10 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                priorEstimates, "_cardinal");
        cardinality.setExpression("SOUTH");
        
+       randomizeGuessVectors = new Parameter(this, "randomizeGuessVectors");
+       randomizeGuessVectors.setTypeEquals(BaseType.BOOLEAN);
+       randomizeGuessVectors.setExpression("false");
+       
        likelihoodThreshold = new Parameter(this, "likelihoodThreshold");
        likelihoodThreshold.setExpression("1E-4");
        likelihoodThreshold.setTypeEquals(BaseType.DOUBLE); 
@@ -144,12 +148,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        
        nStates = new Parameter(this, "numberOfStates");
        nStates.setExpression("2");
-       nStates.setTypeEquals(BaseType.INT);
-       
-       randomizeGuessVectors = new Parameter(this, "randomizeGuessVectors");
-       randomizeGuessVectors.setTypeEquals(BaseType.BOOLEAN);
-       randomizeGuessVectors.setExpression("false");
-       
+       nStates.setTypeEquals(BaseType.INT); 
        
        _initializeArrays();
       

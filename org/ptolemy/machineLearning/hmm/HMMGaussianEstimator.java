@@ -186,7 +186,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 protected boolean _checkForConvergence(int iterations){
        
        
-       if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0])){
+       if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0]) || (prior_new[0]!=prior_new[0])){
            // if no convergence in 10 iterations, issue warning message.
            if ( (iterations >= _nIterations-1)){ 
                // return the guess parameters
@@ -219,13 +219,10 @@ protected boolean _checkForConvergence(int iterations){
                }
                A_new = _A0;
                // sort arrays
-               Arrays.sort(m_new); 
-               prior_new = _priorIn;  
+               Arrays.sort(m_new);   
+               prior_new = _priors; 
            }
-       }else{
-           return false;
-       }
-       
+       }  
        return true;
    }
 
@@ -267,9 +264,9 @@ protected boolean _checkForConvergence(int iterations){
     private double[] _sigma0;
     
     // EM Specific Parameters
-    double[][] A_new;
-    double[]   m_new;
-    double[]   s_new;
-    double[] prior_new;
+    private double[][] A_new;
+    private double[]   m_new;
+    private double[]   s_new;
+    private double[] prior_new;
     
 }

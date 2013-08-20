@@ -30,7 +30,6 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -43,7 +42,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -84,22 +82,18 @@ public class HMMExponentialEstimator extends ParameterEstimator {
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
        
-       lambda = new TypedIOPort(this, "lambda", false, true);
-       lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
+       
        
        lambda0 = new Parameter(this, "lambdaGuess");
        lambda0.setExpression("{1.0, 4.0}");
-       lambda0.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
+       lambda0.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
        
-       _nStates = ((ArrayToken)lambda0.getToken()).length(); 
        _lambda0 = new double[_nStates];
-       _lambda =  new double[_nStates]; 
-      
-       for (int i = 0; i < _nStates; i++) { 
-           _lambda0[i] = ((DoubleToken)((ArrayToken) lambda0.getToken()).getElement(i))
-                   .doubleValue();
-       }
+       _lambda =  new double[_nStates];  
        
+       // output parameters
+       lambda = new TypedIOPort(this, "lambda", false, true);
+       lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
    }
    
    public void attributeChanged(Attribute attribute)
@@ -110,8 +104,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
            for ( int i = 0; i < _nStates; i++) {
                _lambda0[i] = ((DoubleToken)((ArrayToken) lambda0.getToken()).getElement(i))
                        .doubleValue();
-           }
-           
+           } 
        }  else{
            super.attributeChanged(attribute);
        }
@@ -141,7 +134,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
        Token[] mTokens = new Token[_nStates];
        Token[] pTokens = new Token[_nStates];
        for ( int i = 0; i< _nStates; i++){
-           // lambda estimate is the inverse mean estimate
+           // lambda estimate is the reciprocal of the mean estimate
            _lambda[i] = Math.pow(m_new[i], -1.0);
            mTokens[i] = new DoubleToken(_lambda[i]); 
            pTokens[i] = new DoubleToken(prior_new[i]);
@@ -158,14 +151,16 @@ public class HMMExponentialEstimator extends ParameterEstimator {
    
 protected boolean _checkForConvergence(int iterations){
        
-       
-       if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0])){
+       // check for null estimates
+       if((m_new[0] != m_new[0]) || (A_new[0]!=A_new[0]) || (prior_new[0]!=prior_new[0]) ){
            // if no convergence in 10 iterations, issue warning message.
            if ( (iterations >= _nIterations-1)){ 
                // return the guess parameters
-               m_new = _lambda0;
-               A_new = _A0;
-               prior_new = _priors;
+               for ( int i = 0; i< _nStates; i++){
+                   m_new[i] = Math.pow(_lambda0[i], -1.0); // reset to initial lambda guesses
+               }
+               A_new = _A0; // reset to initial guess
+               prior_new = _priors; // reset to input priors
                System.out.println("Expectation Maximization failed to converge");
                return false;
            }else if(_randomize){ 
@@ -183,8 +178,7 @@ protected boolean _checkForConvergence(int iterations){
                double L = maxO - minO;
                // make new random guess
                for( int i = 0; i< _nStates; i++){
-                   m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO;
-                   s_new[i] = Math.abs((maxO - minO)*Math.random())/_nStates;
+                   m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO; 
                    for ( int j = 0 ; j < _nStates; j++){
                        //A_new[i][j] = 1.0/nStates;
                    } 
@@ -192,11 +186,9 @@ protected boolean _checkForConvergence(int iterations){
                A_new = _A0;
                // sort arrays
                Arrays.sort(m_new); 
-               prior_new = _priorIn;  
+               prior_new = _priors;  
            }
-       }else{
-           return false;
-       }
+       }  
        return true;
    }
    protected void _initializeEMParameters(){
@@ -206,15 +198,13 @@ protected boolean _checkForConvergence(int iterations){
        _priorIn = _priors;
        
        A_new = new double[_nStates][_nStates];
-       m_new = new double[_nStates];
-       s_new = new double[_nStates];
+       m_new = new double[_nStates]; 
        prior_new = new double[_nStates];
    }
    
    protected void _iterateEM(){
        newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn,0); 
-       m_new = (double[])   newEstimates.get("mu_hat"); 
-       s_new = (double[])   newEstimates.get("s_hat"); 
+       m_new = (double[])   newEstimates.get("mu_hat");  
        A_new = (double[][]) newEstimates.get("A_hat"); 
        prior_new = (double[]) newEstimates.get("pi_hat");
        likelihood = (Double) (newEstimates.get("likelihood"));
@@ -236,8 +226,7 @@ protected boolean _checkForConvergence(int iterations){
     
     
  // EM Specific Parameters
-    double[][] A_new;
-    double[]   m_new;
-    double[]   s_new;
-    double[] prior_new;
+    private double[][] A_new;
+    private double[]   m_new; 
+    private double[] prior_new;
 }
