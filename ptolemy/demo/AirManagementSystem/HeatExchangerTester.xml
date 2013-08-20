@@ -10,22 +10,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{850.0, -150.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 188, 1152, 699}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 335, 995, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[918, 589]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[761, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.625194937826909">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6568008583210172">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1009.2822265625, -19.970592730978268}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1023.2978515625, -22.987248772470053}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mass flow rate should vary from about 0.7 to perhaps 10.0.&#10;Below that range results in an invalid model.&#10;Above that range doesn't achieve enough temperature change.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 60.0]">
+        </property>
     </property>
     <entity name="HeatExchanger" class="ptolemy.demo.AirManagementSystem.HeatExchanger">
-        <property name="initialTx" class="ptolemy.data.expr.Parameter" value="250.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1065.0, 20.0}">
-        </property>
-        <property name="hh" class="ptolemy.data.expr.Parameter" value="50.0">
-        </property>
-        <property name="ha" class="ptolemy.data.expr.Parameter" value="50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, 20.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -44,7 +44,7 @@
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <display name="Ambient Air Temperature"/>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="273.15">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="213.15">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -58,7 +58,7 @@
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <display name="Mass Flow Rate"/>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -67,13 +67,13 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{850.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 30.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="metal, HX out">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1095, 79, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1027, 22, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -87,7 +87,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="250.0" max="333.0005231689074"/>
+<yRange min="273.1500000001028" max="323.1848779272546"/>
 </plot>?>
         </configure>
     </entity>
