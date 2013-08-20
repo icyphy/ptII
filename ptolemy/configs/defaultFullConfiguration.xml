@@ -186,6 +186,8 @@
 	    <!-- Joystick actors depend on the Joystick interface being present  -->
             <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
             <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
+		<!-- Machine Learning library still under development  -->
+			<input source="org/ptolemy/machineLearning/machineLearning.xml"/>
             <input source="ptolemy/actor/lib/mail/mail.xml"/>
             <input source="ptolemy/domains/metroII/metroII.xml"/>
 
