@@ -112,9 +112,10 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
        if(attribute == observationProbabilities){
-           int nStates = ((MatrixToken) observationProbabilities.getToken()).getRowCount();
+          
            int nCat = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
-           for (int i = 0; i < nStates; i++) {
+           _B0 = new double[_nStates][nCat];
+           for (int i = 0; i < _nStates; i++) {
                for(int j = 0; j< nCat; j++){
                    _B0[i][j] = ((DoubleToken)((MatrixToken) observationProbabilities.getToken())
                            .getElementAsToken(i, j))
@@ -157,45 +158,42 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
            throw new IllegalActionException(this, "Parameter guess vectors cannot have different lengths.");
        } 
        
-       HashMap newEstimates = new HashMap(); 
-       // reset the initial values to the parameter values 
-       _transitionMatrix = _A0;
-       _B = _B0;
-       
-       double[][] A_new = new double[_nStates][_nStates];
-       double[][] B_new = new double[_nStates][_nCategories];
-          
-       for( int iterations = 0; iterations< _nIterations; iterations++){
-            newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priors, _nCategories); 
-            B_new = (double[][]) newEstimates.get("eta_hat"); 
-            A_new = (double[][]) newEstimates.get("A_hat"); 
-            
-               _transitionMatrix  = A_new; 
-               _B = B_new;
-               
-               double likelihood = (Double) (newEstimates.get("likelihood"));
-               
-               if( (likelihood - _likelihood) < _likelihoodThreshold || (likelihood - _likelihood) < 0.0 ){
-                   break;
-               } else{
-                   _likelihood = likelihood;
-               } 
-           }  
-           // broadcast best-effort parameter estimates
+       boolean converged = _EMParameterEstimation();
            
-           double[] pi_new = (double[]) newEstimates.get("pi_hat");
-           Token[] pTokens = new Token[_nStates];
-           for ( int i = 0; i< _nStates; i++){ 
-               pTokens[i] = new DoubleToken(pi_new[i]);
-           }
-           transitionMatrix.send(0, new DoubleMatrixToken(A_new));
-           emissionEstimates.send(0, new DoubleMatrixToken(B_new));
-           priorEstimates.send(0, new ArrayToken(pTokens)); 
+       Token[] pTokens = new Token[_nStates];
+       for ( int i = 0; i< _nStates; i++){ 
+           pTokens[i] = new DoubleToken(prior_new[i]);
+       }
+       transitionMatrix.send(0, new DoubleMatrixToken(A_new));
+       emissionEstimates.send(0, new DoubleMatrixToken(B_new));
+       priorEstimates.send(0, new ArrayToken(pTokens)); 
    }
    
    public boolean postfire() throws IllegalActionException {
        _likelihood = 0.0;
        return true;
+   }
+   protected boolean _checkForConvergence(int iterations){
+       return true;
+   }
+   protected void _initializeEMParameters(){
+       _transitionMatrix = _A0;
+       _B = _B0;
+       _priorIn = _priors;
+        A_new = new double[_nStates][_nStates];
+        B_new = new double[_nStates][_nCategories];
+   }
+   protected void _iterateEM(){
+       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn, _nCategories); 
+       B_new = (double[][]) newEstimates.get("eta_hat"); 
+       A_new = (double[][]) newEstimates.get("A_hat"); 
+       prior_new = (double[]) newEstimates.get("pi_hat");
+       likelihood = (Double) (newEstimates.get("likelihood"));
+   }
+   protected void _updateEstimates(){
+       _transitionMatrix  = A_new; 
+       _B = B_new;
+       _priorIn = prior_new; 
    }
    protected double emissionProbability(double y, int hiddenState){
        return _B[hiddenState][(int)y];  
@@ -205,4 +203,8 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
 private double[][] _B;
 private double[][] _B0;
 private int _nCategories;
+
+double[][] A_new;
+double[][] B_new;
+double[] prior_new;
 }
