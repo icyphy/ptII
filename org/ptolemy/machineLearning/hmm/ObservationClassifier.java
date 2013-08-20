@@ -171,39 +171,42 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
        // do this with org.apache.commons.math3.distribution
        //later NormalDistribution gaussian = ...
        
+       double[] alphaNormalizers = new double[y.length];       
+       double alphaSum = 0;
        for(int t=0; t< y.length ; t++){
+           alphaSum = 0;
            for (int i=0; i < nStates; i++){
+               alphas[t][i] = 0;
                if(t == 0){
-                   alphas[t][i] =  prior[i]*emissionProbability( y[t],i);
+                    alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
                }else{
-                   alphas[t][i] = 0;
                    for(int qt = 0; qt < nStates; qt++){
-                       alphas[t][i]+= A[qt][i]*emissionProbability( y[t],i)*alphas[t-1][qt]; 
+                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt]; 
+                   }
+               }
+               alphaSum += alphas[t][i];
+           }
+           // alpha normalization
+           for (int i=0; i < nStates; i++){
+               alphas[t][i] /= alphaSum;
+               alphaNormalizers[t] = alphaSum;
+           }
+       }    
+       for(int t=y.length-1; t>=0 ; t--){  
+           for( int qt=0; qt < nStates; qt ++){ 
+               if( t == y.length -1){
+                   gamma[t][qt] = alphas[t][qt];
+               }else{
+                   gamma[t][qt]=0;
+                   for ( int qtp = 0 ; qtp < nStates ; qtp ++){
+                       double alphasum = 0;
+                       for( int j=0; j < nStates; j ++){ 
+                           alphasum += alphas[t][j]*A[j][qtp];
+                       }
+                       gamma[t][qt] += (alphas[t][qt]*A[qt][qtp]*gamma[t+1][qtp])/alphasum;
                    }
                }
            }
-       }
-       for(int t=y.length-1; t>=0 ; t--){
-           // initialize py at time t
-           Py[t] = 0;
-           
-           for (int i=0; i < nStates; i++){ 
-               gamma[t][i] = 0.0;
-               if(t == y.length - 1){
-                   betas[t][i] =  1;
-               }else{
-                   betas[t][i] = 0;
-                   // reverse-time recursion  (do this recursively later)
-                   for(int qtp = 0; qtp < nStates; qtp++){
-                       betas[t][i]+= A[i][qtp]*emissionProbability( y[t+1],qtp)*betas[t+1][qtp]; 
-                   } 
-               } 
-               Py[t]+= alphas[t][i]*betas[t][i];
-           }
-           for( int i =0; i < nStates; i++)
-           {
-               gamma[t][i] += alphas[t][i]*betas[t][i]/Py[t];
-           }  
        }
        
        //  Classification to clusters

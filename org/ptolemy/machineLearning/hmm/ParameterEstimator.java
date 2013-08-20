@@ -36,6 +36,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
@@ -145,6 +146,11 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        nStates.setExpression("2");
        nStates.setTypeEquals(BaseType.INT);
        
+       randomizeGuessVectors = new Parameter(this, "randomizeGuessVectors");
+       randomizeGuessVectors.setTypeEquals(BaseType.BOOLEAN);
+       randomizeGuessVectors.setExpression("false");
+       
+       
        _initializeArrays();
       
    }
@@ -214,6 +220,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                throw new IllegalActionException(this, "Number of states must be a positive integer");
            }
            
+       } else if(attribute == randomizeGuessVectors){
+           boolean randomize = ((BooleanToken) randomizeGuessVectors.getToken()).booleanValue();
+           _randomize = randomize;
        }else{
            super.attributeChanged(attribute);
        }
@@ -234,6 +243,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
    
    /* Number of states of the HMM*/
    public Parameter nStates;
+   
+   /* Boolean that determines whether or not to randomize input guess vectors */
+   public Parameter randomizeGuessVectors;
    
    /* The user-provided initial guess on the prior probability distribution*/
    public Parameter priors;
@@ -268,7 +280,42 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                    .doubleValue();
        }   
    }
+   
+   protected boolean _EMParameterEstimation(){
+       
+       boolean success = false;
+       _initializeEMParameters(); 
+       
+       for( int iterations = 0; iterations< _nIterations; iterations++){
+           
+           _iterateEM();
+           success = _checkForConvergence(iterations);
+           // randomization not allowed and convergence was not achieved
+           if( !_randomize && !success){
+               break;
+           }
+           _updateEstimates();
+               
+           // check convergence within likelihoodThreshold
+           if( Math.abs(likelihood - _likelihood) < _likelihoodThreshold){
+               break;
+           }else{
+               _likelihood = likelihood;
+           } 
+       } 
+       
+       return success;
+   }
+   
    protected abstract double emissionProbability(double y, int hiddenState);
+   
+   protected abstract void _initializeEMParameters();
+   
+   protected abstract void _iterateEM();
+   
+   protected abstract boolean _checkForConvergence(int i);
+   
+   protected abstract void _updateEstimates();
    
    /* Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
     * and cluster assignment. This method uses normalized alpha values for computing the conditional
@@ -421,7 +468,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        return estimates;
    }
    
-   protected HashMap HMMAlphaBetaRecursionNonNormalized(double[] y, double[][] A, double[] prior) 
+   protected HashMap HMMAlphaBetaRecursionNonNormalized(double[] y, double[][] A, double[] prior, int unused) 
    {
        int nStates = _nStates;
        int nObservations = y.length;
@@ -608,10 +655,17 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
    /* Prior distribution on hidden states*/
    protected double[] _priors;
    
+   /* The prior estimates used in the EM iterations*/
+   protected double[] _priorIn;
+   
+   /* randomize the initial guess vectors or not*/
+   protected boolean _randomize;
    /* Initial guess array for the state transition matrix for the Alpha-Beta Recursion*/
    protected double[][] _transitionMatrix;
    
- 
+   HashMap newEstimates;
+   
+   double likelihood;
    
 
 } 

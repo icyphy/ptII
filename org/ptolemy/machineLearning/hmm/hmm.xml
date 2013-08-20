@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HMM" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Quantity managers</doc>
+
+  <entity name="HMMGaussianEstimator" class="org.ptolemy.machineLearning.hmm.HMMGaussianEstimator">
+  </entity>
+      
+  <entity name="HMMExponentialEstimator" class="org.ptolemy.machineLearning.hmm.HMMExponentialEstimator">
+      </entity>
+      
+  <entity name="HMMMultinomialEstimator" class="org.ptolemy.machineLearning.hmm.HMMMultinomialEstimator">
+      </entity>
+      
+      <entity name="HMMGaussianClassifier" class="org.ptolemy.machineLearning.hmm.HMMGaussianClassifier">
+      </entity>
+      
+      <entity name="HMMExponentialClassifier" class="org.ptolemy.machineLearning.hmm.HMMExponentialClassifier">
+      </entity>
+      
+      <entity name="HMMMultinomialClassifier" class="org.ptolemy.machineLearning.hmm.HMMMultinomialClassifier">
+      </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

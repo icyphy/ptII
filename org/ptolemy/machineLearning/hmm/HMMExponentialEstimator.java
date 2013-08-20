@@ -127,7 +127,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-   // the function to specifically define the emission probabilities
+   
    public void fire() throws IllegalActionException {
        super.fire(); 
        
@@ -136,84 +136,108 @@ public class HMMExponentialEstimator extends ParameterEstimator {
            throw new IllegalActionException(this, "Parameter guess vectors can not have different lengths.");
        }
       
-       // get the first N observations and produce parameter estimates 
+       boolean converged = _EMParameterEstimation();
        
-       HashMap newEstimates = new HashMap();
-       _nStates = _lambda.length;
-       
-       // reset the initial values to the parameter values  
-       _lambda = _lambda0;
-       _transitionMatrix = _A0;
-       
-       double[][] A_new = new double[_nStates][_nStates];
-       double[]   m_new = new double[_nStates];
-       double[]   s_new = new double[_nStates];
-       double[] _pi_new = new double[_nStates];
-          
-       for( int iterations = 0; iterations< _nIterations; iterations++){
-            newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priors,0); 
-            m_new = (double[])   newEstimates.get("mu_hat"); 
-            s_new = (double[])   newEstimates.get("s_hat"); 
-            A_new = (double[][]) newEstimates.get("A_hat"); 
-            _pi_new = (double[]) newEstimates.get("pi_hat");
-            
-            if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0])){
-                   // if no convergence in 10 iterations, issue warning message.
-                   if ( iterations < _nIterations-1){
-                       //if((asked == 0) ){
-                           //&& !MessageHandler.yesNoQuestion("WARNING: The Expectation Maximization algorithm did not " +
-                      // "converge with the given initial parameters. Randomize initial guess?")
-                          // break;
-                      // }
-                      // asked = 1;
-                   } else{
-                       MessageHandler.message("Expectation Maximization failed to converge");
-                   }
-                   
-                   // randomize means
-                   double minO = _observations[0];
-                   double maxO = _observations[0];
-                   for(int t=0; t<_observations.length; t++){
-                       if( _observations[t] < minO){
-                           minO = _observations[t];
-                       }
-                       if( _observations[t] > maxO){
-                           maxO = _observations[t];
-                       }
-                       
-                   }
-                   double L = maxO - minO;
-                   // make new random guess
-                   for( int i = 0; i< _nStates; i++){
-                       m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO;
-                       s_new[i] = Math.abs((maxO - minO)*Math.random())/_nStates; 
-                   }
-                   A_new = _A0;
-                   // sort arrays
-                   Arrays.sort(m_new);
-                    
-               }
-               // Converged 
-               _transitionMatrix    = A_new;  
-           } 
-           Token[] mTokens = new Token[_nStates];
-           Token[] pTokens = new Token[_nStates];
-           for ( int i = 0; i< _nStates; i++){
-               // lambda estimate is the inverse mean estimate
-               _lambda[i] = Math.pow(m_new[i], -1.0);
-               mTokens[i] = new DoubleToken(_lambda[i]); 
-               pTokens[i] = new DoubleToken(_pi_new[i]);
-           }
-           // broadcast best-effort parameter estimates
-           lambda.send(0, new ArrayToken(mTokens)); 
-           transitionMatrix.send(0, new DoubleMatrixToken(A_new));
+       Token[] mTokens = new Token[_nStates];
+       Token[] pTokens = new Token[_nStates];
+       for ( int i = 0; i< _nStates; i++){
+           // lambda estimate is the inverse mean estimate
+           _lambda[i] = Math.pow(m_new[i], -1.0);
+           mTokens[i] = new DoubleToken(_lambda[i]); 
+           pTokens[i] = new DoubleToken(prior_new[i]);
+       }
+       // broadcast best-effort parameter estimates
+       lambda.send(0, new ArrayToken(mTokens)); 
+       transitionMatrix.send(0, new DoubleMatrixToken(A_new));
          
    }
    protected double emissionProbability(double y, int hiddenState){ 
        double m = _lambda[hiddenState]; 
        return m*Math.exp(-m*y);
-       
    } 
-private double[] _lambda;
-private double[] _lambda0;
+   
+protected boolean _checkForConvergence(int iterations){
+       
+       
+       if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0])){
+           // if no convergence in 10 iterations, issue warning message.
+           if ( (iterations >= _nIterations-1)){ 
+               // return the guess parameters
+               m_new = _lambda0;
+               A_new = _A0;
+               prior_new = _priors;
+               System.out.println("Expectation Maximization failed to converge");
+               return false;
+           }else if(_randomize){ 
+               // randomize means
+               double minO = _observations[0];
+               double maxO = _observations[0];
+               for(int t=0; t<_observations.length; t++){
+                   if( _observations[t] < minO){
+                       minO = _observations[t];
+                   }
+                   if( _observations[t] > maxO){
+                       maxO = _observations[t];
+                   } 
+               }
+               double L = maxO - minO;
+               // make new random guess
+               for( int i = 0; i< _nStates; i++){
+                   m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO;
+                   s_new[i] = Math.abs((maxO - minO)*Math.random())/_nStates;
+                   for ( int j = 0 ; j < _nStates; j++){
+                       //A_new[i][j] = 1.0/nStates;
+                   } 
+               }
+               A_new = _A0;
+               // sort arrays
+               Arrays.sort(m_new); 
+               prior_new = _priorIn;  
+           }
+       }else{
+           return false;
+       }
+       return true;
+   }
+   protected void _initializeEMParameters(){
+       // set the initial values of parameters
+       _lambda = _lambda0; 
+       _transitionMatrix = _A0;
+       _priorIn = _priors;
+       
+       A_new = new double[_nStates][_nStates];
+       m_new = new double[_nStates];
+       s_new = new double[_nStates];
+       prior_new = new double[_nStates];
+   }
+   
+   protected void _iterateEM(){
+       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn,0); 
+       m_new = (double[])   newEstimates.get("mu_hat"); 
+       s_new = (double[])   newEstimates.get("s_hat"); 
+       A_new = (double[][]) newEstimates.get("A_hat"); 
+       prior_new = (double[]) newEstimates.get("pi_hat");
+       likelihood = (Double) (newEstimates.get("likelihood"));
+   }
+   
+   protected void _updateEstimates(){
+       
+       _transitionMatrix    = A_new;
+       for ( int i = 0; i< _nStates; i++){
+           // lambda estimate is the inverse mean estimate
+           _lambda[i] = Math.pow(m_new[i], -1.0);
+       }
+       _priorIn = _priors; // set to the original priors
+       
+   }
+    private double[] _lambda;
+    private double[] _lambda0;
+    
+    
+    
+ // EM Specific Parameters
+    double[][] A_new;
+    double[]   m_new;
+    double[]   s_new;
+    double[] prior_new;
 }
