@@ -1614,10 +1614,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
 
-            boolean toplevelHasEntities = false;
-
             if (updateValue) {
-                toplevelHasEntities = true;
                 // Don't call setToken(), instead use a MoMLChangeRequest so that
                 // the model is marked modified so that any changes are preserved.
                 //zoom.setToken(new DoubleToken(scale));
@@ -1652,7 +1649,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
 
-            if (updateValue && toplevelHasEntities) {
+            if (updateValue) {
                 //Token[] centerArray = new Token[2];
                 //centerArray[0] = new DoubleToken(center.getX());
                 //centerArray[1] = new DoubleToken(center.getY());
