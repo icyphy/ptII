@@ -1,4 +1,4 @@
-/* Code generator adapter class associated with the PtidesDirector class.
+/* Code generator adapter class associated with the PtidesPlatformDirector class.
 
  Copyright (c) 2009-2013 The Regents of the University of California.
  All rights reserved.
@@ -33,16 +33,17 @@ import java.util.Map;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.SuperdenseDependency;
+import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
-////PtidesDirector
+////PtidesPlatformDirector
 
 /**
-* Code generator adapter associated with the PtidesDirector class. 
+* Code generator adapter associated with the PtidesPlatformDirector class. 
 * This adapter is highly experimental and extends the DE Director
 * adapter.
 * This class is also associated with a code generator.
@@ -54,14 +55,14 @@ import ptolemy.kernel.util.IllegalActionException;
 *  @Pt.AcceptedRating red (wlc)
 */
 
-public class PtidesDirector extends DEDirector {
+public class PtidesPlatformDirector extends Director {
     
     /** Construct the code generator adapter associated with the given
      *  PtidesDirector.
      *  @param ptidesDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesDirector
      */
-    public PtidesDirector(ptolemy.domains.ptides.kernel.PtidesDirector ptidesDirector) {
+    public PtidesPlatformDirector(ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesPlatformDirector ptidesDirector) {
         super(ptidesDirector);
     }
 

@@ -8,44 +8,46 @@
 #ifndef PTIDESRECEIVER_H_
 #define PTIDESRECEIVER_H_
 
-#include "$ModelName()_types.h"
-#include "$ModelName()__IOPort.h"
-#include "$ModelName()__DEReceiver.h"
+#include "_DEReceiver.h"
+#include "_PtidesDirector.h"
 
 // Definition of the type of this receiver
 #define PTIDESRECEIVER 11
+#define IS_PTIDESRECEIVER(p) ((p)->typeReceiver%100 == 11)
 
 struct PtidesReceiver {
 	// Members from parent class
 	int typeReceiver;
 	struct IOPort * container;
-	void (*free)(struct Receiver*);
-	int (*getModelTime)(struct Receiver*);
-	void (*clear)(struct Receiver*);
-	PblList* (*elementList)(struct Receiver*);
-	Token (*get)(struct Receiver*);
-	bool (*hasRoom)(struct Receiver*);
-	bool (*hasRoom1)(struct Receiver*, int);
-	bool (*hasToken)(struct Receiver*);
-	bool (*hasToken1)(struct Receiver*, int);
-	void (*put)(struct Receiver*, Token);
-	void (*putArray)(struct Receiver*, Token[], int , int);
-	void (*putArrayToAll)(struct Receiver*, Token[], int, int, struct Receiver*[], int);
-	void (*putToAll)(struct Receiver*, Token , struct Receiver*[], int);
+	void (*free)(struct PtidesReceiver*);
+	Time (*getModelTime)(struct PtidesReceiver*);
+	void (*clear)(struct PtidesReceiver*);
+	PblList* (*elementList)(struct PtidesReceiver*);
+	Token (*get)(struct PtidesReceiver*);
+	Token* (*getArray)(struct PtidesReceiver*, int);
+	bool (*hasRoom)(struct PtidesReceiver*);
+	bool (*hasRoom1)(struct PtidesReceiver*, int);
+	bool (*hasToken)(struct PtidesReceiver*);
+	bool (*hasToken1)(struct PtidesReceiver*, int);
+	void (*put)(struct PtidesReceiver*, Token);
+	void (*putArray)(struct PtidesReceiver*, Token*, int);
+	void (*putArrayToAll)(struct PtidesReceiver*, Token*, int, PblList*);
+	void (*putToAll)(struct PtidesReceiver*, Token , PblList*);
 
 	PblList* _tokens;
-	DEDirector* _director;
+	struct PtidesDirector* _director;
 
 	// New Members
 	void (*putToReceiver)(struct PtidesReceiver*, Token);
 	void (*remove)(struct PtidesReceiver*, Token);
 };
 
-struct DEReceiver* DEReceiver_New();
-struct DEReceiver DEReceiver_Create();
-void DEReceiver_Init(struct DEReceiver*);
-void DEReceiver_New_Free(struct DEReceiver* r);
-void DEReceiver_Free(struct DEReceiver* r);
+struct PtidesReceiver* PtidesReceiver_New();
+void PtidesReceiver_Init(struct PtidesReceiver*);
+void PtidesReceiver_New_Free(struct PtidesReceiver* r);
 
+void PtidesReceiver_Put(struct PtidesReceiver* r, Token token);
+void PtidesReceiver_PutToReceiver(struct PtidesReceiver* r, Token token);
+void PtidesReceiver_Remove(struct PtidesReceiver* r, Token token);
 
 #endif /* PTIDESRECEIVER_H_ */

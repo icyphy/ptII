@@ -1,5 +1,7 @@
 #include "_PtidesDirector.h"
 
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+
 struct PtidesDirector* PtidesDirector_New() {
 	struct PtidesDirector* newDirector = malloc(sizeof(struct PtidesDirector));
 	if (newDirector == NULL) {
@@ -14,6 +16,24 @@ struct PtidesDirector* PtidesDirector_New() {
 void PtidesDirector_Init(struct PtidesDirector* director) {
 	DEDirector_Init((struct DEDirector*)director);
 
+	director->addInputEvent = PtidesDirector_AddInputEvent;
+	director->fire = PtidesDirector_Fire;
+	director->fireAt = PtidesDirector_FireAt;
+	director->getModelTime = PtidesDirector_GetModelTime;
+	director->getMicrostep = PtidesDirector_GetMicrostep;
+	director->postfire = PtidesDirector_Postfire;
+	director->prefire = PtidesDirector_Prefire;
+	director->preinitialize = PtidesDirector_Preinitialize;
+	director->_checkForNextEvent = PtidesDirector__CheckForNextEvent;
+	director->_enqueueTriggerEvent1 = PtidesDirector__EnqueueTriggerEvent;
+	director->_getNextActorToFire = PtidesDirector__GetNextActorToFire;
+	director->_getNextActorFrom = PtidesDirector__GetNextActorFrom;
+	director->_getSuperdenseDependencyPair = PtidesDirector__GetSuperdenseDependencyPair;
+	director->_isSafeToProcess = PtidesDirector__IsSafeToProcess;
+	director->_removeEventsFromQueue = PtidesDirector__RemoveEventsFromQueue;
+	director->_setNextFireTime = PtidesDirector__SetNextFireTime;
+
+	director->clockSynchronizationErrorBound = 0.0;
 }
 void PtidesDirector_New_Free(struct PtidesDirector* director) {
 	DEDirector_New_Free((struct DEDirector*) director);
@@ -27,462 +47,505 @@ void PtidesDirector_AddInputEvent(struct PtidesDirector* director, struct Ptides
 		if (director->localClock->getLocalTime(director->localClock)
 				- event->timeStamp(event) > sourcePlatformDelayBound
 				+ networkDelayBound + director->clockSynchronizationErrorBound) {
-			char* message;
-			sprintf(message, "Event on this network receiver came in too late. \
+			fprintf(stderr, "Event on this network receiver came in too late. \
 (Physical time: \
 %lf, Event timestamp: %lf, Source platform delay bound: \
 %lf, Network delay bound: %lf)", director->localClock->getLocalTime(director->localClock),
 event->timeStamp(event), sourcePlatformDelayBound, networkDelayBound);
-			event = director->_handleTimingError(director,
-					sourcePort,	event, message);
+			exit(-1);
+//			event = director->_handleTimingError(director,
+//					sourcePort,	event, message);
 		}
 	}
 
 	if (event != NULL) {
 		Time inputReady = director->getModelTime(director) + deviceDelay;
-		PblList* list = *(pblMapGet(director->_inputEventQueue, &inputReady, sizeof(Time), NULL));
-		if (list == NULL) {
-			list = pblListNewArrayList();
-		}
+		PblList** list = (PblList**)pblMapGet(director->_inputEventQueue, &inputReady, sizeof(Time), NULL);
+		PblList* newList;
+		if (list == NULL)
+			newList = pblListNewArrayList();
+		else
+			newList = *list;
 
-		pblListAdd(list, event);
-		pblMapPut(director->_inputEventQueue, &inputReady, sizeof(Time), &list, sizeof(PblList*), NULL);
+		pblListAdd(newList, event);
+		pblMapPut(director->_inputEventQueue, &inputReady, sizeof(Time), &newList, sizeof(PblList*), NULL);
 	}
 }
 
 void PtidesDirector_Fire(struct PtidesDirector* director) {
 	// Transfer all inputs that are ready.
-	List<PtidesEvent> list = _inputEventQueue.get(getModelTime());
-	if (list != null) {
-		for (PtidesEvent event : list) {
-			if (event.ioPort() != null) {
-				_currentLogicalTime = event.timeStamp();
-				_currentSourceTimestamp = event.sourceTimestamp();
-				_currentLogicalIndex = event.microstep();
-				event.receiver().put(event.token());
-				_currentLogicalTime = null;
-				if (_debugging) {
-					_debug("iiiiiiii - transfer inputs from "
-							+ event.ioPort());
-				}
+	Time currentTime = director->getModelTime(director);
+	PblList** list = (PblList**)pblMapGet(director->_inputEventQueue, &currentTime, sizeof(Time), NULL);
+	if (list != NULL) {
+		PblIterator* eventIterator = pblIteratorNew(*list);
+		while (pblIteratorHasNext(eventIterator)) {
+			struct PtidesEvent* event = pblIteratorNext(eventIterator);
+			if (event->ioPort(event) != NULL) {
+				director->_currentLogicalTime = event->timeStamp(event);
+				director->_currentSourceTimestamp = event->sourceTimestamp(event);
+				director->_currentLogicalIndex = event->microstep(event);
+				struct Receiver* r = event->receiver(event);
+				r->put(r, event->token(event));
+				director->_currentLogicalTime = -DBL_MAX;
 			}
 		}
-		_inputEventQueue.remove(getModelTime());
+		pblIteratorFree(eventIterator);
+		pblMapRemove(director->_inputEventQueue, &currentTime, sizeof(Time), NULL);
 	}
 
-	super.fire();
+	DEDirector_Fire((struct DEDirector*) director);
 
 	// Transfer all outputs to the ports that are ready.
-	list = _outputEventDeadlines.get(getModelTime());
-	if (list != null) {
-		for (PtidesEvent event : list) {
-			_currentLogicalTime = event.timeStamp();
-			_currentSourceTimestamp = event.sourceTimestamp();
-			_currentLogicalIndex = event.microstep();
-			if (event.ioPort() instanceof PtidesPort) {
-				double deviceDelay = _getDoubleParameterValue(
-						event.ioPort(), "deviceDelay");
+	list = (PblList**)pblMapGet(director->_outputEventDeadlines, &currentTime, sizeof(Time), NULL);
+	if (list != NULL) {
+		PblIterator* eventIterator = pblIteratorNew(*list);
+		while (pblIteratorHasNext(eventIterator)) {
+			struct PtidesEvent* event = pblIteratorNext(eventIterator);
+			director->_currentLogicalTime = event->timeStamp(event);
+			director->_currentSourceTimestamp = event->sourceTimestamp(event);
+			director->_currentLogicalIndex = event->microstep(event);
+			if (IS_PTIDESPORT(event->ioPort(event))) {
+				struct PtidesPort* port = (struct PtidesPort*) event->ioPort(event);
+				double deviceDelay = port->deviceDelay;
 
-				Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
-						.get(event.ioPort());
-				if (ptidesOutputPortList == null) {
-					ptidesOutputPortList = new LinkedList<PtidesEvent>();
-				}
+				PblList** ptidesOutputPortList = (PblList**)pblMapGet(director->_ptidesOutputPortEventQueue, &port,
+						sizeof(struct PtidesPort*), NULL);
+				PblList* newList;
+				if (ptidesOutputPortList == NULL)
+					newList = pblListNewLinkedList();
+				else
+					newList = *ptidesOutputPortList;
 
 				// modify deadline of event such that it will be output after deviceDelay
-				PtidesEvent newEvent = new PtidesEvent(event.ioPort(),
-						event.channel(), event.timeStamp(),
-						event.microstep(), event.depth(), event.token(),
-						event.receiver(), localClock.getLocalTime().add(
-								deviceDelay), event.sourceTimestamp());
+				struct PtidesEvent* newEvent = PtidesEvent_New();
+				newEvent->_ioPort = event->ioPort(event);
+				newEvent->_channel = event->channel(event);
+				newEvent->_timestamp = event->timeStamp(event);
+				newEvent->_microstep = event->microstep(event);
+				newEvent->_depth = event->depth(event);
+				newEvent->_token = event->token(event);
+				newEvent->_receiver = event->receiver(event);
+				newEvent->_absoluteDeadline = director->localClock->getLocalTime(director->localClock) + deviceDelay;
+				newEvent->_sourceTimestamp = event->sourceTimestamp(event);
 
-				ptidesOutputPortList.add(newEvent);
+				pblListAdd(newList, newEvent);
 
-				_ptidesOutputPortEventQueue.put(
-						(PtidesPort) event.ioPort(), ptidesOutputPortList);
+				pblMapPut(director->_ptidesOutputPortEventQueue, &port, sizeof(struct PtidesPort*),
+						&newList, sizeof(PblList*), NULL);
 			}
-			_currentLogicalTime = null;
+			director->_currentLogicalTime = -DBL_MAX;
 		}
-		_outputEventDeadlines.remove(getModelTime());
+		pblMapRemove(director->_outputEventDeadlines, &currentTime, sizeof(Time), NULL);
 	}
 
 	// Transfer all outputs from ports to the outside
-	for (PtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
-		Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
-				.get(port);
-		if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
-			PtidesEvent event = ptidesOutputPortList.peek();
-			if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
-				_currentLogicalTime = event.timeStamp();
-				_currentSourceTimestamp = event.sourceTimestamp();
-				_currentLogicalIndex = event.microstep();
-				event.ioPort().send(0, event.token());
-				_currentLogicalTime = null;
-				ptidesOutputPortList.poll();
+	PblIterator* outputIterator = pblMapIteratorNew(director->_ptidesOutputPortEventQueue);
+	while (pblIteratorHasNext(outputIterator)) {
+		PblMapEntry* entry = pblIteratorNext(outputIterator);
+		//struct PtidesPort* port = *((struct PtidesPort**)pblMapEntryKey(entry));
+		PblList** ptidesOutputPortListPointer = (PblList**)pblMapEntryValue(entry);
+		if (ptidesOutputPortListPointer != NULL && pblListSize(*ptidesOutputPortListPointer) > 0) {
+			struct PtidesEvent* event = pblListPeek(*ptidesOutputPortListPointer);
+			if (event->absoluteDeadline(event) == director->localClock->getLocalTime(director->localClock)) {
+				director->_currentLogicalTime = event->timeStamp(event);
+				director->_currentSourceTimestamp = event->sourceTimestamp(event);
+				director->_currentLogicalIndex = event->microstep(event);
+				struct IOPort* port = event->ioPort(event);
+				port->send(port, 0, event->token(event));
+				director->_currentLogicalTime = -DBL_MAX;
+				pblListPoll(*ptidesOutputPortListPointer);
 			}
 		}
 	}
 }
-Time DEDirector_FireAt(struct DEDirector* director, struct Actor* actor, Time time, int index) {
-	Time result = time;
-	if (director->_delegateFireAt) {
-		if (result < (*(director->getModelTime))((struct Director*)director)) {
-			result = (*(director->getModelTime))((struct Director*)director);
-		}
-		result = (*(director->fireContainerAt))((struct Director*)director, result, index);
+
+Time PtidesDirector_FireAt(struct PtidesDirector* director, struct Actor* actor, Time time, int index) {
+	if (actor == (struct Actor*)director->container) {
+		director->fireContainerAt(director, time, 1);
+		return time;
 	}
-	else {
-		if (result < (*(director->getModelTime))((struct Director*)director)) {
-			result = (*(director->getModelTime))((struct Director*)director);
+	int newIndex = index;
+	if (director->_currentLogicalTime != -DBL_MAX
+			&& director->_currentLogicalTime == time
+			&& index <= director->getMicrostep(director)) {
+		newIndex = MAX(director->getMicrostep(director), index) + 1;
+	}
+
+	if (director->_isInitializing) {
+		director->_currentSourceTimestamp = time;
+	}
+
+	struct PtidesEvent* newEvent = PtidesEvent_New();
+	newEvent->_actor = actor;
+	newEvent->_timestamp = time;
+	newEvent->_microstep = newIndex;
+	int depth = * ((int*)pblMapGet(director->actorsDepths, &actor, sizeof (struct Actor*), NULL));
+	newEvent->_depth = depth;
+	newEvent->_absoluteDeadline = 0.0;
+	newEvent->_sourceTimestamp = director->_currentSourceTimestamp;
+
+	director->_pureEvents->put(director->_pureEvents, newEvent);
+	director->_currentSourceTimestamp = -DBL_MAX;
+
+	Time environmentTime = director->getEnvironmentTime(director);
+	if (environmentTime <= time) {
+		director->fireContainerAt(director, time, 1);
+	}
+	return time;
+}
+Time PtidesDirector_GetModelTime(struct PtidesDirector* director) {
+	if (director->_currentLogicalTime != -DBL_MAX) {
+		return director->_currentLogicalTime;
+	}
+	return Director_GetModelTime((struct Director*) director);
+}
+
+
+int PtidesDirector_GetMicrostep(struct PtidesDirector* director) {
+	if (director->_currentLogicalTime != -DBL_MAX) {
+		return director->_currentLogicalIndex;
+	}
+	return DEDirector_GetMicrostep((struct DEDirector*) director);
+}
+
+bool PtidesDirector_Postfire(struct PtidesDirector* director) {
+	bool result = true;
+	if (director->getModelTime(director) >= director->getModelStopTime(director)) {
+		if (director->_eventQueue->size(director->_eventQueue) == 0) {
+			result = false;
+		} else {
+			struct PtidesEvent* event = (struct PtidesEvent*) director->_eventQueue->get(director->_eventQueue);
+			if (!(event->_timestamp == director->getModelStopTime(director)))
+				result = false;
 		}
 	}
 
-	if (result == (*(director->getModelTime))((struct Director*)director)
-			&& index <= director->_microstep
-			&& !director->_isInitializing) {
-		index = director->_microstep + 1;
+	// Potentially set next fire time from _outputEventQueue.
+	PblIterator* deliveryIterator = pblMapIteratorNew(director->_outputEventDeadlines);
+	Time first = DBL_MAX;
+	while (pblIteratorHasNext(deliveryIterator)) {
+		PblMapEntry* entry = pblIteratorNext(deliveryIterator);
+		Time time = *((Time*)pblMapEntryKey(entry));
+		if (time < first)
+			first = time;
+	}
+	pblIteratorFree(deliveryIterator);
 
-		if (index == INT_MAX) {
-			fprintf(stderr, "Microstep has hit the maximum while scheduling a firing : DEDirector_FireAt\n");
-			exit(-1);
+	if (first < DBL_MAX) {
+		PblList* events = *((PblList**)pblMapGet(director->_outputEventDeadlines, &first, sizeof(Time), NULL));
+		PblIterator* eventsIterator = pblIteratorNew(events);
+		while (pblIteratorHasNext(eventsIterator)) {
+			struct PtidesEvent* event = pblIteratorNext(eventsIterator);
+			if (IS_PTIDESPORT(event->ioPort(event))) {
+				struct PtidesPort* port = (struct PtidesPort*)event->ioPort(event);
+				if (port->isActuatorPort(port)
+						&& director->getEnvironmentTime(director) > event->timeStamp(event)) {
+					fprintf(stderr, "Missed Deadline at platform time \
+%lf with logical time %lf at port %s!", director->localClock->getLocalTime(director->localClock),
+director->getModelTime(director), port->name);
+					exit(-1);
+				}
+			}
 		}
+		director->_setNextFireTime(director, first);
 	}
 
-	(*(director->_enqueueEvent))(director, actor, result, index);
+	//... or from _inputEventQueue
+	deliveryIterator = pblMapIteratorNew(director->_inputEventQueue);
+	first = DBL_MAX;
+	while (pblIteratorHasNext(deliveryIterator)) {
+		PblMapEntry* entry = pblIteratorNext(deliveryIterator);
+		Time time = *((Time*)pblMapEntryKey(entry));
+		if (time < first)
+			first = time;
+	}
+	pblIteratorFree(deliveryIterator);
+	if (first < DBL_MAX)
+		director->_setNextFireTime(director, first);
+
+	// ... or from ptides output port queue
+	PblIterator* outputIterator = pblMapIteratorNew(director->_ptidesOutputPortEventQueue);
+	while (pblIteratorHasNext(outputIterator)) {
+		PblMapEntry* entry = pblIteratorNext(outputIterator);
+		struct PtidesPort* port = *((struct PtidesPort**)pblMapEntryKey(entry));
+		PblList* ptidesOutputPortList = *((PblList**)pblMapEntryValue(entry));
+		if (ptidesOutputPortList != NULL && pblListSize(ptidesOutputPortList) > 0) {
+			struct PtidesEvent* event = pblListPeek(ptidesOutputPortList);
+			if (port->isActuatorPort(port)
+					&& event->absoluteDeadline(event) < director->getEnvironmentTime(director)) {
+				fprintf(stderr, "Missed Deadline at port %s!", port->name);
+				exit(-1);
+			}
+			director->_setNextFireTime(director, event->absoluteDeadline(event));
+		}
+	}
+	// ... or could also have already been set in safeToProcess().
+
+	// If not null, request refiring.
+	if (director->_nextFireTime != -DBL_MAX) {
+		director->fireContainerAt(director, director->_nextFireTime, 1);
+	}
 
 	return result;
 }
-int DEDirector_GetMicrostep(struct DEDirector* director) {
-	return director->_microstep;
+
+bool PtidesDirector_Prefire(struct PtidesDirector* director) {
+	Time currentTime = director->localClock->getLocalTimeForCurrentEnvironmentTime(director->localClock);
+	director->localClock->setLocalTime(director->localClock, currentTime);
+	director->_microstep = 1;
+	director->_nextFireTime = -DBL_MAX;
+	return true;
 }
-Time DEDirector_GetNextEventTime(struct DEDirector* director) {
-	if ((*(director->_eventQueue->size))(director->_eventQueue) == 0) {
-		return -DBL_MAX;
+void PtidesDirector_Preinitialize(struct PtidesDirector* director) {
+	DEDirector_Preinitialize((struct DEDirector*)director);
+	director->_inputEventQueue = pblMapNewHashMap();
+	director->_outputEventDeadlines = pblMapNewHashMap();
+	director->_ptidesOutputPortEventQueue = pblMapNewHashMap();
+	director->_nextFireTime = DBL_MAX;
+	director->_pureEvents = CalendarQueue_New();
+	director->_currentLogicalTime = -DBL_MAX;
+}
+
+bool PtidesDirector__CheckForNextEvent(struct PtidesDirector* director) {
+	return true;
+}
+void PtidesDirector__EnqueueTriggerEvent(struct PtidesDirector* director, struct IOPort* ioPort, Token token,
+        struct Receiver* receiver) {
+	struct Actor* actor = (struct Actor*) ioPort->container;
+
+	if (director->_eventQueue == NULL || (director->_disabledActors != NULL
+			&& pblSetContains(director->_disabledActors, actor))) {
+		return;
 	}
-	struct DEEvent* nextEvent = (*(director->_eventQueue->get))(director->_eventQueue);
-	return (*(nextEvent->timeStamp))(nextEvent);
-}
-void DEDirector_Initialize(struct DEDirector* director) {
-	director->_isInitializing = true;
+	int depth = * ((int*)(pblMapGet(director->portsDepths, &ioPort, sizeof(struct IOPort*), NULL)));
 
-	(*(director->_eventQueue->clear))(director->_eventQueue);
+	struct PtidesEvent* newEvent = PtidesEvent_New();
+	newEvent->_ioPort = ioPort;
+	newEvent->_channel = ioPort->getChannelForReceiver(ioPort, receiver);
+	newEvent->_actor = ioPort->container;
+	newEvent->_timestamp = director->getModelTime(director);
+	newEvent->_microstep = 1;
+	newEvent->_depth = depth;
+	newEvent->_token = token;
+	newEvent->_receiver = receiver;
+	newEvent->_isPureEvent = false;
+	newEvent->_sourceTimestamp = director->_currentSourceTimestamp;
 
-	director->_disabledActors = NULL;
-	director->_exceedStopTime = false;
-	director->_noMoreActorsToFire = false;
-	director->_microstep = 0;
+	if (ioPort->isOutput(ioPort)) {
 
-	if ((*(director->isEmbedded))((struct Director*)director)) {
-		struct CompositeActor* container = director->container;
-		struct Director* executiveDirector = (*(container->getExecutiveDirector))(container);
+		Time deliveryTime;
+		deliveryTime = director->localClock->getLocalTime(director->localClock);
+		if (((struct PtidesPort*) ioPort)->isActuatorPort((struct PtidesPort*)ioPort)) {
+			if (((struct PtidesPort*) ioPort)->actuateAtEventTimestamp) {
+				deliveryTime = director->getModelTime(director) - ((struct PtidesPort*)ioPort)->deviceDelay;
+			}
 
-		if (IS_DEDIRECTOR(executiveDirector) && !(*(director->isTopLevel))((struct Director*)director)) {
-			struct DEDirector* executiveDirectorDE = (struct DEDirector*) executiveDirector;
-			director->_microstep = (*(executiveDirectorDE->getMicrostep))(executiveDirectorDE);
+			if (director->getModelTime(director) < deliveryTime) {
+				fprintf(stderr, "Missed Deadline at %s!\n At %lf which is smaller than current platform time %lf",
+						((struct PtidesPort*)ioPort)->name, director->getModelTime(director),
+						director->localClock->getLocalTime(director->localClock));
+				exit(-1);
+			}
+		} else if (((struct PtidesPort*) ioPort)->isNetworkTransmitterPort((struct PtidesPort*)ioPort)) {
+			if (director->localClock->getLocalTime(director->localClock) - director->getModelTime(director)
+					> ((struct PtidesPort*)ioPort)->platformDelayBound) {
+				fprintf(stderr, "Token is being sent out onto the network too late.\
+Current platform time: %lf Event timestamp: %lf Platform delay: %lf",
+						director->localClock->getLocalTime(director->localClock),
+						director->getModelTime(director),
+						((struct PtidesPort*)ioPort)->platformDelayBound);
+			}
 		}
-	}
-	Director_Initialize((struct Director*)director);
 
-	Time stopTime = (*(director->getModelStopTime))((struct Director*)director);
-	if (stopTime != DBL_MAX) {
-		(*(director->fireAt))(director, (struct Actor*)director->container, stopTime, 1);
-	}
-
-	if ((*(director->isEmbedded))((struct Director*)director) && !(*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-		(*(director->_requestFiring))(director);
-		director->_delegateFireAt = true;
+		if (newEvent != NULL) {
+			PblList** list = (PblList**)pblMapGet(director->_outputEventDeadlines, &deliveryTime, sizeof(Time), NULL);
+			PblList* newList;
+			if (list == NULL)
+				newList = pblListNewArrayList();
+			else
+				newList = *list;
+			pblListAdd(newList, newEvent);
+			pblMapPut(director->_outputEventDeadlines, &deliveryTime, sizeof(Time), &newList, sizeof(PblList*), NULL);
+		}
 	} else {
-		director->_delegateFireAt = false;
+		director->_eventQueue->put(director->_eventQueue, newEvent);
 	}
-
-	director->_isInitializing = false;
 }
-bool DEDirector_Postfire(struct DEDirector* director) {
-    bool result = Director_Postfire((struct Director*)director);
-
-    struct CompositeActor* container = director->container;
-    PblIterator* outports = pblIteratorNew((*(container->outputPortList))(container));
-    bool moreOutputsToTransfer = false;
-    while (pblIteratorHasNext(outports) && !moreOutputsToTransfer) {
-        struct IOPort* outport = pblIteratorNext(outports);
-        for (int i = 0; i < (*(outport->getWidthInside))(outport); i++) {
-            if ((*(outport->hasTokenInside))(outport, i)) {
-                moreOutputsToTransfer = true;
-                break;
-            }
-        }
-    }
-
-    if (!(*(director->_eventQueue->isEmpty))(director->_eventQueue) && !moreOutputsToTransfer) {
-    	struct DEEvent* next = (*(director->_eventQueue->get))(director->_eventQueue);
-		if ((*(next->timeStamp))(next) > (*(director->getModelTime))((struct Director*)director)) {
-			director->_microstep = 0;
-		}
+struct Actor* PtidesDirector__GetNextActorToFire(struct PtidesDirector* director) {
+	struct Actor* actor = director->_getNextActorFrom(director, director->_pureEvents);
+	if (actor != NULL) {
+		return actor;
 	}
-	bool stop = director->stopWhenQueueIsEmpty;
-
-	if (moreOutputsToTransfer) {
-		(*(director->fireContainerAt))((struct Director*)director, (*(director->getModelTime))((struct Director*)director),
-				(*(director->getMicrostep))(director));
-	} else if (director->_noMoreActorsToFire
-			&& (stop || (*(director->getModelTime))((struct Director*)director) == (*(director->getModelStopTime))((struct Director*)director))) {
-		director->_exceedStopTime = true;
-		result = false;
-	} else if (director->_exceedStopTime) {
-		result = false;
-	} else if ((*(director->isEmbedded))((struct Director*)director)
-			&& !(*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-		(*(director->_requestFiring))(director);
+	actor = director->_getNextActorFrom(director, director->_eventQueue);
+	if (actor != NULL) {
+		return actor;
 	}
-
-    if ((*(director->isEmbedded))((struct Director*)director) ) {
-        director->_delegateFireAt = true;
-    }
-    return result;
+	director->_currentLogicalTime = -DBL_MAX;
+	return NULL;
 }
 
-bool DEDirector_Prefire(struct DEDirector* director) {
-	Director_Prefire((struct Director*)director);
+struct Actor* PtidesDirector__GetNextActorFrom(struct PtidesDirector* director, struct CalendarQueue* queue) {
+	struct PtidesEvent** eventArray = (struct PtidesEvent**)queue->toArray(queue);
+	for (int foo = 0 ; foo < queue->size(queue) ; foo++) {
+		struct PtidesEvent* ptidesEvent = eventArray[foo];
+		if (director->_isSafeToProcess(director, ptidesEvent)) {
+			struct Actor* actor = ptidesEvent->actor(ptidesEvent);
+			Time timestamp = ptidesEvent->timeStamp(ptidesEvent);
 
-	if ((*(director->isEmbedded))((struct Director*)director)) {
-		struct CompositeActor* container = director->container;
-		struct Director* executiveDirector = (*(container->getExecutiveDirector))(container);
-		if (IS_DEDIRECTOR(executiveDirector) && !(*(director->isTopLevel))((struct Director*)director)) {
-			struct DEDirector* executiveDirectorDE = (struct DEDirector*) executiveDirector;
-			director->_microstep = (*(executiveDirectorDE->getMicrostep))(executiveDirectorDE);
+			if (queue == director->_pureEvents) {
+				struct CalendarQueue* queue2 = director->_pureEvents;
+				struct PtidesEvent** eventArray2 = (struct PtidesEvent**)queue2->toArray(queue2);
+				for (int bar = 0 ; bar < queue2->size(queue2) ; bar++) {
+					struct PtidesEvent* triggeredEvent = eventArray2[bar];
+					if (triggeredEvent->actor(triggeredEvent) == actor
+							&& triggeredEvent->timeStamp(triggeredEvent) < timestamp) {
+						ptidesEvent = triggeredEvent;
+					}
+				}
+			}
+			actor = ptidesEvent->actor(ptidesEvent);
+			timestamp = ptidesEvent->timeStamp(ptidesEvent);
+
+			PblList* sameTagEvents = pblListNewArrayList();
+			int i = 0;
+			while (i < queue->size(queue)) {
+				struct PtidesEvent* eventInQueue = eventArray[i];
+
+				if (eventInQueue->hasTheSameTagAs(eventInQueue, ptidesEvent)
+						&& eventInQueue->actor(eventInQueue) == actor) {
+					pblListAdd(sameTagEvents, eventInQueue);
+					if (eventInQueue->receiver(eventInQueue) != NULL) {
+						struct Receiver* receiver = eventInQueue->receiver(eventInQueue);
+						if (IS_PTIDESRECEIVER(receiver)) {
+							((struct PtidesReceiver*)receiver)->putToReceiver((struct PtidesReceiver*)receiver,
+									eventInQueue->token(eventInQueue));
+						}
+					}
+				}
+				i++;
+			}
+
+			director->_currentLogicalTime = timestamp;
+			director->_currentLogicalIndex = ptidesEvent->microstep(ptidesEvent);
+			director->_currentSourceTimestamp = ptidesEvent->sourceTimestamp(ptidesEvent);
+			bool prefire = actor->prefire(actor);
+			director->_currentLogicalTime = -DBL_MAX;
+
+			PblIterator* sameTagIterator = pblIteratorNew(sameTagEvents);
+			while (pblIteratorHasNext(sameTagIterator)) {
+				struct PtidesEvent* sameTagEvent = pblIteratorNext(sameTagIterator);
+				if (sameTagEvent->receiver(sameTagEvent) != NULL) {
+					struct Receiver* receiver = sameTagEvent->receiver(sameTagEvent);
+					if (IS_PTIDESRECEIVER(receiver)) {
+						struct PtidesReceiver* pReceiver = (struct PtidesReceiver*) receiver;
+						pReceiver->remove(pReceiver, sameTagEvent->token(sameTagEvent));
+					}
+				}
+			}
+			pblIteratorFree(sameTagIterator);
+			if (prefire) {
+				director->_currentLogicalTime = timestamp;
+				director->_currentLogicalIndex = ptidesEvent->microstep(ptidesEvent);
+				director->_currentSourceTimestamp = ptidesEvent->sourceTimestamp(ptidesEvent);
+
+				// remove all events with same tag from all queues.
+				director->_removeEventsFromQueue(director, director->_eventQueue, ptidesEvent);
+				director->_removeEventsFromQueue(director, director->_pureEvents, ptidesEvent);
+				return actor;
+			}
+		}
+	}
+	return NULL;
+}
+
+struct SuperdenseDependency PtidesDirector__GetSuperdenseDependencyPair(struct PtidesDirector* director,
+		struct IOPort* source, struct IOPort* destination) {
+	struct SuperdenseDependency result;
+	if (pblMapContainsKey(director->_superdenseDependencyPair, &source, sizeof(struct IOPort*))) {
+		PblMap* map = pblMapGet(director->_superdenseDependencyPair, &source, sizeof(struct IOPort*), NULL);
+		if (pblMapContainsKey(map, &destination, sizeof(struct IOPort*))) {
+			return *((struct SuperdenseDependency*)pblMapGet(map, &destination, sizeof(struct IOPort*), NULL));
+		}
+	} else {
+		struct SuperdenseDependency result;
+		result.time = DBL_MAX;
+		result.microstep = 0;
+		return result;
+	}
+	return result;
+}
+
+bool PtidesDirector__IsSafeToProcess(struct PtidesDirector* director, struct PtidesEvent* event) {
+	struct PtidesEvent** eventArray = (struct PtidesEvent**)director->_eventQueue->toArray(director->_eventQueue);
+	for (int foo = 0 ; foo < director->_eventQueue->size(director->_eventQueue) ; foo++) {
+		struct PtidesEvent* ptidesEvent = eventArray[foo];
+		if (event->timeStamp(event) > ptidesEvent->timeStamp(ptidesEvent)) {
+			break;
+		}
+		if (ptidesEvent->actor(ptidesEvent) != event->actor(event)
+				&& ptidesEvent->ioPort(ptidesEvent) != NULL && event->ioPort(event) != NULL) {
+			struct SuperdenseDependency minDelay = director->_getSuperdenseDependencyPair(
+					director,
+					ptidesEvent->ioPort(ptidesEvent),
+					event->ioPort(event));
+			if (event->timeStamp(event) - ptidesEvent->timeStamp(ptidesEvent) >= minDelay.time) {
+				return false;
+			}
 		}
 	}
 
-	// A top-level DE director is always ready to fire.
-	if ((*(director->isTopLevel))((struct Director*)director)) {
+	double delayOffset = -DBL_MAX;
+	Time eventTimestamp = event->timeStamp(event);
+	struct IOPort* port = event->ioPort(event);
+
+	if (port != NULL) {
+		struct Actor* actor = port->container;
+		for (int i = 0; i < pblListSize(actor->inputPortList(actor)); i++) {
+			struct PtidesPort* ioPort = pblListGet(actor->inputPortList(actor), i);
+			double ioPortDelayOffset = ioPort->delayOffset;
+			if (ioPortDelayOffset != -DBL_MAX
+					&& (delayOffset == -DBL_MAX || ioPortDelayOffset < delayOffset)) {
+				delayOffset = ioPortDelayOffset;
+			}
+		}
+	} else {
+		if (event->_actor->delayOffset != -DBL_MAX) {
+			delayOffset = event->_actor->delayOffset;
+		}
+
+	}
+	if (delayOffset == -DBL_MAX
+			|| director->localClock->getLocalTime(director->localClock) >=
+					eventTimestamp - delayOffset) {
 		return true;
 	}
 
-	Time modelTime = (*(director->getModelTime))((struct Director*)director);
-	Time nextEventTime = DBL_MAX;
-
-	if (!(*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-		struct DEEvent* nextEvent = (*(director->_eventQueue->get))(director->_eventQueue);
-		nextEventTime = (*(nextEvent->timeStamp))(nextEvent);
-	}
-
-	while (modelTime > nextEventTime) {
-		(*(director->_eventQueue->take))(director->_eventQueue);
-		if (!(*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-			struct DEEvent* nextEvent = (*(director->_eventQueue->get))(director->_eventQueue);
-			nextEventTime = (*(nextEvent->timeStamp))(nextEvent);
-		} else {
-			nextEventTime = DBL_MAX;
-		}
-	}
-	director->_delegateFireAt = false;
-	return true;
-}
-void DEDirector_Preinitialize(struct DEDirector* director) {
-	director->_eventQueue = CalendarQueue_New();
-
-	director->_eventQueue->_logMinNumBuckets = log(director->minBinCount);
-	director->_eventQueue->_logQueueBinCountFactor = log(director->binCountFactor);
-	director->_eventQueue->_resizeEnabled = director->isCQAdaptive;
-
-	Director_Preinitialize((struct Director*)director);
-}
-void DEDirector_Wrapup(struct DEDirector* director) {
-	Director_Wrapup((struct Director*)director);
-	if (director->_disabledActors)
-		pblSetFree(director->_disabledActors);
-	(*(director->_eventQueue->clear))(director->_eventQueue);
-
-	director->_noMoreActorsToFire = false;
-	director->_microstep = 0;
-}
-bool DEDirector__CheckForNextEvent(struct DEDirector* director) {
-	if (!(*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-		struct DEEvent* next = (*(director->_eventQueue->get))(director->_eventQueue);
-
-		if ((*(next->timeStamp))(next) > (*(director->getModelTime))((struct Director*)director)) {
-			return false;
-		} else if ((*(next->microstep))(next) > director->_microstep) {
-			return false;
-		} else if ((*(next->timeStamp))(next) < (*(director->getModelTime))((struct Director*)director)
-				|| (*(next->microstep))(next) < director->_microstep) {
-			fprintf(stderr, "he tag of the next event can not be less than the current tag : DEDirector__CheckForNextEvent\n");
-			exit(-1);
-		}
-	}
-	return true;
-}
-void DEDirector__DisableActor(struct DEDirector* director, struct Actor* actor) {
-	if (actor != NULL) {
-		if (director->_disabledActors == NULL) {
-			director->_disabledActors = pblSetNewHashSet();
-		}
-
-		pblSetAdd(director->_disabledActors, actor);
-	}
+	director->_setNextFireTime(director, eventTimestamp - delayOffset);
+	return false;
 }
 
-void DEDirector__EnqueueEvent(struct DEDirector* director, struct Actor* actor, Time time, int defaultMicrostep) {
-	if (director->_eventQueue == NULL || (director->_disabledActors != NULL
-			&& pblSetContains(director->_disabledActors, actor))) {
-		return;
+PblList* PtidesDirector__RemoveEventsFromQueue(struct PtidesDirector* director,
+			struct CalendarQueue* queue,
+            struct PtidesEvent* event) {
+        PblList* eventList = pblListNewArrayList();
+        int i = 0;
+        struct PtidesEvent** queueArray = (struct PtidesEvent**) queue->toArray(queue);
+        int queueSize = queue->size(queue);
+        while (i < queueSize) {
+            struct PtidesEvent* eventInQueue = queueArray[i];
+            if (eventInQueue->hasTheSameTagAs(eventInQueue, event)
+                    && eventInQueue->actor(eventInQueue) == event->actor(event)) {
+                pblListAdd(eventList, eventInQueue);
+                queue->remove(queue, eventInQueue);
+                //continue;
+            }
+            i++;
+        }
+        return eventList;
+    }
+
+void PtidesDirector__SetNextFireTime(struct PtidesDirector* director, Time time) {
+	if (director->_nextFireTime == -DBL_MAX || director->_nextFireTime > time) {
+		director->_nextFireTime = time;
 	}
-
-	int microstep = 1;
-	if (time == (*(director->getModelTime))((struct Director*)director) && microstep <= director->_microstep) {
-		if (!director->_isInitializing) {
-			microstep = director->_microstep + 1;
-
-			if (microstep == INT_MAX) {
-				fprintf(stderr, "Microstep has hit the maximum while scheduling a firing : DEDirector__EnqueueEvent\n");
-				exit(-1);
-			}
-		}
-	} else if (time < (*(director->getModelTime))((struct Director*)director) ) {
-		fprintf(stderr, "Attempt to queue an event in the past : DEDirector__EnqueueEvent\n");
-		exit(-1);
-	}
-
-	int depth = * ((int*)pblMapGet(director->actorsDepths, &actor, sizeof (struct Actor*), NULL));
-
-	struct DEEvent* newEvent = DEEvent_New();
-	newEvent->_actor = actor;
-	newEvent->_timestamp = time;
-	newEvent->_microstep = microstep;
-	newEvent->_depth = depth;
-	(*(director->_eventQueue->put))(director->_eventQueue, newEvent);
 }
-void DEDirector__EnqueueTriggerEvent(struct DEDirector* director, struct IOPort* ioPort, Time time) {
-	struct Actor* actor = ioPort->container;
-	if (director->_eventQueue == NULL || (director->_disabledActors != NULL
-			&& pblSetContains(director->_disabledActors, actor))) {
-		return;
-	}
-
-	int depth = * ((int*)(pblMapGet(director->portsDepths, &ioPort, sizeof(struct IOPort*), NULL)));
-
-	int microstep = director->_microstep;
-	if (microstep < 1) {
-		microstep = 1;
-	}
-
-	// Register this trigger event.
-	struct DEEvent* newEvent = DEEvent_New();
-	newEvent->_ioPort = ioPort;
-	newEvent->_actor = ioPort->container;
-	newEvent->_timestamp = time;
-	newEvent->_microstep = microstep;
-	newEvent->_depth = depth;
-	(*(director->_eventQueue->put))(director->_eventQueue, newEvent);
-}
-int DEDirector__Fire(struct DEDirector* director) {
-	struct Actor* actorToFire = DEDirector__GetNextActorToFire(director);
-
-	if (actorToFire == NULL) {
-		director->_noMoreActorsToFire = true;
-		return -1;
-	}
-
-	if ((struct CompositeActor*)actorToFire == (struct CompositeActor*)director->container) {
-		return 1;
-	}
-
-	if (!(*(actorToFire->prefire))(actorToFire)) {
-		return 0;
-	}
-
-	(*(actorToFire->fire))(actorToFire);
-
-	if (!(*(actorToFire->postfire))(actorToFire)) {
-		(*(director->_disableActor))(director, actorToFire);
-	}
-	return 0;
-}
-struct Actor* DEDirector__GetNextActorToFire(struct DEDirector* director) {
-	if (director->_eventQueue == NULL) {
-		fprintf(stderr, "Fire method called before the preinitialize method : DEDirector__GetNextActorToFire\n");
-		exit(-1);
-	}
-
-	struct Actor* actorToFire = NULL;
-	struct DEEvent* lastFoundEvent = NULL;
-	struct DEEvent* nextEvent = NULL;
-
-	while (true) {
-		if (director->stopWhenQueueIsEmpty) {
-			if ((*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-				break;
-			}
-		}
-
-		if ((*(director->isEmbedded))((struct Director*)director)) {
-			if ((*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-				break;
-			}
-			nextEvent = (*(director->_eventQueue->get))(director->_eventQueue);
-			if ((*(nextEvent->timeStamp))(nextEvent) < (*(director->getModelTime))((struct Director*)director)) {
-				fprintf(stderr, "An event was missed : DEDirector__GetNextActorToFire\n");
-				exit(-1);
-			}
-
-			bool microstepMatches = true;
-			struct CompositeActor* container = director->container;
-			struct Director* executiveDirector = (*(container->getExecutiveDirector))(container);
-			if (IS_DEDIRECTOR(executiveDirector) && !(*(director->isTopLevel))((struct Director*)director)) {
-				microstepMatches = (*(nextEvent->microstep))(nextEvent) <= director->_microstep;
-			}
-
-			int comparison = (*(nextEvent->timeStamp))(nextEvent) - (*(director->getModelTime))((struct Director*)director);
-			if (comparison > 0 || (comparison == 0 && !microstepMatches)) {
-				nextEvent = NULL;
-				break;
-			}
-		} else {
-			if ((*(director->_eventQueue->isEmpty))(director->_eventQueue)) {
-				if (actorToFire != NULL
-						|| (*(director->getModelTime))((struct Director*)director) == (*(director->getModelStopTime))((struct Director*)director)) {
-					break;
-				}
-				return NULL;
-			}
-			nextEvent = (*(director->_eventQueue->get))(director->_eventQueue);
-		}
-
-		if (actorToFire == NULL) {
-			Time currentTime;
-			lastFoundEvent = (*(director->_eventQueue->take))(director->_eventQueue);
-			currentTime = (*(lastFoundEvent->timeStamp))(lastFoundEvent);
-			actorToFire = (*(lastFoundEvent->actor))(lastFoundEvent);
-
-			if (director->_disabledActors != NULL
-					&& pblSetContains(director->_disabledActors, actorToFire)) {
-				actorToFire = NULL;
-				continue;
-			}
-
-			director->localClock->_localTime = currentTime;
-			director->_microstep = (*(lastFoundEvent->microstep))(lastFoundEvent);
-
-			if (currentTime > (*(director->getModelStopTime))((struct Director*)director)) {
-				director->_exceedStopTime = true;
-				return NULL;
-			}
-		} else {
-			if ((*(nextEvent->hasTheSameTagAs))(nextEvent, lastFoundEvent)
-					&& (*(nextEvent->actor))(nextEvent) == actorToFire) {
-				(*(director->_eventQueue->take))(director->_eventQueue);
-			} else {
-				break;
-			}
-		}
-	}
-
-	return actorToFire;
-}
-void DEDirector__RequestFiring(struct DEDirector* director) {
-	struct DEEvent* nextEvent = NULL;
-	nextEvent = (*(director->_eventQueue->get))(director->_eventQueue);
-
-	(*(director->fireContainerAt))((struct Director*)director, (*(nextEvent->timeStamp))(nextEvent), (*(nextEvent->microstep))(nextEvent));
-}
-
