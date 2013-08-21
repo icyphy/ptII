@@ -53,7 +53,8 @@ import ptolemy.kernel.util.Workspace;
  *  implemented here is different. I.e. this switch can potentially exhibit
  *  better throughput performance as some tokens can be processed in parallel
  *  by the switch fabric. For more information on how a crossbar switch works
- *  please refer to the {@link http://en.wikipedia.org/wiki/Crossbar_switch}, 
+ *  please refer to the 
+ *  <a href="http://en.wikipedia.org/wiki/Crossbar_switch#in_browser">http://en.wikipedia.org/wiki/Crossbar_switch</a> 
  *  General Properties.
  *  
  *  @author Patricia Derler
