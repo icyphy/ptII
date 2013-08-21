@@ -2,21 +2,35 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Network" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 55.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 916, 651}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/Network">
+        </property>
+        <property name="generateInSubdirectory" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{560, 70}">
+        </property>
     </property>
     <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
@@ -209,6 +223,10 @@
                 </property>
             </property>
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
         <port name="SensorPort" class="ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesMirrorPort">
             <property name="input"/>
         </port>
@@ -220,7 +238,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 47, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 47, 916, 651}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -235,10 +253,13 @@
             </port>
             <port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="output"/>
-<property name="isNetworkPort" value="true"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 250.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
@@ -249,6 +270,8 @@
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                 </port>
             </entity>
@@ -453,6 +476,10 @@
                 </property>
             </property>
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
         <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesMirrorPort">
             <property name="input"/>
         </port>
@@ -467,7 +494,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 47, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 47, 916, 651}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -477,7 +504,8 @@
             </property>
             <port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
-<property name="isNetworkPort" value="true"/>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 200.0]">
                 </property>
             </port>
@@ -486,6 +514,8 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 215.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
@@ -504,6 +534,8 @@
                     <property name="input"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                 </port>
             </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -513,6 +545,8 @@
                     <property name="input"/>
                     <property name="multiport"/>
                     <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                 </port>
             </entity>
@@ -539,6 +573,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 125.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -546,6 +584,10 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -555,10 +597,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 135.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -567,6 +617,10 @@
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 225.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
