@@ -64,7 +64,7 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Open Computer Vision and sets PTOPENCV_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTOPENCV_DIR is empty.
 #
-DIRS = 		anomaly conversions gui logic hoc image test \
+DIRS = 		conversions gui logic hoc image test \
 		javasound jopio net io xslt \
 		test comm qm resourceScheduler security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
@@ -104,7 +104,6 @@ PTAUXALLJAR =	libKore.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	$(PTAUXALLJARS) \
-	anomaly/anomaly.jar \
 	fmi/fmi.jar \
 	gui/gui.jar \
 	javasound/javasound.jar \
@@ -378,7 +377,6 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	anomaly \
 	comm \
 	doc \
 	jai \
