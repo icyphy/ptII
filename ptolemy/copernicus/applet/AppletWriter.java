@@ -78,6 +78,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.kernel.attributes.TextAttribute;
 import soot.HasPhaseOptions;
@@ -1956,18 +1957,21 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
 
             if (renameJarFile) {
-                // Windows XP has a toy file system that requires
-                // that we *remove* the file before calling File.renameTo().
-                // Will this madness ever end?
-                if (!jarFile.delete()) {
-                    System.out.println("Warning: could not remove \""
-                            + jarFile.getCanonicalPath() + "\"");
-                }
-                if (!jarFile.delete()) {
-                    System.out.println("Warning: could not remove \""
-                            + jarFile.getCanonicalPath() + "\"");
-                }
-                if (!temporaryJarFileName.renameTo(jarFile)) {
+                if (jarFile.exists()) { 
+		    // Windows XP has a toy file system that requires
+		    // that we *remove* the file before calling File.renameTo().
+		    // Will this madness ever end?
+		    if (!jarFile.delete()) {
+			System.out.println("Warning: could not remove \""
+					   + jarFile.getCanonicalPath() + "\"");
+		    }
+		    if (!jarFile.delete()) {
+			System.out.println("Warning: could not remove \""
+					   + jarFile.getCanonicalPath() + "\"");
+		    }
+		    System.out.println("Removed " + jarFile);
+		}
+		if (!temporaryJarFileName.renameTo(jarFile)) {
                     System.out.println("Attempt #1: Failed to rename \""
                             + temporaryJarFileName
                             + "\" to \""
@@ -2009,8 +2013,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + "\" after test creation.");
                     }
 
+		    temporaryJarFileName = null;
+		    temporaryJarFileName = new File(outputJarFileName);
                     if (!temporaryJarFileName.renameTo(jarFile)) {
-                        throw new IOException("Attempt #2: Failed to rename \""
+                        System.out.println("About to throw an exception!!! Attempt #2: Failed to rename \""
                                 + temporaryJarFileName
                                 + "\" to \""
                                 + jarFile
@@ -2027,6 +2033,28 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + jarFileDirectory
                                 + (jarFileDirectory.isDirectory() ? " is"
                                         : " is not") + " a directory.");
+			// GRR.  Under Linux, File.renameTo() seems to
+			// fail if the File was created with
+			// createTempFile, so we copy it.
+			if (!FileUtilities.binaryCopyURLToFile(temporaryJarFileName.toURL(), jarFile)) {
+			    throw new IOException("Attempt #3: Failed to copy \""
+					      + temporaryJarFileName
+                                + "\" to \""
+                                + jarFile
+                                + "\", source file "
+                                + (temporaryJarFileName.exists() ? "exists"
+                                        : "does not exist")
+                                + ", destination file "
+                                + (jarFile.exists() ? "exists"
+                                        : "does not exist")
+                                + ", destination file "
+                                + (jarFile.canWrite() ? "can" : "cannot")
+                                + " be written.  "
+                                + "The directory "
+                                + jarFileDirectory
+                                + (jarFileDirectory.isDirectory() ? " is"
+                                        : " is not") + " a directory.");
+			}
                     }
                 }
             }
