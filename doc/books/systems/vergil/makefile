@@ -2,21 +2,26 @@
 CHAPTER=vergil
 # grep 'htm"' index.html.in  | grep -v ssi | awk -F '"' '{print $2}' | sort 
 EXAMPLE_MODELS = \
-	AddingStringsException.htm \
-	AddingStrings.htm \
-	ApplyFunction.htm \
-	ChannelBadDesign.htm \
-	ChannelGoodDesign.htm \
-	ChannelSingle.htm \
-	ChannelWithExternalClass.htm \
-	ChannelWithIcon.htm \
-	ChannelWithIterate.htm \
-	ChannelWithMultiInstance.htm \
-	ChannelWithOverrides.htm \
-	ChannelWithSubclass.htm \
-	ChannelWithSubclassWithOverrides.htm \
-	CustomIcon.htm \
-	HellowWorld.htm \
-	Spectrum.htm \
-	TypeModel.htm \
-	WidthInference.htm
+	AddingStringsException.xml \
+	AddingStrings.xml \
+	ApplyFunction.xml \
+	ChannelBadDesign.xml \
+	ChannelGoodDesign.xml \
+	ChannelSingle.xml \
+	ChannelWithExternalClass.xml \
+	ChannelWithIcon.xml \
+	ChannelWithIterate.xml \
+	ChannelWithMultiInstance.xml \
+	ChannelWithOverrides.xml \
+	ChannelWithSubclass.xml \
+	ChannelWithSubclassWithOverrides.xml \
+	CustomIcon.xml \
+	HellowWorld.xml \
+	Spectrum.xml \
+	TypeModel.xml \
+	WidthInference.xml
+
+EXAMPLE_SUBMODELS = \
+	Channel.xml
+
+include ../chapter.mk
