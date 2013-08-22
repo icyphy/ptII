@@ -51,7 +51,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	PtidesBasicReceiver.java \
-	PtidesPlatformDirector.java \
 	PtidesPreemptiveEDFDirector.java \
 	PtidesTopLevelDirector.java
 
