@@ -103,6 +103,7 @@
               <entity name="ProcessNetworks" class="ptolemy.moml.EntityLibrary">
                 <group>
                   <entity name="OrderedMerge" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMerge"/>
+                  <entity name="Sequencer" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequencer"/>
                 </group>
               </entity>
             </group>
