@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5618057576335302">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.9301532946135, 220.74542236328128}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.93015329461343, 220.74542236328128}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
@@ -282,13 +282,13 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={594, 552, 872, 414}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 207, 872, 635}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[638, 303]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[638, 524]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1875217441725618">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2345354788424694">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.52099609375, 242.70110931396482}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.3466796875, 234.45948660297756}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -414,13 +414,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 525.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 412, 878, 446}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 412, 878, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 336]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.205914258117245">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{664.87109375, 632.0616867113564}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{664.87109375, 710.0108438485804}">
         </property>
         <property name="T" class="ptolemy.data.expr.Parameter" value="5.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -628,7 +628,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 533.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={530, 473, 861, 554}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={530, 412, 861, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 444]">
             </property>
@@ -835,13 +835,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 145.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={579, 477, 878, 436}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={579, 412, 878, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 326]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4586530760426453">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.498119320463178">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{243.5195711484679, 293.08447265625}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{218.59863281249997, 288.4429496500394}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
