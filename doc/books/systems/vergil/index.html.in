@@ -15,24 +15,24 @@
   <h1>Chapter 2: Building Graphical Models</h1>
   Executable models in chapter 2:
   <ul>
-    <li> Figure 2.1: <a href="Spectrum.htm">Spectrum</a>. This model also references <a href="MaximumEntropySpectrum.htm">MaximumEntropySpectrum</a>.
-    <li> Figure 2.7: <a href="HelloWorld.htm">Hello World</a>.
-    <li> Figure 2.12: <a href="TypeModel.htm">Type Model</a>.
-    <li> Figure 2.13: <a href="AddingStringsException.htm">Adding Strings (with Exception)</a>.
-    <li> Figure 2.14: <a href="AddingStrings.htm">Adding Strings</a>.
-    <li> Figure 2.20,22,24: <a href="ChannelSingle.htm">Channel Single</a>.
-    <li> Figure 2.21: <a href="WidthInference.htm">Width Inference</a>.
-    <li> Figure 2.26: <a href="CustomIcon.htm">Custom Icon</a>.
-    <li> Figure 2.30: <a href="ChannelBadDesign.htm">Channel (Bad Design)</a>.
-    <li> Figure 2.31: <a href="ChannelGoodDesign.htm">Channel (Good Design)</a>.
-    <li> Figure 2.32: <a href="ChannelWithIcon.htm">Channel (with Custom Icon)</a>.
-    <li> Figure 2.33: <a href="ChannelWithOverrides.htm">Channel (with Overrides)</a>.
-    <li> Figure 2.34: <a href="ChannelWithSubclass.htm">Channel with Subclass (no overrides yet)</a>.
-    <li> Figure 2.35-36: <a href="ChannelWithSubclassWithOverrides.htm">Channel with Subclass (with overrides)</a>.
-    <li> Figure 2.37: <a href="ChannelWithExternalClass.htm">Channel with External Class Definition</a>.
-    <li> Figure 2.40: <a href="ChannelWithMultiInstance.htm">Channel with MultiInstanceComposite</a>.
-    <li> Figure 2.42: <a href="ChannelWithIterate.htm">Channel with IterateOverArray</a>.
-    <li> Figure 2.44: <a href="ApplyFunction.htm">Demonstration of ApplyFunction</a>.
+    <li> Figure 2.1: <a href="Spectrum/index.html">Spectrum</a>. This model also references <a href="MaximumEntropySpectrum/index.html">MaximumEntropySpectrum</a>.
+    <li> Figure 2.7: <a href="HelloWorld/index.html">Hello World</a>.
+    <li> Figure 2.12: <a href="TypeModel/index.html">Type Model</a>.
+    <li> Figure 2.13: <a href="AddingStringsException/index.html">Adding Strings (with Exception)</a>.
+    <li> Figure 2.14: <a href="AddingStrings/index.html">Adding Strings</a>.
+    <li> Figure 2.20,22,24: <a href="ChannelSingle/index.html">Channel Single</a>.
+    <li> Figure 2.21: <a href="WidthInference/index.html">Width Inference</a>.
+    <li> Figure 2.26: <a href="CustomIcon/index.html">Custom Icon</a>.
+    <li> Figure 2.30: <a href="ChannelBadDesign/index.html">Channel (Bad Design)</a>.
+    <li> Figure 2.31: <a href="ChannelGoodDesign/index.html">Channel (Good Design)</a>.
+    <li> Figure 2.32: <a href="ChannelWithIcon/index.html">Channel (with Custom Icon)</a>.
+    <li> Figure 2.33: <a href="ChannelWithOverrides/index.html">Channel (with Overrides)</a>.
+    <li> Figure 2.34: <a href="ChannelWithSubclass/index.html">Channel with Subclass (no overrides yet)</a>.
+    <li> Figure 2.35-36: <a href="ChannelWithSubclassWithOverrides/index.html">Channel with Subclass (with overrides)</a>.
+    <li> Figure 2.37: <a href="ChannelWithExternalClass/index.html">Channel with External Class Definition</a>.
+    <li> Figure 2.40: <a href="ChannelWithMultiInstance/index.html">Channel with MultiInstanceComposite</a>.
+    <li> Figure 2.42: <a href="ChannelWithIterate/index.html">Channel with IterateOverArray</a>.
+    <li> Figure 2.44: <a href="ApplyFunction/index.html">Demonstration of ApplyFunction</a>.
   </ul>
   <!--#include virtual="/ssi/bottom.htm" -->
   <!-- Do not include a body or html close tag here, the ssi does it -->
