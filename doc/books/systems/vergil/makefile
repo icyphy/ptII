@@ -16,7 +16,7 @@ EXAMPLE_MODELS = \
 	ChannelWithSubclass.xml \
 	ChannelWithSubclassWithOverrides.xml \
 	CustomIcon.xml \
-	HellowWorld.xml \
+	HelloWorld.xml \
 	Spectrum.xml \
 	TypeModel.xml \
 	WidthInference.xml
