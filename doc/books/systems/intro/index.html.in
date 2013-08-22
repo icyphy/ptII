@@ -15,7 +15,7 @@
   <h1>Chapter 1: Heterogeneous Modeling</h1>
   Executable models in chapter 1:
   <ul>
-    <li> <a href="GeneratorRegulatorProtector.htm">GeneratorRegulatorProtector</a>.
+    <li> <a href="GeneratorRegulatorProtector/index.html">GeneratorRegulatorProtector</a>.
       This model is shown in figures:
       <ul>
 	<li> Figure 1.8: Simplified model of a gas-powered generator. </li>
