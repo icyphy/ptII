@@ -895,7 +895,7 @@ jnlps_index: $(ROOT)/mk/ptcommon.mk
 			echo "<h2>Demos</h2>" >> toc.htm; \
 			set $(EXAMPLE_MODELS); \
 			for x do \
-				echo "<li> <a href=\"`basename $$x .xml`.htm\">`basename $$x .xml`</a></li>" >> index.html; \
+				echo "<li> <a href=\"`basename $$x .xml`/index.html\">`basename $$x .xml`</a></li>" >> index.html; \
 				echo "<li> <a href=\"`basename $$x .xml`.htm\">`basename $$x .xml | awk '{ if (length($$0) < 20) {print $$0} else {print substr($$0, 0, 17) "..."}}'`</a></li>" >> toc.htm; \
 			done; \
 			echo "</ul>" >> index.html; \
