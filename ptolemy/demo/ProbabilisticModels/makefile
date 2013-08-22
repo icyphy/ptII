@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/demo/FaultModels
+ME =		ptolemy/demo/ProbabilisticModels
 
 DIRS =
 
@@ -46,32 +46,19 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 EXAMPLE_MODELS = \
-	ContactorTester.xml \
-	ElectricPowerSystem.xml \
-	GeneratorContactorLoad.xml \
-	GeneratorRegulator.xml \
-	GeneratorRegulatorFMUProtector.xml \
-	GeneratorRegulatorProtector.xml \
-	GeneratorRegulatorProtectorWithBus.xml \
-	GeneratorTester.xml \
-	ElectricPowerSystem.xml
+	FaultModels.xml \
+	GaussianMixtureModel.xml \
+	GMMConvergenceAnalysis.xml \
+	HiddenMarkovModel.xml \
+	HiddenMarkovModelAnalysis.xml \
+	TwoStateMarkovChain.xml
 
 OTHER_FILES_TO_BE_JARED = \
-	$(EXAMPLE_MODELS) \
-	onOffSupervisor.fmu \
-	Contactor.xml \
-	ContactorIcon.xml \
-	Generator.xml \
-	ElectricPowerSystem.htm
-
-EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
+	$(EXAMPLE_MODELS)
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 
-#	$(EXAMPLE_MODEL_HTML) \
-#	index.htm \
-#	toc.htm
 
 
 # Sources that may or may not be present, but if they are present, we don't
