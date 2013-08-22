@@ -1425,7 +1425,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         auxiliaryJarMap.put("ptolemy.vergil.kernel.attributes.TextAttribute",
                 "ptolemy/vergil/vergilApplet.jar");
-        auxiliaryJarMap.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
+        auxiliaryJarMap.put("ptolemy.vergil.modal.modal.ModalTableauFactory",
                 "ptolemy/vergil/vergilApplet.jar");
 
         // classes from data.property require tester.jar
@@ -2036,7 +2036,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 			// GRR.  Under Linux, File.renameTo() seems to
 			// fail if the File was created with
 			// createTempFile, so we copy it.
-			if (!FileUtilities.binaryCopyURLToFile(temporaryJarFileName.toURL(), jarFile)) {
+			if (FileUtilities.binaryCopyURLToFile(temporaryJarFileName.toURL(), jarFile)) {
+			    System.out.println("Successfully copied " + temporaryJarFileName
+					       + " to " + jarFile);
+			} else {
 			    throw new IOException("Attempt #3: Failed to copy \""
 					      + temporaryJarFileName
                                 + "\" to \""
