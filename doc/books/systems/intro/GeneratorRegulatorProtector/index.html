@@ -3,6 +3,7 @@
 <head>
 <meta charset=utf-8>
 <link rel="stylesheet"  href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
+<link href="http://ptolemy.org/ptolemyII/ptIIlatest/ptII/doc/default.css" rel="stylesheet" type="text/css"/>
 <title>Generator, Regulator, Protector</title>
 <script src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
 <script src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
@@ -12,10 +13,11 @@ function writeText(text) {
    document.getElementById("afterImage").innerHTML = text;
 };
 </script>
-</head>
-<body>
-<div style="background-color:#e5e5e5">
-<img src="GeneratorRegulatorProtector.png" usemap="#iconmap" alt="GeneratorRegulatorProtectormodel"/>
+<!--#include virtual="/ssi/toppremenu.htm" -->
+<!--#include virtual="toc.htm" -->
+<!--#include virtual="/ssi/toppostmenu.htm" -->
+Below is a browsable image of the model. For an executable version, go to the <a href="../GeneratorRegulatorProtector.jnlp">WebStart version</a>.
+<img src="GeneratorRegulatorProtector.gif" usemap="#iconmap" alt="GeneratorRegulatorProtectormodel"/>
 <map name="iconmap" id="iconmap">
 <area shape="rect" coords="11,120,378,150"
  target="_blank" href="http://ptolemy.org/systems/intro/index.html" alt="Actor"/>
@@ -24,17 +26,17 @@ function writeText(text) {
 <area shape="rect" coords="11,58,597,87"
  target="_blank" href="http://ptolemy.org/systems/models/intro/GeneratorRegulatorProtector.htm" alt="Actor"/>
 <area shape="rect" coords="461,211,572,291"
- title="Controller" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Controller&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;_flipPortsHorizontal&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Controller"/>
+ title="Controller" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" href="Controller/index.html" onmouseover="writeText('&lt;h2&gt;Controller&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;_flipPortsHorizontal&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Controller"/>
 <area shape="rect" coords="508,336,619,416"
- title="DiscreteGenerator" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;DiscreteGenerator&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;T&lt;/td&gt;&lt;td&gt;5.0&lt;/td&gt;&lt;td&gt;5.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Z&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;P&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="DiscreteGenerator"/>
+ title="DiscreteGenerator" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" href="DiscreteGenerator/index.html" onmouseover="writeText('&lt;h2&gt;DiscreteGenerator&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;T&lt;/td&gt;&lt;td&gt;5.0&lt;/td&gt;&lt;td&gt;5.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Z&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;P&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="DiscreteGenerator"/>
 <area shape="rect" coords="172,352,283,431"
- title="Supervisor" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Supervisor&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;stateDependentCausality&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;directorClass&lt;/td&gt;&lt;td&gt;ptolemy.domains.modal.kernel.FSMDirector&lt;/td&gt;&lt;td&gt;ptolemy.domains.modal.kernel.FSMDirector&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Supervisor"/>
+ title="Supervisor" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" href="Supervisor/index.html" alt="Supervisor"/>
 <area shape="rect" coords="432,504,617,545"
  title="Expression" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Expression&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;expression&lt;/td&gt;&lt;td&gt;voltage &amp;gt;= OVT&lt;/td&gt;&lt;td&gt;voltage &amp;gt;= OVT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;_flipPortsHorizontal&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Expression"/>
 <area shape="rect" coords="1,352,112,431"
  title="SingleEvent" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;SingleEvent&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;time&lt;/td&gt;&lt;td&gt;15.0&lt;/td&gt;&lt;td&gt;15.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;value&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="SingleEvent"/>
 <area shape="rect" coords="758,336,838,416"
- title="TimedPlotter" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;TimedPlotter&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fillOnWrapup&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;automaticRescale&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;legend&lt;/td&gt;&lt;td&gt;drive, voltage&lt;/td&gt;&lt;td&gt;drive, voltage&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;startingDataset&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;disconnectGraphOnAbsentValue&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;useLocalTime&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="TimedPlotter"/>
+ title="TimedPlotter" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" class="iframe" href="TimedPlotter.gif" onmouseover="writeText('&lt;h2&gt;TimedPlotter&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fillOnWrapup&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;automaticRescale&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;legend&lt;/td&gt;&lt;td&gt;drive, voltage&lt;/td&gt;&lt;td&gt;drive, voltage&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;startingDataset&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;disconnectGraphOnAbsentValue&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;useLocalTime&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="TimedPlotter"/>
 </map>
 
 <div id="afterImage">
@@ -48,6 +50,6 @@ function writeText(text) {
      <br/>See <a href="http://support.microsoft.com/gp/howtoscript"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.
   </noscript>
 </div>
-</div>
-</body>
-</html>
+<!-- /body -->
+<!-- /html -->
+<!--#include virtual="/ssi/bottom.htm" -->

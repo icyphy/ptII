@@ -1727,6 +1727,9 @@ JNLP_JAR =		$(JNLP_MODEL_DIRECTORY)/signed_$(JNLP_MODEL).jar
 
 # Create the .jnlp file by running copernicus on the .xml file that contains the model.
 $(JNLP_FILE): $(JNLP_MODEL_FILE)
+	@echo "#"
+	@echo "# mk/jnlp.mk: creating $(JNLP_FILE) by invoking copernicus"
+	@echo "#"
 	(cd $(JNLP_MODEL_DIRECTORY); JAVAFLAGS=-Dptolemy.ptII.ptKeystore=$(HOME)/ptKeystore.properties $(PTII)/bin/copernicus -codeGenerator applet -run false -targetPath $(JNLP_MODEL_DIRECTORY) $(JNLP_MODEL).xml)
 
 # Shortcut to create the jnlp file.  Try "make book"
@@ -1734,8 +1737,8 @@ book: $(JNLP_FILE_FIXED)
 book_clean:
 	rm -f $(JNLP_FILE_FIXED) 
 book_real_clean:
-	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE) $(JNLP_HTML)
-	rm -rf $(JNLP_HTMLL_EXPORT)
+	rm -f $(JNLP_FILE_FIXED) $(JNLP_FILE) $(JNLP_HTML) $(JNLP_VERGIL_HTM) $(JNLP_JAR)
+	rm -rf $(JNLP_HTML_EXPORT)
 
 # Create the .jnlp file, but don't fix it yet:
 # make -n JNLP_MODEL_DIRECTORY=doc/papers/y12/designContracts JNLP_MODEL=DCMotorTol KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat $HOME/.certpw`" KEYPASSWORD="-storepass `cat $HOME/.certpw`" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics jnlp_file
@@ -1744,7 +1747,9 @@ jnlp_file: $(JNLP_FILE)
 # Fix the jnlp file by substituting in the proper URL
 jnlp_file_fixed: $(JNLP_FILE_FIXED)
 $(JNLP_FILE_FIXED): $(JNLP_FILE)
-	# Fix the JNLP File
+	#
+	# mk/jnlp.mk: Fix the JNLP File
+	#
 	sed -e "s@<jnlp codebase=\".*\"@<jnlp codebase=\"$(DIST_URL)\"@" \
 	    -e "s@\(^ *href=\"\).*\(/[^/]*\)@\1$(DIST_URL)/$(JNLP_MODEL_DIRECTORY)\2@" \
 	    $(JNLP_FILE) > $(JNLP_FILE_FIXED)
@@ -1781,6 +1786,9 @@ EXPORT_HTML_RUN=-run
 HTML_MODEL =           $(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL)
 html_model: $(HTML_MODEL)
 $(HTML_MODEL):
+	#
+	# mk/jnlp.mk: HTML_MODEL rule. Exporting the model to html.
+	#
 	(cd $(JNLP_MODEL_DIRECTORY); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel $(EXPORT_HTML_RUN) -whiteBackground -openComposites htm $(JNLP_MODEL).xml; find $(JNLP_MODEL) -name "*.htm*" -exec chmod a+x {} \;)
 
 # Update the website, create links.
@@ -1812,7 +1820,11 @@ JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(
 # Files to be updated, not including the .htm files
 #JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) doc/deployJava.js doc/deployJava.txt
 
+# The jnlps_index rule is in $PTII/mk/ptcommon.mk
 book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
+	@echo "#"
+	@echo "# mk/jnlp.mk:  book_dist_update target."
+	@echo "#"
 	pwd
 	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xpf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
