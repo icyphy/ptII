@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="GMM" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+<class name="GaussianMixtureModel" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{-1450.0, -880.0}">
     </property>
-    <property name="priors" class="ptolemy.data.expr.Parameter" value="{0.5,0.5}">
+    <property name="mixingProportions" class="ptolemy.data.expr.Parameter" value="{0.5,0.5}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -22,7 +22,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-650.0, -320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-650.0, -300.0]">
         </property>
     </property>
     <property name="m" class="ptolemy.data.expr.Parameter" value="{1.0,5.0}">
@@ -60,7 +60,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-450.0, -340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-650.0, -320.0]">
         </property>
     </property>
     <property name="N" class="ptolemy.data.expr.Parameter" value="100">
@@ -88,7 +88,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.095431670403066">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-541.8994140625, -111.6412449048913}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-541.8994140625, -111.64124490489135}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -102,6 +102,12 @@
         <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-800.0, -295.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A mixture distribution of two Gaussians. The mixing probabilities are&#10;determined by the DiscreteRandomSource actor.&#10;&#10;In this demo, the output distribution will be a mixture of two Gaussians&#10;with equal probabilities, having means 1.0 and 5.0 respectively.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-805.0, -110.0]">
         </property>
     </property>
     <port name="port_2" class="ptolemy.actor.TypedIOPort">
@@ -123,9 +129,9 @@
         </property>
         <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="pmf" class="ptolemy.data.expr.Parameter" value="priors">
+        <property name="pmf" class="ptolemy.data.expr.Parameter" value="mixingProportions">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[0:1:priors.length-1].toArray()">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[0].toArray()">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-795.0, -190.0}">
         </property>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FaultModels" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides links to probabilistic fault model examples">
@@ -15,7 +15,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hidden Markov Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/HiddenMarkovModel.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -42,7 +42,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Gaussian Mixture Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/GaussianMixtureModel.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -69,36 +69,9 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hidden Markov Model Analysis">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/HiddenMarkovModelAnalysis.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.0,0.8,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Expectation Maximization Dataflow Implementation">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 300.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/ExpectationMaximization.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -123,7 +96,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Gaussian Mixture Model Parameter Estimation">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 200.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/GMMConvergenceAnalysis.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -150,7 +123,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Two State Markov Chain">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 80.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/TwoStateMarkovChain.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -178,34 +151,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.0,0.8,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Expectation-Maximization and Classification">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 85.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/demo/HMMLearningAndClassification.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
-            </property>
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 251.99999999999997}">
     </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
@@ -218,21 +164,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Probabilistic Models">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 120.0]">
-        </property>
-    </property>
-    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model Learning and Maximum-Likelihood Data Classification">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">
         </property>
     </property>
 </entity>
