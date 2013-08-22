@@ -730,6 +730,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + className + "ptolemy/codegen/codegen.jar");
                 }
                 results.put(className, "ptolemy/codegen/codegen.jar");
+            } else if (className.contains("ptolemy.vergil.basic.export.web")) {
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars export.web: " + className
+                            + " " + "ptolemy/vergil/basic/export/web/web.jar");
+                }
+                results.put(className, "ptolemy/vergil/basic/export/web/web.jar");
             } else {
                 results.put(object.getClass().getName(), _getDomainJar(object
                         .getClass().getPackage().getName()));
@@ -823,7 +829,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + " " + "ptolemy/actor/lib/jmf/jmf.jar");
                 }
                 results.put(className, "ptolemy/actor/lib/jmf/jmf.jar");
-
+            } else if (className.contains("ptolemy.vergil.basic.export.web")) {
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars export.web: " + className
+                            + " " + "ptolemy/vergil/basic/export/web/web.jar");
+                }
+                results.put(className, "ptolemy/vergil/basic/export/web/web.jar");
             } else {
                 // Add in the entity
                 results.put(object.getClass().getName(), _getDomainJar(object
@@ -956,6 +967,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             RemoveGraphicalClasses.clear();
             removeGraphicalClasses.put(
                     "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
+
             MoMLParser.addMoMLFilter(removeGraphicalClasses);
 
             // Parse the model.
