@@ -86,34 +86,35 @@ public class PtidesDirector extends DEDirector {
         code.append(_eol + "PblMap* tempMap;");
         code.append(_eol + "struct SuperdenseDependency tempEntry;");
         ptolemy.domains.ptides.kernel.PtidesDirector director = (ptolemy.domains.ptides.kernel.PtidesDirector) getComponent();
-        Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> superdenseDependencyPair = 
-                director.getSuperdenseDependencyPair();
-        for (TypedIOPort port1 : superdenseDependencyPair.keySet()) {
-            Map<TypedIOPort, SuperdenseDependency> value = superdenseDependencyPair.get(port1);
-            code.append(_eol + "tempMap = pblMapNewHashMap();");
-            for (TypedIOPort port2 : value.keySet()) {
-                SuperdenseDependency dependency = value.get(port2);
+        // Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> superdenseDependencyPair = 
+        //         director.getSuperdenseDependencyPair();
+        // for (TypedIOPort port1 : superdenseDependencyPair.keySet()) {
+        //     Map<TypedIOPort, SuperdenseDependency> value = superdenseDependencyPair.get(port1);
+        //     code.append(_eol + "tempMap = pblMapNewHashMap();");
+        //     for (TypedIOPort port2 : value.keySet()) {
+        //         SuperdenseDependency dependency = value.get(port2);
                 
-                code.append(_eol + "tempEntry.time = " + dependency.timeValue() + ";");
-                code.append(_eol + "tempEntry.microstep = " + dependency.indexValue() + ";");
-                String port2Name;
-                if (port2.getContainer().equals(director.getContainer()))
-                    port2Name = port2.getName();
-                else
-                    port2Name = CodeGeneratorAdapter.generateName(port2.getContainer()) + "_" + port2.getName();
-                code.append(_eol + "pblMapAdd(tempMap, &" + port2Name + ", sizeof(struct TypedIOPort*), &tempEntry" +
-                        ", sizeof(struct SuperdenseDependency));");
-            }
-            String port1Name;
-            if (port1.getContainer().equals(director.getContainer()))
-                port1Name = port1.getName();
-            else
-                port1Name = CodeGeneratorAdapter.generateName(port1.getContainer()) + "_" + port1.getName();
-            code.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->_superdenseDependencyPair, &" 
-                    + port1Name + ", sizeof(struct TypedIOPort*), tempMap" +
-                    ", sizeof(PblMap));");
-        }
+        //         code.append(_eol + "tempEntry.time = " + dependency.timeValue() + ";");
+        //         code.append(_eol + "tempEntry.microstep = " + dependency.indexValue() + ";");
+        //         String port2Name;
+        //         if (port2.getContainer().equals(director.getContainer()))
+        //             port2Name = port2.getName();
+        //         else
+        //             port2Name = CodeGeneratorAdapter.generateName(port2.getContainer()) + "_" + port2.getName();
+        //         code.append(_eol + "pblMapAdd(tempMap, &" + port2Name + ", sizeof(struct TypedIOPort*), &tempEntry" +
+        //                 ", sizeof(struct SuperdenseDependency));");
+        //     }
+        //     String port1Name;
+        //     if (port1.getContainer().equals(director.getContainer()))
+        //         port1Name = port1.getName();
+        //     else
+        //         port1Name = CodeGeneratorAdapter.generateName(port1.getContainer()) + "_" + port1.getName();
+        //     code.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->_superdenseDependencyPair, &" 
+        //             + port1Name + ", sizeof(struct TypedIOPort*), tempMap" +
+        //             ", sizeof(PblMap));");
+        // }
         
+	code.append("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/PtidesDirector.java did not compile");
         return code.toString();
     }
 }

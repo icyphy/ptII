@@ -62,9 +62,9 @@ public class PtidesPlatformDirector extends Director {
      *  @param ptidesDirector The associated
      *  ptolemy.domains.ptides.kernel.PtidesDirector
      */
-    public PtidesPlatformDirector(ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesPlatformDirector ptidesDirector) {
-        super(ptidesDirector);
-    }
+    //public PtidesPlatformDirector(ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesPlatformDirector ptidesDirector) {
+    //    super(ptidesDirector);
+    //}
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
