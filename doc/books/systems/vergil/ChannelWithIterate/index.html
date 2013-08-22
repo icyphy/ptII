@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel="stylesheet"  href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
+<title>Channel with IterateOverArray</title>
+<script src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
+<script src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
+<script type="text/javascript">
+function writeText(text) {
+   document.getElementById("afterImage").innerHTML = text;
+};
+</script>
+</head>
+<body>
+<div style="background-color:#e6e6e6">
+<img src="ChannelWithIterate.png" usemap="#iconmap" alt="ChannelWithIteratemodel"/>
+<map name="iconmap" id="iconmap">
+<area shape="rect" coords="11,85,276,108"
+ target="_blank" href="http://ptolemy.org/systems/vergil/index.html" alt="Actor"/>
+<area shape="rect" coords="11,63,439,86"
+ target="_blank" href="http://ptolemy.org/systems/vergil/ChannelWithIterate.xml" alt="Actor"/>
+<area shape="rect" coords="11,41,432,64"
+ target="_blank" href="http://ptolemy.org/systems/models/vergil/ChannelWithIterate.htm" alt="Actor"/>
+<area shape="rect" coords="500,223,582,282"
+ title="ArrayAverage" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;ArrayAverage&lt;/h2&gt;Has no parameters.')" alt="ArrayAverage"/>
+<area shape="rect" coords="232,223,314,282"
+ title="SequenceToArray" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;SequenceToArray&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;arrayLength&lt;/td&gt;&lt;td&gt;diversity&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="SequenceToArray"/>
+<area shape="rect" coords="149,211,230,271"
+ title="Repeat" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Repeat&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;numberOfTimes&lt;/td&gt;&lt;td&gt;diversity&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;blockSize&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Repeat"/>
+<area shape="rect" coords="372,211,476,293"
+ title="IterateOverArray" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;IterateOverArray&lt;/h2&gt;Has no parameters.')" alt="IterateOverArray"/>
+<area shape="rect" coords="606,223,666,282"
+ title="SequencePlotter" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" class="iframe" href="SequencePlotter.gif" onmouseover="writeText('&lt;h2&gt;SequencePlotter&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fillOnWrapup&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;automaticRescale&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;legend&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;startingDataset&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;xInit&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;xUnit&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="SequencePlotter"/>
+<area shape="rect" coords="48,211,130,271"
+ title="Sinewave" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" href="Sinewave/index.html" onmouseover="writeText('&lt;h2&gt;Sinewave&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;samplingFrequency&lt;/td&gt;&lt;td&gt;8000.0&lt;/td&gt;&lt;td&gt;8000.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;frequency&lt;/td&gt;&lt;td&gt;440.0&lt;/td&gt;&lt;td&gt;440.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;phase&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Sinewave"/>
+</map>
+
+<div id="afterImage">
+  <script type="text/javascript">
+     writeText('Mouse over the icons to see their parameters. Click on composites and plotters to reveal their contents (if provided).');
+  </script>
+  <noscript>
+     Your browser does not support JavaScript so moving the mouse
+     over the actors will not display their parameters. To enable
+     JavaScript, consult the security preferences of your browser.
+     <br/>See <a href="http://support.microsoft.com/gp/howtoscript"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.
+  </noscript>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel="stylesheet"  href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
+<title>ChannelWithIcon</title>
+<script src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
+<script src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
+<script type="text/javascript">
+function writeText(text) {
+   document.getElementById("afterImage").innerHTML = text;
+};
+</script>
+</head>
+<body>
+<div style="background-color:#e6e6e6">
+<h1>
+ChannelWithIcon
+</h1>
+
+<img src="Channel.png" usemap="#iconmap" alt="Channelmodel"/>
+<map name="iconmap" id="iconmap">
+<area shape="rect" coords="23,198,97,252"
+ title="Gaussian" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Gaussian&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;seed&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0L&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;privateSeed&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;null&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;resetOnEachRun&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;mean&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;standardDeviation&lt;/td&gt;&lt;td&gt;sqrt(noisePower)&lt;/td&gt;&lt;td&gt;0.1732050807569&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Gaussian"/>
+<area shape="rect" coords="138,153,192,207"
+ title="AddSubtract" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;AddSubtract&lt;/h2&gt;Has no parameters.')" alt="AddSubtract"/>
+</map>
+
+<div id="afterImage">
+  <script type="text/javascript">
+     writeText('Mouse over the icons to see their parameters. Click on composites and plotters to reveal their contents (if provided).');
+  </script>
+  <noscript>
+     Your browser does not support JavaScript so moving the mouse
+     over the actors will not display their parameters. To enable
+     JavaScript, consult the security preferences of your browser.
+     <br/>See <a href="http://support.microsoft.com/gp/howtoscript"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.
+  </noscript>
+</div>
+</div>
+</body>
+</html>

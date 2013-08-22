@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel="stylesheet"  href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
+<title>SmoothedPeriodogram</title>
+<script src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
+<script src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
+<script type="text/javascript">
+function writeText(text) {
+   document.getElementById("afterImage").innerHTML = text;
+};
+</script>
+</head>
+<body>
+<div style="background-color:#e5e5e5">
+<h1>
+SmoothedPeriodogram
+</h1>
+
+<img src="SmoothedPeriodogram.png" usemap="#iconmap" alt="SmoothedPeriodogrammodel"/>
+<map name="iconmap" id="iconmap">
+<area shape="rect" coords="17,391,91,428"
+ title="Sequence" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Sequence&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;values&lt;/td&gt;&lt;td&gt;{1, -1}&lt;/td&gt;&lt;td&gt;{1, -1}&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;repeat&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;holdLastOutput&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Sequence"/>
+<area shape="rect" coords="322,308,396,362"
+ title="ArrayToSequence" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;ArrayToSequence&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;arrayLength&lt;/td&gt;&lt;td&gt;2*numberOfLags+1&lt;/td&gt;&lt;td&gt;65&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;enforceArrayLength&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="ArrayToSequence"/>
+<area shape="rect" coords="437,308,511,362"
+ title="Chop" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Chop&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;numberToRead&lt;/td&gt;&lt;td&gt;numberOfLags*2 + 1&lt;/td&gt;&lt;td&gt;65&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;numberToWrite&lt;/td&gt;&lt;td&gt;2^order&lt;/td&gt;&lt;td&gt;256&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;offset&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;usePastInputs&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Chop"/>
+<area shape="rect" coords="212,308,286,362"
+ title="Autocorrelation" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Autocorrelation&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;numberOfInputs&lt;/td&gt;&lt;td&gt;numberOfInputs&lt;/td&gt;&lt;td&gt;1024&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;numberOfLags&lt;/td&gt;&lt;td&gt;numberOfLags&lt;/td&gt;&lt;td&gt;32&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;biased&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;symmetricOutput&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Autocorrelation"/>
+<area shape="rect" coords="267,398,341,452"
+ title="AbsoluteValue0" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;AbsoluteValue0&lt;/h2&gt;Has no parameters.')" alt="AbsoluteValue0"/>
+<area shape="rect" coords="382,398,456,452"
+ title="DB" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;DB&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;inputIsPower&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;min&lt;/td&gt;&lt;td&gt;-100.0&lt;/td&gt;&lt;td&gt;-100.0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="DB"/>
+<area shape="rect" coords="152,398,226,452"
+ title="FFT" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;FFT&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;order&lt;/td&gt;&lt;td&gt;order&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="FFT"/>
+<area shape="rect" coords="132,308,186,362"
+ title="Multiply" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Multiply&lt;/h2&gt;Has no parameters.')" alt="Multiply"/>
+</map>
+
+<div id="afterImage">
+  <script type="text/javascript">
+     writeText('Mouse over the icons to see their parameters. Click on composites and plotters to reveal their contents (if provided).');
+  </script>
+  <noscript>
+     Your browser does not support JavaScript so moving the mouse
+     over the actors will not display their parameters. To enable
+     JavaScript, consult the security preferences of your browser.
+     <br/>See <a href="http://support.microsoft.com/gp/howtoscript"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.
+  </noscript>
+</div>
+</div>
+</body>
+</html>

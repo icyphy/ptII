@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel="stylesheet"  href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
+<title>Channel with Class in Another File</title>
+<script src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
+<script src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
+<script type="text/javascript">
+function writeText(text) {
+   document.getElementById("afterImage").innerHTML = text;
+};
+</script>
+</head>
+<body>
+<div style="background-color:#e6e6e6">
+<img src="ChannelWithExternalClass.png" usemap="#iconmap" alt="ChannelWithExternalClassmodel"/>
+<map name="iconmap" id="iconmap">
+<area shape="rect" coords="26,103,335,128"
+ target="_blank" href="http://ptolemy.org/systems/vergil/index.html" alt="Actor"/>
+<area shape="rect" coords="26,77,527,102"
+ target="_blank" href="http://ptolemy.org/systems/vergil/ChannelWithExternalClass.xml" alt="Actor"/>
+<area shape="rect" coords="26,50,519,76"
+ target="_blank" href="http://ptolemy.org/systems/models/vergil/ChannelWithExternalClass.htm" alt="Actor"/>
+<area shape="rect" coords="528,270,596,339"
+ title="SequencePlotter" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" class="iframe" href="SequencePlotter.gif" onmouseover="writeText('&lt;h2&gt;SequencePlotter&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fillOnWrapup&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;automaticRescale&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;legend&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;startingDataset&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;xInit&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;xUnit&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;td&gt;1.0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="SequencePlotter"/>
+<area shape="rect" coords="364,270,433,339"
+ title="AddSubtract" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;AddSubtract&lt;/h2&gt;Has no parameters.')" alt="AddSubtract"/>
+<area shape="rect" coords="57,257,151,326"
+ title="Sinewave" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" href="Sinewave/index.html" onmouseover="writeText('&lt;h2&gt;Sinewave&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;samplingFrequency&lt;/td&gt;&lt;td&gt;8000.0&lt;/td&gt;&lt;td&gt;8000.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;frequency&lt;/td&gt;&lt;td&gt;440.0&lt;/td&gt;&lt;td&gt;440.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;phase&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Sinewave"/>
+<area shape="rect" coords="237,270,298,313"
+ title="Channel" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" href="Channel/index.html" onmouseover="writeText('&lt;h2&gt;Channel&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;noisePower&lt;/td&gt;&lt;td&gt;0.03&lt;/td&gt;&lt;td&gt;0.03&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Channel"/>
+</map>
+
+<div id="afterImage">
+  <script type="text/javascript">
+     writeText('Mouse over the icons to see their parameters. Click on composites and plotters to reveal their contents (if provided).');
+  </script>
+  <noscript>
+     Your browser does not support JavaScript so moving the mouse
+     over the actors will not display their parameters. To enable
+     JavaScript, consult the security preferences of your browser.
+     <br/>See <a href="http://support.microsoft.com/gp/howtoscript"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.
+  </noscript>
+</div>
+</div>
+</body>
+</html>

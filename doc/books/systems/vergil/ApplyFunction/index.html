@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel="stylesheet"  href="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.css" media="screen"/>
+<title>ApplyFunction Actor Demonstration</title>
+<script src="http://ptolemy.org/javascript/jquery-1.4.3.min.js"></script>
+<script src="http://ptolemy.org/javascript/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="http://ptolemy.org/javascript/pt-1.0.0.js"></script>
+<script type="text/javascript">
+function writeText(text) {
+   document.getElementById("afterImage").innerHTML = text;
+};
+</script>
+</head>
+<body>
+<div style="background-color:#e6e6e6">
+<img src="ApplyFunction.png" usemap="#iconmap" alt="ApplyFunctionmodel"/>
+<map name="iconmap" id="iconmap">
+<area shape="rect" coords="36,90,314,114"
+ target="_blank" href="http://ptolemy.org/systems/vergil/index.html" alt="Actor"/>
+<area shape="rect" coords="36,66,485,90"
+ target="_blank" href="http://ptolemy.org/systems/vergil/ApplyFunction.xml" alt="Actor"/>
+<area shape="rect" coords="36,43,478,67"
+ target="_blank" href="http://ptolemy.org/systems/models/vergil/ApplyFunction.htm" alt="Actor"/>
+<area shape="rect" coords="439,241,524,325"
+ title="ApplyFunction" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;ApplyFunction&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;function&lt;/td&gt;&lt;td&gt;(function(x:double) pow(2, x))&lt;/td&gt;&lt;td&gt;(function(x:double) pow(2, x))&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="ApplyFunction"/>
+<area shape="rect" coords="283,240,363,302"
+ title="Commutator" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Commutator&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;blockSize&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Commutator"/>
+<area shape="rect" coords="591,252,653,314"
+ title="SequencePlotter" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" class="iframe" href="SequencePlotter.gif" onmouseover="writeText('&lt;h2&gt;SequencePlotter&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fillOnWrapup&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;td&gt;true&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;automaticRescale&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;td&gt;false&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;legend&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;startingDataset&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;xInit&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;td&gt;0.0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;xUnit&lt;/td&gt;&lt;td&gt;0.1&lt;/td&gt;&lt;td&gt;0.1&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="SequencePlotter"/>
+<area shape="rect" coords="37,284,257,317"
+ title="Const2" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Const2&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;value&lt;/td&gt;&lt;td&gt;function(x:double) pow(2, x)&lt;/td&gt;&lt;td&gt;(function(x:double) pow(2, x))&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;firingCountLimit&lt;/td&gt;&lt;td&gt;NONE&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Const2"/>
+<area shape="rect" coords="37,219,257,252"
+ title="Const" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Const&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;value&lt;/td&gt;&lt;td&gt;function(x:double) pow(x, 2)&lt;/td&gt;&lt;td&gt;(function(x:double) pow(x, 2))&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;firingCountLimit&lt;/td&gt;&lt;td&gt;NONE&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Const"/>
+<area shape="rect" coords="245,322,331,384"
+ title="Ramp" onmouseout="writeText('Mouse over the icons to see their parameters.  Click on composites and plotters to reveal their contents (if provided).')" onmouseover="writeText('&lt;h2&gt;Ramp&lt;/h2&gt;&lt;table border=&quot;1&quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;init&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;step&lt;/td&gt;&lt;td&gt;0.1&lt;/td&gt;&lt;td&gt;0.1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;firingCountLimit&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;')" alt="Ramp"/>
+</map>
+
+<div id="afterImage">
+  <script type="text/javascript">
+     writeText('Mouse over the icons to see their parameters. Click on composites and plotters to reveal their contents (if provided).');
+  </script>
+  <noscript>
+     Your browser does not support JavaScript so moving the mouse
+     over the actors will not display their parameters. To enable
+     JavaScript, consult the security preferences of your browser.
+     <br/>See <a href="http://support.microsoft.com/gp/howtoscript"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.
+  </noscript>
+</div>
+</div>
+</body>
+</html>
