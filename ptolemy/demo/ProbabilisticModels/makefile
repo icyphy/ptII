@@ -1,4 +1,4 @@
-# Makefile for Ptolemy model that simulates a ElectricPowerSystem.
+# Makefile for Ptolemy demos that implement probabilistic models.
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	F
+PTPACKAGE = 	ProbabilisticModels
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
