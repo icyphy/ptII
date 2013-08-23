@@ -30,6 +30,10 @@ struct AtomicActor {
 	void (*preinitialize)(struct AtomicActor*);
 	void (*wrapup)(struct AtomicActor*);
 
+	// FIXME : temp solution for the decorators of Ptides domain
+	double delayOffset;
+	double _clockSynchronizationBound;
+
 	// new members
 	PblList* _inputPorts;
 	PblList* _outputPorts;

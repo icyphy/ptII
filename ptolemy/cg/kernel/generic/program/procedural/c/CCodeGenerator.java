@@ -51,7 +51,6 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
@@ -68,11 +67,11 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.BaseType.StringType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.domains.modal.modal.Refinement;
+import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -494,6 +493,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeH.append(_eol + "#include <limits.h>");
         codeH.append(_eol + "#include <stdarg.h>");
         codeH.append(_eol + "#include \"pbl.h\"");
+        
+        // Add the extra-define
+        for (String extraDefine : _definesToAdd) {
+            codeH.append(_eol + "#define " + extraDefine);
+        }
 
         codeH.append(_eol
                 + comment("Generate type resolution code for "
@@ -519,6 +523,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         CodeStream[] typeStreams = new CodeStream[types.size()];
 
+        codeH.append(_eol + "typedef struct Actor Actor;");
+        codeH.append(_eol + "typedef struct CompositeActor CompositeActor;");
+        codeH.append(_eol + "typedef struct IOPort IOPort;");
+        codeH.append(_eol + "typedef struct Receiver Receiver;");
+        codeH.append(_eol + "typedef struct Director Director;");
+        codeH.append(_eol + "typedef double Time;" + _eol);
+        
         // Generate type map.
         StringBuffer typeMembers = new StringBuffer();
         codeH.append("#define TYPE_Token -1 " + _eol);
@@ -810,13 +821,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // typeFunction contains the set of function:
         // Type_new(), Type_delete(), and etc.
         codeH.append(typeFunctionCode);
-        
-        codeH.append(_eol + "typedef struct Actor Actor;");
-        codeH.append(_eol + "typedef struct CompositeActor CompositeActor;");
-        codeH.append(_eol + "typedef struct IOPort IOPort;");
-        codeH.append(_eol + "typedef struct Receiver Receiver;");
-        codeH.append(_eol + "typedef struct Director Director;");
-        codeH.append(_eol + "typedef double Time;");
 
         String[] result = new String[2];
         result[0] = processCode(codeH.toString());
@@ -1159,6 +1163,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "Long.c");
         _overloadedFunctions.parse(typeDir + "Matrix.c");
         _overloadedFunctions.parse(typeDir + "Pointer.c");
+        _overloadedFunctions.parse(typeDir + "Record.c");
         _overloadedFunctions.parse(typeDir + "Scalar.c");
         _overloadedFunctions.parse(typeDir + "String.c");
         _overloadedFunctions.parse(typeDir + "StringArray.c");
@@ -1578,74 +1583,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Iterator<?> inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()){
             TypedIOPort iPort = (TypedIOPort) inputPorts.next();
-            if (!iPort.isOutsideConnected())
-                continue;
-            String portName = iPort.getName();
-            result.append(portName + " = TypedIOPort_New();" + _eol);
-            result.append(portName + "->container = (struct Actor*)" + sanitizedActorName + ";" + _eol);
-            result.append(portName + "->_isInsideConnected = " + iPort.isInsideConnected() + ";" + _eol);
-            result.append(portName + "->_isOutsideConnected = " + iPort.isOutsideConnected() + ";" + _eol);
-            result.append(portName + "->_isInput = " + iPort.isInput() + ";" + _eol);
-            result.append(portName + "->_isOutput = " + iPort.isOutput() + ";" + _eol);
-            result.append(portName + "->_isMultiport = " + iPort.isMultiport() + ";" + _eol);
-            result.append(portName + "->_width = " + iPort.getWidth() + ";" + _eol);
-            result.append(portName + "->_insideWidth = " + iPort.getWidthInside() + ";" + _eol);
-            result.append(portName + "->_numberOfSinks = " + iPort.numberOfSinks() + ";" + _eol);
-            result.append(portName + "->_numberOfSources = " + iPort.numberOfSources() + ";" + _eol);
-            String type = codeGenType(iPort.getType());
-            result.append(portName + "->_type = TYPE_" + type + ";" + _eol);
-            _newTypesUsed.add(type);
-            result.append("pblListAdd(" + sanitizedActorName + "->_inputPorts, " + portName + ");" + _eol);
-            
-            int foo = 0;
-            for (Receiver[] receivers : iPort.getReceivers()) {
-                result.append("PblList* " + portName + "_" + foo + " = pblListNewArrayList();" + _eol);
-                int bar = 0;
-                for (Receiver receiver : receivers) {
-                    String typeReceiver = receiver.getClass().getSimpleName();
-                    String receiverName = portName + "_" + foo + "_" + bar;
-                    result.append("struct " + typeReceiver + "* " + receiverName + " = " 
-                            + typeReceiver + "_New();" + _eol);
-                    result.append(receiverName + "->container = (struct IOPort*)"+ portName + ";" + _eol);
-                    // FIXME : not a good way to do this
-                    if (receiver instanceof DEReceiver) {
-                        result.append(receiverName + "->_director = (struct DEDirector*)(*(" 
-                                + sanitizedActorName + "->getDirector))(" + sanitizedActorName + ");" + _eol);
-                    }
-                    result.append("pblListAdd(" + portName + "_" + foo + ", " + receiverName + ");" + _eol);
-                    bar++;
-                }
-                result.append("pblListAdd(" + portName + "->_localReceivers , " + portName + "_" + foo + ");" + _eol);
-                foo++;
-            }
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(iPort);
+            result.append(portAdapter.generatePortDeclaration() + _eol);
         }
         
         Iterator<?> outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()){
             TypedIOPort oPort = (TypedIOPort) outputPorts.next();
-            if (!oPort.isOutsideConnected())
-                continue;
-            String portName = oPort.getName();
-            result.append(portName + " = TypedIOPort_New();" + _eol);
-            result.append(portName + "->container = (struct Actor*)" + sanitizedActorName + ";" + _eol);
-            result.append(portName + "->_isInsideConnected = " + oPort.isInsideConnected() + ";" + _eol);
-            result.append(portName + "->_isOutsideConnected = " + oPort.isOutsideConnected() + ";" + _eol);
-            result.append(portName + "->_isInput = " + oPort.isInput() + ";" + _eol);
-            result.append(portName + "->_isOutput = " + oPort.isOutput() + ";" + _eol);
-            result.append(portName + "->_isMultiport = " + oPort.isMultiport() + ";" + _eol);
-            result.append(portName + "->_width = " + oPort.getWidth() + ";" + _eol);
-            result.append(portName + "->_insideWidth = " + oPort.getWidthInside() + ";" + _eol);
-            result.append(portName + "->_numberOfSinks = " + oPort.numberOfSinks() + ";" + _eol);
-            result.append(portName + "->_numberOfSources = " + oPort.numberOfSources() + ";" + _eol);
-            String type = codeGenType(oPort.getType());
-            result.append(portName + "->_type = TYPE_" + type + ";" + _eol);
-            _newTypesUsed.add(type);
-            result.append("pblListAdd(" + sanitizedActorName + "->_outputPorts, " + portName + ");" + _eol);
-            
-            for (int foo = 0 ; foo < oPort.getWidth() ; foo++) {
-                result.append("PblList* " + portName + "_"+ foo + " = pblListNewArrayList();" + _eol);
-                result.append("pblListAdd(" + portName + "->_farReceivers, " + portName + "_"+ foo + ");" + _eol);
-            }
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(oPort);
+            result.append(portAdapter.generatePortDeclaration() + _eol);
         }
         
         result.append("return " + sanitizedActorName + ";" + _eol);
@@ -1696,95 +1644,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Iterator<?> inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()){
             TypedIOPort iPort = (TypedIOPort) inputPorts.next();
-            String portName = iPort.getName();
-            result.append(portName + " = TypedIOPort_New();" + _eol);
-            result.append(portName + "->container = (struct Actor*)" + sanitizedActorName + ";" + _eol);
-            result.append(portName + "->_isInsideConnected = " + iPort.isInsideConnected() + ";" + _eol);
-            result.append(portName + "->_isOutsideConnected = " + iPort.isOutsideConnected() + ";" + _eol);
-            result.append(portName + "->_isInput = " + iPort.isInput() + ";" + _eol);
-            result.append(portName + "->_isOutput = " + iPort.isOutput() + ";" + _eol);
-            result.append(portName + "->_isMultiport = " + iPort.isMultiport() + ";" + _eol);
-            result.append(portName + "->_width = " + iPort.getWidth() + ";" + _eol);
-            result.append(portName + "->_insideWidth = " + iPort.getWidthInside() + ";" + _eol);
-            result.append(portName + "->_numberOfSinks = " + iPort.numberOfSinks() + ";" + _eol);
-            result.append(portName + "->_numberOfSources = " + iPort.numberOfSources() + ";" + _eol);
-            String type = codeGenType(iPort.getType());
-            result.append(portName + "->_type = TYPE_" + type + ";" + _eol);
-            _newTypesUsed.add(type);
-            result.append("pblListAdd(" + sanitizedActorName + "->_inputPorts, " + portName + ");" + _eol);
-            
-            int foo = 0;
-            for (Receiver[] receivers : iPort.getReceivers()) {
-                result.append("PblList* " + portName + "_" + foo + " = pblListNewArrayList();" + _eol);
-                int bar = 0;
-                for (Receiver receiver : receivers) {
-                    String typeReceiver = receiver.getClass().getSimpleName();
-                    String receiverName = portName + "_" + foo + "_" + bar;
-                    result.append("struct " + typeReceiver + "* " + receiverName + " = " 
-                            + typeReceiver + "_New();" + _eol);
-                    result.append(receiverName + "->container = (struct IOPort*)"+ portName + ";" + _eol);
-                    // FIXME : not a good way to do this
-                    if (receiver instanceof DEReceiver) {
-                        result.append(receiverName + "->_director = (struct DEDirector*)(*(" 
-                                + sanitizedActorName + "->getExecutiveDirector))(" + sanitizedActorName + ");" + _eol);
-                    }
-                    result.append("pblListAdd(" + portName + "_" + foo + ", " + receiverName + ");" + _eol);
-                    bar++;
-                }
-                result.append("pblListAdd(" + portName + "->_localReceivers , " + portName + "_" + foo + ");" + _eol);
-                foo++;
-            }
-            for (foo = 0 ; foo < iPort.getWidthInside() ; foo++) {
-                result.append("PblList* " + portName + "__" + foo + " = pblListNewArrayList();" + _eol);
-                result.append("pblListAdd(" + portName + "->_insideReceivers , " + portName + "__" + foo + ");" + _eol);
-            }
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(iPort);
+            result.append(portAdapter.generatePortDeclaration() + _eol);
         }
         
         Iterator<?> outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()){
             TypedIOPort oPort = (TypedIOPort) outputPorts.next();
-            String portName = oPort.getName();
-            result.append(portName + " = TypedIOPort_New();" + _eol);
-            result.append(portName + "->container = (struct Actor*)" + sanitizedActorName + ";" + _eol);
-            result.append(portName + "->_isInsideConnected = " + oPort.isInsideConnected() + ";" + _eol);
-            result.append(portName + "->_isOutsideConnected = " + oPort.isOutsideConnected() + ";" + _eol);
-            result.append(portName + "->_isInput = " + oPort.isInput() + ";" + _eol);
-            result.append(portName + "->_isOutput = " + oPort.isOutput() + ";" + _eol);
-            result.append(portName + "->_isMultiport = " + oPort.isMultiport() + ";" + _eol);
-            result.append(portName + "->_width = " + oPort.getWidth() + ";" + _eol);
-            result.append(portName + "->_insideWidth = " + oPort.getWidthInside() + ";" + _eol);
-            result.append(portName + "->_numberOfSinks = " + oPort.numberOfSinks() + ";" + _eol);
-            result.append(portName + "->_numberOfSources = " + oPort.numberOfSources() + ";" + _eol);
-            String type = codeGenType(oPort.getType());
-            result.append(portName + "->_type = TYPE_" + type + ";" + _eol);
-            _newTypesUsed.add(type);
-            result.append("pblListAdd(" + sanitizedActorName + "->_outputPorts, " + portName + ");" + _eol);
-            
-            for (int foo = 0 ; foo < oPort.getWidth() ; foo++) {
-                result.append("PblList* " + portName + "_"+ foo + " = pblListNewArrayList();" + _eol);
-                result.append("pblListAdd(" + portName + "->_farReceivers, " + portName + "_"+ foo + ");" + _eol);
-            }
-            Receiver[][] insideReceivers = oPort.getInsideReceivers();
-            for (int foo = 0 ; foo < oPort.getWidthInside() ; foo++) {
-                Receiver[] receivers = insideReceivers[foo];
-                result.append("PblList* " + portName + "__" + foo + " = pblListNewArrayList();" + _eol);
-                int bar = 0;
-                for (Receiver receiver : receivers) {
-                    String typeReceiver = receiver.getClass().getSimpleName();
-                    String receiverName = portName + "__" + foo + "_" + bar;
-                    result.append("struct " + typeReceiver + "* " + receiverName + " = " 
-                            + typeReceiver + "_New();" + _eol);
-                    result.append(receiverName + "->container = (struct IOPort*)"+ portName + ";" + _eol);
-                    // FIXME : not a good way to do this
-                    if (receiver instanceof DEReceiver) {
-                        result.append(receiverName + "->_director = (struct DEDirector*)(*(" 
-                                + sanitizedActorName + "->getExecutiveDirector))(" + sanitizedActorName + ");" + _eol);
-                    }
-                    result.append("pblListAdd(" + portName + "__" + foo + ", " + receiverName + ");" + _eol);
-                    bar++;
-                }
-                result.append("pblListAdd(" + portName + "->_localInsideReceivers , " + portName + "__" + foo + ");" + _eol);
-            }
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(oPort);
+            result.append(portAdapter.generatePortDeclaration() + _eol);
         }
 
         /* Initialization of the director */
@@ -2356,7 +2226,25 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             directoryC += "/";
         String directoryCommons = directoryC + "commons/";
         
-        if (((CompositeActor)container).getDirector() instanceof DEDirector) {
+        if (((CompositeActor)container).getDirector() instanceof PtidesDirector) {
+            // in order to mark the Record_new function
+            processCode("$new(Record(0.0,0,0));");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesReceiver.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesReceiver.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesDirector.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesDirector.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesPlatformDirector.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesPlatformDirector.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesEvent.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesEvent.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesPort.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesPort.c");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesMirrorPort.h");
+            _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesMirrorPort.c");
+            _definesToAdd.add("PTIDESDIRECTOR 11");
+            _definesToAdd.add("PTIDESPLATFORMDIRECTOR 3");
+            
+        } else if (((CompositeActor)container).getDirector() instanceof DEDirector) {
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_CalendarQueue.h");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_CalendarQueue.c");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_DEEvent.h");
@@ -2365,14 +2253,15 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_DEReceiver.c");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_DEDirector.h");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_DEDirector.c");
+            _definesToAdd.add("DEDIRECTOR 1");
         }
         else if (((CompositeActor)container).getDirector() instanceof SDFDirector) {
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/", directoryCommons, "_SDFReceiver.h");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/", directoryCommons, "_SDFReceiver.c");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/", directoryCommons, "_SDFDirector.h");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/", directoryCommons, "_SDFDirector.c");
+            _definesToAdd.add("SDFDIRECTOR 2");
         }
-        
         // Generation and writing of all the contained actors
         // This function calls itself when the actor is composite
         List actorList = container.deepEntityList();
@@ -3232,6 +3121,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** A list of actors present to include in the makefile*/
     private List<String> _actorsToInclude;
+    
+    /** A list of the defines to add in the _types.h file */
+    private List<String> _definesToAdd = new LinkedList<String>();
     
     private CodeStream _overloadedFunctionsDeclaration;
     private CodeStream _overloadedFunctions;

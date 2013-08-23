@@ -53,6 +53,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
+import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -301,6 +302,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             } else if (ptType instanceof MatrixType) {
                 //result = ptType.getClass().getSimpleName().replace("Type", "");
                 result = "Matrix";
+            } else if (ptType instanceof RecordType) {
+                RecordType rType = (RecordType)ptType;
+                result = "";
+                for (String label : rType.labelSet()) {
+                    Type t = null;
+                    try {
+                        t = (Type) rType.getTypeTerm(label).getValue();
+                    } catch (IllegalActionException e) {
+                    }
+                    result += codeGenType(t) + ",";
+                }
+                result = result.substring(0, result.length() - 1);
             }
         }
         if (result == null || result.length() == 0) {

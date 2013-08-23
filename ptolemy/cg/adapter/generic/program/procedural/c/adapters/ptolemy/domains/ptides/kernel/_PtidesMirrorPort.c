@@ -23,6 +23,6 @@ void PtidesMirrorPort_New_Free(struct PtidesMirrorPort* port) {
 }
 
 void PtidesMirrorPort_SetAssociatedPort(struct PtidesMirrorPort* port, struct PtidesMirrorPort* port1) {
-	port->_associatedPort = port1;
-	port1->_associatedPort = port;
+	port->_associatedPort = (struct PtidesPort*)port1;
+	port1->_associatedPort = (struct PtidesPort*)port;
 }

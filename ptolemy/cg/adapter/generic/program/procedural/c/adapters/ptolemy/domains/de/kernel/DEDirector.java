@@ -145,13 +145,35 @@ public class DEDirector extends Director {
         result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->actorsDepths, &" + sanitizedContainerName +
                 ", sizeof(struct Actor*), depth, sizeof(int));");
         
+        // Add the depths of the container's ports
+        Iterator<?> ports = ((Actor)container).inputPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort)ports.next();
+            if (!port.isInsideConnected())
+                continue;
+            depth = causality.getDepthOfPort(port);
+            result.append(_eol + "*depth = " + depth + ";");
+            result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + port.getName() + 
+                    ", sizeof(struct IOPort*), depth, sizeof(int));");
+        }
+        ports = ((Actor)container).outputPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort)ports.next();
+            if (!port.isInsideConnected())
+                continue;
+            depth = causality.getDepthOfPort(port);
+            result.append(_eol + "*depth = " + depth + ";");
+            result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + port.getName() + 
+                    ", sizeof(struct IOPort*), depth, sizeof(int));");
+        }
+        
         List<?> containedActors = container.deepEntityList();
         Iterator<?> actors = containedActors.iterator();
         // First loop to create the struct IOPort
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
-            Iterator<?> ports = ((Actor)actor).inputPortList().iterator();
+            ports = ((Actor)actor).inputPortList().iterator();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
@@ -177,7 +199,7 @@ public class DEDirector extends Director {
             result.append(_eol + "*depth = " + depth + ";");
             result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->actorsDepths, &" + sanitizedActorName +
                     ", sizeof(struct Actor*), depth, sizeof(int));");
-            Iterator<?> ports = ((Actor)actor).inputPortList().iterator();
+            ports = ((Actor)actor).inputPortList().iterator();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
@@ -238,7 +260,7 @@ public class DEDirector extends Director {
             }
         }
         // In the case of a CompositeActor, we have to initialize the insideReceivers
-        Iterator<?> ports = ((Actor)container).inputPortList().iterator();
+        ports = ((Actor)container).inputPortList().iterator();
         while (ports.hasNext()) {
             IOPort port = (IOPort)ports.next();
             if (!port.isInsideConnected())

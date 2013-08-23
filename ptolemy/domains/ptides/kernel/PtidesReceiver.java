@@ -96,7 +96,7 @@ public class PtidesReceiver extends DEReceiver {
             return;
         }
         try {
-            _getDirector()._enqueueTriggerEvent(getContainer(), token, this);
+            getDirector()._enqueueTriggerEvent(getContainer(), token, this);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
         }
@@ -122,9 +122,6 @@ public class PtidesReceiver extends DEReceiver {
         _tokens.remove(token);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /**
      * Return the director that created this receiver. If this receiver is an
      * inside receiver of an output port of an opaque composite actor, then the
@@ -139,7 +136,7 @@ public class PtidesReceiver extends DEReceiver {
      *                container actor, or if the actor has no director, or if
      *                the director is not an instance of DEDirector.
      */
-    private PtidesDirector _getDirector() throws IllegalActionException {
+    public PtidesDirector getDirector() throws IllegalActionException {
         IOPort port = getContainer();
 
         if (port != null) {

@@ -542,6 +542,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
         return super.getMicrostep();
     }
+    
+    /** Return the superdense dependency hashmap
+     * This is used for the code generation in order to fill
+     * the generated director hashmap.
+     * @return The Superdense dependency hashmap
+     */
+    public Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> getSuperdenseDependencyPair() {
+        return _superdenseDependencyPair;
+    }
 
     /** Initialize all the actors and variables. Perform static analysis on
      *  superdense dependencies between input ports in the topology.

@@ -11,8 +11,6 @@
 #include "_CompositeActor.h"
 #include "_LocalClock.h"
 
-#define SDFDIRECTOR 2
-
 #define IS_SDFDIRECTOR(director) ((director)->typeDirector%10 == 2)
 
 struct SDFDirector {

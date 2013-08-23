@@ -591,11 +591,9 @@ public class PtidesPlatform extends MirrorComposite {
                 Actor container = (Actor) getContainer();
                 if (container != null && container.getContainer() != null) {
                     container = (Actor) container.getContainer();
-                    if (container != null) {
-                        Director director = container.getDirector();
-                        if (director != null) {
-                            return director.fireContainerAt(time);
-                        }
+                    Director director = container.getDirector();
+                    if (director != null) {
+                        return director.fireContainerAt(time);
                     }
                 }
             }
@@ -612,24 +610,13 @@ public class PtidesPlatform extends MirrorComposite {
                 Actor container = (Actor) getContainer();
                 if (container != null && container.getContainer() != null) {
                     container = (Actor) container.getContainer();
-                    if (container != null) {
-                        Director director = container.getDirector();
-                        if (director != null) {
-                            return director.getModelTime();
-                        }
+                    Director director = container.getDirector();
+                    if (director != null) {
+                        return director.getModelTime();
                     }
                 }
             }
             return localClock.getLocalTime();
-        }
-
-        /** Invoke initialize of the embedded PtidesDirector.
-         *  @exception IllegalActionException Thrown by embedded
-         *  PtidesDirector.
-         */
-        public void initialize() throws IllegalActionException {
-            super.initialize();
-            //_getEmbeddedPtidesDirector().initialize();
         }
 
         /** Return a new instance of QueueReceiver.

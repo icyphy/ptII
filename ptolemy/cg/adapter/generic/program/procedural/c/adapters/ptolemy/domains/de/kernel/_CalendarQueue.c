@@ -16,23 +16,23 @@ void CalendarQueue_Init(struct CalendarQueue* cqueue) {
 	cqueue->_queueSizeOverThreshold = 0;
 	cqueue->_queueSizeUnderThreshold = 0;
 	cqueue->_binWidth = 2.0;
-	cqueue->_bottomThreshold;
-	cqueue->_bucket;
-	cqueue->_cachedMinimumBucket;
+//	cqueue->_bottomThreshold;
+//	cqueue->_bucket;
+//	cqueue->_cachedMinimumBucket;
 	cqueue->_indexOfMinimumBucket = 0;
 	cqueue->_indexOfMinimumBucketValid = false;
 	cqueue->_initialized = false;
 	cqueue->_logMinNumBuckets = 1;
-	cqueue->_logNumberOfBuckets;
+//	cqueue->_logNumberOfBuckets;
 	cqueue->_logQueueBinCountFactor = 1;
 	cqueue->_minimumEntry = NULL;
-	cqueue->_minVirtualBucket;
-	cqueue->_minBucket;
-	cqueue->_numberOfBuckets;
-	cqueue->_numberOfBucketsMask;
-	cqueue->_queueSize;
+//	cqueue->_minVirtualBucket;
+//	cqueue->_minBucket;
+//	cqueue->_numberOfBuckets;
+//	cqueue->_numberOfBucketsMask;
+//	cqueue->_queueSize;
 	cqueue->_resizeEnabled = true;
-	cqueue->_topThreshold;
+//	cqueue->_topThreshold;
 
 	cqueue->clear = CalendarQueue_Clear;
 	cqueue->get = CalendarQueue_Get;
@@ -42,6 +42,7 @@ void CalendarQueue_Init(struct CalendarQueue* cqueue) {
 	cqueue->remove = CalendarQueue_Remove;
 	cqueue->size = CalendarQueue_Size;
 	cqueue->take = CalendarQueue_Take;
+	cqueue->toArray = CalendarQueue_ToArray;
 	cqueue->_getBinIndex = CalendarQueue__GetBinIndex;
 	cqueue->_getFromBucket = CalendarQueue__GetFromBucket;
 	cqueue->_getIndexOfMinimumBucket = CalendarQueue__GetIndexOfMinimumBucket;
@@ -72,7 +73,7 @@ void* CalendarQueue_Get(struct CalendarQueue* cqueue) {
 		return result;
 	}
 }
-bool CalendarQueue_Includes(struct CalendarQueue* cqueue, struct DEEvent* entry) {
+bool CalendarQueue_Includes(struct CalendarQueue* cqueue, void* entry) {
 	if (cqueue->_queueSize == 0) {
 		return false;
 	}
@@ -82,7 +83,7 @@ bool CalendarQueue_Includes(struct CalendarQueue* cqueue, struct DEEvent* entry)
 bool CalendarQueue_IsEmpty(struct CalendarQueue* cqueue) {
 	return cqueue->_queueSize == 0;
 }
-bool CalendarQueue_Put(struct CalendarQueue* cqueue, struct DEEvent* entry) {
+bool CalendarQueue_Put(struct CalendarQueue* cqueue, void* entry) {
 	if ((*(cqueue->includes))(cqueue, entry))
 		return false;
 
@@ -94,9 +95,9 @@ bool CalendarQueue_Put(struct CalendarQueue* cqueue, struct DEEvent* entry) {
 	int binNumber = (*(cqueue->_getBinIndex))(cqueue, entry);
 
 	if (cqueue->_minimumEntry == NULL || cqueue->_queueSize == 0
-			|| (*(entry->compareTo))(entry, cqueue->_minimumEntry) < 0) {
+			|| (*(((struct DEEvent*)entry)->compareTo))(entry, cqueue->_minimumEntry) < 0) {
 		cqueue->_minimumEntry = entry;
-		cqueue->_minVirtualBucket = (*(entry->getVirtualBinNumber))(entry, cqueue->_binWidth);
+		cqueue->_minVirtualBucket = (*(((struct DEEvent*)entry)->getVirtualBinNumber))(entry, cqueue->_binWidth);
 		cqueue->_minBucket = (*(cqueue->_getBinIndex))(cqueue, entry);
 	}
 
@@ -109,7 +110,7 @@ bool CalendarQueue_Put(struct CalendarQueue* cqueue, struct DEEvent* entry) {
 
 	return true;
 }
-bool CalendarQueue_Remove(struct CalendarQueue* cqueue, struct DEEvent* entry) {
+bool CalendarQueue_Remove(struct CalendarQueue* cqueue, void* entry) {
 	if (cqueue->_queueSize == 0) {
 		return false;
 	}
@@ -122,6 +123,16 @@ bool CalendarQueue_Remove(struct CalendarQueue* cqueue, struct DEEvent* entry) {
 		(*(cqueue->_resize))(cqueue, false);
 	}
 
+#ifdef PTIDESDIRECTOR
+	if (IS_PTIDESEVENT((struct DEEvent*)entry) && ((struct PtidesEvent*)entry)->receiver(entry) != NULL) {
+		struct PtidesEvent* ptidesEvent = (struct PtidesEvent*) entry;
+		if (IS_PTIDESRECEIVER(ptidesEvent->receiver(ptidesEvent))) {
+			struct PtidesReceiver* ptidesReceiver = (struct PtidesReceiver*) ptidesEvent->receiver(ptidesEvent);
+			ptidesReceiver->putToReceiver(ptidesReceiver, ptidesEvent->token(ptidesEvent));
+		}
+	}
+#endif
+
 	return result;
 }
 int CalendarQueue_Size(struct CalendarQueue* cqueue) {
@@ -129,10 +140,78 @@ int CalendarQueue_Size(struct CalendarQueue* cqueue) {
 }
 void* CalendarQueue_Take(struct CalendarQueue* cqueue) {
 	int indexOfMinimum = (*(cqueue->_getIndexOfMinimumBucket))(cqueue);
-	return (*(cqueue->_takeFromBucket))(cqueue, indexOfMinimum);
+	void* event = (*(cqueue->_takeFromBucket))(cqueue, indexOfMinimum);
+	return event;
 }
-int CalendarQueue__GetBinIndex(struct CalendarQueue* cqueue, struct DEEvent* entry) {
-	long i = (*(entry->getVirtualBinNumber))(entry, cqueue->_binWidth);
+void** CalendarQueue_ToArray(struct CalendarQueue* cqueue) {
+	int size = cqueue->size(cqueue);
+	void** result = calloc(size, sizeof(void*));
+	if (!result) {
+		fprintf(stderr, "Allocation error : CalendarQueue_ToArray");
+		exit(-1);
+	}
+	if (size == 0) {
+		return result;
+	}
+	int index = 0;
+	int currentBucket = cqueue->_minBucket;
+	long virtualBucket = cqueue->_minVirtualBucket;
+	long minimumNextVirtualBucket = INT_MAX;
+	bool foundValue = false;
+	int nextStartBucket = cqueue->_minBucket;
+
+	struct CQCell** bucketHead = calloc(pblListSize(cqueue->_bucket), sizeof(struct CQCell*));
+
+	for (int i = 0; i < pblListSize(cqueue->_bucket); i++) {
+		struct CQLinkedList* bucket = (struct CQLinkedList*)pblListGet(cqueue->_bucket, i);
+		bucketHead[i] = bucket->head;
+	}
+
+	while (true) {
+		if (bucketHead[currentBucket] != NULL) {
+			void* nextInBucket = bucketHead[currentBucket]->content;
+
+			while ((*(((struct DEEvent*)nextInBucket)->getVirtualBinNumber))(nextInBucket, cqueue->_binWidth) == virtualBucket) {
+				result[index] = nextInBucket;
+				index++;
+				if (index == size) {
+					return result;
+				}
+				bucketHead[currentBucket] = bucketHead[currentBucket]->next;
+				if (bucketHead[currentBucket] == NULL) {
+					break;
+				}
+				nextInBucket = bucketHead[currentBucket]->content;
+			}
+			long nextVirtualBucket = (*(((struct DEEvent*)nextInBucket)->getVirtualBinNumber))(nextInBucket, cqueue->_binWidth);
+			if (nextVirtualBucket < minimumNextVirtualBucket
+					|| nextVirtualBucket == INT_MAX) {
+				foundValue = true;
+				minimumNextVirtualBucket = nextVirtualBucket;
+				nextStartBucket = currentBucket;
+			}
+		}
+		++currentBucket;
+		++virtualBucket;
+		if (currentBucket == cqueue->_numberOfBuckets) {
+			currentBucket = 0;
+		}
+		if (currentBucket == nextStartBucket) {
+			if (!foundValue) {
+				fprintf(stderr,
+						"Queue is empty, but size() is not zero! It is: %i",
+						cqueue->_queueSize);
+			}
+			virtualBucket = minimumNextVirtualBucket;
+			foundValue = false;
+			minimumNextVirtualBucket = INT_MAX;
+		}
+	}
+	return result;
+}
+
+int CalendarQueue__GetBinIndex(struct CalendarQueue* cqueue, void* entry) {
+	long i = (*(((struct DEEvent*)entry)->getVirtualBinNumber))(entry, cqueue->_binWidth);
 	i = i & cqueue->_numberOfBucketsMask;
 	return (int) i;
 }
@@ -195,7 +274,7 @@ int CalendarQueue__GetIndexOfMinimumBucket(struct CalendarQueue* cqueue) {
 	cqueue->_indexOfMinimumBucketValid = true;
 	return cqueue->_indexOfMinimumBucket;
 }
-void CalendarQueue__LocalInit(struct CalendarQueue* cqueue, int logNumberOfBuckets, struct DEEvent* firstEntry) {
+void CalendarQueue__LocalInit(struct CalendarQueue* cqueue, int logNumberOfBuckets, void* firstEntry) {
 	cqueue->_logNumberOfBuckets = logNumberOfBuckets;
 	cqueue->_numberOfBuckets = 1 << logNumberOfBuckets;
 	cqueue->_numberOfBucketsMask = cqueue->_numberOfBuckets - 1;
@@ -208,7 +287,7 @@ void CalendarQueue__LocalInit(struct CalendarQueue* cqueue, int logNumberOfBucke
 	}
 
 	cqueue->_minimumEntry = firstEntry;
-	cqueue->_minVirtualBucket = (*(firstEntry->getVirtualBinNumber))(firstEntry, cqueue->_binWidth);
+	cqueue->_minVirtualBucket = (*(((struct DEEvent*)firstEntry)->getVirtualBinNumber))(firstEntry, cqueue->_binWidth);
 	cqueue->_minBucket = (*(cqueue->_getBinIndex))(cqueue, firstEntry);
 
 	cqueue->_bottomThreshold = cqueue->_numberOfBuckets >> cqueue->_logQueueBinCountFactor;
@@ -324,8 +403,15 @@ bool CQLinkedList_Includes(struct CQLinkedList * list, struct DEEvent * item) {
 	struct CQCell * p = NULL;
 	for (p = list->head ; p != NULL; p = p->next)  {
 		if ((*(item->compareTo))(item, p->content) == 0
-				&& item->_actor == p->content->_actor)
+				&& item->_actor == p->content->_actor) {
+#ifdef PTIDESDIRECTOR
+			// In the case of ptides events we have to compare the receivers !
+			if (IS_PTIDESEVENT(item) && IS_PTIDESEVENT(p->content))
+				return ((struct PtidesEvent*) item)->_receiver == ((struct PtidesEvent*) p->content)->_receiver;
+			else
+#endif
 			return true;
+		}
 	}
 	return false;
 }
@@ -398,16 +484,20 @@ bool CQLinkedList_Remove(struct CQLinkedList * list, struct DEEvent* item) {
 
 	if (head->content == item) {
 		if (head != tail) {
-			head = head->next;
+			list->head = head->next;
 		} else {
-			head = NULL;
-			tail = NULL;
+			list->head = NULL;
+			list->tail = NULL;
 		}
 		return true;
 	}
 
 	struct CQCell * previousCell = head;
 	struct CQCell * currentCell = previousCell->next;
+
+	// Case where there is only one item in the queue
+	if (currentCell == NULL)
+		return false;
 
 	do {
 		if (currentCell->content == item) {

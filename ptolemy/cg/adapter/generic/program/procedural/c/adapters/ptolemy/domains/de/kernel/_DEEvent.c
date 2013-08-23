@@ -11,6 +11,8 @@ struct DEEvent* DEEvent_New() {
 	return e;
 }
 void DEEvent_Init(struct DEEvent* e) {
+	e->typeEvent = DEEVENT;
+
 	e->_depth = 0;
 	e->_microstep = 0;
 	e->_priority = 0;

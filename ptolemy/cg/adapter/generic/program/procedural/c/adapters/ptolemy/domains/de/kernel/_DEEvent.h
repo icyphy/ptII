@@ -5,14 +5,19 @@
  * @author : William Lucas
  */
 
-#ifndef DE_EVENT
-#define DE_EVENT
+#ifndef DE_EVENT_H_
+#define DE_EVENT_H_
 
 #include "_types.h"
 #include "_Actor.h"
 #include "_IOPort.h"
 
+#define DEEVENT 1
+#define IS_DEEVENT(e) ((e)->typeEvent%10 == 1)
+
 struct DEEvent {
+	int typeEvent;
+
 	struct Actor* _actor;
 	int _depth;
 	struct IOPort* _ioPort;

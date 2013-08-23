@@ -1323,6 +1323,9 @@ public class TemplateParser {
 
             TypedIOPort port = getPort(parameter);
             if (port != null) {
+                if (_getCodeGenerator().codeGenType(port.getType()).contains(",")) {
+                    return "Record";
+                }
                 return type + _getCodeGenerator().codeGenType(port.getType());
             }
 

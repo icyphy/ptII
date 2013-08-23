@@ -64,6 +64,10 @@ struct IOPort {
 	void (*send)(struct IOPort*, int, Token);
 	void (*send1)(struct IOPort*, int, Token*, int);
 	void (*sendInside)(struct IOPort*, int, Token);
+
+#ifdef PTIDESDIRECTOR
+	double delayOffset;
+#endif
 };
 
 struct IOPort* IOPort_New();

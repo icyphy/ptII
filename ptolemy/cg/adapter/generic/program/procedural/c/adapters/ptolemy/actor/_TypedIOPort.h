@@ -66,6 +66,10 @@ struct TypedIOPort {
 	void (*send1)(struct IOPort*, int, Token*, int);
 	void (*sendInside)(struct IOPort*, int, Token);
 
+#ifdef PTIDESDIRECTOR
+	double delayOffset;
+#endif
+
 	// new members
 	char (*getType)(struct TypedIOPort*);
 

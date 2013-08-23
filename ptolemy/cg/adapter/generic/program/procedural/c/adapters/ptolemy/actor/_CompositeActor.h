@@ -25,13 +25,17 @@ struct CompositeActor {
 	struct Director* (*getDirector)(struct CompositeActor*);
 	struct Director* (*getExecutiveDirector)(struct CompositeActor*);
 	void (*initialize)(struct CompositeActor*);
-	int (*iterate)(struct Actor*, int);
+	int (*iterate)(struct CompositeActor*, int);
 	PblList* (*inputPortList)(struct CompositeActor*);
 	PblList* (*outputPortList)(struct CompositeActor*);
 	bool (*postfire)(struct CompositeActor*);
 	bool (*prefire)(struct CompositeActor*);
 	void (*preinitialize)(struct CompositeActor*);
 	void (*wrapup)(struct CompositeActor*);
+
+	// FIXME : temp solution for the decorators of Ptides domain
+	double delayOffset;
+	double _clockSynchronizationBound;
 
 	// new members
 	bool (*isOpaque)();

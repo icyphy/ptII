@@ -61,6 +61,10 @@ struct PtidesMirrorPort {
 	void (*send1)(struct PtidesMirrorPort*, int, Token*, int);
 	void (*sendInside)(struct PtidesMirrorPort*, int, Token);
 
+#ifdef PTIDESDIRECTOR
+	double delayOffset;
+#endif
+
 	char (*getType)(struct TypedIOPort*);
 	char _type;
 

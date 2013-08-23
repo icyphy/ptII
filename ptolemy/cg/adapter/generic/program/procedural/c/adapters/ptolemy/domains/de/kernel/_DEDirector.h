@@ -13,8 +13,6 @@
 #include "_LocalClock.h"
 #include "_DEReceiver.h"
 
-#define DEDIRECTOR 1
-
 #define IS_DEDIRECTOR(director) ((director)->typeDirector%10 == 1)
 
 struct DEDirector {

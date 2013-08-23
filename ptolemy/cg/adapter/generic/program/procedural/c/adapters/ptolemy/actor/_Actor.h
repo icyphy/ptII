@@ -29,6 +29,10 @@ struct Actor {
 	bool (*prefire)(struct Actor*);
 	void (*preinitialize)(struct Actor*);
 	void (*wrapup)(struct Actor*);
+
+	// FIXME : temp solution for the decorators of Ptides domain
+	double delayOffset;
+	double _clockSynchronizationBound;
 };
 
 struct Actor* Actor_New();

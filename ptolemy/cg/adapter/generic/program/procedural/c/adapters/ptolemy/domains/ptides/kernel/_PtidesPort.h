@@ -61,6 +61,10 @@ struct PtidesPort {
 	void (*send1)(struct PtidesPort*, int, Token*, int);
 	void (*sendInside)(struct PtidesPort*, int, Token);
 
+#ifdef PTIDESDIRECTOR
+	double delayOffset;
+#endif
+
 	char (*getType)(struct TypedIOPort*);
 	char _type;
 
@@ -74,7 +78,6 @@ struct PtidesPort {
 
 	bool actuateAtEventTimestamp;
 	Time deviceDelay;
-	double delayOffset;
 	Time deviceDelayBound;
 	bool isNetworkPort;
 	Time networkDelayBound;

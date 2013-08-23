@@ -16,6 +16,9 @@
 #include <errno.h>
 
 #include "_DEEvent.h"
+#ifdef PTIDESDIRECTOR
+#include "_PtidesDirector.h"
+#endif
 
 struct CQCell {
 	struct DEEvent* content;
@@ -84,16 +87,17 @@ struct CalendarQueue {
 
 	void (*clear)(struct CalendarQueue *);
 	void* (*get)(struct CalendarQueue *);
-	bool (*includes)(struct CalendarQueue *, struct DEEvent*);
+	bool (*includes)(struct CalendarQueue *, void*);
 	bool (*isEmpty)(struct CalendarQueue*);
-	bool (*put)(struct CalendarQueue *, struct DEEvent*);
-	bool (*remove)(struct CalendarQueue *, struct DEEvent*);
+	bool (*put)(struct CalendarQueue *, void*);
+	bool (*remove)(struct CalendarQueue *, void*);
 	int (*size)(struct CalendarQueue *);
 	void* (*take)(struct CalendarQueue *);
-	int (*_getBinIndex)(struct CalendarQueue *, struct DEEvent*);
+	void** (*toArray)(struct CalendarQueue *);
+	int (*_getBinIndex)(struct CalendarQueue *, void*);
 	void* (*_getFromBucket)(struct CalendarQueue *, int);
 	int (*_getIndexOfMinimumBucket)(struct CalendarQueue *);
-	void (*_localInit)(struct CalendarQueue *, int, struct DEEvent*);
+	void (*_localInit)(struct CalendarQueue *, int, void*);
 	void (*_resize)(struct CalendarQueue *, bool);
 	void* (*_takeFromBucket)(struct CalendarQueue *, int);
 };
@@ -104,16 +108,17 @@ void CalendarQueue_New_Free(struct CalendarQueue* cqueue);
 
 void CalendarQueue_Clear(struct CalendarQueue* cqueue);
 void* CalendarQueue_Get(struct CalendarQueue* cqueue);
-bool CalendarQueue_Includes(struct CalendarQueue* cqueue, struct DEEvent* entry);
+bool CalendarQueue_Includes(struct CalendarQueue* cqueue, void* entry);
 bool CalendarQueue_IsEmpty(struct CalendarQueue* cqueue);
-bool CalendarQueue_Put(struct CalendarQueue* cqueue, struct DEEvent* entry);
-bool CalendarQueue_Remove(struct CalendarQueue* cqueue, struct DEEvent* entry);
+bool CalendarQueue_Put(struct CalendarQueue* cqueue, void* entry);
+bool CalendarQueue_Remove(struct CalendarQueue* cqueue, void* entry);
 int CalendarQueue_Size(struct CalendarQueue* cqueue);
 void* CalendarQueue_Take(struct CalendarQueue* cqueue);
-int CalendarQueue__GetBinIndex(struct CalendarQueue* cqueue, struct DEEvent* entry);
+void** CalendarQueue_ToArray(struct CalendarQueue* cqueue);
+int CalendarQueue__GetBinIndex(struct CalendarQueue* cqueue, void* entry);
 void* CalendarQueue__GetFromBucket(struct CalendarQueue* cqueue, int index);
 int CalendarQueue__GetIndexOfMinimumBucket(struct CalendarQueue* cqueue);
-void CalendarQueue__LocalInit(struct CalendarQueue* cqueue, int logNumberOfBuckets, struct DEEvent* firstEntry);
+void CalendarQueue__LocalInit(struct CalendarQueue* cqueue, int logNumberOfBuckets, void* firstEntry);
 void CalendarQueue__Resize(struct CalendarQueue* cqueue, bool increasing);
 void* CalendarQueue__TakeFromBucket(struct CalendarQueue* cqueue, int index);
 

@@ -128,7 +128,7 @@ void DEDirector_Initialize(struct DEDirector* director) {
 	Director_Initialize((struct Director*)director);
 
 	Time stopTime = (*(director->getModelStopTime))((struct Director*)director);
-	if (stopTime != DBL_MAX) {
+	if (stopTime != DBL_MAX && stopTime != Infinity) {
 		(*(director->fireAt))(director, (struct Actor*)director->container, stopTime, 1);
 	}
 
@@ -320,7 +320,7 @@ void DEDirector__EnqueueTriggerEvent(struct DEDirector* director, struct IOPort*
 	(*(director->_eventQueue->put))(director->_eventQueue, newEvent);
 }
 int DEDirector__Fire(struct DEDirector* director) {
-	struct Actor* actorToFire = DEDirector__GetNextActorToFire(director);
+	struct Actor* actorToFire = director->_getNextActorToFire(director);
 
 	if (actorToFire == NULL) {
 		director->_noMoreActorsToFire = true;
