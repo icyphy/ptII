@@ -12,8 +12,6 @@ EXAMPLE_MODELS = \
 	IfThenElse.xml \
 	Loop.xml \
 	MaximumEntropySpectrum.xml \
-	PetriNetNotation.xml \
-	PetriNet.xml \
 	RunLengthCoder.xml \
 	SampleDelay.xml \
 	SoundSpectrum.xml \
