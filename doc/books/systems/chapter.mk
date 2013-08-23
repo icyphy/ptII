@@ -52,9 +52,14 @@ include $(CONFIG)
 PTPACKAGE = 	$(CHAPTER)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
+# Used to build jar files
+PTPACKAGE = 	$(CHAPTER)
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
+OTHER_FILES_TO_BE_JARED = \
+	$(CHAPTER_FILES_TO_BE_JARED)
+
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) $(EXAMPLE_MODELS) $(EXAMPLE_SUBMODELS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

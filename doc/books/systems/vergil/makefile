@@ -24,4 +24,9 @@ EXAMPLE_MODELS = \
 EXAMPLE_SUBMODELS = \
 	Channel.xml
 
+# ChannelWithExternalClass has a _jnlpClassesToJars property so that Channel.xml is included. 
+# See _userSpecifiedUjars in ptolemy/copernicus/applet/AppletWriter.java
+CHAPTER_FILES_TO_BE_JARED = \
+	Channel.xml
+
 include ../chapter.mk
