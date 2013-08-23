@@ -129,6 +129,7 @@
     <include name="ptolemy/domains/ptinyos/demo/demo.jar" />
     <include name="ptolemy/domains/ptinyos/doc/doc.jar" />
     <include name="ptolemy/domains/ptinyos/ptinyos.jar" />
+    <include name="ptolemy/domains/rendezvous/rendezvous.jar" />
     <include name="ptolemy/domains/rendezvous/demo/demo.jar" />
     <include name="ptolemy/domains/rendezvous/doc/doc.jar" />
     <include name="ptolemy/domains/sdf/demo/demo.jar" />
@@ -2010,15 +2011,18 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/domains/sdf/lib/vq/vq.jar -->
+    <!-- ptolemy/domains/rendezvous/rendezvous.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/sdf/lib/vq/vq.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/lib/vq/*.class"/>
+	<include name="ptolemy/domains/rendezvous/kernel/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/lib/vq/*.xml"/>
+	<include name="ptolemy/domains/rendezvous/lib/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/rendezvous/lib/*.xml"/>
       </fileset>
     </jar>
 
