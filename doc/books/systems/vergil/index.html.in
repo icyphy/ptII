@@ -15,7 +15,7 @@
   <h1>Chapter 2: Building Graphical Models</h1>
   Executable models in chapter 2:
   <ul>
-    <li> Figure 2.1: <a href="Spectrum/index.html">Spectrum</a>. This model also references <a href="MaximumEntropySpectrum/index.html">MaximumEntropySpectrum</a>.
+    <li> Figure 2.1: <a href="Spectrum/index.html">Spectrum</a>.
     <li> Figure 2.7: <a href="HelloWorld/index.html">Hello World</a>.
     <li> Figure 2.12: <a href="TypeModel/index.html">Type Model</a>.
     <li> Figure 2.13: <a href="AddingStringsException/index.html">Adding Strings (with Exception)</a>.
