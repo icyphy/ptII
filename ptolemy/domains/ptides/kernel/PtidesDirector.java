@@ -201,21 +201,17 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 "clockSynchronizationErrorBound");
         clockSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
         clockSynchronizationErrorBound.setExpression("0.0");
-        _clockSynchronizationErrorBound = new Time(this, 0.0);
-
+        _clockSynchronizationErrorBound = new Time(this, 0.0); 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
-    /** Bound on clock synchronization error across all platforms.
-     *  FIXME: eventually set parameter per platform or for some
-     *  platforms.
+    /** Bound on clock synchronization error across all platforms. 
      */
     public SharedParameter clockSynchronizationErrorBound;
     
     
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -329,7 +325,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         return SuperdenseDependency.OTIMES_IDENTITY;
     }
 
-    /** Return entities contained by the composite of this director.
+    /** Return local sources contained by the composite of this director.
      *  @return List of entities.
      */
     public List<NamedObj> decoratedObjects() {
@@ -1194,7 +1190,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
      * used to calculate the minimum model time delay paths.
      * @exception IllegalActionException If the container is not a
      * TypedCompositeActor.
-     * TODO: Assumes all channels have same dependency as multiport.
+     * Note: This algorithm assumes all channels have same dependency as multiport.
      */
     private void _calculateSuperdenseDependenices()
             throws IllegalActionException {
@@ -1406,8 +1402,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     PtidesEvent eventInQueue = ((PtidesListEventQueue) queue)
                             .get(i);
                     // If event has same tag and destined to same actor, remove from
-                    // queue.
-                    // TODO: or input port group?
+                    // queue. 
                     if (eventInQueue.hasTheSameTagAs(ptidesEvent)
                             && eventInQueue.actor().equals(actor)) {
                         sameTagEvents.add(eventInQueue);
@@ -1551,9 +1546,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
     }
 
     /** Handle timing error on a PtidesPort.
-     *
-     * FIXME: for now this can only drop the event that caused the error or throw a message.
-     * TODO: implement different behaviors.
+     * Some behaviors can be selected via special ErrorHandlingActions, for example
+     * drop event, throw error message, modify event to be legal, ....
      * @param port The port where the error occurred.
      * @param event The event that caused the error; i.e. that arrived too late or out of order.
      * @param message The error message.
@@ -1883,8 +1877,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         while (i < queue.size()) {
             PtidesEvent eventInQueue = ((PtidesListEventQueue) queue).get(i);
             // If event has same tag and destined to same actor, remove from
-            // queue.
-            // TODO: or input port group?
+            // queue. 
             if (eventInQueue.hasTheSameTagAs(event)
                     && eventInQueue.actor().equals(event.actor())) {
                 eventList.add(eventInQueue);
@@ -1903,8 +1896,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private void _setDelayOffset(NamedObj namedObj, Double delayOffset)
             throws IllegalActionException {
-
-        // FIXME: change method to _setDoubleParameterValue?
         DoubleToken token = new DoubleToken(delayOffset);
         Parameter parameter = (Parameter) namedObj.getAttribute("delayOffset");
         if (parameter == null) {
@@ -1981,10 +1972,5 @@ public class PtidesDirector extends DEDirector implements Decorator {
     private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
     private DEEventQueue _pureEvents;
-
-    /** This is an upper bound on the events in the event queue
-     *  produced by any actor at any given time. 
-     */
-    private static int _maximumNumberOfEventsPerActor = 100;
 
 }
