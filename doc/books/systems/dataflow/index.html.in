@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/index.html.in $Id$ 
+	 This gets copied to the website.
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/vergil/index.html
+      -->
+    <title>Chapter 2: Building Graphical Models</title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Chapter 3: Dataflow</h1>
+  Executable models in chapter 3:
+  <ul>
+<li> <a href="AllToAllArray/index.html">AllToAllArray</a></li>
+<li> <a href="AllToAllSequence/index.html">AllToAllSequence</a></li>
+<li> <a href="BetterFibonacci/index.html">BetterFibonacci</a></li>
+<li> <a href="Case/index.html">Case</a></li>
+<li> <a href="DynamicRates/index.html">DynamicRates</a></li>
+<li> <a href="Eratosthenes/index.html">Eratosthenes</a></li>
+<li> <a href="Fibonacci/index.html">Fibonacci</a></li>
+<li> <a href="HammingNumbers/index.html">HammingNumbers</a></li>
+<li> <a href="IfThenElse/index.html">IfThenElse</a></li>
+<li> <a href="Loop/index.html">Loop</a></li>
+<li> <a href="MaximumEntropySpectrum/index.html">MaximumEntropySpectrum</a></li>
+<li> <a href="RunLengthCoder/index.html">RunLengthCoder</a></li>
+<li> <a href="SampleDelay/index.html">SampleDelay</a></li>
+<li> <a href="SoundSpectrum/index.html">SoundSpectrum</a></li>
+<li> <a href="SpectrumOfNoisySinusoid/index.html">SpectrumOfNoisySinusoid</a></li>
+<li> <a href="Unbounded/index.html">Unbounded</a></li>
+  </ul>
+  <!--#include virtual="/ssi/bottom.htm" -->
+  <!-- Do not include a body or html close tag here, the ssi does it -->
