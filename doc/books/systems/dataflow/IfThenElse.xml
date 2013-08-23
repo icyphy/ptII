@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="IfThenElse" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 901, 344}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 922, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[688, 234]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[688, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.0, 117.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.0, 262.0}">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
@@ -23,6 +23,14 @@
             <display name="Show parameters"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 320.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A DDF model that accomplishes conditional firing.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 250.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
