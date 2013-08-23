@@ -69,6 +69,9 @@ KRUFT = *.jar *.jnlp *.jnlp.fixed *.htm doc
 all: jclass
 install: jclass jars
 
+echo_models:
+	@echo "$(EXAMPLE_MODELS) $(EXAMPLE_SUBMODELS)" | awk '{for(i=1;i<=NF;i++) {print $$i}}' | sort
+
 # The main target for this file is "jnlps", which is defined in $PTII/mk/ptcommon.mk
 # For how to call this for the Ptolemy book, see ptbook/workspace/makefile.
 # For an example that is in the ptII repo, see the $PTII/mk/jnlp.mk file.

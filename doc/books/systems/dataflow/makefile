@@ -10,8 +10,6 @@ EXAMPLE_MODELS = \
 	Fibonacci.xml \
 	HammingNumbers.xml \
 	IfThenElse.xml \
-	IterateFilesSolution.xml \
-	IterateFiles.xml \
 	Loop.xml \
 	MaximumEntropySpectrum.xml \
 	PetriNetNotation.xml \
