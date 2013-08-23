@@ -17,7 +17,6 @@ EXAMPLE_MODELS = \
 	ChannelWithSubclassWithOverrides.xml \
 	CustomIcon.xml \
 	HelloWorld.xml \
-	MaximumEntropySpectrum.xml \
 	Spectrum.xml \
 	TypeModel.xml \
 	WidthInference.xml
