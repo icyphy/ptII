@@ -1146,6 +1146,7 @@ APPLET_DOMAIN_JARS = \
 	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/pn/pn.jar \
 	ptolemy/domains/ptides/ptides.jar \
+	ptolemy/domains/rendezvous/rendezvous.jar \
 	ptolemy/domains/sdf/sdf.jar \
 	ptolemy/domains/sr/sr.jar \
 	ptolemy/domains/wireless/wireless.jar \
@@ -1787,7 +1788,7 @@ HTML_MODEL =           $(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL)
 html_model: $(HTML_MODEL)
 $(HTML_MODEL):
 	#
-	# mk/jnlp.mk: HTML_MODEL rule. Exporting the model to html.
+	# mk/jnlp.mk: HTML_MODEL rule. Exporting $(JNLP_MODEL).xml to html.
 	#
 	(cd $(JNLP_MODEL_DIRECTORY); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel $(EXPORT_HTML_RUN) -whiteBackground -openComposites htm $(JNLP_MODEL).xml; find $(JNLP_MODEL) -name "*.htm*" -exec chmod a+x {} \;)
 
@@ -1828,6 +1829,8 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 	pwd
 	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xpf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
+	# Copy over the model and submodel files
+	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - `make --no-print-directory --silent echo_models` | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR)/$(JNLP_MODEL_DIRECTORY); /usr/sfw/bin/gtar -xpf -")
 	# Replace link to applet with link to image.  Some files have a .htm file that link to the applet
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); sed -e 's@$(JNLP_MODEL)Vergil.htm@$(JNLP_MODEL)/index.html@' -e 's@>applet</a>@>HTML Version</a> - browsable only, not executable@' $(JNLP_HTML) > $(JNLP_HTML).tmp"
 	#-ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); diff $(JNLP_HTML).tmp $(JNLP_HTML)"
