@@ -2013,7 +2013,7 @@
 
     <!-- ptolemy/domains/rendezvous/rendezvous.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/sdf/lib/vq/vq.jar"
+	 destfile="${basedir}/ptolemy/domains/rendezvous/rendezvous.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/rendezvous/kernel/*.class"/>
