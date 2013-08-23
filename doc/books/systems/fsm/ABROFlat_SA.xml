@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ABROFlat_SA" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="test.length()">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={396, 132, 964, 587}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={396, 132, 985, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 477]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.9701586174243, 202.9620501893939}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.97015861742426, 221.7620501893939}">
     </property>
     <property name="test" class="ptolemy.data.expr.Parameter" value="{&#10; {true, nil, nil},&#10; {true, true, nil}, &#10; {true, true, nil},&#10; {nil, nil, true},&#10; {true, true, nil}, &#10; {true, true, nil},&#10; {true, true, true},&#10; {true, true, true},&#10; {true, true, nil}&#10;}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -57,16 +57,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="{  A,    B,    R  }">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[45.0, 345.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee and Christian Motika">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[25.0, 370.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -110,20 +100,13 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={368, 234, 929, 466}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 207, 950, 635}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 355]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.0448179271709">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.0767123287671, 129.8047945205479}">
-            </property>
-            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                    <display name="Background Color"/>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 260}">
-                </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.07671232876703, 171.128767123287}">
             </property>
             <port name="A" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -209,11 +192,12 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6989669509946849">
                 </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
@@ -225,9 +209,10 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.76570524327584">
                 </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -237,9 +222,10 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.477727945138596">
                 </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
@@ -249,9 +235,10 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.5074520350410374">
                 </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation9" class="ptolemy.domains.modal.kernel.Transition">

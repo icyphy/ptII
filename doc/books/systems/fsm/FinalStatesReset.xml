@@ -2,30 +2,22 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FinalStatesReset" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 144, 809, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 144, 830, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates an extended FSM that counts to&#10;five and then stops, unless it receives a reset input&#10;before it finishes counting, in which case it starts over&#10;again.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 165.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 275.0]">
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
@@ -61,25 +53,18 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={568, 215, 767, 289}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={446, 207, 788, 635}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 178]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{277.0, 89.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{277.0, 262.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In an iteration where reset is present and true,&#10;this state machine returns to the initial state,&#10;unless it has already reached the final state.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
-            </property>
-        </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                <display name="Background Color"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 300}">
             </property>
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
@@ -115,17 +100,15 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.41987737845196005">
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07266834110185712">
             </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -145,11 +128,12 @@
             </property>
             <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2165850957370026">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.297291536715413">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.2528254927354645">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.254850218759231">
             </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">

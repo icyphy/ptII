@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HysteresisWithDefault" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 378]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -84,11 +84,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 398, 796, 488}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 398, 817, 634}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0962737096991166">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 189.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.33984375, 241.32503681282722}">
     </property>
     <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -138,14 +138,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This variant illustrates the use of finite state machines (FSMs) with&#10;default transitions to model systems with hysteresis. The TemperatureModel&#10;takes heat as input and produces temperature as output. The FSMActor&#10;models a simple thermostat that turns the heat on and off.&#10;When the heat is off, a negative heating rate is provided to model&#10;cooling.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 225.0}">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 340.0}">
         </property>
     </property>
     <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
@@ -230,7 +222,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 160.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -300,6 +292,7 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.044190606909536">
             </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                <display name="default"/>
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -309,11 +302,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.030127293506284583">
             </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <link port="heating.incomingPort" relation="relation2"/>

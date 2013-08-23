@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Hysteresis" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 524]">
     </property>
@@ -29,9 +29,9 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 817, 634}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2806341709354327">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 209.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{237.71728515624997, 207.57635423483856}">
     </property>
     <property name="initialTemp" class="ptolemy.data.expr.Parameter" value="15.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -64,31 +64,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 220.0]">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 390.0]">
-        </property>
-    </property>
     <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 115.0}">
         </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-                <display name="Show parameters"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 290.0}">
-            </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 412, 818, 634}, maximized=false}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 440, 797, 460}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[584, 140]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[584, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.0, 70.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.0, 262.0}">
         </property>
         <port name="temperature" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -154,13 +139,13 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 155.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={437, 377, 793, 391}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={443, 207, 793, 635}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 280]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1747757236087342">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{269.6409131659836, 122.62447169569671}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{269.64091316598353, 226.4740810706967}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This state machine models hysteresis in a simple&#10;thermostat. Each time it gets a temperature input,&#10;it produces a heat output depending on its current&#10;state and the value of the input, and possibly takes&#10;a transition to the other state.">
@@ -244,13 +229,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 230.0]">
             </property>
         </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                <display name="Background Color"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 405}">
-            </property>
-        </property>
         <port name="temperature" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -309,6 +287,7 @@
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.044190606909536">
             </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">

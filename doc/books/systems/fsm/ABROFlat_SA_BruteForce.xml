@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ABROFlat_SA_BruteForce" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="test.length()">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 326, 964, 587}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 326, 985, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 477]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.9701586174243, 202.9620501893939}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.97015861742426, 221.7620501893939}">
     </property>
     <property name="test" class="ptolemy.data.expr.Parameter" value="{&#10; {true, nil, nil},&#10; {true, true, nil}, &#10; {true, true, nil},&#10; {nil, nil, true},&#10; {true, true, nil}, &#10; {true, true, nil},&#10; {true, true, true},&#10; {true, true, true},&#10; {true, true, true}&#10;}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -82,6 +82,8 @@
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
             </property>
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -223,13 +225,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6989669509946849">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
@@ -241,11 +244,12 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.76570524327584">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -255,11 +259,12 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.0089884623805614">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
@@ -269,11 +274,12 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.987984484701278">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
@@ -283,9 +289,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.106592475456672">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation9" class="ptolemy.domains.modal.kernel.Transition">

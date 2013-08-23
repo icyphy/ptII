@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalFSM_Flattened" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -84,11 +84,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 367, 794, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 367, 815, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 262.0}">
     </property>
     <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -132,6 +132,14 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A flat FSM version of the hierarchical FSM combining normal&#10;and faulty thermostats.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
         </property>
     </property>
     <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
@@ -291,7 +299,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 80.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 23, 1193, 744}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 153, 1214, 744}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[980, 633]">
             </property>
@@ -378,6 +386,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.044190606909536">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
             </relation>
             <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
@@ -387,11 +396,12 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.030127293506284583">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation8" class="ptolemy.domains.modal.kernel.Transition">
@@ -432,6 +442,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.044190606909536">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -460,6 +471,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.05188813355105286">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
                 </property>
             </relation>
             <relation name="relation13" class="ptolemy.domains.modal.kernel.Transition">
@@ -482,6 +494,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.135339923633347">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
             </relation>
             <relation name="relation15" class="ptolemy.domains.modal.kernel.Transition">
@@ -492,6 +505,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.40114318572566">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="default"/>
                 </property>
             </relation>
             <link port="heating.incomingPort" relation="relation5"/>

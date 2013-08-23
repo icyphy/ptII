@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixedPointFSM" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 49, 969, 537}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 49, 990, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 427]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.0, 213.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.0, 262.0}">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
@@ -22,14 +22,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates that FSM actors are non-strict, in that&#10;they do not need to know all their inputs in order to produce&#10;outputs. The dialog between these two FSMs could not occur&#10;if they were strict.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 190.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 280.0]">
         </property>
     </property>
     <entity name="FSMActor1" class="ptolemy.domains.modal.kernel.FSMActor">
