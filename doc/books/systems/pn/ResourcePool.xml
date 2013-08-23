@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ResourcePool" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 795, 298}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1119, 781}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[561, 188]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[885, 671]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5671806257295144">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.5, 245.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.1637369791667, 200.3218567708333}">
     </property>
     <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
@@ -20,21 +20,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates resource management where a pool (containing&#10;only one resource) provides that resource nondeterministically to one&#10;of two Sleep actors. The Sleep actor that gets the resource holds it&#10;for a fixed amount of time (100 and 150 ms, respectively). After this&#10;time, it releases the resource, sending it to an Expression actor, which&#10;increments the value of the resource and then returns it to the&#10;resource pool.&#10;&#10;Note that there is no assurance of fairness in this system, and in fact&#10;it is possible for only one of the two Sleep actors to get resources.&#10;How could you force this system to be more fair?">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 225.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 450.0]">
-        </property>
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{435, 455}">
         </property>
     </property>
     <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">

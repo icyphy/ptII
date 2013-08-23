@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RendezvousMerge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 35.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 744, 346}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 846, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[510, 236]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[612, 350]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0870043818686486">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.067740321734885">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.68310546875006, 292.2489850671707}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.90374932261557, 165.81630464234104}">
     </property>
     <property name="SuppressDeadlockReporting" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,6 +40,14 @@
             <display name="Show parameters"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 465.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An illustration of conditional rendezvous for nondeterministic merge.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{24.779505735187854, 240.74088917991332}">
         </property>
     </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">

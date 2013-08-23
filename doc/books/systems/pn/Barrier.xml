@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Barrier" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
@@ -20,14 +20,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a design pattern with rendezvous&#10;called a &quot;barrier synchronization.&quot; In this example, the&#10;two Ramps are sending increasing sequences of integers&#10;to the Displays. However, the transfer is constrained to&#10;occur only when both the Barrier actor and the Sleep&#10;actor read inputs. Thus, a multi-way rendezvous between&#10;the two Ramp actors, the two Display actors, the Barrier&#10;actor, and the Sleep actor constrains the two transfers&#10;to the Display actors to occur simultaneously.  The&#10;Sleep actor will sleep a random amount of time after&#10;reading its input, and during that time will not accept&#10;additional inputs. Thus, after the first two (why two?)&#10;transfers to the Display actors the time between&#10;transfers is controlled by the Sleep actor.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 85.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 375.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
