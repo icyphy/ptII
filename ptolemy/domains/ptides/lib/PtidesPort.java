@@ -245,14 +245,14 @@ public class PtidesPort extends MirrorPort {
         }
         return times;
     }
-    
+
     /** Get the microstep of the event that contained the token.
      * @param t The token.
      * @return The microstep.
      */
     public int getMicrostepForToken(Token t) {
-        Integer microstep = _transmittedTokenMicrosteps.get(t); 
-        _transmittedTokenMicrosteps.remove(t); 
+        Integer microstep = _transmittedTokenMicrosteps.get(t);
+        _transmittedTokenMicrosteps.remove(t);
         return microstep;
     }
 
@@ -316,8 +316,8 @@ public class PtidesPort extends MirrorPort {
             throws IllegalActionException, NoRoomException {
         Time timestamp = ((CompositeActor) getContainer()).getDirector()
                 .getModelTime();
-        int microstep = ((PtidesDirector)((CompositeActor) getContainer()).getDirector())
-                .getIndex();
+        int microstep = ((PtidesDirector) ((CompositeActor) getContainer())
+                .getDirector()).getIndex();
         Time sourceTimestamp = ((PtidesDirector) ((CompositeActor) getContainer())
                 .getDirector()).getCurrentSourceTimestamp();
         if (sourceTimestamp == null) {
@@ -333,20 +333,16 @@ public class PtidesPort extends MirrorPort {
         }
         _transmittedTokenTimestamps.put(token, new Object[] { timestamp,
                 sourceTimestamp });
-        
-        
+
         _transmittedTokenMicrosteps.put(token, microstep);
-        
+
         _transmittedTokenCnt.put(token, _transmittedTokenCnt.get(token)
                 .intValue() + 1);
         super.send(channelIndex, token);
     }
 
-    
-
-
     /** Change visibility of parameters depending on the type of
-     *  port. FIXME: change icon!
+     *  port. 
      *  @exception IllegalActionException Thrown if icon cannot be changed.
      */
     private void _setIconAndParameterVisibility() throws IllegalActionException {
@@ -415,11 +411,10 @@ public class PtidesPort extends MirrorPort {
 
     private boolean _isNetworkPort;
 
-
     private HashMap<Token, Object[]> _transmittedTokenTimestamps;
-     
+
     private HashMap<Token, Integer> _transmittedTokenMicrosteps;
 
     private HashMap<Token, Integer> _transmittedTokenCnt;
-    
+
 }
