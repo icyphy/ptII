@@ -835,6 +835,13 @@ public class PtidesDirector extends DEDirector implements Decorator {
             }
         } else {
             _eventQueue.put(newEvent);
+            if (_numberOfTokensPerPort == null) {
+                _numberOfTokensPerPort = new HashMap<IOPort, Integer>();
+            }
+            IOPort port = newEvent.ioPort();
+            if (port != null) {
+                _numberOfTokensPerPort.put(port, _numberOfTokensPerPort.get(port) + 1);
+            }
         }
     }
 
@@ -1487,27 +1494,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         maxEvents += _outputEventDeadlines.get(time).size();
                     } 
                 } else {
-                    sinkActorEventQueueSize.put(
-                            (Actor) ((IOPort) sinkPort).getContainer(),
-                            Integer.valueOf(0));
+                    maxEvents += _numberOfTokensPerPort.get(sinkPort);
                 }
             }
         }
-        Object[] eventArray = _eventQueue.toArray();
-        for (Object object : eventArray) {
-            PtidesEvent event = (PtidesEvent) object;
-            if (sinkActorEventQueueSize.keySet().contains(event.actor())) {
-                int events = sinkActorEventQueueSize.get(event.actor()) + 1;
-                sinkActorEventQueueSize.put(event.actor(), events);
-                if (events > maxEvents) {
-                    maxEvents = events;
-                }
-            }
-        }
-        
-        // Find all sink ports.
-        
-        
         return maxEvents;
     }
 
@@ -1830,13 +1820,13 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                 _clockSynchronizationErrorBound)*/) >= 0) {
             
             // Default throttling actors.
-//            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
-//            if (futureEvents > _maximumNumberOfEventsPerActor) {
-//                if (_debugging) {
-//                    _debug("*** throttling futureEvents !safe" + event);
-//                }
-//                return false;
-//            } 
+            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+            if (futureEvents > _maxNumberOfFutureEvents) {
+                if (_debugging) {
+                    _debug("*** throttling futureEvents !safe" + event);
+                }
+                return false;
+            } 
             if (_debugging) {
                 _debug("*** safe" + event);
             }
@@ -1881,6 +1871,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
             if (eventInQueue.hasTheSameTagAs(event)
                     && eventInQueue.actor().equals(event.actor())) {
                 eventList.add(eventInQueue);
+                IOPort port = eventInQueue.ioPort();
+                if (port != null) {
+                    _numberOfTokensPerPort.put(port, _numberOfTokensPerPort.get(port) - 1);
+                }
                 ((PtidesListEventQueue) queue).take(i);
                 continue;
             }
@@ -1961,6 +1955,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
      * event. Used to calculate _relativeDeadlineForPureEvent.
      */
     private Map<TypedIOPort, Set<TypedIOPort>> _inputPortsForPureEvent;
+    
+    private Map<IOPort, Integer> _numberOfTokensPerPort;
 
     /** Map the input port where an event caused a pure event to the relative
      * deadline for that pure event.
@@ -1972,5 +1968,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
     private DEEventQueue _pureEvents;
+    
+    private static int _maxNumberOfFutureEvents = 10;
 
 }
