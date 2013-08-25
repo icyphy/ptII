@@ -11,6 +11,7 @@
     <include name="com/jgoodies/jgoodies.jar" />
     <include name="contrib/contrib.jar" />
     <include name="diva/diva.jar" />
+    <include name="doc/books/systems/vergil/vergil.jar" />
     <include name="doc/codeDoc.jar" />
     <include name="doc/codeDocBcvtb.jar" />
     <include name="doc/codeDocHyVisual.jar" />
@@ -970,6 +971,16 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/matlab/demo/MatlabExpression/*.xml"/>
+      </fileset>
+    </jar>
+
+
+    <!-- doc/books/systems/vergil/vergil.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/doc/books/systems/vergil/vergil.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="doc/books/systems/vergil/Channel.xml"/>
       </fileset>
     </jar>
 
