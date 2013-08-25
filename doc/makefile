@@ -573,6 +573,7 @@ ALLPACKAGES = \
 	$(USER_PACKAGES) \
 	doc.doclets \
 	org.ptolemy.machineImprovisation \
+	org.ptolemy.machineLearning.hmm \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.anomaly \
 	ptolemy.actor.lib.net \
