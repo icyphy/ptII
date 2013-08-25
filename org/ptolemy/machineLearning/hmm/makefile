@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../../..
 
-DIRS = demo
+DIRS = demo test
 
 # $(ME) is used in ptdir.mk
 ME = org/ptolemy/machineLearning/hmm
@@ -51,35 +51,36 @@ PTPACKAGE = hmm
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	HMMExponentialClassifier.java\
-	HMMExponentialEstimator.java\
-	HMMGaussianClassifier.java\
-	HMMGaussianEstimator.java\
-	HMMMultinomialClassifier.java\
-	HMMMultinomialEstimator.java\
-	ObservationClassifier.java\
-	ParameterEstimator.java
-	
+	HMMExponentialClassifier.java \
+	HMMExponentialEstimator.java \
+	HMMGaussianClassifier.java \
+	HMMGaussianEstimator.java \
+	HMMMultinomialClassifier.java \
+	HMMMultinomialEstimator.java \
+	ObservationClassifier.java \
+	PacketDropFaultGenerator.java \
+	ParameterEstimator.java \
+	StuckAtFaultGenerator.java
 
 OTHER_FILES_TO_BE_JARED = \
-	HMMExponentialClassifierIcon.xml\
-	HMMExponentialEstimatorIcon.xml\
-	HMMGaussianClassifierIcon.xml\
-	HMMGaussianEstimatorIcon.xml\
-	HMMMultinomialClassifierIcon.xml\
-	HMMMultinomialEstimatorIcon.xml
+	HMMExponentialClassifierIcon.xml \
+	HMMExponentialEstimatorIcon.xml \
+	HMMGaussianClassifierIcon.xml \
+	HMMGaussianEstimatorIcon.xml \
+	HMMMultinomialClassifierIcon.xml \
+	HMMMultinomialEstimatorIcon.xml \
+	hmm.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	
+OPTIONAL_FILES = demo test\
 
 JCLASS = $(JSRCS:%.java=%.class)
 
