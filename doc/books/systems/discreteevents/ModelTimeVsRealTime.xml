@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModelTimeVsRealTime" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[457, 211]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[457, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -26,18 +26,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 250.0]">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 22, 670, 321}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 22, 691, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0471806674338">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{225.2049450549451, 107.9342032967033}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{225.20494505494506, 257.383104395609}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model time vs. real time (wall clock time).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{14.63956043955405, 220.14024725275073}">
+        </property>
     </property>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">

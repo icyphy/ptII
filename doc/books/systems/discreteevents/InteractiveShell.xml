@@ -2,28 +2,26 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="InteractiveShell" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={463, 22, 869, 317}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={463, 22, 890, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[656, 207]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[656, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2880834706205">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.641882673942, 151.4144355388803}">
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 345.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.64188267394195, 274.4654672578471}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 105.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A DE model using the InteractiveShell actor, whose&#10;execution is stalled until a user types something. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{21.526944065476528, 244.96427353342602}">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -38,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 120.0}">
         </property>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Type something:&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 115.0}">

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DEExample" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -10,22 +10,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 193, 614, 360}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 193, 635, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[401, 250]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[401, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{200.5, 125.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{200.5, 262.0}">
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple example of a DE model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 270}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{18.0, 244.0}">
         </property>
     </property>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
@@ -37,7 +35,7 @@
         </property>
     </entity>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 120.0]">
         </property>
@@ -59,7 +57,7 @@
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 517, 646, 265}, maximized=false}">
@@ -91,7 +89,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.82066259268782, 91.04876504739514]">
                 </property>
@@ -101,7 +99,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.82066259268777, 91.04876504739514]">
                 </property>
@@ -117,13 +115,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.22377878780998">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -137,13 +136,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06577943508610536">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -157,13 +157,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.475318903278773">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="normal.incomingPort" relation="relation"/>

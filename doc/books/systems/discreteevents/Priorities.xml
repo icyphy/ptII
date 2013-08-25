@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Priorities" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -10,22 +10,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 193, 720, 379}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 193, 859, 600}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 269]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 490]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3589419817904">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{193.5421801643193, 106.16155614241}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{236.95830888106389, 187.4748141627537}">
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Although it is rarely necessary, it may sometimes be useful&#10;to set the priorities of actors in DE. This only has an effect&#10;when the firing order is otherwise not determined by time&#10;stamps or by data precedences (levels).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 270}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{18.037998826292423, 211.7584115805939}">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -34,7 +32,7 @@
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
@@ -110,7 +108,7 @@
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>

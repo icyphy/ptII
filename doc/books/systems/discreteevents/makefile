@@ -2,13 +2,10 @@
 CHAPTER=discreteevents
 EXAMPLE_MODELS = \
 	DEExample.xml \
-	DEWithinSDFWithinDE.xml \
-	DEWithinSDF.xml \
 	Feedback.xml \
 	FixedPointLimitationEx.xml \
-	FixedPointLimitation.xml \
-	FSMsource2.xml \
 	FSMsource.xml \
+	FSMsource2.xml \
 	InteractiveShell.xml \
 	InterarrivalTimes2.xml \
 	InterarrivalTimes3.xml \
@@ -19,11 +16,9 @@ EXAMPLE_MODELS = \
 	ModelTimeVsRealTime.xml \
 	OpenQueuingNetwork.xml \
 	Priorities.xml \
-	Record2.xml \
 	SDFwithinDE.xml \
-	StutteringZeno.xml \
 	ThreadedComposite.xml \
 	Wireless.xml \
 	Zeno.xml 
-
+	
 include ../chapter.mk

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SDFwithinDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -12,20 +12,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={138, 58, 671, 279}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={138, 58, 692, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[458, 169]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[458, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{229.0, 84.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{229.0, 262.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple example of an SDF submodel within a DE model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{11.0, 188.0}">
+        </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 75.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-           </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1.5">

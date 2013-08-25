@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Feedback" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 210]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[88, -9]">
     </property>
@@ -26,17 +26,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 91, 814, 320}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 91, 835, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2490241998439">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{241.7128125, 88.628125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{241.7128125, 214.32624999999717}">
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225, 255}">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete-event model with feedback, which requires a delay&#10; actor such as TimeDelay.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{27.545625000004804, 194.31062499999763}">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -70,11 +71,11 @@
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 130.0]">

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OpenQueuingNetwork" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -12,18 +12,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 74, 1123, 588}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 74, 1144, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[910, 459]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[910, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3238790232722">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.8432425436071, 176.2878020769402}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.8432425436071, 200.83687297291266}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Class definitions:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 170.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A queueing model of a transaction processor that writes to two disks.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-8.736629448639555, 354.17414656929446}">
         </property>
     </property>
     <class name="ExponentialServer" extends="ptolemy.actor.TypedCompositeActor">

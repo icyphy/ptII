@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MM1Queue2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 133, 736, 295}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 133, 757, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[523, 185]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[523, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.5, 92.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.5, 262.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="25.0">
@@ -18,11 +18,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 165.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 210.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of an M/M/1 queue.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 215.0}">
         </property>
     </property>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
