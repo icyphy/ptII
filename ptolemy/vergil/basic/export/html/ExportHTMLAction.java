@@ -866,7 +866,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         + ".xml\">click here</a>.</li>");
 		if (usePtWebsite) {
 		    printWriter.println("<li>For a chapter overview, "
-				+ "<a href=\"../index.html\">Click here</a>.</li>");
+				+ "<a href=\"../index.html\">click here</a>.</li>");
 		}
 		printWriter.println("</ul>");
 
