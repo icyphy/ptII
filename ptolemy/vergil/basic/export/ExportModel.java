@@ -55,14 +55,17 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.lib.gui.UsesInvokeAndWait;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 import ptolemy.vergil.basic.export.html.ExportHTMLAction;
+import ptolemy.vergil.basic.export.web.WebExportParameters;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportModel
@@ -289,7 +292,8 @@ public class ExportModel {
             if (!_runnable(model[0])) {
                 System.out.println("Model \"" + model[0].getFullName() 
                         + "\" contains actors such cannot be run "
-                        + " as part of the export process from ExportModel. "
+                        + " as part of the export process from ExportModel or "
+		        + "it has a WebExportParameters value that runBeforeExport set to false. "
                         + "To export run this model and export it, use vergil."); 
             } else {
             // Optionally run the model.
@@ -914,10 +918,23 @@ public class ExportModel {
      *  Models that invoke SwingUtilities.invokeAndWait()
      *  are not runnable here.  To export such a model, use 
      *  vergil.
+     *  If the model has a WebExportParameters parameter
+     *  then the value of the runBeforeExport Parameter is
+     *  returned.
      *  @param model The model to be checked.
      *  @return true if the model is runnable.
+     *  @exception IllegalActionException If the WebExportParameter
+     *  cannot be read.
      */
-    private boolean _runnable(CompositeEntity model) {
+    private boolean _runnable(CompositeEntity model) throws IllegalActionException {
+	// Check for WebExportParameters.runBeforeExport being false.
+	List<WebExportParameters> webExportParameters = model.attributeList(WebExportParameters.class);
+	if (webExportParameters.size() > 0) {
+	    if (!((BooleanToken)webExportParameters.get(0).runBeforeExport.getToken()).booleanValue()) {
+		return false;
+	    }
+	}
+
         // Check for actors that implement UsesInvokeAndWait.
         Iterator atomicEntities = model.allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
