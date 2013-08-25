@@ -151,6 +151,11 @@ $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemErrorHandling.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemOntology.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemQuantityManager.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved.xml
+$CLASSPATH/ptolemy/demo/ProbabilisticModels/GaussianMixtureModel.xml
+$CLASSPATH/ptolemy/demo/ProbabilisticModels/GMMConvergenceAnalysis.xml
+$CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel.xml
+$CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml
+$CLASSPATH/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain.xml
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/ca/demo/Conway/Conway.xml
 $CLASSPATH/ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom.xml
