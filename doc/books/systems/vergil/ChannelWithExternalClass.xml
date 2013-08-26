@@ -4,13 +4,13 @@
 <entity name="ChannelWithExternalClass" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 243, 997, 599}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 243, 997, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[763, 489]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[763, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3099745844489445">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{266.58984375, 83.72250581009297}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{266.58984375, 97.0815436171979}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -148,8 +148,6 @@
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
@@ -163,7 +161,11 @@
         <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
-    <entity name="Channel" class="Channel">
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;doc.books.systems.vergil.Channel&quot;,  &quot;doc/books/systems/vergil/vergil.jar&quot;}}">
+    </property>
+    <entity name="Channel" class="doc.books.systems.vergil.Channel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 120.0]">
         </property>
     </entity>
@@ -232,7 +234,7 @@
 <plot>
 <title>SequencePlotter</title>
 <xRange min="0.0" max="99.0"/>
-<yRange min="-1.32979598727825" max="1.3254780011534717"/>
+<yRange min="-1.394193919381999" max="1.1688771907668036"/>
 </plot>?>
         </configure>
     </entity>
