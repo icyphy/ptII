@@ -555,8 +555,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
      *  in initialize() throw it.
      */
     public void initialize() throws IllegalActionException {
-
-
+        if (_numberOfTokensPerPort != null) {
+            _numberOfTokensPerPort.clear();
+        }
         super.initialize();
     }
 
@@ -1971,6 +1972,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private Map<TypedIOPort, Set<TypedIOPort>> _inputPortsForPureEvent;
     
+    /** Store number of tokens per port. This is used for throttling local sources. 
+     *  The number could also be retrieved from the event queue but iterating the
+     *  entire event queue for every event would be too time consuming.
+     */
     private Map<IOPort, Integer> _numberOfTokensPerPort;
 
     /** Map the input port where an event caused a pure event to the relative
@@ -1978,12 +1983,23 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private Map<TypedIOPort, Double> _relativeDeadlineForPureEvent;
 
+    /** Deadline for event at ptides output ports. 
+     */
     private HashMap<Time, List<PtidesEvent>> _outputEventDeadlines;
 
+    /** 
+     */
     private HashMap<PtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
+    /** Separate event queue for pure events. 
+     */
     private DEEventQueue _pureEvents;
     
+    /** Maximum number of future events in the event queue. This number is important for
+     *  automatic throttling of local sources. A local source can only produce up to 10
+     *  future events. Manual throttling can be done by using the parameters 
+     *  <i>maxFutureEvents</i> or <
+     */
     private static int _maxNumberOfFutureEvents = 10;
 
 }
