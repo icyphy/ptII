@@ -2,26 +2,19 @@
 CHAPTER=modal
 EXAMPLE_MODELS = \
 	ErrorTransition.xml \
-	Fibonacci2.xml \
 	Fibonacci.xml \
-	FSK.xml \
-	Heartbeat.xml \
 	History.xml \
-	Hysteresis.xml \
 	Merge.xml \
+	ModalClocks.xml \
 	ModalDelay.xml \
-	ModalHDFMultirate.xml \
 	ModalModelExample.xml \
-	ModalSDFMultirate.xml \
 	ModalSDF.xml \
 	Preemptive.xml \
 	RefinementOutput.xml \
-	ResetFinal.xml \
 	ResettableTimer.xml \
-	Reset.xml \
-	SpontaneousFSMPreemptive.xml \
 	SpontaneousFSM.xml \
 	Termination.xml \
+	TimedFSM.xml \
 	Timeout.xml
 
 include ../chapter.mk
