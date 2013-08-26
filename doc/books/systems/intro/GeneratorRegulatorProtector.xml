@@ -48,7 +48,7 @@
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
         </property>
