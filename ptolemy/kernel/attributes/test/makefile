@@ -69,7 +69,8 @@ MISC_FILES =	alljtests.tcl junit
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	test.txt
 
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 

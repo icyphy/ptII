@@ -57,7 +57,8 @@ PTCLASSALLJARS =
 # Keep this list alphabetized.
 JSRCS = ModalController.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	ModalController.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

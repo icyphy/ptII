@@ -94,7 +94,8 @@ MISC_FILES =	alljtests.tcl  junit \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'InnerClassTest$$InnerClass.class'
+	'InnerClassTest$$InnerClass.class' \
+	'WatchDog$$1.class'
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.

@@ -50,7 +50,10 @@ OTHER_FILES_TO_BE_JARED = \
 	FMUModelExchange.xml \
 	Simple.fmu \
 	Simple.mo \
-	Simple.mos
+	Simple.mos \
+	Simple.darwin-x86_64.fmu \
+	Simple.linux64.fmu \
+	Simple.win32.fmu
 
 EXTRA_SRCS = \
 	$(JSRCS) \

@@ -172,6 +172,8 @@ OPTIONAL_FILES =  \
 	'CachedMethod$$BaseConvertCachedMethod.class' \
 	'CachedMethod$$MatrixMapCachedMethod.class' \
 	'CachedMethod$$TypeArgumentConversion.class' \
+	'ConstraintMonitor$$ConstraintMonitorAttributes.class' \
+	'Variable$$CircularDependencyError.class' \
 	'Parameter$$ParseList$$Element.class' \
 	'Parameter$$ParseList.class' \
 	'ParseTreeTypeInference$$1.class' \

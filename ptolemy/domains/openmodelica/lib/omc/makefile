@@ -69,6 +69,7 @@ MISC_FILES =  corba
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'OMCProxy$$_osType.class' \
 	'OMCLogger$$1.class' \
 	'OMCLogger$$2.class' \
 	'OMCProxy$$1.class' \

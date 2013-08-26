@@ -50,7 +50,13 @@ OTHER_FILES_TO_BE_JARED = \
 	GeneratorContactorLoad.fmu \
 	GeneratorContactorLoad.mo \
 	GeneratorContactorLoad.mos \
-	GeneratorContactorLoad.xml
+	GeneratorContactorLoad.xml \
+	GeneratorContactorLoad.darwin-x86_64.fmu \
+	GeneratorContactorLoad.win32.fmu \
+	GeneratorTest.mo \
+	feedback-controller.png \
+	generator-contactor-load.png \
+	plot.png
 
 EXTRA_SRCS = \
 	$(JSRCS) \

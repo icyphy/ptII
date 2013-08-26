@@ -53,7 +53,8 @@ JSRCS = \
 	PtidesListEventQueue.java \
 	PtidesPlatform.java \
 	PtidesReceiver.java \
-	Tag.java
+	Tag.java \
+	ThrottleAttributes.java
 
 OTHER_FILES_TO_BE_JARED = \
 	PtidesPlatformIcon.xml

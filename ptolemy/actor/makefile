@@ -159,6 +159,7 @@ OPTIONAL_FILES = \
 	'Manager$$UnpauserThread.class' \
 	'PublisherPort$$1.class' \
 	'PubSubPort$$1.class' \
+	'QuantityManagerListener$$EventType.class' \
 	'ResourceScheduler$$ExecutionEventType.class' \
 	'TypedIOPort$$1.class' \
 	'TypedIOPort$$TypeTerm.class'

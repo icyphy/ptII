@@ -51,35 +51,40 @@ PTCLASSALLJARS = \
 	util/util.jar
 
 JSRCS = \
-    ActMachine.java \
-    BlockingActor.java \
-    BlockingFire.java \
-    ConstraintSolver.java \
-    EventDictionary.java \
-    FireMachine.java \
-    Graph.java \
-    MappingConstraintSolver.java \
-    MetroDebugger.java \
-    MetroEventBuilder.java \
-    MetroIIDEDirector.java \
-    MetroIIDEDirectorForPtides.java \
-    MetroIIDirector.java \
-    MetroIIMirrorComposite.java \
-    MetroIIPNDirector.java \
-    MetroIIPNQueueReceiver.java \
-    MetroIIPtidesDirector.java \
-    MetroIIPtidesListEventQueue.java \
-    MetroIIPtidesPlatform.java \
-    MetroIIPtidesPort.java \
-    MetroIIPtidesReceiver.java \
-    MetroIISRDirector.java \
-    MetroIISystemCDirector.java \
-    NonBlockingFire.java \
-    Pair.java \
-    ResumableActor.java \
-    ResumableFire.java \
-    StartOrResumable.java \
-    TimeScheduler.java
+	ActMachine.java \
+	BlockingActor.java \
+	BlockingFire.java \
+	ConstraintSolver.java \
+	EventDictionary.java \
+	FireMachine.java \
+	Graph.java \
+	MappingConstraintSolver.java \
+	MetroDebugger.java \
+	MetroEventBuilder.java \
+	MetroEventHandler.java \
+	MetroFSMDirector.java \
+	MetroIICompositeActor.java \
+	MetroIIDEDirector.java \
+	MetroIIDEDirectorForPtides.java \
+	MetroIIDirector.java \
+	MetroIIMirrorComposite.java \
+	MetroIIPNDirector.java \
+	MetroIIPNQueueReceiver.java \
+	MetroIIPtidesDirector.java \
+	MetroIIPtidesListEventQueue.java \
+	MetroIIPtidesPlatform.java \
+	MetroIIPtidesPort.java \
+	MetroIIPtidesReceiver.java \
+	MetroIISRDirector.java \
+	MetroIISystemCDirector.java \
+	MetroModalModel.java \
+	MetroSequentialSDFDirector.java \
+	NonBlockingFire.java \
+	Pair.java \
+	ResumableActor.java \
+	ResumableFire.java \
+	StartOrResumable.java \
+	TimeScheduler.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -93,63 +98,29 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
     doc \
-    'ActMachine.class' \
-    'ActMachine$State.class' \
-    'BlockingActor.class' \
-    'BlockingFire.class' \
-    'ConstraintSolver.class' \
-    'EventDictionary.class' \
-    'FireMachine.class' \
-    'FireMachine$State.class' \
-    'Graph.class' \
-    'MappingConstraintSolver.class' \
-    'MappingConstraintSolverTest.class' \
-    'MetroDebugger.class' \
-    'MetroEventBuilder.class' \
-    'MappingConstraintSolver$ConstraintCounter.class' \
-    'MetroIICompositeActor$1.class' \
-    'MetroIICompositeActor.class' \
-    'MetroIIDEDirector.class' \
-    'MetroIIDEDirectorForPtides.class' \
-    'MetroIIDEDirectorForPtides$Pair.class' \
-    'MetroIIDEDirector$Pair.class' \
-    'MetroIIDirector.class' \
-    'MetroIIEventHandler.class' \
-    'MetroIIFSMDirector$1.class' \
-    'MetroIIFSMDirector.class' \
-    'MetroIIMirrorComposite$1.class' \
-    'MetroIIMirrorComposite$2.class' \
-    'MetroIIMirrorComposite.class' \
-    'MetroIIMirrorComposite$MetroIIMirrorCompositeContents$1.class' \
-    'MetroIIMirrorComposite$MetroIIMirrorCompositeContents.class' \
-    'MetroIIModalModel$1.class' \
-    'MetroIIModalModel.class' \
-    'MetroIIPNDirector$1.class' \
-    'MetroIIPNDirector.class' \
-    'MetroIIPNQueueReceiver.class' \
-    'MetroIIPtidesDirector.class' \
-    'MetroIIPtidesListEventQueue.class' \
-    'MetroIIPtidesPlatform.class' \
-    'MetroIIPtidesPlatform$PtidesMirrorPort.class' \
-    'MetroIIPtidesPlatform$PtidesNetworkType.class' \
-    'MetroIIPtidesPlatform$PtidesPlatformContents.class' \
-    'MetroIIPtidesPlatform$PtidesPlatformDirector.class' \
-    'MetroIIPtidesPort.class' \
-    'MetroIIPtidesReceiver.class' \
-    'MetroIIPtidesReceiver$Event.class' \
-    'MetroIIPtidesReceiver$TagComparator.class' \
-    'MetroIISRDirector$1.class' \
-    'MetroIISRDirector.class' \
-    'MetroIISystemCDirector$1.class' \
-    'MetroIISystemCDirector.class' \
-    'NonBlockingFire.class' \
-    'OverridingMappingConstraintSolver.class' \
-    'Pair.class' \
-    'ResumableActor.class' \
-    'ResumableFire.class' \
-    'StartOrResumable.class' \
-    'TimeScheduler.class' 
-
+	'ActMachine$$1.class' \
+	'ActMachine$$State.class' \
+	'FireMachine$$1.class' \
+	'FireMachine$$State.class' \
+	'MappingConstraintSolver$$ConstraintCounter.class' \
+	'MetroFSMDirector$$1.class' \
+	'MetroIICompositeActor$$1.class' \
+	'MetroIIDEDirectorForPtides$$Pair.class' \
+	'MetroIIMirrorComposite$$1.class' \
+	'MetroIIMirrorComposite$$2.class' \
+	'MetroIIMirrorComposite$$MetroIIMirrorCompositeContents$$1.class' \
+	'MetroIIMirrorComposite$$MetroIIMirrorCompositeContents.class' \
+	'MetroIIPNDirector$$1.class' \
+	'MetroIIPtidesPlatform$$PtidesMirrorPort.class' \
+	'MetroIIPtidesPlatform$$PtidesNetworkType.class' \
+	'MetroIIPtidesPlatform$$PtidesPlatformContents.class' \
+	'MetroIIPtidesPlatform$$PtidesPlatformDirector.class' \
+	'MetroIIPtidesReceiver$$Event.class' \
+	'MetroIIPtidesReceiver$$TagComparator.class' \
+	'MetroIISRDirector$$1.class' \
+	'MetroIISystemCDirector$$1.class' \
+	'MetroModalModel$$1.class' \
+	'MetroSequentialSDFDirector$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

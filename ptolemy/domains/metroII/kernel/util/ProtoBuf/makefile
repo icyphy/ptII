@@ -66,6 +66,9 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'metroIIcomm$$Event$$Time$$Builder.class' \
+	'metroIIcomm$$Event$$Time.class' \
+	'metroIIcomm$$Event$$TimeOrBuilder.class' \
 	'metroIIcomm$$1.class' \
 	'metroIIcomm$$Event$$Builder.class' \
 	'metroIIcomm$$Event.class' \

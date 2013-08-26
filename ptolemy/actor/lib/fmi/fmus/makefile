@@ -40,7 +40,7 @@ FMUS_ME = 	bouncingBallME1 dqME1 incME1 valuesME1 vanDerPolME1
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
 
-DIRS =		fmusim2 $(FMUS)
+DIRS =		fmusim2 template win32 $(FMUS)
 
 
 # Root of the Ptolemy II directory
@@ -67,16 +67,20 @@ PTCLASSALLJARS = \
 	stepCounter1/stepCounter1.jar \
 	stepCounterExtendedFMI/stepCounterExtendedFMI.jar \
 	stepCounterPeriodInName/stepCounterPeriodInName.jar \
+	template/template.jar \
 	valuesME1/valuesME1.jar \
-	vanDerPolME1/vanDerPolME1.jar
-
+	vanDerPolME1/vanDerPolME1.jar \
+	win32/win32.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	fmus.mk
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

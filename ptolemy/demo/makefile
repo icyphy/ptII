@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		Brewery ElectricPowerSystem ExecDemos FuelSystem test
+DIRS = 		AirManagementSystem Brewery ElectricPowerSystem ExecDemos FuelSystem ProbabilisticModels test
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -47,10 +47,13 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
+	AirManagementSystem/AirManagementSystem.java \
 	Brewery/Brewery.jar \
 	ElectricPowerSystem/ElectricPowerSystem.jar \
 	ExecDemos/ExecDemos.jar \
-	FuelSystem/FuelSystem.jar
+	FuelSystem/FuelSystem.jar \
+	ProbabilisticModels/ProbabilisticModels.java
+
 
 PTAUXALLJAR = $(PTPACKAGE).jar
 

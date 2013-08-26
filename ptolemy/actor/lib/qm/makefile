@@ -89,7 +89,10 @@ OPTIONAL_FILES = \
         doc \
 	'AFDXESs$$AFDXEndSystemAttributes.class' \
 	'AFDXSwitch$$AFDXSwitchAttributes.class' \
+	'AFDXESs$$AFDXESsAttributes.class' \
+	'AFDXSwitch$$AfdxSwitchAttributes.class' \
 	'AtomicQuantityManager$$QMAttributes.class' \
+	'CanBus$$CanBusAttributes.class' \
 	'CompositeQuantityManager$$CQMAttributes.class' \
 	'BasicSwitch$$BasicSwitchAttributes.class' \
 	'Bus$$BusAttributes.class' \

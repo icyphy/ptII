@@ -69,6 +69,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Long.c \
 	Matrix.c \
 	Pointer.c \
+	Record.c \
 	Scalar.c \
 	String.c \
 	StringArray.c \

@@ -52,7 +52,8 @@ OTHER_FILES_TO_BE_JARED = \
 	Heating.mos \
 	Heating_ControlledHouse.fmu \
 	House.pdf \
-	HouseControl.xml
+	HouseControl.xml \
+	HouseControlNoPDF.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \

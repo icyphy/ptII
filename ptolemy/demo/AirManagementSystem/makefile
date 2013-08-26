@@ -1,10 +1,9 @@
-# Makefile for Ptolemy II actor.lib.net Datagram demo 
+# Makefile for Ptolemy model that simulates a brewery.
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
-#
-# @Copyright (c) 1998-2011 The Regents of the University of California.
+# @Copyright (c) 2011-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,53 +27,67 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		ptolemy/actor/lib/resourceScheduler/demo/DE
+ME =		ptolemy/demo/AirManagementSystem
 
 DIRS =
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../../..
-
-CLASSPATH =	$(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	DE
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	Brewery
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = 
+
+EXAMPLE_MODELS = \
+	AirManagementSystem.xml \
+	AirManagementSystemCausalityLoop.xml \
+	HeatExchanger.xml \
+	HeatExchangerTester.xml \
+	PhysicalPlant.xml \
+	PhysicalPlantCausalityLoop.xml
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	DE.xml \
-	DE2.xml
+	$(EXAMPLE_MODELS) \
+	FlowChart.pdf \
+	NEWamsStateSpaceModel.pdf
+
+EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 
+#	$(EXAMPLE_MODEL_HTML) \
+#	index.htm \
+#	toc.htm
+
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =
 
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
 
-all: jclass
-	@echo "To run the demos, run 'make demo'"
+all: suball $(EXTRA_SRCS)
+install: subinstall jars
 
-install: jclass jars
+jnlps:
+	cd $(ROOT); \
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		echo "Creating applet for $(ME)/$$x" ; \
+		$(MAKE) JNLP_MODEL_DIRECTORY=$(ME) JNLP_MODEL=`basename $$x .xml` book_dist_update; \
+	done
 
-demo:
-	vergil DE.xml
-
-# Get the rest of the rules
+# Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

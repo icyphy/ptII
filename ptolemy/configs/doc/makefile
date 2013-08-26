@@ -86,7 +86,8 @@ OTHER_FILES_TO_BE_JARED = \
 	whatsNew7.0.htm \
 	whatsNew8.0.htm \
 	whatsNew8.1.htm \
-	whatsNew9.1.htm
+	whatsNew9.1.htm \
+	whatsNew10.0.htm
 
 EXTRA_SRCS = \
 	ClassesIllustrated.htm \
@@ -99,7 +100,8 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	demosModels.txt
 
 JCLASS = $(JSRCS:%.java=%.class)
 

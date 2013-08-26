@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SRinPtides.xml 
+	SRinPtides.xml \
+	SRinPtidesLoop.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

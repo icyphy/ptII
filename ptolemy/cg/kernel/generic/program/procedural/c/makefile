@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/kernel/generic/program/procedural/c
 
-DIRS =		ptidyos type test
+DIRS =		ptidyos type test structures
 
 # Root of the Java directory
 ROOT =		../../../../../../..
@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	ptidyos/ptidyos.jar \
+	structures/structures.jar \
 	type/type.jar
 
 # Keep this list alphabetized.

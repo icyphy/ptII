@@ -69,7 +69,8 @@ MISC_FILES = test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	test
+	test \
+	FMIPP_LICENSE examples include libfmipp.dylib makefile.darwin makefile.linux makefile.mingw msvc src swig
 
 JCLASS = $(JSRCS:%.java=%.class) $(PTLIB) $(PTLIB2)
 

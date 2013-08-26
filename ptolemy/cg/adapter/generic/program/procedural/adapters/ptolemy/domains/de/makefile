@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/de
 
-DIRS =		lib
+DIRS =		kernel lib
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../..
@@ -65,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	lib
+MISC_FILES =	kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

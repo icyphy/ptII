@@ -78,7 +78,8 @@ OPTIONAL_FILES = \
 	'GiottoScheduler$$GiottoActorComparator.class' \
 	'GiottoTimingManager$$1$$1.class' \
 	'GiottoTimingManager$$1$$2.class' \
-	'GiottoTimingManager$$1.class'
+	'GiottoTimingManager$$1.class' \
+	'GiottoTimingManager$$ExecutionAttributes.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

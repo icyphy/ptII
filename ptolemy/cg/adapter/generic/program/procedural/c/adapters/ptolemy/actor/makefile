@@ -57,19 +57,27 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
+	IOPort.java \
 	TypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
+	TypedCompositeActor.c \
 	_Actor.c \
 	_Actor.h \
+	_AtomicActor.c \
+	_AtomicActor.h \
 	_CompositeActor.c \
 	_CompositeActor.h \
+	_Director.c \
 	_Director.h \
 	_IOPort.c \
 	_IOPort.h \
+	_LocalClock.c \
+	_LocalClock.h \
 	_Receiver.c \
 	_Receiver.h \
-	TypedCompositeActor.c
+	_TypedIOPort.c \
+	_TypedIOPort.h
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -1,10 +1,10 @@
-# Makefile for ptolemy/demo tests
+# Makefile FMU template files used to build fmus
 #
-# @Authors: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 67134 2013-08-14 06:35:31Z cxh $
 #
-# @Copyright (c) 1997-2013 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,66 +29,50 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/demo/test
+ME =		ptolemy/actor/lib/fmi/fmus/template
+
+DIRS =		sources
+
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS =
+# Used to build jar files
+PTPACKAGE = 	template
+# PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	sources/sources.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Keep this list alphabetized.
 JSRCS =
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+OTHER_FILES_TO_BE_JARED =
 
-# Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = \
-	dummy.tcl
-
-# Graphical Java tests that use Tcl.
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl  junit \
-		auto \
-		auto32
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
-JCLASS =	$(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
-
-tests:: $(EXTRA_SRCS) jclass test_jsimple
-
-# PtolemyII-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
-
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
-	$(JTCLSH) alljtests.tcl
-
-all install: $(EXTRA_SRCS)
-	@echo "To run the tests in $(ME), run 'make tests'"
+all: suball 
+install: subinstall jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

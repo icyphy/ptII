@@ -55,9 +55,17 @@ PTCLASSALLJAR =
 PTCLASSALLJARS =
 
 # Keep this list alphabetized.
-JSRCS = FSMReceiver.java
+JSRCS = \
+	FSMActor.java \
+	FSMDirector.java \
+	FSMReceiver.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	FSMActor.c \
+	_FSMDirector.c \
+	_FSMDirector.h \
+	_FSMReceiver.c \
+	_FSMReceiver.h
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -69,7 +77,11 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo
+	demo \
+	'FSMActor$$1.class' \
+	'FSMActor$$OutgoingRelations.class' \
+	'FSMActor$$PortScope.class' \
+	'FSMActor$$TransitionRetriever.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

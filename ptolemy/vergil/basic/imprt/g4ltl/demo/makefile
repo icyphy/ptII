@@ -31,7 +31,7 @@
 ME =		ptolemy/vergil/basic/imprt/g4ltl/html/demo
 
 # Keep these alphabetical please.
-DIRS = 	 	Arbitor	Numerical PriorityArbitor
+DIRS = 	 	Arbitor	ErrorHandling Numerical PriorityArbitor
 
 # Root of Ptolemy II directory
 ROOT =		../../../../../..
@@ -47,6 +47,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	Arbitor/Arbitor.jar \
+	ErrorHandling/ErrorHandling.jar \
 	Numerical/Numerical.jar \
 	PriorityArbitor/PriorityArbitor.jar
 

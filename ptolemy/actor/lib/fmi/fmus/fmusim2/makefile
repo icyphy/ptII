@@ -103,3 +103,5 @@ run: fmusim2
 clean: dirclean
 dirclean:
 	rm -rf *.so *.dylib *.o *.fmu *~ fmu fmuTmp* fmusim2 result.csv
+checkjunk:
+	@echo "checkjunk rule not implemented."

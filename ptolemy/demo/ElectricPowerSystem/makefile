@@ -62,7 +62,22 @@ OTHER_FILES_TO_BE_JARED = \
 	Contactor.xml \
 	ContactorIcon.xml \
 	Generator.xml \
-	ElectricPowerSystem.htm
+	ElectricPowerSystem.htm \
+	Controller.xml \
+	Gen_Ctrl_Load.fmu \
+	GeneratorContactorLoadFMU.xml \
+	GeneratorContactorLoadSimXFMU.xml \
+	GeneratorRegulatorProtectorMetro \
+	GeneratorRegulatorProtectorSimXFMU.xml \
+	GeneratorRegulatorProtectorSimXRhapsodyFMU.xml \
+	GeneratorRegulatorProtectorSimXRhapsodyFMUMetronomy.xml \
+	GeneratorRegulatorProtectorTuLiP.xml \
+	GeneratorRegulatorProtectorWithConstraintMonitor.xml \
+	GeneratorRegulatorProtectorWithDecorator.xml \
+	GeneratorRegulatorProtectorWithProcessor.xml \
+	GeneratorRegulatorProtectorWithSpecification.xml \
+	GeneratorRegulatorProtectorWithSpecificationAsAspect.xml \
+	onOffSupervisorSimX.fmu
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 

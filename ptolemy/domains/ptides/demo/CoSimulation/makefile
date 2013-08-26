@@ -50,6 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	CoSimulation.xml \
 	CoSimulationSimple.xml \
+	CoSimulationCompositeResourceScheduler.xml \
 	SysMLABC_OneCPU.xml
 
 EXTRA_SRCS = \

@@ -58,6 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	resourceScheduler.xml
 
 JSRCS = \
+	AtomicResourceScheduler.java \
 	CompositeResourceScheduler.java \
 	DynamicCoreAssignmentScheduler.java \
 	EDFScheduler.java \
@@ -80,6 +81,9 @@ MISC_FILES = #test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	'AtomicResourceScheduler$$ExecutionEventType.class' \
+	'CompositeResourceScheduler$$CompositeResourceSchedulerAttributes.class' \
+	'CompositeResourceScheduler$$ExecutionEventType.class' \
 	'ResourceScheduler$$ExecutionEventType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
