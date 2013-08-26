@@ -1,10 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Fig7" class="ptolemy.domains.ptera.kernel.PteraModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+<entity name="CarWashPtera" class="ptolemy.domains.ptera.kernel.PteraModalModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="errorCause" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
@@ -12,7 +14,7 @@
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    The upper part of this model simulates a car wash system. The Servers variable specifies&#10;the number of servers available (initially 3), and the Queue variable records the number of&#10;cars waiting for service (initially 0).&#10;    The lower part is an add-on to the figure in the paper. It generates a plot to show the&#10;                                                                                        change of Servers and Queue&#10;                                                                                        during execution.&#10;                                                                                            After running this model, a plot&#10;                                                                                        pops up that shows the system is in&#10;                                                                                        fact stable.">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper part of this model simulates a car wash system. The variable named Servers specifies&#10;the number of servers available (initially 3), and the Queue variable records the number of&#10;cars waiting for service (initially 0). The SimulationTime variable defines the duration of an&#10;execution.&#10;&#10;The lower part is an add-on to the model that generates a plot to show the change of&#10;Servers and Queue during execution. After running this model, a plot pops up that&#10;shows the queue size as a function of time.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
             </property>
@@ -35,10 +37,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 130.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 60.0]">
             </property>
         </property>
-        <property name="Servers" class="ptolemy.data.expr.Parameter" value="3">
+        <property name="Servers" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -54,10 +56,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 40.0}">
             </property>
         </property>
-        <property name="SimulationTime" class="ptolemy.data.expr.Parameter" value="1000.0">
+        <property name="SimulationTime" class="ptolemy.data.expr.Parameter" value="300.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -73,19 +75,21 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 90.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 20.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={383, 149, 913, 597}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={110, 122, 939, 732}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 486]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 621]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 243.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.5, 310.5}">
         </property>
         <entity name="Run" class="ptolemy.domains.ptera.kernel.Event">
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Servers = 3;&#10;Queue = 0">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -139,8 +143,19 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 435.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 510.0]">
             </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Servers Available (in blue) and Queue Size (in red)</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="300.0"/>
+<yRange min="0.0" max="3.0"/>
+</plot>?>
+            </configure>
         </entity>
         <entity name="SendToPlot" class="ptolemy.domains.ptera.kernel.Event">
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
@@ -149,7 +164,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 430.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[184.99999999999994, 505.0]">
             </property>
         </entity>
         <entity name="Event" class="ptolemy.domains.ptera.kernel.Event">
@@ -159,7 +174,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 430.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.00000000000003, 505.0]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
@@ -172,14 +187,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.08962465508989391">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -195,14 +208,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.510858573599481">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="5.0 + 20.0*random()">
             </property>
@@ -221,14 +232,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7515006754491314">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -244,14 +253,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.4682056140847942">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="3.0 + 5.0*random()">
             </property>
@@ -267,14 +274,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.09010396403193936">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="SimulationTime">
             </property>
@@ -294,14 +299,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6495179945965548">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="3.0 + 5.0 * random()">
             </property>

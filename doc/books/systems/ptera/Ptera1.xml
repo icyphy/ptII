@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="TwoEvents" class="ptolemy.domains.ptera.kernel.PteraModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+<entity name="Ptera1" class="ptolemy.domains.ptera.kernel.PteraModalModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
         <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
@@ -28,18 +28,18 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 45.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a simple Ptera model, where the Init event schedules the&#10;Increase event after 1.0 unit of time if guard P &lt; 1 evaluates to true. &#10;The actions of both events set the value of P.&#10;&#10;After running the model, the value of P shown at the top right should&#10;become 1.">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    This is a simple Ptera model, where the Init event&#10;schedules the Increase event after 1.0 unit of time if&#10;P &lt; 1 is true. The actions of those events set the&#10;value of P.&#10;    After running the model, the value of P should&#10;become 1.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 135.0]">
             </property>
         </property>
         <entity name="Init" class="ptolemy.domains.ptera.kernel.Event">
@@ -74,14 +74,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.06207771850231384">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="1.0">
             </property>
