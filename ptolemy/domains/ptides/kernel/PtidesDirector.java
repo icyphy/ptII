@@ -287,6 +287,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         PtidesDirector newObject = (PtidesDirector) super.clone(workspace); 
         try {
             newObject._clockSynchronizationErrorBound = new Time(newObject, 0.0);
+            newObject._numberOfTokensPerPort = new HashMap<IOPort, Integer>();
         } catch (IllegalActionException e) { 
             // cannot happen.
         }
@@ -840,7 +841,14 @@ public class PtidesDirector extends DEDirector implements Decorator {
             }
             IOPort port = newEvent.ioPort();
             if (port != null) {
-                _numberOfTokensPerPort.put(port, _numberOfTokensPerPort.get(port) + 1);
+                if (_numberOfTokensPerPort == null) {
+                    _numberOfTokensPerPort = new HashMap<IOPort, Integer>();
+                }
+                Integer numberofTokens = _numberOfTokensPerPort.get(port);
+                if (numberofTokens == null) {
+                    numberofTokens = 0;
+                }
+                _numberOfTokensPerPort.put(port, numberofTokens + 1);
             }
         }
     }
@@ -1494,7 +1502,14 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         maxEvents += _outputEventDeadlines.get(time).size();
                     } 
                 } else {
-                    maxEvents += _numberOfTokensPerPort.get(sinkPort);
+                    if (_numberOfTokensPerPort == null) {
+                        _numberOfTokensPerPort = new HashMap<IOPort, Integer>();
+                    }
+                    Integer numberOfTokens = _numberOfTokensPerPort.get(sinkPort);
+                    if (numberOfTokens == null) {
+                        numberOfTokens = 0;
+                    }
+                    maxEvents += numberOfTokens;
                 }
             }
         }
