@@ -1976,7 +1976,37 @@
 	 destfile="${basedir}/ptolemy/domains/ptides/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/ActuatorPattern/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/Controller/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/CoSimulation/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/DistributedPowerPlant/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/LocalSource/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/MixedSimulator/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/MultiPlatformTDMA/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/MultipleCores/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/PowerPlant/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/PrintingPress/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ptides/demo/PtidesBasicDistributedPowerPlant/*.xml"/>
@@ -2018,7 +2048,13 @@
 	<include name="ptolemy/domains/ptides/demo/PtidesSynchrophasor/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/SRinPtides/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ptides/demo/TREX/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ptides/demo/TTE/*.xml"/>
       </fileset>
     </jar>
 
@@ -3036,61 +3072,61 @@
 	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/Chat/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/Cookies/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/Cookies/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/Cookies/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/Cookies/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/EPlus70Actuator/*.html"/>
+        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/EPlus70Actuator/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/ErrorHandler/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/ErrorHandler/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/Guidance/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/Guidance/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/Guidance/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/OptimizationAdvisor/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/OptimizationAdvisor/files/*.html"/>
+        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/files/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/SmartRoom/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/SmartRoom/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/SmartRoom/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/SmartRoom/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/TemperatureSimulation/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/TemperatureSimulation/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/UCBPower/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/UCBPower/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/UCBPowerPtera/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/WebServerDE/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/demo/WebServerDE/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
       </fileset>
     </jar>
 
