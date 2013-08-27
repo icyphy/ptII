@@ -2,24 +2,24 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ExpressionEvaluatorBackward" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, -35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.736328125, 64.71500015258789]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1494, 634}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 912, 309}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1260, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[678, 199]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.181500872600349">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.49999999999997, 54.70333124999999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.0, 99.5}">
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, -50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[294.736328125, 59.71500015258789]">
         </property>
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
@@ -29,7 +29,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[516.0, 220.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -38,7 +38,7 @@
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 465, 654, 388}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.736328125, 149.7150001525879]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -52,11 +52,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.736328125, 149.7150001525879]">
         </property>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.736328125, 149.7150001525879]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

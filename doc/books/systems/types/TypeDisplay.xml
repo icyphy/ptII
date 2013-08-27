@@ -2,24 +2,24 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TypeDisplay" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[92.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1268, 401}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 828, 284}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1034, 291]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[594, 174]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9770114942528736">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{228.0, 66.88871729651162}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.0, 87.0}">
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.0, 35.0]">
         </property>
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
@@ -29,7 +29,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 135.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[452.0, 210.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -42,11 +42,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[137.0, 90.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="complex">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -57,23 +57,23 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 25.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[297.0, 100.0]">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="complex">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
         <port name="minus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="complex">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="complex">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
     </entity>
@@ -87,11 +87,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 70.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[132.0, 145.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="double">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="unknown">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -113,7 +113,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[487.0, 100.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
