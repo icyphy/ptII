@@ -29,6 +29,8 @@ package ptolemy.actor.gui;
 
 import javax.swing.UIManager;
 
+import ptolemy.moml.ErrorHandler;
+import ptolemy.moml.SimpleErrorHandler;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -66,6 +68,8 @@ public class MoMLApplication extends ConfigurationApplication {
      */
     public MoMLApplication(String[] args) throws Exception {
         this("ptolemy/configs", args);
+        System.out.println("MoMLApplication(args)" + args);
+        MessageHandler.setMessageHandler(new ActorGraphicalMessageHandler());
     }
 
     /** Parse the specified command-line arguments, instantiating classes
@@ -77,8 +81,23 @@ public class MoMLApplication extends ConfigurationApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public MoMLApplication(String basePath, String[] args) throws Exception {
-        super(basePath, args);
-        MessageHandler.setMessageHandler(new ActorGraphicalMessageHandler());
+        this(basePath, args, new ActorGraphicalMessageHandler(), new SimpleErrorHandler());
+    }
+
+
+    /** Parse the specified command-line arguments, instantiating classes
+     *  and reading files that are specified.
+     *  @param basePath The basePath to look for configurations
+     *  in, usually "ptolemy/configs", but other tools might
+     *  have other configurations in other directories
+     *  @param args The command-line arguments.
+     *  @param messageHandler The message handler.
+     *  @param errorHandler The MoML error handler.
+     *  @exception Exception If command line arguments have problems.
+     */
+    public MoMLApplication(String basePath, String[] args, MessageHandler messageHandler,
+                           ErrorHandler errorHandler) throws Exception {
+        super(basePath, args, messageHandler, errorHandler);
     }
 
     /** Set the look and feel to the native look and feel.

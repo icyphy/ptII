@@ -63,6 +63,7 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.SimpleErrorHandler;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -200,6 +201,20 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args)
             throws Exception {
+        this(basePath, args, new /*Graphical*/MessageHandler(), new SimpleErrorHandler());
+    }
+    /** Parse the specified command-line arguments, instantiating classes
+     *  and reading files that are specified.
+     *  @param basePath The basePath to look for configurations
+     *  in, usually "ptolemy/configs", but other tools might
+     *  have other configurations in other directories
+     *  @param args The command-line arguments.
+     *  @param messageHandler The message handler.
+     *  @param errorHandler the MoML error handler.
+     *  @exception Exception If command line arguments have problems.
+     */
+    public ConfigurationApplication(String basePath, String[] args,
+            MessageHandler messageHandler, ErrorHandler errorHandler) throws Exception {
         this();
 
         _initializeApplication();
@@ -208,6 +223,8 @@ public class ConfigurationApplication implements ExecutionListener {
         // Create a parser to use.
         _parser = new MoMLParser();
 
+        MoMLParser.setErrorHandler(errorHandler);
+
         // We set the list of MoMLFilters to handle Backward Compatibility.
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
@@ -215,7 +232,7 @@ public class ConfigurationApplication implements ExecutionListener {
         // that if we get an error in parseArgs() we will get a graphical
         // stack trace.   Such an error could be caused by specifying a model
         // as a command line argument and the model has an invalid parameter.
-        MessageHandler.setMessageHandler(new /*Graphical*/MessageHandler());
+        MessageHandler.setMessageHandler(messageHandler);
 
         // Even if the user is set up for foreign locale, use the US locale.
         // This is because certain parts of Ptolemy (like the expression

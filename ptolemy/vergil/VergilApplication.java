@@ -107,14 +107,9 @@ public class VergilApplication extends MoMLApplication {
      */
     public VergilApplication(String[] args) throws Exception {
         // FindBugs: FIXME: Note that MoMLApplication(String, String[]) starts a
-        // thread, which means that the error handler will not be registered before
+        // thread, which used to mean that the error handler will not be registered before
         // the thread starts.
-        super("ptolemy/configs", args);
-        MessageHandler.setMessageHandler(new VergilGraphicalMessageHandler());
-
-        // Create register an error handler with the parser so that
-        // MoML errors are tolerated more than the default.
-        MoMLParser.setErrorHandler(new VergilErrorHandler());
+        this("ptolemy/configs", args);
     }
 
     /** Parse the specified command-line arguments, creating models
@@ -126,11 +121,11 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public VergilApplication(String basePath, String[] args) throws Exception {
-        super(basePath, args);
-
-        // Create register an error handler with the parser so that
-        // MoML errors are tolerated more than the default.
-        MoMLParser.setErrorHandler(new VergilErrorHandler());
+        // FindBugs: FIXME: Note that MoMLApplication(String,
+        // String[]) starts a thread, which used to mean that the
+        // message handler and error handler were not registered
+        // before the thread starts.
+        super("ptolemy/configs", args, new VergilGraphicalMessageHandler(), new VergilErrorHandler());
     }
 
     ///////////////////////////////////////////////////////////////////

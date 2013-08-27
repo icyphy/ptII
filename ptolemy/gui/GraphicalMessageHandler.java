@@ -140,6 +140,13 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
      * "Cancel" button.
      */
     protected void _warning(final String info) throws CancelException {
+        if (isRunningNightlyBuild()) {
+            System.out.println("Running nightly build or in batch mode.  "
+                    + "A warning dialog would have been displayed, but instead we are printing:\n"
+                    + info);
+            return;
+        }
+
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
@@ -192,6 +199,12 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
      */
     protected void _warning(final String info, final Throwable throwable)
             throws CancelException {
+        if (isRunningNightlyBuild()) {
+            System.out.println("Running nightly build or in batch mode.  "
+                    + "A warning dialog would have been displayed, but instead we are printing:\n"
+                    + info + ": " + throwable.getMessage() + " " + throwable);
+            return;
+        }
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
