@@ -163,9 +163,7 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
-    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;doc.books.systems.vergil.Channel&quot;,  &quot;doc/books/systems/vergil/vergil.jar&quot;}}">
-    </property>
-    <entity name="Channel" class="doc.books.systems.vergil.Channel">
+    <entity name="Channel" class="Channel" source="http://ptolemy.org/systems/models/vergil/Channel.xml" >
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 120.0]">
         </property>
     </entity>
