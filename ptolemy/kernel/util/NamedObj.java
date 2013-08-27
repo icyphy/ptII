@@ -1601,6 +1601,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         throw new IllegalActionException(this, "Has no container.");
     }
 
+    /** React to a change in a contained named object. This method is 
+     *  called by a contained named object when its name or display name
+     *  changes. In this base class, the method does nothing.
+     *  @param object The object that changed.
+     */
+    public void notifyOfNameChange(NamedObj object) {
+    }
+    
     /** Propagate the existence of this object.
      *  If this object has a container, then ensure that all
      *  objects derived from the container contain an object
@@ -1894,6 +1902,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public void setDisplayName(String name) {
         _displayName = name;
+        // Notify container of this change.
+        NamedObj container = getContainer();
+        if (container != null) {
+            container.notifyOfNameChange(this);
+        }
     }
 
     /** Set the model error handler.
@@ -1953,7 +1966,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } finally {
             _workspace.doneWriting();
         }
-
+        
+        // Notify container of this change.
+        NamedObj container = getContainer();
+        if (container != null) {
+            container.notifyOfNameChange(this);
+        }
+        
         if (_debugging) {
             _debug("Changed name from " + oldName + " to " + getFullName());
         }
