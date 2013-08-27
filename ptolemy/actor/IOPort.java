@@ -260,7 +260,9 @@ public class IOPort extends ComponentPort {
             if (decorator != null && decorator instanceof QuantityManager) {
                 // Invalidate list of quantity managers.
                 _qmListValid = false;
-                createReceivers();
+                if (isOpaque()) {
+                    createReceivers();
+                }
             }
         }
         super.attributeChanged(attribute);
