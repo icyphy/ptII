@@ -276,12 +276,19 @@ public class DEDirector extends Director {
                     IOPort farPort = receiver.getContainer();
                     NamedObj farActor = farPort.getContainer();
                     String sanitizedFarActorName = CodeGeneratorAdapter.generateName(farActor);
-                    String farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
+                    String farPortName;
+                    if (farActor == container)
+                        farPortName = farPort.getName() + "->_localInsideReceivers, ";
+                    else
+                        farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
                     
                     int foo = 0;
                     int bar = 0;
                     Receiver[][] farReceiverss;
-                    farReceiverss = farPort.getReceivers();
+                    if (farPort.isOutput() && farPort.isOpaque())
+                        farReceiverss = farPort.getInsideReceivers();
+                    else
+                        farReceiverss = farPort.getReceivers();
                     loops:
                     for (foo = 0 ; foo < farReceiverss.length ; foo++) 
                         for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)

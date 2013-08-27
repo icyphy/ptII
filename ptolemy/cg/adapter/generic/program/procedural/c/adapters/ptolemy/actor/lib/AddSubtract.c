@@ -7,9 +7,10 @@ $actorSymbol(result) = $zero;
 /**/
 
 /***minusOnlyInitSum($minusType)***/
-//$actorSymbol(result) = $negate_$minusType($get(minus#0));
-$actorSymbol(result) = $zero_$minusTypeOneArg($get(minus#0));
+$actorSymbol(result) = $zero_$minusType();
 /**/
+//$actorSymbol(result) = $negate_$minusType($get(minus#0));
+//$zero_$minusType($get(minus#0));
 
 /***plusBlock($channel, $type1, $type2)***/
 if ($hasToken(plus#$channel)) {
