@@ -98,7 +98,9 @@ public class QMAttributes extends ResourceAttributes {
             throws IllegalActionException {
         IOPort port = (IOPort) getContainer();
         if (attribute == enable) {
-            port.createReceivers();
+            if (((CompositeActor)port.getContainer().getContainer()).isOpaque()) {
+                port.createReceivers();
+            }
             port.invalidateQMList();
         }
         super.attributeChanged(attribute);
