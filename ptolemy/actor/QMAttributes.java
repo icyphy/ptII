@@ -98,10 +98,15 @@ public class QMAttributes extends ResourceAttributes {
             throws IllegalActionException {
         IOPort port = (IOPort) getContainer();
         if (attribute == enable) {
-            if (((CompositeActor)port.getContainer().getContainer()).isOpaque()) {
-                port.createReceivers();
-            }
-            port.invalidateQMList();
+	    // When cloning, the contanier might be an EntityLibrary.
+	    // See vergil/test/VergilConfiguration.tcl.
+	    NamedObj container = port.getContainer().getContainer();
+	    if (container instanceof CompositeActor) {
+		if (((CompositeActor) container).isOpaque()) {
+		    port.createReceivers();
+		}
+		port.invalidateQMList();
+	    }
         }
         super.attributeChanged(attribute);
     }
