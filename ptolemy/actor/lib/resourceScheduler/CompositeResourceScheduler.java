@@ -50,6 +50,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
@@ -99,7 +100,22 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                 this.uniqueName("_editorFactory"));
         _requestPorts = new HashMap<Actor, String>();
         _previousY = new HashMap<NamedObj, Double>();
+        
+        justMonitor = new Parameter(this, "justMonitor");
+        justMonitor.setTypeEquals(BaseType.BOOLEAN);
+        justMonitor.setExpression("false");
+        _justMonitor = false;
+        
+        _lastTimeScheduled = new HashMap<Actor, Time>();
     }
+    
+    /** This parameter indicates whether the tokens received via the 
+     *  ImmediateReceivers are immediately forwarded to the wrapped 
+     *  receivers or whether they are delayed by this quantity manager
+     *  and only forwarded through a CQMOutputPort. 
+     *  This parameter is a boolean that defaults to false.
+     */
+    public Parameter justMonitor;
     
     ///////////////////////////////////////////////////////////////////
     //                         public variables                      //
@@ -117,6 +133,22 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
 
+    /** React to the change of the <i>justMonitor</i> attribute by
+     *  updating internal variables.
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException If token in attribute cannot
+     *    be accessed.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == justMonitor) {
+            _justMonitor = ((BooleanToken) justMonitor.getToken())
+                    .booleanValue();
+        }
+        super.attributeChanged(attribute);
+    }
+    
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -131,6 +163,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                     newObject, this.uniqueName("_editorFactory"));
             newObject._previousY = new HashMap<NamedObj, Double>();
             newObject._requestPorts = new HashMap<Actor, String>();
+            newObject._lastTimeScheduled = new HashMap<Actor, Time>();
         } catch (KernelException e) {
             throw new InternalErrorException(e);
         }
@@ -224,6 +257,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         _currentlyExecuting = new ArrayList<Actor>();
         _lastActorFinished = false;
         _previousY.clear();
+        _lastTimeScheduled.clear();
         _initializeActorsToSchedule();
         _actors.add(this);
     
@@ -249,13 +283,6 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     
     public boolean isWaitingForResource(Actor actor) {
         return _currentlyExecuting.contains(actor);
-    }
-
-    /** Return whether last actor that was scheduled finished execution.
-     *  @return True if last actor finished execution.
-     */
-    public boolean lastActorFinished() {
-        return _lastActorFinished;
     }
 
     /** If the last actor that was scheduled finished execution
@@ -289,6 +316,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                 }
             }
         }
+        
+        
         return postfire;
     }
 
@@ -365,17 +394,6 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         _requestPorts.put(actor, portName);
     }
 
-    /** Create end events for the plotter.
-     *  @exception IllegalActionException Thrown by super class.
-     */
-    public void wrapup() throws IllegalActionException {
-        for (NamedObj actor : _actors) {
-//            event(actor, ((CompositeActor) getContainer()).getDirector()
-//                    .getModelTime().getDoubleValue(), null);
-        }
-        super.wrapup();
-    }
-
     ///////////////////////////////////////////////////////////////////
     //                          protected methods                    //
 
@@ -442,14 +460,15 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     
     protected Time _schedule(Actor actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {   
-        _lastActorFinished = false;
-        
+        _lastActorFinished = false; 
         // make sure that director has the correct time.
         getDirector().setModelTime(getExecutiveDirector().localClock.getLocalTime());
         
-        
         // create token for scheduling requests and put them into ports.
-        if (!_currentlyExecuting.contains(actor)) {
+        Time time = _lastTimeScheduled.get(actor);
+        if ((_justMonitor && (time == null || !time.equals(currentPlatformTime))) 
+                || !_currentlyExecuting.contains(actor)) {
+            _lastTimeScheduled.put(actor, currentPlatformTime);
             event((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
             if (_requestPorts.get(actor) == null) {
                 throw new IllegalActionException(this, "Actor " + actor + " does not have a" +
@@ -470,9 +489,14 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                       + _requestPorts.get(actor));
             }
         } 
-        // at this point we don't know how long it will take till the actor
-        // finishes execution.
-        return Time.POSITIVE_INFINITY;
+        if (_justMonitor) {
+            _lastActorFinished = true;
+            return new Time(getDirector(), 0.0);
+        } else {
+            // at this point we don't know how long it will take till the actor
+            // finishes execution.
+            return Time.POSITIVE_INFINITY;
+        }
     }
 
     /** Contains the actors inside a ptides platform (=platforms). */
@@ -538,6 +562,10 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
 
     /** Previous positions of the actor data set. */
     private HashMap<NamedObj, Double> _previousY;
+    
+    private HashMap<Actor, Time> _lastTimeScheduled;
+    
+    private boolean _justMonitor;
 
     private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
 

@@ -248,7 +248,10 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
     @Override
     public void fire() throws IllegalActionException { 
         super.fire();
-        schedule(getDirector().getModelTime());
+        Time time = schedule(getDirector().getModelTime());
+        if (time.getDoubleValue() > 0.0) {
+            getDirector().fireAt(this, getDirector().getModelTime().add(time));
+        }
     }
 
     /** Initialize local variables.
@@ -293,6 +296,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
     public boolean lastActorFinished() {
         return _lastActorFinished;
     }
+     
 
     /** If the last actor that was scheduled finished execution
      *  then this method returns true.
@@ -413,7 +417,8 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         double executionTime = 0.0;
         for (ExecutionTimeResourceAttributes resourceAttributes : ((NamedObj) actor)
                 .attributeList(ExecutionTimeResourceAttributes.class)) {
-            if (resourceAttributes.getDecorator().equals(this)) {
+            if (resourceAttributes.getDecorator() != null && 
+                    resourceAttributes.getDecorator().equals(this)) {
                 Token token = resourceAttributes.executionTime.getToken();
                 if (token != null) {
                     executionTime = ((DoubleToken) token).doubleValue();
@@ -438,7 +443,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *    as execution time or priority cannot be read.
      */
     protected Time schedule(Actor actor, Time environmentTime, Time deadline,
-            Time executionTime) throws IllegalActionException {
+            Time executionTime) throws IllegalActionException { 
         return null;
     }
 
@@ -449,6 +454,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *  finished execution.
      */
     protected boolean _lastActorFinished;
+    protected Actor _lastActorThatFinished;
 
     /** The last time an actor's remaining time was updated due to a scheduling
      *  request.

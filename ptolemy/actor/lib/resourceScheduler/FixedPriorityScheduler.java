@@ -171,11 +171,12 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
         Time time = Time.POSITIVE_INFINITY;
         if (_currentlyExecuting.size() > 0) {
             Actor actor = _currentlyExecuting.peek();
-            time = super.schedule(actor, environmentTime, null, null);
-            if (lastScheduledActorFinished()) { 
+            time = schedule(actor, environmentTime, null, null);
+            if (_lastActorThatFinished == actor && lastActorFinished()) { 
                 getDirector().resumeActor(actor);
             }
         }
+        
         return time;
     }
     
@@ -204,22 +205,38 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
             Time lasttime = _lastTimeScheduled.get(executing);
             Time timePassed = currentPlatformTime.subtract(lasttime);
             remainingTime = _remainingTimes.get(executing).subtract(timePassed);
+            if (remainingTime.getDoubleValue() < 0) {
+                throw new IllegalActionException(this, "");
+            }
             _remainingTimes.put(executing, remainingTime);
-            if (_preemptive && !_currentlyExecuting.contains(actor) && executing != actor) {
-                double executingPriority = _getPriority(executing);
-                double newActorPriority = _getPriority(actor);
-                if (newActorPriority < executingPriority) {
-                    if (remainingTime.getDoubleValue() == 0.0) {
-                        event((NamedObj) _currentlyExecuting.peek(),
-                                currentPlatformTime.getDoubleValue(),
-                                ExecutionEventType.STOP);
+            if (!_currentlyExecuting.contains(actor) && executing != actor) {
+                if (_preemptive) {
+                    double executingPriority = _getPriority(executing);
+                    double newActorPriority = _getPriority(actor);
+                    if (newActorPriority < executingPriority) {
+                        if (remainingTime.getDoubleValue() == 0.0) {
+                            event((NamedObj) _currentlyExecuting.peek(),
+                                    currentPlatformTime.getDoubleValue(),
+                                    ExecutionEventType.STOP);
+                        } else {
+                            event((NamedObj) executing,
+                                    currentPlatformTime.getDoubleValue(),
+                                    ExecutionEventType.PREEMPTED);
+                        }
+                        remainingTime = executionTime; 
+                        scheduleNewActor(actor, currentPlatformTime, executionTime);
                     } else {
-                        event((NamedObj) executing,
-                                currentPlatformTime.getDoubleValue(),
-                                ExecutionEventType.PREEMPTED);
+                        _add(actor, executionTime);
+                        // add event somewhere
                     }
-                    remainingTime = executionTime; 
-                    scheduleNewActor(actor, currentPlatformTime, executionTime);
+                } else {
+                    Object[] actors = _currentlyExecuting.toArray();
+                    _currentlyExecuting.clear();
+                    for (int j = 0; j < actors.length; j++) {
+                        _currentlyExecuting.push((Actor) actors[j]);
+                    }
+                    _currentlyExecuting.push(actor);
+                    _remainingTimes.put(actor, executionTime);
                 }
             }
             for (Actor preemptedActor : _currentlyExecuting) {
@@ -243,10 +260,13 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
                 }
             }
             _lastActorFinished = true;
+            _lastActorThatFinished = actor;
         }
-        return remainingTime;
+         return remainingTime;
 
     }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     //                      protected methods                        //
@@ -270,6 +290,34 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
 
+    private void _add(Actor actor, Time executionTime) throws IllegalActionException {
+        double priority = _getPriority(actor); 
+                
+        Object[] actors = _currentlyExecuting.toArray();
+        _currentlyExecuting.clear();
+        for (int i = 0; i < actors.length; i++) {
+            Actor actorInArray = (Actor) actors[i];
+            double actorInArrayPriority = _getPriority(actor); 
+            if (priority < actorInArrayPriority) { 
+                for (int j = actors.length - 1; j >= i; j--) {
+                    _currentlyExecuting.push((Actor) actors[j]);
+                }
+                _currentlyExecuting.push(actor);
+                _remainingTimes.put(actor, executionTime);
+                for (int j = i - 1; j >= 0; j--) {
+                    _currentlyExecuting.push((Actor) actors[j]);
+                }
+                break;
+            }
+        } 
+        _currentlyExecuting.push(actor);
+        for (int j = actors.length - 1; j >= 0; j--) {
+            _currentlyExecuting.push((Actor) actors[j]);
+        }
+        
+        _remainingTimes.put(actor, executionTime);
+    }
+    
     /** Schedule a new actor which possibly preempts currently executing
      *  actors.
      *  @param actor The actor.
