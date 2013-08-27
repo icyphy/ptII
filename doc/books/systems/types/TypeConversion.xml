@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 98, 867, 280}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 867, 634}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 170]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.5, 85.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.5, 262.0}">
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 35.0]">
@@ -29,7 +29,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 565.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">

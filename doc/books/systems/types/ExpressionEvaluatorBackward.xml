@@ -7,19 +7,19 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.736328125, 64.71500015258789]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 912, 309}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 912, 634}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[678, 199]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[678, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.0, 99.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.0, 262.0}">
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[294.736328125, 59.71500015258789]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 40.0]">
         </property>
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
@@ -29,7 +29,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[516.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 575.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -38,7 +38,7 @@
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 465, 654, 388}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.736328125, 149.7150001525879]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 140.0]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -52,23 +52,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.736328125, 149.7150001525879]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 140.0]">
         </property>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.736328125, 149.7150001525879]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 140.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=75.0,y=50.0}, tail={id=&quot;SampleDelay.output&quot;,x=415.0,y=50.0}, points={-35.0,40.0,-35.0,5.0,530.0,5.0,530.0,50.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=160.0,y=140.0}, tail={id=&quot;SampleDelay.output&quot;,x=495.0,y=140.0}, points={50.0,130.0,50.0,95.0,610.0,95.0,610.0,140.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=75.0,y=50.0}, tail={id=&quot;ExpressionToToken.input&quot;,x=200.0,y=50.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=160.0,y=140.0}, tail={id=&quot;ExpressionToToken.input&quot;,x=280.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=415.0,y=50.0}, tail={id=&quot;ExpressionToToken.output&quot;,x=200.0,y=50.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=495.0,y=140.0}, tail={id=&quot;ExpressionToToken.output&quot;,x=280.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <link port="InteractiveShell.input" relation="relation4"/>
