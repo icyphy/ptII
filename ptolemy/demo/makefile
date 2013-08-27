@@ -47,12 +47,12 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
-	AirManagementSystem/AirManagementSystem.java \
+	AirManagementSystem/AirManagementSystem.jar \
 	Brewery/Brewery.jar \
 	ElectricPowerSystem/ElectricPowerSystem.jar \
 	ExecDemos/ExecDemos.jar \
 	FuelSystem/FuelSystem.jar \
-	ProbabilisticModels/ProbabilisticModels.java
+	ProbabilisticModels/ProbabilisticModels.jar
 
 
 PTAUXALLJAR = $(PTPACKAGE).jar
