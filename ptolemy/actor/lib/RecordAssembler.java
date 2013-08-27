@@ -27,12 +27,13 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
-import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ConstructAssociativeType;
@@ -44,7 +45,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordAssembler
@@ -106,8 +107,6 @@ public class RecordAssembler extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
 
-        _inputs = new LinkedList<TypedIOPort>();
-
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
@@ -122,20 +121,6 @@ public class RecordAssembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RecordAssembler newObject = (RecordAssembler) super.clone(workspace);
-
-        newObject._inputs = new LinkedList<TypedIOPort>();
-
-        return newObject;
-    }
-
     /** Read one token from each input port, assemble them into a RecordToken,
      *  and send the RecordToken to the output.
      *  @exception IllegalActionException If there is no director.
@@ -143,21 +128,15 @@ public class RecordAssembler extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        Object[] portArray = _inputs.toArray();
-        int size = portArray.length;
-
-        // construct the RecordToken and to output
-        String[] labels = new String[size];
-        Token[] values = new Token[size];
-
-        for (int i = 0; i < size; i++) {
-            IOPort port = (IOPort) portArray[i];
-            if (port.getDisplayName() == null || port.getDisplayName().equals("")) {
-                labels[i] = port.getName(); 
-            } else {
-                labels[i] = port.getDisplayName();
-            }
-            values[i] = port.get(0);
+        int i = 0;
+        Set<Entry<String, TypedIOPort>> entries = _portMap.entrySet();
+        String[] labels = new String[entries.size()];
+        Token[] values = new Token[entries.size()];
+        
+        for (Entry<String, TypedIOPort> entry : entries) {
+            labels[i] = entry.getKey();
+            values[i] = entry.getValue().get(0);
+            i++;
         }
 
         RecordToken result = new RecordToken(labels, values);
@@ -165,17 +144,16 @@ public class RecordAssembler extends TypedAtomicActor {
         output.send(0, result);
     }
 
-    /** Generate a list of all connected input ports.
+    /** React to a name change of contained ports. Update the internal
+     *  mapping from names and aliases to port objects, and invalidate
+     *  the resolved types. 
+     *  @param object The object that changed.
      */
     @Override
-    public void preinitialize() throws IllegalActionException {
-        _inputs = new LinkedList<TypedIOPort>();
-        for (TypedIOPort port : inputPortList()) {
-            if (port.numberOfSources() > 0) {
-                _inputs.add(port);
-            }
+    public void notifyOfNameChange(NamedObj object) {
+        if (object instanceof TypedIOPort) {
+            _mapPorts();
         }
-        super.preinitialize();
     }
 
     /** Return true if all connected input ports have tokens, false if some
@@ -187,10 +165,13 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
 
-        for (TypedIOPort port : _inputs) {
+        for (TypedIOPort port : _portMap.values()) {
             if (!port.hasToken(0)) {
                 if (_debugging) {
-                    _debug("Port " + port.getName() + " does not have a token, prefire() will return false.");
+                    _debug("Port "
+                            + port.getName()
+                            + " does not have a token, prefire()"
+                            + " will return false.");
                 }
                 return false;
             }
@@ -227,17 +208,16 @@ public class RecordAssembler extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
 
+        // make sure the ports are mapped
+       _mapPorts();
+        
         // constrain the type of every input to be greater than or equal to
         // the resolved type of the corresponding field in the output record
-        for (TypedIOPort input : _inputs) {
+        for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
+            String inputName = entry.getKey();
+            TypedIOPort input = entry.getValue();
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
-                String inputName;
-                if (input.getDisplayName() == null || input.getDisplayName().equals("")) {
-                    inputName = input.getName(); 
-                } else {
-                    inputName = input.getDisplayName();
-                }
                 result.add(new Inequality(new ExtractFieldType(output, 
                         inputName), input.getTypeTerm()));
             }
@@ -246,8 +226,8 @@ public class RecordAssembler extends TypedAtomicActor {
         // constrain the fields in the output record to be greater than or
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
-        result.add(new Inequality(new ConstructAssociativeType(_inputs,
-                RecordType.class), output.getTypeTerm()));
+        result.add(new Inequality(new ConstructAssociativeType(_portMap
+                .values(), RecordType.class), output.getTypeTerm()));
 
         return result;
     }
@@ -260,9 +240,43 @@ public class RecordAssembler extends TypedAtomicActor {
         return null;
     }
 
+    /** Map port names or aliases to port objects. If the mapping
+     *  has changed, then invalidate the resolved types, which 
+     *  forces new type constraints with appropriate field names
+     *  to be generated. 
+     */
+    protected void _mapPorts() {
+        // Retrieve the manager.
+        Manager manager = this.getManager();
+        
+        // Generate a new mapping from names/aliases to ports.
+        Map<String, TypedIOPort> oldMap = _portMap;
+        _portMap = new HashMap<String, TypedIOPort>();
+        for (TypedIOPort p : this.inputPortList()) {
+            String name = p.getName();
+            String alias = p.getDisplayName();
+            // ignore unconnected ports
+            if (p.numberOfSources() < 1) {
+                continue;
+            }
+            if (alias == null || alias.equals("")) {
+                _portMap.put(name, p);
+            } else {
+                _portMap.put(alias, p);
+            }
+        }
+        
+        // Only invalidate resolved types if there actually was a name change.
+        // As a result, new type constraints will be generated.
+        if (manager != null && (oldMap == null || !_portMap.equals(oldMap))) {
+            manager.invalidateResolvedTypes();
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The connected input ports. */
-    private List<TypedIOPort> _inputs;
+    ////                     protected variables                   ////
+    
+    /** Keeps track of which name or alias is associated with which port. */
+    protected Map<String, TypedIOPort> _portMap;
+    
 }

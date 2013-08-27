@@ -28,12 +28,15 @@
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ConstructAssociativeType;
@@ -48,6 +51,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordDisassembler
@@ -107,7 +111,6 @@ public class RecordDisassembler extends TypedAtomicActor {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
@@ -121,7 +124,7 @@ public class RecordDisassembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** Read one RecordToken from the input port and send its fields
      *  to the output ports.
      *  If the input does not have a token, suspend firing and return.
@@ -142,8 +145,8 @@ public class RecordDisassembler extends TypedAtomicActor {
             while (labels.hasNext()) {
                 String label = (String) labels.next();
                 Token value = record.get(label);
-                IOPort port = (IOPort) getPort(label);
-
+                TypedIOPort port = _portMap.get(label);
+                
                 // since the record received may contain more fields than the
                 // output ports, some fields may not have a corresponding
                 // output port.
@@ -154,6 +157,18 @@ public class RecordDisassembler extends TypedAtomicActor {
         }
     }
 
+    /** React to a name change of contained ports. Update the internal
+     *  mapping from names and aliases to port objects, and invalidate
+     *  the resolved types. 
+     *  @param object The object that changed.
+     */
+    @Override
+    public void notifyOfNameChange(NamedObj object) {
+        if (object instanceof TypedIOPort) {
+            _mapPorts();
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -183,23 +198,19 @@ public class RecordDisassembler extends TypedAtomicActor {
         ArrayList<String> labels = new ArrayList<String>();
         ArrayList<Type> types = new ArrayList<Type>();
 
+        // make sure the ports are mapped
+        _mapPorts();
+        
         // constrain the fields in the input record to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
         result.add(new Inequality(new ConstructAssociativeType(
-                outputPortList(), RecordType.class), input.getTypeTerm()));
+                _portMap.values(), RecordType.class), input.getTypeTerm())); 
 
-        for (TypedIOPort output : outputPortList()) {
-            String outputName;
-            // ignore unconnected ports
-            if (output.numberOfSinks() < 1) {
-                continue;
-            }
-            if (output.getDisplayName() == null || output.getDisplayName().equals("")) {
-                outputName = output.getName(); 
-            } else {
-                outputName = output.getDisplayName();
-            }
+        for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
+            String outputName = entry.getKey();
+            TypedIOPort output = entry.getValue();
+            
             labels.add(outputName);
             types.add(BaseType.GENERAL);
 
@@ -228,4 +239,47 @@ public class RecordDisassembler extends TypedAtomicActor {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+    
+    /** Map port names or aliases to port objects. If the mapping
+     *  has changed, then invalidate the resolved types, which 
+     *  forces new type constraints with appropriate field names
+     *  to be generated. 
+     */
+    private void _mapPorts() {
+        // Retrieve the manager.
+        Manager manager = this.getManager();
+        
+        // Generate a new mapping from names/aliases to ports.
+        Map<String, TypedIOPort> oldMap = _portMap;
+        _portMap = new HashMap<String, TypedIOPort>();
+        for (TypedIOPort p : this.outputPortList()) {
+            String name = p.getName();
+            String alias = p.getDisplayName();
+            // ignore unconnected ports
+            if (p.numberOfSinks() < 1) {
+                continue;
+            }
+            if (alias == null || alias.equals("")) {
+                _portMap.put(name, p);
+            } else {
+                _portMap.put(alias, p);
+            }
+        }
+        
+        // Only invalidate resolved types if there actually was a name change.
+        // As a result, new type constraints will be generated.
+        if (manager != null && (oldMap == null || !_portMap.equals(oldMap))) {
+            manager.invalidateResolvedTypes();
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+    
+    /** Keeps track of which name or alias is associated with which port. */
+    private Map<String, TypedIOPort> _portMap;
+
 }

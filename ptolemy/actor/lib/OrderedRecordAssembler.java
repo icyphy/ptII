@@ -27,7 +27,11 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.Set;
+import java.util.Map.Entry;
+
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
@@ -86,27 +90,20 @@ public class OrderedRecordAssembler extends RecordAssembler {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        Object[] portArray = inputPortList().toArray();
-        int size = portArray.length;
-
-        // construct the RecordToken and to output
-        String[] labels = new String[size];
-        Token[] values = new Token[size];
-
-        for (int i = 0; i < size; i++) {
-            IOPort port = (IOPort) portArray[i];
-            String displayName = port.getDisplayName();
-            if (displayName == null || displayName.equals("")) {
-                labels[i] = port.getName(); 
-            } else {
-                labels[i] = displayName;
-            }
-            values[i] = port.get(0);
+        int i = 0;
+        Set<Entry<String, TypedIOPort>> entries = _portMap.entrySet();
+        String[] labels = new String[entries.size()];
+        Token[] values = new Token[entries.size()];
+        
+        for (Entry<String, TypedIOPort> entry : entries) {
+            labels[i] = entry.getKey();
+            values[i] = entry.getValue().get(0);
+            i++;
         }
 
         RecordToken result = new OrderedRecordToken(labels, values);
 
         output.send(0, result);
-    }
+     }
 
 }

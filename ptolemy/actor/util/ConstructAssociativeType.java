@@ -29,6 +29,7 @@
 package ptolemy.actor.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,7 +39,6 @@ import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.StringUtilities;
 
 /** A function that, given a list of ports, returns a <code>StructuredType</code>
  *  of which the fields names and field types correspond with the given ports.
@@ -60,7 +60,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
      *  @param ports A list of ports used to construct the AssociativeType
      *  @param type A specific subclass to instantiate
      */
-    public ConstructAssociativeType(List<TypedIOPort> ports,
+    public ConstructAssociativeType(Collection<TypedIOPort> ports,
             Class<? extends AssociativeType> type) {
 
         _ports = new LinkedList<TypedIOPort>();

@@ -27,11 +27,15 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ConstructAssociativeType;
@@ -43,6 +47,7 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// UnionDisassembler
@@ -134,6 +139,18 @@ public class UnionDisassembler extends TypedAtomicActor {
         }
     }
 
+    /** React to a name change of contained ports. Update the internal
+     *  mapping from names and aliases to port objects, and invalidate
+     *  the resolved types. 
+     *  @param object The object that changed.
+     */
+    @Override
+    public void notifyOfNameChange(NamedObj object) {
+        if (object instanceof TypedIOPort) {
+            _mapPorts();
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -164,17 +181,22 @@ public class UnionDisassembler extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
 
+        // make sure the ports are mapped
+        _mapPorts();
+        
         // constrain the fields in the input union to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {| x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
         result.add(new Inequality(new ConstructAssociativeType(
-                outputPortList(), UnionType.class), input.getTypeTerm()));
+                _portMap.values(), UnionType.class), input.getTypeTerm()));
 
-        for (TypedIOPort output : outputPortList()) {
+        for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
+            String outputName = entry.getKey();
+            TypedIOPort output = entry.getValue();
             // constrain each output to be >= the type of the corresponding
             // field inside the input union
-            result.add(new Inequality(new ExtractFieldType(input, output
-                    .getName()), output.getTypeTerm()));
+            result.add(new Inequality(new ExtractFieldType(input, outputName),
+                    output.getTypeTerm()));
         }
 
         // NOTE: refrain from using port.setTypeAtMost() or
@@ -193,4 +215,46 @@ public class UnionDisassembler extends TypedAtomicActor {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+    
+    /** Map port names or aliases to port objects. If the mapping
+     *  has changed, then invalidate the resolved types, which 
+     *  forces new type constraints with appropriate field names
+     *  to be generated. 
+     */
+    private void _mapPorts() {
+        // Retrieve the manager.
+        Manager manager = this.getManager();
+        
+        // Generate a new mapping from names/aliases to ports.
+        Map<String, TypedIOPort> oldMap = _portMap;
+        _portMap = new HashMap<String, TypedIOPort>();
+        for (TypedIOPort p : this.outputPortList()) {
+            String name = p.getName();
+            String alias = p.getDisplayName();
+            // ignore unconnected ports
+            if (p.numberOfSinks() < 1) {
+                continue;
+            }
+            if (alias == null || alias.equals("")) {
+                _portMap.put(name, p);
+            } else {
+                _portMap.put(alias, p);
+            }
+        }
+        
+        // Only invalidate resolved types if there actually was a name change.
+        // As a result, new type constraints will be generated.
+        if (manager != null && (oldMap == null || !_portMap.equals(oldMap))) {
+            manager.invalidateResolvedTypes();
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+    
+    /** Keeps track of which name or alias is associated with which port. */
+    private Map<String, TypedIOPort> _portMap;
 }
