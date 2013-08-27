@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UnderconstrainedExampleResolved" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 161, 769, 484}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 161, 874, 515}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 374]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 405]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1407728570936995">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{233.1071579391892, 183.97455658783784}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.12858952702703, 197.56183638996143}">
     </property>
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
@@ -23,7 +23,7 @@
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -349,11 +349,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 260.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 325.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model with too few ontology constraints to fully resolve.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{22.285171332046332, 291.7961963079151}">
         </property>
     </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">

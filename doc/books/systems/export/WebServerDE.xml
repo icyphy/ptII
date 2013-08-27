@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="WebServerDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 22, 1050, 714}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 22, 984, 794}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[816, 604]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 684]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3746372506967837">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.16825205757021, 169.5882496553309}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{198.1619187625334, 198.68683546749668}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
@@ -43,17 +43,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 50.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{485, 470}">
-        </property>
-    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -15.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple web service implemented in Ptolemy II.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 415.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">

@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UnitsConverterExampleWithUnitsConverter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={558, 266, 1017, 449}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={558, 266, 1017, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 339]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.21519606793637">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{208.55567035478413, 159.80269536283828}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{208.55567035478413, 235.92209900531572}">
     </property>
     <property name="DimensionAnalysis" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
@@ -131,11 +131,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 55.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 355.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that uses the UnitsConverter actor to convert&#10;from meters per second to miles per hour.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 325.0]">
         </property>
     </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">

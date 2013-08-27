@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1680, 1024}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1494, 705}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1446, 914]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1260, 595]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6321224660137277">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1630169251748304">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.91796875, 275.9400026114206}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{454.39544667937395, 250.50106904594702}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -69,7 +69,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate the&#10;driver of the&#10;leading car.&#10;Output is the &#10;driver's&#10;desired speed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 225.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -77,7 +77,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a car&#10;that matches&#10;the desired speed&#10;using feedback&#10;control with a&#10;specified time&#10;constant.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 240.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -145,13 +145,13 @@
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 195.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[877, 369]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={446, 124, 1111, 479}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={446, 124, 1111, 634}, maximized=false}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -241,13 +241,6 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 45.0]">
-            </property>
-        </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                <display name="Background Color"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{625, 390}">
             </property>
         </property>
         <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
@@ -498,7 +491,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 485.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -533,7 +526,7 @@
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 350.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -629,7 +622,7 @@
         </port>
     </entity>
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 310.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={321, 33, 1119, 634}, maximized=false}">
         </property>
@@ -1869,7 +1862,7 @@
         <link port="ModalModel.fault" relation="relation3"/>
     </entity>
     <entity name="DriverSimulator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 195.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Driver simulator">
@@ -2466,7 +2459,7 @@
     <entity name="NetworkModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 270.0]">
         </property>
         <port name="packetIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
