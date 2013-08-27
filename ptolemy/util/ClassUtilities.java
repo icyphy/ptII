@@ -260,6 +260,12 @@ public class ClassUtilities {
         URL necessaryURL = Thread.currentThread().getContextClassLoader()
                 .getResource(necessaryResource);
 
+        if (necessaryURL == null) {
+	    necessaryResource = StringUtilities.substitute(necessaryClass,
+                ".", "/") + ".xml";
+	    necessaryURL = Thread.currentThread().getContextClassLoader()
+                .getResource(necessaryResource);
+	}
         if (necessaryURL != null) {
             String resourceResults = necessaryURL.getFile();
 
