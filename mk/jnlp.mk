@@ -450,6 +450,7 @@ FULL_8_1_JARS = \
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	contrib/contrib.jar \
+	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
 	org/ptolemy/ptango/ptango.jar \
@@ -1731,6 +1732,8 @@ $(JNLP_FILE): $(JNLP_MODEL_FILE)
 	@echo "#"
 	@echo "# mk/jnlp.mk: creating $(JNLP_FILE) by invoking copernicus"
 	@echo "#"
+	# Create any jar files by running make install.
+	(cd $(JNLP_MODEL_DIRECTORY); $(MAKE) install);
 	(cd $(JNLP_MODEL_DIRECTORY); JAVAFLAGS=-Dptolemy.ptII.ptKeystore=$(HOME)/ptKeystore.properties $(PTII)/bin/copernicus -codeGenerator applet -run false -targetPath $(JNLP_MODEL_DIRECTORY) $(JNLP_MODEL).xml)
 
 # Shortcut to create the jnlp file.  Try "make book"
