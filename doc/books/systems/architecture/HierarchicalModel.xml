@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 105.0]">
@@ -166,13 +166,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 215.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 35, 671, 511}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 35, 671, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 401]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0812807881773399">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0517241379310345">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{219.0751708428246, 194.42824601366743}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{220.0, 253.36065573770492}">
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -192,13 +192,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Relation">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 290.0]">
-        </property>
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320, 455}">
         </property>
     </property>
     <port name="q: Port" class="ptolemy.actor.TypedIOPort">

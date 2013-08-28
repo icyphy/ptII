@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PeriodicSamplerIntegrator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -10,19 +10,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 309, 770, 378}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 309, 791, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[557, 268]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[557, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3438030051124819">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.5, 134.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{199.68310546875, 197.84983253827696}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 320}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 430.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">

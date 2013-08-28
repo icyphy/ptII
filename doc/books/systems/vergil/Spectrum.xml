@@ -7,7 +7,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 50.0]">
         </property>
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,7 +33,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 385.0]">
         </property>
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -59,14 +59,14 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 50.0]">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 668]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 545]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 1031, 778}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 972, 655}, maximized=false}">
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -82,7 +82,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
         </property>
     </property>
     <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="500.0">
@@ -99,7 +99,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 205.0]">
         </property>
     </property>
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -116,12 +116,12 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 225.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2094572894186295">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0929650747543103">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.72753906249994, 191.0228344385324}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.414004088785, 263.74707031250006}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -130,7 +130,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Signa Source, Carrier Source, and Spectrum&#10;blocks are hierarchical. Right click or Command-&#10;click (Mac) and select &quot;Open Actor&quot; to view them.&#10;The source actors generate sinusoids, one for the&#10;signal and the other for the carrier.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 165.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -140,13 +140,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select &quot;Run Window&quot; from the View menu to execute the model,&#10;-or click on the red triangle in the toolbar.&#10;-Try changing the parameters in the run window or on the diagram.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 410.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also MaximumEntropySpectrum.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 485.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -167,7 +167,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 455}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/dataflow/MaximumEntropySpectrum/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/models/dataflow/MaximumEntropySpectrum/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 450}">
@@ -194,101 +194,8 @@
         <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="png">
         </property>
     </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute this model using Java Web Start, click here.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -55.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/models/vergil/Spectrum.htm#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/models/vergil/Spectrum.htm">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{45, 100}">
-            </property>
-        </property>
-    </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Spectrum">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -85.0]">
-        </property>
-    </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To view or save the MoML file for this model, click here.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -35.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/vergil/Spectrum.xml#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/vergil/Spectrum.xml">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 115}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a chapter overview, click here.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -15.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/vergil/index.html#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/vergil/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 115}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 15.0]">
         </property>
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
@@ -299,7 +206,7 @@
         <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 420.0]">
         </property>
     </entity>
     <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
@@ -326,7 +233,7 @@
             </property>
             <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 355.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -358,7 +265,7 @@
             </property>
             <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 290.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -379,7 +286,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 355.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -399,7 +306,7 @@
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 355.0]">
         </property>
     </entity>
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -415,7 +322,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 280.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -439,7 +346,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 355.0]">
         </property>
         <port name="signal" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -460,7 +367,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[385.0, 315.0]">
+        <vertex name="vertex1" value="[415.0, 355.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

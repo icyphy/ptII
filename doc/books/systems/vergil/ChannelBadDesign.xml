@@ -18,9 +18,9 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 975, 664}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1886178861788619">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1952016512293033">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.5, 212.83720930232556}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{284.80613708496094, 211.57666015625}">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Channel (Bad Design)">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -20.0]">

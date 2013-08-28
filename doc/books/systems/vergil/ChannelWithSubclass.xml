@@ -13,14 +13,14 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, -45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 35.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 1040, 717}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.20656762725814">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3188787563023034">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.861328125, 165.39599609375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.951171875, 233.22314453125003}">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -45,104 +45,11 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 25.0]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute this model using Java Web Start, click here.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -50.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/models/vergil/$(this.getContainer().getName()).htm#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/models/vergil/$(this.getContainer().getName()).htm">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{45, 100}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 70.0]">
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Channel with Subclass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -80.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To view or save the MoML file for this model, click here.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -30.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/vergil/$(this.getContainer().getName()).xml#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/vergil/$(this.getContainer().getName()).xml">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 115}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a chapter overview, click here.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -10.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.org/systems/vergil/index.html#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/systems/vergil/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 115}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 15.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -151,8 +58,6 @@
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-        </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -168,7 +73,7 @@
         </property>
     </property>
     <class name="Channel" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 95.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 350]">
         </property>
@@ -430,7 +335,7 @@
         <link port="Gaussian.output" relation="relation"/>
     </class>
     <class name="SubclassOfChannel" extends="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 95.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 295, 676, 634}, maximized=false}">
         </property>
@@ -462,7 +367,7 @@
         <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             <doc>The phase, in radians.</doc>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 150.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -488,7 +393,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 180.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -501,11 +406,11 @@
         </configure>
     </entity>
     <entity name="InstanceOfChannel" class="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 150.0]">
         </property>
     </entity>
     <entity name="InstanceOfChannel2" class="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 210.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -515,7 +420,7 @@
         </property>
     </entity>
     <entity name="InstanceOfChannel3" class="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 270.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -525,7 +430,7 @@
         </property>
     </entity>
     <entity name="InstanceOfChannel4" class="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 330.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -535,7 +440,7 @@
         </property>
     </entity>
     <entity name="InstanceOfChannel5" class="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 360.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 390.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -557,13 +462,13 @@
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 180.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="{110.0, 120.0}">
+        <vertex name="vertex1" value="[150.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

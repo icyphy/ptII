@@ -31,9 +31,9 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 242, 676, 634}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0051693619303192">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{221.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{169.26416015625, 274.6783062970197}">
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
