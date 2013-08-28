@@ -28,10 +28,8 @@
 
 package org.ptolemy.fmi;
 
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
 import com.sun.jna.Pointer;
+import com.sun.jna.Native;
 
 /**
  * A Functional Mock-up Interface (FMI) log method implementation.
@@ -48,9 +46,12 @@ import com.sun.jna.Pointer;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMULog {
-
     /** Log a message.
      *  Note that arguments after the message are currently ignored.
+     *  @param modelDescription The model description that contains
+     *  the names of the variables.  The FMI specification states that
+     *  the variable names might not be stored in the C-functions,
+     *  which is why we can't just use the fmiComponent.
      *  @param fmiComponent The component that was instantiated.
      *  @param instanceName The name of the instance of the FMU.
      *  @param status The fmiStatus, see
@@ -59,194 +60,168 @@ public class FMULog {
      *  defined by the tool that created the fmu.  Typical
      *  values are "log" or "error".
      *  @param message The message in printf format
-     *  @param parameters The printf style parameters.
      */
-    public static void log(Pointer fmiComponent, String instanceName,
-            int status, String category, String message,
-            Pointer /*...*/ parameters) {
-        
-        // MessageHandler.message(String.format(message, (Object[])parameters));
-        // What to do about jni callbacks with varargs?
-        // See
-        // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger
-        _debugMessage("Java FMULogger, status: " + status);
-        _debugMessage("Java FMULogger, message: " + message);
+    public static void log(FMIModelDescription modelDescription,
+            Pointer fmiComponent, String instanceName,
+            int status, String category, String message) {
+
+        // We need the ffi_cif so we can call the new Native.ffi_closure_va_*
+        // functions which allow us to access variadic arguments.
+        long ffi_cif = Pointer.nativeCif(fmiComponent);
 
         // FIXME: Need to handle the fmi-specific # format:
         // #<Type><valueReference#, where <Type> is one of
         // r, i, b or s. To print a #, use ##.
 
-        if (parameters != null) {
-            StringTokenizer tokenizer = new StringTokenizer(message, "%", false ); // Return delimiters
-            ArrayList<Object> parameterList = new ArrayList<Object>();
-            int offset = 0;
-            Pointer newPointer = parameters;
-            if (!message.startsWith("%") && tokenizer.hasMoreTokens()) {
-                // Throw away the first token.
-                tokenizer.nextToken();
-            }
-            while (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                boolean foundType = false;
-                for (int i = 0; i < token.length() && !foundType; i++) {
-                    char type = token.charAt(i);
-                    _debugMessage("Token: " + token + " " + type + " " + offset);
-                    switch (type) {
+        if (ffi_cif != 0) {
+            final char[] msg = message.toCharArray();
+
+            StringBuffer out = new StringBuffer();
+            boolean foundEscape = false;
+            boolean foundHash = false;
+            for (int i = 0; i < msg.length; i++) {
+                // Skipping all fmi-specific formatting options.
+                // In a fmt message, you can say "#r1365#" to mean print the
+                // name of the fmiReal variable with the fmiValueReference =
+                // 1365.
+                //
+                // Need to find out how we can access the fmiValueReferences.
+                if (foundEscape) {
+                    // Skip over all the formatting parts besides the
+                    // conversion at the end.
+                    // XXX There must be a better way...
+                    final char[] conversions = new char[] { 'd', 'i', 'o', 'x', 'X', 'e', 'E', 'f', 'F', 'g', 'G', 'a', 'A', 'c', 's', 'p', 'n', 'u', '%' };
+
+                    // Find the conversion
+                    StringBuffer flags = new StringBuffer();
+                    boolean foundConversion = false;
+                    boolean foundLong = false;
+                    while (!foundConversion) {
+                        // While we are delegating to String.format() for the
+                        // formatting, find out if we need a long vs. int from
+                        // libffi
+                        if (msg[i] == 'l' || msg[i] == 'L') {
+                            foundLong = true;
+                        }
+                        for (char c : conversions) {
+                            if (msg[i] == c) {
+                                foundConversion = true;
+                                break;
+                            }
+                        }
+                        if (! foundConversion) {
+                            flags.append(msg[i]);
+                            i++;
+                        }
+                    }
+
+                    switch (msg[i]) {
                     case 'd':
                     case 'i':
+                        out.append(String.format("%" + flags.toString() + msg[i],
+                                                 foundLong ? Native.ffi_closure_va_sint64(ffi_cif) : Native.ffi_closure_va_sint32(ffi_cif)));
+                        break;
+
                     case 'o': // Unsigned octal
-                    case 'u': // Unsigned decimal
                     case 'x': // Unsigned hex
                     case 'X': // Unsigned hex
-                        foundType = true;
-                        _debugMessage("newPointer: " + newPointer);
-                        int value = (int) Pointer.nativeValue(newPointer);
-                        _debugMessage("Token: " + token + " type:" + type + " value:" + value + " offset: " + offset);
-                        if (offset != 0) {
-                            if (!_printedMessage) {
-                                _printedMessage = true;
-                                System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 666 instead");
-                            }
-                            value = 666;
-                        }
-                        parameterList.add(Integer.valueOf(value));
-                        offset += 4;
+                    case 'u': // Unsigned decimal which must be converted to 'd' since String.format() doesn’t handle it.
+                        out.append(String.format("%" + flags.toString() + (msg[i] == 'u' ? 'd' : msg[i]),
+                                        foundLong ? Native.ffi_closure_va_uint64(ffi_cif) : Native.ffi_closure_va_uint32(ffi_cif)));
                         break;
-                    case 'f': // Doubles
+
+                    // DOU are deprecated.  Does FMI support them?
                     case 'e':
                     case 'E':
+                    case 'f':
+                    case 'F':
                     case 'g':
                     case 'G':
-                        foundType = true;
-                        double doubleValue = Pointer.nativeValue(newPointer);
-                        _debugMessage("Token: " + token + " type:" + type + " doubleValue:" + doubleValue + " offset: " + offset);
-                        if (doubleValue > 9999.0) {
-                            _dump(newPointer, 4, 0);
-                        }
-                        if (offset != 0) {
-                            if (!_printedMessage) {
-                                _printedMessage = true;
-                                System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
-                            }
-                            doubleValue = 666.666;
-                        }
-                        parameterList.add(Double.valueOf(doubleValue));
-                        offset += 4;
+                    case 'a':
+                    case 'A':
+                        // XXX Can you handle a long double in Java?  Not checking foundLong
+                        out.append(String.format("%" + flags.toString() + msg[i],
+                                   Native.ffi_closure_va_double(ffi_cif)));
                         break;
+
                     case 'c': // Unsigned char
-                        foundType = true;
-                        if (offset != 0) {
-                            if (!_printedMessage) {
-                                _printedMessage = true;
-                                System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
-                            }
-                            doubleValue = 666.666;
-                        }
-
-                        //parameterList.add(Character.valueOf(newParameter.getChar(offset++)));
-                        if (!_printedMessage) {
-                            _printedMessage = true;
-                            System.out
-                                    .println("FIXME: logger: don't know how to get chars, using ! instead.");
-                        }
-                        parameterList.add(Character.valueOf('!'));
-                        offset += 1;
+                        // Assuming 1 byte char
+                        out.append(String.format("%" + flags.toString() + msg[i],
+                                                 (char)Native.ffi_closure_va_uint8(ffi_cif)));
                         break;
+
                     case 's': // String
-                        foundType = true;
-                        _debugMessage("type=s, parameters = " + parameters
-                                + " offset: " + offset);
-                        _debugMessage("type=s "
-                                + parameters.share(offset));
+                        // C strings: Read until you hit NUL (utf-8 is NUL safe).
+                        out.append(String.format("%" + flags.toString() + "s",
+                                                 Native.ffi_closure_va_pointer(ffi_cif).getString(0)));
+                        break;
 
-                        if (offset == 0) {
-                            String result = newPointer.getString(offset);
-                            //offset += result.length() + 1;
-                            newPointer = new Pointer(Pointer.nativeValue(newPointer) + 4);
-                            _debugMessage("Token: " + token + " type: " + type + " result: " + result);
-                            parameterList.add(result);
-                        } else {
-                            if (!_printedMessage) {
-                                _printedMessage = true;
-                                System.out
-                                    .println("FIXME: logger: don't know how to get string other than the first string, using 666 instead.");
-                            }
-                            parameterList.add("666");
-                        }
-                        offset += 4;
-                        break;
                     case 'p': // Pointer
-                        foundType = true;
-                        long longValue = Pointer.nativeValue(newPointer);
-                        if (offset != 0) {
-                            if (!_printedMessage) {
-                                _printedMessage = true;
-                                System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 6666 instead");
-                            }
-                            longValue = 6666;
-                        }
-                        parameterList.add(Long.valueOf(longValue));
-                        offset += 4;
+                        out.append(Pointer.nativeValue(Native.ffi_closure_va_pointer(ffi_cif)));
                         break;
+
                     case 'n':
-                        // FIXME: Don't know how to handle this:
-                        // "The argument shall be a
-                        // pointer to an integer into which is
-                        // written the number of characters
-                        // written to the output stream so far
-                        // by this call to fprintf .  No
-                        // argument is converted."
-                        foundType = true;
+                        // This can take a length modifier but it's the same void * here
+                        Pointer p = Native.ffi_closure_va_pointer(ffi_cif);
+                        p.setInt(0, out.length());
                         break;
+
                     case '%':
-                        // FIXME: what about %%?
-                        foundType = true;
+                        out.append("%");
                         break;
+
                     default:
+                        // XXX Should not be here: invalid conversion
+                        System.out.println("XXX Should not be here: " + msg[i]);
+                        out.append(msg[i]);
                         break;
                     }
+
+                    foundEscape = false;
+
+                } else if (foundHash) {
+                    if (msg[i] == '#') {
+                        out.append("#");
+                        foundHash = false;
+
+                    } else if (msg[i] == '%') {
+                        // Assuming this allows you to pass in a variable.
+                        // The FMI spec gives an example #r1365# but the demo
+                        // here uses #r%u# which is a variadic argument.
+                        foundEscape = true;
+
+                    } else {
+                        out.append(msg[i]);
+                    }
+
+                } else if (msg[i] == '#') {
+                    out.append("#");
+
+                    // XXX Not supporting any FMI formats except '##' and
+                    // embedded '%' conversions
+                    if (msg[i + 1] == '#') {
+                        i++;
+
+                    } else {
+                        // XXX Don't know how to map #<type><valueReference>#
+                        // to a parameter name yet.
+                        // We have to handle extra arguments on the stack
+                        // though so look for % conversions.
+                        foundHash = true;
+                    }
+
+                } else if (msg[i] == '%') {
+                    foundEscape = true;
+
+                } else {
+                    // Normal character
+                    out.append(msg[i]);
                 }
             }
-            // Java format does not handle %u.  Lamers.
-            message = message.replace("%u", "%d");
-            _debugMessage("Java FMULogger, message0: " + message + " " + parameterList.size() + " " + parameterList);
-            System.out.format("Java FMULogger: " + message,
-                    parameterList.toArray());
-            System.out.println("");
+            // The format is from FMUSDK.  Please do not change it, we
+            // want to keep compatibility with FMUSDK.
+            System.out.println(FMULogUtilities.fmiStatusToString(status) + " " + instanceName + "(" + category + "): "
+                    + FMULogUtilities.replaceVariableReferences(modelDescription, out.toString()));
         }
     }
-
-    /** Set to true to get debugging messages. */
-    private static boolean _debug = false;
-
-    private static void _dump(Pointer pointer, int size, int offset) {
-        if (!_debug) {
-            return;
-        }
-        System.out.print("dump: " + pointer + "<" + size + "," + offset + "," + Pointer.nativeValue(pointer) + ">");
-        System.out.printf("<%x>", Pointer.nativeValue(pointer));
-        byte bytes[] = pointer.getByteArray(offset, size);
-        for (int i = 0; i < size; ++i) {
-            System.out.printf("%02x(%c)", bytes[i], bytes[i]);
-            if ((i % 16) == 15) {
-                System.out.printf("\n");
-            } else {
-                System.out.printf(" ");
-            }
-        }
-        System.out.println();
-    }
-
-    private static void _debugMessage(String message) {
-        if (_debug) {
-            System.out.println(message);
-        }
-    }
-
-    /** True if we printed the fixme message. */
-    private static boolean _printedMessage = false;
 }

@@ -2704,14 +2704,14 @@ if test ! -d "$JNA_USER_DIR"; then
     so we need not find the JNA - The Java Native Access utility.])
 else
     AC_MSG_CHECKING([for Java Native Access (JNA) jar])
-    if test -f "$PTII/lib/jna.jar"; then
-        PT_MSG_RESULT($PTII/lib/jna.jar)
-	JNA_JAR="$PTII/lib/jna.jar"
+    if test -f "$PTII/lib/jna-4.0.0-variadic.jar"; then
+        PT_MSG_RESULT($PTII/lib/jna-4.0.0-variadic.jar)
+	JNA_JAR="$PTII/lib/jna-4.0.0-variadic.jar"
 	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
         updateClasspath "$JNA_JAR"
     else
-        AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
+        AC_MSG_WARN([Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
     JNA is the Java Native Access interfaced, used by the 
     Functional Mock-up Inteface actors in
     ptolemy/actor/lib/fmi

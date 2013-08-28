@@ -83,14 +83,14 @@ public class FMUCoSimulation extends FMUDriver {
      *
      *  <p>Usage:</p>
      *  <pre>
-     *  java -classpath ../../../../lib/jna.jar:../../../.. \
+     *  java -classpath ../../../../lib/jna-4.0.0-variadic.jar:../../../.. \
      *  org.ptolemy.fmi.driver.FMUCoSimulation \
      *  file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
      *  </pre>
      *  <p>For example, under Mac OS X or Linux:
      *  <pre>
-     *  java -classpath $PTII/lib/jna.jar:${PTII} org.ptolemy.fmi.driver.FMUCoSimulation \
-     *  $PTII/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu 1.0 0.1 true c foo.csv
+     *  java -classpath $PTII/lib/jna-4.0.0-variadic.jar:${PTII} org.ptolemy.fmi.driver.FMUCoSimulation \
+     *  
      *  </pre>
      *
      *  <p>The command line arguments have the following meaning:</p>
@@ -177,12 +177,10 @@ public class FMUCoSimulation extends FMUDriver {
 
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-		new FMULibrary.FMULogger(), fmiModelDescription.getFMUAllocateMemory(),
+		new FMULibrary.FMULogger(fmiModelDescription), fmiModelDescription.getFMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
-        // Logging tends to cause segfaults because of vararg callbacks.
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
-        //loggingOn = (byte) 0;
 
         Function instantiateSlave = fmiModelDescription.getFmiFunction("fmiInstantiateSlave");
 	System.out.println("_fmiInstantiateSlave = " + instantiateSlave);

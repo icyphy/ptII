@@ -123,14 +123,10 @@ public interface FMILibrary extends Library {
          *  @param status One of FMIStatus.
          *  @param category The category of the message, typically
          *  defined by the tool that created the fmu.
-         *  @param message The message in printf format
-         *  @param parameters The printf style parameters.
+         *  @param message The printf style format string
          */
         void apply(Pointer fmiComponent, String instanceName, int status,
-                String category, String message, Pointer /*...*/ parameters);
-        // What to do about jni callbacks with varargs?
-        // See
-        // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCallbackLogger
+                   String category, String message);
     };
 
     /** A callback for the fmiCallbackAllocateMemory() function.

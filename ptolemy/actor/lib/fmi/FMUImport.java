@@ -1300,12 +1300,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         // FIXME: We should send logging messages to the debug listener.
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
-        System.out.println("FMUImport: FIXME: Disabling logging because of errors");
-        loggingOn = 0;
 
         if (_fmiVersion < 2.0) {
             _callbacks = new FMICallbackFunctions.ByValue(
-                    new FMULibrary.FMULogger(),
+                    new FMULibrary.FMULogger(_fmiModelDescription),
                     new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
@@ -1336,7 +1334,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // In FMI 2.0, this is a pointer to the structure, which is by
             // default how a subclass of Structure is handled, so there is no
             // need for the inner class ByValue, as above.
-            _callbacks = new FMICallbackFunctions(new FMULibrary.FMULogger(),
+            _callbacks = new FMICallbackFunctions(new FMULibrary.FMULogger(_fmiModelDescription),
                     new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());

@@ -62,8 +62,20 @@ public interface FMULibrary extends FMILibrary {
 
     /** The logging callback function. */
     public class FMULogger implements FMICallbackLogger {
+
+        /** Instantiate a FMULogger.
+         *  @param modelDescription The model description that
+         *  contains the names of the variables.  The FMI
+         *  specification states that the variable names might not be
+         *  stored in the C-functions, which is why we can't just use
+         *  the fmiComponent.
+         */
+        public FMULogger(FMIModelDescription modelDescription) {
+            _modelDescription = modelDescription;
+        }
+
+
         /** Log a message.
-         *  Note that arguments after the message are currently ignored.
          *  @param fmiComponent The component that was instantiated.
          *  @param instanceName The name of the instance of the FMU.
          *  @param status The fmiStatus, see
@@ -71,15 +83,18 @@ public interface FMULibrary extends FMILibrary {
          *  @param category The category of the message,
          *  defined by the tool that created the fmu.  Typical
          *  values are "log" or "error".
-         *  @param message The message in printf format
-         *  @param parameters The printf style parameters.
+         *  @param message The printf style format string.
          */
         public void apply(Pointer fmiComponent, String instanceName,
-                int status, String category, String message, Pointer /*...*/ parameters) {
+                int status, String category, String message) {
             // We place this method in separate file for testing purposes.
-            FMULog.log(fmiComponent, instanceName, status, category, message,
-                    parameters);
+            FMULog.log(_modelDescription, fmiComponent, instanceName, status, category, message);
         }
+        
+        /** The model description that contains the names of the
+         * variables.
+         */
+        protected FMIModelDescription _modelDescription;
     }
 
     /** Class for the allocate memory callback function. */
