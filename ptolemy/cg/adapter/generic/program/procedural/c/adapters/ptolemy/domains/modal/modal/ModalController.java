@@ -40,6 +40,7 @@ import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalController
@@ -243,12 +244,11 @@ public class ModalController
 
             if (actors != null) {
                 for (Actor actor : actors) {
-                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                            .getAdapter(actor);
-
+//                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+//                            .getAdapter(actor);
                     // fire the actor
-
-                    code.append(actorHelper.generateFireCode());
+                    String actorName = generateName((NamedObj)actor);
+                    code.append(_eol + actorName + "->fire(" + actorName + ");" + _eol);
                 }
             }
 

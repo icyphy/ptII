@@ -188,12 +188,14 @@ public class FSMActor
                 break;
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
             for (int i = 0; i < inputPort.getWidth() ; i++) {
-                codeBuffer.append(_eol + generateName(inputPort) + " = $get(" + generateSimpleName(inputPort));
-                
-                if (inputPort.isMultiport()) {
+                codeBuffer.append(_eol + "if ($hasToken(" + generateSimpleName(inputPort));
+                if (inputPort.isMultiport()) 
                     codeBuffer.append("#" + i);
-                }
-    
+                codeBuffer.append("))" + _eol);
+                
+                codeBuffer.append(_eol + generateName(inputPort) + " = $get(" + generateSimpleName(inputPort));
+                if (inputPort.isMultiport())
+                    codeBuffer.append("#" + i);
                 codeBuffer.append(");" + _eol);
             }
         }

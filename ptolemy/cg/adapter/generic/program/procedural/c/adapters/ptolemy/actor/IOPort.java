@@ -45,6 +45,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.de.kernel.DEReceiver;
+import ptolemy.domains.modal.modal.ModalBasePort;
 import ptolemy.domains.ptides.kernel.PtidesReceiver;
 import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.kernel.util.IllegalActionException;
@@ -139,7 +140,7 @@ public class IOPort extends ptolemy.cg.adapter.generic.program.procedural.adapte
         
         // FIXME : in first approximation, a parameter port can be seen as a 
         // regular TypedIOPort
-        if (port instanceof ParameterPort || port instanceof PubSubPort)
+        if (port instanceof ParameterPort || port instanceof PubSubPort || port instanceof ModalBasePort)
             typePort = "TypedIOPort";
         
         NamedObj actor = port.getContainer();

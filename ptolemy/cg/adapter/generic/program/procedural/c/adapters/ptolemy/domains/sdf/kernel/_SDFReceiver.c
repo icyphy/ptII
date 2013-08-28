@@ -49,9 +49,6 @@ PblList* SDFReceiver_ElementList(struct SDFReceiver* r) {
 }
 Token SDFReceiver_Get(struct SDFReceiver* r) {
 	if (pblListIsEmpty(r->_queue)) {
-//		fprintf(stderr, "No more Tokens in the SDF Receiver \
-//				: SDFReceiver_Get (_SDFReceiver.c)\n");
-//		exit(-1);
 		return emptyToken;
 	}
 

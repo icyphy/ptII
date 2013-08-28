@@ -119,7 +119,7 @@ bool SDFDirector_Prefire(struct SDFDirector* director) {
 		return false;
 	}
 
-	double periodValue = director->period;
+	//double periodValue = director->period;
 
 	struct CompositeActor* container = director->container;
 	PblList* inputPortList = (*(container->inputPortList))(container);
@@ -175,7 +175,6 @@ bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* por
 	return wasTransferred;
 }
 bool SDFDirector_TransferOutputs1(struct SDFDirector* director, struct IOPort* port){
-	bool result = false;
 	if (!port->isOutput(port) /*|| !port->isOpaque(port)*/) {
 		fprintf(stderr, "Attempted to transferOutputs on a port that is not an opaque input port.");
 		exit(-1);

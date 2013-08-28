@@ -11,7 +11,7 @@
 #include "_types.h"
 #include "_Director.h"
 
-
+#define IS_COMPOSITEACTOR(a) ((a)->typeActor%10 == 2)
 #define COMPOSITEACTOR 2
 
 struct CompositeActor {
@@ -38,8 +38,8 @@ struct CompositeActor {
 	double _clockSynchronizationBound;
 
 	// new members
-	bool (*isOpaque)();
-	void (*_transferPortParameterInputs)();
+	bool (*isOpaque)(struct CompositeActor*);
+	void (*_transferPortParameterInputs)(struct CompositeActor*);
 
 	struct Director* _director;
 	PblList* _inputPorts;

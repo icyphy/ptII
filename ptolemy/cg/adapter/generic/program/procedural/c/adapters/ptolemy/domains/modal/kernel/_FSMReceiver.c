@@ -53,10 +53,9 @@ Token FSMReceiver_Get(struct FSMReceiver* r) {
 		exit(-1);
 	}
 
-	Token* retour = (Token*)(pblListPeek(r->_queue));
-	Token nonDynToken = *retour;
-	free(retour);
-	return nonDynToken;
+	Token retour = r->_token;
+	r->_token.type = -1;
+	return retour;
 }
 bool FSMReceiver_HasRoom(struct FSMReceiver* r) {
 	return true;

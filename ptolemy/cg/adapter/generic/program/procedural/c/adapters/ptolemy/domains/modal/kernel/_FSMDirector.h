@@ -6,14 +6,11 @@
 #ifndef FSMDIRECTOR_H_
 #define FSMDIRECTOR_H_
 
-#include "_IOPort.h"
-#include "_Actor.h"
-#include "_CompositeActor.h"
-#include "_LocalClock.h"
+#include "_Director.h"
+#include "_FSMActor.h"
+#include "_FSMReceiver.h"
 
-#define FSMDIRECTOR 3
-
-#define IS_FSMDIRECTOR(director) ((director)->typeDirector%10 == 3)
+#define IS_FSMDIRECTOR(director) ((director)->typeDirector%10 == 4)
 
 struct FSMDirector {
 	int typeDirector;
@@ -27,46 +24,50 @@ struct FSMDirector {
 	void (*free)(struct FSMDirector*);
 
 	void (*fire)(struct FSMDirector*);
-	Time (*fireAt)(struct Director*, struct Actor*, Time, int);
-	Time (*fireContainerAt)(struct Director*, Time, int);
-	Time (*getEnvironmentTime)(struct Director*);
-	Time (*getGlobalTime)(struct Director*);
-	Time (*getModelStartTime)(struct Director*);
-	Time (*getModelStopTime)(struct Director*);
-	Time (*getModelTime)(struct Director*);
-	void (*initialize)(struct SDFDirector*);
-	void (*initialize1)(struct Director*, struct Actor*);
-	bool (*isEmbedded)(struct Director*);
-	int (*iterate)(struct Director*, int);
+	Time (*fireAt)(struct FSMDirector*, struct Actor*, Time, int);
+	Time (*fireContainerAt)(struct FSMDirector*, Time, int);
+	Time (*getEnvironmentTime)(struct FSMDirector*);
+	Time (*getGlobalTime)(struct FSMDirector*);
+	Time (*getModelStartTime)(struct FSMDirector*);
+	Time (*getModelStopTime)(struct FSMDirector*);
+	Time (*getModelTime)(struct FSMDirector*);
+	void (*initialize)(struct FSMDirector*);
+	void (*initialize1)(struct FSMDirector*, struct Actor*);
+	bool (*isEmbedded)(struct FSMDirector*);
+	int (*iterate)(struct FSMDirector*, int);
 	bool (*postfire)(struct FSMDirector*);
 	bool (*prefire)(struct FSMDirector*);
-	void (*preinitialize)(struct Director*);
-	void (*preinitialize1)(struct Director*, struct Actor*);
+	void (*preinitialize)(struct FSMDirector*);
+	void (*preinitialize1)(struct FSMDirector*, struct Actor*);
 	bool (*transferInputs)(struct FSMDirector*, struct IOPort*);
-	bool (*transferOutputs)(struct Director*);
+	bool (*transferOutputs)(struct FSMDirector*);
 	bool (*transferOutputs1)(struct FSMDirector*, struct IOPort*);
-	void (*wrapup)(struct Director*);
-	bool (*isTopLevel)(struct Director*);
+	void (*wrapup)(struct FSMDirector*);
+	bool (*isTopLevel)(struct FSMDirector*);
 
 	// new members
-	PblMap* _currentLocalReceiverMap;
-	int _indexOffset;
-	PblMap* _localReceiverMaps;
+	//PblMap* _currentLocalReceiverMap;
+	//int _indexOffset;
+	//PblMap* _localReceiverMaps;
 	struct FSMActor* _controller;
+
+	void (*makeTransitions)(struct FSMDirector*);
+	void (*transferModalInputs)(PblMap*);
 
 };
 
-struct SDFDirector* SDFDirector_New();
-void SDFDirector_Init(struct SDFDirector* director);
-void SDFDirector_New_Free(struct SDFDirector* director);
+struct FSMDirector* FSMDirector_New();
+void FSMDirector_Init(struct FSMDirector* director);
+void FSMDirector_New_Free(struct FSMDirector* director);
 
-int SDFDirector_GetIterations(struct SDFDirector* director);
-Time SDFDirector_GetModelNextIterationTime(struct SDFDirector* director);
-void SDFDirector_Fire(struct SDFDirector* director);
-void SDFDirector_Initialize(struct SDFDirector* director);
-bool SDFDirector_Postfire(struct SDFDirector* director);
-bool SDFDirector_Prefire(struct SDFDirector* director);
-bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* port);
-bool SDFDirector_TransferOutputs1(struct SDFDirector* director, struct IOPort* port);
+Time FSMDirector_GetModelNextIterationTime(struct FSMDirector* director);
+void FSMDirector_Fire(struct FSMDirector* director);
+Time FSMDirector_FireAt(struct FSMDirector* director, struct Actor* actor, Time time, int microstep);
+void FSMDirector_Initialize(struct FSMDirector* director);
+bool FSMDirector_Postfire(struct FSMDirector* director);
+bool FSMDirector_Prefire(struct FSMDirector* director);
+bool FSMDirector_TransferInputs(struct FSMDirector* director, struct IOPort* port);
+bool FSMDirector_TransferOutputs(struct FSMDirector* director);
+bool FSMDirector_TransferOutputs1(struct FSMDirector* director, struct IOPort* port);
 
-#endif /* DEDIRECTOR_H_ */
+#endif /* FSMDIRECTOR_H_ */
