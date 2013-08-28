@@ -1743,8 +1743,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  adapter is used to generate variable declarations for the
      *  director.
      *  @param container Not used by this method.
-     *  @param includesDirectory The directory path of the includes files
-     *  @param srcDirectory The directory path of the sources files
+     *  @param directory The directory path of the sources files
      *  @exception IllegalActionException If anything goes wrong during the generation.
      */
     protected void _generateAndWriteActorCode(NamedObj actor,
