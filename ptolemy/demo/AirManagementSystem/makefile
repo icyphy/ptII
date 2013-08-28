@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Brewery
+PTPACKAGE = 	AirManagementSystem
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
