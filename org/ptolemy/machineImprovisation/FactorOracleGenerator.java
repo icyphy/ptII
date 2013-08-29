@@ -137,39 +137,39 @@ public class FactorOracleGenerator extends TypedAtomicActor {
        super.fire();
        
        _inputSequence = ((StringToken)inputSequence.get(0)).stringValue(); //.toString();
-       if(_inputSequence != null){
-           int m = _inputSequence.length();
-           _sequenceLength = m;
-           try{
-               // TODO: need a naming convention
-               FactorOracle fo =new FactorOracle((CompositeEntity)this.getContainer(), 
-                       "FO_"+_inputSequence, _inputSequence, _repetitionFactor);
-               Double horizontal = 200.0;
-               Double vertical = _FOindex*100.0+300.0;
-               String changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
-                       + horizontal.toString() + "," + vertical.toString() + "}\"></property>";
-               MoMLChangeRequest change = new MoMLChangeRequest(this, fo, changeExpression);
-               requestChange(change);
+       // if(_inputSequence != null){
+       //     int m = _inputSequence.length();
+       //     _sequenceLength = m;
+       //     try{
+       //         // TODO: need a naming convention
+       //         FactorOracle fo =new FactorOracle((CompositeEntity)this.getContainer(), 
+       //                 "FO_"+_inputSequence, _inputSequence, _repetitionFactor);
+       //         Double horizontal = 200.0;
+       //         Double vertical = _FOindex*100.0+300.0;
+       //         String changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
+       //                 + horizontal.toString() + "," + vertical.toString() + "}\"></property>";
+       //         MoMLChangeRequest change = new MoMLChangeRequest(this, fo, changeExpression);
+       //         requestChange(change);
                
-               Display d = new Display((CompositeEntity)this.getContainer(),"Display_"+_inputSequence);
-               horizontal += 100.0;
-               changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
-                       + (horizontal).toString() + "," + vertical.toString() + "}\"></property>";
-               change = new MoMLChangeRequest(this, d, changeExpression);
-               requestChange(change);
-               TypedIORelation r = new TypedIORelation(this._workspace);
-               r.setName("Relation_"+_inputSequence);
-               r.setContainer((CompositeEntity)this.getContainer());
+       //         Display d = new Display((CompositeEntity)this.getContainer(),"Display_"+_inputSequence);
+       //         horizontal += 100.0;
+       //         changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
+       //                 + (horizontal).toString() + "," + vertical.toString() + "}\"></property>";
+       //         change = new MoMLChangeRequest(this, d, changeExpression);
+       //         requestChange(change);
+       //         TypedIORelation r = new TypedIORelation(this._workspace);
+       //         r.setName("Relation_"+_inputSequence);
+       //         r.setContainer((CompositeEntity)this.getContainer());
                
-               fo.getPort("output").link(r);
-               d.getPort("input").link(r);
-               _FOindex ++;
+       //         fo.getPort("output").link(r);
+       //         d.getPort("input").link(r);
+       //         _FOindex ++;
                
-           }catch(NameDuplicationException e){
+       //     }catch(NameDuplicationException e){
                
-           }
-       }
- }
+       //     }
+       // }
+   }
        
        
    protected List<Integer> _getTransitionsFrom( Integer node){
