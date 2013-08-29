@@ -37,24 +37,14 @@ if [ $status -ne 0 ]; then
 fi
 rm DOPCenter.png.orig
 
-# each time we create a pdf file, it is different, so we create the
-# tex file and run pdflatex on the server.
+# Create Placard.pdf for 
+# http://chess.eecs.berkeley.edu/ptexternal/src/ptII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf
 
-# Create Placard.tex
-cp Placard.tex Placard.tex.orig
-
+# Create Placard.tex.
 $PTII/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication Placard.xml
 
-#pdflatex Placard.tex
+# Create Placard.pdf, which changes each time, so it is not checked in.
+pdflatex Placard.tex.
 
-diff Placard.tex.orig Placard.tex
-status=$?
-if [ $status -ne 0 ]; then
-   #echo "Added a 'Last Update Line'"
-   #mogrify -font Courier -draw "text 10,20 \"Last updated: `date`\"" DOPCenter.png
-   echo "Committing changed files"
-   #svn commit -m "Automatic update" Placard.tex
-fi
-rm Placard.tex.orig
-
-#rm Placard.aux Placard.log
+# Clean up junk created by pdflatex and Ptolemy II.
+rm Placard.aux Placard.log Placard.tex
