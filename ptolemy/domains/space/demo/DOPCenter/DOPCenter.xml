@@ -12,7 +12,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1276, 815}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1293, 844}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 734]">
     </property>
@@ -473,7 +473,7 @@
         </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: VACANT&#10;?: Rabaey">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 55.0}">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -731,7 +731,7 @@
     </entity>
     <entity name="ArrayOfRecordsRecorder2" class="ptolemy.actor.lib.database.ArrayOfRecordsRecorder">
         <display name="Sponsor Key"/>
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{count_sponsorlname_ = &quot;0&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;Brayton&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;EECS&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;King Liu&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Kuehlmann&quot;}, {count_sponsorlname_ = &quot;20&quot;, sponsorlname = &quot;Lee&quot;}, {count_sponsorlname_ = &quot;8&quot;, sponsorlname = &quot;Lustig&quot;}, {count_sponsorlname_ = &quot;2&quot;, sponsorlname = &quot;Lustiglab&quot;}, {count_sponsorlname_ = &quot;8&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {count_sponsorlname_ = &quot;9&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {count_sponsorlname_ = &quot;12&quot;, sponsorlname = &quot;Seshia&quot;}}">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{count_sponsorlname_ = &quot;0&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;Brayton&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;EECS&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Kuehlmann&quot;}, {count_sponsorlname_ = &quot;20&quot;, sponsorlname = &quot;Lee&quot;}, {count_sponsorlname_ = &quot;8&quot;, sponsorlname = &quot;Lustig&quot;}, {count_sponsorlname_ = &quot;2&quot;, sponsorlname = &quot;Lustiglab&quot;}, {count_sponsorlname_ = &quot;8&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {count_sponsorlname_ = &quot;9&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {count_sponsorlname_ = &quot;12&quot;, sponsorlname = &quot;Seshia&quot;}}">
         </property>
         <property name="columns" class="ptolemy.data.expr.Parameter" value="ALL">
         </property>
@@ -750,13 +750,13 @@
         </port>
     </entity>
     <entity name="Occupants9" class="ptolemy.domains.space.Occupants">
-        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;2012-05-31&quot;, deskno = &quot;1&quot;, email = &quot;voros@eecs.berkeley.edu&quot;, fnames = &quot;Katalin&quot;, lname = &quot;Voros&quot;, occupancy = &quot;2012-11-15&quot;, room = &quot;545D&quot;, spaceid = &quot;2990&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;King Liu&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545D&quot;, spaceid = &quot;2997&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545D&quot;, spaceid = &quot;2992&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}}">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545D&quot;, spaceid = &quot;2990&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545D&quot;, spaceid = &quot;2997&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545D&quot;, spaceid = &quot;2992&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}}">
         </property>
         <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
         </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Gray&#10;?: VACANT&#10;?: VACANT&#10;?: VACANT&#10;?: Pranawahadi">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 125.0]">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
