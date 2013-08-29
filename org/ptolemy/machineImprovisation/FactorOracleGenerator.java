@@ -29,23 +29,18 @@ package org.ptolemy.machineImprovisation;
 
  
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.lib.gui.Display;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -67,13 +62,12 @@ import ptolemy.moml.MoMLChangeRequest;
  * a finite acyclic automaton that contains at least all the suffixes of
  * a given input sequence.</p>
 
- * @author Ilge Akkaya
- * @version $Id$
- * @since Ptolemy II 10.1
- * @Pt.ProposedRating Red (ilgea)
- * @Pt.AcceptedRating Red (ilgea)
+ @author Ilge Akkaya
+ @version  $Id$
+ @since Ptolemy II 10.1
+ @Pt.ProposedRating Red (ilgea)
+ @Pt.AcceptedRating 
  */
-
 public class FactorOracleGenerator extends TypedAtomicActor {
    /** Construct an actor with the given container and name.
     *  @param container The container.
@@ -87,27 +81,33 @@ public class FactorOracleGenerator extends TypedAtomicActor {
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
        
-       inputSequence = new TypedIOPort(this, "input", true, false);
-       inputSequence.setTypeEquals(BaseType.STRING);
+       pitchSequence = new TypedIOPort(this, "input", true, false);
+       pitchSequence.setTypeEquals(BaseType.INT);
        
-       repetitionFactor = new Parameter(this, "repetitionFactor");
-       repetitionFactor.setTypeEquals(BaseType.DOUBLE);
-       repetitionFactor.setExpression("0.9");
+       durationSequence = new TypedIOPort(this, "durations", true, false);
+       durationSequence.setTypeEquals(BaseType.INT);
+       
+       repetitionProbability = new Parameter(this, "repetitionFactor");
+       repetitionProbability.setTypeEquals(BaseType.DOUBLE);
+       repetitionProbability.setExpression("0.9");
+       
+       isPitchOracle = new Parameter(this, "isPitchOracle");
+       isPitchOracle.setTypeEquals(BaseType.BOOLEAN);
+       isPitchOracle.setExpression("TRUE");
        
        _adjacencyList = new HashMap<Integer,List<Integer>>();
        _adjacencyListSymbols = new HashMap<Integer,List<Character>>(); 
        
-       _suffixLinks = new HashMap();
-       _alphabet = new HashSet();
-       _sequenceLength = 0;
        _FOindex=0;
+       _pitchSequence = new LinkedList();
+       _durationSequence = new LinkedList();
       
    }
    
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == repetitionFactor){
-           double token = ((DoubleToken)repetitionFactor.getToken()).doubleValue();
+       if(attribute == repetitionProbability){
+           double token = ((DoubleToken)repetitionProbability.getToken()).doubleValue();
            if( token > 1.0 || token < 0.0){
                throw new IllegalActionException(this, "Repetition factor must be in range [0.0,1.0].");
            }
@@ -121,9 +121,13 @@ public class FactorOracleGenerator extends TypedAtomicActor {
    ///////////////////////////////////////////////////////////////////
    ////                         public variables                  ////
 
-   public TypedIOPort inputSequence;
+   public TypedIOPort pitchSequence;
+   
+   public TypedIOPort durationSequence;
 
-   public Parameter repetitionFactor;
+   public Parameter repetitionProbability;
+   
+   public Parameter isPitchOracle;
 
    
 
@@ -136,43 +140,104 @@ public class FactorOracleGenerator extends TypedAtomicActor {
        
        super.fire();
        
-       _inputSequence = ((StringToken)inputSequence.get(0)).stringValue(); //.toString();
-       // if(_inputSequence != null){
-       //     int m = _inputSequence.length();
-       //     _sequenceLength = m;
-       //     try{
-       //         // TODO: need a naming convention
-       //         FactorOracle fo =new FactorOracle((CompositeEntity)this.getContainer(), 
-       //                 "FO_"+_inputSequence, _inputSequence, _repetitionFactor);
-       //         Double horizontal = 200.0;
-       //         Double vertical = _FOindex*100.0+300.0;
-       //         String changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
-       //                 + horizontal.toString() + "," + vertical.toString() + "}\"></property>";
-       //         MoMLChangeRequest change = new MoMLChangeRequest(this, fo, changeExpression);
-       //         requestChange(change);
+       if( durationSequence.hasToken(0)){
+            int incomingDuration = ((IntToken)durationSequence.get(0)).intValue();
+            _durationSequence.add(incomingDuration);
+       }
+       
+       // pitch sequence triggers the generation, if any
+       if ( pitchSequence.hasToken(0)){
+       
+           int incomingNote =((IntToken)pitchSequence.get(0)).intValue();
+           
+           //if(_pitchSequence != null && _pitchSequence.size() > 0){
+           int m = _pitchSequence.size();
+           int n = _durationSequence.size();
+           boolean isPitch = ((BooleanToken)(isPitchOracle.getToken())).booleanValue();
+           
+           if(incomingNote <= 36 && m >0 && n > 0){
+               try{
+                       // pitch oracle
+                       String appendPitch = "P" ;
+                       String fullName = "FO_" + appendPitch +_FOindex;
+                       _constructNewFactorOracle(fullName, true);
+                       
+                       // duration oracle
+                       appendPitch = "D" ;
+                       fullName = "FO_" + appendPitch +_FOindex;
+                       _constructNewFactorOracle(fullName, false);
+                   
+               }catch(NameDuplicationException e){
+                   System.err.println("NameDuplicationException at FactorOracleGenerator");
+               }
+           } else if(incomingNote >= 5000){
+               // long notes and a duration of 5s trigger FO generation
+               try{
+                   if( m > 1){
+                       
+                       String appendPitch = "D" ;
+                       String fullName = "FO_" + appendPitch +_FOindex;
+                       _constructNewFactorOracle(fullName, false);
+                   }      
+               }catch(NameDuplicationException e){
+                   System.err.println("NameDuplicationException at FactorOracleGenerator");
+               }
                
-       //         Display d = new Display((CompositeEntity)this.getContainer(),"Display_"+_inputSequence);
-       //         horizontal += 100.0;
-       //         changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
-       //                 + (horizontal).toString() + "," + vertical.toString() + "}\"></property>";
-       //         change = new MoMLChangeRequest(this, d, changeExpression);
-       //         requestChange(change);
-       //         TypedIORelation r = new TypedIORelation(this._workspace);
-       //         r.setName("Relation_"+_inputSequence);
-       //         r.setContainer((CompositeEntity)this.getContainer());
+           }else{
                
-       //         fo.getPort("output").link(r);
-       //         d.getPort("input").link(r);
-       //         _FOindex ++;
-               
-       //     }catch(NameDuplicationException e){
-               
-       //     }
-       // }
-   }
+                   _pitchSequence.add(incomingNote); //.toString();
+                
+               }
+               //}
+           
+       }
+ }
        
        
-   protected List<Integer> _getTransitionsFrom( Integer node){
+   private void _constructNewFactorOracle(String fullName, boolean isPitch) throws NameDuplicationException, IllegalActionException{
+       // TODO: need a naming convention
+       FactorOracle fo;
+       Double horizontal;
+       if(isPitch){
+            fo =new FactorOracle((CompositeEntity)this.getContainer(), 
+               fullName, _pitchSequence.toArray(), _repetitionFactor, isPitch);
+            horizontal = 200.0;
+       }else{
+            fo =new FactorOracle((CompositeEntity)this.getContainer(), 
+                   fullName, _durationSequence.toArray(), _repetitionFactor, isPitch);
+            horizontal = 250.0;
+       }
+        
+       Double vertical = _FOindex*100.0+300.0;
+       String changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
+               + horizontal.toString() + "," + vertical.toString() + "}\"></property>";
+       MoMLChangeRequest change = new MoMLChangeRequest(this, fo, changeExpression);
+       requestChange(change);
+       
+       //Display d = new Display((CompositeEntity)this.getContainer(),"Display_"+_FOindex);
+       //horizontal += 100.0;
+       //changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{" 
+       //        + (horizontal).toString() + "," + vertical.toString() + "}\"></property>";
+       //change = new MoMLChangeRequest(this, d, changeExpression);
+       //requestChange(change);
+       //TypedIORelation r = new TypedIORelation(this._workspace);
+       //r.setName("Relation_"+_inputSequence);
+       //r.setContainer((CompositeEntity)this.getContainer());
+       
+       //fo.getPort("output").link(r);
+       //d.getPort("input").link(r);
+       
+       // empty the factor oracle
+       if(isPitch){
+           _pitchSequence.clear();
+       }else{
+           _durationSequence.clear();
+           _FOindex ++;
+       }
+    
+}
+
+protected List<Integer> _getTransitionsFrom( Integer node){
        List<Integer> _transitions = (List<Integer>)_adjacencyList.get(node);
        return _transitions;
    }
@@ -247,22 +312,18 @@ public class FactorOracleGenerator extends TypedAtomicActor {
        return word;
    }
    
-   private String _inputSequence;
+   private List _pitchSequence;
    /* The adjacency list given on the Factor Oracle graph structure */
    private HashMap _adjacencyList;
    
    /* The symbol map given on the Factor Oracle graph structure */
-   private HashMap _adjacencyListSymbols;
-   
-   private HashMap _suffixLinks;
-   
-   private Set _alphabet;
-   
-   private int _sequenceLength;
+   private HashMap _adjacencyListSymbols; 
    
    /* The repetition factor that determines the probability of moving along the original sequence in the FO */
    private double _repetitionFactor;
    
-   private static int _FOindex = 0;
+   private int _FOindex = 0;
+   
+   private List _durationSequence;
    
 }

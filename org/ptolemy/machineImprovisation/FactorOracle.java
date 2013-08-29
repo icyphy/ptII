@@ -56,11 +56,11 @@ import ptolemy.moml.MoMLChangeRequest;
  * automaton that contains at least all the suffixes of a given input
  * sequence.
  *
- * @author Ilge Akkaya
- * @version $Id$
- * @since Ptolemy II 10.1
- * @Pt.ProposedRating Red (ilgea)
- * @Pt.AcceptedRating Red (ilgea)
+ @author Ilge Akkaya
+ @version  $Id$
+ @since Ptolemy II 10.1
+ @Pt.ProposedRating Red (ilgea)
+ @Pt.AcceptedRating 
  */
 public class FactorOracle extends FSMActor {
    /** Construct an actor with the given container and name.
