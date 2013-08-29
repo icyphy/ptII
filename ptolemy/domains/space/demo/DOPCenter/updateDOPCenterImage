@@ -36,3 +36,25 @@ if [ $status -ne 0 ]; then
    svn commit -m "Automatic update" DOPCenter.png DOPCenter.xml
 fi
 rm DOPCenter.png.orig
+
+# each time we create a pdf file, it is different, so we create the
+# tex file and run pdflatex on the server.
+
+# Create Placard.tex
+cp Placard.tex Placard.tex.orig
+
+$PTII/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication Placard.xml
+
+#pdflatex Placard.tex
+
+diff Placard.tex.orig Placard.tex
+status=$?
+if [ $status -ne 0 ]; then
+   #echo "Added a 'Last Update Line'"
+   #mogrify -font Courier -draw "text 10,20 \"Last updated: `date`\"" DOPCenter.png
+   echo "Committing changed files"
+   #svn commit -m "Automatic update" Placard.tex
+fi
+rm Placard.tex.orig
+
+#rm Placard.aux Placard.log
