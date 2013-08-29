@@ -44,7 +44,7 @@ rm DOPCenter.png.orig
 $PTII/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication Placard.xml
 
 # Create Placard.pdf, which changes each time, so it is not checked in.
-pdflatex Placard.tex.
+pdflatex Placard.tex
 
 # Clean up junk created by pdflatex and Ptolemy II.
 rm Placard.aux Placard.log Placard.tex
