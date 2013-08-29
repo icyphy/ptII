@@ -452,8 +452,13 @@ public class PtidesDirector extends DEDirector implements Decorator {
             _currentSourceTimestamp = time;
         }
 
+        int depth = 1;
+        if (!(actor instanceof ResourceScheduler)) {
+            depth = _getDepthOfActor(actor);
+        }
+        
         _pureEvents.put(new PtidesEvent(actor, null, time, newIndex,
-                _getDepthOfActor(actor), _zeroTime, _currentSourceTimestamp));
+                depth, _zeroTime, _currentSourceTimestamp));
         _currentSourceTimestamp = null;
 
         Time environmentTime = super.getEnvironmentTime();
