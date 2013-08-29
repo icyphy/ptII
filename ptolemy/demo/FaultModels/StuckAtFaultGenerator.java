@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package org.ptolemy.machineLearning.hmm;
+package ptolemy.demo.FaultModels;
 
 import java.util.HashMap;
 
