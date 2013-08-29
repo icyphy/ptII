@@ -34,9 +34,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1386, 882]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2219941320997387">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2273553239627117">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{37.01416015625, -113.20614269167874}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{34.55486668577987, -114.76464843750006}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -227,6 +227,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 190.0]">
         </property>
     </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mass flow rate of&#10;cold air through&#10;the heat exchanger&#10;(in kg/s)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, 105.0]">
+        </property>
+    </property>
     <port name="C1" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, -140.0]">
@@ -304,6 +312,13 @@
     <port name="Wv" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 160.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="Wa" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, 130.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -761,7 +776,7 @@
         </port>
     </entity>
     <entity name="HeatExchanger" class="ptolemy.demo.AirManagementSystem.HeatExchanger">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-210.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-210.0, 60.0}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -822,6 +837,8 @@
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="C1" relation="relation8"/>
     <link port="Pe" relation="relation6"/>
     <link port="Pc" relation="relation7"/>
@@ -833,6 +850,7 @@
     <link port="Wi" relation="relation"/>
     <link port="Wh" relation="relation14"/>
     <link port="Wv" relation="relation15"/>
+    <link port="Wa" relation="relation4"/>
     <link port="Fork.Wi" relation="relation10"/>
     <link port="Fork.Wv" relation="relation11"/>
     <link port="Fork.Pc" relation="relation7"/>
@@ -854,6 +872,7 @@
     <link port="HeatExchanger.Ta" relation="relation16"/>
     <link port="HeatExchanger.Wh" relation="relation2"/>
     <link port="HeatExchanger.Th" relation="relation13"/>
+    <link port="HeatExchanger.Wa" relation="relation4"/>
     <link relation1="relation2" relation2="relation14"/>
     <link relation1="relation11" relation2="relation15"/>
     <link relation1="relation10" relation2="relation"/>
