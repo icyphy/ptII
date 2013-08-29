@@ -83,14 +83,14 @@ OPTIONAL_FILES =
 all: suball
 install: all jars
 
-jnlps:
+allJnlps:
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
 			echo making all in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) JNLP_MODEL_DIRECTORY=$(ME)/$$x jnlps ;\
+			$(MAKE) $(MFLAGS) $(MAKEVARS) CHAPTER=$$x JNLP_MODEL_DIRECTORY=$(ME)/$$x jnlps ;\
 			) \
 		    fi ; \
 		done ; \
