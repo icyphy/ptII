@@ -77,7 +77,8 @@ sequence given the parameter estimates converges to a value within <i>likelihood
 the parameter estimation stops iterating and delivers the parameter estimates.
 
  @author Ilge Akkaya
- @version  
+ @version $Id$
+ @since Ptolemy II 10.1 
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */

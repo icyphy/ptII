@@ -53,7 +53,7 @@ import ptolemy.moml.MoMLChangeRequest;
 
 
 
-/* A Factor Oracle (FO) builder from an input sequence. Given an input
+/** A Factor Oracle (FO) builder from an input sequence. Given an input
  * of type String, recognizes a set of alphabet by recognizing the
  * distinct characters in the symbol and builds a factor oracle data
  * structure.
@@ -67,11 +67,13 @@ import ptolemy.moml.MoMLChangeRequest;
  * a finite acyclic automaton that contains at least all the suffixes of
  * a given input sequence.</p>
 
- @author Ilge Akkaya
- @version  $Id$
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.1
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (ilgea)
  */
+
 public class FactorOracleGenerator extends TypedAtomicActor {
    /** Construct an actor with the given container and name.
     *  @param container The container.

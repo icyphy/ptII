@@ -60,7 +60,8 @@ governing the Markovian process representing the hidden state evolution. The <i>
 </i> input is an estimate of the prior state distribution.  
 
  @author Ilge Akkaya
- @version  
+ @version $Id$
+ @since Ptolemy II 10.1 
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */

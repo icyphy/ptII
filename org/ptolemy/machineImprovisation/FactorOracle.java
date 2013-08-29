@@ -58,6 +58,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *
  * @author Ilge Akkaya
  * @version $Id$
+ * @since Ptolemy II 10.1
  * @Pt.ProposedRating Red (ilgea)
  * @Pt.AcceptedRating Red (ilgea)
  */
@@ -71,7 +72,7 @@ public class FactorOracle extends FSMActor {
     *  @exception NameDuplicationException If the container already has an
     *   actor with this name.
     */
-   public FactorOracle(CompositeEntity container, String name, String trainingSequence, double repetitionFactor)
+   public FactorOracle(CompositeEntity container, String name, Object[] trainingSequence, double repetitionFactor, boolean interpretAsNotes)
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
        
@@ -84,7 +85,7 @@ public class FactorOracle extends FSMActor {
        _repetitionFactor = repetitionFactor;
        
        _adjacencyList = new HashMap<Integer,List<Integer>>();
-       _adjacencyListSymbols = new HashMap<Integer,List<Character>>();
+       _adjacencyListSymbols = new HashMap<Integer,List<Integer>>();
        _longestRepeatedSuffixes = new LinkedList<String>();
        
        _suffixLinks = new HashMap();
@@ -92,7 +93,8 @@ public class FactorOracle extends FSMActor {
        _sequenceLength = 0;
        
        _inputSequence = trainingSequence;
-       _sequenceLength = _inputSequence.length();
+       _sequenceLength = _inputSequence.length;
+       _interpretAsNotes = interpretAsNotes;
        
        _learnFactorOracle();
        _buildFactorOracle(); 
@@ -188,10 +190,19 @@ public class FactorOracle extends FSMActor {
                String relationName = "relation_" + i + j ; //this will be unique. i:source state, j:destination state
                // label the original string transitions with the repetition factor
                
+               String outputChar = " ";
             // get the symbol to be produced, when this transition is taken
-               Character outputChar = (Character)((List)_adjacencyListSymbols.get(i)).get(k);
-            // set the output expression for this transition
-               outputExpression = "output = \"" + outputChar.toString() +"\"";
+               if( _interpretAsNotes == true){
+                    outputChar = _translateKeyToLetterNote((Integer)((List)(_adjacencyListSymbols.get(i))).get(k));
+               } else{
+                   outputChar = ((List)(_adjacencyListSymbols.get(i))).get(k).toString();
+               }
+                   // set the output expression for this transition
+               if(outputChar != null){
+                   outputExpression = "output = \"" + outputChar.toString() +"\"";
+               }else{
+                   outputExpression = "";
+               }
                
                
                Transition t = new Transition(this, relationName);
@@ -202,7 +213,7 @@ public class FactorOracle extends FSMActor {
                ((State)_stateList.get(j)).incomingPort.link(t);
            } 
        }
-       exitAngle = "-0.7";
+       exitAngle = "-0.6";
        for(int i=0; i<_suffixLinks.size();i++){
             int destination = (Integer)_suffixLinks.get(i);
             String relationName = "relation"+i+destination;
@@ -220,10 +231,49 @@ public class FactorOracle extends FSMActor {
    /*
     * The function that builds the factor oracle data structure
     */
-   private void _learnFactorOracle(){
+private String _translateKeyToLetterNote(int keyIndex){
+    if( keyIndex < 21|| keyIndex > 108){
+        return null;
+    }
+    else{
+        int note = keyIndex % 12;
+        String noteName = "";
+        switch(note){
+            case 0 : noteName = "C";  break;
+            case 1 : noteName = "C#"; break;
+            case 2 : noteName = "D";  break;
+            case 3 : noteName = "D#"; break;
+            case 4 : noteName = "E";  break;
+            case 5 : noteName = "F";  break;
+            case 6 : noteName = "F#"; break;
+            case 7 : noteName = "G";  break;
+            case 8 : noteName = "G#"; break;
+            case 9 : noteName = "A";  break;
+            case 10: noteName = "A#"; break;
+            case 11: noteName = "B";  break;
+            default: break;
+        }
+        // 0 : C
+        // 1 : C#
+        // 2 : D
+        // 3 : D#
+        // 4 : E
+        // 5 : F
+        // 6 : F#
+        // 7 : G
+        // 8 : G#
+        // 9 : A
+        // 10: A#
+        // 11: B
+        int octave = (keyIndex - (keyIndex % 12))/12 - 1;
+        noteName = noteName.concat(octave+"");
+        return noteName;
+    }
+}
+private void _learnFactorOracle(){
        
        for( int i = 0; i< _sequenceLength; i++){
-           char p = _inputSequence.charAt(i);
+           Object p = _inputSequence[i];
            _alphabet.add(p);
            
            // add original transitions to graph
@@ -232,7 +282,7 @@ public class FactorOracle extends FSMActor {
            _adjacencyList.put(i, initialEdge);
            
            List initialSymbol = new LinkedList<Character>();
-           initialSymbol.add(_inputSequence.charAt(i));
+           initialSymbol.add(_inputSequence[i]);
            _adjacencyListSymbols.put(i, initialSymbol);
        }
        
@@ -244,7 +294,7 @@ public class FactorOracle extends FSMActor {
            // already created the original links
            int l = (Integer)_suffixLinks.get(i-1);
            // while previous node DOES exist and there is no w[i]-son of state l...
-           Character wiSon = _inputSequence.charAt(i-1);
+           Object wiSon = _inputSequence[i-1];
            while( l!=-1 && ((List)_adjacencyListSymbols.get(l)).contains(wiSon) == false){ 
                List prevList = (List<Integer>)_getTransitionsFrom(l);
                prevList.add(i);
@@ -348,7 +398,7 @@ public class FactorOracle extends FSMActor {
        return word;
    }
    
-   private String _inputSequence;
+   private Object[] _inputSequence;
    /* The adjacency list given on the Factor Oracle graph structure */
    private HashMap _adjacencyList;
    
@@ -360,6 +410,8 @@ public class FactorOracle extends FSMActor {
    private HashMap _suffixLinks;
    
    private Set _alphabet;
+   
+   private boolean _interpretAsNotes;
    
    private int _sequenceLength;
    

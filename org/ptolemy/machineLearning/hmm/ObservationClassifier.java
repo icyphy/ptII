@@ -75,7 +75,8 @@ governing the Markovian process representing the hidden state evolution. The <i>
  @see ptolemy.demo.FaultModels.HiddenMarkovModelAnalysis
 
  @author Ilge Akkaya
- @version  
+ @version $Id$
+ @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */

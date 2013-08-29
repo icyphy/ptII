@@ -97,7 +97,8 @@ converge and is given the option to randomize initial guesses to reiterate.
  @see ptolemy.demo.FaultModels.HiddenMarkovModelAnalysis
 
  @author Ilge Akkaya
- @version  
+@version $Id$
+ @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */
