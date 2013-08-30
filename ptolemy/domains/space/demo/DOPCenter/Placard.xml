@@ -74,12 +74,14 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="roomCount" class="ptolemy.data.expr.Parameter" value="12">
+            <property name="roomCount" class="ptolemy.data.expr.Parameter" value="13">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -98,7 +100,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 30.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 26, 867, 847}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={396, 101, 888, 847}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[654, 736]">
             </property>
@@ -337,13 +339,15 @@
                 </property>
             </port>
             <entity name="Room" class="ptolemy.domains.space.Room">
+                <property name="room" class="ptolemy.data.expr.StringParameter" value="545W">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 165.0]">
                 </property>
             </entity>
             <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 170.0]">
                 </property>
-                <property name="deskArray" class="ptolemy.actor.parameters.PortParameter" value="{{deskno=string, fnames=string, lname=string}}">
+                <property name="deskArray" class="ptolemy.actor.parameters.PortParameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Frank&quot;, lname = &quot;Ong&quot;, occupancy = &quot;2012-03-11&quot;, room = &quot;545W&quot;, spaceid = &quot;1847&quot;, spacenotes = &quot;Was a senior, now a grad student (2013)&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;aflynn@eecs.berkeley.edu&quot;, fnames = &quot;Anita&quot;, lname = &quot;Flynn&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1848&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Patrick&quot;, lname = &quot;Virtue&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1849&quot;, spacenotes = &quot;Fall 2010 Admit. Confirmed 7/12&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Jiang&quot;, lname = &quot;Long&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545W&quot;, spaceid = &quot;2986&quot;, spacenotes = &quot;Fall 08 admit. Confirmed 1/11.&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;5&quot;, email = &quot;&quot;, fnames = &quot;Eric&quot;, lname = &quot;Kim&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1851&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;EECS&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1852&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;7&quot;, email = &quot;ysho.tw@gmail.com&quot;, fnames = &quot;Yen Sheng&quot;, lname = &quot;Ho&quot;, occupancy = &quot;2012-08-10&quot;, room = &quot;545W&quot;, spaceid = &quot;1853&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;8&quot;, email = &quot;&quot;, fnames = &quot;Yu-Yun&quot;, lname = &quot;Dai&quot;, occupancy = &quot;2013-08-10&quot;, room = &quot;545W&quot;, spaceid = &quot;1854&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;9&quot;, email = &quot;twelp@berkeley.edu&quot;, fnames = &quot;Tobias&quot;, lname = &quot;Welp&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1855&quot;, spacenotes = &quot;Fall 07 admit&quot;, sponsorlname = &quot;Kuehlmann&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;10&quot;, email = &quot;&quot;, fnames = &quot;Shromona&quot;, lname = &quot;Ghosh&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1856&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2012-12-24&quot;, deskno = &quot;11&quot;, email = &quot;ykim122@asu.edu&quot;, fnames = &quot;Yooseong&quot;, lname = &quot;Kim&quot;, occupancy = &quot;2012-07-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1857&quot;, spacenotes = &quot;Visitor for PRET&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;12&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1858&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;13&quot;, email = &quot;jon.tamir@gmail.com&quot;, fnames = &quot;Jonathan&quot;, lname = &quot;Tamir&quot;, occupancy = &quot;2012-08-15&quot;, room = &quot;545W&quot;, spaceid = &quot;2294&quot;, spacenotes = &quot;2012 Incoming Grad&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;&quot;, deskno = &quot;14&quot;, email = &quot;muecker@gwdg.de&quot;, fnames = &quot;Martin&quot;, lname = &quot;Uecker&quot;, occupancy = &quot;2011-11-17&quot;, room = &quot;545W&quot;, spaceid = &quot;1860&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2013-08-24&quot;, deskno = &quot;15&quot;, email = &quot;mizarrouk@gmail.com&quot;, fnames = &quot;Michal&quot;, lname = &quot;Zarrouk&quot;, occupancy = &quot;2012-03-22&quot;, room = &quot;545W&quot;, spaceid = &quot;1864&quot;, spacenotes = &quot;Visiting from SAMLA (simulations and electronic warfare), RAFAEL &quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;16&quot;, email = &quot;jiangwenwen1231@gmail.com&quot;, fnames = &quot;Wenwen&quot;, lname = &quot;Jiang&quot;, occupancy = &quot;2012-08-15&quot;, room = &quot;545W&quot;, spaceid = &quot;1861&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}}">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -384,7 +388,7 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
-                <property name="tableBody" class="ptolemy.data.expr.Parameter" value="&quot;1&amp; \\\\\n2&amp;Avital Steinitz Steinitz\\\\\n3&amp;Patrick Virtue\\\\\n4&amp;Jiang Long\\\\\n5&amp;Alessandro  Mignona\\\\\n6&amp;Mert Pilanci\\\\\n7&amp;Ankur Mukesh Mehta\\\\\n8&amp;anita flynn\\\\\n9&amp;Tobias Welp\\\\\n10&amp;Travis Massey\\\\\n11&amp;Fabien Chraim\\\\\n12&amp;Yang Yang\\\\\n13&amp; \\\\\n14&amp; \\\\\n15&amp;Michael Lorek\\\\\n16&amp;Richard Yu-Kuwan Su\\\\\n&quot;">
+                <property name="tableBody" class="ptolemy.data.expr.Parameter" value="&quot;1&amp;Frank Ong\\\\\n2&amp;Anita Flynn\\\\\n3&amp;Patrick Virtue\\\\\n4&amp;Jiang Long\\\\\n5&amp;Eric Kim\\\\\n6&amp; \\\\\n7&amp;Yen Sheng Ho\\\\\n8&amp;Yu-Yun Dai\\\\\n9&amp;Tobias Welp\\\\\n10&amp;Shromona Ghosh\\\\\n11&amp;Yooseong Kim\\\\\n12&amp; \\\\\n13&amp;Jonathan Tamir\\\\\n14&amp;Martin Uecker\\\\\n15&amp;Michal Zarrouk\\\\\n16&amp;Wenwen Jiang\\\\\n&quot;">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -615,21 +619,21 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 834, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
             </property>
             <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 180.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 180.0]">
                 </property>
             </port>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;\end{document}">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;&#10;{\scriptsize To update: http://embedded.eecs.berkeley.edu/placard}&#10;\end{document}">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -646,7 +650,7 @@
                     <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 180.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 145.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -713,13 +717,13 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 65.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 834, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
             </property>
             <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
@@ -727,7 +731,7 @@
                 </property>
             </port>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;\vspace{1in}&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;&#10;{\scriptsize To update: http://embedded.eecs.berkeley.edu/placard}&#10;\vspace{1in}&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
