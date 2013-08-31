@@ -2,25 +2,27 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.99">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 783, 523}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 804, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[570, 413]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[570, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.0, 206.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a fuel tank that can exhibit chattering behavior.&#10;In this model, the tank stops input flow when the tank become full&#10;and stops output flow when it becomes empty.&#10;&#10;The top-level of this model tests the tank in a scenario where the&#10;tank has a constant input flow of 1.0, and the output flow is&#10;0.0 from time 0 to 3, and then becomes 2.0 from time 3 to 8.&#10;At time 8 the output flow is changed to 0.0 again&#10;and the sequence of values for the output flow is repeated.&#10;&#10;">
@@ -62,8 +64,8 @@
 <title>Tank Level and Flow Rates</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="20.0"/>
-<yRange min="-5.000000000000008E-5" max="4.000000000000002"/>
+<xRange min="0.0" max="6.99"/>
+<yRange min="0.0" max="4.00005"/>
 </plot>?>
         </configure>
     </entity>
@@ -94,6 +96,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 100.0]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="0.0098763888889">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
