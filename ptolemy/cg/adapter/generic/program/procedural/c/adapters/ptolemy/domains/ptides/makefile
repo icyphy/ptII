@@ -54,8 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	kernel/kernel.jar \
-	lib/lib.jar \
-	test/test.jar
+	lib/lib.jar
 
 # Keep this list alphabetized.
 JSRCS = 
