@@ -98,7 +98,17 @@ cd $gendir
 
 puts "This test (NightlyUpdate.tcl) should be run after NightlyTest.tcl"
 
-test nightly-1.7 {update_andrews} {
+test nightly-1.6 {updateDOPCenterImage, which updates the pdf} {
+    file delete -force $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
+    file delete -force $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf
+    set start [list [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png] \
+		   [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf]]
+    set matches [nightlyMake updateDOPCenterImage]
+    list $start $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png] \
+	[file exists $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf]
+} {0 0 {} 1 1}
+
+test nightly-1.7 {update_moog} {
     set matches [nightlyMake update_moog]
 
     # Check that the files are there.
@@ -126,11 +136,6 @@ test nightly-1.7 {update_andrews} {
     }
     list $matches $results
 } {{} {}}
-
-test nightly-1.8 {updateDOPCenterImage} {
-    set matches [nightlyMake updateDOPCenterImage]
-    list $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png]
-} {{} 1}
 
 set VERBOSE 0
 cd $startingDirectory
