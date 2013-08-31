@@ -58,9 +58,7 @@ JSRCS = \
 	HMMMultinomialClassifier.java \
 	HMMMultinomialEstimator.java \
 	ObservationClassifier.java \
-	PacketDropFaultGenerator.java \
-	ParameterEstimator.java \
-	StuckAtFaultGenerator.java
+	ParameterEstimator.java
 
 OTHER_FILES_TO_BE_JARED = \
 	HMMExponentialClassifierIcon.xml \
