@@ -353,10 +353,34 @@ public class ExportModel {
                             }
                         };
                         _timer.schedule(doTimeToDie, timeOut);
+
+                        // Calling finish() and stopFire() is not
+                        // sufficient if the model is still
+                        // initializing, so we call stop() on the
+                        // manager after 2x the timeout.
+                        // To replicate:
+
+                        // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml $PTII/ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption
+
+                        final Manager finalManager = manager;
+                        _failSafeTimer = new Timer(true);
+                        TimerTask doFailSafeTimeToDie = new TimerTask() {
+                            public void run() {
+                                System.out
+                                        .println("ExportHTMLTimer went off after "
+                                                + timeOut * 2
+                                                + " ms., calling manager.stop().");
+
+                                finalManager.stop();
+                            }
+                        };
+                        _failSafeTimer.schedule(doFailSafeTimeToDie, timeOut*2);
+
                         try {
                             manager.execute();
                         } finally {
                             _timer.cancel();
+                            _failSafeTimer.cancel();
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -908,8 +932,15 @@ public class ExportModel {
     /** The BasicGraphFrame of the model. */
     private BasicGraphFrame _basicGraphFrame;
 
-    /** The Timer used to terminate a run. */
+    /** The Timer used to terminate a run by calling finish() and stopFire()*/
     private static Timer _timer = null;
+
+
+    /** The Timer used to terminate a run by calling stop on the
+     * manager. This is called fail safe after the movie by the same
+     * name.
+     */
+    private static Timer _failSafeTimer = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
