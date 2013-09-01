@@ -71,8 +71,9 @@ governing the Markovian process representing the hidden state evolution. The <i>
  to parameter estimation for Gaussian mixture and hidden Markov models.</i> 
  International Computer Science Institute 4.510 (1998): 126.
 
- @see ptolemy.demo.FaultModels.lib.ExpectationMaximization
- @see ptolemy.demo.FaultModels.HiddenMarkovModelAnalysis
+ @see org.ptolemy.machineLearning.hmm.ParameterEstimator
+ @see org.ptolemy.machineLearning.hmm.HMMGaussianClassifier
+ @see org.ptolemy.machineLearning.hmm.HMMMultinomial 
 
  @author Ilge Akkaya
  @version $Id$

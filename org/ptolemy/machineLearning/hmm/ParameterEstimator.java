@@ -93,11 +93,12 @@ converge and is given the option to randomize initial guesses to reiterate.
  to parameter estimation for Gaussian mixture and hidden Markov models.</i> 
  International Computer Science Institute 4.510 (1998): 126.
 
- @see ptolemy.demo.FaultModels.lib.ClassifyObservations
- @see ptolemy.demo.FaultModels.HiddenMarkovModelAnalysis
+@see org.ptolemy.machineLearning.hmm.ObservationClassifier
+@see org.ptolemy.machineLearning.hmm.HMMGaussianEstimator
+
 
  @author Ilge Akkaya
-@version $Id$
+ @version $Id$
  @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
