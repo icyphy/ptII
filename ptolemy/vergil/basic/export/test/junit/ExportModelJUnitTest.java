@@ -268,6 +268,7 @@ public class ExportModelJUnitTest {
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
+                "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
                 "SerialPort.xml", // Requires serial port.
                 "Signature.xml", // Throws an exception in the normal course of operations.
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
