@@ -49,7 +49,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * This actor produces discrete events according to a Poisson process.
  * The time between events is given by independent and identically
  * distributed exponential random variables. The values produced
@@ -86,20 +86,20 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
     // because it can't subclass both TimedSource and RandomSource.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * If true, then this actor will request a firing at the start time.
      * Otherwise, the first firing will be requested at the first random
      * time. This is a boolean-valued parameter that defaults to <i>true</i>.
      */
     public Parameter fireAtStart;
 
-    /**
+    /**     
      * The mean time between events, where the output value transitions.
      * This parameter must contain a DoubleToken.
      */
     public Parameter meanTime;
 
-    /**
+    /**     
      * The time at which postfire() should return false. This is a
      * double that defaults to Infinity, which means that postfire()
      * never returns false (or at least, doesn't do so due to stopTime
@@ -107,7 +107,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      */
     public Parameter stopTime;
 
-    /**
+    /**     
      * The values that will be produced at the output.
      * This parameter can contain any ArrayToken, and it defaults to {1, 0}.
      */
@@ -190,7 +190,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
 
     private Time _stopTime;
 
-    /**
+    /**     
      * Construct an actor with the specified container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -217,7 +217,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "+"width=\"40\" height=\"40\" "+"style=\"fill:lightGrey\"/>\n"+"<circle cx=\"0\" cy=\"0\" r=\"17\""+"style=\"fill:white\"/>\n"+"<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"+"<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"+"<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"+"<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"+"<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"+"<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"+"</svg>\n");
     }
 
-    /**
+    /**     
      * If the argument is the meanTime parameter, check that it is
      * positive.
      * @param attribute The attribute that changed.
@@ -231,7 +231,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
                 throw new IllegalActionException(this, "meanTime is required to be positive.  meanTime given: " + mean);
             }
         } else if (attribute == values) {
-            ArrayToken val = (ArrayToken)(values.getToken());
+            ArrayToken val = (ArrayToken)values.getToken();
             $ASSIGN$_length(val.length());
         } else if (attribute == stopTime) {
             double newStopTimeValue = ((DoubleToken)stopTime.getToken()).doubleValue();
@@ -253,7 +253,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         }
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the parameter public members to refer
      * to the parameters of the new actor.
@@ -272,7 +272,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         return newObject;
     }
 
-    /**
+    /**     
      * Output the current value.
      * @exception IllegalActionException If there is no director.
      */
@@ -285,7 +285,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         }
         Director director = getDirector();
         Time currentTime = director.getModelTime();
-        boolean timeForOutput = (currentTime.compareTo(_nextFiringTime) >= 0);
+        boolean timeForOutput = currentTime.compareTo(_nextFiringTime) >= 0;
         if (!timeForOutput && !triggerInputPresent) {
             return;
         }
@@ -300,7 +300,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         $ASSIGN$_outputProduced(true);
     }
 
-    /**
+    /**     
      * Get the stop time.
      * @return The stop time.
      * @deprecated As of Ptolemy II 4.1, replaced by{
@@ -311,7 +311,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         return getModelStopTime().getDoubleValue();
     }
 
-    /**
+    /**     
      * Get the stop time.
      * @return The stop time.
      */
@@ -319,7 +319,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         return _stopTime;
     }
 
-    /**
+    /**     
      * Request the first firing either at the start time
      * or at a random time, depending on <i>fireAtStart</i>.
      * @exception IllegalActionException If the fireAt() method of the
@@ -335,7 +335,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         double stopTimeValue = ((DoubleToken)stopTime.getToken()).doubleValue();
         $ASSIGN$_stopTime(new Time(getDirector(), stopTimeValue));
         Time currentTime = director.getModelTime();
-        if (!_stopTime.isInfinite() && (_stopTime.compareTo(currentTime) > 0)) {
+        if (!_stopTime.isInfinite() && _stopTime.compareTo(currentTime) > 0) {
             director.fireAt(this, _stopTime);
             $ASSIGN$_executing(true);
         }
@@ -351,7 +351,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         }
     }
 
-    /**
+    /**     
      * Generate an exponential random number and schedule the next firing.
      * @exception IllegalActionException If the director throws it when
      * scheduling the next firing, or if the director does not
@@ -377,7 +377,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         return result;
     }
 
-    /**
+    /**     
      * If the current time matches the expected time for the next
      * output, then return true. Also return true if the
      * trigger input is connected and has events.
@@ -400,7 +400,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         return false;
     }
 
-    /**
+    /**     
      * Override the base class to reset a flag that indicates that the
      * model is executing. This method is invoked exactly once per execution
      * of an application.  None of the other action methods should be
@@ -412,18 +412,19 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
         $ASSIGN$_executing(false);
     }
 
-    /**
+    /**     
      * Generate a new random number.
      * @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException  {
         double meanTimeValue = ((DoubleToken)meanTime.getToken()).doubleValue();
-        $ASSIGN$_current(-Math.log((1 - _random.nextDouble())) * meanTimeValue);
+        double test = _random.nextDouble();
+        $ASSIGN$_current(-Math.log(1 - test) * meanTimeValue);
     }
 
     private Token _getValue(int index) throws IllegalActionException  {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if ((val == null) || (index >= _length)) {
+        ArrayToken val = (ArrayToken)values.getToken();
+        if (val == null || index >= _length) {
             throw new IllegalActionException(this, "Index out of range of the values parameter.");
         }
         return val.getElement(index);

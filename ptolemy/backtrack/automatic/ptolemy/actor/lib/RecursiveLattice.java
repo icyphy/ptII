@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * A recursive (all-pole) filter with a lattice structure.
  * The coefficients of such a filter are called "reflection coefficients."
  * Recursive lattice filters are typically used as synthesis filters for
@@ -118,7 +118,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
     // Note that setExpression() will call attributeChanged().
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    /**
+    /**     
      * The reflection coefficients.  This is an array of doubles with
      * default value {0.804534, -0.820577, 0.521934, -0.205}. These
      * are the reflection coefficients for the linear predictor of a
@@ -164,7 +164,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
 
     private double[] _reflectionCoefficients = null;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -181,7 +181,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         reflectionCoefficients.setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
-    /**
+    /**     
      * If the argument is the <i>reflectionCoefficients</i> parameter,
      * then reallocate the arrays to use.
      * @param attribute The attribute that changed.
@@ -191,7 +191,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         if (attribute == reflectionCoefficients) {
             ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
             int valueLength = value.length();
-            if ((_backward == null) || (valueLength != (_backward.length - 1))) {
+            if (_backward == null || valueLength != _backward.length - 1) {
                 $ASSIGN$_backward(new double[valueLength + 1]);
                 $ASSIGN$_backwardCache(new double[valueLength + 1]);
                 $ASSIGN$_forward(new double[valueLength + 1]);
@@ -206,7 +206,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace.
      * @param workspace The workspace for the new object.
      * @return A new actor.
@@ -270,7 +270,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * Consume one input token, if there is one, and produce one output
      * token.  If there is no input, then produce no output.
      * @exception IllegalActionException If there is no director.
@@ -284,18 +284,18 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
             $ASSIGN$_forwardCache(0, inputValue.doubleValue());
             for (int i = 1; i <= M; i++) {
                 k = _reflectionCoefficients[M - i];
-                $ASSIGN$_forwardCache(i, (k * _backwardCache[i]) + _forwardCache[i - 1]);
+                $ASSIGN$_forwardCache(i, k * _backwardCache[i] + _forwardCache[i - 1]);
             }
             output.broadcast(new DoubleToken(_forwardCache[M]));
             for (int i = 1; i < M; i++) {
                 k = -_reflectionCoefficients[M - 1-i];
-                $ASSIGN$_backwardCache(i, _backwardCache[i + 1] + (k * _forwardCache[i + 1]));
+                $ASSIGN$_backwardCache(i, _backwardCache[i + 1] + k * _forwardCache[i + 1]);
             }
             $ASSIGN$_backwardCache(M, _forwardCache[M]);
         }
     }
 
-    /**
+    /**     
      * Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException  {
@@ -307,7 +307,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Update the backward and forward prediction errors that
      * were generated in fire() method.
      * @return False if the number of iterations matches the number requested.
@@ -319,7 +319,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         return super.postfire();
     }
 
-    /**
+    /**     
      * Check to see if this actor is ready to fire.
      * @exception IllegalActionException If there is no director.
      */

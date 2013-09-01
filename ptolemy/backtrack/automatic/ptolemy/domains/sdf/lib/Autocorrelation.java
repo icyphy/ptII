@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * This actor calculates the autocorrelation of a sequence of input tokens.
  * <a name="autocorrelation"></a>
  * It is polymorphic, supporting any input data type that supports
@@ -120,25 +120,25 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     // Set the output type to be an ArrayType.
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    /**
+    /**     
      * If true, the estimate will be biased.
      * This is a boolean with default value false.
      */
     public Parameter biased;
 
-    /**
+    /**     
      * Number of input samples to average.
      * This is an integer with default value 256.
      */
     public Parameter numberOfInputs;
 
-    /**
+    /**     
      * Number of autocorrelation lags to output.
      * This is an integer with default value 64.
      */
     public Parameter numberOfLags;
 
-    /**
+    /**     
      * If true, then the output from each firing
      * will have 2*<i>numberOfLags</i> + 1
      * samples (an odd number) whose values are symmetric about
@@ -167,7 +167,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     // The constructor takes a port argument so that the clone()
     // method can construct an instance of this class for the
     // input port on the clone.
-    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     ////                       public inner methods            ////
     private int _numberOfInputs;
 
@@ -191,7 +191,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             $ASSIGN$_port(port);
         }
 
-        /**
+        /**         
          * Return the function result.
          * @return A Type.
          */
@@ -206,7 +206,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             }
         }
 
-        /**
+        /**         
          * Return an one element array containing the InequalityTerm
          * representing the type of the input port.
          * @return An array of InequalityTerm.
@@ -266,7 +266,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
     }
 
-    /**
+    /**     
      * Monotonic function that determines the type of the output port.
      */
     private class OutputTypeTerm extends MonotonicFunction implements Rollbackable {
@@ -279,12 +279,12 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         ////                   private methods                     ////
         ///////////////////////////////////////////////////////////////
         ////                   private members                     ////
-        /**
-         * The array type with element types matching the typeable.
+        /**         
+         * The array type with element types matching the typeable. 
          */
         private ArrayType _arrayType;
 
-        /**
+        /**         
          * Return an array type with element types given by the
          * associated typeable.
          * @return An ArrayType.
@@ -306,7 +306,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             return _getArrayTypeRaw();
         }
 
-        /**
+        /**         
          * Return an array containing the type term for the actor's
          * input port.
          * @return An array of InequalityTerm.
@@ -317,7 +317,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             return array;
         }
 
-        /**
+        /**         
          * Get an array type with element type matching the type
          * of the associated typeable.
          * @return An array type for the associated typeable.
@@ -332,7 +332,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             return _arrayType;
         }
 
-        /**
+        /**         
          * Get an array type with element type matching the type
          * of the associated typeable.
          * @return An array type for the associated typeable.
@@ -396,7 +396,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
     }
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -421,7 +421,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         attributeChanged(numberOfInputs);
     }
 
-    /**
+    /**     
      * Check to see that the numberOfInputs parameter is positive,
      * and that the numberOfLags parameter is positive.  Based on the
      * new values, recompute the size of the output array.
@@ -429,7 +429,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException  {
-        if ((attribute == numberOfInputs) || (attribute == numberOfLags)||(attribute == symmetricOutput)) {
+        if (attribute == numberOfInputs || attribute == numberOfLags || attribute == symmetricOutput) {
             $ASSIGN$_numberOfInputs(((IntToken)numberOfInputs.getToken()).intValue());
             $ASSIGN$_numberOfLags(((IntToken)numberOfLags.getToken()).intValue());
             $ASSIGN$_symmetricOutput(((BooleanToken)symmetricOutput.getToken()).booleanValue());
@@ -440,11 +440,11 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
                 throw new IllegalActionException(this, "Invalid numberOfLags: " + _numberOfLags);
             }
             if (_symmetricOutput) {
-                $ASSIGN$_lengthOfOutput((2 * _numberOfLags) + 1);
+                $ASSIGN$_lengthOfOutput(2 * _numberOfLags + 1);
             } else {
                 $ASSIGN$_lengthOfOutput(2 * _numberOfLags);
             }
-            if ((_outputs == null) || (_lengthOfOutput != _outputs.length)) {
+            if (_outputs == null || _lengthOfOutput != _outputs.length) {
                 $ASSIGN$_outputs(new Token[_lengthOfOutput]);
             }
         } else {
@@ -452,7 +452,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the type constraints.
      * @param workspace The workspace for the new object.
@@ -469,7 +469,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * Consume tokens from the input and produce a token on the output
      * that contains an array token that represents an autocorrelation
      * estimate of the consumed tokens.  The estimate is consistent with
@@ -484,7 +484,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         boolean complex = inputValues[0] instanceof ComplexToken;
         for (int i = _numberOfLags; i >= 0; i--) {
             Token sum = inputValues[0].zero();
-            for (int j = 0; j < (_numberOfInputs - i); j++) {
+            for (int j = 0; j < _numberOfInputs - i; j++) {
                 if (complex) {
                     ComplexToken conjugate = new ComplexToken(((ComplexToken)inputValues[j]).complexValue().conjugate());
                     sum = sum.add(conjugate.multiply(inputValues[j + i]));
@@ -493,23 +493,23 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
                 }
             }
             if (biasedValue) {
-                $ASSIGN$_outputs((i + _numberOfLags) - notSymmetric, sum.divide(numberOfInputs.getToken()));
+                $ASSIGN$_outputs(i + _numberOfLags - notSymmetric, sum.divide(numberOfInputs.getToken()));
             } else {
-                $ASSIGN$_outputs((i + _numberOfLags) - notSymmetric, sum.divide(new IntToken(_numberOfInputs - i)));
+                $ASSIGN$_outputs(i + _numberOfLags - notSymmetric, sum.divide(new IntToken(_numberOfInputs - i)));
             }
         }
         for (int i = _numberOfLags - 1-notSymmetric; i >= 0; i--) {
             if (complex) {
-                ComplexToken candidate = (ComplexToken)_outputs[(2 * (_numberOfLags - notSymmetric)) - i];
+                ComplexToken candidate = (ComplexToken)_outputs[2 * (_numberOfLags - notSymmetric) - i];
                 $ASSIGN$_outputs(i, new ComplexToken(candidate.complexValue().conjugate()));
             } else {
-                $ASSIGN$_outputs(i, _outputs[(2 * (_numberOfLags - notSymmetric)) - i]);
+                $ASSIGN$_outputs(i, _outputs[2 * (_numberOfLags - notSymmetric) - i]);
             }
         }
         output.broadcast(new ArrayToken($BACKUP$_outputs()));
     }
 
-    /**
+    /**     
      * If there are not sufficient inputs, then return false.
      * Otherwise, return whatever the base class returns.
      * @exception IllegalActionException If the base class throws it.

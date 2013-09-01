@@ -36,7 +36,7 @@ import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.math.DoubleMatrixMath;
 
-/**
+/** 
  * This class provides algorithms to do interpolation. Currently, zero,
  * first, and third order interpolations are supported. These are the
  * interpolation orders most often used in practice. zero order interpolation
@@ -118,13 +118,13 @@ public class Interpolation implements Rollbackable {
 
     private int _order = 0;
 
-    /**
+    /**     
      * Construct an instance of Interpolation using the default parameters.
      */
     public Interpolation() {
     }
 
-    /**
+    /**     
      * Return the reference indexes.
      * @return An int array.
      * @see #setIndexes(int[])
@@ -133,7 +133,7 @@ public class Interpolation implements Rollbackable {
         return $BACKUP$_indexes();
     }
 
-    /**
+    /**     
      * Return the interpolation order.
      * @return An int.
      * @see #setOrder(int)
@@ -142,7 +142,7 @@ public class Interpolation implements Rollbackable {
         return _order;
     }
 
-    /**
+    /**     
      * Return the value repetition period.
      * @return An int.
      * @see #setPeriod(int)
@@ -151,7 +151,7 @@ public class Interpolation implements Rollbackable {
         return _period;
     }
 
-    /**
+    /**     
      * Return the reference values.
      * @return An double array.
      * @see #setValues(double[])
@@ -160,7 +160,7 @@ public class Interpolation implements Rollbackable {
         return $BACKUP$_values();
     }
 
-    /**
+    /**     
      * Return the interpolation result for the specified index.
      * @param index The point of interpolation. Can be negative
      * @return A double.
@@ -174,15 +174,15 @@ public class Interpolation implements Rollbackable {
             throw new IllegalStateException("Interpolation.interpolate(): " + "The index and value arrays do "+"not have the same length.");
         }
         int largestIndex = _indexes[numRefPoints - 1];
-        if ((_period != 0) && (_period <= largestIndex)) {
+        if (_period != 0 && _period <= largestIndex) {
             throw new IllegalStateException("Interpolation.interpolate(): " + "The period is not 0 and not "+"greater than the "+"largest index.");
         }
-        if ((index < 0) || (index > largestIndex)) {
+        if (index < 0 || index > largestIndex) {
             if (_period == 0) {
                 return 0.0;
             } else {
                 if (index < 0) {
-                    index += (((-index / _period) + 1) * _period);
+                    index += (-index / _period + 1) * _period;
                 }
                 index %= _period;
             }
@@ -218,7 +218,7 @@ public class Interpolation implements Rollbackable {
             iStart = _indexes[indexIndexStart];
             vStart = _values[indexIndexStart];
         }
-        if (indexIndexStart == (numRefPoints - 1)) {
+        if (indexIndexStart == numRefPoints - 1) {
             iEnd = _indexes[0] + _period;
             vEnd = _values[0];
         } else {
@@ -226,7 +226,7 @@ public class Interpolation implements Rollbackable {
             vEnd = _values[indexIndexStart + 1];
         }
         if (_order == 1) {
-            return vStart + (((index - iStart) * (vEnd - vStart)) / (iEnd - iStart));
+            return vStart + (index - iStart) * (vEnd - vStart) / (iEnd - iStart);
         }
         int iBeforeStart;
         int iAfterEnd;
@@ -247,10 +247,10 @@ public class Interpolation implements Rollbackable {
             iBeforeStart = _indexes[indexIndexStart - 1];
             vBeforeStart = _values[indexIndexStart - 1];
         }
-        if (indexIndexStart == (numRefPoints - 1)) {
+        if (indexIndexStart == numRefPoints - 1) {
             iAfterEnd = _indexes[1] + _period;
             vAfterEnd = _values[1];
-        } else if (indexIndexStart == (numRefPoints - 2)) {
+        } else if (indexIndexStart == numRefPoints - 2) {
             if (_period > 0) {
                 iAfterEnd = _indexes[0] + _period;
                 vAfterEnd = _values[0];
@@ -270,7 +270,7 @@ public class Interpolation implements Rollbackable {
         return _hermite(index, iStart, vStart, tanStart, iEnd, vEnd, tanEnd);
     }
 
-    /**
+    /**     
      * Set the reference indexes.
      * @param indexes An int array.
      * @exception IllegalArgumentException If the argument array is
@@ -279,29 +279,29 @@ public class Interpolation implements Rollbackable {
      */
     public void setIndexes(int[] indexes) {
         int prev = -1;
-        for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] <= prev) {
+        for (int indexe : indexes) {
+            if (indexe <= prev) {
                 throw new IllegalArgumentException("Interpolation.setIndexes" + " index array is not increasing and non-negative.");
             }
-            prev = indexes[i];
+            prev = indexe;
         }
         $ASSIGN$_indexes(indexes);
     }
 
-    /**
+    /**     
      * Set the interpolation order.
      * @param order An int.
      * @exception IllegalArgumentException If the order is not 0, 1, or 3.
      * @see #getOrder()
      */
     public void setOrder(int order) {
-        if ((order != 0) && (order != 1)&&(order != 3)) {
+        if (order != 0 && order != 1 && order != 3) {
             throw new IllegalArgumentException("Interpolation.setOrder: " + "The order " + order+" is not valid.");
         }
         $ASSIGN$_order(order);
     }
 
-    /**
+    /**     
      * Set the value repetition period.
      * @param period An int.
      * @exception IllegalArgumentException If the period is negative.
@@ -314,7 +314,7 @@ public class Interpolation implements Rollbackable {
         $ASSIGN$_period(period);
     }
 
-    /**
+    /**     
      * Set the reference values.
      * @param values A double array.
      * @see #getValues()
@@ -351,7 +351,7 @@ public class Interpolation implements Rollbackable {
         Gh[3] = tanEnd;
         double[] coef = DoubleMatrixMath.multiply(Gh, MInverse);
         double indexSqr = index * index;
-        return (coef[0] * indexSqr*index) + (coef[1] * indexSqr)+(coef[2] * index)+coef[3];
+        return coef[0] * indexSqr*index + coef[1] * indexSqr + coef[2] * index + coef[3];
     }
 
     private final int[] $ASSIGN$_indexes(int[] newValue) {

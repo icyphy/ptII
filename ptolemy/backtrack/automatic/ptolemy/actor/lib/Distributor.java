@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * A polymorphic distributor, which splits an input stream into a set of
  * output streams. The distributor has an input port and an output port,
  * the latter of which is a multiport.
@@ -87,13 +87,13 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
     // These parameters are required for SDF
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The number of tokens produced on each output channel on each firing.
      * This is an integer with default value 0.
      */
     public Parameter blockSize;
 
-    /**
+    /**     
      * The parameter controlling the input port consumption rate.
      * This is an integer, initially with value 0. Whenever a connection
      * is made to the output, the value of this parameter is changed to
@@ -101,7 +101,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      */
     public Parameter input_tokenConsumptionRate;
 
-    /**
+    /**     
      * The parameter specifying the output port production rate.
      * This is an integer, equal to the value of <i>blockSize</i>.
      */
@@ -119,12 +119,11 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
 
     private int _tentativeOutputPosition;
 
-    /**
-     * This class will set _port.getWidth() + " * blockSize" as expression
-     * of the parameter, but will only do it when the token is requested to
-     * delay the triggering of the width.
+    /**     
+     * This parameter overrides the default behavior to always return the
+     * value of the blockSize parameter times the width of the input port.
      */
-    private static class WidthDependentParameter extends Parameter implements Rollbackable {
+    private class WidthDependentParameter extends Parameter implements Rollbackable {
 
         protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -133,10 +132,12 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         public WidthDependentParameter(NamedObj container, String name, Token token, IOPort port) throws IllegalActionException, NameDuplicationException  {
             super(container, name, token);
             $ASSIGN$_port(port);
+            setPersistent(false);
         }
 
         public ptolemy.data.Token getToken() throws IllegalActionException  {
-            setExpression(_port.getWidth() + " * blockSize");
+            IntToken blockSizeValue = (IntToken)blockSize.getToken();
+            setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
         }
 
@@ -193,7 +194,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
 
     }
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name. Create ports and make the input port a multiport. Create
      * the actor parameters.
@@ -221,7 +222,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         output.setMultiport(true);
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the base
      * class method and sets the public variables to point to the new ports.
      * @param workspace The workspace for the new object.
@@ -231,12 +232,12 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Distributor newObject = (Distributor)super.clone(workspace);
-        newObject.input_tokenConsumptionRate = (Parameter)(newObject.input.getAttribute("tokenConsumptionRate"));
+        newObject.input_tokenConsumptionRate = (Parameter)newObject.input.getAttribute("tokenConsumptionRate");
         ((WidthDependentParameter)newObject.input_tokenConsumptionRate).setPort(newObject.output);
         return newObject;
     }
 
-    /**
+    /**     
      * Notify this entity that the links to the specified port have
      * been altered.  This sets the consumption rate of the input port
      * and notifies the director that the schedule is invalid, if there
@@ -251,7 +252,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         }
     }
 
-    /**
+    /**     
      * Read at most <i>N</i> tokens from the input port, where <i>N</i>
      * is the width of the output port times the <i>blockSize</i> parameter.
      * Write <i>blockSize</i> tokens to each of the
@@ -277,7 +278,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         }
     }
 
-    /**
+    /**     
      * Begin execution by setting the current output channel to zero.
      * @exception IllegalActionException If there is no director.
      */
@@ -286,7 +287,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         $ASSIGN$_currentOutputPosition(0);
     }
 
-    /**
+    /**     
      * Update the output position to equal that determined by the most
      * recent invocation of the fire() method.  The output position is
      * the channel number of the output port to which the next input

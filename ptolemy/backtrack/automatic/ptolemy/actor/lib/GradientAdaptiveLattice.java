@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * An adaptive FIR filter with a lattice structure.  This class extends
  * the base class to dynamically adapt the reflection coefficients to
  * minimize the power of the output sequence.  The output reflection
@@ -71,13 +71,13 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
     // The currently adapted reflection coefficients
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The output port that produces the current reflection
      * coefficients.  The port is of type array of double.
      */
     public TypedIOPort adaptedReflectionCoefficients;
 
-    /**
+    /**     
      * The time constant of the filter, which determines how fast the
      * filter adapts.
      * The default value of this parameter is 1.0.
@@ -116,7 +116,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
 
     private double[] _reflectionCoefficientsCache;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -136,7 +136,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         output.setTypeAtLeast(input);
     }
 
-    /**
+    /**     
      * Handle parameter change events on the
      * <i>order</i> and <i>timeConstant</i> parameters. The
      * filter state vector is reinitialized to zero state.
@@ -147,13 +147,13 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
     public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == timeConstant) {
             double timeConstantValue = ((DoubleToken)timeConstant.getToken()).doubleValue();
-            $ASSIGN$_oneMinusAlpha(((timeConstantValue - 1.0) / (timeConstantValue + 1.0)));
+            $ASSIGN$_oneMinusAlpha((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
             $ASSIGN$_alpha(1.0 - _oneMinusAlpha);
         }
         super.attributeChanged(attribute);
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the type constraints.
      * @param workspace The workspace for the new object.
@@ -173,7 +173,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException  {
@@ -191,7 +191,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */
@@ -205,20 +205,20 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         double k;
         for (int i = 0; i < _order; i++) {
             k = _reflectionCoefficients[i];
-            _forwardCache[i + 1] = (-k * _backwardCache[i]) + _forwardCache[i];
+            _forwardCache[i + 1] = -k * _backwardCache[i] + _forwardCache[i];
         }
         DoubleToken[] outputArray = new DoubleToken[_order];
         for (int i = _order; i > 0; i--) {
             k = _reflectionCoefficients[i - 1];
-            _backwardCache[i] = (-k * _forwardCache[i - 1]) + _backwardCache[i - 1];
+            _backwardCache[i] = -k * _forwardCache[i - 1] + _backwardCache[i - 1];
             double fe_i = _forwardCache[i];
             double be_i = _backwardCache[i];
             double fe_ip = _forwardCache[i - 1];
             double be_ip = _backwardCache[i - 1];
-            double newError = (_estimatedErrorPower[i] * _oneMinusAlpha) + (_alpha * ((fe_ip * fe_ip) + (be_ip * be_ip)));
+            double newError = _estimatedErrorPower[i] * _oneMinusAlpha + _alpha * (fe_ip * fe_ip + be_ip * be_ip);
             double newCoefficient = _reflectionCoefficients[i - 1];
             if (newError != 0.0) {
-                newCoefficient += ((_alpha * ((fe_i * be_ip) + (be_i * fe_ip))) / newError);
+                newCoefficient += _alpha * (fe_i * be_ip + be_i * fe_ip) / newError;
                 if (newCoefficient > 1.0) {
                     newCoefficient = 1.0;
                 } else if (newCoefficient < -1.0) {

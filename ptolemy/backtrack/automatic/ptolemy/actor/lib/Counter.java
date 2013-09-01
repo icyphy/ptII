@@ -40,12 +40,14 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
-/**
+/** 
  * This actor implements an up-down counter of received tokens.  Whenever
  * a token is received from the <i>increment</i> input, the internal
  * counter is incremented.  Whenever a token is received from the
@@ -55,7 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * token will be consumed from each input during each firing.  If a token
  * is present on both input ports during any firing, then the increment
  * and the decrement will cancel out, and only one output token will be
- * produced.
+ * produced. If any firing a <i>reset</i> input is present and true,
+ * then the count will be reset.
  * @author Steve Neuendorffer
  * @version $Id$
  * @since Ptolemy II 2.0
@@ -68,39 +71,42 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The increment port. If this input port
      * receives a token, then the counter is incremented.  The port
      * has type general.
      */
     public TypedIOPort increment;
 
-    /**
+    /**     
      * The decrement port. If this input port
      * receives a token, then the counter is decremented.  The port
      * has type general.
      */
     public TypedIOPort decrement;
 
-    /**
+    /**     
      * The output port with type IntToken.
      */
     public TypedIOPort output;
+
+    /**     
+     * The reset input port. This is of type boolean. 
+     */
+    public TypedIOPort reset;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Check the increment port.
     // Check the decrement port.
-    // Produce an output if we consumed an input.
+    // Produce an output if we consumed an input or got a reset.
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private int _count = 0;
 
     private int _latestCount = 0;
 
-    private boolean _consumed;
-
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -119,9 +125,14 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
         new Parameter(decrement, "_showName", BooleanToken.TRUE);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
+        reset = new TypedIOPort(this, "reset", true, false);
+        reset.setTypeEquals(BaseType.BOOLEAN);
+        new SingletonParameter(reset, "_showName").setToken(BooleanToken.TRUE);
+        StringAttribute cardinal = new StringAttribute(reset, "_cardinal");
+        cardinal.setExpression("SOUTH");
     }
 
-    /**
+    /**     
      * Consume at most one token from each input and update the
      * counter appropriately. Send the current value of the counter
      * to the output.  If there are no input tokens available, no
@@ -140,28 +151,36 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
     public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_latestCount(_count);
-        $ASSIGN$_consumed(false);
+        boolean consumed = false;
         for (int i = 0; i < increment.getWidth(); i++) {
             if (increment.hasToken(i)) {
                 increment.get(i);
                 $ASSIGN$SPECIAL$_latestCount(11, _latestCount);
-                $ASSIGN$_consumed(true);
+                consumed = true;
             }
         }
         for (int i = 0; i < decrement.getWidth(); i++) {
             if (decrement.hasToken(i)) {
                 decrement.get(i);
                 $ASSIGN$SPECIAL$_latestCount(12, _latestCount);
-                $ASSIGN$_consumed(true);
+                consumed = true;
             }
         }
-        if (_consumed) {
+        if (reset.getWidth() > 0) {
+            if (reset.hasToken(0)) {
+                if (((BooleanToken)reset.get(0)).booleanValue()) {
+                    $ASSIGN$_latestCount(0);
+                    consumed = true;
+                }
+            }
+        }
+        if (consumed) {
             Token out = new IntToken(_latestCount);
             output.send(0, out);
         }
     }
 
-    /**
+    /**     
      * Reset the count of inputs to zero.
      * @exception IllegalActionException If the parent class throws it.
      */
@@ -170,7 +189,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
         $ASSIGN$_count(0);
     }
 
-    /**
+    /**     
      * Record the most recent output count as the actual count.
      * @exception IllegalActionException If the base class throws it.
      */
@@ -233,13 +252,6 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    private final boolean $ASSIGN$_consumed(boolean newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_consumed.add(null, _consumed, $CHECKPOINT.getTimestamp());
-        }
-        return _consumed = newValue;
-    }
-
     public void $COMMIT(long timestamp) {
         FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
@@ -248,7 +260,6 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
     public void $RESTORE(long timestamp, boolean trim) {
         _count = $RECORD$_count.restore(_count, timestamp, trim);
         _latestCount = $RECORD$_latestCount.restore(_latestCount, timestamp, trim);
-        _consumed = $RECORD$_consumed.restore(_consumed, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
@@ -280,12 +291,9 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
 
     private transient FieldRecord $RECORD$_latestCount = new FieldRecord(0);
 
-    private transient FieldRecord $RECORD$_consumed = new FieldRecord(0);
-
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_count,
-            $RECORD$_latestCount,
-            $RECORD$_consumed
+            $RECORD$_latestCount
         };
 
 }
