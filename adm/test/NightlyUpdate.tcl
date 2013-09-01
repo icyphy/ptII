@@ -106,7 +106,7 @@ test nightly-1.6 {updateDOPCenterImage, which updates the pdf} {
     set matches [nightlyMake updateDOPCenterImage]
     list $start $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png] \
 	[file exists $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf]
-} {0 0 {} 1 1}
+} {{0 0} {} 1 1}
 
 test nightly-1.7 {update_moog} {
     set matches [nightlyMake update_moog]
