@@ -83,9 +83,6 @@ public class OMCProxy implements IOMCProxy {
      *  This private Constructor prevents other class from instantiating. 
      */
     private OMCProxy() {
-        if (_fOMCThread == null) {
-            _fOMCThread = new OMCThread();
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,8 +95,8 @@ public class OMCProxy implements IOMCProxy {
     public OmcCommunication omcCommunication;
 
     /** 
-     *  OpenModelica Compiler(OMC) thread runs the OMC binary file by taking environmental variables
-     *  OPENMODELICAHOME,OPENMODELICALIBRARY and working directory.
+       OMCThread runs the OMC binary file by taking environmental variables
+       OPENMODELICAHOME,OPENMODELICALIBRARY and working directory.
      */
     class OMCThread extends Thread {
         /** Construct an OpenModelica compiler thread
@@ -107,7 +104,6 @@ public class OMCProxy implements IOMCProxy {
          */
         public OMCThread() {
             super("OpenModelica Interactive Compiler Thread");
-
         }
 
         public void run() {
@@ -117,7 +113,7 @@ public class OMCProxy implements IOMCProxy {
             } catch (ConnectException e) {
 
                 _omcLogger
-                .getSever("Unable to get the omc binary path! Server quit.");
+                .getSever("Unable to get the omc binary path! Server stopped.");
                 hasInitialized = false;
                 return;
             }
@@ -129,7 +125,7 @@ public class OMCProxy implements IOMCProxy {
             // Start OpenModelica Compiler(OMC) as a server listening on the CORBA interface by setting +d=interactiveCorba flag.
             // Set the name of the CORBA session by +c because of using +d=interactiveCorba.
             String command[] = { omcBinary.getAbsolutePath(),
-                    "+c=" + _corbaSessionName, "+d=interactiveCorba" };
+                    "+c=" + _corbaSession, "+d=interactiveCorba" };
 
             ArrayList<String> both = new ArrayList<String>(command.length);
             Collections.addAll(both, command);
@@ -337,11 +333,14 @@ public class OMCProxy implements IOMCProxy {
         _os = getOs();
 
         // Set time as _corbaSession.
-        String strDate = "";
+        String stringDate = "";
+        // FIXME add mili to current one OR use mili instead of the current one
         Date date = new Date();
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss");
-        strDate = timeFormat.format(date);
-        _corbaSessionName = strDate;
+        stringDate = timeFormat.format(date);
+        //long timeInMillis = System.currentTimeMillis();
+        //_corbaSession = stringDate + timeInMillis ;
+        _corbaSession = stringDate;
 
         // Check if an OMC server is already started. 
         File file = new File(_getPathToObject());
@@ -576,7 +575,7 @@ public class OMCProxy implements IOMCProxy {
             }
         } catch (ConnectException e) {
             throw new ConnectException(
-                    "Unable to modify variables value due to connection problem with OMC!");
+                    "Unable to modify variables value due to connection problem!");
         }
     }
 
@@ -723,7 +722,7 @@ public class OMCProxy implements IOMCProxy {
 
             loggerInfo = "Building "
                     + modelName
-                    + " model without the preferable name for the executable result file.";
+                    + " model without the preferable name for the executable result file...";
             _omcLogger.getInfo(loggerInfo);
         }
 
@@ -741,7 +740,7 @@ public class OMCProxy implements IOMCProxy {
 
             loggerInfo = "Building "
                     + modelName
-                    + " model with the preferable name for the executable result file.";
+                    + " model with the preferable name for the executable result file...";
             _omcLogger.getInfo(loggerInfo);
         }
 
@@ -764,7 +763,7 @@ public class OMCProxy implements IOMCProxy {
 
             if (processingType.compareTo("batch") == 0) {
 
-                loggerInfo = "Running non-interactive simulation.";
+                loggerInfo = "Running non-interactive simulation...";
                 _omcLogger.getInfo(loggerInfo);
 
                 if (fileNamePrefix.compareTo("") == 0) {
@@ -860,7 +859,7 @@ public class OMCProxy implements IOMCProxy {
                 }
             } else {
 
-                loggerInfo = "Running interactive simulation.";
+                loggerInfo = "Running interactive simulation...";
                 _omcLogger.getInfo(loggerInfo);
 
                 switch (getOs()) {
@@ -883,10 +882,13 @@ public class OMCProxy implements IOMCProxy {
                 commands = commands + " -interactive";
 
                 try {
-                    loggerInfo = "Command " + commands + " is running!";
+                    loggerInfo = "Command " + commands + " is running...";
                     _omcLogger.getInfo(loggerInfo);
                     Runtime.getRuntime().exec(commands,
                             _environmentalVariables, _workDir);
+                    loggerInfo = "Command " + commands
+                            + " is run successfully!";
+                    _omcLogger.getInfo(loggerInfo);
                 } catch (IOException e) {
                     loggerInfo = "Failed to run command: " + commands;
                     _omcLogger.getInfo(loggerInfo);
@@ -1076,21 +1078,18 @@ public class OMCProxy implements IOMCProxy {
                 .println("Could not get user.name property?  Using 'nobody'.");
                 _username = "nobody";
             }
-            if (_corbaSessionName == null
-                    || _corbaSessionName.equalsIgnoreCase("")) {
+            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
                 fileName = _temp + "/openmodelica." + _username + ".objid";
             } else {
                 fileName = _temp + "/openmodelica." + _username + ".objid"
-                        + "." + _corbaSessionName;
+                        + "." + _corbaSession;
             }
             break;
         case WINDOWS:
-            if (_corbaSessionName == null
-            || _corbaSessionName.equalsIgnoreCase("")) {
+            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
                 fileName = _temp + "openmodelica.objid";
             } else {
-                fileName = _temp + "openmodelica.objid" + "."
-                        + _corbaSessionName;
+                fileName = _temp + "openmodelica.objid" + "." + _corbaSession;
             }
             break;
         case MAC:
@@ -1099,12 +1098,11 @@ public class OMCProxy implements IOMCProxy {
                 .println("Could not get user.name property?  Using 'nobody'.");
                 _username = "nobody";
             }
-            if (_corbaSessionName == null
-                    || _corbaSessionName.equalsIgnoreCase("")) {
+            if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
                 fileName = _temp + "openmodelica." + _username + ".objid";
             } else {
                 fileName = _temp + "openmodelica." + _username + ".objid" + "."
-                        + _corbaSessionName;
+                        + _corbaSession;
             }
             break;
         }
@@ -1216,9 +1214,6 @@ public class OMCProxy implements IOMCProxy {
                 }
             }
         }
-        synchronized (_fOMCThread) {
-            _fOMCThread.notify();
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1227,7 +1222,7 @@ public class OMCProxy implements IOMCProxy {
     private String _componentName = null;
 
     // Initialize _corbaSession.
-    private String _corbaSessionName = null;
+    private String _corbaSession = null;
 
     // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start. 
     private boolean _couldNotStartOMC = false;
@@ -1236,7 +1231,7 @@ public class OMCProxy implements IOMCProxy {
     private String[] _environmentalVariables = null;
 
     // This object is used for starting OpenModelica Compiler(OMC)'s thread. 
-    private OMCThread _fOMCThread = null;
+    private final OMCThread _fOMCThread = new OMCThread();
 
     // Flag which indicates whether the server should start or not. 
     private boolean _fOMCThreadHasBeenScheduled = false;
