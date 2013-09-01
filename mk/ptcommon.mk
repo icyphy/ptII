@@ -860,10 +860,11 @@ _jnlps:
 	set $(EXAMPLE_MODELS); \
 	for x do \
 		(cd $(ROOT); $(MAKE) \
-			JNLP_MODEL=`basename $$x .xml` \
-			JNLP_MODEL_DIRECTORY=$(ME) \
+			CHAPTER=$(CHAPTER) \
 			EXAMPLE_MODELS="$(EXAMPLE_MODELS)" \
 			EXAMPLE_SUBMODELS="$(EXAMPLE_SUBMODELS)" \
+			JNLP_MODEL=`basename $$x .xml` \
+			JNLP_MODEL_DIRECTORY=$(ME) \
 			book_dist_update); \
 	done
 
