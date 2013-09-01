@@ -1147,7 +1147,7 @@ hudson_dist:
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
-	clean all jnlp src.jar setup update_moog updateDOPCenterImage
+	clean all jnlp src.jar setup updateDOPCenterImage update_moog 
 
 # caltrop requires -source 1.4, ptalon -source 1.5
 # Move remote1doc to after rebuild so that the Actor Index tool is built.
