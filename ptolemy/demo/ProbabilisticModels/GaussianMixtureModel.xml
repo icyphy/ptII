@@ -131,7 +131,7 @@
         </property>
         <property name="pmf" class="ptolemy.data.expr.Parameter" value="mixingProportions">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[0].toArray()">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-795.0, -190.0}">
         </property>
