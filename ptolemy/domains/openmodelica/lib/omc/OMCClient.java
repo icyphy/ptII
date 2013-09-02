@@ -66,7 +66,7 @@ public class OMCClient {
      *  The generated simulation runtime file in <i>$TMPDIR/$USERNAME/OpenModelica</i> runs by <i>-interactive</i> flag. 
      *  Upon running the executable file the keyboard entries and the results are displayed in the same console as you are typing the command. 
      *  The simulation runtime waits until a Control Client has been connected to its port through calling the method 
-     *  <i>establishclientsocket()</i>. Afterwards, <i>exchangewithsocket()</i> handles communications between Ptolemy II and OMI. 
+     *  <i>establishSocket()</i>. Afterwards, <i>exchangeData()</i> handles communications between Ptolemy II and OMI. 
      *  @param args
      *  @throws IllegalActionException
      *  @throws IOException If an I/O error occurs while establishing connection or exchanging data over network.
