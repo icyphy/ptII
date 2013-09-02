@@ -62,23 +62,17 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class OMCClient {
 
-    /** OpenModelica Compiler(OMC) which is coupled to Ptolemy II is called to initialize the
-     *  OMC server and simulate the Modelica model afterward. The generated simulation runtime file is generated in 
-     *  <i>$TMPDIR/$USERNAME/OpenModelica</i> runs by <i>-interactive</i> flag. After starting the simulation the keyboard 
-     *  entries and the results are displayed in the same console as you are typing the command. 
-     *  The simulation runtime will be waiting until a UI client in Ptolemy II has been connected to its port.
-     *  OMCClient establishes a connection through calling the method <i>establishclientsocket()</i>. Then it calls the method <i>exchangewithsocket()</i> to exchange 
-     *  messages between the client Ptolemy II and the server OMC. Parameters are changeable while simulating interactively using OpenModelica Interactive(OMI), 
-     *  which is an important modification/addition to the semantics of the Modelica language. Thus, all properties using the prefix parameter can be
-     *  changed during an interactive simulation. In the final step, client calls <i>closesocket()</i> to close the socket upon figuring 
-     *  out there is no more data to read from the OMC server.
-     * @param args
-     * @throws IllegalActionException
-     * @throws IOException If an I/O error occurs at the time of creating/closing the socket or exchanging data
-     * between the client and the server.
+    /** OpenModelica Compiler(OMC) is called to initialize the OMC server and simulate the Modelica model afterward. 
+     *  The generated simulation runtime file in <i>$TMPDIR/$USERNAME/OpenModelica</i> runs by <i>-interactive</i> flag. 
+     *  Upon running the executable file the keyboard entries and the results are displayed in the same console as you are typing the command. 
+     *  The simulation runtime waits until a Control Client has been connected to its port through calling the method 
+     *  <i>establishclientsocket()</i>. Afterwards, <i>exchangewithsocket()</i> handles communications between Ptolemy II and OMI. 
+     *  @param args
+     *  @throws IllegalActionException
+     *  @throws IOException If an I/O error occurs while establishing connection or exchanging data over network.
      */
     public static void main(String[] args) throws IllegalActionException,
-    IOException {
+            IOException {
 
         try {
             // Initialize the OpenModelica compiler(OMC) server.
@@ -90,7 +84,7 @@ public class OMCClient {
             // Build the Modelica model and run the executable result file in an interactive processing mode. [run by -interactive flag]
             _omcProxy.simulateModel("BouncingBall.mo", "BouncingBall",
                     "BouncingBall", "0.0", "0.1", 500, "0.0001", "dassl",
-                    "mat", ".*", "", "", "interactive");
+                    "csv", ".*", "", "", "interactive");
         } catch (ConnectException e) {
             e.printStackTrace();
             throw new IllegalActionException(e.getMessage());
@@ -105,21 +99,19 @@ public class OMCClient {
         // Use the BSD socket to exchange data with the OMC server.          
         _utilSocket.exchangeData();
 
-        // Close the socket.
-        _utilSocket.closeSocket();
-
         // Stop the OMC server.
         try {
             _omcProxy.quitServer();
             System.out.println("OMC server stopped!");
         } catch (ConnectException e) {
             e.printStackTrace();
-            throw new IllegalActionException("SeverError: Server is unable to stop.");
+            throw new IllegalActionException(
+                    "SeverError: unable to stop server.");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variable                  ////
+    ////                         private variables                  ////
     // OMCProxy object for accessing a unique source of instance.
     private static OMCProxy _omcProxy = OMCProxy.getInstance();
 
