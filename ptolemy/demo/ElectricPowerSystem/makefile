@@ -68,12 +68,14 @@ OTHER_FILES_TO_BE_JARED = \
 	GeneratorContactorLoadFMU.xml \
 	GeneratorContactorLoadSimXFMU.xml \
 	GeneratorRegulatorProtectorMetro \
+	GeneratorRegulatorProtectorPtides.xml \
 	GeneratorRegulatorProtectorSimXFMU.xml \
 	GeneratorRegulatorProtectorSimXRhapsodyFMU.xml \
 	GeneratorRegulatorProtectorSimXRhapsodyFMUMetronomy.xml \
 	GeneratorRegulatorProtectorTuLiP.xml \
 	GeneratorRegulatorProtectorWithConstraintMonitor.xml \
 	GeneratorRegulatorProtectorWithDecorator.xml \
+	GeneratorRegulatorProtectorWithLogging.xml \
 	GeneratorRegulatorProtectorWithProcessor.xml \
 	GeneratorRegulatorProtectorWithSpecification.xml \
 	GeneratorRegulatorProtectorWithSpecificationAsAspect.xml \
