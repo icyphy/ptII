@@ -50,13 +50,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /** 
-       <p>ControlServer runs Control module, one of the modules of the OpenModelica Interactive (OMI) which are designated for communication over TCP/IP.
-        Control module is the interface between OMI and Ptolemy II that is implemented as a single thread to support parallel 
-        tasks and independent reactivity. Control module is considered the major controlling and communication 
-        instance at simulation initialization phase besides managing simulation properties during simulation runtime. 
-        A client permanently sends operations as messages to Control unit. It also reacts to the feedback from other 
-        internal OMI components and sends messages back to the client, such as errors or status messages.</p>
+    <p>ControlServer runs Control module, one of the modules of the
+        OpenModelica Interactive (OMI) which are designated for
+        communication over TCP/IP.  Control module is the interface
+        between OMI and Ptolemy II that is implemented as a single
+        thread to support parallel tasks and independent
+        reactivity. Control module is considered the major controlling
+        and communication instance at simulation initialization phase
+        besides managing simulation properties during simulation
+        runtime.  A client permanently sends operations as messages to
+        Control unit. It also reacts to the feedback from other
+        internal OMI components and sends messages back to the client,
+        such as errors or status messages.</p>
 
+	<pre>
         Request from Ptolemy II to Control:
 
         UI Request                        Description                            OMI::Control Reply
@@ -85,8 +92,9 @@ import java.net.Socket;
        ---------------------------------------------------------------------------------------------------------
         Error: MESSAGE               If an error occurs the OMI::Control       Up to the UI developers
                                      generates an error messages and sends
-                                     the messages with the prefix “Error:” 
+                                     the messages with the prefix "Error:"
                                      to the UI.    
+     </pre>
       @author Mana Mirzaei
       @version $Id$
       @since Ptolemy II 9.1
