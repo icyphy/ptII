@@ -754,7 +754,8 @@ public class OMCProxy implements IOMCProxy {
             _omcLogger.getInfo(loggerInfo);
         }
         if (buildModelResult.getError().compareTo("") != 0) {
-            loggerInfo = "Error in building " + modelName + " model.";
+            loggerInfo = "Error in building " + modelName + " model: "
+                + buildModelResult.getError();
             _omcLogger.getInfo(loggerInfo);
             throw new ConnectException(loggerInfo);
         }
