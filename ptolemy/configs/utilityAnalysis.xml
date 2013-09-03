@@ -8,6 +8,16 @@
                 <doc>Attributes for Analysis</doc>
                 <property name="_libraryMarker"
   	                  class="ptolemy.kernel.util.Attribute"/>
+    <entity name="Assert" class="ptolemy.actor.lib.Assert">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+    </entity>
 				<property name="ConstraintMonitor"
 						  class="ptolemy.data.expr.ConstraintMonitor">
         			<property name="_icon" class="ptolemy.vergil.icon.ConstraintMonitorIcon">
