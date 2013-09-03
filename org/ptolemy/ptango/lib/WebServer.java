@@ -362,7 +362,8 @@ public class WebServer extends AbstractInitializableAttribute {
         if (!(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, "Container is required to be a CompositeEntity.");
         }
-        List<Entity> entities = ((CompositeEntity)container).deepEntityList();
+        List<Entity> entities = 
+                   ((CompositeEntity)container).allAtomicEntityList();
         for (Entity entity : entities) {
             if (entity instanceof HttpService) {
                 HttpService service = (HttpService) entity;
