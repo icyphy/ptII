@@ -31,7 +31,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.352689392650131">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{459.79443359375, 293.14914203951946}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{459.7944335937502, 293.14914203951946}">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Heat Exchanger">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, -45.0]">
@@ -69,7 +69,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 360.0]">
         </property>
     </property>
-    <property name="Mx" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="Mx" class="ptolemy.data.expr.Parameter" value="13.61">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -189,7 +189,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 165.0]">
         </property>
     </property>
-    <property name="Cmetal" class="ptolemy.data.expr.Parameter" value="385.0">
+    <property name="Cmetal" class="ptolemy.data.expr.Parameter" value="837.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -207,7 +207,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 195.0]">
         </property>
-        <property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+        <property name="style" class="ptolemy.actor.gui.style.LineStyle">
         </property>
     </property>
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -267,7 +267,7 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The above two actors calculate coefficients hh*Ah&#10;and ha*Aa based on a Modelica model implemented by Yilin Mo.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The above two actors calculate coefficients hh*Ah&#10;and ha*Aa based on a Modelica model implemented by Yilin Mo.&#10;According to UTC, the numbers are off by a couple of orders of magnitude.">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
@@ -275,7 +275,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 570.0]">
         </property>
     </property>
     <port name="Tx" class="ptolemy.actor.TypedIOPort">
@@ -424,7 +424,7 @@
     </entity>
     <entity name="LinearMap1" class="ptolemy.actor.TypedCompositeActor">
         <display name="LinearMap for ha*Aa"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 465.0]">
         </property>
         <property name="t_grid" class="ptolemy.data.expr.Parameter" value="{200.0,216.67,233.33,250.0,266.67,283.33,300.0,316.67,333.33,366.67}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -776,6 +776,14 @@
         <link port="Interpolation.m_flow" relation="relation"/>
         <link port="Interpolation.t" relation="relation3"/>
     </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 600}">
+        </property>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -812,8 +820,6 @@
         <vertex name="vertex1" value="[255.0, 305.0]">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -830,6 +836,12 @@
         <vertex name="vertex1" value="[430.0, 425.0]">
         </vertex>
     </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[410.0, 465.0]">
+        </vertex>
+    </relation>
     <link port="Tx" relation="relation6"/>
     <link port="Te" relation="relation"/>
     <link port="Ta" relation="relation11"/>
@@ -842,19 +854,21 @@
     <link port="Expression.Te" relation="relation4"/>
     <link port="Expression.Ta" relation="relation11"/>
     <link port="Expression.Tx" relation="relation9"/>
-    <link port="Expression.ha_x_Aa" relation="relation2"/>
+    <link port="Expression.ha_x_Aa" relation="relation13"/>
     <link port="Expression.hh_x_Ah" relation="relation14"/>
     <link port="Expression2.output" relation="relation7"/>
     <link port="Expression2.Tx" relation="relation10"/>
     <link port="Expression2.Te" relation="relation3"/>
     <link port="Expression2.Wh" relation="relation12"/>
     <link port="Expression2.hh_x_Ah" relation="relation14"/>
-    <link port="LinearMap1.ha_x_Aa" relation="relation2"/>
+    <link port="LinearMap1.ha_x_Aa" relation="relation13"/>
     <link port="LinearMap1.Wa" relation="relation8"/>
     <link port="LinearMap1.Ta" relation="relation11"/>
     <link port="LinearMap2.hh_x_Ah" relation="relation14"/>
     <link port="LinearMap2.Wh" relation="relation12"/>
     <link port="LinearMap2.Te" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation14"/>
+    <link port="TimedPlotter.input" relation="relation13"/>
     <link relation1="relation6" relation2="relation10"/>
     <link relation1="relation9" relation2="relation10"/>
     <link relation1="relation3" relation2="relation4"/>
