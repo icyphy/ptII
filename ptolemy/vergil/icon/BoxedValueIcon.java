@@ -111,6 +111,14 @@ public class BoxedValueIcon extends AttributeValueIcon {
             // snap to grid still works.
             width = Math.floor(stringBounds.getWidth()) + 20;
             height = Math.floor(stringBounds.getHeight()) + 10;
+            
+            if (width < 40) {
+                // Too small. Annoying.
+                width = 40;
+            }
+            if (height < 20) {
+                height = 20;
+            }
         }
 
         return new BasicRectangle(0, 0, width, height, boxColor.asColor(), 1);
