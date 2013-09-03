@@ -58,7 +58,9 @@ import ptolemy.kernel.util.Workspace;
  <i>delay</i> port is connected (and hence the delay will be variable
  at run time), then the values provided at the port are required to be
  greater than or equal <i>minimumDelay</i>,
- which defaults to the value of <i>delay</i>.
+ which defaults to the initial value of <i>delay</i>.
+ If the <i>delay</i> is to be changed dynamically during execution, consider
+ setting <i>minimumDelay</i> to 0.0.
  The input and output types are unconstrained, except that the output type
  must be the same as that of the input.
  <p>
@@ -176,17 +178,25 @@ public class TimeDelay extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay || attribute == minimumDelay) {
-            double newDelay = ((DoubleToken) delay.getToken()).doubleValue();
-            double newMinimumDelay = ((DoubleToken) minimumDelay.getToken())
+            double oldDelay = _delay;
+            double oldMinimumDelay = _minimumDelay;
+            _delay = ((DoubleToken) delay.getToken()).doubleValue();
+            _minimumDelay = ((DoubleToken) minimumDelay.getToken())
                     .doubleValue();
-            if (newMinimumDelay > newDelay) {
+            if (_delay < 0.0) {
+                _minimumDelay = oldMinimumDelay;
+                _delay = oldDelay;
                 throw new IllegalActionException(this,
-                        "Cannot have minimumDelay > delay "
-                                + (newMinimumDelay > newDelay)
-                                + ". Modify the delay value.");
+                        "Cannot have negative delay: "
+                                + _delay);
             }
-            _minimumDelay = newMinimumDelay;
-            _delay = newDelay;
+            if (_minimumDelay > _delay) {
+                _minimumDelay = oldMinimumDelay;
+                _delay = oldDelay;
+                throw new IllegalActionException(this,
+                        "Cannot have minimumDelay > delay"
+                                + ". Consider setting minimumDelay to 0.0.");
+            }
         } else {
             super.attributeChanged(attribute);
         }
