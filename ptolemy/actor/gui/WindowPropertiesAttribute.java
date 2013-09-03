@@ -55,8 +55,7 @@ import ptolemy.kernel.util.Workspace;
  This attribute stores properties of a window, including the width,
  height, and location. The token in this attribute is a RecordToken
  containing a field "bounds" with a 4-element integer array.
- When we fully commit to Java 1.4, there will also be a field
- to indicate whether the window is maximized.
+ There is also a field that indicates whether the window is maximized.
  By default, this attribute has visibility NONE, so the user will not
  see it in parameter editing dialogs.
 
