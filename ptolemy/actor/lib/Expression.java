@@ -208,8 +208,6 @@ public class Expression extends TypedAtomicActor {
             }
         }
 
-        Token result;
-
         try {
             // Note: this code parallels code in the OutputTypeFunction class
             // below.
@@ -230,7 +228,7 @@ public class Expression extends TypedAtomicActor {
                 _scope = new VariableScope();
             }
 
-            result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
+            _result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
         } catch (Throwable throwable) {
             // Chain exceptions to get the actor that threw the exception.
             // Note that if evaluateParseTree does a divide by zero, we
@@ -239,13 +237,13 @@ public class Expression extends TypedAtomicActor {
                     "Expression invalid.");
         }
 
-        if (result == null) {
+        if (_result == null) {
             throw new IllegalActionException(this,
                     "Expression yields a null result: "
                             + expression.getExpression());
         }
 
-        output.send(0, result);
+        output.send(0, _result);
     }
 
     /** Initialize the iteration count to 1.
@@ -307,8 +305,23 @@ public class Expression extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _tokenMap = new HashMap();
+        _tokenMap = new HashMap<String,Token>();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
+    
+    /** Variable storing the result of the expression evaluation so that
+     *  subclasses can access it in an overridden fire() method.
+     */
+    protected Token _result;
+
+    /** Map from input port name to input value.
+     *  The fire() method populates this map.
+     *  This is protected so that if a subclass overrides fire(), it
+     *  can determine the values of the inputs.
+     */
+    protected Map<String,Token> _tokenMap;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -530,6 +543,4 @@ public class Expression extends TypedAtomicActor {
     private ParseTreeEvaluator _parseTreeEvaluator = null;
 
     private VariableScope _scope = null;
-
-    private Map _tokenMap;
 }

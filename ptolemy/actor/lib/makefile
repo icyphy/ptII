@@ -142,6 +142,7 @@ JSRCS = \
 	ArrayToElements.java \
 	ArrayToMatrix.java \
 	ArrayUpdate.java \
+	Assert.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanMultiplexor.java \
