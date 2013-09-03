@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Spectrum2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -66,7 +66,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 59, 836, 657}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 59, 857, 657}, maximized=false}">
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -157,14 +157,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 455}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="../../MaximumEntropySpectrum/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_blank">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="../../MaximumEntropySpectrum/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 450}">
             </property>
         </property>
     </property>
-    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
         <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -182,16 +182,16 @@
         <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
-    <property name="Title" class="ptolemy.vergil.basic.export.html.Title" value="Illustration of Signal Processing Using SDF">
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Illustration of Signal Processing Using SDF">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 10.0]">
         </property>
     </property>
-    <property name="HTMLText" class="ptolemy.vergil.basic.export.html.HTMLText" value="The model shown above illustrates the use of the Expression actor,&#10;which has an abritrary set of ports, and references the input data&#10;provided on those ports in an arbitrary expression that calculates&#10;the output.">
+    <property name="HTMLText" class="ptolemy.vergil.basic.export.web.HTMLText" value="The model shown above illustrates the use of the Expression actor,&#10;which has an abritrary set of ports, and references the input data&#10;provided on those ports in an arbitrary expression that calculates&#10;the output.">
         <property name="height" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="end">
+        <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 475.0}">
         </property>
