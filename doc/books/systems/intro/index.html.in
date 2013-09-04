@@ -26,5 +26,6 @@
 	<li> Figure 1.13: The Controller of Figure 1.10. </li>
       </ul>
   </ul>
+
   <!--#include virtual="/ssi/bottom.htm" -->
   <!-- Do not include a body or html close tag here, the ssi does it -->

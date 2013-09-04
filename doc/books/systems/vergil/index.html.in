@@ -34,5 +34,6 @@
     <li> Figure 2.42: <a href="ChannelWithIterate/index.html">Channel with IterateOverArray</a>.
     <li> Figure 2.44: <a href="ApplyFunction/index.html">Demonstration of ApplyFunction</a>.
   </ul>
+
   <!--#include virtual="/ssi/bottom.htm" -->
   <!-- Do not include a body or html close tag here, the ssi does it -->

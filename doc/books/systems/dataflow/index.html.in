@@ -6,7 +6,7 @@
 	 This gets copied to the website.
 	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/vergil/index.html
       -->
-    <title>Chapter 2: Building Graphical Models</title>
+    <title>Chapter 3: Dataflow</title>
   </head>
   <!--#include virtual="/ssi/toppremenu.htm" -->
   <!--#include virtual="toc.htm" -->
@@ -32,5 +32,6 @@
 <li> <a href="SpectrumOfNoisySinusoid/index.html">SpectrumOfNoisySinusoid</a></li>
 <li> <a href="Unbounded/index.html">Unbounded</a></li>
   </ul>
+
   <!--#include virtual="/ssi/bottom.htm" -->
   <!-- Do not include a body or html close tag here, the ssi does it -->
