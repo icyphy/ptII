@@ -157,7 +157,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 455}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="../../MaximumEntropySpectrum/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="../MaximumEntropySpectrum/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 450}">
