@@ -42,6 +42,7 @@
 
 package ptolemy.domains.openmodelica.lib.omc;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import ptolemy.data.IntToken;
@@ -49,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
    The interface to the Modelica compiler that should be implemented by OMCProxy.
-   
+
    @author Mana Mirzaei 
    @version $Id$
    @since Ptolemy II 9.1
@@ -65,7 +66,7 @@ public interface IOMCProxy {
      *   be sent to the OMC.
      */
     public CompilerResult buildModel(String modelName) throws ConnectException;
-    
+
     /** Read a result file and return a matrix corresponding to the variables and given size.
      *  @param fileName The executable result file of simulation in CSV format.
      *  @param modelName Name of the model which should be built.
@@ -74,7 +75,8 @@ public interface IOMCProxy {
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      */
-    public String displaySimulationResult(String fileName, String modelName) throws ConnectException, IllegalActionException;
+    public String displaySimulationResult(String fileName, String modelName)
+            throws ConnectException, IllegalActionException;
 
     /** Initialize the communication with the (OpenModelica compiler)OMC.
      *  @throws ConnectException If we're unable to start communicating with
@@ -95,18 +97,19 @@ public interface IOMCProxy {
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelic Compiler)OMC.
      *  @throws IllegalActionException 
+     * @throws FileNotFoundException 
      */
     public void loadFile(String fileName, String modelName)
-            throws ConnectException, IllegalActionException;
+            throws ConnectException;
 
-    /** Return the components which the model is composed of and modify the value of parameters/variables.
+    /** Return components of Modelica model.
      *  @param inputPortValue The value of OpenModelica actor input port which reads init value of the Ramp actor.
      *  @param modelName Name of the model which should be built.
      *  @throws ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC. 
      *  @throws IllegalActionException 
      */
-    public void modifyVariables(IntToken inputPortValue, String modelName)
+    public void displayComponents(IntToken inputPortValue, String modelName)
             throws IllegalActionException, ConnectException;
 
     /** Plot the plt file by calling PxgraphApplication.main(dcmotor_res.plt).

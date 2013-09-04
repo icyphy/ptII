@@ -260,29 +260,30 @@ public class OpenModelica extends TypedAtomicActor {
         // Create a unique instance of OMCProxy.
         _omcProxy = OMCProxy.getInstance();
 
-        // Load the Modelica library and file.
-        try {
-            _omcProxy.loadFile(fileName.getExpression(),
-                    modelName.getExpression());
-        } catch (ConnectException e) {
-            throw new IllegalActionException(
-                    "Unable to load the Modelica file/library!"
-                            + e.getMessage());
-        }
-
+        // The width of the input port is more than 0.
         if (input.getWidth() > 0) {
+
+            // Load Modelica library and file.
+            try {
+                _omcProxy.loadFile(fileName.getExpression(),
+                        modelName.getExpression());
+            } catch (ConnectException e) {
+                throw new IllegalActionException(
+                        "Unable to load Modelica file/library!"
+                                + e.getMessage());
+            }
 
             // Read the value of input port -init value of the Ramp.
             IntToken inputPortValue = (IntToken) input.get(0);
 
-            // Return the components of the model and modify the value of parameters/variables before running the simulation.
-            System.out.println("------Variable Modification-------");
+            // Display components of Modelica model.
             try {
-                _omcProxy.modifyVariables(inputPortValue,
+                _omcProxy.displayComponents(inputPortValue,
                         modelName.getExpression());
             } catch (ConnectException e) {
                 throw new IllegalActionException(
-                        "Unable to modify variables value before running the simulation!"
+                        "Unable to display components of "
+                                + modelName.getExpression() + " !"
                                 + e.getMessage());
             }
         }
@@ -293,8 +294,7 @@ public class OpenModelica extends TypedAtomicActor {
                     modelName.getExpression());
         } catch (ConnectException e) {
             throw new IllegalActionException(
-                    "Unable to load the Modelica file/library!"
-                            + e.getMessage());
+                    "Unable to load Modelica file/library!" + e.getMessage());
         }
 
         // Build the Modelica model and run the executable result file in both interactive
@@ -314,11 +314,13 @@ public class OpenModelica extends TypedAtomicActor {
         } catch (ConnectException e) {
             e.printStackTrace();
             throw new IllegalActionException(
-                    "Unable to simulate/build the model!" + e.getMessage());
+                    "Unable to send command to OMC/create connection!"
+                            + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalActionException(
-                    "Unable to simulate/build the model!" + e.getMessage());
+                    "I/O error in simulating/building the model!"
+                            + e.getMessage());
         }
 
         if ((processingType.getExpression().compareTo("batch") == 0)
@@ -326,23 +328,25 @@ public class OpenModelica extends TypedAtomicActor {
 
             String simulationResult = null;
 
-            // Load the Modelica library and file.
+            // Load Modelica library and file.
             try {
                 _omcProxy.loadFile(fileName.getExpression(),
                         modelName.getExpression());
             } catch (ConnectException e) {
                 throw new IllegalActionException(
-                        "Unable to load the Modelica file/library!"
+                        "Unable to load Modelica file/library!"
                                 + e.getMessage());
             }
 
-            // Display the value of variables/parameters of the modelica file.
+            // Display the value of variables/parameters of Modelica file.
             try {
+                System.out
+                .println("------Display variables/parameters values-------");
                 simulationResult = _omcProxy.displaySimulationResult(
                         fileName.getExpression(), modelName.getExpression());
             } catch (ConnectException e) {
                 throw new IllegalActionException(
-                        "Unable to display variables/parameters in the simulation result file of "
+                        "Unable to display variables/parameters of "
                                 + modelName.getExpression() + " !"
                                 + e.getMessage());
             }
@@ -362,8 +366,8 @@ public class OpenModelica extends TypedAtomicActor {
             } catch (ConnectException e) {
                 throw new IllegalActionException(
                         "Unable to plot the plt format of "
-                                + modelName.getExpression()
-                                + " simulation result file!" + e.getMessage());
+                                + modelName.getExpression() + " !"
+                                + e.getMessage());
             }
         }
     }

@@ -28,7 +28,6 @@ package ptolemy.domains.openmodelica.kernel;
 import ptolemy.actor.util.Time;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.openmodelica.lib.omc.ConnectException;
-import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
 import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -80,7 +79,6 @@ public class OpenModelicaDirector extends ContinuousDirector {
         OpenModelicaDirector newObject = (OpenModelicaDirector) super
                 .clone(workspace);
         try {
-            newObject._omcLogger = OMCLogger.getInstance();
             newObject._omcProxy = OMCProxy.getInstance();
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Could not clone "
@@ -100,13 +98,12 @@ public class OpenModelicaDirector extends ContinuousDirector {
         try {
 
             // Create a unique instance of OMCLogger and OMCProxy.
-            _omcLogger = OMCLogger.getInstance();
             _omcProxy = OMCProxy.getInstance();
             _omcProxy.initServer();
         } catch (ConnectException e) {
             e.printStackTrace();
             throw new IllegalActionException(
-                    "ServerError : Unable the OpenModelica server is unable to start!" + e.getMessage());
+                    "ServerError : OMC is unable to start!" + e.getMessage());
         }
     }
 
@@ -142,18 +139,14 @@ public class OpenModelicaDirector extends ContinuousDirector {
         super.wrapup();
         try {
             _omcProxy.quitServer();
-            String loggerInfo = "OpenModelica Server stopped!";
-            _omcLogger.getInfo(loggerInfo);
         } catch (ConnectException e) {
-            new IllegalActionException("SeverError: Server is unable to stop.").printStackTrace();
+            new IllegalActionException("ServerError : OMC is unable to stop.")
+            .printStackTrace();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
-    // OMCLogger object for accessing a unique source of instance.
-    private OMCLogger _omcLogger;
-
     // OMCProxy object for accessing a unique source of instance.
     private OMCProxy _omcProxy;
 
