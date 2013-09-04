@@ -218,6 +218,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     public SharedParameter clockSynchronizationErrorBound;
     
+    /** Auto throttling of local sources. This parameter is only visible
+     *  in expert mode and defaults to the boolean value true.
+     */
     public Parameter autoThrottling;
     
     
