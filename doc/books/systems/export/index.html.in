@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/index.html.in $Id$ 
+	 This gets copied to the website.
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/intro/index.html
+      -->
+    <title>Chapter 16: Web Interfaces</title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Chapter 16: Web Interfaces</h1>
+  Executable models in chapter 16:
+  <ul>
+    <h2>Models</h2>
+    <ul>
+      <li> <a href="Spectrum2/index.html">Figure 16.4: Spectrum</a>
+	This model also references <a href="MaximumEntropySpectrum/index.html">MaximumEntropySpectrum</a>.</li>
+      <li> <a href="WebServerDE/index.html">Figure 16.4: WebServerDE</a></li>
+      <li> <a href="Cookies/index.html">Figure 16.7: Cookies</a></li>
+    </ul>
+
+    <!--#include virtual="/ssi/bottom.htm" -->
+    <!-- Do not include a body or html close tag here, the ssi does it -->
