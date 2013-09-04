@@ -80,6 +80,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /** This director implements the Ptides programming model,
@@ -202,6 +203,12 @@ public class PtidesDirector extends DEDirector implements Decorator {
         clockSynchronizationErrorBound.setTypeEquals(BaseType.DOUBLE);
         clockSynchronizationErrorBound.setExpression("0.0");
         _clockSynchronizationErrorBound = new Time(this, 0.0); 
+        
+        autoThrottling = new Parameter(this, "autoThrotting");
+        autoThrottling.setTypeEquals(BaseType.BOOLEAN);
+        autoThrottling.setExpression("true");
+        autoThrottling.setVisibility(Settable.EXPERT);
+        _autoThrottling = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -210,6 +217,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
     /** Bound on clock synchronization error across all platforms. 
      */
     public SharedParameter clockSynchronizationErrorBound;
+    
+    public Parameter autoThrottling;
     
     
     ///////////////////////////////////////////////////////////////////
@@ -270,6 +279,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
         if (attribute == clockSynchronizationErrorBound) {
             _clockSynchronizationErrorBound = new Time(this, ((DoubleToken) clockSynchronizationErrorBound
                     .getToken()).doubleValue());
+        } else if (attribute == autoThrottling) {
+            _autoThrottling = ((BooleanToken) autoThrottling
+                    .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -1841,13 +1853,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                 _clockSynchronizationErrorBound)*/) >= 0) {
             
             // Default throttling actors.
-            int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
-            if (futureEvents > _maxNumberOfFutureEvents) {
-                if (_debugging) {
-                    _debug("*** throttling futureEvents !safe" + event);
-                }
-                return false;
-            } 
+            if (_autoThrottling) {
+                int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
+                if (futureEvents > _maxNumberOfFutureEvents) {
+                    if (_debugging) {
+                        _debug("*** throttling futureEvents !safe" + event);
+                    }
+                    return false;
+                } 
+            }
             if (_debugging) {
                 _debug("*** safe" + event);
             }
@@ -1965,6 +1979,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private boolean _autoThrottling;
     private Time _clockSynchronizationErrorBound;
     private Time _currentLogicalTime;
     private Time _currentSourceTimestamp;
