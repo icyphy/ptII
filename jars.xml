@@ -3053,16 +3053,19 @@
 	 destfile="${basedir}/org/ptolemy/ptango/ptango.jar"
 	 >
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/lib/*.class"/>
+        <include name="org/ptango/ptolemy/lib/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/lib/*.xml"/>
+        <include name="org/ptango/ptolemy/lib/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/lib/xmpp/*.class"/>
+        <include name="org/ptango/ptolemy/lib/img/*.gif"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/lib/xmpp/*.xml"/>
+        <include name="org/ptango/ptolemy/lib/xmpp/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="org/ptango/ptolemy/lib/xmpp/*.xml"/>
       </fileset>
     </jar>
 
