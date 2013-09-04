@@ -40,6 +40,7 @@ import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -255,35 +256,40 @@ public class FSMActor
                         codeBuffer.append("else if (");
                     }
                     transitionCount++;
+                    
+                    if (guard.compareTo("") == 0)
+                        codeBuffer.append("true) ");
+                    else {
 
-                    PtParser parser = new PtParser();
+                        PtParser parser = new PtParser();
 
-                    //int index = guard.indexOf("==");
-                    ASTPtRootNode guardParseTree = parser
-                            .generateParseTree(guard);
-
-                    if (getTemplateParser() == null) {
-                        if (getCodeGenerator() == null) {
-                            // The code generator was not being found.
-                            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
-                            throw new InternalErrorException(
-                                    this,
-                                    null,
-                                    "Can't find a code generator?, be sure to call setCodeGenerator() after instantiating FSMActor.");
+                        //int index = guard.indexOf("==");
+                        ASTPtRootNode guardParseTree = parser
+                                .generateParseTree(guard);
+    
+                        if (getTemplateParser() == null) {
+                            if (getCodeGenerator() == null) {
+                                // The code generator was not being found.
+                                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
+                                throw new InternalErrorException(
+                                        this,
+                                        null,
+                                        "Can't find a code generator?, be sure to call setCodeGenerator() after instantiating FSMActor.");
+                            }
+                            getCodeGenerator().getAdapter(fsmActor);
                         }
-                        getCodeGenerator().getAdapter(fsmActor);
+    
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
+                                .getParseTreeCodeGenerator();
+    
+                        parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
+                                _scope);
+    
+                        codeBuffer
+                                .append(parseTreeCodeGenerator.generateFireCode());
+    
+                        codeBuffer.append(") ");
                     }
-
-                    ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
-                            .getParseTreeCodeGenerator();
-
-                    parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
-                            _scope);
-
-                    codeBuffer
-                            .append(parseTreeCodeGenerator.generateFireCode());
-
-                    codeBuffer.append(") ");
                 }
                 codeBuffer.append(_eol + "{" + _eol);
 
@@ -376,29 +382,29 @@ public class FSMActor
                                     //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
                                     //      .getContainer().getContainer());
 
-                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                                            .getAdapter(
-                                                    ((IOPort) destination)
-                                                            .getContainer()
-                                                            .getContainer());
+//                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+//                                            .getAdapter(
+//                                                    ((IOPort) destination)
+//                                                            .getContainer()
+//                                                            .getContainer());
 
-                                    StringBuffer containerReference = new StringBuffer();
-
-                                    //containerReference.append("$ref("
-                                    //        + generateSimpleName(destination));
-                                    containerReference.append("$get("
-                                            + generateSimpleName(destination));
-
-                                    if (((IOPort) destination).isMultiport()) {
-                                        containerReference.append("#" + i);
-                                    }
-
-                                    containerReference.append(")");
-
-                                    codeBuffer.append(containerHelper
-                                            .processCode(containerReference
-                                                    .toString())
-                                            + " = ");
+//                                    StringBuffer containerReference = new StringBuffer();
+//
+//                                    //containerReference.append("$ref("
+//                                    //        + generateSimpleName(destination));
+//                                    containerReference.append("$new("
+//                                            + generateSimpleName(destination));
+//
+//                                    if (((IOPort) destination).isMultiport()) {
+//                                        containerReference.append("#" + i);
+//                                    }
+//
+//                                    containerReference.append(")");
+//
+//                                    codeBuffer.append(containerHelper
+//                                            .processCode(containerReference
+//                                                    .toString())
+//                                            + " = ");
 
                                     //sendCode.append("$send("
                                     //        + generateSimpleName(destination)
@@ -546,7 +552,7 @@ public class FSMActor
         }
 
         codeBuffer.append(_eol + "}" + _eol); // end of switch statement
-        code.append(processCode(codeBuffer.toString())); // was initially enclosed with processCode()
+        code.append(TemplateParser.unescapeName(processCode(codeBuffer.toString()))); // was initially enclosed with processCode()
     }
 
     /** A class implementing this interface implements a method to

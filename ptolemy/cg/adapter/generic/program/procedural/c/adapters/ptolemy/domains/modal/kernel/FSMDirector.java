@@ -87,6 +87,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         result.append(_eol + _sanitizedDirectorName + "->localClock->container = (struct Director*)" + _sanitizedDirectorName + ";");
         result.append(_eol + _sanitizedDirectorName + "->makeTransitions = " + sanitizedContainerName + "_makeTransitions;");
         result.append(_eol + _sanitizedDirectorName + "->transferModalInputs = " + sanitizedContainerName + "_transferModalInputs;");
+        result.append(_eol + _sanitizedDirectorName + "->transferModalOutputs = " + sanitizedContainerName + "_transferModalOutputs;");
         
         List<?> containedActors = container.deepEntityList();
         Iterator<?> actors = containedActors.iterator();
@@ -451,11 +452,22 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String containerName = generateName(container);
         
+        
+        List<TypedIOPort> inputPorts = container.inputPortList();
+        List<TypedIOPort> outputPorts = container.outputPortList();
+        TypedIOPort inputPort;
+        for (int i = 0; i < inputPorts.size(); i++) {
+
+            inputPort = inputPorts.get(i);
+            if (!outputPorts.contains(inputPort)) {
+                code.append(_eol +  containerName + "__Controller_" + inputPort.getName() + "_isPresent = false;" + _eol);
+            }
+        }
         Iterator<?> ports = container.inputPortList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if (!port.getFullName().contains("_Controller")) {
-                code.append(_eol + "struct IOPort* " + port.getName() + " = (struct IOPort*)" 
+                code.append(_eol + port.getName() + " = (struct IOPort*)" 
                         + containerName + "_get_" + port.getName() + "();");
                 int width = port.getWidth();
                 for (int i = 0 ; i < width ; i++) {
@@ -464,9 +476,59 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                     code.append(_eol + containerName + "__Controller_" + port.getName());
                     code.append(" = temp");
                     code.append(".payload." + getCodeGenerator().codeGenType(port.getType()) + ";" + _eol);
+                    code.append(_eol + containerName + "__Controller_" + port.getName() + "_isPresent = true;" + _eol);
                     code.append(_eol + "}");
                 }
                 
+            }
+        }
+        ports = container.outputPortList().iterator();
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
+            if (!port.getFullName().contains("_Controller")) {
+                code.append(_eol + port.getName() + " = (struct IOPort*)" 
+                        + containerName + "_get_" + port.getName() + "();");
+            }
+        }
+        return processCode(code.toString());
+    }
+    
+    /** Generate the code for the transfer of output values inside the modal model.
+     * 
+     *  @return The generated code.
+     *  @exception IllegalActionException If the adapter associated with
+     *   an actor throws it while generating code for the actor.
+     */
+    public String generateTransferOutputCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        String containerName = generateName(container);
+        
+        Iterator<?> ports = container.outputPortList().iterator();
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
+            if (!port.getFullName().contains("_Controller")) {
+                code.append(_eol + port.getName() + " = (struct IOPort*)" 
+                        + containerName + "_get_" + port.getName() + "();");
+                int width = port.getWidth();
+                for (int i = 0 ; i < width ; i++) {
+                    code.append(_eol + "if (pblMapContainsKey(mapTokensOut, &" + port.getName() + ", sizeof(struct IOPort*))) {" + _eol);
+                    code.append(_eol + "Token temp = *((Token*)pblMapGet(mapTokensOut, &" + port.getName() + ", sizeof(struct IOPort*), NULL));");
+                    code.append(_eol + containerName + "__Controller_" + port.getName());
+                    code.append(" = temp");
+                    code.append(".payload." + getCodeGenerator().codeGenType(port.getType()) + ";" + _eol);
+                    code.append(_eol + "}");
+                }
+                
+            }
+        }
+        ports = container.outputPortList().iterator();
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
+            if (!port.getFullName().contains("_Controller")) {
+                code.append(_eol + port.getName() + " = (struct IOPort*)" 
+                        + containerName + "_get_" + port.getName() + "();");
             }
         }
         return processCode(code.toString());
@@ -483,10 +545,25 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
         
-        code.append(_eol + "Director " + _sanitizedDirectorName + ";");
+        CompositeActor container = ((CompositeActor) _director.getContainer());
+        //code.append(_eol + "Director " + _sanitizedDirectorName + ";");
+        Iterator<?> ports = container.inputPortList().iterator();
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
+            if (!port.getFullName().contains("_Controller")) {
+                code.append(_eol + "static struct IOPort* " + port.getName() + ";");
+            }
+        }
+        ports = container.outputPortList().iterator();
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
+            if (!port.getFullName().contains("_Controller")) {
+                code.append(_eol + "static struct IOPort* " + port.getName() + ";");
+            }
+        }
+        
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
-
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor.getFullName().contains("_Controller")) {

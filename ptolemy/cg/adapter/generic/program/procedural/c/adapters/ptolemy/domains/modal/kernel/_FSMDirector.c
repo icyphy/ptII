@@ -22,6 +22,7 @@ void FSMDirector_Init(struct FSMDirector* director) {
 	director->postfire = FSMDirector_Postfire;
 	director->prefire = FSMDirector_Prefire;
 	director->transferInputs = FSMDirector_TransferInputs;
+	director->transferOutputs1 = FSMDirector_TransferOutputs1;
 }
 void FSMDirector_New_Free(struct FSMDirector* director) {
 	Director_New_Free((struct Director*) director);
@@ -96,4 +97,25 @@ bool FSMDirector_TransferInputs(struct FSMDirector* director, struct IOPort* por
 		director->transferModalInputs(tokensIn);
 	pblMapFree(tokensIn);
 	return wasTransferred;
+}
+bool FSMDirector_TransferOutputs1(struct FSMDirector* director, struct IOPort* port){
+	bool result = false;
+	if (!port->isOutput(port) /*|| !port->isOpaque(port)*/) {
+		fprintf(stderr, "Attempted to transferOutputs on a port that is not an opaque input port.");
+		exit(-1);
+	}
+
+	PblMap* tokensOut = pblMapNewHashMap();
+	for (int i = 0; i < port->getWidthInside(port); i++) {
+		if (port->hasTokenInside(port, i)) {
+			Token t = port->getInside(port, i);
+			pblMapAdd(tokensOut, &port, sizeof(struct IOPort*), &t, sizeof(Token));
+			port->send(port, i, t);
+			result = true;
+		}
+	}
+	if (result)
+		director->transferModalOutputs(tokensOut);
+	pblMapFree(tokensOut);
+	return result;
 }

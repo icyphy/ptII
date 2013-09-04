@@ -77,7 +77,7 @@ void DEReceiver_Put(struct DEReceiver* r, Token token) {
 	}
 	struct DEDirector* director = r->_director;
 	// FIXME : quick patch to use the DEReceiver instead of the QueueReceiver
-	if (director != NULL)
+	if (director != NULL && IS_DEDIRECTOR(director))
 		(*(director->_enqueueTriggerEvent))(director, r->container,
 			(*(director->getModelTime))((struct Director*) director));
 	Token* dynToken = malloc(sizeof(Token));

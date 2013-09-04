@@ -40,6 +40,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
@@ -747,6 +748,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         }
 
         String name = node.getName();
+        boolean isPresentMark = false;
+        
+        if (name.endsWith("_isPresent")) {
+            isPresentMark = true;
+            name = name.substring(0, name.length() - 10);
+        }
 
         // The node refers to a variable, or something else that is in
         // scope
@@ -754,6 +761,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         if (_scope != null) {
             value = _scope.get(name);
+            
         }
 
         // Look up for constants.
@@ -764,6 +772,14 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         // Set the value, if we found one.
         if (value != null) {
+            if (isPresentMark) {
+                String label2 = value.toString();
+                if (label2.startsWith("object(")) 
+                    label2 = label2.substring(7, label2.length() - 1) + "_isPresent";
+                else 
+                    label2 += "_isPresent";
+                value = new ObjectToken(label2);
+            }
             _evaluatedChildToken = value;
 
             String label = value.toString();
@@ -779,6 +795,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             return;
         }
+        
+        
 
         throw new IllegalActionException("The ID " + node.getName()
                 + " is undefined.");

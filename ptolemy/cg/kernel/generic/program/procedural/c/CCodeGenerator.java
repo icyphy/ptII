@@ -1424,6 +1424,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeMainH.append(_eol + "static int iterationCount;");
         codeMainH.append(_eol + "void preinitialize();");
         code.append(_eol + "void preinitialize() {");
+        code.append(_eol + "emptyToken.type = -1;");
         code.append(_eol + "iterationCount = 0;");
         code.append(_eol + sanitizedNameContainer + "_New();");
         code.append(_eol + "(*(" + sanitizedNameContainer + "->preinitialize))(" + sanitizedNameContainer + ");");
@@ -2177,6 +2178,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             HCode.append(_eol + "void " + sanitizedContainerName + "_Schedule_iterate();"  + _eol);
         } else if (((CompositeActor)container).getDirector() instanceof FSMDirector) {
             HCode.append(_eol + "void " + sanitizedContainerName + "_transferModalInputs(PblMap* mapTokensIn);"  + _eol);
+            HCode.append(_eol + "void " + sanitizedContainerName + "_transferModalOutputs(PblMap* mapTokensOut);"  + _eol);
             HCode.append(_eol + "void " + sanitizedContainerName + "_makeTransitions(struct FSMDirector* director);"  + _eol);
         }
         
@@ -2236,11 +2238,22 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             
             CCode.append("#include \"" + sanitizedContainerName + ".h\"");
             
+            // Variables declaration
             CCode.append(_eol + directorAdapter.generateVariableDeclaration());
+            
+            // Transfer inputs to modal model function
             CCode.append(_eol + "void " + sanitizedContainerName + 
                     "_transferModalInputs(PblMap* mapTokensIn) {");
             CCode.append(_eol + directorAdapter.generateTransferInputCode());
             CCode.append(_eol + "}");
+            
+            // Transfer outputs to modal model function
+            CCode.append(_eol + "void " + sanitizedContainerName + 
+                    "_transferModalOutputs(PblMap* mapTokensOut) {");
+            CCode.append(_eol + directorAdapter.generateTransferOutputCode());
+            CCode.append(_eol + "}");
+            
+            // Transition code for the modal model
             CCode.append(_eol + "void " + sanitizedContainerName + "_makeTransitions(struct FSMDirector* director) {");
             CCode.append(_eol + directorAdapter.generateFireFunctionCode());
             CCode.append(_eol + "}");

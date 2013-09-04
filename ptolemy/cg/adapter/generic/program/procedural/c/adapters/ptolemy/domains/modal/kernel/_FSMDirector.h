@@ -53,6 +53,7 @@ struct FSMDirector {
 
 	void (*makeTransitions)(struct FSMDirector*);
 	void (*transferModalInputs)(PblMap*);
+	void (*transferModalOutputs)(PblMap*);
 
 };
 
@@ -67,7 +68,6 @@ void FSMDirector_Initialize(struct FSMDirector* director);
 bool FSMDirector_Postfire(struct FSMDirector* director);
 bool FSMDirector_Prefire(struct FSMDirector* director);
 bool FSMDirector_TransferInputs(struct FSMDirector* director, struct IOPort* port);
-bool FSMDirector_TransferOutputs(struct FSMDirector* director);
 bool FSMDirector_TransferOutputs1(struct FSMDirector* director, struct IOPort* port);
 
 #endif /* FSMDIRECTOR_H_ */

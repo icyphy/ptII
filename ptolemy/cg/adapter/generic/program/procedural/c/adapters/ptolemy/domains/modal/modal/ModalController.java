@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.modal;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMActor.TransitionRetriever;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -108,6 +110,9 @@ public class ModalController
 
         // Generate code for refinements.
         _generateRefinementCode(code);
+        
+        // Transfer the outputs beetween the two types of transitions
+        code.append(_eol + "director->transferOutputs(director);" + _eol);
 
         // Generate code for non-preemptive transition
         code.append(getCodeGenerator().comment("2. Nonpreemptive Transition"));
@@ -168,7 +173,7 @@ public class ModalController
         String modalName = name.replace("_Controller", "");
         name = name.replace('.', '_');
         modalName = modalName.replace('.', '_');
-        TypedIOPort inputPort;
+        TypedIOPort inputPort, outputPort;
         code.append(_eol + getCodeGenerator().comment(
                 "Beginning of create controller variables."));
         for (int i = 0; i < inputPorts.size(); i++) {
@@ -183,8 +188,22 @@ public class ModalController
                     code.append("[" + width + "]");
                 }
                 code.append(";" + _eol);
+                code.append("bool " + name
+                        + "_" + inputPort.getName() + "_isPresent;" + _eol);
             }
         }
+        for (int i = 0; i < outputPorts.size(); i++) {
+
+            outputPort = outputPorts.get(i);
+            int width = outputPort.getWidth();
+            code.append(outputPort.getType() + " " + name
+                    + "_" + outputPort.getName());
+            if (width > 1) {
+                code.append("[" + width + "]");
+            }
+            code.append(";" + _eol);
+        }
+        
 
         //code.append("int " + name + "__currentState;" + _eol);
         code.append("int " + modalName + "__transitionFlag;" + _eol);
@@ -204,6 +223,20 @@ public class ModalController
         enumStates.append("};");
         code.append(enumStates);
         code.append(_eol + "enum " + name + "__currentState " + name + "__currentState;");
+        
+        List<?> list = _myController.getModifiedVariables();
+        List<Parameter> done = new ArrayList();
+        for (Object o : list) {
+            if (o instanceof Parameter && !done.contains((Parameter)o)) {
+                Parameter parameter = (Parameter)o;
+                getCodeGenerator().addModifiedVariables(parameter);
+                done.add(parameter);
+                code.append(_eol + parameter.getType() + " " 
+                        + getCodeGenerator().generateVariableName(parameter)
+                        + " = "
+                        + parameter.getValueAsString() + ";" + _eol);
+            }
+        }
 
         code.append(_eol + getCodeGenerator().comment(
                 "End of create controller variables"));
@@ -248,7 +281,7 @@ public class ModalController
 //                            .getAdapter(actor);
                     // fire the actor
                     String actorName = generateName((NamedObj)actor);
-                    code.append(_eol + actorName + "->fire(" + actorName + ");" + _eol);
+                    code.append(_eol + actorName + "->iterate(" + actorName + ", 1);" + _eol);
                 }
             }
 

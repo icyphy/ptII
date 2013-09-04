@@ -222,6 +222,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a modified variable.
+     *  @param variable The variable to add to the Set     
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  @see #getModifiedVariables()
+     */
+    final public void addModifiedVariables(Parameter variable)
+            throws IllegalActionException {
+        _modifiedVariables.add(variable);
+    }
+    
     /** If the attribute is the verbosity attribute, then if
      *  its value is 1, set a debug listener on the code generator.
      *  @param attribute The attribute that changed.

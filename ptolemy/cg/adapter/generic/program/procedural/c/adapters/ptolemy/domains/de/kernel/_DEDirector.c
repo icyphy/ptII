@@ -14,6 +14,8 @@ struct DEDirector* DEDirector_New() {
 void DEDirector_Init(struct DEDirector* director) {
 	Director_Init((struct Director*)director);
 
+	director->typeDirector = DEDIRECTOR;
+
 	director->binCountFactor = 2;
 	director->isCQAdaptive = true;
 	director->minBinCount = 2;
