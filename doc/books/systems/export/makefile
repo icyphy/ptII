@@ -2,6 +2,7 @@
 CHAPTER=export
 EXAMPLE_MODELS = \
 	Cookies.xml \
+	MaximumEntropySpectrum.xml \
 	Spectrum2.xml \
 	WebServerDE.xml \
 
