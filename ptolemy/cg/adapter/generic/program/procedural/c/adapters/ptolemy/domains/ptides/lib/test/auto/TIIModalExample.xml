@@ -18,13 +18,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={206, 125, 1122, 553}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={206, 125, 1122, 649}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 426]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9134659317181559">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{429.36312499999997, 132.998125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{429.36312499999997, 185.54524069780808}">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/TIIModalExample">
@@ -113,7 +113,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.600000000000001E-8">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 225.0]">
         </property>
         <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
@@ -472,8 +472,6 @@
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
