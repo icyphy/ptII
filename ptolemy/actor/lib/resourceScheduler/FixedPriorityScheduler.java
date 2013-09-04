@@ -173,10 +173,9 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
             Actor actor = _currentlyExecuting.peek();
             time = schedule(actor, environmentTime, null, null);
             if (_lastActorThatFinished == actor && lastActorFinished()) { 
-                getDirector().resumeActor(actor);
+                actor.getDirector().resumeActor(actor);
             }
-        }
-        
+        } 
         return time;
     }
     
