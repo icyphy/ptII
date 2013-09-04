@@ -858,9 +858,25 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             if (linkToJNLP && model.getContainer() == null) {
                 printWriter.println("<p>Below is a browsable image of the model.</p> "
 				    + "<ul>\n"
-				    + "<li>For an executable version, go to the "
-				    + "<a href=\"../" + _sanitizedModelName
-				    + ".jnlp\">WebStart version</a>.</li>");
+				    + "<li>For an executable version,"
+				    + "<!-- We use the deployJava.js script so that Java "
+				    + "will be installed if necessary -->\n"
+				    + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
+				    + "<script>\n"
+				    + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
+				    + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
+				    + "  var url = parentDir + \""
+				    + _sanitizedModelName + ".jnlp\";\n"
+				    + "  deployJava.createWebStartLaunchButton(url);\n"
+				    + "  document.write(\"the WebStart version.\");\n"
+				    + "</script>\n"
+				    + "<noscript>\n"
+				    + "<a href=\"../" 
+				    + _sanitizedModelName + ".jnlp\";\n"
+				    + ".jnlp\">WebStart version</a>. \n"
+                                    + "</noscript>\n"
+				    + "(<i>Java Plug-in Required</i>)\n"
+				    + "</li>\n");
                 printWriter.println("<li>To view or save the MoML file for this model, "
                         + "<a href=\"../" + _sanitizedModelName
                         + ".xml\">click here</a>.</li>");
