@@ -1,4 +1,4 @@
-/* Methods for interfacing clients using BSD sockets.
+/* Methods for interfacing client using BSD sockets.
  *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
@@ -98,6 +98,8 @@ public class UtilSocket implements IUtilSocket {
      *   
      *   OMI server/client components:
      *   
+     *   <pre>
+     *   
      *   Name            Description                                                      URL
      *   ---------------------------------------------------------------------------------------------------------
      *   Control Server  Waits for requests from the UI                                   By Default, waits for connection on: 127.0.0.1:10501
@@ -117,6 +119,7 @@ public class UtilSocket implements IUtilSocket {
      *   ---------------------------------------------------------------------------------------------------------
      *   Transfer Server/TransferServer Waits for simulation results from the OMI Transfer Client By Default, waits for connection on: 127.0.0.1:10502
      *   
+     *   </pre>
      *  
      *   @throws IOException If an I/O error occurs while client/server exchanging data.
      */
@@ -138,11 +141,13 @@ public class UtilSocket implements IUtilSocket {
                     }
 
                     ControlServer _controlThread = new ControlServer(_toServer);
+                    TransferServer _transferThread = new TransferServer(_toServer);
+
                     _controlThread.start();
 
                     synchronized (_controlThread) {
                         try {
-                            _controlThread.wait(1000);
+                            _controlThread.wait(10000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                             throw new IOException(
@@ -151,12 +156,10 @@ public class UtilSocket implements IUtilSocket {
                         }
                     }
 
-                    TransferServer _transferThread = new TransferServer(
-                            _toServer);
                     _transferThread.start();
 
                     synchronized (_transferThread) {
-                        try {// TODO set the right duration 
+                        try {
                             _transferThread.wait(10000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();

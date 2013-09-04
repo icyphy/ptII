@@ -54,11 +54,14 @@ import java.net.Socket;
       Transfer module gets simulation results from a result manager and sends them to the Ptolemy II upon starting a simulation. 
       This module employs filter mask property containing names of all properties whose result values are significant to the Ptolemy II.</p>
 
-        Message format from Transfer to UI:                                                    
-            result#ID#Tn#                   
-            var1=Val:var2=Val# 
-            par1=Val:par2=Val# 
-            end
+        Message format from Transfer to UI:   
+        <pre>  result#ID#Tn#                   
+               var1=Val:var2=Val# 
+               par1=Val:par2=Val# 
+               end
+        </pre>
+       If no filter is set, the result by default is : result#time####end
+       If filter such as setfilter#4#load#w#end is set, the result is according to the filter : result#time#load#w#end/result#0.02#1#3#end
 
       @author Mana Mirzaei
       @version $Id$
@@ -74,14 +77,6 @@ public class TransferServer extends Thread {
     public TransferServer(BufferedWriter toServer) throws IOException {
         try {
             _transferServer = new ServerSocket(10502);
-
-            // Change IP and port of Transfer Server. 
-            String _controlRequest = "settransferclienturl#1#127.0.0.1#10502#end";
-            if (_controlRequest != null) {
-                toServer.write(_controlRequest);
-                toServer.flush();
-                System.out.println("IP and port of Transfer Server is set!");
-            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new IOException(
@@ -92,31 +87,33 @@ public class TransferServer extends Thread {
 
     public void run() {
         try {
+
             Socket _transferConnection = _transferServer.accept();
             _inFromTransferServer = new BufferedReader(new InputStreamReader(
                     _transferConnection.getInputStream()));
 
-            char[] serverBuffer = new char[1024];
-            _inFromTransferServer.read(serverBuffer);
-            serverBuffer.toString().trim();
+            // Read simulation result from Transfer Server, then write them to the console.
 
             System.out.println("Message from Transfer Server : ");
 
-            // Read simulation result from Transfer Server char by char until 
-            // there is no char to read. Then write them to the console.
+            char[] serverBuffer = new char[1024];
 
-            for (char readChar : serverBuffer) {
-                if (readChar == 'd')
-                    System.out.println(readChar);
-                else
-                    System.out.print(readChar);
+            while (true) {
+                _inFromTransferServer.read(serverBuffer);
+                System.out.println(new String(serverBuffer).trim());
             }
-
-            _transferServer.close();
-            System.out.println("Transfer Server is closed!");
-            _inFromTransferServer.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if (_transferServer.isBound()) {
+            try {
+                _transferServer.close();
+                _inFromTransferServer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Transfer Server is closed!");
         }
     }
 
