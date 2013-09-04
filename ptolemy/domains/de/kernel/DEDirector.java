@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor; 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
@@ -240,7 +240,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class DEDirector extends Director implements SuperdenseTimeDirector {
-    
+
     /* NOTE: This implementation of DE has a very subtle bug documented in the
      * following test:
      *   $PTII/ptolemy/domains/de/test/auto/knownFailedTests/DirectFeedback.xml
@@ -260,7 +260,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      * a principle in DE that when an actor firing begins, all inputs at 
      * the current superdense time are available.
      */
-    
+
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -758,7 +758,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (_eventQueue.size() == 0) {
             return null;
         }
-        return ((DEEvent)_eventQueue.get()).timeStamp();
+        return ((DEEvent) _eventQueue.get()).timeStamp();
     }
 
     /** Return the system time at which the model begins executing.
@@ -815,8 +815,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     /** Initialize all the contained actors by invoke the initialize() method
      *  of the super class. If any events are generated during the
      *  initialization, and the container is not at the top level, request a
-     *  refiring.
-     *  <p>
+     *  refiring. 
+     *  <p> 
      *  The real start time of the model is recorded when this method
      *  is called. This method is <i>not</i> synchronized on the workspace,
      *  so the caller should be.</p>
@@ -826,7 +826,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
-        
+
         synchronized (_eventQueue) {
             _eventQueue.clear();
 
@@ -1245,7 +1245,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     .getCausalityInterface();
             causality.checkForCycles();
         }
-        
+
         _actorsFinished = new ArrayList();
 
         if (_debugging && _verbose) {
@@ -1269,7 +1269,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         super.removeDebugListener(listener);
     }
-    
+
     /** Resume the execution of an actor that was previously blocked because
      *  it didn't have all the resources it needed for execution. This method 
      *  puts an event into the queue for the current time.
@@ -1279,12 +1279,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void resumeActor(Actor actor) throws IllegalActionException { 
         DEEvent event = _actorsInExecution.get(actor);
+        Time time = ((CompositeActor)_getResourceScheduler(actor).getContainer()).getDirector().getModelTime(); 
         if (event.ioPort() != null) {
-            _enqueueTriggerEvent(event.ioPort(), getModelTime());
+            _enqueueTriggerEvent(event.ioPort(), time);
         } else {
-            _enqueueEvent(actor, getModelTime(), 1); 
-        } 
-        fireContainerAt(getModelTime());
+            _enqueueEvent(actor, time, 1);
+        }
+        fireContainerAt(time);
         _actorsInExecution.remove(actor);
         if (_actorsFinished == null) {
             _actorsFinished = new ArrayList();
@@ -1547,9 +1548,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         int depth = _getDepthOfActor(actor);
 
         if (_debugging) {
-            _debug("DEDirector: enqueue a pure event: ", ((NamedObj) actor).getName(),
-                    "time = " + time + " microstep = " + microstep
-                            + " depth = " + depth);
+            _debug("DEDirector: enqueue a pure event: ",
+                    ((NamedObj) actor).getName(), "time = " + time
+                            + " microstep = " + microstep + " depth = " + depth);
         }
 
         DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
@@ -1579,7 +1580,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             throws IllegalActionException {
         _enqueueTriggerEvent(ioPort, getModelTime());
     }
-    
+
     /** Put a trigger event into the event queue with a timestamp that can be 
      *  different from the current model time. 
      *  Only resource schedulers can enqueue trigger events with future timestamps. 
@@ -1589,13 +1590,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  current time, or the depth of the given IO port has not be calculated,
      *  or the new event can not be enqueued.
      */
-    private void _enqueueTriggerEvent(IOPort ioPort, Time time) throws IllegalActionException {
+    private void _enqueueTriggerEvent(IOPort ioPort, Time time)
+            throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
         if (_eventQueue == null || _disabledActors != null
                 && _disabledActors.contains(actor)) {
             return;
         }
-        
+
         /* NOTE: We would like to throw an exception if the microstep is
          * zero, but this breaks models with CT inside DE.
          * The CTDirector does not have a notion of superdense time.
@@ -1627,26 +1629,26 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (microstep < 1) {
             microstep = 1;
         }
-        
+
         if (_resourceScheduling) {
-            if (_schedulerForActor.get(actor) != null &&
-                    _schedulerForActor.get(actor).isWaitingForResource(actor)) {
+            if (_schedulerForActor.get(actor) != null
+                    && _schedulerForActor.get(actor)
+                            .isWaitingForResource(actor)) {
                 Object[] eventArray = _eventQueue.toArray();
                 for (Object object : eventArray) {
-                    DEEvent event = (DEEvent)object;
+                    DEEvent event = (DEEvent) object;
                     if (event.actor().equals(actor)) {
-                        if (event.timeStamp().compareTo(time) == 0 && event.microstep() == 1) {
+                        if (event.timeStamp().compareTo(time) == 0
+                                && event.microstep() == 1) {
                             microstep = microstep + 1;
                         } else if (event.timeStamp().compareTo(time) < 0) {
                             time = event.timeStamp();
                             microstep = microstep + 1;
-                        } 
+                        }
                     }
-                } 
-            } 
-        } 
-
-        
+                }
+            }
+        }
 
         if (_debugging) {
             _debug("enqueue a trigger event for ",
@@ -1868,10 +1870,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     + ". Refire the actor.");
                         }
                         // refire only if can be scheduled.
-                        if (!_resourceScheduling ||  
-                                _schedule(actorToFire, getModelTime())) {
+                        if (!_resourceScheduling
+                                || _schedule(actorToFire, getModelTime())) {
                             refire = true;
-    
+
                             // Found a channel that has input data,
                             // jump out of the for loop.
                             break;
@@ -1917,7 +1919,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 .getCausalityInterface();
         return causality.getDepthOfPort(ioPort);
     }
-    
+
     /** Dequeue the events that have the smallest tag from the event queue.
      *  Return their destination actor. Advance the model tag to their tag.
      *  If the timestamp of the smallest tag is greater than the stop time
@@ -2319,17 +2321,18 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // scheduling of actor returns that actor hasn't been granted all
                     // the requested resources, create a new event with a future 
                     // timestamp. 
-                    Time nextScheduleTime = _nextScheduleTime.get(_schedulerForActor
-                            .get(actorToFire)).add(getModelTime());
+                    Time nextScheduleTime = _nextScheduleTime.get(
+                            _schedulerForActor.get(actorToFire)).add(
+                            getModelTime());
                     if (_actorsInExecution == null) {
                         _actorsInExecution = new HashMap();
                     }
                     _actorsInExecution.put(actorToFire, lastFoundEvent);
-                    actorToFire = null; 
-                } 
+                    actorToFire = null;
+                }
             }
         } // close the loop: LOOPLABEL::GetNextEvent 
-        
+
         // Note that the actor to be fired can be null.
         return actorToFire;
     }
@@ -2342,14 +2345,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _noActorToFire() throws IllegalActionException {
     }
-    
+
     @Override
     protected boolean _schedule(Actor actor, Time timestamp)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         boolean schedule = super._schedule(actor, timestamp);
         if (!schedule) {
             ResourceScheduler scheduler = _getResourceScheduler(actor);
-            fireAt((Actor) scheduler, getModelTime().add(_nextScheduleTime.get(scheduler)));
+            ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
+                    (Actor) scheduler,
+                    getModelTime().add(_nextScheduleTime.get(scheduler)));
         }
         return schedule;
     }
