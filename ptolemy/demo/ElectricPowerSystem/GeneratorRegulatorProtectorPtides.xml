@@ -17,7 +17,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 15, turn&#10;on a load.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-25.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[65.0, -55.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SingleEvent">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -66,7 +66,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At 119, if the Supervisor and PID&#10;actors share the same processor, then&#10;overvoltage protection kicks in.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 85.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -74,7 +74,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Supervisor and PID actors can&#10;execute on the same processor or on&#10;two processors, depending on the value&#10;of useTwoProcessors. If they use one&#10;processor, overvoltage protection kicks&#10;in, while if they use two, it does not.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[295.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[390.0, 355.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -195,7 +195,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 397]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{570.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 300.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -211,7 +211,7 @@
         </configure>
     </entity>
     <entity name="GeneratorContactorLoad" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoad">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 235.0]">
         </property>
         <property name="loadImpedance" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -224,15 +224,11 @@
         <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[792, 563]">
             </property>
-            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            </entity>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                     </property>
                 </property>
-            </entity>
-            <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -254,12 +250,6 @@
                     </property>
                 </property>
             </entity>
-            <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
-            </entity>
-        </entity>
-        <entity name="Contactor" class="ptolemy.demo.ElectricPowerSystem.Contactor">
-            <entity name="When" class="ptolemy.domains.sr.lib.When">
-            </entity>
         </entity>
         <entity name="Load" class="ptolemy.actor.lib.Const">
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -269,17 +259,11 @@
                 </property>
             </property>
         </entity>
-        <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-        </entity>
-        <entity name="ZeroOrderHold2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-        </entity>
-        <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
-        </entity>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 255.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -293,7 +277,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 175.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -308,7 +292,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 290.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -514,7 +498,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={342, 118, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 275, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -651,14 +635,14 @@
                 <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
                     </property>
-                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
                     </property>
                 </property>
-                <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
+                <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.8, 1.0}">
                 </property>
                 <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
                     <property name="input"/>
@@ -855,7 +839,7 @@
                     </property>
                 </entity>
                 <entity name="Server" class="ptolemy.domains.de.lib.Server">
-                    <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+                    <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.5">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 140.0]">
                     </property>
@@ -914,12 +898,12 @@
                 <link port="ResourceMappingOutputPort.input" relation="relation4"/>
             </entity>
             <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 300.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 300.0]">
                 </property>
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
@@ -979,14 +963,14 @@
                 <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
-                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
                     </property>
                 </property>
-                <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
+                <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.8, 1.0}">
                 </property>
                 <port name="voltage" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1327,17 +1311,17 @@
         </entity>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 280.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[510.0, 210.0]">
+        <vertex name="vertex1" value="[550.0, 140.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[320.0, 240.0]">
+        <vertex name="vertex1" value="[315.0, 300.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1347,6 +1331,10 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[40.0, 140.0]">
+        </vertex>
     </relation>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation4"/>
@@ -1359,8 +1347,9 @@
     <link port="PtidesPlatform.port" relation="relation3"/>
     <link port="PtidesPlatform.port2" relation="relation"/>
     <link port="PtidesPlatform.port3" relation="relation5"/>
-    <link port="PtidesPlatform.port4" relation="relation2"/>
+    <link port="PtidesPlatform.port4" relation="relation7"/>
     <link port="PtidesPlatform.port5" relation="relation4"/>
     <link port="MicrostepDelay.input" relation="relation5"/>
     <link port="MicrostepDelay.output" relation="relation6"/>
+    <link relation1="relation2" relation2="relation7"/>
 </entity>
