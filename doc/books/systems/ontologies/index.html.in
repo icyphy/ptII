@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/index.html.in $Id$ 
+	 This gets copied to the website.
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/vergil/index.html
+      -->
+    <title>Chapter 2: Building Graphical Models</title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Chapter 2: Building Graphical Models</h1>
+  Executable models in chapter 2:
+  <ul>
+    <li> Figure 15.8: Running an analysis.
+      (<a href="ModelWithActorConstraints/index.html">ModelWithActorConstraints</a>)
+    </li>
+
+    <li> Figure 15.12: Result of applying an analysis based on the
+      ontology in Figure 15.11 to the model in Figure 15.10.
+      (<a href="ConstAbstractInterpretation/index.html">ConstAbstractInterpretation</a>)
+
+    <li> Figure 15.14: A piece of a larger model that shows interesting inference of dimensions.
+      (<a href="CarTracking/index.html">CarTracking</a>)
+    </li>
+
+    <li> Figure 15.15: A model analyzing physical dimensions with too
+      few annotations. Running the analysis reveals where additional
+      annotations are needed.
+      (<a href="UnderconstrainedExampleResolved/index.html">UnderconstrainedExampleResolved</a>)
+    </li>
+
+    <li> Figure 15.16: Adding an additional constraint allows for a complete analysis.
+      (<a href="UnderconstrainedExampleFixed/index.html">UnderconstrainedExampleFixed</a>)
+    </li>
+
+    <li> Figure 15.17: An example model with conflicting dimensions
+      due to an error in the model. Running the analysis on this model shows
+      that the whole model is in conflict.
+      (<a href="OverconstrainedExampleConflicts/index.html">OverconstrainedExampleConflicts</a>)
+    </li>
+
+    <li> With our error minimization algoritm, finding errors is easier.
+      (<a href="OverconstrainedExampleDeltaResolved/index.html">OverconstrainedExampleDeltaResolved</a>)
+    </li>
+
+    <li> Figure 15.23: An example that adds a quantity in miles per
+      hour to one in meters per second without conversion, resulting in
+      conflicts throughout the model.
+      (<a href="UnitsConverterExample/index.html">UnitsConverterExample</a>)
+    </li>
+
+    <li> Figure 15.24: A model that uses the UnitsConverter actor to convert from meters
+      per second to miles per hour.
+      (<a href="UnitsConverterExampleWithUnitsConverter/index.html">UnitsConverterExampleWithUnitsConverter</a>
+    </li>
+
+  </ul>
+
+  <!--#include virtual="/ssi/bottom.htm" -->
+  <!-- Do not include a body or html close tag here, the ssi does it -->
