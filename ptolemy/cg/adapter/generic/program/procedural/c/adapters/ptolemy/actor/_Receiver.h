@@ -8,7 +8,7 @@
 #ifndef RECEIVER_H_
 #define RECEIVER_H_
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_IOPort.h"
 #include "_CompositeActor.h"
 #include "_Director.h"

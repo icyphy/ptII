@@ -483,7 +483,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         StringBuffer codeH = new StringBuffer();
         StringBuffer codeC = new StringBuffer();
-        codeC.append("#include \"_types.h\"");
+        codeC.append("#include \"_ptTypes.h\"");
 
         codeH.append(_eol + "#include <stdio.h>");
         codeH.append(_eol + "#include <stdlib.h>");
@@ -1507,8 +1507,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         
         _writeCodeFileName(code, _sanitizedModelName + "_Main.c", true, false);
         _writeCodeFileName(codeMainH, _sanitizedModelName + "_Main.h", true, false);
-        _writeCodeFileName(codeTypesH, directoryCommons + "_types.h", true, false);
-        _writeCodeFileName(codeTypesC, directoryCommons + "_types.c", true, false);
+        _writeCodeFileName(codeTypesH, directoryCommons + "_ptTypes.h", true, false);
+        _writeCodeFileName(codeTypesC, directoryCommons + "_ptTypes.c", true, false);
         
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_AtomicActor.h");
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_AtomicActor.c");
@@ -1935,7 +1935,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 + _eol);
         String sanitizedContainerName = CodeGeneratorAdapter
               .generateName(container); 
-        codeContainerH.append("#include \"_types.h\"" + _eol);
+        codeContainerH.append("#include \"_ptTypes.h\"" + _eol);
         codeContainerH.append("#include \"_AtomicActor.h\"" + _eol);
         codeContainerH.append("#include \"_TypedIOPort.h\"" + _eol);
         // FIXME : not a good way to do it

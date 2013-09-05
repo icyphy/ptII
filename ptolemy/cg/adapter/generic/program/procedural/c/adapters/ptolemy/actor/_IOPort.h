@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_Receiver.h"
 #include "_Actor.h"
 

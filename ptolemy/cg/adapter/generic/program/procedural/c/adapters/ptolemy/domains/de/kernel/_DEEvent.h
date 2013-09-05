@@ -8,7 +8,7 @@
 #ifndef DE_EVENT_H_
 #define DE_EVENT_H_
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_Actor.h"
 #include "_IOPort.h"
 

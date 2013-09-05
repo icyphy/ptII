@@ -7,7 +7,7 @@
 #define ATOMICACTOR_H_
 
 #include "_IOPort.h"
-#include "_types.h"
+#include "_ptTypes.h"
 
 #define ATOMICACTOR 1
 

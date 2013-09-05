@@ -8,7 +8,7 @@
 #ifndef SDFRECEIVER_H_
 #define SDFRECEIVER_H_
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_TypedIOPort.h"
 #include "_Receiver.h"
 

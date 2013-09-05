@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_Director.h"
 
 struct LocalClock {

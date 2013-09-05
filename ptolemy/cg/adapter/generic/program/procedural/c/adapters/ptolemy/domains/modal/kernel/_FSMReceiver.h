@@ -8,7 +8,7 @@
 #ifndef FSMRECEIVER_H_
 #define FSMRECEIVER_H_
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_TypedIOPort.h"
 #include "_Receiver.h"
 

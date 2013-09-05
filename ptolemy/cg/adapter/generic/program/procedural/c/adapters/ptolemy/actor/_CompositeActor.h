@@ -8,7 +8,7 @@
 #ifndef COMPOSITE_ACTOR_H_
 #define COMPOSITE_ACTOR_H_
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_Director.h"
 
 #define IS_COMPOSITEACTOR(a) ((a)->typeActor%10 == 2)

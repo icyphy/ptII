@@ -6,7 +6,7 @@
 #ifndef PTIDESEVENT_H_
 #define PTIDESEVENT_H_
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_DEEvent.h"
 
 #define PTIDESEVENT 11

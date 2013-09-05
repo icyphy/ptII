@@ -8,7 +8,7 @@
 #ifndef DERECEIVER_H_
 #define DERECEIVER_H_
 
-#include "_types.h"
+#include "_ptTypes.h"
 #include "_TypedIOPort.h"
 #include "_DEReceiver.h"
 #include "_DEDirector.h"
