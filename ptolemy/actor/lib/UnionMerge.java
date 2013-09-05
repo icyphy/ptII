@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// UnionMerge
@@ -124,6 +125,18 @@ public class UnionMerge extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        UnionMerge newObject = (UnionMerge) super.clone(workspace);
+        newObject._portMap = new HashMap<String, TypedIOPort>();
+        return newObject;
+    }
 
     /** Read all available tokens from each input port, wrap each of them into
      *  a UnionToken of which the label matches the name of the originating

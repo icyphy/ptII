@@ -48,6 +48,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// UnionDisassembler
@@ -113,6 +114,18 @@ public class UnionDisassembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        UnionDisassembler newObject = (UnionDisassembler) super.clone(workspace);
+        newObject._portMap = new HashMap<String, TypedIOPort>();
+        return newObject;
+    }
 
     /** Read one UnionToken from the input port and send its fields
      *  to the output ports.

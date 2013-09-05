@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// RecordAssembler
@@ -120,6 +121,18 @@ public class RecordAssembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RecordAssembler newObject = (RecordAssembler) super.clone(workspace);
+        newObject._portMap = new HashMap<String, TypedIOPort>();
+        return newObject;
+    }
 
     /** Read one token from each input port, assemble them into a RecordToken,
      *  and send the RecordToken to the output.
