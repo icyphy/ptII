@@ -4,13 +4,13 @@
 <entity name="OverconstrainedExampleConflicts" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={218, 256, 874, 498}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={218, 256, 874, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 388]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.106793384412694">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.60596569896444, 230.19717316937871}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.6059656989644, 291.63592132026633}">
     </property>
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
@@ -372,6 +372,12 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An example model with conflicting dimensions due to an error in the model.&#10;Running the analysis on this model shows that the whole model is in conflict.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 305.0]">
+        </property>
+    </property>
+    <property name="WebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 265.0]">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
