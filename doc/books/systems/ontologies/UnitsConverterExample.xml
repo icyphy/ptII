@@ -4,13 +4,13 @@
 <entity name="UnitsConverterExample" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={568, 266, 825, 546}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={568, 266, 825, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[591, 436]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[591, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2486952962444997">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{241.64282397290214, 195.01163680069934}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{241.64282397290214, 230.2484156468532}">
     </property>
     <property name="DimensionAnalysis" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
@@ -137,6 +137,12 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An example that adds a quantity in miles per hour to&#10;one in meters per second without conversion,&#10;resulting in conflicts throughout the model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 310.0}">
+        </property>
+    </property>
+    <property name="WebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 270.0]">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">

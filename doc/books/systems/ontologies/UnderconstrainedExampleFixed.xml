@@ -4,13 +4,13 @@
 <entity name="UnderconstrainedExampleFixed" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 412, 770, 480}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 412, 770, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[536, 370]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[536, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1144127945490678">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.4987262228261, 215.81300951086956}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.4987262228261, 284.9076936141304}">
     </property>
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
@@ -370,6 +370,12 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model with enough ontology constraints to fully resolve.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 310.0]">
+        </property>
+    </property>
+    <property name="WebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 275.0]">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">

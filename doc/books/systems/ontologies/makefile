@@ -11,4 +11,8 @@ EXAMPLE_MODELS = \
 	UnitsConverterExampleWithUnitsConverter.xml \
 	UnitsConverterExample.xml 
 
+# See _userSpecifiedUjars in ptolemy/copernicus/applet/AppletWriter.java
+CHAPTER_FILES_TO_BE_JARED = \
+	CarTrackingUnitOntology.xml 
+
 include ../chapter.mk

@@ -4,13 +4,13 @@
 <entity name="UnderconstrainedExampleResolved" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 161, 874, 515}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 161, 874, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 405]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1407728570936995">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.12858952702703, 197.56183638996143}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.128589527027, 249.71945885617768}">
     </property>
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
@@ -355,6 +355,12 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model with too few ontology constraints to fully resolve.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{22.285171332046332, 291.7961963079151}">
+        </property>
+    </property>
+    <property name="WebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 250.0]">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">

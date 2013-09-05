@@ -139,6 +139,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 325.0]">
         </property>
     </property>
+    <property name="WebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 270.0]">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+    </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 110.0]">
         </property>

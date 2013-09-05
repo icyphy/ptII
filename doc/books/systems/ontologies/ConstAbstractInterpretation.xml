@@ -13,7 +13,7 @@
         </property>
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.multiply&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.falseInput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.input&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.left&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.divide&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.trueInput&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.factor&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.output&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.MultiplyDivide.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const.value&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.rowsDisplayed&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const4.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.columnsDisplayed&quot;}, {Concept = &quot;BooleanTrue&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Scale.scaleOnLeft&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.value&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const2.value&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.control&quot;}, {Concept = &quot;Negative&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const3.value&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.BooleanSelect.output&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Const5.output&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.suppressBlankLines&quot;}, {Concept = &quot;Zero&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Display.input&quot;}, {Concept = &quot;BooleanFalse&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.output&quot;}, {Concept = &quot;Positive&quot;, NamedObj = &quot;.ConstAbstractInterpretation.Comparator.right&quot;}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[364.0, 120.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
@@ -24,14 +24,14 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3547387142650613">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2816978017259204">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.61816406250006, 458.99744629526685}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.1708984375, 273.8082537523824}">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[129.0, 125.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -39,7 +39,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model illustrating inference of ontology concepts for an ontology that&#10;abstracts numerical values as positive, negative, and zero, and also&#10;tracks boolean values.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 560.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[74.0, 375.0]">
+        </property>
+    </property>
+    <property name="WebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[529.0, 320.0]">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -65,7 +71,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[579.0, 215.0]">
         </property>
         <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,1.0}">
@@ -101,7 +107,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[359.0, 325.0]">
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -139,7 +145,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[104.0, 220.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -150,7 +156,7 @@
         </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 445.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.0, 260.0]">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -190,7 +196,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 455.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[104.0, 270.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -214,7 +220,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[79.0, 335.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -225,7 +231,7 @@
         </port>
     </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[479.0, 215.0]">
         </property>
         <port name="trueInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -279,7 +285,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[354.0, 240.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -303,7 +309,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[354.0, 190.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -330,7 +336,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[219.0, 335.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
