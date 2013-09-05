@@ -101,7 +101,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 134, 639, 456}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={801, 488, 639, 456}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
@@ -138,8 +138,8 @@
 <title>Voltage and Drive over time</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage, drive</yLabel>
-<xRange min="0.0" max="2.0"/>
-<yRange min="0.0" max="230.30188368841564"/>
+<xRange min="0.0" max="60.0"/>
+<yRange min="0.0" max="285.5815607552148"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -158,14 +158,12 @@
         <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ResourceMappingInputPort">
             </property>
-        </property>
-        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.0, 1.0}">
         </property>
         <port name="drive" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -453,12 +451,14 @@
         <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
-            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ResourceMappingInputPort">
             </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.0, 1.0}">
         </property>
         <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
