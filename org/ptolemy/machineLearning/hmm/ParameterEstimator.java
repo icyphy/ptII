@@ -31,9 +31,12 @@ package org.ptolemy.machineLearning.hmm;
 
  
 import java.util.HashMap;
+import java.util.List;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.BooleanToken;
@@ -48,6 +51,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -122,7 +126,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        transitionMatrix = new TypedIOPort(this, "transitionMatrix", false, true);
        transitionMatrix.setTypeEquals( BaseType.DOUBLE_MATRIX);
        
-       priorEstimates = new TypedIOPort( this, "priors", false, true);
+       priorEstimates = new TypedIOPort( this, "priorEstimates", false, true);
        priorEstimates.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
        StringAttribute cardinality = new StringAttribute(
                priorEstimates, "_cardinal");
@@ -140,17 +144,19 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        maxIterations.setExpression("10");
        maxIterations.setTypeEquals(BaseType.INT); 
        
-       A0 = new Parameter(this, "transitionProbabilityMatrix");
+       A0 = new Parameter(this, "A0");
        A0.setExpression("[0.5, 0.5; 0.5, 0.5]");
        A0.setTypeEquals(BaseType.DOUBLE_MATRIX);
+       A0.setDisplayName("Transition Probability Matrix");
        
-       priors = new Parameter(this, "priorDistribution");
-       priors.setExpression("{0.5,0.5}");
-       priors.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
+       priorDistribution = new Parameter(this, "priorDistribution");
+       priorDistribution.setExpression("{0.5,0.5}");
+       priorDistribution.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
        
-       nStates = new Parameter(this, "numberOfStates");
+       nStates = new Parameter(this, "nStates");
        nStates.setExpression("2");
        nStates.setTypeEquals(BaseType.INT); 
+       nStates.setDisplayName("numberOfStates");
        
        _initializeArrays();
       
@@ -162,7 +168,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            int nRow = ((MatrixToken) A0.getToken()).getRowCount();
            int nCol = ((MatrixToken) A0.getToken()).getColumnCount();
            if(nRow != nCol){
-               throw new IllegalActionException(this, "Transition Matrix must be a square matrix.");
+               throw new IllegalActionException(this, "Transition Probability Matrix must be a square matrix.");
            }else{
                _transitionMatrix = new double[nRow][nCol];
                _A0 = new double[nRow][nCol];
@@ -178,13 +184,13 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                }
                _A0 = _transitionMatrix;
            }
-      }else if(attribute == priors){
-          int nS = ((ArrayToken)priors.getToken()).length();
+      }else if(attribute == priorDistribution){
+          int nS = ((ArrayToken)priorDistribution.getToken()).length();
            double[] tempPriors = new double[nS];
            double sum = 0.0;
            
            for (int i = 0; i < nS; i++) { 
-               tempPriors[i] = ((DoubleToken)((ArrayToken) priors.getToken()).getElement(i))
+               tempPriors[i] = ((DoubleToken)((ArrayToken) priorDistribution.getToken()).getElement(i))
                        .doubleValue();
                if(tempPriors[i] < 0.0){
                    throw new IllegalActionException(this, "Priors must be non-negative.");
@@ -249,7 +255,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
    public Parameter randomizeGuessVectors;
    
    /* The user-provided initial guess on the prior probability distribution*/
-   public Parameter priors;
+   public Parameter priorDistribution;
   
    /* The input port that provides the sample observations*/
    public TypedIOPort input;
@@ -262,6 +268,15 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
    
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
+   public Object clone(Workspace workspace) throws CloneNotSupportedException {
+       ParameterEstimator newObject = (ParameterEstimator) super
+               .clone(workspace);
+       newObject._likelihood = 0.0;
+       newObject._transitionMatrix = new double[_nStates][_nStates];
+       newObject._A0 = new double[_nStates][_nStates];
+       newObject._priors = new double[_nStates];
+       return newObject;
+   }
    
    public void fire() throws IllegalActionException {
        
@@ -309,6 +324,17 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
    }
    
    protected abstract double emissionProbability(double y, int hiddenState);
+   
+   protected void _initializeArrays() throws IllegalActionException{
+       
+       //_observations = new double[_observationLength];
+       // infer the number of states from the mean array
+       _likelihood = 0.0;
+       _nStates = ((IntToken)nStates.getToken()).intValue(); 
+       _transitionMatrix = new double[_nStates][_nStates];
+       _A0 = new double[_nStates][_nStates];
+       _priors = new double[_nStates];
+   }
    
    protected abstract void _initializeEMParameters();
    
@@ -624,17 +650,6 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        return estimates;
    
    }
-   
-    protected void _initializeArrays() throws IllegalActionException{
-           
-           //_observations = new double[_observationLength];
-           // infer the number of states from the mean array
-           _likelihood = 0.0;
-           _nStates = ((IntToken)nStates.getToken()).intValue(); 
-           _transitionMatrix = new double[_nStates][_nStates];
-           _A0 = new double[_nStates][_nStates];
-           _priors = new double[_nStates];
-    }
     
    /* User-defined initial guess array for the state transition matrix*/
    protected double[][] _A0;

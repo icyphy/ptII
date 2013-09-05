@@ -31,6 +31,7 @@ package org.ptolemy.machineLearning.hmm;
 
 import java.util.Arrays;
 import java.util.HashMap; 
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -43,6 +44,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -101,30 +103,30 @@ public class HMMGaussianEstimator extends ParameterEstimator {
        standardDeviation = new TypedIOPort(this, "standardDeviation", false, true);
        standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        
-       m0 = new Parameter(this, "meanVectorGuess");
-       m0.setExpression("{0.0, 4.0}");
-       m0.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+       meanVectorGuess = new Parameter(this, "meanVectorGuess");
+       meanVectorGuess.setExpression("{0.0, 4.0}");
+       meanVectorGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        
-       s0 = new Parameter(this, "standardDeviationGuess");
-       s0.setExpression("{1.0, 1.0}");
-       s0.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
+       standardDeviationGuess = new Parameter(this, "standardDeviationGuess");
+       standardDeviationGuess.setExpression("{1.0, 1.0}");
+       standardDeviationGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
        
    }
    
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == m0){
-           int nS = ((ArrayToken) m0.getToken()).length();
+       if(attribute == meanVectorGuess){
+           int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
            _mu0 = new double[nS];
            for ( int i = 0; i < nS; i++) {
-               _mu0[i] = ((DoubleToken)((ArrayToken) m0.getToken()).getElement(i))
+               _mu0[i] = ((DoubleToken)((ArrayToken) meanVectorGuess.getToken()).getElement(i))
                        .doubleValue();
            } 
-       } else if(attribute == s0){ 
-           int nS = ((ArrayToken) s0.getToken()).length();
+       } else if(attribute == standardDeviationGuess){ 
+           int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
            _sigma0 = new double[nS]; 
            for ( int i = 0; i < nS; i++) { 
-               _sigma0[i] = ((DoubleToken)((ArrayToken) s0.getToken()).getElement(i))
+               _sigma0[i] = ((DoubleToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(i))
                        .doubleValue();
            } 
        } else{
@@ -139,13 +141,21 @@ public class HMMGaussianEstimator extends ParameterEstimator {
    
    public TypedIOPort standardDeviation; 
    
-   public Parameter m0;
+   public Parameter meanVectorGuess;
    
-   public Parameter s0; 
+   public Parameter standardDeviationGuess; 
    
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
+       public Object clone(Workspace workspace) throws CloneNotSupportedException {
+           HMMGaussianEstimator newObject = (HMMGaussianEstimator) super
+                   .clone(workspace);
+           newObject._sigma0 = new double[_nStates]; 
+           //newObject._mu0 = new double[_nStates];
+           return newObject;
+       }
+       
        public void fire() throws IllegalActionException {
        super.fire();
        

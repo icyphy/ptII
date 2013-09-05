@@ -76,7 +76,7 @@ sequence given the parameter estimates converges to a value within <i>likelihood
 the parameter estimation stops iterating and delivers the parameter estimates.
 
  @author Ilge Akkaya
-@version $Id$
+ @version $Id$
  @since Ptolemy II 10.1 
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
@@ -94,14 +94,14 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
        
-       emissionEstimates = new TypedIOPort(this, "observationProbabilities", false, true);
+       emissionEstimates = new TypedIOPort(this, "emissionEstimates", false, true);
        emissionEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
         
        observationProbabilities = new Parameter(this, "observationProbabilities");
        observationProbabilities.setExpression("[0.6,0.3,0.1;0.1,0.4,0.5]");
        observationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
        
-       nCategories = new Parameter(this, "numberOfCategoriesObserved");
+       nCategories = new Parameter(this, "nCategories");
        nCategories.setExpression("3");
        nCategories.setTypeEquals(BaseType.INT);
        _nCategories = 3;

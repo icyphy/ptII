@@ -30,6 +30,7 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.Arrays;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -42,6 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -85,9 +87,9 @@ public class HMMExponentialEstimator extends ParameterEstimator {
        
        
        
-       lambda0 = new Parameter(this, "lambdaGuess");
-       lambda0.setExpression("{1.0, 4.0}");
-       lambda0.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
+       lambdaGuess = new Parameter(this, "lambdaGuess");
+       lambdaGuess.setExpression("{1.0, 4.0}");
+       lambdaGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
        
        _lambda0 = new double[_nStates];
        _lambda =  new double[_nStates];  
@@ -99,11 +101,11 @@ public class HMMExponentialEstimator extends ParameterEstimator {
    
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == lambda0){
+       if(attribute == lambdaGuess){
            _lambda0 = new double[_nStates];
            _lambda =  new double[_nStates];
            for ( int i = 0; i < _nStates; i++) {
-               _lambda0[i] = ((DoubleToken)((ArrayToken) lambda0.getToken()).getElement(i))
+               _lambda0[i] = ((DoubleToken)((ArrayToken) lambdaGuess.getToken()).getElement(i))
                        .doubleValue();
            } 
        }  else{
@@ -116,11 +118,18 @@ public class HMMExponentialEstimator extends ParameterEstimator {
 
    public TypedIOPort lambda;  
    
-   public Parameter lambda0;  
+   public Parameter lambdaGuess;  
    
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
-
+   
+   public Object clone(Workspace workspace) throws CloneNotSupportedException {
+       HMMExponentialEstimator newObject = (HMMExponentialEstimator) super
+               .clone(workspace);
+       newObject._lambda = new double[_nStates];
+       newObject._lambda0 = new double[_nStates];
+       return newObject;
+   }
    
    public void fire() throws IllegalActionException {
        super.fire(); 
