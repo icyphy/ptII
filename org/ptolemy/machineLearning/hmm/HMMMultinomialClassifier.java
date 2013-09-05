@@ -40,6 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 ///////////////////////////////////////////////////////////////////
 ////
+import ptolemy.kernel.util.Workspace;
 
 /**
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
@@ -97,7 +98,13 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-    
+   public Object clone(Workspace workspace) throws CloneNotSupportedException {
+       HMMMultinomialClassifier newObject = (HMMMultinomialClassifier) super
+               .clone(workspace);
+       newObject._B = new double[_nStates][_nCategories];
+       return newObject;
+   }
+   
    /** Consume the inputs and produce the outputs of the FFT filter.
     *  @exception IllegalActionException If a runtime type error occurs.
     */

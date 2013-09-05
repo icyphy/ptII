@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 ///////////////////////////////////////////////////////////////////
 ////FFT
+import ptolemy.kernel.util.Workspace;
 
 /**
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
@@ -137,7 +138,14 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-
+   public Object clone(Workspace workspace) throws CloneNotSupportedException {
+       ObservationClassifier newObject = (ObservationClassifier) super
+               .clone(workspace);
+       newObject._priors = new double[_nStates]; 
+       newObject._transitionMatrixEstimate = new double[_nStates][_nStates]; 
+       return newObject;
+   }
+   
    /** Consume the inputs and produce the outputs of the FFT filter.
     *  @exception IllegalActionException If a runtime type error occurs.
     */

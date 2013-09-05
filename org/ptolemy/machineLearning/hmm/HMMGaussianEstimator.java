@@ -152,7 +152,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
            HMMGaussianEstimator newObject = (HMMGaussianEstimator) super
                    .clone(workspace);
            newObject._sigma0 = new double[_nStates]; 
-           //newObject._mu0 = new double[_nStates];
+           newObject._mu0 = new double[_nStates];
            return newObject;
        }
        

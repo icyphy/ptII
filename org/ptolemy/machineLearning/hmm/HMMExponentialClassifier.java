@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 ///////////////////////////////////////////////////////////////////
 ////
+import ptolemy.kernel.util.Workspace;
 
 /**
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
@@ -98,7 +99,13 @@ public class HMMExponentialClassifier extends ObservationClassifier {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-    
+   public Object clone(Workspace workspace) throws CloneNotSupportedException {
+       HMMExponentialClassifier newObject = (HMMExponentialClassifier) super
+               .clone(workspace);
+       newObject._lambda = new double[_nStates];  
+       return newObject;
+   }
+   
    /** Consume the inputs and produce the outputs of the FFT filter.
     *  @exception IllegalActionException If a runtime type error occurs.
     */

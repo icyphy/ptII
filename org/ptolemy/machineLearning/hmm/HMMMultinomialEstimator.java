@@ -30,6 +30,7 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.HashMap;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -43,6 +44,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -150,7 +152,14 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-   // the function to specifically define the emission probabilities
+   public Object clone(Workspace workspace) throws CloneNotSupportedException {
+       HMMMultinomialEstimator newObject = (HMMMultinomialEstimator) super
+               .clone(workspace);
+       newObject._B = new double[_nStates][_nStates];  
+       newObject._B0 = new double[_nStates][_nStates];  
+       return newObject;
+   }
+   
    public void fire() throws IllegalActionException { 
        super.fire(); 
        
@@ -183,6 +192,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
        _priorIn = _priors;
         A_new = new double[_nStates][_nStates];
         B_new = new double[_nStates][_nCategories];
+        prior_new = new double[_nStates];
    }
    protected void _iterateEM(){
        newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn, _nCategories); 
