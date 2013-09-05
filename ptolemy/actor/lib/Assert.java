@@ -1,5 +1,29 @@
-/** Check that an assertion predicate is satisfied, and throw an exception if not.
- * 
+/* Check that an assertion predicate is satisfied, and throw an exception if not.
+
+ Copyright (c) 2013 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
  */
 package ptolemy.actor.lib;
 
@@ -14,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** Check that an assertion predicate is satisfied, and throw an exception if not.
  *  To use this actor, add any number of input ports.
@@ -22,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  When the actor fires, if the expression evaluates to false, then the actor
  *  will throw an exception with the message given by the {@link #message} parameter.
  *  Otherwise, it will copy the inputs to the corresponding output ports.
+ *
  *  @author Ilge Akkaya, David Broman, Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 10.0
@@ -31,10 +57,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class Assert extends Expression {
 
     /** Construct an instance of Assert.
-     * @param container
-     * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public Assert(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -62,6 +90,18 @@ public class Assert extends Expression {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Assert newObject = (Assert) super.clone(workspace);
+        newObject._outputPortMap = new HashMap<String,TypedIOPort>();
+        return newObject;
+    }
 
     /** Override the base class to check the result of the evaluation
      *  of the expression. If the result is false, throw an exception.
