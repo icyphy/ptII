@@ -13,7 +13,7 @@
   <!--#include virtual="/ssi/toppostmenu.htm" -->
   <!-- Do not include a body open tag here, the ssi does it -->
   <h1>Chapter 15: Ontologies</h1>
-  Executable models in chapter 2:
+  Executable models in chapter 15:
   <ul>
     <li> Figure 15.8: Running an analysis.
       (<a href="ModelWithActorConstraints/index.html">ModelWithActorConstraints</a>)
