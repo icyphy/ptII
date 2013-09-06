@@ -605,6 +605,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  this PtidesPlatform actor.
          *  @return Environment time.
          */
+        @Override
         public Time getEnvironmentTime() {
             if (getContainer() instanceof Actor) {
                 Actor container = (Actor) getContainer();
@@ -617,6 +618,11 @@ public class PtidesPlatform extends MirrorComposite {
                 }
             }
             return localClock.getLocalTime();
+        }
+        
+        @Override
+        public Time getModelTime() { 
+            return getEnvironmentTime();
         }
 
         /** Return a new instance of QueueReceiver.

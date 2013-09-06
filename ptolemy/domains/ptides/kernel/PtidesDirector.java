@@ -720,8 +720,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
     }
     
     public void resumeActor(Actor actor) throws IllegalActionException { 
+        prefire();
         _actorsFinished.add(actor); 
-        fireContainerAt(getModelTime());
+        fireContainerAt(localClock.getLocalTime());
     }
 
     /** Override the base class to first set the container, then establish
