@@ -8,6 +8,9 @@ EXAMPLE_MODELS = \
 	Ptera1.xml \
 	Ptera2.xml \
 	Ptera3.xml \
-	Ptera4.xml \
+	Ptera4.xml
+
+CHAPTER_FILES_TO_BE_JARED = \
+	CarWash.xml
 
 include ../chapter.mk
