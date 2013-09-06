@@ -6,13 +6,13 @@
 	 This gets copied to the website.
 	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/vergil/index.html
       -->
-    <title>Chapter 2: Building Graphical Models</title>
+    <title>Chapter 15: Ontologies</title>
   </head>
   <!--#include virtual="/ssi/toppremenu.htm" -->
   <!--#include virtual="toc.htm" -->
   <!--#include virtual="/ssi/toppostmenu.htm" -->
   <!-- Do not include a body open tag here, the ssi does it -->
-  <h1>Chapter 2: Building Graphical Models</h1>
+  <h1>Chapter 15: Ontologies</h1>
   Executable models in chapter 2:
   <ul>
     <li> Figure 15.8: Running an analysis.
