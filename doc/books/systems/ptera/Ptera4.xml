@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Ptera3" class="ptolemy.domains.ptera.kernel.PteraModalModel">
+<entity name="Ptera4" class="ptolemy.domains.ptera.kernel.PteraModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
