@@ -1010,7 +1010,7 @@
                 <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="useTwoProcessors">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
                     </property>
@@ -1020,7 +1020,7 @@
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="!useTwoProcessors">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
                     </property>
@@ -1242,7 +1242,7 @@
                 <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="useTwoProcessors">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
@@ -1252,7 +1252,7 @@
                 <property name="DecoratorAttributesFor_1Processor2" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                     </property>
-                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="!useTwoProcessors">
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
