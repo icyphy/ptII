@@ -50,9 +50,16 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	PtidesBasicReceiver.java \
 	PtidesDirector.java \
+	PtidesPreemptiveEDFDirector.java \
+	PtidesTopLevelDirector.java
 
 OTHER_FILES_TO_BE_JARED = \
+	PtidesBasicReceiver.c \
+	PtidesPreemptiveEDFDirector.c \
+	PtidesTopLevelDirector.c \
+	PtidesDirector.c \
 	_PtidesDirector.c \
 	_PtidesDirector.h \
 	_PtidesEvent.c \

@@ -50,8 +50,14 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ActuatorSetup.java \
+	InputDevice.java \
+	OutputDevice.java \
+	SensorHandler.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ActuatorSetup.c \
+	SensorHandler.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
