@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GeneratorRegulatorProtectorWithSpecificationAsAspect" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1233, 802}, maximized=false}">
     </property>
@@ -104,9 +104,9 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Specification monitor here provides a violation signal if the&#10;spec is not me. The result will be an exception.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Specification monitor here provides a &#10;violation signal if the spec is not me.&#10;The result will be an exception.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 440.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -179,10 +179,41 @@
             </property>
         </property>
     </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also a messier version of this&#10;where the specification monitor is&#10;not an aspect, but is rather wired&#10;directly to the original model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 495.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecification.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithSpecification/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
+            </property>
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 310, 639, 456}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={970, 517, 639, 456}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
@@ -196,6 +227,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
@@ -203,6 +236,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
@@ -239,6 +274,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
@@ -246,6 +283,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
@@ -258,6 +297,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="contactor">
                 </property>
             </property>
@@ -267,6 +308,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
@@ -303,6 +346,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
@@ -310,6 +355,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
@@ -326,6 +373,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
@@ -333,6 +382,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
@@ -342,7 +393,7 @@
     <entity name="Supervisor" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 220.0]">
         </property>
         <port name="onOff" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -353,6 +404,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="onOff">
                 </property>
             </property>
@@ -362,6 +415,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
@@ -378,6 +433,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="fault">
                 </property>
             </property>
@@ -387,6 +444,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="fault">
                 </property>
@@ -398,6 +457,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -517,6 +578,8 @@
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
@@ -524,6 +587,8 @@
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="voltage">
                 </property>
@@ -567,6 +632,8 @@
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
@@ -579,6 +646,8 @@
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
@@ -593,6 +662,8 @@
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
@@ -603,6 +674,8 @@
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -778,6 +851,8 @@
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -988,6 +1063,8 @@
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
@@ -1122,6 +1199,8 @@
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
@@ -1129,6 +1208,8 @@
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
@@ -1143,6 +1224,8 @@
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
@@ -1150,6 +1233,8 @@
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
@@ -1161,6 +1246,8 @@
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1391,6 +1478,8 @@
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
@@ -1398,6 +1487,8 @@
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>

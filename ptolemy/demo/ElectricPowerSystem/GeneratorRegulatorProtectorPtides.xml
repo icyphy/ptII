@@ -4,13 +4,13 @@
 <entity name="GeneratorRegulatorProtectorPtides" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 22, 1280, 744}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 744}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 634]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1126597222947772">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0731300971395559">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{467.5511380709134, 287.59082031249994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{483.70009515224353, 266.91992187499994}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -24,22 +24,22 @@
             </property>
         </property>
     </property>
-    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Architecture Alternatives">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 5.0]">
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator using Ptides">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, -20.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 10.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes two possible implementation platforms, one with one processor,&#10;one with two processors. Change the selection using the useTwoProcessors parameter.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses Ptides, where timing is specified rather than being&#10;discovered from an implementation, and the model is used to verify&#10;that the timing specification is met.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 10.0]">
         </property>
     </property>
     <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="119.0">
@@ -72,9 +72,9 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Supervisor and PID actors can&#10;execute on the same processor or on&#10;two processors, depending on the value&#10;of useTwoProcessors. If they use one&#10;processor, overvoltage protection kicks&#10;in, while if they use two, it does not.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you look inside the PtidesPlatform, you can enable&#10;either a two-processor implementation platform, or&#10;a one-processor implemention with a fixed-priority,&#10;non-preemptive scheduler. In the former case, the&#10;timing specification is met, and the model runs correctly.&#10;In the latter case, the model does not run because the&#10;timing specification is not met.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[390.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[25.0, 330.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -118,20 +118,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
         </property>
     </property>
-    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorProtectorWithProcessor">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Two alternative execution platforms.&#10;Select between them using the&#10;useTwoProcessors parameter.">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 510.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 370.0]">
-        </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorProtectorWithBus">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 515.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -150,38 +142,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithBus/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: GeneratorRegulatorProtectorWithConstraintMonitor">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 540.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithConstraintMonitor.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithConstraintMonitor/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithProcessor/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
@@ -191,7 +152,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Voltage, Drive">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={639, 248, 639, 441}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={865, 343, 639, 441}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 397]">
         </property>
@@ -505,6 +466,14 @@
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Two alternative execution platforms.&#10;Select between them using the&#10;useTwoProcessors parameter.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 30.0]">
+                </property>
             </property>
             <port name="port" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>

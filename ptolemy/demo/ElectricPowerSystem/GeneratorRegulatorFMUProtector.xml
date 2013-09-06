@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GeneratorRegulatorFMUProtector" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 262, 1131, 682}, maximized=false}">
     </property>
@@ -75,7 +75,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorProtector">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 365.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 365.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -116,11 +116,11 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: GeneratorRegulatorProtectorTuLiP">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: GeneratorRegulatorProtectorSimXRhapsodyFMU">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 390.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorTuLiP.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorSimXRhapsodyFMU.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -139,7 +139,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorTuLiP/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorSimXRhapsodyFMU/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
