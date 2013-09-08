@@ -122,18 +122,24 @@ public class Transformer {
                         String listName = pathOrFile.substring(1);
                         File listFile = new File(listName);
                         File listPath = listFile.getParentFile();
-                        BufferedReader reader = new BufferedReader(
+			List<String> strings = new LinkedList<String>();
+			BufferedReader reader = null;
+			try {
+			    reader = new BufferedReader(
                                 new InputStreamReader(new FileInputStream(
                                         listName)));
-                        List<String> strings = new LinkedList<String>();
-                        String line = reader.readLine();
+			    String line = reader.readLine();
 
-                        while (line != null) {
-                            strings.add(new File(listPath, line)
-                                    .getCanonicalPath());
-                            line = reader.readLine();
-                        }
-
+			    while (line != null) {
+				strings.add(new File(listPath, line)
+					    .getCanonicalPath());
+				line = reader.readLine();
+			    }
+			} finally {
+			    if (reader != null) {
+				reader.close();
+			    }
+			}
                         files = new File[strings.size()];
 
                         Iterator<String> stringsIter = strings.iterator();
