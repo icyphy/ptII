@@ -87,9 +87,10 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.JVMBitWidth;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-////CCodeGenerator
+//// CCodeGenerator
 
 /** Base class for C code generator.
  *
@@ -154,6 +155,20 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CCodeGenerator newObject = (CCodeGenerator) super.clone(workspace);
+
+	newObject._definesToAdd = new LinkedList<String>();
+        return newObject;
+    }
+
 
     /** Generate code that defines a constant.  In C, generate a
      *  #define
