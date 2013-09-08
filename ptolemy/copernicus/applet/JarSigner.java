@@ -355,22 +355,30 @@ public class JarSigner {
      */
     private static Manifest _getManifestFile(JarFile jarFile)
             throws IOException {
-        JarEntry je = jarFile.getJarEntry("META-INF/MANIFEST.MF");
-        if (je != null) {
+        JarEntry jarEntry = jarFile.getJarEntry("META-INF/MANIFEST.MF");
+        if (jarEntry != null) {
             Enumeration entries = jarFile.entries();
             while (entries.hasMoreElements()) {
-                je = (JarEntry) entries.nextElement();
-                if ("META-INF/MANIFEST.MF".equalsIgnoreCase(je.getName())) {
+                jarEntry = (JarEntry) entries.nextElement();
+                if ("META-INF/MANIFEST.MF".equalsIgnoreCase(jarEntry.getName())) {
                     break;
                 } else {
-                    je = null;
+                    jarEntry = null;
                 }
             }
         }
         // create the manifest object
         Manifest manifest = new Manifest();
-        if (je != null) {
-            manifest.read(jarFile.getInputStream(je));
+        if (jarEntry != null) {
+            InputStream inputStream = null;
+            try {
+                inputStream = jarFile.getInputStream(jarEntry);
+                manifest.read(inputStream);
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }
         }
         return manifest;
 
