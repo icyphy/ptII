@@ -66,6 +66,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -607,14 +608,20 @@ public class PtidesPlatform extends MirrorComposite {
          */
         @Override
         public Time getEnvironmentTime() {
-            if (getContainer() instanceof Actor) {
-                Actor container = (Actor) getContainer();
+	    NamedObj namedObjContainer = getContainer();
+            if (namedObjContainer instanceof Actor) {
+                Actor container = (Actor) namedObjContainer;
                 if (container != null && container.getContainer() != null) {
-                    container = (Actor) container.getContainer();
-                    Director director = container.getDirector();
-                    if (director != null) {
-                        return director.getModelTime();
-                    }
+		    // This could be an EntityLibrary, see tests in
+		    // $PTII/doc.
+		    NamedObj parentContainer = container.getContainer();
+		    if (parentContainer instanceof Actor) {
+			container = (Actor) parentContainer;
+			Director director = container.getDirector();
+			if (director != null) {
+			    return director.getModelTime();
+			}
+		    }
                 }
             }
             return localClock.getLocalTime();
