@@ -145,72 +145,79 @@ public class Transformer {
                         files = PathFinder.getJavaFiles(pathOrFile, true);
                     }
 
-                    ClassFileLoader loader = new ClassFileLoader(paths);
+                    ClassFileLoader loader = null;
+		    try {
+			loader = new ClassFileLoader(paths);
 
-                    for (int j = 0; j < files.length; j++) {
-                        String fileName = files[j].getPath();
+			for (int j = 0; j < files.length; j++) {
+			    String fileName = files[j].getPath();
 
-                        if (fileName.endsWith(".java")) {
-                            fileName = fileName.substring(0,
-                                    fileName.length() - 5)
+			    if (fileName.endsWith(".java")) {
+				fileName = fileName.substring(0,
+							      fileName.length() - 5)
                                     + ".class";
-                        } else {
-                            System.err.println("Skipping \"" + files[j]
-                                    + "\". " + "Cause: Class file not found.");
-                            continue;
-                        }
+			    } else {
+				System.err.println("Skipping \"" + files[j]
+						   + "\". " + "Cause: Class file not found.");
+				continue;
+			    }
 
-                        Class c = null;
+			    Class c = null;
 
-                        try {
-                            c = loader.loadClass(new File(fileName));
-                        } catch (Throwable throwable) {
-                            /*System.err.println("Skipping \"" + files[j] + "\". "
-                                    + "Cause: " + e.getMessage());
-                            continue;*/
-                            System.err.println("***********************");
-                            String message = throwable.getMessage();
-                            System.err
+			    try {
+				c = loader.loadClass(new File(fileName));
+			    } catch (Throwable throwable) {
+				/*System.err.println("Skipping \"" + files[j] + "\". "
+				  + "Cause: " + e.getMessage());
+				  continue;*/
+				System.err.println("***********************");
+				String message = throwable.getMessage();
+				System.err
                                     .println("Cannot load class from file: \""
-                                            + fileName + "\": " + message);
+					     + fileName + "\": " + message);
 
-                            String header = "Prohibited package name:";
-                            if (message.startsWith(header)) {
-                                String packageName = message.substring(
-                                        header.length()).trim();
-                                String name = new File(fileName).getName();
-                                int dotPos = name.indexOf('.');
-                                if (dotPos >= 0) {
-                                    name = name.substring(0, dotPos);
-                                }
-                                String className = packageName + "." + name;
-                                System.err
+				String header = "Prohibited package name:";
+				if (message.startsWith(header)) {
+				    String packageName = message.substring(
+									   header.length()).trim();
+				    String name = new File(fileName).getName();
+				    int dotPos = name.indexOf('.');
+				    if (dotPos >= 0) {
+					name = name.substring(0, dotPos);
+				    }
+				    String className = packageName + "." + name;
+				    System.err
                                         .println("Try to use preloaded class: "
-                                                + className);
-                                try {
-                                    c = loader.loadClass(className);
-                                } catch (Exception e2) {
-                                }
+						 + className);
+				    try {
+					c = loader.loadClass(className);
+				    } catch (Exception e2) {
+				    }
 
-                                if (c == null) {
-                                    System.err
+				    if (c == null) {
+					System.err
                                             .println("Cannot obtain preloaded class: "
-                                                    + className);
-                                    continue;
-                                }
-                            }
-                        }
+						     + className);
+					continue;
+				    }
+				}
+			    }
 
-                        fileList.add(files[j]);
-                        if (c == null) {
-                            throw new NullPointerException("Could not obtain "
-                                    + "preloaded class \"" + fileName + "\"");
-                        }
-                        crossAnalysis.add(c.getName());
-                        _addInnerClasses(crossAnalysis, fileName, (c
-                                .getPackage() == null) ? null : c.getPackage()
-                                .getName());
-                    }
+			    fileList.add(files[j]);
+			    if (c == null) {
+				throw new NullPointerException("Could not obtain "
+							       + "preloaded class \"" + fileName + "\"");
+			    }
+			    crossAnalysis.add(c.getName());
+			    _addInnerClasses(crossAnalysis, fileName, (c
+								       .getPackage() == null) ? null : c.getPackage()
+					     .getName());
+			}
+		    } finally {
+			if (loader != null) {
+			    loader.close();
+			}
+		    }
                 }
 
                 // Compute the array of cross-analyzed types.
