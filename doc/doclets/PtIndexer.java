@@ -174,16 +174,22 @@ public class PtIndexer {
                 String line = null;
                 while ((fileName = stdin.readLine()) != null) {
                     numberOfFiles++;
-                    fileInput = new BufferedReader(new InputStreamReader(
-                            new FileInputStream(fileName)));
-                    // Remove .xml
-                    fileName = fileName.substring(0, fileName.lastIndexOf("."));
-                    // Replace "./" with "" and then "/" with "."
-                    String className = fileName.replace("./", "").replace("/",
-                            ".");
-                    while ((line = fileInput.readLine()) != null) {
-                        numberOfLines++;
-                        ptIndexer.append(className, line);
+                    try {
+                        fileInput = new BufferedReader(new InputStreamReader(
+                                        new FileInputStream(fileName)));
+                        // Remove .xml
+                        fileName = fileName.substring(0, fileName.lastIndexOf("."));
+                        // Replace "./" with "" and then "/" with "."
+                        String className = fileName.replace("./", "").replace("/",
+                                ".");
+                        while ((line = fileInput.readLine()) != null) {
+                            numberOfLines++;
+                            ptIndexer.append(className, line);
+                        }
+                    } finally {
+                        if (fileInput != null) {
+                            fileInput.close();
+                        }
                     }
                 }
                 System.out.println("Read " + numberOfFiles + " files, "
