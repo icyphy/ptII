@@ -171,13 +171,14 @@ public class RecordAssembler extends TypedAtomicActor {
 
     /** Return true if all connected input ports have tokens, false if some
      *  connected input ports do not have a token.
-     *  @return True if all connected input ports have tokens.
+     *  @return True if all connected input ports have tokens and the
+     *  parent method returns true.
      *  @exception IllegalActionException If the hasToken() call to the
      *   input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-
+        boolean superReturnValue = super.prefire();
         for (TypedIOPort port : _portMap.values()) {
             if (!port.hasToken(0)) {
                 if (_debugging) {
@@ -190,7 +191,7 @@ public class RecordAssembler extends TypedAtomicActor {
             }
         }
 
-        return true;
+        return true && superReturnValue;
     }
 
     ///////////////////////////////////////////////////////////////////

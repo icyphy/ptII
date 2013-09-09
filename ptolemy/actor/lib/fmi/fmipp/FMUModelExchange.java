@@ -364,7 +364,7 @@ public class FMUModelExchange extends Transformer {
     }
 
     public void fire() throws IllegalActionException {
-        _debug("Called fire()");
+        super.fire();
         getDirector();
         double currentTime = getDirector().getModelTime().getDoubleValue();
         //	DECQEventQueue queue = (DECQEventQueue) director.getEventQueue();
@@ -560,7 +560,7 @@ public class FMUModelExchange extends Transformer {
     }
 
     public boolean prefire() throws IllegalActionException {
-        _debug("Called prefire()");
+        boolean superReturnValue = super.prefire();
 
         _debug("ModelTime=", getDirector().getModelTime().toString(),
                 ", _nextEvent=", _nextEvent.toString());
@@ -571,14 +571,16 @@ public class FMUModelExchange extends Transformer {
             return false;
         }
 
-        return true;
+        return true && superReturnValue;
     }
 
     public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         _fmu = null;
     }
 
     public void wrapup() throws IllegalActionException {
+        super.wrapup();
         if (_fmu != null) {
             _fmu.delete();
             _fmu = null;

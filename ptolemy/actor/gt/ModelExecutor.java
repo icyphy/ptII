@@ -103,6 +103,7 @@ public class ModelExecutor extends TypedAtomicActor {
      *   execution of the model throws an exception.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Workspace workspace = new Workspace();
         Entity actor = ((ActorToken) actorInput.get(0)).getEntity(workspace);
         if (actor instanceof ComponentEntity) {
@@ -547,6 +548,11 @@ public class ModelExecutor extends TypedAtomicActor {
          */
         public void broadcast(Token token) throws NoRoomException,
                 IllegalActionException {
+            // FIXME: This method does not call super.broadcast(),
+            // which means that the port event listeners are not
+            // notified.  However, IOPort.broadcast also sends data to
+            // the far receivers, so not calling super.broadcast is
+            // probably ok?
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             executorPort.broadcast(token);

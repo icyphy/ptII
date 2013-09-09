@@ -152,6 +152,9 @@ abstract public class GRShape2D extends GRActor2D {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public boolean prefire() throws IllegalActionException {
+        if (!super.prefire()) {
+            return false;
+        }
         if (_isSceneGraphInitialized) {
             return false;
         } else {

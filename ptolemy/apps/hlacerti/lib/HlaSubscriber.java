@@ -207,6 +207,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown here.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Time currentTime = getDirector().getModelTime();
 
         Iterator<TimedEvent> it = _reflectedAttributeValues.iterator();

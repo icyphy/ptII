@@ -182,6 +182,7 @@ public class Reader extends Source {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         System.out.println("actor.lib.Reader is obsolete, "
                 + "use actor.lib.io.ExpressionReader instead");
         _dataSize = output.getWidth();

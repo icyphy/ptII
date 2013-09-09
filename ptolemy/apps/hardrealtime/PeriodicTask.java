@@ -128,8 +128,8 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
      *  job throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
-            _debug("PeriodicTask " + getName() + " called fire()");
             _debug("PeriodTask " + this + ": nextFireTime is "
                     + nextFireTime() + ", current time is " + _scheduler.getModelTime());
         }
@@ -139,10 +139,15 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
         }
     }
 
-    /** Initialize the last time a job was released and register task with the scheduler.
+    /** Initialize the last time a job was released and register task
+     * with the scheduler.
+     * @exception IllegalActionException If thrown by the parent
+     * class while invoking the initializable methods (if any).
      */
     @Override
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        // Print debugging and invoke any initializable methods.
+        super.initialize();
         _lastTimeReleasedJob = null;
         _scheduler = (EDF) ((CompositeActor) getContainer()).getDirector();
         _scheduler.addSchedulableTask(this);

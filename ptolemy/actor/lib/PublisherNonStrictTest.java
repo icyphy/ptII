@@ -250,6 +250,7 @@ public class PublisherNonStrictTest extends Publisher {
      *   the required value or if the width of the input is not 1.
      */
     public boolean postfire() throws IllegalActionException {
+        boolean superReturnValue = super.postfire();
         if (input.getWidth() != 1) {
             throw new IllegalActionException(this, "Width of input is "
                     + input.getWidth()
@@ -270,7 +271,7 @@ public class PublisherNonStrictTest extends Publisher {
                 output.send(0, token);
             }
 
-            return true;
+            return true && superReturnValue;
         }
 
         //          if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
@@ -316,7 +317,7 @@ public class PublisherNonStrictTest extends Publisher {
         }
 
         _iteration++;
-        return true;
+        return true && superReturnValue;
     }
 
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected

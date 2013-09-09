@@ -231,6 +231,10 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            // Presumably, stopRequested is true.
+            return false;
+        }
         Time currentTime;
         boolean localTime = ((BooleanToken) stopTimeIsLocal.getToken())
                 .booleanValue();

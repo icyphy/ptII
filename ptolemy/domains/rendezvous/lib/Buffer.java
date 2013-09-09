@@ -288,9 +288,14 @@ public class Buffer extends TypedAtomicActor {
     }
 
     /** Return false if it is time to stop the process.
-     *  @return False a TerminateProcessException was thrown during I/O.
+     *  @return False a TerminateProcessException was thrown during
+     *  I/O or if the superclass returns false.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            return false;
+        }
         return _postfireReturns;
     }
 

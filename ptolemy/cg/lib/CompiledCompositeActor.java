@@ -470,11 +470,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         commands.add("javac -classpath . " + _sanitizedActorName + ".java");
 
         // Create the .h file.
-        //commands.add("javah -classpath . " + _sanitizedActorName);
+        commands.add("javah -classpath . " + _sanitizedActorName);
 
         if (_debugging) {
             _debugAndSystemOut("Execute command: " + commands.get(0));
-            //_debugAndSystemOut("Execute command: " + commands.get(1));
+            _debugAndSystemOut("Execute command: " + commands.get(1));
         }
 
         executeCommands.setWorkingDirectory(codeDirectory.asFile());
@@ -564,6 +564,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 writer = FileUtilities.openForWriting(codeFileName,
                         codeDirectory.getBaseDirectory(), false);
+                System.out.println("CompiledCompositeActor wrote " + codeDirectory.getBaseDirectory() + " " + codeFileName);
                 writer.write(code.toString());
             } finally {
                 if (writer != null) {
