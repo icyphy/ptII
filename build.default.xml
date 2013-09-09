@@ -303,7 +303,7 @@ For example:
   <target name="checkstyle" depends="initReports"
 	  description="Run checkstyle and find common code style problems." >
     <echo>To avoid an 'OutOfMemoryError' exception, under bash, try 'export ANT_OPTS=-Xmx1024m'</echo>
-    <taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
+    <taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.6-all.jar" />
     <checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
       <fileset defaultexcludes="yes"
 	       dir="${basedir}">
