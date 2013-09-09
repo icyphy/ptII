@@ -165,6 +165,7 @@
       <external-property>
         <originalValue class="hudson.plugins.setenv.SetEnvBuildWrapper">
           <localVarText>ANT_HOME=/usr/local/apache-ant
+ANT_OPTS=-Xmx1024m
 BCVTB_HOME=${WORKSPACE}/lbnl
 CERTI_HOST=localhost
 CERTI_HOME=/usr/local/certi
