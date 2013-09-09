@@ -290,31 +290,22 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
     //                        private methods                        //
 
     private void _add(Actor actor, Time executionTime) throws IllegalActionException {
-        double priority = _getPriority(actor); 
-                
-        Object[] actors = _currentlyExecuting.toArray();
+        double priority = _getPriority(actor);  
+        boolean added = false;
+        Object[] actors = _currentlyExecuting.toArray(); 
+        System.out.println(_currentlyExecuting); 
         _currentlyExecuting.clear();
         for (int i = 0; i < actors.length; i++) {
             Actor actorInArray = (Actor) actors[i];
-            double actorInArrayPriority = _getPriority(actor); 
-            if (priority < actorInArrayPriority) { 
-                for (int j = actors.length - 1; j >= i; j--) {
-                    _currentlyExecuting.push((Actor) actors[j]);
-                }
+            double actorInArrayPriority = _getPriority(actorInArray); 
+            if (!added && priority > actorInArrayPriority) { // has lower priority  
                 _currentlyExecuting.push(actor);
-                _remainingTimes.put(actor, executionTime);
-                for (int j = i - 1; j >= 0; j--) {
-                    _currentlyExecuting.push((Actor) actors[j]);
-                }
-                break;
-            }
-        } 
-        _currentlyExecuting.push(actor);
-        for (int j = actors.length - 1; j >= 0; j--) {
-            _currentlyExecuting.push((Actor) actors[j]);
-        }
-        
-        _remainingTimes.put(actor, executionTime);
+                _remainingTimes.put(actor, executionTime); 
+                added = true;
+            } 
+            _currentlyExecuting.push(actorInArray);
+        }  
+        System.out.println(added); 
     }
     
     /** Schedule a new actor which possibly preempts currently executing
