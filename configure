@@ -4309,6 +4309,8 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/domains/pdf/"/>
 <exclude name="ptolemy/moml/test/NoPackageActor.java"/>
 <exclude name="ptolemy/plot/servlet/"/>
+<exclude name="reports/"/>
+<exclude name="signed/" />
 <exclude name="src/"/>
 <exclude name="target/"/>
 <exclude name="vendors/"/>'
@@ -11361,7 +11363,7 @@ PTQUICKTIME_DIR=
 
 # Set to the location of the QTJava.zip file
 QTJAVA_ZIP=
-
+set -x
 # We only need to look for Java3D if the gr domain is present
 QUICKTIME_USER_DIR="$PTII/ptolemy/domains/gr/lib/quicktime"
 
@@ -11478,7 +11480,7 @@ else
         updateClasspath "$QTJAVA_ZIP"
     fi
 fi
-
+set +x
 #--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
