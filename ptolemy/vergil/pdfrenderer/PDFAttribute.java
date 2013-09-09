@@ -138,10 +138,11 @@ public class PDFAttribute extends VisibleAttribute {
         if (attribute == source) {
             try {
                 ByteBuffer byteBuffer = null;
+                FileChannel channel = null;
                 try {
                     File file = source.asFile();
                     RandomAccessFile raf = new RandomAccessFile(file, "r");
-                    FileChannel channel = raf.getChannel();
+                    channel = raf.getChannel();
                     byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0,
                             channel.size());
                 } catch (Exception ex) {
@@ -179,6 +180,10 @@ public class PDFAttribute extends VisibleAttribute {
                                             + KernelException
                                                     .stackTraceToString(ex3));
                         }
+                    }
+                } finally {
+                    if (channel != null) {
+                        channel.close();
                     }
                 }
 
