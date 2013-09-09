@@ -14,7 +14,6 @@ EXAMPLE_MODELS = \
 	ResettableTimer.xml \
 	SpontaneousFSM.xml \
 	Termination.xml \
-	TimedFSM.xml \
 	Timeout.xml
 
 include ../chapter.mk
