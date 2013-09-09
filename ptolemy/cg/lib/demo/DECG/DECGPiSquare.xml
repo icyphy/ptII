@@ -95,7 +95,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes pi².&#10;We use the Euler formula for the Riemman zeta function : zeta(2) = Sum(1, 1/2², ..., 1/n²) = pi²/6">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes pi<sup>2</sup>.&#10;We use the Euler formula for the Riemman zeta function : zeta(2) = Sum(1, 1/2<sup>2</sup>, ..., 1/n<sup>2</sup>) = pi<sup>2</sup>/6">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 285.0]">
         </property>
