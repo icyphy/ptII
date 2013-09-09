@@ -1119,7 +1119,7 @@ hudson:
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
-	clean all jnlp src.jar setup test_setup updateDOPCenterImage update_moog 
+	clean all jnlp src.jar setup test_setup updateDOPCenterImage update_moog coverity
 
 hudson_notest: 
 	$(MAKE) -k USER=hudson \
@@ -2940,3 +2940,6 @@ update_moog:
 	-ssh moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.setup.mac.app.tar.gz
 
+# Invoke the coverity scan.
+coverity:
+	(cd $(PTII); adm/bin/coverity)
