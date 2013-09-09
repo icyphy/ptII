@@ -614,7 +614,9 @@ public class JarSigner {
                 jarOutputStream.write(buffer, 0, read);
             }
         } finally {
-            inputStream.close();
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
     }
 
