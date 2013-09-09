@@ -243,13 +243,24 @@ public class AudioViewer extends PlotApplication {
      */
     protected void _save() {
         if (_file != null) {
+            FileOutputStream out = null;
             try {
-                FileOutputStream fout = new FileOutputStream(_file);
-                _sound.write(new DataOutputStream(fout));
+                out = new FileOutputStream(_file);
+                _sound.write(new DataOutputStream(out));
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Error writing file: " + ex, "AudioViewer error",
+                        "Error writing file \"" + _file + "\". "+ ex, "AudioViewer error",
                         JOptionPane.ERROR_MESSAGE);
+            } finally {
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException ex2) {
+                        JOptionPane.showMessageDialog(this,
+                                "Error closing file \"" + _file + "\". "+ ex2, "AudioViewer error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         } else {
             _saveAs();
