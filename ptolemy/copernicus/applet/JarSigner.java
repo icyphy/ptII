@@ -470,58 +470,65 @@ public class JarSigner {
 
         // write out the manifest to the output jar stream
         String manifestFileName = "META-INF/MANIFEST.MF";
-        JarOutputStream jos = new JarOutputStream(outputStream);
-        JarEntry manifestFile = new JarEntry(manifestFileName);
-        jos.putNextEntry(manifestFile);
-        byte manifestBytes[] = _serialiseManifest(manifest);
-        jos.write(manifestBytes, 0, manifestBytes.length);
-        jos.closeEntry();
+        JarOutputStream jarOutputStream = null;
+        try {
+            jarOutputStream = new JarOutputStream(outputStream);
+            JarEntry manifestFile = new JarEntry(manifestFileName);
+            jarOutputStream.putNextEntry(manifestFile);
+            byte manifestBytes[] = _serialiseManifest(manifest);
+            jarOutputStream.write(manifestBytes, 0, manifestBytes.length);
+            jarOutputStream.closeEntry();
 
-        // write out the signature file -- the signatureFile
-        // object will name itself appropriately
-        String signatureFileName = signatureFile.getMetaName();
-        JarEntry signatureFileEntry = new JarEntry(signatureFileName);
-        jos.putNextEntry(signatureFileEntry);
-        signatureFile.write(jos);
-        jos.closeEntry();
+            // write out the signature file -- the signatureFile
+            // object will name itself appropriately
+            String signatureFileName = signatureFile.getMetaName();
+            JarEntry signatureFileEntry = new JarEntry(signatureFileName);
+            jarOutputStream.putNextEntry(signatureFileEntry);
+            signatureFile.write(jarOutputStream);
+            jarOutputStream.closeEntry();
 
-        // write out the signature block file -- again, the block
-        // will name itself appropriately
-        String signatureBlockName = block.getMetaName();
-        JarEntry signatureBlockEntry = new JarEntry(signatureBlockName);
-        jos.putNextEntry(signatureBlockEntry);
-        block.write(jos);
-        jos.closeEntry();
+            // write out the signature block file -- again, the block
+            // will name itself appropriately
+            String signatureBlockName = block.getMetaName();
+            JarEntry signatureBlockEntry = new JarEntry(signatureBlockName);
+            jarOutputStream.putNextEntry(signatureBlockEntry);
+            block.write(jarOutputStream);
+            jarOutputStream.closeEntry();
 
-        // commit the rest of the original entries in the
-        // META-INF directory. if any of their names conflict
-        // with one that we created for the signed JAR file, then
-        // we simply ignore it
-        Enumeration metaEntries = jarFile.entries();
-        while (metaEntries.hasMoreElements()) {
-            JarEntry metaEntry = (JarEntry) metaEntries.nextElement();
-            if (metaEntry.getName().startsWith("META-INF")
-                    && !(manifestFileName.equalsIgnoreCase(metaEntry.getName())
-                            || signatureFileName.equalsIgnoreCase(metaEntry
-                                    .getName()) || signatureBlockName
+            // commit the rest of the original entries in the
+            // META-INF directory. if any of their names conflict
+            // with one that we created for the signed JAR file, then
+            // we simply ignore it
+            Enumeration metaEntries = jarFile.entries();
+            while (metaEntries.hasMoreElements()) {
+                JarEntry metaEntry = (JarEntry) metaEntries.nextElement();
+                if (metaEntry.getName().startsWith("META-INF")
+                        && !(manifestFileName.equalsIgnoreCase(metaEntry.getName())
+                                || signatureFileName.equalsIgnoreCase(metaEntry
+                                        .getName()) || signatureBlockName
                                 .equalsIgnoreCase(metaEntry.getName()))) {
-                _writeJarEntry(metaEntry, jarFile, jos);
+                    _writeJarEntry(metaEntry, jarFile, jarOutputStream);
+                }
+            }
+
+            // now write out the rest of the files to the stream
+            Enumeration allEntries = jarFile.entries();
+            while (allEntries.hasMoreElements()) {
+                JarEntry entry = (JarEntry) allEntries.nextElement();
+                //System.out.println("JarSigner: entry: " + entry);
+                if (!entry.getName().startsWith("META-INF")) {
+                    _writeJarEntry(entry, jarFile, jarOutputStream);
+                }
+            }
+
+        } finally {
+            if (jarOutputStream != null) {
+                // finish the stream that we have been writing to
+                jarOutputStream.flush();
+                jarOutputStream.finish();
+                jarOutputStream.close();
             }
         }
-
-        // now write out the rest of the files to the stream
-        Enumeration allEntries = jarFile.entries();
-        while (allEntries.hasMoreElements()) {
-            JarEntry entry = (JarEntry) allEntries.nextElement();
-            //System.out.println("JarSigner: entry: " + entry);
-            if (!entry.getName().startsWith("META-INF")) {
-                _writeJarEntry(entry, jarFile, jos);
-            }
-        }
-
-        // finish the stream that we have been writing to
-        jos.flush();
-        jos.finish();
     }
 
     /** Helper function to update the digest.
@@ -600,13 +607,14 @@ public class JarSigner {
         jarOutputStream.putNextEntry(jarEntry);
         byte[] buffer = new byte[2048];
         int read = 0;
+        InputStream inputStream = null;
         try {
-            InputStream inputStream = jarFile.getInputStream(jarEntry);
+            inputStream = jarFile.getInputStream(jarEntry);
             while ((read = inputStream.read(buffer)) > 0) {
                 jarOutputStream.write(buffer, 0, read);
             }
         } finally {
-            jarOutputStream.closeEntry();
+            inputStream.close();
         }
     }
 
