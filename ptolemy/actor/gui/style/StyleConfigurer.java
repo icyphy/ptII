@@ -239,7 +239,11 @@ public class StyleConfigurer extends Query implements QueryListener {
             }
 
             moml.append("<group name=\"auto\">");
-            moml.append(found.exportMoML("style"));
+            if (found != null) {
+                // Coverity: found could be null if there was an internal error
+                // and the parameter style was not found/
+                moml.append(found.exportMoML("style"));
+            }
             moml.append("</group></property></group>");
         }
 
