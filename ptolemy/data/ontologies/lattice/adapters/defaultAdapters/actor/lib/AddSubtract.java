@@ -134,7 +134,9 @@ public class AddSubtract extends LatticeOntologyAdapter {
                     InequalityTerm[] minusTerms = new InequalityTerm[minusInputs
                             .size()];
                     for (int i = 0; i < minusTerms.length; i++) {
-                        minusTerms[i] = getPropertyTerm(plusInputs.get(i));
+                        // Coverity identified a copy paste error here:
+                        //minusTerms[i] = getPropertyTerm(plusInputs.get(i));
+                        minusTerms[i] = getPropertyTerm(minusInputs.get(i));
                     }
                     setAtLeast(actor.minus, new ConceptFunctionInequalityTerm(
                             new ApplyBinaryFunctionToMultipleArguments(
