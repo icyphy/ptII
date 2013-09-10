@@ -1278,7 +1278,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Controller" class="Controller">
+    <entity name="Controller" class="doc.books.systems.modelingtime.Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 210.0]">
         </property>
         <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
