@@ -73,6 +73,7 @@ public class MoMLGenerator extends Transformer {
      *   moml cannot be produced.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ActorToken token = (ActorToken) input.get(0);
         output.send(0, new StringToken(token.getEntity(new Workspace())
                 .exportMoML()));

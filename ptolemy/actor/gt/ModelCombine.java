@@ -77,6 +77,7 @@ public class ModelCombine extends Transformer {
      *   the models cannot be combined.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Entity entity = ((ActorToken) input.get(0)).getEntity(new Workspace());
         for (int i = 1; i < input.getWidth(); i++) {
             _merge(entity,
