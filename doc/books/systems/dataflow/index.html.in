@@ -15,16 +15,16 @@
   <h1>Chapter 3: Dataflow</h1>
   Executable models in chapter 3:
   <ul>
-<li> <a href="Case/index.html">Case</a></li>
-<li> <a href="DynamicRates/index.html">DynamicRates</a></li>
-<li> <a href="Eratosthenes/index.html">Eratosthenes</a></li>
-<li> <a href="IfThenElse/index.html">IfThenElse</a></li>
-<li> <a href="Loop/index.html">Loop</a></li>
-<li> <a href="MaximumEntropySpectrum/index.html">MaximumEntropySpectrum</a></li>
-<li> <a href="SampleDelay/index.html">SampleDelay</a></li>
-<li> <a href="SoundSpectrum/index.html">SoundSpectrum</a></li>
-<li> <a href="SpectrumOfNoisySinusoid/index.html">SpectrumOfNoisySinusoid</a></li>
-<li> <a href="Unbounded/index.html">Unbounded</a></li>
+    <li> Figure 3.1: <a href="SpectrumOfNoisySinusoid/index.html">SpectrumOfNoisySinusoid</a>.</li>
+    <li> Figure 3.5: <a href="SoundSpectrum/index.html">SoundSpectrum</a>.</li>
+    <li> Figure 3.6: <a href="MaximumEntropySpectrum/index.html">MaximumEntropySpectrum</a>.</li>
+    <li> Figure 3.7: <a href="SampleDelay/index.html">SampleDelay</a>.</li>
+    <li> Figure 3.9: <a href="DynamicRates/index.html">DynamicRates</a>.</li>
+    <li> Figure 3.10: <a href="IfThenElse/index.html">IfThenElse</a>.</li>
+    <li> Figure 3.11: <a href="Loop/index.html">Loop</a>.</li>
+    <li> Figure 3.13: <a href="Unbounded/index.html">Unbounded</a>.</li>
+    <li> Figure 3.14: <a href="Case/index.html">Case</a>.</li>
+    <li> Figure 3.16: <a href="Eratosthenes/index.html">Eratosthenes</a>.</li>
   </ul>
 
   <!--#include virtual="/ssi/bottom.htm" -->
