@@ -136,8 +136,11 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      */
     public void destroy() {
         // Note: we used to call manager.terminate() here to get rid
-        // of a lingering browser problem
+        // of a lingering browser problem.
         stop();
+        // Coverity suggests calling super.destroy() here.
+        // In the super.super class, java.applet.Applet.destroy() does nothing.
+        super.destroy();
     }
 
     /** Report that an execute error occurred.  This is
