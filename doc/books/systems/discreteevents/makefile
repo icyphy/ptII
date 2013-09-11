@@ -14,11 +14,11 @@ EXAMPLE_MODELS = \
 	MM1Queue2.xml \
 	MM1Queue.xml \
 	ModelTimeVsRealTime.xml \
-	OpenQueuingNetwork.xml \
+	OpenQueueingNetwork.xml \
 	Priorities.xml \
 	SDFwithinDE.xml \
 	ThreadedComposite.xml \
 	Wireless.xml \
 	Zeno.xml 
-	
+
 include ../chapter.mk
