@@ -96,48 +96,7 @@ proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
 set startingDirectory [pwd]
 cd $gendir
 
-puts "This test (NightlyUpdate.tcl) should be run after NightlyTest.tcl"
-
-test nightly-1.6 {updateDOPCenterImage, which updates the pdf} {
-    file delete -force $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
-    file delete -force $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf
-    set start [list [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png] \
-		   [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf]]
-    set matches [nightlyMake updateDOPCenterImage]
-    list $start $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png] \
-	[file exists $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf]
-} {{0 0} {} 1 1}
-
-test nightly-1.7 {update_moog} {
-    set matches [nightlyMake update_moog]
-
-    # Check that the files are there.
-    set results {}
-    set date [exec date +%Y-%m-%d]
-    set files [list ptII10.0.devel-$date.src.tar.gz  ptII10.0.devel.setup.mac-$date.app.tar.gz  ptII10_0_devel_setup_windows-$date.exe  ptII10_0_devel_setup_windows_64-$date.exe ]
-    foreach file $files {
-    puts $file
-	set url [java::new java.net.URL http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/$file]
-	set connection [$url openConnection]
-	if [catch {set reader [java::new java.io.BufferedReader [java::new java.io.InputStreamReader [$connection getInputStream]]]} errMessage] {
-	    lappend $results "Could not read [$url toString]"
-        jdkStackTrace
-	} else {
-	    set line [$reader readLine]
-	    if {[string length $line] < 5 } {
-		lappend $results  "Could not read [$url toString], the line was less than 5 chars?"
-	    }
-	    set contentLength [$connection getContentLength]
-	    if {$contentLength < 1000000} {
-		lappend $results  "The content length of [$url toString] was $contentLength, which is less than 1 meg?"
-	    }
-        #puts $line                                                                                                                          $reader close
-	}
-    }
-    list $matches $results
-} {{} {}}
-
-test nightly-1.8 {coverity} {
+test coverity-1.0 {coverity} {
     set matches [nightlyMake coverity]
 } {}
 
