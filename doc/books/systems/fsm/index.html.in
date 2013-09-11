@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/index.html.in $Id$ 
+	 This gets copied to the website.
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/vergil/index.html
+      -->
+    <title>Chapter 6: Finite State Machines</title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Chapter 6: Finite State Machines</h1>
+  Executable models in chapter 6:
+  <ul>
+    <li> Figure 6.6: <a href="Hysteresis/index.html">Hysteresis</a>.</li>
+    <li> Figure 6.9: <a href="ExtendedFSM/index.html">ExtendedFSM</a>.</li>
+    <li> Figure 6.10: <a href="FinalStates/index.html">FinalStates</a>.</li>
+    <li> Figure 6.11: <a href="FinalStatesSR/index.html">FinalStatesSR</a>.</li>
+    <li> Figure 6.12: <a href="HysteresisWithDefault/index.html">HysteresisWithDefault</a>.</li>
+    <li> Figure 6.13: <a href="FinalStatesReset/index.html">FinalStatesReset</a>.</li>
+    <li> Figure 6.14: <a href="FinalStatesResetDefault/index.html">FinalStatesResetDefault</a>.</li>
+    <li> Figure 6.15: <a href="CapriciousThermostat/index.html">CapriciousThermostat</a>.</li>
+    <li> Figure 6.17: <a href="FinalStatesImmediate/index.html">FinalStatesImmediate</a>.</li>
+    <li> Figure 6.18: <a href="ABROFlat_SA_BruteForce/index.html">ABROFlat_SA_BruteForce</a>.</li>
+    <li> Figure 6.19: <a href="ABROFlat_SA/index.html">ABROFlat_SA</a>.</li>
+    <li> Figure 6.21: <a href="HierarchicalFSM/index.html">HierarchicalFSM</a>.</li>
+    <li> Figure 6.22: <a href="HierarchicalFSM_Flattened/index.html">HierarchicalFSM_Flattened</a>.</li>
+    <li> Figure 6.23: <a href="ABROHierarchicalTermination/index.html">ABROHierarchicalTermination</a>.</li>
+    <li> Figure 6.24: <a href="FixedPointFSM/index.html">FixedPointFSM</a>.</li>
+
+  </ul>
+
+
+  <!--#include virtual="/ssi/bottom.htm" -->
+  <!-- Do not include a body or html close tag here, the ssi does it -->
