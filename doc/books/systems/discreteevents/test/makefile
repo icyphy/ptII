@@ -37,7 +37,9 @@ DIRS =		$(PTJUNIT_DIR)
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# $PTII/configure sets PTCOLT_JARS to include $PTII/vendors/misc/colt/colt.jar
+# and $PTII/lib/ptcolt.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
