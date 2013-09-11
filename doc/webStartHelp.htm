@@ -1,410 +1,342 @@
 <html>
-<head>
-<title>Web Start Help</title>
-<link href="default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1>Web Start Help</h1>	
-<a href="http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136112.html" target="_top">Web Start</a>
-is a product from Sun that uses the Web to download applications.
+  <head>
+    <title>Web Start Help</title>
+    <link href="default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Web Start Help</h1>	
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#Overview">Overview</a></li>
+      <li><a href="#InstallingWebStart">Installing Web Start</a></li>
+      <li><a href="#JavaWebStartApplicationManager">Java Web Start Application Manager</a></li>
+      <li><a href="#Troubleshooting">Troubleshooting</a>
+	<ul>
+	  <li><a href="#HelpWhileInstalling">Help While Installing</a>
+	    <ul>
+	      <li><a href="#installationTimeLimitations">Ptolemy Limitations while installing</a></li>
+	      <li><a href="#WebStartProblemsWithMacOSXFireFox">Web Start Problems with Mac OS X Firefox</a></li>
+	      <li><a href="#Java3D">Installing Java 3D for use with Web Start</a></li>
+	    </ul>
+	  </li>
+	  <li><a href="#HelpWhileRunning">Help While Running</a>
+	    <ul>
+	      <li><a href="#runTimeLimitations">Limitations while running</a></li>
+	    </ul>
+	  </li>
+	  <li><a href="#HelpForDevelopers">Help for Developers</a>
+	    <ul>
+	      <li> <a href="#remoteJavaWebStartResources">Remote Java Web Start Resources</a></li>
+	      <li> <a href="#ptolemyIIjnlpFiles">How Web Start .jnlp files are built in Ptolemy II</a></li>
+	      <li> <a href="#fileNotFound">File not found</a></li>
+	      <li> <a href="#unsignedApplicationRequesting">Unsigned application requesting unrestricted access to system</a></li>
+	      <li> <a href="#badMimeType">Bad Mime Type</a></li>
+	    </ul>
+	</ul>
+    </ul>
 
-<p>The first time a user downloads a Web Start application, they need
-to download the Java Web Start client.  That client includes a JVM and
-an application manager that allows the user to configure Web Start and
-any downloaded Web Start applications.
+    <h2><a name="Overview">Overview</a></h2>
+    <a href="https://en.wikipedia.org/wiki/Java_Web_Start" target="_top">Web Start</a>
+    is a Java-based product that uses the Web to download applications.
 
- <p>You can try downloading Ptolemy II as a Web Start application
-by going to
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/webstart.htm#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/webstart.htm</CODE></a>
+    <p>The first time a user downloads a Web Start application, they need
+      to download the Java Web Start client.  That client includes a JVM and
+      an application manager that allows the user to configure Web Start and
+      any downloaded Web Start applications.
 
-<p>Web Start Features:
-<menu>
-<li> Support for multiple JVMS
-<li> jar file versioning, which allows users to update an application
-without dowloading the entire application
-<li> The developer can choose whether the user can download an application
-to run it later when not connected to the network.
-<li> Support for applets, applications in an applet like sandbox 
-and full applications.
-</menu>
+    <p>You can try downloading Ptolemy II as a Web Start application
+      by going to
+      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/webstart.htm#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/webstart.htm</code></a>
 
- <p>The best thing about Web Start is that it is easy to update a small
-part of the application and then the next time the users run the app,
-they will download just the updated portion instead of having to
-download the entire application and reinstall.
+    <p>Web Start Features:
+      <ul>
+	<li> Support for multiple JVMS
+	<li> jar file versioning, which allows users to update an application
+	  without dowloading the entire application
+	<li> The developer can choose whether the user can download an application
+	  to run it later when not connected to the network.
+	<li> Support for applets, applications in an applet like sandbox 
+	  and full applications.
+      </ul>
 
- <p>The way Web Start works is that developers create jar files that are
-collections of Java .class files, images, platform dependent libraries
-and other resources.  An application consists of multiple jar files
-and a .jnlp file that describes the application.
+    <p>The best thing about Web Start is that it is easy to update a small
+      part of the application and then the next time the users run the app,
+      they will download just the updated portion instead of having to
+      download the entire application and reinstall.
 
- <p>Since shipping a standalone installer usually requires splitting an
-application up into components anyway, then the exercise of building
-jar files is a useful one, since the jar files could be used for
-other installers such as InstallAnywhere or InstallShield.  I use
-Web Start as a test bed for figuring out which files need to be
-shipped.  Using Web Start for this is usually much faster than running
-InstallAnywhere or InstallShield, since if there is a problem in
-only one jar file, then only that jar file is affected, and I don't
-necessarily need to rebuild a large installer.
+    <p>The way Web Start works is that developers create jar files that are
+      collections of Java .class files, images, platform dependent libraries
+      and other resources.  An application consists of multiple jar files
+      and a .jnlp file that describes the application.
 
- <p>In theory, one can ship one large jar file, but that makes updating
-the application more difficult, since if the application changes, the
-entire jar file will be downloaded unless a somewhat more complex jar
-diff system is used.
+    <p>Since shipping a standalone installer usually requires splitting an
+      application up into components anyway, then the exercise of building
+      jar files is a useful one, since the jar files could be used for
+      other installers such as InstallAnywhere or InstallShield.  I use
+      Web Start as a test bed for figuring out which files need to be
+      shipped.  Using Web Start for this is usually much faster than running
+      InstallAnywhere or InstallShield, since if there is a problem in
+      only one jar file, then only that jar file is affected, and I don't
+      necessarily need to rebuild a large installer.
 
- <p>The jar files and the .jnlp file may or may not be signed by using a 
-Sun Java code signing certificate.  If all the jars are signed, then
-the application can have access to the local disk, and basically looks
-like a regular application.  If the jars are not signed, then access
-is limited.  It is also possible to run the application in 'sandbox'
-mode, which is fairly restrictive, but can still do some useful
-things.
+    <p>In theory, one can ship one large jar file, but that makes updating
+      the application more difficult, since if the application changes, the
+      entire jar file will be downloaded unless a somewhat more complex jar
+      diff system is used.
 
- <p>One can use a temporary code signing certificate and eventually pay
-Verisign $400/year for a permanent code signing certificate.
+    <p>The jar files and the .jnlp file may or may not be signed by using a 
+      Sun Java code signing certificate.  If all the jars are signed, then
+      the application can have access to the local disk, and basically looks
+      like a regular application.  If the jars are not signed, then access
+      is limited.  It is also possible to run the application in 'sandbox'
+      mode, which is fairly restrictive, but can still do some useful
+      things.
 
-<h2>Installing Web Start</h2>
+    <p>One can use a temporary code signing certificate and eventually pay
+      Verisign $400/year for a permanent code signing certificate.
 
- <p>The basic procedure is that one installs Web Start itself and then
-restarts your browser and downloads the Web Start enabled application.
+      <h2><a name="InstallingWebStart">Installing Web Start</a></h2>
 
-<ol>
+    <p>The basic procedure is that Web Start is included as part of the Java Runtime Environment (JRE) and the
+      Java Development Kit (JDK).  After the JRE or JDK is installed it is sometimes necessary to
+      restart your web browser.  At runtime, a .jnlp file is downloaded and the browser invokes Java.
 
-<li> Usually, the web page that includes the Web Start enabled application
-download attempts to detect if you already have Web Start installed.
-If the Web Start detection succeeds, then you need not reinstall Web Start.
- <br>However, the Web Start detection can fail, especially under
-<a href="#Netscape6">Netscape 6</a>.  If the detection fails,
-the web page will contain text like:
-<pre>
- You need to <a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?" target="_top">Install Web Start from Sun</a> before installing . . .
-</pre>
+      <ol>
 
-<li> You may already have Web Start installed, so you may
-want to try clicking on the Web Start enabled application download
-and if you
-have Java Web start installed, either: 
-<menu>
-<li> the Java Web Start splash screen
-should come up and the download should start.
+	<li> Usually, the web page that includes the Web Start enabled application
+	  download attempts to detect if you already have Web Start installed.
+	  If the Web Start detection succeeds, then you need not reinstall Web Start.
+	  <br/>However, the Web Start detection can fail
+	  If the detection fails, then you will be prompted to install the Java Runtime Environment.
 
-<li> or you should see a window that asks if you want to download
-the file or start up javaws.  Click on <CODE>Open using javaws.exe</CODE>
-and then <CODE>OK</CODE>, and the Java Web Start splash screen should come up.
+	<li> You may already have Web Start installed, so you may
+	  want to try clicking on the Web Start enabled application download
+	  and if you
+	  have Java Web start installed, either: 
+	  <ul>
+	    <li> the Java Web Start splash screen
+	      should come up and the download should start.
 
-</menu>
-If the Java Web Start splash screen comes up, then need not
-reinstall Web Start.
+	    <li> or you should see a window that asks if you want to download
+	      the file or start up javaws.  Click on <code>Open using javaws.exe</code>
+	      and then <code>OK</code>, and the Java Web Start splash screen should come up.
 
+	    <li> <a name="promptedToSave">If you are prompted to save the .jnlp file</a>, then the association between the .jnlp file and Java Web Start
+	      is inactive.  One thing to do is to start up a command line window and invoke the <code>javaws</code> 
+	      command on the downloaded .jnlp file.  See <a href="http://support.apple.com/kb/ts2828" target="_top">Mac OS X 10.5: Unable to launch Java Web Start JNLP file after installing Java Update</a>
 
-<li> If the Java Web Start splash screen did not appear, then
-download Java Web Start from
-<a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?" target="_top"><CODE>http://java.sun.com/cgi-bin/javawebstart-platform.sh?</CODE></a>
-
-
-<li> Click on the Java Web Start installer executable
-<li> Usually, the default location of
-<CODE>c:\Program Files\Java Web Start</CODE>
-is fine
-
-<li> You may need to restart your browser and go back to
-the Web Start enabled application download page.
+	  </ul>
+	  If the Java Web Start splash screen comes up, then need not
+	  reinstall Web Start.
 
 
-<li> Note that the Ptolemy II Web Start applications may be
-signed with a certificate that is not registered with a certificate
-authority, so you may be prompted with a window stating
-that the certificate from <CODE>Claudius Ptolemaus</CODE> is unknown.
-You should hit the <CODE>OK</CODE> button to proceed with the download
+	<li> If the Java Web Start splash screen did not appear, then
+	  download the Java Runtime Environment (JRE), which contains Java Web Start, from
+	  <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/javase/downloads/index.html</code></a>
 
+
+	<li> You may need to restart your browser and go back to
+	  the Web Start enabled application download page.
+
+	<li> Note that the Ptolemy II Web Start applications may be
+	  signed with a certificate that is not registered with a certificate
+	  authority, so you may be prompted with a window stating
+	  that the certificate from <code>Claudius Ptolemaus</code> is unknown.
+	  You should hit the <code>OK</code> button to proceed with the download
+
+      </ol>
+
+      <h2><a name="JavaWebStartApplicationManager">Java Web Start Application Manager</a></h2>
+
+      Java applications are cached on your disk.  To view them, use the <a name="JavaControlPanel">Java Control Panel</a>.
+      
+      <h3>Windows: Opening the Java Control Panel</h3>
+      To open the Java Control panel, go to Start -&gt; Settings -&gt; Control Panel and then double click on the Java icon (or search for <code>Java</code>).  The Java Control Panel with start up.</li>
 </ol>
 
-<h2><a name="JavaWebStartApplicationManager">Java Web Start Application Manager</a></h2>
+<h3>Mac OS X: Opening the Java Control Panel</h3>
+The Java Control Panel is under the Mac OS "Other" Control Panels.
 
-<menu>
-<li> Under Windows, after you download the Web Start enabled demo, you can run 
-it again by going to <CODE>Start</CODE> -&gt; <CODE>Programs</CODE>
--:&gt; <CODE>Java Web Start</CODE> -&gt; <CODE>Java Web Start</CODE>.
- <br> This will bring up the Java Web Start Application Manager that will
-list all the Web Start enabled applications.
+<h3>Using The Java Control Panel</h3>
+<ul>
+  <li> To view what Java Web Start applications have been installed, go the the Java Control Panel (see above):
+    <ol>
+      <li> Click on the General Tab.</li>
+      <li> At the bottom, under "Temporary Internet Files", click on the View button.</li>
+      <li>The Java Web Start applications that have been downloaded will be visible.</li>
+    </ol>
+  </li>
 
-<li> In the default, if you run the Web Start enabled application twice,
-a window will pop up asking you if you would like to install an
-icon for the application in your Start menu and on the desktop.
- <br>This facility is controllable by the Java Web Start Application Manager application
-preferences found under <CODE>File</CODE> -&gt; 
-<CODE>Preferences</CODE> -&gt; <CODE>Shortcut Option</CODE>.
+  <li> In the default, if you run the Web Start enabled application twice,
+    a window will pop up asking you if you would like to install an
+    icon for the application in your Start menu and on the desktop.
+    <br/>This facility is controllable by the Java Web Start Control Panel
+    found under <code>Advanced</code> -&gt; 
+    <code>Shortcut Creation</code>.
 
- <br>You can configure Web Start to always install application icons or to
-never install them
-
-
-<li> <a name="consoleOutput">The</a>
- <CODE>File</CODE> -&gt; <CODE>Preferences</CODE> -&gt; <CODE>Advanced </CODE> pane controls two output options that are useful for 
-troubleshooting
-<dl>
-<dt> <CODE>Show Java Console</CODE>
-<dd> If checked, this will bring up the Java console which will
-report error messages in the application
-
-<dt> <CODE>Log Output</CODE>
-<dd> If checked, this will log the Java Console output to a file. 
-This can be very useful if the application is crashing and
-the Java Console window is closed before you can read it.
-</dl>
-</li>
-<li> To remove an application, mouse on the application
-and then select <CODE>Application</CODE> -&gt; <CODE>Remove Application</CODE>
-</li>
-<li> 
-If an update to the application is available, a small yellow triangle will
-appear at the bottom of the Web Start application manager when the application
-is highlighted.  It is unclear when updating occurs, but one way to trigger
-the update is to go back to the website where you initially downloaded
-the application and redownload it.  In theory, only the changed jar files will
-be pulled over.
-</li>
-
-</menu>
+    <br/>You can configure Web Start to always install application icons or to
+    never install them.</li>
 
 
-<h2>Troubleshooting Web Start</h2>
+  <li> <a name="consoleOutput">Console Output:</a> The Java Web Start Control Panel pan found at <code>Advanced</code> -&gt; 
+    <code>Java Console</code> controls two output options that
+    are useful for troubleshooting
+
+    <dl>
+      <dt> <code>Show Java Console</code></dt>
+      <dd> If checked, this will bring up the Java console which will
+	report error messages in the application</dd>
+
+      <dt> <code>Log Output</code></dt>
+      <dd> If checked, this will log the Java Console output to a file. 
+	This can be very useful if the application is crashing and
+	the Java Console window is closed before you can read it.</dd>
+    </dl>
+  </li>
+  <li> To remove an application, mouse on the application
+    and then select <code>Application</code> -&gt; <code>Remove Application</code>
+  </li>
+  <li> 
+    If an update to the application is available, a small yellow triangle will
+    appear at the bottom of the list of applications when the application
+    is highlighted.  It is unclear when updating occurs, but one way to trigger
+    the update is to go back to the website where you initially downloaded
+    the application and redownload it.  In theory, only the changed jar files will
+    be pulled over.
+  </li>
+
+</ul>
+
+
+<h2><a name="#Troubleshooting">Troubleshooting Web Start</a></h2>
 
 Help while installing:
-<menu>
-<li> <a href="#installationTimeLimitations">Limitations while installing</a>
-<li>
-<a href="http://download.oracle.com/javase/6/docs/technotes/guides/javaws/index.html" target="_top">Oracle Java Web Start</a>
+<ul>
+  <li> <a href="#installationTimeLimitations">Ptolemy Limitations while installing</a>
+  <li> <a href="http://download.oracle.com/javase/6/docs/technotes/guides/javaws/index.html" target="_top">Oracle Java Web Start</a>
+  <li> <a name="#WebStartProblemsWithMacOSXFireFox">Web Start Problems with Mac OS X Firefox</a></li>
+  <li> Installing <a href="#Java3D">Java 3D</a> for use with Web Start.
 
-<li> Installing <a href="#Java3D">Java 3D</a> for use with Web Start.
-
-<li> Setting up <a href="#Netscape6">Netscape 6</a>
-</menu>
+</ul>
 
 Help while running:
-<menu>
-<li> <a href="#runTimeLimitations">Limitations while running</a>
-<li> Setting up <a href="#consoleOutput">Console Output</a>
-<li> <a href="#driveNotReady">Drive not ready message</a>
-</menu>
+<ul>
+  <li> <a href="#runTimeLimitations">Limitations while running</a>
+  <li> Setting up <a href="#consoleOutput">Console Output</a>
+</ul>
 
 Help for developers:
 
-<menu>
-<li> <a href="#remoteJavaWebStartResources">Remote Java Web Start Resources</a>
-<li> <a href="#ptolemyIIjnlpFiles">How Web Start .jnlp files are built in Ptolemy II</a>
-<li> <a href="#fileNotFound">File not found</a>
-<li> <a href="#unsignedApplicationRequesting">Unsigned application requesting unrestricted access to system</a>
-<li> <a href="#badMimeType">Bad Mime Type</a>
-</menu>
+<ul>
+  <li> <a href="#remoteJavaWebStartResources">Remote Java Web Start Resources</a>
+  <li> <a href="#ptolemyIIjnlpFiles">How Web Start .jnlp files are built in Ptolemy II</a>
+  <li> <a href="#fileNotFound">File not found</a>
+  <li> <a href="#unsignedApplicationRequesting">Unsigned application requesting unrestricted access to system</a>
+  <li> <a href="#badMimeType">Bad Mime Type</a>
+</ul>
 
 <h3>Help while installing</h3>
 
-<h4><a name="installationTimeLimitations">Limitations while installing</a></h4>
-<menu>
-<li> Roughly half the size of the application download is consumed
-by the HTML documentation of the Ptolemy II Java classes.
-<li> It would be nice if we use the Web Start jar versioning system.
+<h4><a name="installationTimeLimitations">Ptolemy Limitations while installing</a></h4>
+<ul>
+  <li> With Ptolemy II, Roughly half the size of the application download is consumed
+    by the HTML documentation of the Ptolemy II Java classes.
+  <li> It would be nice if we use the Web Start jar versioning system.</li>
 
-<li> Web Start sometimes ignores beta JRE versions.  You may find it
-necesary to install an earlier JRE version. 
+  <li> Web Start sometimes ignores beta JRE versions.  You may find it
+    necesary to install an earlier JRE version. 
+    <br/> The Java pane of the <a href="#JavaControlPanel">Java Control Panel</a>
+    lists what JREs are installed.</li>
+</ul>
 
-<li> The Web Start Application manager can be used to add and delete
-JREs to the list of possible JRES to run.  Try starting up
-Web Start and then do File -&gt; Preferences -&gt; Java
-If you already have JRE 1.4.x installed, you can browse to 
-where it is located, probably
-<CODE>c:\Program Files\Java\j2re1.4.2</CODE>
-and add it
-</menu>
+<h4><a name="WebStartProblemsWithMacOSXFireFox">Web Start Problems with Mac OS X Firefox</a></h4>
+<p>The summary is that Java is not very well supported under Firefox on the Mac.</p>
+<p><b>Under Mac OS X, if you have problems with Web Start under Firefox, try using Safari.</b></p>
 
+<p>Below are some things to try under Mac OS X for Firefox.  In theory the <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jweb/deployment_advice.html" target="_top">JavaScript that is invoked by the "Launch" button</a> should install the Oracle JRE, but in practice, there are problems.</p>
+
+<ul>
+  <li> See the <a href="http://docs.oracle.com/javase/7/docs/webnotes/install/mac/mac-install-faq.html" target="_top">Oracle Mac OS X Platform Install FAQ</a>.
+    <br/>In particular, the Oracle JRE should probably be installed.</li>
+  <li> See Oracle's <a href="https://www.java.com/en/download/help/enable_browser.xml" target="_top">How do I enable Java in my web browser?</a></li>
+
+
+  <li> If you are prompted to save the jnlp file, see <a href="#promptedToSave">above</a></li>
+</ul>
 
 <h4><a name="Java3D">Installing Java 3D for use with Web Start</a></h4>
- In theory, Web Start can install Java 3d
+In theory, Web Start can install Java 3d
 automatically, but this is somewhat tough to do.
 
 We have only tested out Java 3D 1.2.1_03 API under JDK1.3.1.
 
- <p>There are problems with Java 3D 1.2.1_03 API under
-JDK1.4.0, when I run a Java3D app, we get:
+<p>There are problems with Java 3D 1.2.1_03 API under
+  JDK1.4.0, when I run a Java3D app, we get:
 
-<pre>
-Fail to create back buffer - DDERR_INALIDPARAM
-</pre>
-
-
- <p>The workaround is to use JDK1.3.1
-
- <p>Below are some instructions on installing Java3D:
-
-Go to
-<a href="https://java3d.dev.java.net/"><CODE>https://java3d.dev.java.net/</CODE></a>
-and download 
-<CODE>Java 3D for Windows (DirectX Version) Runtime for the JRE</CODE>
-
- <p>Click on the installer.   Eventually, it will prompt you for the JRE
-to install Java 3D in.  You should install it under the same JRE
-that you are running in Web Start.  
-
-There are at least two ways to determine which JRE you are running:
-
-<ol>
-<li> 
-
-1) Start up Ptolemy, go to a model, do <CODE>View</CODE> -&gt;
-<CODE>JVM Properties</CODE> and look at the <CODE>java.home</CODE>
- property.  The value of the <CODE>java.home</CODE>
-property should be something like 
-<CODE>C:\Program Files\JavaSoft\Java\j2re1.4.2</CODE>
-This value is the JRE that Java 3D should be installed in.
+  <pre>
+    Fail to create back buffer - DDERR_INALIDPARAM
+  </pre>
 
 
-<li> Start up the Web Start Application Manager and do
-<CODE>File</CODE> -&gt; <CODE>Preferences</CODE> -&gt; <CODE>Java</CODE>
-and look at the command column of the table.  The Ptolemy II
-Web Start edition will use a JVM that is 1.4 or later.
-</ol>
+<p>The workaround is to use JDK1.3.1
+
+<p>Below are some instructions on installing Java3D:
+
+  Go to
+  <a href="https://java3d.dev.java.net/"><code>https://java3d.dev.java.net/</code></a>
+  and download 
+  <code>Java 3D for Windows (DirectX Version) Runtime for the JRE</code>
+
+<p>Click on the installer.   Eventually, it will prompt you for the JRE
+  to install Java 3D in.  You should install it under the same JRE
+  that you are running in Web Start.  
+
+  There are at least two ways to determine which JRE you are running:
+
+  <ol>
+    <li> Start up Ptolemy, go to a model, do <code>View</code> -&gt;
+      <code>JVM Properties</code> and look at the <code>java.home</code>
+      property.  The value of the <code>java.home</code>
+      property should be something like 
+      <br/><code>C:\Program Files\JavaSoft\Java\jre7</code> (Windows) or
+      <br/><code>/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home</code> (Mac OS X)
+      BTW - This value is the JRE that Java 3D should be installed in.</li>
 
 
-<h4><a name="Netscape6">Netscape 6</a></h4>
-If you are running under Netscape 6, then the links above
-may state that you need to install Web Start from Sun even if you
-already have it installed.  The reason is that the Java Script 
-code fails to detect Java Web Start under Netscape 6.
+    <li> Start up the <a href="#JavaControlPanel">Java Control Panel</a>, go to the 
+      Java pane and click on View.  The command that will be run will in the Path column.
+  </ol>
+<p> See also <a href="http://www.j3d.org/tutorials/quick_fix/auto_install.html" target="_top"><code>http://www.j3d.org/tutorials/quick_fix/auto_install.html</code></a> (dead link)</p>
 
- <p>A quick test is to click on one of the Vergil downloads and if you
-have Java Web start installed, either: 
-<menu>
-<li> the Java Web Start splash screen
-should come up and the download should start.
-
-<li> or you should see a window that asks if you want to download
-the file or start up javaws.  Click on <CODE>Open using javaws.exe</CODE>
-and then <CODE>OK</CODE>, and the Java Web Start splash screen should come up.
-
-</menu>
-
-
- <p>The Java Web Start FAQ at
-<a href="http://download.oracle.com/javase/6/docs/technotes/guides/javaws/developersguide/faq.html#111" target="_top"><CODE>http://download.oracle.com/javase/6/docs/technotes/guides/javaws/developersguide/faq.html#111</CODE></a> says:
-<BLOCKQUOTE>
-<b>What are the supported browsers? </b> 
-
-JavaTM Web Start supports primarily Internet Explorer 4 or higher and Netscape 4.X. However JNLP files can be launched from any browser if the mime-type association is done correctly. Please note that JavaTM Web Start uses the browsers settings and may launch a browser to show a URL these may/may not work with unsupported browsers.
-
- <p>JavaTM Web Start works with Netscape 6. However, you will manually need to register JavaTM Web Start with NS6. This is done in the Navigator/Applications section of the Navigator/Helper Application section.
-
-This will be done automatically in a later version of the JavaTM Web Start installer. back to top
-</BLOCKQUOTE>
-
-
-<h5>Netscape 6 Java Web Start Set up Instructions</h5>
-
-<ol>
-
-<li> If necessary, download Java Web Start from
-<a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?" target="_top"><CODE>http://java.sun.com/cgi-bin/javawebstart-platform.sh?</CODE></a>
-<li> Click on the Java Web Start download and install it.
-
-<li> In Netscape 6,
-go to the preferences window: <CODE>Edit -&gt; Preferences</CODE>
-
-<li> Click on <CODE>Navigator</CODE> in the left hand <CODE>Category</CODE> pane
-
-<li> Click on <CODE>Helper Applications</CODE>
-
-<li> The File type <CODE>application/x-java-jnlp-file</CODE> should
-be listed.  If it is, you are done, click on <CODE>OK</CODE>
-
-<li> If <CODE>application/x-java-jnlp-file</CODE> was not
-listed, click on <CODE>New Type</CODE>
-<dl>
-<dt> <CODE>Description of type:</CODE>
-<dd> <CODE>Java Web Start</CODE>
-
-<dt> <CODE>File extension:</CODE>
-<dd> <CODE>JNLP</CODE>
-
-<dt> <CODE>MIME Type:</CODE>
-<dd> <CODE>application/x-java-jnlp-file</CODE>
-
-<dt> <CODE>Application to use</CODE>
-<dd> Choose
-to the <CODE>javaws.exe</CODE> binary, usually
-<CODE>c:\Program Files\Java Web Start\javaws.exe</CODE>
-
-</dl>
-
-<li> Click on <CODE>OK</CODE> to close the <CODE>New Type</CODE> window
-
-<li> Click on <CODE>OK</CODE> to close the <CODE>Preference</CODE> window
-
-
-<li> You should now be able to download Java Web Start applications.
-</ol>
 
 <h3>Help while running</h3>
 <h4><a name="runTimeLimitations">Limitations while running</a></h4>
-<menu>
-<li> If you start up Ptiny then the splash window mentions Ptiny, but if
-you then hit <code>Help</code> -&gt; <code>about</code>,
-the splash window is the standard full installation window which
-includes links to domains and demos that are not included in
-the Ptiny release.
+<ul>
+  <li> If you start up Ptiny then the splash window mentions Ptiny, but if
+    you then hit <code>Help</code> -&gt; <code>about</code>,
+    the splash window is the standard full installation window which
+    includes links to domains and demos that are not included in
+    the Ptiny release.
 
-<li> Codegen does not work, there are path problems.  The codegen
-mechanism looks for the makefile by reading $PTII, and tries to run make.
+  <li> The GR domain might not because of issues with Java3D, see <a href="#Java3D">Installing Java 3D for use with Web Start</a></li>
 
-<li> For Web Start installations, we should disable look inside
-on atomic actors.
 
-<li> The DSP Only quick tour window includes domains and demos
-that are not installed.
-
-<li> The GR domain is not likely to work because Java 3D is not installed.
- <br><a href="http://www.j3d.org/tutorials/quick_fix/auto_install.html" target="_top"><code>http://www.j3d.org/tutorials/quick_fix/auto_install.html</code></a>
-
-</menu>
-
-<h3><a name="driveNotReady">Drive not ready message</a></h3>
-If you are running older versions of the Java Virtual Machine,
-you may see a message that says something like:
-<pre>
-Drive not Ready . . .
-Abort Retry Cancel
-</pre>
-Upgrading to Java 1.3.1-02 seems to help
- <p>For more information, see
-<menu>
-
-<li> <a href="http://forum.java.sun.com/thread.jsp?forum=38&thread=71610" target="_top"><CODE>http://forum.java.sun.com/thread.jsp?forum=38&amp;thread=71610</CODE></a>
-
-<li> <a href="http://forum.java.sun.com/thread.jsp?forum=38&amp;thread=71491" target="_top"><CODE>http://forum.java.sun.com/thread.jsp?forum=38&amp;thread=71491</CODE></a>
-</menu>
+</ul>
 
 <h3>Troubleshooting for developers</h3>
 
 <h3><a name="remoteJavaWebStartResources">Remote Java Web Start Resources</a>
 </h3>
-<menu>
-<li> <a href="http://download.oracle.com/javase/6/docs/technotes/guides/javaws/index.html" target="_top">Oracle Java Web Start</a>
-<li> <a href="http://jcp.org/en/jsr/detail?id=056" target="_top">JNLP Specification</a>
-
-<li> <a href="http://download.oracle.com/javase/6/docs/technotes/guides/javaws/developersguide/examples.html" target="_top">05/01 Tech Tip Article</a> simple services examples.
-<li> <a href="http://developer.apple.com/java/javawebstart/">Apple's
-Web Start Home Page</a>
-Under Mac OS X, the Java Web Start Application Manager can be
-found as Applications -&gt; Utilities -&gt; Java Web Start
-
-<li> <a href="http://forums.java.sun.com/thread.jsp?forum=38&thread=71666" target="_top">Problems with Web Start and displaying images</a>
-<li> <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4464149" target="_top">JavaHelp bug</a>
-<li> <a href="http://lopica.sourceforge.net/faq.html" target="_top">Unofficial Web Start FAQ</a> 
-<li> <a href="http://forum.java.sun.com/thread.jsp?forum=38&thread=166873" target="_top">Using Web Start with Java 3D</a>
-<li> <a href="http://www.javaworld.com/javaworld/jw-07-2001/jw-0706-webstart.html" target="_top">7/01 Javaworld article</a>
-<li> <a href="http://www.ibm.com/developerworks/java/library/j-webstart/index.html?dwzone=java" target="_top">IBM Article <i>Java Web Start: Developing and Distributing Java Applications</i> Steven Kim 
-<li> <a href="http://forum.java.sun.com/thread.jsp?forum=38&thread=166873" target="_top">Marc's Web Start Kamasutra</a> Information about Web Start and Java 3D
-</menu>
+<ul>
+  <li> <a href="http://download.oracle.com/javase/7/docs/technotes/guides/javaws/index.html" target="_top">Oracle Java Web Start</a></li>
+  <li> <a href="https://www.java.com/en/download/faq/java_webstart.xml" target="_top">Oracle Java Web Start FAQ</a></li>
+  <li> <a href="http://jcp.org/en/jsr/detail?id=056" target="_top">JNLP Specification</a></li>
+  <li> <a href="http://download.oracle.com/javase/7/docs/technotes/guides/javaws/developersguide/examples.html" target="_top">05/01 Tech Tip Article</a> simple services examples.</li>
+  <li> <a href="https://developer.apple.com/library/mac/documentation/java/conceptual/java14development/03-javadeployment/javadeployment.html" target="_top">Apple's Java Deployment Options for OS X Page</a></li>
+  <li> <a href="http://lopica.sourceforge.net/faq.html" target="_top">Unofficial Web Start FAQ</a></li> 
+  <li> <a href="http://www.javaworld.com/javaworld/jw-07-2001/jw-0706-webstart.html" target="_top">7/01 Javaworld article</a></li>
+  <li> <a href="http://www.ibm.com/developerworks/java/library/j-webstart/index.html?dwzone=java" target="_top">IBM Article <i>Java Web Start: Developing and Distributing Java Applications</i> by Steven Kim</li>
+</ul>
 
 
 <h4><a name="ptolemyIIjnlpFiles">How Web Start .jnlp files are built in Ptolemy II</a></h4>
@@ -414,101 +346,96 @@ In Ptolemy II, the Java Web Start template files are at:
 and
 <code>$PTII/vergilPtiny.jnlp.in</code>.
 <p><code>$PTII/mk/jnlp.mk</code> contains
-the rules that process the <code>*jnlp.in</code> files and generates 
-<code>*.jnlp</code> files.
+  the rules that process the <code>*jnlp.in</code> files and generates 
+  <code>*.jnlp</code> files.
 
 <p>If the Web Start application is to have full access to the machine,
-then the application needs to be signed, which means that the
-<code>.jnlp</code> file needs to be copied into the jar file that has
-the <code>main()</code> method and the entire jar file signed.  
+  then the application needs to be signed, which means that the
+  <code>.jnlp</code> file needs to be copied into the jar file that has
+  the <code>main()</code> method and the entire jar file signed.  
 
 <p>Since we use the same <code>main()</code> for more than one
-application and each application has a separate <code>.jnlp</code>
-file, it is necessary to create a separate java class and jar file for each
-application.  Those jar files are found in 
-<code>$PTII/ptolemy/actor/gui/jnlp</code>.
+  application and each application has a separate <code>.jnlp</code>
+  file, it is necessary to create a separate java class and jar file for each
+  application.  Those jar files are found in 
+  <code>$PTII/ptolemy/actor/gui/jnlp</code>.
 
 
-<h4><a name="fileNotFound">File not found</a></h4>
-Starting up vergil and clicking on the mainVergil.htm link yields
-<pre>
-java.io.FileNotFoundException: JAR entry doc/mainVergil.htm not found in 
-   C:\Program Files\Java Web Start\.javaws\cache\file\D\P-1
-   \DMc&c\DMusers\DMcxh\DMptII\DMptolemy\RMptolemy.jar
-	at sun.net.www.protocol.jar.JarURLConnection.connect(Unknown Source)
-	at sun.net.www.protocol.jar.JarURLConnection.getInputStream(Unknown Source)
-	at javax.swing.JEditorPane.getStream(Unknown Source)
-	at javax.swing.JEditorPane.setPage(Unknown Source)
-	at ptolemy.actor.gui.HTMLViewer.setPage(HTMLViewer.java:195)
-	at ptolemy.actor.gui.HTMLViewerTableau$Factory.createTableau(HTMLViewerTableau.java:169)
-	at ptolemy.actor.gui.TableauFactory.createTableau(TableauFactory.java:116)
-	at ptolemy.actor.gui.Configuration.createPrimaryTableau(Configuration.java:151)
-	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:267)
-	at ptolemy.actor.gui.HTMLViewer.hyperlinkUpdate(HTMLViewer.java:139)
-	at javax.swing.JEditorPane.fireHyperlinkUpdate(Unknown Source)
-</pre>
-<a href="http://forums.java.sun.com/thread.jsp?forum=38&thread=71621" target="_top"><code>http://forums.java.sun.com/thread.jsp?forum=38&thread=71621</code></a> says:
-<pre>
-I had this problem several months back and putting the following
-line (I put this code early in Jbinit() ):
+  <h4><a name="fileNotFound">File not found</a></h4>
+  Starting up vergil and clicking on the mainVergil.htm link yields
+  <pre>
+    java.io.FileNotFoundException: JAR entry doc/mainVergil.htm not found in 
+    C:\Program Files\Java Web Start\.javaws\cache\file\D\P-1
+    \DMc&c\DMusers\DMcxh\DMptII\DMptolemy\RMptolemy.jar
+    at sun.net.www.protocol.jar.JarURLConnection.connect(Unknown Source)
+    at sun.net.www.protocol.jar.JarURLConnection.getInputStream(Unknown Source)
+    at javax.swing.JEditorPane.getStream(Unknown Source)
+    at javax.swing.JEditorPane.setPage(Unknown Source)
+    at ptolemy.actor.gui.HTMLViewer.setPage(HTMLViewer.java:195)
+    at ptolemy.actor.gui.HTMLViewerTableau$Factory.createTableau(HTMLViewerTableau.java:169)
+    at ptolemy.actor.gui.TableauFactory.createTableau(TableauFactory.java:116)
+    at ptolemy.actor.gui.Configuration.createPrimaryTableau(Configuration.java:151)
+    at ptolemy.actor.gui.Configuration.openModel(Configuration.java:267)
+    at ptolemy.actor.gui.HTMLViewer.hyperlinkUpdate(HTMLViewer.java:139)
+    at javax.swing.JEditorPane.fireHyperlinkUpdate(Unknown Source)
+  </pre>
+  <a href="http://forums.java.sun.com/thread.jsp?forum=38&thread=71621" target="_top"><code>http://forums.java.sun.com/thread.jsp?forum=38&thread=71621</code></a> says:
+  <pre>
+    I had this problem several months back and putting the following
+    line (I put this code early in Jbinit() ):
 
-ClassLoader loader=this.getClass().getClassLoader();
-Thread.currentThread().setContextClassLoader(loader);
+    ClassLoader loader=this.getClass().getClassLoader();
+    Thread.currentThread().setContextClassLoader(loader);
 
-hope this helps, md
-</pre>
-<a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4388202" target="_top">URLClassLoader fails when a URL points to a JAR inside another JAR</a>
+    hope this helps, md
+  </pre>
+  <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4388202" target="_top">URLClassLoader fails when a URL points to a JAR inside another JAR</a>
 
 <p>It turns out that is is necessary to modify Ptolemy II so that if
-it is looking for a resource and fails then we should try stripping
-out the text before the jar URL <code>!/</code> separator and look
-for the resource in the classpath.
+  it is looking for a resource and fails then we should try stripping
+  out the text before the jar URL <code>!/</code> separator and look
+  for the resource in the classpath.
 
 <p>Another thing to look for is hrefs that are relative and use 
-<code>../</code> instead of <code>ptolemy/</code>.  Relative URLS
-will not work when looking for resources using the classpath
+  <code>../</code> instead of <code>ptolemy/</code>.  Relative URLS
+  will not work when looking for resources using the classpath
 
 
-<h4><a name="unsignedApplicationRequesting">"Unsigned application requesting unrestricted access to system"</a>
-</h4>
-<ol>
-<li>Start up Web Start, clear the cache and reload.
-<li>Check that the jar files are signed:
-<code>cd $PTII; make jnlp_verify</code>
-<br>If one of the jar files will not verify, use 
-<code>jar -tvf <i>file</i>.jar</code> to verify that the
-file actually has data files in it
-<li>Resign the jar files:
-<code>cd $PTII; make jnlp_clean jnlp_all</code>
-<li>Rebuild the jar files:
-<code>cd $PTII; make clean install</code>
-</ol>
+  <h4><a name="unsignedApplicationRequesting">"Unsigned application requesting unrestricted access to system"</a>
+  </h4>
+  <ol>
+    <li>Start up Web Start, clear the cache and reload.
+    <li>Check that the jar files are signed:
+      <code>cd $PTII; make jnlp_verify</code>
+      <br/>If one of the jar files will not verify, use 
+      <code>jar -tvf <i>file</i>.jar</code> to verify that the
+      file actually has data files in it
+    <li>Resign the jar files:
+      <code>cd $PTII; make jnlp_clean jnlp_all</code>
+    <li>Rebuild the jar files:
+      <code>cd $PTII; make clean install</code>
+  </ol>
 
 
-<h4><a name="badMimeType">Bad Mime Type</a></h4>
-When trying to fetch a .jnlp file from a server
-with cookie authentication, I sometimes have seen:
-<pre>
-Bad MIME type returned from server when accessing resource: 
-   http://www.gigascale.org/ptolemy/src/ptII/vergil.jnlp - text/html
-</pre>
-I think the problem is with the second time the jnlp file is fetched.
-<br>I can run JNLP on the ptolemy web server with basic password based authentication turned on.
-<br>I think the problem is that cookies are not yet supported.
+  <h4><a name="badMimeType">Bad Mime Type</a></h4>
+  When trying to fetch a .jnlp file from a server
+  with cookie authentication, I sometimes have seen:
+  <pre>
+    Bad MIME type returned from server when accessing resource: 
+    http://www.gigascale.org/ptolemy/src/ptII/vergil.jnlp - text/html
+  </pre>
+  I think the problem is with the second time the jnlp file is fetched.
+  <br/>I can run JNLP on the ptolemy web server with basic password based authentication turned on.
+  <br/>I think the problem is that cookies are not yet supported.
 
-<br>The basic password authentication mechanism is a little funky,
-sometimes the app starts up without checking for updates.
+  <br/>The basic password authentication mechanism is a little funky,
+  sometimes the app starts up without checking for updates.
 
-
-<menu>
-<li><a href="http://forums.java.sun.com/thread.jsp?forum=38&thread=71152" target="_top">Question about cookies</a>
-</menu>
-
-<h4>Spaces in path names</h4>
-Web Start does not work very well if the pathname to the 
-<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
-to place your Ptolemy II tree in a directory that does not have spaces
-in the path name if you plan on using Web Start.
+  <h4>Spaces in path names</h4>
+  Web Start does not work very well if the pathname to the 
+  <code>vergil.jnlp</code> file has spaces in it.  The workaround is
+  to place your Ptolemy II tree in a directory that does not have spaces
+  in the path name if you plan on using Web Start.
 
 </body>
 </html>
