@@ -4,8 +4,8 @@ EXAMPLE_MODELS = \
 	DEExample.xml \
 	Feedback.xml \
 	FixedPointLimitationEx.xml \
-	FSMsource.xml \
-	FSMsource2.xml \
+	FSMSource.xml \
+	FSMSource2.xml \
 	InteractiveShell.xml \
 	InterarrivalTimes2.xml \
 	InterarrivalTimes3.xml \
