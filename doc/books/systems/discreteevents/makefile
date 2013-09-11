@@ -16,7 +16,7 @@ EXAMPLE_MODELS = \
 	ModelTimeVsRealTime.xml \
 	OpenQueueingNetwork.xml \
 	Priorities.xml \
-	SDFwithinDE.xml \
+	SDFWithinDE.xml \
 	ThreadedComposite.xml \
 	Wireless.xml \
 	Zeno.xml 
