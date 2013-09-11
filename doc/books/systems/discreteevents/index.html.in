@@ -28,18 +28,11 @@
     <li> Figure 7.13: <a href="InteractiveShell/index.html">InteractiveShell</a>.</li>
     <li> Figure 7.15: <a href="ThreadedComposite/index.html">ThreadedComposite</a>.</li>
     <li> Figure 7.18: <a href="Zeno/index.html">Zeno</a>.</li>
-    <li> Figure 7.19: <a href="FSMsource/index.html">FSMsource</a>.</li>
-    <li> Figure 7.20: <a href="FSMsource2/index.html">FSMsource2</a>.</li>
+    <li> Figure 7.19: <a href="FSMSource/index.html">FSMSource</a>.</li>
+    <li> Figure 7.20: <a href="FSMSource2/index.html">FSMSource2</a>.</li>
     <li> Figure 7.21: <a href="Wireless/index.html">Wireless</a>.</li>
     <li> Figure 7.22: <a href="FixedPointLimitationEx/index.html">FixedPointLimitationEx</a>.</li>
-
-
-    <li> <a href="MM1Queue2/index.html">MM1Queue2</a>.</li>
-
-
-    <li> <a href="SDFwithinDE/index.html">SDFwithinDE</a>.</li>
-
-
+    <li> Figure 7.23: <a href="SDFWthinDE/index.html">SDFWithinDE</a>.</li>
   </ul>
 
   <!--#include virtual="/ssi/bottom.htm" -->

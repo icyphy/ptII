@@ -11,7 +11,6 @@ EXAMPLE_MODELS = \
 	InterarrivalTimes3.xml \
 	InterarrivalTimes.xml \
 	Iteration.xml \
-	MM1Queue2.xml \
 	MM1Queue.xml \
 	ModelTimeVsRealTime.xml \
 	OpenQueueingNetwork.xml \
