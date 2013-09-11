@@ -137,9 +137,5 @@ test nightly-1.7 {update_moog} {
     list $matches $results
 } {{} {}}
 
-test nightly-1.8 {coverity} {
-    set matches [nightlyMake coverity]
-} {}
-
 set VERBOSE 0
 cd $startingDirectory
