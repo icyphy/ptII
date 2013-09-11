@@ -1,0 +1,167 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ResourcePool" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1119, 781}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[885, 671]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3718329471863453">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.9163818359375, 230.35214048549108}">
+    </property>
+    <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates resource management where a pool (containing&#10;only one resource) provides that resource nondeterministically to one&#10;of two Sleep actors. The Sleep actor that gets the resource holds it&#10;for a fixed amount of time (100 and 150 ms, respectively). After this&#10;time, it releases the resource, sending it to an Expression actor, which&#10;increments the value of the resource and then returns it to the&#10;resource pool.&#10;&#10;Note that there is no assurance of fairness in this system, and in fact&#10;it is possible for only one of the two Sleep actors to get resources.&#10;How could you force this system to be more fair?">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 225.0]">
+        </property>
+    </property>
+    <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+        <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 223, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 85.0]">
+        </property>
+    </entity>
+    <entity name="Sleep1" class="ptolemy.actor.lib.Sleep">
+        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="100L">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="Sleep2" class="ptolemy.actor.lib.Sleep">
+        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="150L">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Expression1" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + 1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 65.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + 1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 115.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{521.8327447916666, 62.70906770833333}">
+        </property>
+    </entity>
+    <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{606.8327447916666, 57.70906770833333}">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{611.8327447916666, 97.70906770833332}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 195.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[160.0, 20.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[161.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[475.0, 20.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[475.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ResourcePool.grant" relation="relation"/>
+    <link port="ResourcePool.grant" relation="relation2"/>
+    <link port="ResourcePool.release" relation="relation3"/>
+    <link port="ResourcePool.release" relation="relation4"/>
+    <link port="Sleep1.input" relation="relation"/>
+    <link port="Sleep1.output" relation="relation5"/>
+    <link port="Sleep2.input" relation="relation2"/>
+    <link port="Sleep2.output" relation="relation6"/>
+    <link port="Expression1.output" relation="relation7"/>
+    <link port="Expression1.in" relation="relation5"/>
+    <link port="Expression2.output" relation="relation8"/>
+    <link port="Expression2.in" relation="relation6"/>
+    <link port="Test.input" relation="relation7"/>
+    <link port="Test.output" relation="relation9"/>
+    <link port="TrueGate.input" relation="relation9"/>
+    <link port="TrueGate.output" relation="relation10"/>
+    <link port="Stop.input" relation="relation10"/>
+    <link port="Test2.input" relation="relation8"/>
+    <link relation1="relation3" relation2="relation7"/>
+    <link relation1="relation4" relation2="relation8"/>
+</entity>
