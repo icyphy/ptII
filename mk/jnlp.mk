@@ -1841,6 +1841,10 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 	# Make the html file executable so that Server Side Includes (SSIs) work.
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTML) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html $(DIST_DIR)/$(INDEX_CHAPTER) $(DIST_DIR)/$(TOC_CHAPTER) $(DIST_DIR)/$(INDEX_CHAPTER) $(DIST_DIR)/$(TOC_CHAPTER)"
 	#ssh $(WEBSERVER_USER)@$(WEBSERVER) "chgrp -R ptolemy $(DIST_DIR)"
+	#
+	# Update the Web Start help.  Not the most portable command :-(
+	svn update doc/webStartHelp.htm
+	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):~ptII/ptweb/ptolemyII/ptIIlatest/ptII/doc/
 
 
 # Update the 9.0 tree.
