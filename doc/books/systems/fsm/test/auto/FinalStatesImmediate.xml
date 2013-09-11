@@ -183,20 +183,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 105.0]">
         </property>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 0, 1, 2, 3, 4, 5}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 140.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 105.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="FSMActor.out" relation="relation"/>
+    <link port="FSMActor.out" relation="relation3"/>
     <link port="FSMActor.reset" relation="relation2"/>
     <link port="Sequence.output" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="Test.input" relation="relation3"/>
 </entity>
