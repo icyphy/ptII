@@ -856,6 +856,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             boolean linkToJNLP = Boolean.valueOf(StringUtilities
                     .getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
             if (linkToJNLP && model.getContainer() == null) {
+		String linkToHelp = "<a href=\"" + ssiRoot + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\"" + ssiRoot + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a>";
+
                 printWriter.println("<p>Below is a browsable image of the model.</p> "
 				    + "<ul>\n"
 				    + "<li>For an executable version,"
@@ -868,12 +870,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 				    + "  var url = parentDir + \""
 				    + _sanitizedModelName + ".jnlp\";\n"
 				    + "  deployJava.createWebStartLaunchButton(url);\n"
-				    + "  document.write(\"the WebStart version.\");\n"
+				    // FIXME: Don't use <table> here, use css.
+				    + "  document.write(\"<table><tr><td>the WebStart version.</td><td>"
+				    + linkToHelp.replace("\"", "\\\"") + "</td></tr></table>\");\n"
 				    + "</script>\n"
 				    + "<noscript>\n"
 				    + "<a href=\"../" 
-				    + _sanitizedModelName + ".jnlp\";\n"
-				    + ".jnlp\">WebStart version</a>. \n"
+				    + _sanitizedModelName + ".jnlp\">WebStart version</a>. \n"
+				    + linkToHelp
                                     + "</noscript>\n"
 				    + "(<i>Java Plug-in Required</i>)\n"
 				    + "</li>\n");
