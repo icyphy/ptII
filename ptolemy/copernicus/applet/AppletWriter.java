@@ -835,6 +835,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + " " + "ptolemy/vergil/basic/export/web/web.jar");
                 }
                 results.put(className, "ptolemy/vergil/basic/export/web/web.jar");
+            } else if (className.contains("lib.gui.")) {
+		// Needed for ptolemy.domains.sr.lib.gui.NonStrictDisplay and any other classes in domains.*.lib.gui.
+		// We get the package of the package.
+		String packageName = object.getClass().getPackage().getName();
+		String parentPackage = packageName.substring(0, packageName.lastIndexOf("."));
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars export.web: Adjust for class with lib.gui " + className
+				       + " " + _getDomainJar(parentPackage) + " " + parentPackage);
+                }
+
+                results.put(object.getClass().getName(), _getDomainJar(parentPackage));
             } else {
                 // Add in the entity
                 results.put(object.getClass().getName(), _getDomainJar(object
