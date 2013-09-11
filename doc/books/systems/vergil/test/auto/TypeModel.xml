@@ -1,26 +1,18 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="AddingStringsException" class="ptolemy.actor.TypedCompositeActor">
+<entity name="TypeModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 524]">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 412, 927, 634}, maximized=false}">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 524]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, -25.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 20.0]">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 891, 634}, maximized=false}">
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1619058308547057">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{284.5781250000001, 150.1883210973725}">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -37,7 +29,7 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An example used to explore data types.&#10;This model throws an exception when run.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An example used to explore data types.">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
@@ -45,15 +37,19 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -15.0]">
         </property>
     </property>
-    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Adding Strings (with Exception)">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -75.0]">
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Type Model">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -55.0]">
         </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3214825563818853">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.57812499999994, 141.37307261163983}">
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/books/systems/vergil/TypeModel">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
@@ -72,58 +68,46 @@
         <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
-    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="subtractReverse operation not supported between ptolemy.data.StringToken '&quot;Hello World&quot;' and ptolemy.data.IntToken '0'&#10;Because:&#10;subtract operation not supported between ptolemy.data.StringToken '&quot;0&quot;' and ptolemy.data.StringToken '&quot;Hello World&quot;'&#10;  in .AddingStringsException.AddSubtract&#10;Because:&#10;subtractReverse operation not supported between ptolemy.data.StringToken '&quot;Hello World&quot;' and ptolemy.data.IntToken '0'&#10;Because:&#10;subtract operation not supported between ptolemy.data.StringToken '&quot;0&quot;' and ptolemy.data.StringToken '&quot;Hello World&quot;'">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 215}">
-        </property>
-    </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Hello World&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <doc>Create a constant sequence</doc>
+        <doc>Create a constant signal</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 180.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={486, 591, 240, 174}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[240, 130]">
-        </property>
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 160.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 90.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 45.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 90.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Const.output" relation="relation4"/>
-    <link port="Display.input" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.minus" relation="relation4"/>
     <link port="AddSubtract.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
+    <link port="Test.input" relation="relation2"/>
 </entity>

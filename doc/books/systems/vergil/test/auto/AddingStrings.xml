@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="AddingStringsException" class="ptolemy.actor.TypedCompositeActor">
+<entity name="AddingStrings" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[749, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -13,14 +13,14 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 891, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 983, 634}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1619058308547057">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5148292870411888">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{284.5781250000001, 150.1883210973725}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.07812500000003, 103.65608085250341}">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -37,7 +37,7 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An example used to explore data types.&#10;This model throws an exception when run.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An example used to explore data types.&#10;This model converts integers to strings&#10;and adds them by concatenation.">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
@@ -45,11 +45,11 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -30.0]">
         </property>
     </property>
-    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Adding Strings (with Exception)">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -75.0]">
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Adding Strings">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -70.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -61,7 +61,7 @@
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -70,14 +70,6 @@
         <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="png">
         </property>
         <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-    </property>
-    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="subtractReverse operation not supported between ptolemy.data.StringToken '&quot;Hello World&quot;' and ptolemy.data.IntToken '0'&#10;Because:&#10;subtract operation not supported between ptolemy.data.StringToken '&quot;0&quot;' and ptolemy.data.StringToken '&quot;Hello World&quot;'&#10;  in .AddingStringsException.AddSubtract&#10;Because:&#10;subtractReverse operation not supported between ptolemy.data.StringToken '&quot;Hello World&quot;' and ptolemy.data.IntToken '0'&#10;Because:&#10;subtract operation not supported between ptolemy.data.StringToken '&quot;0&quot;' and ptolemy.data.StringToken '&quot;Hello World&quot;'">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 215}">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -90,11 +82,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 190.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={486, 591, 240, 174}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={590, 421, 240, 174}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[240, 130]">
         </property>
@@ -102,28 +94,28 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 140.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 140.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 125.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Const.output" relation="relation4"/>
+    <link port="Const.output" relation="relation3"/>
     <link port="Display.input" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
-    <link port="AddSubtract.minus" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
     <link port="AddSubtract.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
 </entity>

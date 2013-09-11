@@ -1,0 +1,172 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ApplyFunction" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 199, 1065, 646}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[831, 536]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3405663295733234">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.87011718750006, 229.18574194960414}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 120.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of the ApplyFunction actor used to alternate&#10;between calculating x^2 and 2^x.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 100.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="ApplyFunction Actor Demonstration">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 35.0]">
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="png">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="function(x:double) pow(x, 2)">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="function(x:double) pow(2, x)">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+        <property name="CommutatorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {46, 101, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
+        <property name="function" class="ptolemy.actor.parameters.PortParameter" value="(function(x:double) pow(2, x))">
+        </property>
+        <doc>The function is applied to its input data.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 270.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="function" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0717734625363, 0.04, 1.2311444133449, 0.16, 1.4142135623731, 0.36, 1.6245047927125, 0.64, 1.8660659830736, 1.0, 2.1435469250726, 1.44, 2.4622888266898, 1.96, 2.8284271247462, 2.56, 3.2490095854249, 3.24, 3.7321319661472, 4.0, 4.2870938501452, 4.84, 4.9245776533797, 5.76, 5.6568542494924, 6.76, 6.4980191708499, 7.84, 7.4642639322945, 9.0, 8.5741877002904, 10.24, 9.8491553067593, 11.56, 11.3137084989848, 12.96, 12.9960383416998, 14.44, 14.9285278645889, 16.0, 17.1483754005807, 17.64, 19.6983106135187, 19.36, 22.6274169979695, 21.16, 25.9920766833995, 23.04, 29.8570557291778, 25.0, 34.2967508011613, 27.04, 39.3966212270372, 29.16, 45.2548339959389, 31.36, 51.9841533667989, 33.6399999999999, 59.7141114583555, 35.9999999999999, 68.5935016023225, 38.4399999999999, 78.7932424540743, 40.9599999999999, 90.5096679918776, 43.5599999999999, 103.9683067335976, 46.2399999999999, 119.4282229167106, 48.9999999999999, 137.1870032046446, 51.8399999999999, 157.5864849081482, 54.7599999999998, 181.0193359837548, 57.7599999999998, 207.9366134671947, 60.8399999999998, 238.8564458334207, 63.9999999999998, 274.3740064092886, 67.2399999999998, 315.1729698162956, 70.5599999999998, 362.0386719675088, 73.9599999999998, 415.8732269343883, 77.4399999999997, 477.7128916668402, 80.9999999999997, 548.748012818576, 84.6399999999997, 630.3459396325896, 88.3599999999997, 724.0773439350157, 92.1599999999997, 831.7464538687746, 96.0399999999996, 955.425783333678}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.039683067335977E-7">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{577.8883697472595, 315.71633535703404}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="Commutator.input" relation="relation"/>
+    <link port="Commutator.input" relation="relation2"/>
+    <link port="Commutator.output" relation="relation6"/>
+    <link port="ApplyFunction.output" relation="relation5"/>
+    <link port="ApplyFunction.function" relation="relation6"/>
+    <link port="ApplyFunction.input" relation="relation4"/>
+    <link port="Test.input" relation="relation5"/>
+</entity>
