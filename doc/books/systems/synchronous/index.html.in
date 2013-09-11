@@ -8,15 +8,16 @@
   <!--#include virtual="/ssi/toppostmenu.htm" -->
   <h1>Chapter 5: Synchronous-Reactive Models</h1>
   <ul>
-<ul>
-<li> <a href="IfThenElseSR/index.html">IfThenElseSR</a></li>
-<li> <a href="Counter/index.html">Counter</a></li>
-<li> <a href="GuardedCount/index.html">GuardedCount</a></li>
-<li> <a href="MalikAcyclic/index.html">MalikAcyclic</a></li>
-<li> <a href="MalikCyclic/index.html">MalikCyclic</a></li>
-<li> <a href="NonConstructive/index.html">NonConstructive</a></li>
-<li> <a href="NonStrictAndInLoop/index.html">NonStrictAndInLoop</a></li>
-<li> <a href="TokenRing/index.html">TokenRing</a></li>
-</ul>
+    <ul>
+      <li> Figure 5.3: <a href="IfThenElseSR/index.html">IfThenElseSR</a>.</li>
+      <li> Figure 5.4: <a href="Counter/index.html">Counter</a>.</li>
+      <li> Figure 5.5: <a href="NonStrictAndInLoop/index.html">NonStrictAndInLoop</a>.</li>
+      <li> Figure 5.6: <a href="TokenRing/index.html">TokenRing</a>.</li>
+      <li> Figure 5.7: <a href="MalikCyclic/index.html">MalikCyclic</a>.</li>
+      <li> Figure 5.8: <a href="MalikAcyclic/index.html">MalikAcyclic</a>.</li>
+      <li> Figure 5.10: <a href="GuardedCount/index.html">GuardedCount</a>.</li>
+      <li> Figure 5.11: <a href="NonConstructive/index.html">NonConstructive</a>.</li>
+    </ul>
 
-  <!--#include virtual="/ssi/bottom.htm" -->
+    <!--#include virtual="/ssi/bottom.htm" -->
+
