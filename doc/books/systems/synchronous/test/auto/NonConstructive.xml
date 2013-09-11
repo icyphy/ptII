@@ -26,6 +26,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 260.0]">
         </property>
     </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Unknown inputs remain. Possible causality loop:&#10;input&#10;&#10;  in .NonConstructive.NonStrictLogicGate and .NonConstructive.NonStrictLogicGate.input">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 315.0}">
+        </property>
+    </property>
     <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[83.5, 108.0]">
         </property>
