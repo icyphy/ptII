@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PtidesSchema" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -12,11 +12,11 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 67, 758, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[524, 328]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[524, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2634631357091761">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{115.40917968750001, -21.97376960724708}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{115.40917968749999, -21.97376960724708}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -667,18 +667,18 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -5.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 474, 769, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 412, 771, 423}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[537, 313]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.189161866083334">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1939897709505596">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.42556505042214, 92.08251128635084}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{229.68865781841856, 93.48707164417614}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
                 </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Logical time stamp&#10;is received from along&#10;with the data from the&#10;remote platform.">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Logical time stamp&#10;is received along&#10;with the data from the&#10;remote platform.">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 155.0]">
                 </property>
@@ -969,42 +969,28 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 220.0]">
             </property>
         </entity>
-        <entity name="Test" class="ptolemy.actor.lib.Test">
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{274.0, 390.328125}">
+            </property>
+        </entity>
+        <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2, 2}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 295.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{272.0, 445.328125}">
             </property>
         </entity>
-        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-            <doc>Output the current time.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 345.0]">
-            </property>
-        </entity>
-        <entity name="Test2" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.8, 4.8, 8.8}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 360.0]">
-            </property>
-        </entity>
-        <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4, 4, 4}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 425.0]">
-            </property>
-        </entity>
-        <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
-            <doc>Output the current time.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 475.0]">
-            </property>
-        </entity>
-        <entity name="Test4" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.3, 5.3, 9.3}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 490.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{273.0, 496.328125}">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1015,42 +1001,17 @@
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
-            <vertex name="vertex1" value="{165.0, 295.0}">
-            </vertex>
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-            </property>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-            </property>
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-            </property>
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
-            <vertex name="vertex1" value="[170.0, 425.0]">
-            </vertex>
-            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-            </property>
-        </relation>
-        <link port="in2" relation="relation3"/>
-        <link port="in" relation="relation4"/>
+        <link port="in2" relation="relation4"/>
+        <link port="in" relation="relation"/>
         <link port="out" relation="relation2"/>
         <link port="DiscreteClock.output" relation="relation2"/>
-        <link port="Test.input" relation="relation3"/>
-        <link port="CurrentTime.output" relation="relation"/>
-        <link port="CurrentTime.trigger" relation="relation3"/>
-        <link port="Test2.input" relation="relation"/>
-        <link port="Test3.input" relation="relation4"/>
-        <link port="CurrentTime2.output" relation="relation5"/>
-        <link port="CurrentTime2.trigger" relation="relation4"/>
-        <link port="Test4.input" relation="relation5"/>
+        <link port="NonStrictTest.input" relation="relation2"/>
+        <link port="NonStrictTest2.input" relation="relation4"/>
+        <link port="NonStrictTest3.input" relation="relation"/>
     </entity>
     <entity name="Network" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 85.0]">
