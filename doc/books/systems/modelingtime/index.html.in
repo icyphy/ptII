@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/modelingtime/index.html.in $Id$ 
+	 This gets copied to the website.
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/modelingtime/index.html
+      -->
+    <title>Chapter 10: Modeling Timed Systems</title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Chapter 10: Modeling Timed Systems</h1>
+  Executable models in chapter 10:
+  <ul>
+    <li> Figure 10.3: <a href="TimePlot/index.html">TimePlot</a>.</li>
+    <li> Figure 10.4: <a href="LineFaultModel/index.html">LineFaultModel</a>.</li>
+    <li> Figure 10.9: <a href="LineFaultModelWithDelays/index.html">LineFaultModelWithDelays</a>.</li>
+    <li> Figure 10.: <a href="LineFaultModelWithQM/index.html">LineFaultModelWithQM</a>.</li>
+    <li> Figure 10.: <a href="LineFaultModelWithTwoQMs/index.html">LineFaultModelWithTwoQMs</a>.</li>
+    <li> Figure 10.: <a href="LineFaultModelWithCQM/index.html">LineFaultModelWithCQM</a>.</li>
+    <li> Figure 10.: <a href="LineFaultModelWithBetterCQM/index.html">LineFaultModelWithBetterCQM</a>.</li>
+    <li> Figure 10.: <a href="GeneratorResourceScheduler/index.html">GeneratorResourceScheduler</a>.</li>
+    <li> Figure 10.: <a href="PtidesSchema/index.html">PtidesSchema</a>.</li>
+
+  </ul>
+
+  <!--#include virtual="/ssi/bottom.htm" -->
+  <!-- Do not include a body or html close tag here, the ssi does it -->
