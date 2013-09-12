@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/modal/index.html.in $Id$ 
+	 This gets copied to the website.
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/modal/index.html
+      -->
+    <title>Chapter 8: Modal Models</title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Chapter 8: Modal Models</h1>
+  Executable models in chapter 8:
+  <ul>
+    <li> Figure 8.1: <a href="ModalModelExample/index.html">ModalModelExample</a>.</li>
+    <li> Figure 8.6: <a href="History/index.html">History</a>.</li>
+    <li> Figure 8.8: <a href="Preemptive/index.html">Preemptive</a>.</li>
+    <li> Figure 8.9: <a href="ErrorTransition/index.html">ErrorTransition</a>.</li>
+    <li> Figure 8.10: <a href="Termination/index.html">Termination</a>.</li>
+    <li> Figure 8.12: <a href="RefinementOutput/index.html">RefinementOutput</a>.</li>
+    <li> Figure 8.13: <a href="ModalSDF/index.html">ModalSDF</a>.</li>
+    <li> Figure 8.15: <a href="Fibonacci/index.html">Fibonacci</a>.</li>
+    <li> Figure 8.16: <a href="Merge/index.html">Merge</a>.</li>
+    <li> Figure 8.17: <a href="Timeout/index.html">Timeout</a>.</li>
+    <li> Figure 8.18: <a href="SpontaneousFSM/index.html">SpontaneousFSM</a>.</li>
+    <li> Figure 8.22: <a href="ModalDelay/index.html">ModalDelay</a>.</li>
+    <li> Figure 8.24: <a href="ModalClocks/index.html">ModalClocks</a>.</li>
+    <li> Figure 8.25: <a href="ResettableTimer/index.html">ResettableTimer</a>.</li>
+  </ul>
+
+  <!--#include virtual="/ssi/bottom.htm" -->
+  <!-- Do not include a body or html close tag here, the ssi does it -->
