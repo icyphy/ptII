@@ -726,10 +726,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
             if (className.contains("ptolemy.codegen")) {
                 if (_debug) {
-                    System.out.println("allAttributeJars2: " + object + " "
+                    System.out.println("allAttributeJars: " + object + " "
                             + className + "ptolemy/codegen/codegen.jar");
                 }
                 results.put(className, "ptolemy/codegen/codegen.jar");
+            } else if (className.contains("ptolemy.vergil.kernel.attributes")) {
+                if (_debug) {
+                    System.out.println("_allAttributeJars export.web: " + className
+                            + " " + "ptolemy/vergil/vergilApplet.jar");
+                }
+                results.put(className, "ptolemy/vergil/vergilApplet.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.web")) {
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars export.web: " + className
@@ -940,7 +946,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             result.append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
         }
         if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {
-            result.append("   <extension href=\"http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp\"/>\n");
+            result.append("   <extension href=\"http://ptolemy.org/ptolemyII/java3d/java3d-1.5.0.jnlp\"/>\n");
         }
         return result.toString();
     }
@@ -1446,8 +1452,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.domains.space.Region", spaceJar);
         auxiliaryJarMap.put("ptolemy.domains.space.Room", spaceJar);
 
-        auxiliaryJarMap.put("ptolemy.vergil.kernel.attributes.TextAttribute",
-                "ptolemy/vergil/vergilApplet.jar");
         auxiliaryJarMap.put("ptolemy.vergil.actor.lib.ShowTypes",
                 "ptolemy/vergil/vergilApplet.jar");
         auxiliaryJarMap.put("ptolemy.vergil.modal.modal.ModalTableauFactory",
@@ -2177,7 +2181,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // if gt is used in the model.
     private String _configurationName = "-ptinyViewer";
 
-    private boolean _debug = false;
+    private boolean _debug = true;
 
     // The path to the jar file containing the domain classes,
     // for example "ptolemy/domains/sdf/sdf.jar".
