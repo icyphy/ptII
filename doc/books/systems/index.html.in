@@ -43,8 +43,8 @@
           <li> <a href="expressions/index.html">Expressions</a></li>
           <li> <a href="types/index.html">The Type System</a></li>
           <li> <a href="ontologies/index.html">Ontologies</a></li>
-          <li> <a href="plotter/index.html">Signal Display</a></li>
           <li> <a href="export/index.html">Web Interfaces</a></li>
+          <li> <a href="plotter/index.html">Signal Display</a></li>
         </ul>
       </li>
       <!--#include virtual="/ssi/bottom.htm" -->
