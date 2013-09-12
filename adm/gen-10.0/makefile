@@ -1113,7 +1113,7 @@ remote1local: $(PTII_FULL) $(GENLOGDIR)
 		remote1distjsall remote1distjsrestore remote1distjavadocs \
 		remote1done >& $(REMOTE1LOG)" &
 
-# Commands run by hudson
+# Commands run by hudson by hand.  See $PTII/adm/test/Release.tcl and Nightly.tcl and NightlyInstall.tcl for what really gets run.
 hudson: 
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
