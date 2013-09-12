@@ -55,6 +55,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.PeriodicDirector;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
@@ -65,12 +66,10 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.ptides.lib.ErrorHandlingAction;
-import ptolemy.domains.ptides.lib.PtidesPort;
-import ptolemy.domains.sr.kernel.SRDirector;
+import ptolemy.domains.ptides.lib.PtidesPort; 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
@@ -1107,7 +1106,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                 .getToken()).doubleValue());
             }
             if (entity instanceof CompositeActor
-                    && ((CompositeActor) entity).getDirector() instanceof SRDirector) {
+                    && ((CompositeActor) entity).getDirector() instanceof PeriodicDirector) {
                 // TODO calculate delayOffset
                 double delay = _calculateSRDelay((CompositeActor) entity);
                 _setDelayOffset((NamedObj) entity, delay);                
@@ -1733,7 +1732,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
         if (target instanceof CompositeActor && ((CompositeActor) target).isOpaque()) {
             if (((CompositeActor) target).inputPortList().size() == 0 
-                    || ((CompositeActor) target).getDirector() instanceof SRDirector) {
+                    || ((CompositeActor) target).getDirector() instanceof PeriodicDirector) {
                 return true;
             }
             for (Object entity : ((CompositeActor) target).allAtomicEntityList()) {
