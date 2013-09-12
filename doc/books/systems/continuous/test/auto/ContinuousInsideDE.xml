@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ContinuousInsideDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -10,16 +10,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 31, 845, 562}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 31, 866, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[632, 452]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[632, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0997862340236697">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.0, 226.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.2822265625, 240.86341627311091}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
@@ -30,7 +30,7 @@
     <entity name="Job Processor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[318.5, 138.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 77, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 77, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -76,29 +76,6 @@
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 240.0]">
             </property>
-        </entity>
-        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="job, progress, done">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 22, 500, 239}, maximized=false}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 195]">
-            </property>
-            <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[489.875, 145.875]">
-            </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Job Completion</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="-0.5" max="8.0"/>
-</plot>?>
-            </configure>
         </entity>
         <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
             <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
@@ -226,6 +203,30 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 95.0]">
             </property>
         </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 35.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.5, -0.4, -0.3, -0.2, -0.1, -2.775557561562891E-17, 5.0E-5, 5.0E-5, 5.0E-5, 5.0E-5, 5.0E-5, 0.0876741772476, 0.1752983544953, 0.2629225317429, 0.3505467089906, 0.4381708862382, 0.5257950634858, 0.6134192407335, 0.7010434179811, 0.7886675952288, 0.8762917724764, 0.963915949724, 1.00005, 1.00005, 1.00005, 1.00005, 1.00005, 1.0082642880106, 1.0164785760212, 1.0246928640318, 1.0329071520425, 1.0411214400531, 1.0493357280637, 1.0575500160743, 1.0657643040849, 1.0739785920955, 1.0821928801062, 1.0904071681168, 1.0986214561274, 1.106835744138, 1.1150500321486, 1.1232643201592, 1.1314786081699, 1.1396928961805, 1.1479071841911, 1.1561214722017, 1.1643357602123, 1.1725500482229, 1.1807643362336, 1.1889786242442, 1.1971929122548, 1.2054072002654, 1.213621488276, 1.2218357762866, 1.2300500642973, 1.2382643523079, 1.2464786403185, 1.2546929283291, 1.2629072163397, 1.2711215043503, 1.279335792361, 1.2875500803716, 1.2957643683822, 1.3039786563928, 1.3121929444034, 1.320407232414, 1.3286215204247, 1.3368358084353, 1.3450500964459, 1.3532643844565, 1.3614786724671, 1.3696929604777, 1.3779072484884, 1.386121536499, 1.3943358245096, 1.4025501125202, 1.4107644005308, 1.4189786885414, 1.4271929765521, 1.4354072645627, 1.4436215525733, 1.4518358405839, 1.4600501285945, 1.4682644166051, 1.4764787046158, 1.4846929926264, 1.492907280637, 1.5011215686476, 1.5093358566582, 1.5175501446688, 1.5257644326795, 1.5339787206901, 1.5421930087007, 1.5504072967113, 1.5586215847219, 1.5668358727325, 1.5750501607431, 1.5832644487538, 1.5914787367644, 1.599693024775, 1.6079073127856, 1.6161216007962, 1.6243358888068, 1.6325501768175, 1.6407644648281, 1.6489787528387, 1.6571930408493, 1.6654073288599, 1.6736216168705, 1.6818359048812, 1.6866587159037, 1.6866587159037}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{498.0, 78.0}">
+            </property>
+        </entity>
+        <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{528.0, 178.0}">
+            </property>
+        </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[215.0, 190.0]">
             </vertex>
@@ -254,9 +255,6 @@
         <link port="AddSubtract.plus" relation="relation5"/>
         <link port="AddSubtract.minus" relation="relation3"/>
         <link port="AddSubtract.output" relation="relation7"/>
-        <link port="TimedPlotter.input" relation="relation5"/>
-        <link port="TimedPlotter.input" relation="relation3"/>
-        <link port="TimedPlotter.input" relation="relation6"/>
         <link port="LevelCrossingDetector.output" relation="relation6"/>
         <link port="LevelCrossingDetector.trigger" relation="relation7"/>
         <link port="Integrator2.derivative" relation="relation2"/>
@@ -265,30 +263,9 @@
         <link port="ZeroOrderHold3.output" relation="relation2"/>
         <link port="ZeroOrderHold.input" relation="relation"/>
         <link port="ZeroOrderHold.output" relation="relation5"/>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="job in, job done">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={513, 363, 507, 219}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 175]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[523.5, 98.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Jobs</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="10.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
+        <link port="NonStrictTest.input" relation="relation5"/>
+        <link port="NonStrictTest2.input" relation="relation3"/>
+        <link port="NonStrictTest3.input" relation="relation6"/>
     </entity>
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
         <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="10L">
@@ -351,6 +328,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[443.5, 138.0]">
         </property>
     </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{499.13963587721065, 290.87313479702567}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[143.5, 93.0]">
         </vertex>
@@ -369,21 +362,21 @@
         <vertex name="vertex1" value="[398.5, 93.0]">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="Ramp.trigger" relation="relation6"/>
     <link port="Job Processor.job" relation="relation"/>
     <link port="Job Processor.jobDone" relation="relation2"/>
     <link port="Job Processor.rate" relation="relation4"/>
-    <link port="TimedPlotter.input" relation="relation5"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
     <link port="ColtExponential.output" relation="relation4"/>
     <link port="ColtExponential.trigger" relation="relation"/>
     <link port="TimedDelay.input" relation="relation2"/>
     <link port="TimedDelay.output" relation="relation6"/>
     <link port="MostRecent.input" relation="relation5"/>
-    <link port="MostRecent.output" relation="relation3"/>
+    <link port="MostRecent.output" relation="relation7"/>
     <link port="MostRecent.trigger" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
+    <link port="NonStrictTest2.input" relation="relation7"/>
     <link relation1="relation" relation2="relation5"/>
 </entity>

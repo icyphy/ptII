@@ -1,0 +1,78 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LevelCrossingDetectorFeedback" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 412, 813, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[579, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.357821169813871">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{213.68310546875003, 196.16835148011864}">
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+            <display name="Show parameters"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 410.0]">
+        </property>
+    </property>
+    <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[148.0, 129.0]">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[263.0, 129.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[58.0, 129.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.005, 0.02, 0.045, 0.08, 0.125, 0.18, 0.245, 0.32, 0.405, 0.5, 0.605, 0.72, 0.845, 0.98, 0.9994542217601, 1.0000358651246, 0.0, 0.0, 0.14642389226, 0.30284778452, 0.46927167678, 0.64569556904, 0.8321194613, 0.9994299101441, 1.000034919646, 0.0, 0.0, 0.20500353921, 0.42000707842, 0.64501061763, 0.88001415684, 0.9988005065083, 0.0, 0.0, 0.2499028906, 0.5098057812, 0.7797086718, 0.9992124373904, 1.0000354899655, 0.0, 0.0, 0.28780405871, 0.58560811742, 0.89341217613, 0.9989352258851, 1.0000327047842, 0.0, 0.0, 0.32119422784, 0.65238845568, 0.99358268352, 0.9999596195358, 1.000049880372, 0.0, 0.0, 0.35138098581, 0.71276197162, 0.9991741941741, 1.000038476072, 0.0, 0.0, 0.37913975577, 0.76827951154, 0.9988325423002, 1.0000350128667, 0.0, 0.0, 0.4049765707, 0.8199531414, 0.9988290469255, 1.0000358173446, 0.0, 0.0, 0.42924282369, 0.86848564738, 0.9990145390513, 1.0000385763478, 0.0, 0.0, 0.45219430338, 0.91438860676, 0.9993074937255, 1.0000429010671, 0.0, 0.0, 0.47402409639, 0.95804819278, 0.9996610430223, 1.0000483227875, 0.0, 0.0, 0.49488219956, 0.5007715277128, 0.5007715277128}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 40.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[208.0, 129.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[328.0, 204.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Integrator.derivative" relation="relation"/>
+    <link port="Integrator.state" relation="relation5"/>
+    <link port="Integrator.initialState" relation="relation6"/>
+    <link port="LevelCrossingDetector.output" relation="relation6"/>
+    <link port="LevelCrossingDetector.trigger" relation="relation5"/>
+    <link port="CurrentTime.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
+</entity>
