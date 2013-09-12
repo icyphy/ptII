@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/continuous/index.html.in $Id$ 
+	 This gets copied to the website.
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/continuous/index.html
+      -->
+    <title>Chapter 9: Continuous-Time Models</title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Chapter 9: Continuous-Time Models</h1>
+  Executable models in chapter 9:
+  <ul>
+    <li> Figure 9.1: <a href="Lorenz/index.html">Lorenz</a>.</li>
+    <li> Figure 9.4: <a href="ContinuousTransferFunction/index.html">ContinuousTransferFunction</a>.</li>
+    <li> Figure 9.6: <a href="ContinuousTransferFunctionEquiv/index.html">ContinuousTransferFunctionEquiv</a>.</li>
+    <li> Figure 9.10: <a href="NotPiecewiseContinuous/index.html">NotPiecewiseContinuous</a>.</li>
+    <li> Figure 9.13: <a href="TestTrigger/index.html">TestTrigger</a>.</li>
+    <li> Figure 9.14: <a href="IntegratorInitialState/index.html">IntegratorInitialState</a>.</li>
+    <li> Figure 9.15: <a href="ImpulseResponse/index.html">ImpulseResponse</a>.</li>
+    <li> Figure 9.16: <a href="LevelCrossingDetectorFeedback/index.html">LevelCrossingDetectorFeedback</a>.</li>
+    <li> Figure 9.17: <a href="PeriodicSamplerIntegrator/index.html">PeriodicSamplerIntegrator</a>.</li>
+    <li> Figure 9.18: <a href="ContinuousInsideDE/index.html">ContinuousInsideDE</a>.</li>
+    <li> Figure 9.19: <a href="FixedPointNoLimitation/index.html">FixedPointNoLimitation</a>.</li>
+    <li> Figure 9.20: <a href="BouncingBall/index.html">BouncingBall</a>.</li>
+    <li> Figure 9.23: <a href="PiecewiseContinuous/index.html">PiecewiseContinuous</a>.</li>
+  </ul>
+
+  <!--#include virtual="/ssi/bottom.htm" -->
+  <!-- Do not include a body or html close tag here, the ssi does it -->
