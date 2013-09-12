@@ -127,7 +127,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="GeneratorContactorLoad" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoad">
+    <entity name="GeneratorContactorLoad" class="doc.books.systems.modelingtime.GeneratorContactorLoad">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 210.0]">
         </property>
         <property name="loadImpedance" class="ptolemy.data.expr.Parameter" value="1.0">

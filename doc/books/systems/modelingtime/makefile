@@ -11,12 +11,12 @@ EXAMPLE_MODELS = \
 	PtidesSchema.xml \
 	TimePlot.xml 
 
-EXAMPLE_SUBMODELS = \
-	Controller.xml
+EXAMPLE_SUBMODELS =
 
 # A model may have a _jnlpClassesToJars property so that Controller.xml is included. 
 # See _userSpecifiedUjars in ptolemy/copernicus/applet/AppletWriter.java
 CHAPTER_FILES_TO_BE_JARED = \
-	Controller.xml
+	Controller.xml \
+	GeneratorContactorLoad.xml
 
 include ../chapter.mk

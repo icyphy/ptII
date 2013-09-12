@@ -1,0 +1,265 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="GeneratorContactorLoad" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 145.0]">
+    </property>
+    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Plant Model with Generator, Load, and Contactor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 25.0]">
+        </property>
+    </property>
+    <property name="loadImpedance" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+        </property>
+    </property>
+    <property name="voltageSamplePeriod" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 100.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1056, 641}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[822, 531]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.0, 272.39453125}">
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete output giving&#10;voltage measurements.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 245.0]">
+        </property>
+    </property>
+    <property name="generatorTimeConstant" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 120.0]">
+        </property>
+    </property>
+    <property name="generatorOutputImpedance" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete input controlling&#10;the Generator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-125.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ZeroOrderHold">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discrete input driving&#10;the Contactor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-122.30484008789062, 35.690155029296875]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ZeroOrderHold2">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a model of generator with a load with a digital interface.&#10;The inputs are discrete events, and the output is a periodically&#10;sampled measurement of the voltage.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorContactorLoad">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="imageFormat" class="ptolemy.data.expr.StringParameter" value="gif">
+        </property>
+        <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <port name="drive" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 205.0]">
+        </property>
+    </port>
+    <port name="voltage" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 215.0]">
+        </property>
+    </port>
+    <port name="contactor" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 390.0}">
+        </property>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+        </property>
+    </port>
+    <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 215.0]">
+        </property>
+        <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="generatorTimeConstant">
+        </property>
+        <property name="outputImpedance" class="ptolemy.data.expr.Parameter" value="generatorOutputImpedance">
+        </property>
+        <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Contactor" class="ptolemy.demo.ElectricPowerSystem.Contactor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[232.30484008789062, 329.3098449707031]">
+        </property>
+    </entity>
+    <entity name="Load" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="loadImpedance">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[107.30484008789062, 329.3098449707031]">
+        </property>
+    </entity>
+    <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 205.0}">
+        </property>
+    </entity>
+    <entity name="ZeroOrderHold2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 390.0]">
+        </property>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="voltageSamplePeriod">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 215.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="drive" relation="relation6"/>
+    <link port="voltage" relation="relation3"/>
+    <link port="contactor" relation="relation7"/>
+    <link port="Generator.drive" relation="relation"/>
+    <link port="Generator.outputVoltage" relation="relation8"/>
+    <link port="Generator.load" relation="relation2"/>
+    <link port="Contactor.input" relation="relation5"/>
+    <link port="Contactor.output" relation="relation2"/>
+    <link port="Contactor.control" relation="relation4"/>
+    <link port="Load.output" relation="relation5"/>
+    <link port="ZeroOrderHold.input" relation="relation6"/>
+    <link port="ZeroOrderHold.output" relation="relation"/>
+    <link port="ZeroOrderHold2.input" relation="relation7"/>
+    <link port="ZeroOrderHold2.output" relation="relation4"/>
+    <link port="PeriodicSampler.input" relation="relation8"/>
+    <link port="PeriodicSampler.output" relation="relation3"/>
+</class>
