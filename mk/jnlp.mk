@@ -1919,6 +1919,10 @@ ant.footer:
 # A solution is documented at the above link.
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_3d
 #
+# Unfortunately, under Mac OS X 10.7, the Java 3D 1.5.2 jar files fail with:
+#   Caused by: java.lang.ClassNotFoundException: apple.awt.CGraphicsDevice
+# So, we fall back to 1.5.0
+
 # Use $(ROOT) here instead of $(PTII) or $(HOME)
 # and avoid target pattern contains no `%'.
 WEBSTART=$(ROOT)/webstart
@@ -1934,15 +1938,16 @@ sign_j3d: $(JAVA3D)
 		$$x $(KEYALIAS); \
 	done
 
+JAVA3D_VERSION=1.5.0
 java3d: $(JAVA3D)
 $(JAVA3D):
-	wget -m -np http://download.java.net/media/java3d/webstart/release/j3d/1.5.2/
-	mkdir $(JAVA3D);
-	mv download.java.net/media/java3d/webstart/release/j3d $(JAVA3D)/
+	wget -m -np http://download.java.net/media/java3d/webstart/release/j3d/$(JAVA3D_VERSION)/
+	mkdir -p $(JAVA3D);
+	mv download.java.net/media/java3d/webstart/release/j3d/ $(JAVA3D)
 	rm -rf download.java.net
-	wget http://download.java.net/media/java3d/webstart/release/vecmath/1.5.2/vecmath.jar
-	mkdir -p $(JAVA3D)/vecmath/1.5.2
-	mv vecmath.jar $(JAVA3D)/vecmath/1.5.2
+	wget http://download.java.net/media/java3d/webstart/release/vecmath/$(JAVA3D_VERSION)/vecmath.jar
+	mkdir -p $(JAVA3D)/vecmath/$(JAVA3D_VERSION)
+	mv vecmath.jar $(JAVA3D)/vecmath/$(JAVA3D_VERSION)
 
 
 JAI = $(WEBSTART)/jai
