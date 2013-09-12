@@ -18,12 +18,12 @@
     <li> Figure 10.3: <a href="TimePlot/index.html">TimePlot</a>.</li>
     <li> Figure 10.4: <a href="LineFaultModel/index.html">LineFaultModel</a>.</li>
     <li> Figure 10.9: <a href="LineFaultModelWithDelays/index.html">LineFaultModelWithDelays</a>.</li>
-    <li> Figure 10.: <a href="LineFaultModelWithQM/index.html">LineFaultModelWithQM</a>.</li>
-    <li> Figure 10.: <a href="LineFaultModelWithTwoQMs/index.html">LineFaultModelWithTwoQMs</a>.</li>
-    <li> Figure 10.: <a href="LineFaultModelWithCQM/index.html">LineFaultModelWithCQM</a>.</li>
-    <li> Figure 10.: <a href="LineFaultModelWithBetterCQM/index.html">LineFaultModelWithBetterCQM</a>.</li>
-    <li> Figure 10.: <a href="GeneratorResourceScheduler/index.html">GeneratorResourceScheduler</a>.</li>
-    <li> Figure 10.: <a href="PtidesSchema/index.html">PtidesSchema</a>.</li>
+    <li> Figure 10.11: <a href="LineFaultModelWithQM/index.html">LineFaultModelWithQM</a>.</li>
+    <li> Figure 10.14: <a href="LineFaultModelWithTwoQMs/index.html">LineFaultModelWithTwoQMs</a>.</li>
+    <li> Figure 10.15: <a href="LineFaultModelWithCQM/index.html">LineFaultModelWithCQM</a>.</li>
+    <li> Figure 10.16: <a href="LineFaultModelWithBetterCQM/index.html">LineFaultModelWithBetterCQM</a>.</li>
+    <li> Figure 10.17: <a href="GeneratorResourceScheduler/index.html">GeneratorResourceScheduler</a>.</li>
+    <li> Figure 10.18: <a href="PtidesSchema/index.html">PtidesSchema</a>.</li>
 
   </ul>
 
