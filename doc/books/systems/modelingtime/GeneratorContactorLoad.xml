@@ -187,7 +187,7 @@
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
         </property>
     </port>
-    <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
+    <entity name="Generator" class="doc.books.systems.modelingtime.Generator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 215.0]">
         </property>
         <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="generatorTimeConstant">
@@ -199,7 +199,7 @@
             </property>
         </entity>
     </entity>
-    <entity name="Contactor" class="ptolemy.demo.ElectricPowerSystem.Contactor">
+    <entity name="Contactor" class="doc.books.systems.modelingtime.Contactor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[232.30484008789062, 329.3098449707031]">
         </property>
     </entity>

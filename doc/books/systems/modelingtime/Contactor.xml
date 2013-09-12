@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="Contactor" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 445.0]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={400, 29, 953, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[719, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0886919489555686">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.12011718749994, 245.0631032924894}">
+    </property>
+    <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple model of a contactor where the output is absent&#10;when the control input is absent or false and equal to the input&#10;when the control input is true.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 104.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Contactor Model">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model can be used with a Continuous or SR director.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A more elaborate version of this model would include the dynamics of the&#10;mechanical parts of the contactor, which would introduce delay and bounce.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 320.0]">
+        </property>
+    </property>
+    <port name="input" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.5, 214.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="output" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 214.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="control" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 289.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+        </property>
+    </port>
+    <entity name="When" class="ptolemy.domains.sr.lib.When">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 214.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="input" relation="relation"/>
+    <link port="output" relation="relation3"/>
+    <link port="control" relation="relation2"/>
+    <link port="When.input" relation="relation"/>
+    <link port="When.output" relation="relation3"/>
+    <link port="When.control" relation="relation2"/>
+</class>

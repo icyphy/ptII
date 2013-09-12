@@ -16,7 +16,9 @@ EXAMPLE_SUBMODELS =
 # A model may have a _jnlpClassesToJars property so that Controller.xml is included. 
 # See _userSpecifiedUjars in ptolemy/copernicus/applet/AppletWriter.java
 CHAPTER_FILES_TO_BE_JARED = \
+	Contactor.xml \
 	Controller.xml \
+	Generator.xml \
 	GeneratorContactorLoad.xml
 
 include ../chapter.mk
