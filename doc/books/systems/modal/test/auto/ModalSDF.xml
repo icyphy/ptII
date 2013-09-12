@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalSDF" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 402, 921, 634}, maximized=false}">
     </property>
@@ -15,7 +15,9 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 30}">
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 30.0}">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -23,7 +25,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 100.0}">
         </property>
         <port name="out" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -110,7 +112,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 390.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 303, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 303, 930, 269}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -129,7 +131,7 @@
                 </property>
             </port>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-                <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="1">
+                <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 475.0}">
                 </property>
@@ -164,7 +166,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 125.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 899, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 899, 260}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 150]">
             </property>
@@ -183,7 +185,7 @@
                 </property>
             </port>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-                <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="20">
+                <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 210.0}">
                 </property>
@@ -229,29 +231,27 @@
         <link port="maximum.in" relation="inRelation"/>
     </entity>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="400.0">
+        <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="440.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 100.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 0.3090169943749, 1.0, 0.5877852522925, 1.0, 0.809016994375, 1.0, 0.9510565162952, 1.0, 1.0, 1.0, 0.9510565162951, 1.0, 0.8090169943748, 1.0, 0.5877852522923, 1.0, 0.3090169943747, 1.0, -2.709871949894291E-13, 1.0, -0.3090169943752, 1.0, -0.5877852522928, 1.0, -0.8090169943752, 1.0, -0.9510565162953, 1.0, -1.0, 1.0, -0.951056516295, 1.0, -0.8090169943746, 1.0, -0.587785252292, 1.0, -0.3090169943744, 1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5744033385452, 0.2789911060392, 0.4700059125818, 0.7901550123757, 0.1860822029255, 0.9995065603657, -0.1689185835468, 0.9955619646031, -0.4593982124358, 0.9876883405951, -0.5744033385452, 0.9921147013145, -0.4700059125818, 0.9980267284283, -0.1860822029255, 1.0, 0.1689185835469, 0.8090169943748, 0.4593982124359, 0.3090169943747, 0.5744033385452, 0.2789911060396, 0.4700059125816, 0.790155012376, 0.1860822029253, 0.9995065603657, -0.1689185835471, 0.9955619646031, -0.459398212436, 0.9876883405952, -0.5744033385452, 0.9921147013144, -0.4700059125815, 0.9980267284282, -0.1860822029251, 1.0, 0.1689185835473, 0.8090169943744, 0.4593982124361, 0.309016994374}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 150.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{220.0, 100.0}">
-        </vertex>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ModalModel.out" relation="relation2"/>
+    <link port="ModalModel.out" relation="relation"/>
     <link port="ModalModel.in" relation="relation3"/>
     <link port="Sinewave.output" relation="relation3"/>
-    <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
 </entity>

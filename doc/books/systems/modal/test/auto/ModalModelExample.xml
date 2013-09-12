@@ -1,0 +1,467 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModalModelExample" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 524]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    </property>
+    <property name="averageEventInterval" class="ptolemy.data.expr.Parameter" value="0.005">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 25.0]">
+        </property>
+    </property>
+    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 830, 634}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.0, 175.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.03">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 35}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates a simple modal model. There are two modes,&#10;clean and noisy. In the clean mode, the modal model passes inputs to&#10;output unchanged. In the noisy mode it adds Gaussian noise to the signal.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 245.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
+        </property>
+    </property>
+    <entity name="Modal Model" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 160.0]">
+        </property>
+        <port name="signal" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="event" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+  </configure>
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="signal" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 45.0]">
+                </property>
+            </port>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 90.0]">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 55.0]">
+                </property>
+            </port>
+            <entity name="clean" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="clean">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[106.89966201782227, 62.935022354125934]">
+                </property>
+            </entity>
+            <entity name="noisy" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noisy">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[231.89966201782227, 57.935022354125934]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.1092725249701868">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="event_isPresent">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.032320128619606">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="clean.incomingPort" relation="relation2"/>
+            <link port="clean.outgoingPort" relation="relation"/>
+            <link port="noisy.incomingPort" relation="relation"/>
+            <link port="noisy.outgoingPort" relation="relation2"/>
+        </entity>
+        <entity name="clean" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[576, 350]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+            </property>
+            <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="5456.527560262593">
+            </property>
+            <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 412, 810, 634}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.0, 175.0}">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 40.0}">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This mode refinement passed input values&#10;directly to the output unmodified, thus modeling&#10;a clean communication channel.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 180.0]">
+                </property>
+            </property>
+            <port name="signal" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+                </property>
+            </port>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 160.0]">
+                </property>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 110.0]">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="signal" relation="relation"/>
+            <link port="output" relation="relation"/>
+        </entity>
+        <entity name="noisy" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+            </property>
+            <property name="initialPhase" class="ptolemy.data.expr.Parameter" value="5462.978297177959">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 330, 834, 634}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This mode refinement adds noise to the input&#10;values, thus modeling a noisy communication channel.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 215.0]">
+                </property>
+            </property>
+            <port name="signal" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
+                </property>
+            </port>
+            <port name="event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 160.0]">
+                </property>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 120.0]">
+                </property>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 120.0]">
+                </property>
+            </entity>
+            <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
+                <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                </property>
+                <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
+                </property>
+                <doc>Create a sequence of gaussian random variables</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 165.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="signal" relation="relation"/>
+            <link port="output" relation="relation2"/>
+            <link port="AddSubtract.plus" relation="relation"/>
+            <link port="AddSubtract.plus" relation="relation3"/>
+            <link port="AddSubtract.output" relation="relation2"/>
+            <link port="Gaussian2.output" relation="relation3"/>
+        </entity>
+        <relation name="eventRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="signalRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="signal" relation="signalRelation"/>
+        <link port="event" relation="eventRelation"/>
+        <link port="output" relation="outputRelation"/>
+        <link port="_Controller.signal" relation="signalRelation"/>
+        <link port="_Controller.event" relation="eventRelation"/>
+        <link port="_Controller.output" relation="outputRelation"/>
+        <link port="clean.signal" relation="signalRelation"/>
+        <link port="clean.event" relation="eventRelation"/>
+        <link port="clean.output" relation="outputRelation"/>
+        <link port="noisy.signal" relation="signalRelation"/>
+        <link port="noisy.event" relation="eventRelation"/>
+        <link port="noisy.output" relation="outputRelation"/>
+    </entity>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="averageEventInterval">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 210.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </entity>
+    <entity name="Signal Source" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 110.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="1/sampleRate">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 820, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 350]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.0, 175.0}">
+        </property>
+        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="24000.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 35.0}">
+            </property>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 55.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite produces samples of a sine wave&#10;with the specified frequency at the specified sample rate.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 155.0]">
+            </property>
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 105.0]">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency*2*PI/sampleRate">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 115.0]">
+            </property>
+        </entity>
+        <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 105.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="out" relation="relation2"/>
+        <link port="Ramp.output" relation="relation"/>
+        <link port="TrigFunction.input" relation="relation"/>
+        <link port="TrigFunction.output" relation="relation2"/>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1149371504929, 0.2283508701107, 0.3387379202453, 0.4446351791849, 0.544639035015, 0.6374239897487, 0.7217602280984, 0.7965299180242, 0.8607420270039, 0.9135454576426, 0.9542403285163, 0.9822872507287, 0.9973144772245, 0.9991228300989, 0.9876883405951, 0.9631625667977, 0.92587058481, 0.8763066800439, 0.8151277957286, 0.7431448254774, 0.6613118653237, 0.5707135676844, 0.4725507648691, 0.3681245526847, 0.2588190451025, 0.1460830285624, 0.0314107590781, -0.0836778433323, -0.1976573403791, -0.3090169943749, -0.4162807922604, -0.5180270093731, -0.612907053653, -0.6996633405134, -0.777145961457, -0.844327925502, -0.9003187714022, -0.9443763702375, -0.9759167619387, -0.9945218953683, -0.9999451693655, -0.9921147013145, -0.9711342799096, -0.9372819894919, -0.8910065241884, -0.8329212407101, -0.7637960286346, -0.6845471059287, -0.5962248749656, -0.5, -0.3971478906348, -0.2890317969445, -0.1770847403196, -0.0627905195293, 0.0523359562429, 0.1667687467161, 0.2789911060392, 0.3875155864521, 0.4909037536151, 0.5877852522925, 0.6768759696827, 0.7569950556518, 0.8270805742746, 0.8862035792312, 0.9335804264972, 0.9685831611286, 0.9907478404714, 0.9997806834748, 0.9955619646031, 0.9781476007338, 0.9477684100096, 0.904827052466, 0.8498926929869, 0.7836934573258, 0.7071067811865, 0.6211477802783, 0.5269557954967, 0.4257792915651, 0.3189593092981, 0.2079116908178, 0.0941083133185, -0.0209424198834, -0.1357155724343, -0.2486898871649, -0.3583679495453, -0.4632960351199, -0.5620833778521, -0.6534206039901, -0.7360970871197, -0.8090169943749, -0.8712138111202, -0.9218631515885, -0.9602936856769, -0.9859960370705, -0.9986295347546, -0.9980267284283, -0.9841956079692, -0.9573194975321, -0.917754625684, -0.8660254037844, -0.8028174751911, -0.7289686274214, -0.645457687724, -0.5533915492433, -0.4539904997396, -0.3485720473218, -0.2385334575786, -0.1253332335643, -0.0104717841163, 0.1045284632676, 0.2181432413965, 0.3288666467386, 0.4352310993723, 0.535826794979, 0.6293203910498, 0.7144726796328, 1.0630984061229, 0.9645851369421, 0.8249098120944, 0.9448038169715, 0.8703201190078, 1.164503590255, 0.7871966288056, 1.0714114286043, 1.2029537058996, 0.5857341003032, 0.6555315417228, 0.4985532394561, 0.7104179564133, 0.5167588782871, 0.1622870972858, 0.6063844600849, 0.4152994309536, 0.3204801064431, 0.1274348294706, -0.1861327732788, -0.2383908154567, -0.2471712369845, -0.389939421022, -0.1748597599326, -0.5325184843434, -0.4258735781653, -0.6830405586861, -0.4258812575668, -1.086388905268, -1.0873777751325, -0.9408807689542, -0.9735789028732, -0.9933727656004, -1.0, -0.9933727656004, -0.9735789028732, -0.9408807689542, -0.8957117602394, -0.8386705679454, -0.7705132427758, -0.6921431738704, -0.6045991148624, -0.5090414157504, -0.4067366430758, -0.2990407922561, 0.0855620791615, 0.0359826796539, -0.0424506432235, 0.1501817657166, 0.1589687650014, 0.5458515178239, 0.2694437425416, 0.6614202679839, 0.9061584859694, 0.4060686840454, 0.5953772987915, 0.5587074823873, 0.890083372671, 0.8135540982173, 0.5722782579061, 1.1241373463489, 1.0339515033846, 1.0318314604496, 0.9220568807256, 0.6812276820391, 0.6902116418315, 0.7303650899769, 0.6235740508669, 0.861197274193, 0.512349726386, 0.6139566360694, 0.3379692619229, 0.5627752266055, -0.1431898740549, -0.2021377990094, 0.0396240693367, -0.0381663050514, -0.1379663720861, -0.4025981697227, -0.626914010279, -0.3744042883165, -0.8272045634279, -0.6237864114912, -0.6017715783016, -0.8289924155665, -0.9563072748887, -1.2462591135507, -1.0923977438546, -1.010558943264, -0.9694983613424, -0.7827760809407, -0.7579063467983, -0.7637123219916, -1.1491950008141, -0.9161188753747, -0.6555532990988, -0.5328235435273, -0.2297757330631, -0.7143025611186, -0.1689095802949, -0.3254487737761, -0.1253259102338, 0.4824225755731, 0.1460036492759, 0.282877285944, 0.3498861233179, 0.8513404143318, 0.9788849866526, 0.7060841520986, 0.9978211314862, 0.4629304684849, 1.0676012481797, 0.6277630220358, 1.1903855455244, 1.0696525782035, 0.9830324590323, 0.999872299099, 0.9962509439816, 0.6259878583021, 0.8523669394916, 0.8400501571716, 0.6611788722352, 0.7571958244966, 0.6256056475197, 0.5262094525854, 0.4558579930119, 0.2619093638325, 0.2099244636075, 0.1948144430452, -0.0369304221338, -0.1128775131178, -0.4142460532506, -0.3978367295027, -0.1466051710078, -0.4759275922203, -0.3739853766634, -0.5449424009207, -0.8175241637799, -1.0511154587737, -1.0670547814135, -0.9991370813564, -0.6827771610788, -1.2681697547264, -1.2798064557018, -0.9629853923651, -0.856575820548, -1.2002196247265, -1.1069475674067, -0.5897224447462, -0.9181078022586, -0.3199277119205, -0.5340964160655, -0.5038511986218, -0.4691290999238, -0.3343740253214, 0.3604556436131, -0.0539550447378, 0.1369000151546, 0.2588190451025, 0.3681245526847, 0.472550764869, 0.5707135676844, 0.6613118653236, 0.7431448254774, 0.8151277957286, 0.8763066800439, 0.92587058481, 0.9631625667977, 0.9876883405951, 0.9991228300989, 0.9973144772245, 0.9822872507287, 0.9542403285163, 0.9135454576426, 0.8607420270039, 0.7965299180242, 0.7217602280983, 0.6374239897487, 0.544639035015, 0.4446351791849, 0.3387379202452, 0.2283508701106, 0.1149371504928, -6.615444841814743E-14, -0.1149371504929, -0.2283508701107, -0.3387379202454, -0.444635179185, -0.5446390350151, -0.6374239897488, -0.7217602280984, -0.7965299180243, -0.860742027004, -0.9135454576426, -0.9542403285163, -0.9822872507287, -0.9973144772245, -0.9991228300989, -0.9876883405951, -0.9631625667976, -0.9258705848099, -0.8763066800438, -0.8151277957285, -0.7431448254773, -0.6613118653235, -0.5707135676843, -0.4725507648689, -0.3681245526845, -0.2588190451024, -0.1460830285623, -0.031410759078, 0.0836778433325, 0.1976573403793, 0.3090169943751, 0.4162807922606, 0.5180270093733, 0.6129070536531, 0.6996633405135, 0.7771459614571, 0.8443279255021, 0.9003187714023, 0.9443763702375, 0.9759167619388, 0.9945218953683, 0.9999451693655, 0.9921147013145, 0.9711342799096, 0.9372819894918, 0.8910065241883, 0.83292124071, 0.7637960286345, 0.6845471059285, 0.5962248749654, 0.4999999999998, 0.3971478906346, 0.2890317969442, 0.1770847403193, 0.0627905195291, -0.0523359562432, -0.1667687467164, -0.2789911060395, -0.3875155864524, -0.4909037536154, -0.5877852522927, -0.6768759696829, -0.7569950556519, -0.8270805742747, -0.8862035792313, -0.9335804264973, -0.9685831611287, -0.9907478404715, -0.9997806834749, -0.9955619646031, -0.9781476007337, -0.9477684100095, -0.9048270524659, -0.8498926929867, -0.7836934573256, -0.7071067811863, -0.6211477802781, -0.5269557954964, -0.4257792915648, -0.3189593092977, -0.2079116908174, -0.0941083133182, 0.0209424198837, 0.1357155724347, 0.2486898871652, 0.3583679495456, 0.4632960351202, 0.8350267715997, 0.762641480772, 0.6517707901673, 0.8027642950515, 0.7612627555065, 1.0898738825941, 0.7479837541169, 1.0681351327118, 1.2356574143651, 0.6539843428432, 0.758423697627, 0.6347235278543, 0.8780615124666, 0.7136536757124, 0.385823400134, 0.8535994134043, 0.6829163318587, 0.6049518350708, 0.4249908641696, 0.1205636203134, 0.0733808392491, 0.0655433111651, -0.0804268446501, 0.1273484198751, -0.24162030999, -0.150141110042, -0.4261284841885, -0.1911948097704, -0.8770387283728, -0.9061386945263, -0.625197709475, -0.6549971076336, -0.6986304338116, -0.8996641862784, -1.0537936356575, -0.7254394598421, -1.0977424963722, -0.810241269263, -0.7016720008061, -0.8410142757706, -0.8802912294214, -1.0832127147148, -0.8444820850564, -0.6810600148679, -0.5627834966141, -0.304236069365, -0.2138839820278, -0.1614183314862, -0.4966124714788, -0.2218974419836, 0.0711055020194, 0.2166411489111, 0.5325610943134, 0.0508020315031, 0.5888217226208, 0.4148659135211, 0.5877596835204, 1.1588275050308, 0.7767625264039, 0.8596297368856, 0.8649876007073, 1.2979635217084, 1.3511099719748, 0.998977370912, 1.2075004397606, 0.5866166783711, 1.1036549646677, 0.5757063722654, 1.0509085127356, 0.8446038563758, 0.6753949494274, 0.6137235734894, 0.5367091986028, 0.0991440748802, 0.2652041525159, 0.2003508974821, 0.073238197127, -0.0418756537298, -0.1564344650409, -0.2689198206159, -0.3778407868191, -0.4817536741023, -0.5792811723432, -0.6691306063593, -0.7501110696309, -0.8211492091341, -0.8813034520653, -0.9297764858885, -0.9659258262892, -0.9892723329631, -0.9995065603658, -0.9964928592494, -0.9802711746216, -0.9510565162949, -0.9092361090468, -0.8553642601601, -0.7901550123753, -0.7144726796323, -0.6293203910493, -0.5358267949784, -0.4352310993717, -0.3288666467379, -0.2181432413958, -0.1045284632669, 0.010471784117, 0.125333233565, 0.2385334575793, 0.3485720473225, 0.4539904997402, 0.553391549244, 0.6454576877245, 0.7289686274219, 0.8028174751916, 0.8660254037848, 0.9177546256843, 0.9573194975323, 0.9841956079694, 0.9980267284283, 0.9986295347545, 0.9859960370704, 0.9602936856767, 0.9218631515882, 0.8712138111198, 0.8090169943745, 0.7360970871192, 0.6534206039895, 0.5620833778515, 0.4632960351191, 0.3583679495445, 0.2486898871641, 0.1357155724335, 0.0209424198825, 0.1788350804279, -0.098690814037, -0.4032856062516, -0.4320319908895, -0.6369068511113, -0.4531370492735, -0.9194167127473, -0.7015543616851, -0.6128648133768, -1.2488694380515, -1.173540320352, -1.3007435704116, -1.0352550778204, -1.1521524115466, -1.4077419155282, -0.8439523751452, -0.8961217823618, -0.834643293403, -0.8560802098436, -0.9850034826592, -0.842028588011, -0.6475751746905, -0.5818023823803, -0.1556387033081, -0.3024681746314, 0.0119567899819, -0.0432333410577, 0.4074225047392, -0.0706335970021, 0.0973657820522, 0.5621051935366, 0.7003671525279, 0.8068305502021, 0.7359394359462, 0.6902735675996, 1.1039746401181, 0.7927705881823, 1.1163130531922, 1.2353881053927, 1.080876911432, 1.0009573920088, 0.7324583897868, 0.8815457465122, 0.9324469617277, 0.9168164471299, 1.0218455302378, 0.9411027662466, 0.8071648296413, 0.2727290472131, 0.3380052211174, 0.4141480971508, 0.3382768286989, 0.4311776424351, -0.2722567682418, 0.0483695477909, -0.335816229905, -0.3632025354538, 0.0201897095691, -0.5344588064117, -0.6067955910392, -0.7372050335715, -0.4187602066429, -0.4573905893547, -0.8773293091322, -0.71174291065, -1.3501247912998, -0.8249141448816, -1.3191282180727, -0.7850765324338, -0.9081966371281, -0.9709885529586, -0.9044209990147, -0.8330742441505, -1.1041224862188, -0.7555968678374, -0.624454406851, -0.6404552184309, -0.3643153243703, -0.3009175250173, -0.1930451711396, -0.0465947439323, -0.017081742206, 0.158092867385, 0.3708293569137, 0.3645980176415, 0.5088424063874, 0.4194247787096, 0.6367351508814, 1.0751550570911, 0.9168272007699, 1.1713037562696, 1.1323990853568, 0.9696374054467, 0.8221783161435, 0.8675416853029, 0.971120028652, 1.2970258808307, 0.6949379814366, 0.6405860244762, 0.8892380496172, 0.9029283454176, 0.4432439721526, 0.3986922234184, 0.7581370843946, 0.2541063031232, 0.6611038944165, 0.2427496384095, 0.0585126222003, -0.1287013464714, -0.2203945282753, 0.2464761465656, -0.3943827981916, -0.4254638056688, -0.5607801295017, -0.5247750343484, -0.8115484837712, -0.7279284498457, -1.0797155278028, -1.2435105396196, -0.8017706291796, -0.9865565586202, -1.1415717491812, -1.0158831240953, -1.0331967464069, -0.8654955304216, -1.1468594085673, -1.0412402262581, -0.714475326879, -0.9052187677159, -0.6802166935098, -0.9525574872611, -0.6188800873476, -0.3622995890503, -0.3926522496226, -0.05247258605, -0.2682221469624, 0.1305081114671, 0.3870929362396, 0.4878645590336, 0.8582596009882, 0.5745549844717, 0.7380607894909, 0.9752061530121, 0.7958670643609, 0.8701159810339, 1.0922205809723, 0.7461763228045, 0.9964298850197, 1.0950215384914, 0.9482065850014, 1.2725054898682, 0.6404197080274, 1.0759281243659, 0.9011533040651, 0.8674132679554, 0.8113680979427, 1.06225625348, 0.863231804733, 0.3044973926582, 0.5494686329637, 0.4708753042095, 0.2494456840623, 0.0912355105322, 0.2152234329118, 0.0515667089054, -0.4029369272905, -0.2225160583616, -0.4174087333171, -0.5689412153972, -0.7469730918233, -0.8441165692463, -0.7928798398055, -1.1235313972596, -1.1676415830086, -1.0371709153681, -1.1542235546748, -0.5841648208306, -0.9159072019329, -1.3443251080168, -1.3330003901128, -0.7125236433097, -0.955228713935, -0.7381360871476, -0.8649788657027, -0.6418744406602, -0.7038416512895, -0.1846910796866, -0.4921109927466, -0.3222843004006, -0.1831232401644, 0.0632096132574, 0.1386910772895, -0.2963047394296, 0.3859694771688, 0.514532717364, 0.7584221598257, 0.5047383859855, 0.6744280272507, 0.8598814903077, 0.7614773780528, 0.8384132568699}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 155.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{393.0, 214.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[115.0, 210.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Modal Model.signal" relation="relation"/>
+    <link port="Modal Model.event" relation="relation2"/>
+    <link port="Modal Model.output" relation="relation4"/>
+    <link port="PoissonClock.output" relation="relation2"/>
+    <link port="Signal Source.out" relation="relation"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test2.input" relation="relation2"/>
+</entity>
