@@ -26,7 +26,7 @@
     <li> Figure 9.17: <a href="PeriodicSamplerIntegrator/index.html">PeriodicSamplerIntegrator</a>.</li>
     <li> Figure 9.18: <a href="ContinuousInsideDE/index.html">ContinuousInsideDE</a>.</li>
     <li> Figure 9.19: <a href="FixedPointNoLimitation/index.html">FixedPointNoLimitation</a>.</li>
-    <li> Figure 9.20: <a href="BouncingBall/index.html">BouncingBall</a>.</li>
+    <li> Figure 9.20: <a href="BouncingBall/index.html">BouncingBall</a>. <i>Does not work under Mac OS X Web Start.</i></li>
     <li> Figure 9.23: <a href="PiecewiseContinuous/index.html">PiecewiseContinuous</a>.</li>
   </ul>
 
