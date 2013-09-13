@@ -244,6 +244,9 @@ public class AudioReadBuffer extends Transformer {
      *   from the specified sound file.
      */
     public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            return false;
+        }
         return _postfireReturn;
     }
 
