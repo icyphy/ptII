@@ -319,6 +319,9 @@ public class AudioWriter extends Sink {
      *   writing the audio sample(s) to the specified file.
      */
     public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            return false;
+        }
         int returnVal = iterate(1);
 
         if (returnVal == COMPLETED) {
