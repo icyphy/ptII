@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Initializable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.Manager;
@@ -280,20 +281,6 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** Invoke the initialize() methods of all the deeply contained
-     *  actors in the container (a composite actor) of this director.
-     *  These are expected to call initialize(Actor), which will
-     *  result in the creation of a new thread for each actor.
-     *  Also, set current time to 0.0, or to the current time of
-     *  the executive director of the container, if there is one.
-     *
-     *  @exception IllegalActionException If the initialize() method
-     *   of one of the deeply contained actors throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
-
     /** Initialize the given actor.  This class overrides the base
      *  class to reset the flags for all of the receivers, and to
      *  create a new ProcessThread for each actor being controlled.
@@ -307,6 +294,14 @@ public class ProcessDirector extends Director {
      */
     public synchronized void initialize(Actor actor)
             throws IllegalActionException {
+        // FIXME: Note that ProcessDirector does *not* invoke
+        // super.initialize(actor), so changes made to
+        // Director.initialize(Actor) apply to
+        // ProcessDirector.initialize(Actor).
+
+        // FIXME: This method does not set _resourceScheduling like
+        // the parent method.
+
         if (_debugging) {
             _debug("Initializing actor: " + ((NamedObj) actor).getFullName());
         }
@@ -342,15 +337,6 @@ public class ProcessDirector extends Director {
         return _stopFireRequested;
     }
 
-    /** Return true if a stop has been requested on the director.
-     *  This is used by the ProcessThread to tell the difference
-     *  between a request to pause and a request to stop.
-     *  @return True if stop() has been called.
-     */
-    public boolean isStopRequested() {
-        return _stopRequested;
-    }
-
     /** Return true if the specified thread has been registered
      *  with addThread() and has not been removed with removeThread().
      *  @return True if the specified thread is active.
@@ -362,14 +348,6 @@ public class ProcessDirector extends Director {
         return _activeThreads.contains(thread);
     }
 
-    /** Return a new receiver of a type compatible with this director.
-     *  In class, this returns a new Mailbox.
-     *  @return A new Mailbox.
-     */
-    public Receiver newReceiver() {
-        return new Mailbox();
-    }
-
     /** Return false if a stop has been requested or if
      *  the model has reached deadlock. Return true otherwise.
      *  @return False if the director has detected a deadlock or
@@ -377,7 +355,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        _notDone = _notDone && !_stopRequested && !_finishRequested;
+        _notDone = _notDone && super.postfire();
 
         if (_debugging) {
             synchronized (this) {
@@ -399,6 +377,12 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException {
+        // FIXME: Note that ProcessDirector does *not* invoke
+        // super.prefire(), so changes made to Director.prefire()
+        // should also be made to ProcessDirector.prefire().
+
+        // FIXME: this method does nothing about model time.
+
         synchronized (this) {
             // Clear the stopFire flag and trigger all of the actor threads.
             _stopFireRequested = false;
@@ -429,6 +413,8 @@ public class ProcessDirector extends Director {
      *  throws it.
      */
     public void preinitialize() throws IllegalActionException {
+        // This method calls super.preinitialize() at the end.
+
         _notDone = true;
         synchronized (this) {
             _activeThreads.clear();
@@ -468,6 +454,8 @@ public class ProcessDirector extends Director {
      *  so that the next call to postfire() returns false.
      */
     public void stop() {
+        // This method does not call super.stop() by design.
+
         // Set this before calling stopThread(), in case the thread
         // needs to distinguish between stopFire() and this method.
         if (_debugging) {
@@ -517,6 +505,8 @@ public class ProcessDirector extends Director {
      *  non-blocking.
      */
     public void stopFire() {
+        // This method does not call super.stopFire() by design.
+
         if (_debugging) {
             _debug("stopFire() has been called.");
         }
@@ -663,8 +653,19 @@ public class ProcessDirector extends Director {
      *   this director.
      */
     public void wrapup() throws IllegalActionException {
+        // FIXME: Note that ProcessDirector does *not*
+        // invoke super.wrapup(), so changes made to Director.wrapup()
+        // should also be made to ProcessDirector.wrapup().
+
         if (_debugging) {
             _debug("Called wrapup().");
+        }
+
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.wrapup();
+            }
         }
 
         CompositeActor container = (CompositeActor) getContainer();
