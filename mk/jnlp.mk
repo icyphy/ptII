@@ -230,6 +230,12 @@ SDF_DEMO_JARS = \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
+PTANGO_JAR_FILES = \
+	lib/jetty-all-8.1.5-v20120716.jar \
+	lib/javax.servlet-api-3.0.1.jar \
+	lib/smack.jar \
+	lib/smackx.jar
+
 PTFMI_JARS = \
 	lib/jna.jar \
 	org/ptolemy/fmi/fmi.jar \
@@ -453,7 +459,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
-	$(PTANGO_JARS) \
+	$(PTANGO_JAR_FILES) \
 	org/ptolemy/ptango/ptango.jar \
 	$(PTFMI_JARS) \
 	$(PTJACL_JARS) \
