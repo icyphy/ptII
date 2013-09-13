@@ -313,6 +313,7 @@ public class DiscreteClock extends TimedSource {
      *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Check the start input, to see whether everything needs to
         // be reinitialized.
         if (start.numberOfSources() > 0) {
