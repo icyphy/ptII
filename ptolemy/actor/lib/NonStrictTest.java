@@ -261,6 +261,9 @@ public class NonStrictTest extends Sink {
      *   the required value or if the width of the input is not 1.
      */
     public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            return false;
+        }
         if (input.getWidth() != 1) {
             throw new IllegalActionException(this, "Width of input is "
                     + input.getWidth()
