@@ -855,7 +855,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
             boolean linkToJNLP = Boolean.valueOf(StringUtilities
                     .getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
-	    System.out.println("ExportHTMLAction: model: " + model + " model name: " + model.getName() + " " + model.getContainer() + " name: " + model.getContainer().getName() + model.getContainer().getContainer());
+	    // System.out.println("ExportHTMLAction: model: " + model + " model name: " + model.getName() + " " + model.getContainer() + " name: " + model.getContainer().getName() + model.getContainer().getContainer());
+
             if (linkToJNLP && (model.getContainer() == null
 			       || /* Ptera */ model.getContainer().getContainer() == null && model.getName().equals("_Controller"))) {
 		String linkToHelp = "<a href=\"" + ssiRoot + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\"" + ssiRoot + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a> (<i>Java Plug-in Required</i>)";
