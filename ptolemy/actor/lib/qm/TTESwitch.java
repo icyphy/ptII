@@ -209,6 +209,7 @@ public class TTESwitch extends AtomicQuantityManager {
      *  token, otherwise send first token in the queue of event-triggered tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Time currentTime = getDirector().getModelTime();
         if (_nextTimeFree != null && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output;
