@@ -179,14 +179,18 @@ public class ArrowKeySensor extends TypedAtomicActor {
         }
     }
 
-    /** Create the JFrame window capable of detecting the key-presses. */
-    public void initialize() {
+    /** Create the JFrame window capable of detecting the key-presses.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
         super.initialize();
         _myFrame = new MyFrame();
     }
 
-    /** Dispose of the JFrame, causing the window to vanish. */
-    public void wrapup() {
+    /** Dispose of the JFrame, causing the window to vanish.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_myFrame != null) {
             _myFrame.dispose();
