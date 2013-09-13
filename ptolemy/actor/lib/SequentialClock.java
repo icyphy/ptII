@@ -304,6 +304,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
+        if (!super.prefire()) {
+            return false;
+        }
         ArrayToken val = (ArrayToken) values.getToken();
 
         if (val == null || val.length() <= _phase) {
