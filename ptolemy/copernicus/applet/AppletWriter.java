@@ -730,6 +730,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + className + "ptolemy/codegen/codegen.jar");
                 }
                 results.put(className, "ptolemy/codegen/codegen.jar");
+            } else if (className.contains("ptolemy.data.ontologies")) {
+                if (_debug) {
+                    System.out.println("_allAttributeJars export.web: " + className
+				       + " " + "ptolemy/data/ontologies/ontologies.jar");
+                }
+                results.put(className, "ptolemy/data/ontologies/ontologies.jar");
             } else if (className.contains("ptolemy.vergil.kernel.attributes")) {
                 if (_debug) {
                     System.out.println("_allAttributeJars export.web: " + className
@@ -1607,6 +1613,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 .contains("ptolemy/domains/psdf/psdf.jar")) {
             auxiliaryClassMap.put("psdf requires mapss", "lib/mapss.jar");
         }
+
+        if (jarFilesThatHaveBeenRequired
+	    .contains("ptolemy/data/ontologies/ontologies.jar")) {
+            auxiliaryClassMap.put("ontologies requires tester", "ptolemy/domains/tester/tester.jar");
+            auxiliaryClassMap.put("ontologies requires vergil/ontologies/ontologies.jar", "ptolemy/vergil/ontologies/ontologies.jar");
+	}
 
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/actor/ptalon/gt/gt.jar")
