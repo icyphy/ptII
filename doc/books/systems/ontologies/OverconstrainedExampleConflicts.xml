@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.106793384412694">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.164640508952524">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.6059656989644, 291.63592132026633}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.4697265625, 221.56348276289683}">
     </property>
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
@@ -380,6 +380,12 @@
         <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
+        </property>
+    </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 110.0]">
         </property>
@@ -478,7 +484,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 90.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -525,7 +531,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={598, 421, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
