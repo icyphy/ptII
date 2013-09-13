@@ -107,6 +107,7 @@ public class Excel extends TypedAtomicActor {
      *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
 
         // Increment iteration counter
         _iterationCount++;
@@ -238,8 +239,9 @@ public class Excel extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        // FIXME: This should either call super.postfire()
-        // or else print the debugging message as AtomicActor.postfire() does.
+        if (!super.postfire()) {
+            return false;
+        }
         return true;
     }
 
