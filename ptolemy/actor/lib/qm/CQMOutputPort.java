@@ -98,6 +98,7 @@ public class CQMOutputPort extends TypedAtomicActor {
      */
     @Override
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             _token = input.get(0); 
         }
