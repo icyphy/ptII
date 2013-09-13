@@ -184,7 +184,7 @@ public class RecordUpdater extends TypedAtomicActor {
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-        if (!super.fire()) {
+        if (!super.prefire()) {
             return false;
         }
         for (TypedIOPort port : inputPortList()) {
