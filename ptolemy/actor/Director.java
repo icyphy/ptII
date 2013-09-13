@@ -909,6 +909,10 @@ public class Director extends Attribute implements Executable {
      *  acceptable to the domain.  Not thrown in this base class.
      */
     public void initialize(Actor actor) throws IllegalActionException {
+        // FIXME: Note that ProcessDirector does *not*
+        // invoke this method, so changes made here might
+        // apply to ProcessDirector.initialize(Actor).
+
         if (_debugging) {
             _debug("Initializing actor: " + ((Nameable) actor).getFullName()
                     + ".");
@@ -1105,6 +1109,10 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        // FIXME: Note that ProcessDirector does *not*
+        // invoke this method, so changes made here might
+        // apply to ProcessDirector.prefire().
+
         if (_debugging) {
             _debug("Director: Called prefire().");
         }
@@ -1620,6 +1628,10 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
+        // FIXME: Note that ProcessDirector does *not*
+        // invoke this method, so changes made here might
+        // apply to ProcessDirector.wrapup().
+
         if (_debugging) {
             _debug("Director: Called wrapup().");
         }
