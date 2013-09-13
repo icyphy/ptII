@@ -196,6 +196,9 @@ public class Recorder extends Sink {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            return false;
+        }
         int width = input.getWidth();
         Token[] record = new Token[width];
 
