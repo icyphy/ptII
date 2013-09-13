@@ -166,6 +166,10 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @see #setToken(Token)
      */
     public Token getToken() throws IllegalActionException {
+        // FIXME: Coverity points out that this method should call
+        // super.getToken().  In particular, isStringMode is not handled
+        // and the token is not evaluated if _needsEvaluation is true.
+
         CompositeEntity model = getModel();
 
         boolean createEmptyModel = model == null;
@@ -299,6 +303,8 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @see #getToken()
      */
     public void setToken(Token token) throws IllegalActionException {
+        // FIXME: Coverity points out that super.setToken() is not called.
+        // In particular, setExpression() and validate() are not called here.
         ActorToken actorToken = (ActorToken) ActorToken.TYPE.convert(token);
         CompositeEntity model = (CompositeEntity) actorToken.getEntity();
         setModel(model);
