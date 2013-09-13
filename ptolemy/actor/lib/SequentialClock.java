@@ -269,6 +269,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   offsets parameters don't match.
      */
     public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            return false;
+        }
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         // Set the cycle start time here rather than in initialize
