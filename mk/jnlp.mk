@@ -453,6 +453,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
+	$(PTANGO_JARS) \
 	org/ptolemy/ptango/ptango.jar \
 	$(PTFMI_JARS) \
 	$(PTJACL_JARS) \
