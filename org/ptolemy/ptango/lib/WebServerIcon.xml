@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="WebServerIcon" class="ptolemy.vergil.icon.EditorIcon">
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/lib/img/trapdoorfemale.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/lib/img/trapdoorfemale.gif">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="40.0">
         </property>
