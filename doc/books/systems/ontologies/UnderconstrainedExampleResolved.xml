@@ -4,13 +4,13 @@
 <entity name="UnderconstrainedExampleResolved" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 161, 874, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 160, 874, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1407728570936995">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3783142826621086">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.128589527027, 249.71945885617768}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{234.25486773045367, 185.5579858597436}">
     </property>
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
@@ -19,7 +19,7 @@
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[367.71482866795367, 63.203803692084875]">
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
@@ -331,7 +331,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.714828667953668, 243.20380369208488]">
         </property>
     </property>
     <property name="Constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Duration.output &gt;= Time">
@@ -346,7 +346,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.714828667953668, 263.2038036920849]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -354,7 +354,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model with too few ontology constraints to fully resolve.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{22.285171332046332, 291.7961963079151}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 295.0]">
         </property>
     </property>
     <property name="WebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -363,8 +363,14 @@
         <property name="_hide" class="ptolemy.data.expr.Parameter" value="">
         </property>
     </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[87.71482866795367, 33.203803692084875]">
+        </property>
+    </property>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[172.71482866795367, 113.20380369208488]">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -391,7 +397,7 @@
         </port>
     </entity>
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[297.71482866795367, 193.20380369208488]">
         </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -418,7 +424,7 @@
         </port>
     </entity>
     <entity name="DistanceCovered" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="60.0">
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
             </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
@@ -431,7 +437,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[57.71482866795367, 83.20380369208488]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -461,7 +467,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 135.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[62.71482866795367, 138.20380369208488]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -491,7 +497,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[142.71482866795367, 203.20380369208488]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -508,9 +514,9 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={598, 421, 484, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
@@ -530,7 +536,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[432.71482866795367, 193.20380369208488]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
