@@ -313,6 +313,8 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *  but declared so the subclasses can throw it.
      */
     public void wrapup() throws IllegalActionException {
+        // No need to call super.wrapup(), the parent class
+        // _executeInsideModel() will do it for us.
         if (_debugging) {
             _debug("Called wrapup(), which does nothing.");
         }
