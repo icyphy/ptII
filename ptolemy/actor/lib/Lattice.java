@@ -240,6 +240,7 @@ public class Lattice extends Transformer {
     /** Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         for (int i = 0; i < _order + 1; i++) {
             _forward[i] = 0.0;
             _forwardCache[i] = 0.0;
