@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset=utf-8>
-    <!-- doc/books/systems/index.html.in $Id$ 
-	 This gets copied to the website.
-	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/intro/index.html
+    <!-- doc/books/systems/export/index.html.in $Id$ 
+	 This gets copied to the website.  As the hudson user:
+	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/export/index.html
       -->
     <title>Chapter 16: Web Interfaces</title>
   </head>
