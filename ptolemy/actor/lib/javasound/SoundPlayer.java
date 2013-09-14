@@ -188,7 +188,7 @@ public class SoundPlayer extends SoundActor {
             _doubleArrayToByteArray(data, _playbackData);
             _sourceDataLine.write(_playbackData, 0, bufferSize);
         }
-        return true;
+        return super.postfire();
     }
 
     /** Stop audio playback and free up any audio resources used

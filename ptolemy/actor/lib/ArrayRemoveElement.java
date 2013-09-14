@@ -126,6 +126,7 @@ public class ArrayRemoveElement extends TypedAtomicActor {
      *  to the value given by the <i>element</i> port-parameter.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // NOTE: This has be outside the if because we need to ensure
         // that if an element token is provided that it is consumed even
         // if there is no input token.

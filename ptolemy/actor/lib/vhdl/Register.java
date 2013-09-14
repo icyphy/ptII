@@ -108,6 +108,7 @@ public class Register extends SynchronousFixTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.prefire();
         if (input.hasToken(0)) {
             sendOutput(output, 0, input.get(0));
         }

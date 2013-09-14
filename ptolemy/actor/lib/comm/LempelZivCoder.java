@@ -110,8 +110,10 @@ public class LempelZivCoder extends Transformer {
 
     /** Initialize the actor by creating the code book containing
      *  only one empty string "".
+     *  @exception IllegalActionException If thrown by a super class.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _codeBook = new LinkedList();
         _codeBook.add("");
         _current = "";

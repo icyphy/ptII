@@ -107,8 +107,10 @@ public class LempelZivDecoder extends Transformer {
 
     /** initialize the actor by creating a decode book that only
      *  contains one empty string "".
+     *  @exception IllegalActionException If thrown by a super class.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _decodeBook = new LinkedList();
         _decodeBook.add("");
     }

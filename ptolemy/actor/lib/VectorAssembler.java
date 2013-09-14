@@ -154,6 +154,6 @@ public class VectorAssembler extends Transformer {
             }
         }
 
-        return true;
+        return super.prefire();
     }
 }

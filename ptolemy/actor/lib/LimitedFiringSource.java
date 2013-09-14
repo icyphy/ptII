@@ -140,7 +140,7 @@ public class LimitedFiringSource extends Source {
             }
         }
 
-        return true;
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////

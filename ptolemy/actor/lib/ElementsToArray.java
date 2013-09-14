@@ -133,6 +133,6 @@ public class ElementsToArray extends Transformer {
             }
         }
 
-        return true;
+        return super.prefire();
     }
 }

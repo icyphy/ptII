@@ -146,8 +146,11 @@ public class Multiplexor extends Transformer {
         }
     }
 
-    /** Initialize to the default, which is to use channel zero. */
-    public void initialize() {
+    /** Initialize to the default, which is to use channel zero.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _selectChannel = null;
     }
 

@@ -124,6 +124,7 @@ public class ArrayContains extends TypedAtomicActor {
      *  and output true or false accordingly.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // NOTE: This has be outside the if because we need to ensure
         // that if an element token is provided that it is consumed even
         // if there is no array token.

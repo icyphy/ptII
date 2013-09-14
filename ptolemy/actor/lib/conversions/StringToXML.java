@@ -131,7 +131,7 @@ public class StringToXML extends Transformer {
             }
         }
 
-        return false;
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
