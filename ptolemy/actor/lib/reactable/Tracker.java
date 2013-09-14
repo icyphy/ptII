@@ -81,6 +81,7 @@ public class Tracker extends Transformer {
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         try {
        /* TrackerRemote tracker = new TrackerRemote("Tracker", null, null, null, null);
         tracker.run();
