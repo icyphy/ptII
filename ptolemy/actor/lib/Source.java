@@ -144,8 +144,13 @@ public abstract class Source extends TypedAtomicActor {
         // even back to this same trigger port, in which case higher
         // numbered channels will not have their inputs read.
         for (int i = 0; i < trigger.getWidth(); i++) {
+            // FIXME: Should this be:
+            // if (trigger.isKnown(i) && trigger.hasToken(i)) {
+            // DiscreteClock.fire() was checking if the trigger was known
+            // before DiscreteClock.fire() was calling super.fire()
             if (trigger.hasToken(i)) {
                 trigger.get(i);
+                _triggered = true;
             }
         }
     }
@@ -194,5 +199,13 @@ public abstract class Source extends TypedAtomicActor {
         }
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Indicator of whether trigger inputs have arrived
+     *  since the last output.
+     */
+    protected transient boolean _triggered;
 
 }

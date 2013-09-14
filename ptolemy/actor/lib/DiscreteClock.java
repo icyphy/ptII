@@ -341,20 +341,20 @@ public class DiscreteClock extends TimedSource {
         // Update the period from the port parameter, if appropriate.
         period.update();
 
-        // Check for a trigger input.
-        // Have to consume all trigger inputs.
-        if (trigger.numberOfSources() > 0) {
-            // Have to consume all trigger inputs.
-            for (int i = 0; i < trigger.getWidth(); i++) {
-                if (trigger.isKnown(i) && trigger.hasToken(i)) {
-                    trigger.get(i);
-                    _triggered = true;
-                    if (_debugging) {
-                        _debug("Received a trigger input. Enabling an output.");
-                    }
-                }
-            }
-        }
+//         // Check for a trigger input.
+//         // Have to consume all trigger inputs.
+//         if (trigger.numberOfSources() > 0) {
+//             // Have to consume all trigger inputs.
+//             for (int i = 0; i < trigger.getWidth(); i++) {
+//                 if (trigger.isKnown(i) && trigger.hasToken(i)) {
+//                     trigger.get(i);
+//                     _triggered = true;
+//                     if (_debugging) {
+//                         _debug("Received a trigger input. Enabling an output.");
+//                     }
+//                 }
+//             }
+//         }
 
         // See whether it is time to produce an output.
         Director director = getDirector();
@@ -504,8 +504,14 @@ public class DiscreteClock extends TimedSource {
      *   <i>offsets</i> parameters do not have the same length.
      */
     public boolean prefire() throws IllegalActionException {
+        // FIXME: This comment is not correct:
         // Cannot call super.prefire() because it consumes trigger
         // inputs.
+
+        // super.prefire() longer consumes trigger inputs.
+        // However, if we call super.prefire() then some of
+        // the DiscreteClock tests fail.
+
         // Check the length of the values and offsets arrays.
         // This is done here because it cannot be done in
         // attributeChanged(), since the two parameters are set
@@ -517,6 +523,8 @@ public class DiscreteClock extends TimedSource {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
         }
+
+        // Start of portion of prefire() from TimedSource
         Time currentTime;
         boolean localTime = ((BooleanToken) stopTimeIsLocal.getToken())
                 .booleanValue();
@@ -531,9 +539,12 @@ public class DiscreteClock extends TimedSource {
             }
             return false;
         }
+        // End of portion of prefire() from TimedSource
+
         if (_debugging) {
             _debug("Called prefire, which returns true.");
         }
+
         return true;
     }
 
@@ -633,9 +644,4 @@ public class DiscreteClock extends TimedSource {
      *  skip to the next phase in postfire.
      */
     private boolean _outputProduced;
-
-    /** Indicator of whether trigger inputs have arrived
-     *  since the last output.
-     */
-    private transient boolean _triggered;
 }
