@@ -732,7 +732,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 results.put(className, "ptolemy/codegen/codegen.jar");
             } else if (className.contains("ptolemy.data.ontologies")) {
                 if (_debug) {
-                    System.out.println("_allAttributeJars export.web: " + className
+                    System.out.println("_allAttributeJars ontologies: " + className
 				       + " " + "ptolemy/data/ontologies/ontologies.jar");
                 }
                 results.put(className, "ptolemy/data/ontologies/ontologies.jar");
@@ -742,12 +742,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + " " + "ptolemy/vergil/vergilApplet.jar");
                 }
                 results.put(className, "ptolemy/vergil/vergilApplet.jar");
+            } else if (className.contains("ptolemy.vergil.basic.export.html")) {
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars export.web: " + className
+                            + " " + "ptolemy/vergil/basic/export/html/html.jar");
+                }
+                results.put(className, "ptolemy/vergil/basic/export/html/html.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.web")) {
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars export.web: " + className
                             + " " + "ptolemy/vergil/basic/export/web/web.jar");
                 }
-                results.put(className, "ptolemy/vergil/basic/export/web/web.jar");
+
+
             } else {
                 results.put(object.getClass().getName(), _getDomainJar(object
                         .getClass().getPackage().getName()));
