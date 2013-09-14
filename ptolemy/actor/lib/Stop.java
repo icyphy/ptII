@@ -133,7 +133,10 @@ public class Stop extends Sink {
      *  @exception IllegalActionException If there is no director or
      *   if there is no manager, or if the container is not a
      *   CompositeActor.
-     *  @return False if a stop is requested, and true otherwise.
+     *  @return False if this actor is trying to stop execution if any
+     *  token is true or if the input is not connected.  If this actor
+     *  is not trying to stop execution, then return the value
+     *  returned by super.postfire().
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
@@ -184,6 +187,13 @@ public class Stop extends Sink {
 //                                 + "CompositeActor.");
 //             }
 
+        }
+
+        // If this actor is not trying to stop execution, then return
+        // the value returned by super.postfire().
+        boolean superResults = super.postfire();
+        if (!result) {
+            return superResults;
         }
 
         return !result;
