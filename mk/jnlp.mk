@@ -191,6 +191,7 @@ CORE_JNLP_JARS = \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
+	ptolemy/vergil/basic/export/export.jar \
 	ptolemy/vergil/basic/export/web/web.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
