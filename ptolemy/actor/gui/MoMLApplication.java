@@ -68,7 +68,6 @@ public class MoMLApplication extends ConfigurationApplication {
      */
     public MoMLApplication(String[] args) throws Exception {
         this("ptolemy/configs", args);
-        System.out.println("MoMLApplication(args)" + args);
         MessageHandler.setMessageHandler(new ActorGraphicalMessageHandler());
     }
 
