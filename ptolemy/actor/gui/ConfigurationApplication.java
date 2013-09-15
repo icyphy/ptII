@@ -1734,6 +1734,9 @@ public class ConfigurationApplication implements ExecutionListener {
     /** URI from which the configuration was read.  We use a URI to
      * avoid URL.equals(),which is very expensive?  See FindBugs and
      * http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
+     * This variable is volatile to avoid "unsynchronized lazy
+     * initialization of a non-volatile static field".  See FindBugs
+     * LI_LAZY_INIT_STATIC.
      */
-    private static URI _initialSpecificationURI;
+    private static volatile URI _initialSpecificationURI;
 }
