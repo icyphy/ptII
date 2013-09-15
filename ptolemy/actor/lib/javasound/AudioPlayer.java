@@ -172,7 +172,9 @@ public class AudioPlayer extends LiveSoundActor {
     /** Return true if the actor has enough data to fire.
      */
     public boolean prefire() throws IllegalActionException {
-        super.prefire();
+        if (!super.prefire()) {
+            return false;
+        }
 
         for (int j = 0; j < _channels; j++) {
             if (!input.hasToken(j, _transferSize)) {
@@ -211,7 +213,7 @@ public class AudioPlayer extends LiveSoundActor {
                     "Cannot playback audio.");
         }
 
-        return true;
+        return super.postfire();
     }
 
     /** Stop audio playback and free up any audio resources used

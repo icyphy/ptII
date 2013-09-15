@@ -138,6 +138,11 @@ public abstract class Source extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
+        // Note that the following derived classes do not call
+        // super.fire(): WallClockTime.
+        // if significant changes are made to this method, please review
+        // the above classes.
+
         // NOTE: It might seem that using trigger.numberOfSources() is
         // correct here, but it is not. It is possible for channels
         // to be connected, for example, to other output ports or

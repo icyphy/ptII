@@ -219,6 +219,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @exception IllegalActionException If thrown reading the input.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (!delayed.getToken().equals(BooleanToken.TRUE)) {
             if (input.hasToken(0)) {
                 Token value = input.get(0);
@@ -366,7 +367,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             }
         }
 
-        return true;
+        return super.postfire();
     }
 
     /** If there is no variable with the specified name, then create one.

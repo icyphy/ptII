@@ -169,6 +169,9 @@ public class MobileFunction extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        if (!super.prefire()) {
+            return false;
+        }
         if (_debugging) {
             _debug("Invoking prefire");
         }

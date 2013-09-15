@@ -458,7 +458,7 @@ public class SendMail extends TypedAtomicActor {
                     "Failed to open attachment file.");
         }
 
-        return true;
+        return super.postfire();
     }
 
     //    /** Override the base class to set <i>reallySendMail</i> back

@@ -276,8 +276,9 @@ public class Expression extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
 
-        // This actor never requests termination.
-        return true;
+        // This actor never requests termination, but _stopRequested
+        // might have been set elsewhere.
+        return super.postfire();
     }
 
     /** Prefire this actor.  Return false if an input port has no

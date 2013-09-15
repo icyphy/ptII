@@ -232,6 +232,7 @@ public class XSLTransformer extends Transformer {
      *  class name does not start with net.sf.saxon.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _xsltSource = null;
         _transformer = null;
 

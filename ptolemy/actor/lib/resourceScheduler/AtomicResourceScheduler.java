@@ -259,6 +259,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *   scheduled by this scheduler cannot be retrieved.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _remainingTimes = new HashMap<Actor, Time>();
         _lastTimeScheduled = new HashMap<Actor, Time>();
         _actors = new ArrayList<NamedObj>();
@@ -375,6 +376,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      *  @exception IllegalActionException Thrown by super class.
      */
     public void wrapup() throws IllegalActionException {
+        super.wrapup();
         for (NamedObj actor : _actors) {
             event(actor, ((CompositeActor) getContainer()).getDirector()
                     .getEnvironmentTime().getDoubleValue(), null);

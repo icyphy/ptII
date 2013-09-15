@@ -144,8 +144,10 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
 
     /** Initialize the plot and the legend with the list of quantity managers used
      *  in this model.
+     *  @exception IllegalActionException If thrown by the parent class.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _quantityManagers = new ArrayList();
         if (getContainer() instanceof CompositeActor) {
             Director director = ((CompositeActor) getContainer()).getDirector();

@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  \r's from test output.
 
  @author Christopher Brooks
- @deprecated Use StringReplace with the regularExpression parameter set to false.
+ @deprecated This class is primarily used in models that will be code generated so that regular expressions are not needed in the output.  In general, use StringReplace with the regularExpression parameter set to false.
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating ret (cxh)

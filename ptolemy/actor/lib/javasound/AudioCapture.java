@@ -248,7 +248,7 @@ public class AudioCapture extends LiveSoundActor {
             output.send(j, _audioSendArray, count);
         }
 
-        return true;
+        return super.postfire();
     }
 
     /** Stop capturing audio. Free up any system resources involved

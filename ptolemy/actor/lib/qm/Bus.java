@@ -226,6 +226,7 @@ public class Bus extends AtomicQuantityManager {
     /** Send first token in the queue to the target receiver.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
         // been received; _nextTimeFree could be null.

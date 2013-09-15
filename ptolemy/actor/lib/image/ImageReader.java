@@ -123,6 +123,7 @@ public class ImageReader extends Source {
     /** Open the file at the URL, and set the width of the output.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         attributeChanged(fileOrURL);
     }
 
@@ -130,6 +131,9 @@ public class ImageReader extends Source {
      *  @exception IllegalActionException If an IO error occurs.
      */
     public boolean prefire() throws IllegalActionException {
+        if (!super.prefire()) {
+            return false;
+        }
         if (_url == null) {
             throw new IllegalActionException("sourceURL was null");
         }

@@ -273,6 +273,7 @@ public class CanBus extends AtomicQuantityManager {
      *  @exception IllegalActionException If firing is not permitted.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Time currentTime = getDirector().getModelTime();
 
         // 'If' statement that allows to construct the 'multiCast' Map

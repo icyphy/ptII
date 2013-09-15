@@ -159,6 +159,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         Precision precision = new Precision(
                 ((Parameter) getAttribute("outputPrecision")).getExpression());
 

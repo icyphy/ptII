@@ -315,6 +315,7 @@ public class AFDXSwitch extends AtomicQuantityManager {
      *  target receiver.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Time currentTime = getDirector().getModelTime();
         Time computedTimeStamp = null;
         boolean multicast = false;

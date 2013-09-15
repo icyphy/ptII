@@ -134,6 +134,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *   <i>startingSequenceNumber</i> parameter causes an exception.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _fireProducedOutput = false;
         _nextSequenceNumber = ((IntToken) startingSequenceNumber.getToken())
                 .intValue();

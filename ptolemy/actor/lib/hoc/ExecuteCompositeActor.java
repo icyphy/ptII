@@ -191,6 +191,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
             _debug("---- calling fire(), which will execute a subsystem.");
         }
@@ -207,6 +208,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *  but declared so the subclasses can throw it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         if (_debugging) {
             _debug("Called initialize(), which does nothing.");
         }
@@ -231,22 +233,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
                 return false;
             }
         }
-        if (_debugging) {
-            _debug("Called postfire(), which returns true.");
-        }
-        return true;
-    }
-
-    /** Return true, indicating that this actor is always ready to fire.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *  but declared so the subclasses can throw it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called prefire(), which returns true.");
-        }
-
-        return true;
+        return super.postfire();
     }
 
     /** Override the base class to set type constraints between the

@@ -1021,6 +1021,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  flag.  (Does it already and I just don't know about it?)
      */
     public void stopFire() {
+        super.stopFire();
         synchronized (_syncFireAndThread) {
             if (_fireIsWaiting) {
                 // stopFire() gets called a lot.  Including each time

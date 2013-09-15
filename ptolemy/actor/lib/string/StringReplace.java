@@ -221,11 +221,8 @@ public class StringReplace extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        // We don't call super.fire because we use a regex here.
-        //super.fire();
-        if (_debugging) {
-            _debug("Called fire()");
-        }
+        super.fire();
+
         replacement.update();
         stringToEdit.update();
         pattern.update();

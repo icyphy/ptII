@@ -138,7 +138,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
             }
         }
 
-        return true;
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
