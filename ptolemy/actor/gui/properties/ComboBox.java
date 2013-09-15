@@ -236,7 +236,9 @@ public class ComboBox extends GUIProperty implements ItemListener {
                 ((JComboBox) oldContainer.getComponent()).removeItem(this);
             }
             super.setContainer(container);
-            ((JComboBox) ((ComboBox) container).getComponent()).addItem(this);
+            if (container != null) {
+                ((JComboBox) ((ComboBox) container).getComponent()).addItem(this);
+            }
         }
 
         /** Return the display name of this item, or its name if the display
