@@ -965,7 +965,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     portCount++;
                     parameterMoML.append("  <property name=\""
                             + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.data.expr.PortParameter\" value =\""
+                            + "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
                             + scalar.type + "\"/>\n");
                     break;
                 case internal:
