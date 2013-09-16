@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 22, 1389, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 1389, 878}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1155, 768]">
     </property>
@@ -284,7 +284,7 @@
         <link port="Const.trigger" relation="relation3"/>
     </entity>
     <entity name="Receiver" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 155.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -410,7 +410,7 @@
                 <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-750.0, -235.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 22, 1280, 878}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 1280, 878}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 768]">
             </property>
@@ -577,7 +577,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, -750.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 80, 1389, 820}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 80, 1389, 820}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1155, 710]">
                 </property>
@@ -848,60 +848,19 @@
 <xLabel>Sequence Index</xLabel>
 <yLabel>Success Ratio</yLabel>
 <xRange min="0.0" max="29.0"/>
-<yRange min="0.73" max="0.995"/>
+<yRange min="0.9" max="0.995"/>
 <default marks="dots"/>
 </plot>?>
                     </configure>
                 </entity>
-                <entity name="ParameterEstimatorGaussian" class="org.ptolemy.machineLearning.hmm.HMMGaussianEstimator">
-                    <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="400">
-                    </property>
-                    <property name="transitionProbabilityMatrix" class="ptolemy.data.expr.Parameter" value="transGuess">
-                    </property>
-                    <property name="priorDistribution" class="ptolemy.data.expr.Parameter" value="prior">
-                    </property>
-                    <property name="numberOfStates" class="ptolemy.data.expr.Parameter" value="3">
-                    </property>
-                    <property name="meanVectorGuess" class="ptolemy.data.expr.Parameter" value="meanGuess">
-                    </property>
-                    <property name="standardDeviationGuess" class="ptolemy.data.expr.Parameter" value="stdDevGuess">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-445.0, -325.0}">
-                    </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
-                    </port>
-                    <port name="transitionMatrix" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
-                    </port>
-                    <port name="priors" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
-                    </port>
-                    <port name="mean" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
-                    </port>
-                    <port name="standardDeviation" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
-                    </port>
-                </entity>
                 <entity name="HMMGaussianClassifier" class="org.ptolemy.machineLearning.hmm.HMMGaussianClassifier">
-                    <property name="priorDistribution" class="ptolemy.actor.parameters.PortParameter" value="{0.4113426533315, 0.4456661790152, 0.1429911676533}">
+                    <property name="priorDistribution" class="ptolemy.actor.parameters.PortParameter" value="{0.0860924246872, 0.3139070209089, 0.6000005544039}">
                     </property>
-                    <property name="transitionMatrix" class="ptolemy.actor.parameters.PortParameter" value="[0.8979669137509, 0.1020319609572, 1.125291927875154E-6; 0.1788508328179, 0.820966028619, 1.831385630738414E-4; 1.923051216016242E-6, 0.0153858067196, 0.9846122702292]">
+                    <property name="transitionMatrix" class="ptolemy.actor.parameters.PortParameter" value="[0.8078923882956, 0.1921042071809, 3.404523560763392E-6; 0.5577595746263, 0.4422184582412, 2.19671324340263E-5; 5.066603352777886E-7, 3.121968198379703E-4, 0.9996872965198]">
                     </property>
-                    <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="{0.0488987384563, 0.138872833732, 0.394962900884}">
+                    <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="{0.0501169728264, 0.1423475628632, 0.4090369629652}">
                     </property>
-                    <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="{0.0091212166833, 0.0378478563483, 0.0865942914779}">
+                    <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="{0.0090310198581, 0.048809873492, 0.0764098629529}">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, -360.0}">
                     </property>
@@ -937,7 +896,7 @@
                     </port>
                 </entity>
                 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 311, 1202, 344}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 311, 1202, 344}, maximized=false}">
                     </property>
                     <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1202, 300]">
                     </property>
@@ -950,8 +909,8 @@
 <title>SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="5999.0"/>
-<yRange min="0.0" max="2.0"/>
+<xRange min="724.6230724334803" max="1204.8702163920761"/>
+<yRange min="-0.20999999999999996" max="2.062695652173913"/>
 <default marks="various"/>
 </plot>?>
                     </configure>
@@ -973,6 +932,26 @@
                         <property name="input"/>
                     </port>
                 </entity>
+                <entity name="HMMGaussianEstimator" class="org.ptolemy.machineLearning.hmm.HMMGaussianEstimator">
+                    <property name="A0" class="ptolemy.data.expr.Parameter" value="transGuess">
+                        <display name="Transition Probability Matrix"/>
+                    </property>
+                    <property name="priorDistribution" class="ptolemy.data.expr.Parameter" value="prior">
+                    </property>
+                    <property name="nStates" class="ptolemy.data.expr.Parameter" value="3">
+                        <display name="numberOfStates"/>
+                    </property>
+                    <property name="meanVectorGuess" class="ptolemy.data.expr.Parameter" value="meanGuess">
+                    </property>
+                    <property name="standardDeviationGuess" class="ptolemy.data.expr.Parameter" value="stdDevGuess">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-405.0, -325.0]">
+                    </property>
+                </entity>
+                <entity name="Average4" class="ptolemy.actor.lib.Average">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-228.777801921694, -250.65057674241353}">
+                    </property>
+                </entity>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;trueLabels._location&quot;,x=-55.0,y=-445.0}, tail={id=&quot;ArrayToSequence2.input&quot;,x=45.0,y=-445.0}, points={} } }">
                     </property>
@@ -993,28 +972,12 @@
                     <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CompareLabels.left&quot;,x=210.0,y=-370.0}, tail={id=&quot;relation7.vertex1&quot;,x=160.0,y=-445.0}, points={160.0,-380.0} },{ head={id=&quot;ArrayToSequence2.output&quot;,x=45.0,y=-445.0}, tail={id=&quot;relation7.vertex1&quot;,x=160.0,y=-445.0}, points={} },{ head={id=&quot;.SequencePlotter.input&quot;,x=205.0,y=-145.0,index=2}, tail={id=&quot;relation7.vertex1&quot;,x=160.0,y=-270.0}, points={160.0,-150.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=205.0,y=-440.0,index=2}, tail={id=&quot;relation7.vertex1&quot;,x=160.0,y=-445.0}, points={} } }">
                     </property>
                 </relation>
-                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;train._location&quot;,x=-530.0,y=-325.0}, tail={id=&quot;ParameterEstimatorGaussian.input&quot;,x=-445.0,y=-325.0}, points={} } }">
-                    </property>
-                </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;test._location&quot;,x=-195.0,y=-360.0}, tail={id=&quot;HMMGaussianClassifier.input&quot;,x=-110.0,y=-360.0}, points={} } }">
                     </property>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                     <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToSequence.input&quot;,x=45.0,y=-360.0}, tail={id=&quot;HMMGaussianClassifier.output&quot;,x=-110.0,y=-360.0}, points={} } }">
-                    </property>
-                </relation>
-                <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average3.input&quot;,x=-220.0,y=-140.0}, tail={id=&quot;ParameterEstimatorGaussian.transitionMatrix&quot;,x=-445.0,y=-325.0}, points={-270.0,-140.0,-270.0,-335.0} } }">
-                    </property>
-                </relation>
-                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average.input&quot;,x=-220.0,y=-50.0}, tail={id=&quot;ParameterEstimatorGaussian.mean&quot;,x=-445.0,y=-325.0}, points={-285.0,-50.0,-285.0,-325.0} } }">
-                    </property>
-                </relation>
-                <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average2.input&quot;,x=-220.0,y=45.0}, tail={id=&quot;ParameterEstimatorGaussian.standardDeviation&quot;,x=-445.0,y=-325.0}, points={-300.0,45.0,-300.0,-315.0} } }">
                     </property>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1041,7 +1004,19 @@
                     <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequencePlotter2.input&quot;,x=710.0,y=-370.0}, tail={id=&quot;Expression.output&quot;,x=615.0,y=-370.0}, points={} } }">
                     </property>
                 </relation>
-                <link port="train" relation="relation2"/>
+                <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="train" relation="relation12"/>
                 <link port="test" relation="relation3"/>
                 <link port="trueLabels" relation="relation10"/>
                 <link port="ArrayToSequence.input" relation="relation"/>
@@ -1053,17 +1028,14 @@
                 <link port="CompareLabels.output" relation="relation9"/>
                 <link port="CountTrues.input" relation="relation9"/>
                 <link port="CountTrues.output" relation="relation5"/>
-                <link port="Average.input" relation="relation4"/>
+                <link port="Average.input" relation="relation14"/>
                 <link port="Average.output" relation="relation15"/>
-                <link port="Average2.input" relation="relation17"/>
+                <link port="Average2.input" relation="relation4"/>
                 <link port="Average2.output" relation="relation6"/>
-                <link port="Average3.input" relation="relation16"/>
+                <link port="Average3.input" relation="relation2"/>
                 <link port="Average3.output" relation="relation13"/>
                 <link port="SequencePlotter2.input" relation="relation8"/>
-                <link port="ParameterEstimatorGaussian.input" relation="relation2"/>
-                <link port="ParameterEstimatorGaussian.transitionMatrix" relation="relation16"/>
-                <link port="ParameterEstimatorGaussian.mean" relation="relation4"/>
-                <link port="ParameterEstimatorGaussian.standardDeviation" relation="relation17"/>
+                <link port="HMMGaussianClassifier.priorDistribution" relation="relation16"/>
                 <link port="HMMGaussianClassifier.transitionMatrix" relation="relation13"/>
                 <link port="HMMGaussianClassifier.input" relation="relation3"/>
                 <link port="HMMGaussianClassifier.output" relation="relation"/>
@@ -1073,6 +1045,13 @@
                 <link port="SequencePlotter.input" relation="relation11"/>
                 <link port="Expression.output" relation="relation8"/>
                 <link port="Expression.count" relation="relation5"/>
+                <link port="HMMGaussianEstimator.input" relation="relation12"/>
+                <link port="HMMGaussianEstimator.transitionMatrix" relation="relation2"/>
+                <link port="HMMGaussianEstimator.priorEstimates" relation="relation17"/>
+                <link port="HMMGaussianEstimator.mean" relation="relation14"/>
+                <link port="HMMGaussianEstimator.standardDeviation" relation="relation4"/>
+                <link port="Average4.input" relation="relation17"/>
+                <link port="Average4.output" relation="relation16"/>
             </entity>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
                 <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="N">
@@ -2228,7 +2207,7 @@
             <link port="slowLink.state" relation="stateRelation"/>
         </entity>
         <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.1521453162392">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.1051140783073">
             </property>
             <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -2305,7 +2284,7 @@
         <entity name="LatencyDistribution" class="ptolemy.actor.lib.gui.HistogramPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="WiFi, LTE, anomalous">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={881, 25, 567, 281}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={713, 25, 567, 281}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[567, 237]">
             </property>
@@ -2320,8 +2299,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>LatencyDistribution</title>
-<xRange min="0.015" max="0.68"/>
-<yRange min="0.0" max="631.0"/>
+<xRange min="0.025" max="0.6900000000000001"/>
+<yRange min="0.0" max="623.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.01" offset="0.005"/>
 </plot>?>
