@@ -125,10 +125,15 @@ public class DoubleFork extends TypedAtomicActor {
 
     /** Return true if this actor will allow subsequent iterations to
      *  occur; return false otherwise.
-     * @return True if continued execution is enabled; false otherwise.
-     * @exception IllegalActionException Not thrown in this base class.
+     * @return False if super.postfire() returns false, true if
+     * continued execution is enabled; false otherwise.
+     * @exception IllegalActionException If thrown by the parent class.
      */
     public boolean postfire() throws IllegalActionException {
+        // This is similar to DDESink, Wire.
+        if (!super.postfire()) {
+            return false;
+        }
         return _continueIterations;
     }
 

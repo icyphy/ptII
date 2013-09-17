@@ -118,10 +118,13 @@ public class CSPSink extends Sink {
     /** Return false indicating that this actor should not be
      *  executed in the next iteration of the containing
      *  composite actor.
-     * @return True indicating that execution of this actor
-     *  should not be repeated.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
+        // We intentially ignore the return value of super.postfire()
+        // here.
+        super.postfire();
         return false;
     }
 }

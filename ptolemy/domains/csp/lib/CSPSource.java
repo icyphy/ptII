@@ -123,10 +123,13 @@ public class CSPSource extends Source {
 
     /** Return false indicating that iteration of this actor should
      *  not continue.
-     * @return false Indicating that iteration of this actor should
-     *  should not continue.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
+        // We intentially ignore the return value of super.postfire()
+        // here.
+        super.postfire();
         return false;
     }
 

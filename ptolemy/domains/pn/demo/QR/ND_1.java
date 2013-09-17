@@ -133,8 +133,13 @@ public class ND_1 extends TypedAtomicActor {
     /** Post fire the actor. Return false to indicated that the
      *  process has finished. If it returns true, the process will
      *  continue indefinitely.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
+        // We intentially ignore the return value of super.postfire()
+        // here.
+        super.postfire();
         return false;
     }
 

@@ -110,7 +110,7 @@ public class DDESink extends TypedAtomicActor {
             _count++;
 
             if (_count > value) {
-                _continue = false;
+                _continueIteration = false;
                 return;
             }
         }
@@ -121,7 +121,7 @@ public class DDESink extends TypedAtomicActor {
             for (int j = 0; j < receiver2.length; j++) {
                 DDEReceiver receiver = (DDEReceiver) receiver2[j];
 
-                if (!_continue) {
+                if (!_continueIteration) {
                     return;
                 } else if (receiver.hasToken()) {
                     receiver.get();
@@ -132,17 +132,21 @@ public class DDESink extends TypedAtomicActor {
 
     /** Return true if this actor is enabled to proceed with additional
      *  iterations. Return false otherwise.
-     * @return True if continued execution is enabled; false otherwise.
-     * @exception IllegalActionException Not thrown in this base class.
-     * @see #fire
+     * @return False if super.postfire() returns false, true if
+     * continued execution is enabled; false otherwise.
+     * @exception IllegalActionException If thrown by the parent class.
      */
     public boolean postfire() throws IllegalActionException {
-        return _continue;
+        // This is similar to DoubleFork, Wire.
+        if (!super.postfire()) {
+            return false;
+        }
+        return _continueIteration;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int _count = 0;
 
-    private boolean _continue = true;
+    private boolean _continueIteration = true;
 }

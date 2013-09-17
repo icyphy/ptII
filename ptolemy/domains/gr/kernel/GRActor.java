@@ -76,6 +76,7 @@ abstract public class GRActor extends TypedAtomicActor {
      *    during the scene graph initialization.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (!_isSceneGraphInitialized) {
             _makeSceneGraphConnection();
             _isSceneGraphInitialized = true;

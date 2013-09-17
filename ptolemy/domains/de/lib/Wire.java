@@ -109,7 +109,7 @@ public class Wire extends DETransformer {
      *  @exception IllegalActionException If the base class throws one.
      */
     public void fire() throws IllegalActionException {
-        // Don't call "super.fire();", this actor extends another actor.
+        super.fire();
         int inputWidth = input.getWidth();
         int outputWidth = output.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);
