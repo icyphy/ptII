@@ -1278,15 +1278,22 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @throws IllegalActionException Not thrown here but in derived classes.
      */
     public void resumeActor(Actor actor) throws IllegalActionException { 
-        DEEvent event = _actorsInExecution.get(actor);
-        Time time = ((CompositeActor)_getResourceScheduler(actor).getContainer()).getDirector().getModelTime(); 
+        List<DEEvent> events = _actorsInExecution.get(actor);
+        Time time = ((CompositeActor)_getResourceScheduler(actor).getContainer()).getDirector().getModelTime();
+        if (events == null || events.size() == 0) {
+            events = null;
+        }
+        
+        DEEvent event = events.get(0);
+        events.remove(event); 
+        _actorsInExecution.put(actor, events);
+        
         if (event.ioPort() != null) {
             _enqueueTriggerEvent(event.ioPort(), time);
         } else {
             _enqueueEvent(actor, time, 1);
         }
-        fireContainerAt(time);
-        _actorsInExecution.remove(actor);
+        fireContainerAt(time); 
         if (_actorsFinished == null) {
             _actorsFinished = new ArrayList();
         }
@@ -2327,7 +2334,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     if (_actorsInExecution == null) {
                         _actorsInExecution = new HashMap();
                     }
-                    _actorsInExecution.put(actorToFire, lastFoundEvent);
+                    List<DEEvent> events = _actorsInExecution.get(actorToFire);
+                    if (events == null) {
+                        events = new ArrayList<DEEvent>();
+                    }
+                    events.add(lastFoundEvent);
+                    _actorsInExecution.put(actorToFire, events); 
                     actorToFire = null;
                 }
             }
@@ -2362,7 +2374,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     /** Actors and their matching events currently in execution and waiting
      *  for resources.
      */
-    protected HashMap<Actor, DEEvent> _actorsInExecution;
+    protected HashMap<Actor, List<DEEvent>> _actorsInExecution;
 
     /** Actors that just got granted all the resources they needed for
      *  execution but have not actually been fired yet. After the actor
