@@ -191,6 +191,12 @@ public class RunCompositeActor extends LifeCycleManager {
      *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
+        // Note that super.fire() is not called here probably because
+        // CompositeActor.fire() transfers inputs. 
+
+        // FIXME: CompositeActor.fire() invokes the piggyback.fire(),
+        // this method does not.
+
         if (_debugging) {
             _debug("---- calling fire(), which will execute a subsystem.");
         }
@@ -207,6 +213,10 @@ public class RunCompositeActor extends LifeCycleManager {
      *  but declared so the subclasses can throw it.
      */
     public void initialize() throws IllegalActionException {
+        // FIXME: Why does this method not call super.initialize()?
+        // CompositeActor.initialize() invokes the initialize method
+        // of the local director and resets the receivers.  Are
+        // these steps not necessary here?
         if (_debugging) {
             _debug("Called initialize(), which does nothing.");
         }
@@ -234,6 +244,9 @@ public class RunCompositeActor extends LifeCycleManager {
         if (_debugging) {
             _debug("Called postfire(), which returns true.");
         }
+        // FIXME: Why does calling super.postfire() cause a causality loop exception with test/auto/RunCompositeActor3.xml
+        // FIXME: Shouldn't piggybacked methods be called here?
+        //return super.postfire();
         return true;
     }
 
@@ -242,6 +255,10 @@ public class RunCompositeActor extends LifeCycleManager {
      *  but declared so the subclasses can throw it.
      */
     public boolean prefire() throws IllegalActionException {
+        // FIXME: Why is super.prefire() not called here, which calls
+        // CompositeActor.prefire().  CompositeActor.prefire() invokes
+        // prefire() on the director and the piggybacked methods,
+        // which does not happen here.
         if (_debugging) {
             _debug("Called prefire(), which returns true.");
         }
