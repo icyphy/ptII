@@ -249,11 +249,13 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
     /** Return false. If an actor wishes to continue for more than
      *  one iteration it should override this method to return true.
      *  @return True if another iteration can occur.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class.
      */
-    public boolean postfire() {
-        if (_debugging) {
-            _debug("Invoking postfire.");
-        }
+    public boolean postfire() throws IllegalActionException {
+        // We intentially ignore the return value of super.postfire()
+        // here.
+        super.postfire();
         return false;
     }
 

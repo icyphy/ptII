@@ -87,6 +87,7 @@ public class Stop extends Event {
      *   thrown by the superclass.
      */
     public RefiringData fire(Token arguments) throws IllegalActionException {
+        // FIXME: super.fire() is not called here, which is probably correct.
         PteraController controller = getController();
 
         Manager manager = controller.getManager();

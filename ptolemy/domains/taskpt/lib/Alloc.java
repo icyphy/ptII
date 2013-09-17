@@ -95,7 +95,7 @@ public class Alloc extends MemoryAccess {
      * @exception IllegalActionException Thrown if no memory is found.
      */
     public void fire() throws IllegalActionException {
-
+        super.fire();
         Memory mem = getMemory();
         if (mem == null) {
             throw new IllegalActionException("no memory found.");

@@ -105,7 +105,7 @@ public class MonitorImage extends Sink {
             _icon.setImage(value);
         }
 
-        return true;
+        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////

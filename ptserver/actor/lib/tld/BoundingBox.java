@@ -66,10 +66,11 @@ public class BoundingBox extends TypedAtomicActor {
      * Read matrix token from the port containing four coordinates
      * and pass them to the video actor.
      *
-     * Note: the actor is hardcoded to find video actor within it's container.
+     * Note: the actor is hardcoded to find video actor within its container.
      */
     @Override
     public void fire() throws IllegalActionException {
+        super.fire();
         MatrixToken result = (MatrixToken) _input.get(0);
         CompositeEntity container = (CompositeEntity) this.getContainer();
         Video video = (Video) container.getEntity("Video");

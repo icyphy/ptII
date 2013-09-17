@@ -116,6 +116,7 @@ public class ChangePtr extends TypedAtomicActor {
      * if the channel index is out of range.
       */
     public void fire() throws NoTokenException, IllegalActionException {
+        super.fire();
         Token token = input.get(0);
         if (token instanceof PtrToken) {
             PtrToken in = (PtrToken) token;

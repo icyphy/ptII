@@ -74,6 +74,7 @@ public class Store extends LoadStore {
      * thrown.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
 
         Memory mem = getMemory();
         if (mem == null) {

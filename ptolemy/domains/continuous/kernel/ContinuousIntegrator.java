@@ -240,6 +240,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *   or <i>initialState</i> and the step size is greater than zero.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double stepSize = dir.getCurrentStepSize();
         int microstep = dir.getIndex();
@@ -472,7 +473,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         if (_debugging) {
             _debug("-- Committing the state: " + _state);
         }
-        return true;
+        return super.postfire();
     }
 
     /** If either the <i>impulse</i> or <i>initialState</i> input is unknown,
