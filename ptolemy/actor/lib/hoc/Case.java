@@ -140,6 +140,8 @@ public class Case extends MultiCompositeActor {
      *   opaque.
      */
     public void fire() throws IllegalActionException {
+        // FIXME: Case.fire() does not invoke the piggyback methods as
+        // is done in CompositeActor.fire().
         if (_debugging) {
             _debug("Calling fire()");
         }
