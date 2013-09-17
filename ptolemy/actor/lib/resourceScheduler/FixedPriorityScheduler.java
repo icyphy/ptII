@@ -33,6 +33,7 @@ package ptolemy.actor.lib.resourceScheduler;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -214,14 +215,14 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
                     double newActorPriority = _getPriority(actor);
                     if (newActorPriority < executingPriority) {
                         if (remainingTime.getDoubleValue() == 0.0) {
-                            event((NamedObj) _currentlyExecuting.peek(),
+                            notifyScheduleListeners((NamedObj) _currentlyExecuting.peek(),
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.STOP);
                         } else {
-                            event((NamedObj) executing,
+                            notifyScheduleListeners((NamedObj) executing,
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.PREEMPTED);
-                        }
+                        } 
                         remainingTime = executionTime; 
                         scheduleNewActor(actor, currentPlatformTime, executionTime);
                     } else {
@@ -245,7 +246,7 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
 
         if (remainingTime.getDoubleValue() == 0.0
                 && _currentlyExecuting.peek() == actor) {
-            event((NamedObj) _currentlyExecuting.peek(),
+            notifyScheduleListeners((NamedObj) _currentlyExecuting.peek(),
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
             _remainingTimes.put(_currentlyExecuting.peek(), null);
@@ -253,7 +254,7 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
             if (_currentlyExecuting.size() > 0) {
                 remainingTime = _remainingTimes.get(_currentlyExecuting.peek());
                 if (remainingTime.getDoubleValue() > 0.0) {
-                    event((NamedObj) _currentlyExecuting.peek(),
+                    notifyScheduleListeners((NamedObj) _currentlyExecuting.peek(),
                             currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.START);
                 }
@@ -292,8 +293,7 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
     private void _add(Actor actor, Time executionTime) throws IllegalActionException {
         double priority = _getPriority(actor);  
         boolean added = false;
-        Object[] actors = _currentlyExecuting.toArray(); 
-        System.out.println(_currentlyExecuting); 
+        Object[] actors = _currentlyExecuting.toArray();  
         _currentlyExecuting.clear();
         for (int i = 0; i < actors.length; i++) {
             Actor actorInArray = (Actor) actors[i];
@@ -304,8 +304,7 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
                 added = true;
             } 
             _currentlyExecuting.push(actorInArray);
-        }  
-        System.out.println(added); 
+        }   
     }
     
     /** Schedule a new actor which possibly preempts currently executing
@@ -317,8 +316,8 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
     private void scheduleNewActor(Actor actor, Time currentPlatformTime,
             Time executionTime) {
         _currentlyExecuting.push(actor);
-        event((NamedObj) actor, currentPlatformTime.getDoubleValue(),
-                ExecutionEventType.START);
+        notifyScheduleListeners((NamedObj) actor, currentPlatformTime.getDoubleValue(),
+                    ExecutionEventType.START); 
         _remainingTimes.put(actor, executionTime);
         _lastTimeScheduled.put(actor, currentPlatformTime);
     }

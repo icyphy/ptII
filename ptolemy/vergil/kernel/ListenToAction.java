@@ -29,9 +29,11 @@ package ptolemy.vergil.kernel;
 
 import java.awt.event.ActionEvent;
 
+import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.ResourceSchedulePlotterEditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.kernel.util.KernelException;
@@ -112,6 +114,16 @@ public class ListenToAction extends FigureAction {
                     textEffigy, textEffigy.uniqueName("debugListener"
                             + object.getName()));
             debugTableau.setDebuggable(object);
+            
+            // If the actor is a ResourceScheduler, open Plot as well.
+            if (object instanceof ResourceScheduler) {
+                //Effigy plotEffigy = new 
+                ResourceSchedulePlotterEditorFactory factory = new ResourceSchedulePlotterEditorFactory(object,
+                            object.uniqueName("_editorFactory")); 
+                
+                ((ResourceScheduler)object).addScheduleListener(factory);
+                factory.createEditor(object, this.getFrame());
+            }
         } catch (KernelException ex) {
             MessageHandler.error("Failed to create debug listener.", ex);
         }
@@ -128,5 +140,5 @@ public class ListenToAction extends FigureAction {
 
     private BasicGraphController _controller;
 
-    private NamedObj _target;
+    private NamedObj _target; 
 }

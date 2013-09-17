@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.resourceScheduler;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.DecoratorAttributes;
@@ -108,9 +109,9 @@ public class FCFSScheduler extends AtomicResourceScheduler {
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
-            event((NamedObj) currentlyExecuting,
-                    currentPlatformTime.getDoubleValue(),
-                    ExecutionEventType.START);
+            notifyScheduleListeners((NamedObj) currentlyExecuting,
+                        currentPlatformTime.getDoubleValue(),
+                        ExecutionEventType.START);
         }
 
         Time remainingTime = null;
@@ -128,9 +129,9 @@ public class FCFSScheduler extends AtomicResourceScheduler {
         _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
 
         if (remainingTime.getDoubleValue() == 0.0) {
-            event((NamedObj) currentlyExecuting,
-                    currentPlatformTime.getDoubleValue(),
-                    ExecutionEventType.STOP);
+            notifyScheduleListeners((NamedObj) currentlyExecuting,
+                        currentPlatformTime.getDoubleValue(),
+                        ExecutionEventType.STOP); 
 
             _remainingTimes.put(currentlyExecuting, null);
             currentlyExecuting = null;

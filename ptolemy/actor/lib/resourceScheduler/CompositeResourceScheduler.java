@@ -39,7 +39,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.gui.ColorAttribute; 
+import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -95,9 +96,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
         ColorAttribute attribute = new ColorAttribute(this, "decoratorHighlightColor");
-        attribute.setExpression("{0.0,0.8,0.0,1.0}");
-        _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
-                this.uniqueName("_editorFactory"));
+        attribute.setExpression("{0.0,0.8,0.0,1.0}"); 
         _requestPorts = new HashMap<Actor, String>();
         _previousY = new HashMap<NamedObj, Double>();
         
@@ -106,7 +105,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         justMonitor.setExpression("false");
         _justMonitor = false;
         
-        _lastTimeScheduled = new HashMap<Actor, Time>();
+        _lastTimeScheduled = new HashMap<Actor, Time>(); 
+        _schedulePlotListeners = new ArrayList<ScheduleListener>();
     }
     
     /** This parameter indicates whether the tokens received via the 
@@ -118,20 +118,28 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     public Parameter justMonitor;
     
     ///////////////////////////////////////////////////////////////////
-    //                         public variables                      //
-
-    /** Execution time event types. */
-    public static enum ExecutionEventType {
-        /** Started the execution of an actor. */
-        START,
-        /** Stopped the execution of an actor. */
-        STOP,
-        /** Preempted the execution of an actor. */
-        PREEMPTED
+    //                           public methods                      //
+    
+    /** Add schedule listener. If necessary, initialize list of actors
+     *  scheduled by this resource scheduler.
+     *  @param listener. The listener to be added. 
+     *  @throws IllegalActionException If an error occurs in the initialization
+     *  of actors scheduled by this resource scheduler.
+     */
+    public void addScheduleListener(ScheduleListener listener) throws IllegalActionException {
+        _schedulePlotListeners.add(listener);
+        if (_actors == null) {
+            _initializeActorsToSchedule();
+        }
+        listener.initialize(_actors, this); 
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //                           public methods                      //
+    /** Remove schedule listener.
+     * @param listener. The listener to be removed.
+     */
+    public void removeScheduleListener(ScheduleListener listener) {
+        _schedulePlotListeners.remove(listener);
+    }
 
     /** React to the change of the <i>justMonitor</i> attribute by
      *  updating internal variables.
@@ -157,17 +165,11 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CompositeResourceScheduler newObject = (CompositeResourceScheduler) super
-                .clone(workspace); 
-        try {
-            newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
-                    newObject, this.uniqueName("_editorFactory"));
-            newObject._previousY = new HashMap<NamedObj, Double>();
-            newObject._requestPorts = new HashMap<Actor, String>();
-            newObject._lastTimeScheduled = new HashMap<Actor, Time>();
-        } catch (KernelException e) {
-            throw new InternalErrorException(e);
-        }
-    
+                .clone(workspace);  
+        newObject._previousY = new HashMap<NamedObj, Double>();
+        newObject._requestPorts = new HashMap<Actor, String>();
+        newObject._lastTimeScheduled = new HashMap<Actor, Time>(); 
+        newObject._actors = new ArrayList<NamedObj>();
         return newObject;
     }
 
@@ -199,53 +201,6 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         return _getEntitiesToDecorate(container);
     }
     
-    /** Plot a new execution event for an actor (i.e. an actor
-     *  started/finished execution, was preempted or resumed).
-     * @param actor The actor.
-     * @param physicalTime The physical time when this scheduling event occurred.
-     * @param scheduleEvent The scheduling event.
-     */
-    public void event(final NamedObj actor, double physicalTime,
-            ExecutionEventType scheduleEvent) {
-        if (_schedulePlotterEditorFactory.plot == null) {
-            return;
-        }
-    
-        double x = physicalTime;
-        int actorDataset = _actors.indexOf(actor);
-        if (actorDataset == -1) {
-            return; // actor is not being monitored
-        }
-        if (scheduleEvent == null) {
-            if (_previousY.get(actor) == null) {
-                _previousY.put(actor, (double) actorDataset);
-            }
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    _previousY.get(actor), true);
-            _previousY.put(actor, (double) actorDataset);
-        } else if (scheduleEvent == ExecutionEventType.START) {
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    _previousY.get(actor), true);
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
-            _previousY.put(actor, actorDataset + 0.6);
-        } else if (scheduleEvent == ExecutionEventType.STOP) {
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset, true);
-            _previousY.put(actor, (double) actorDataset);
-        } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.4, true);
-            _previousY.put(actor, actorDataset + 0.4);
-        }
-        _schedulePlotterEditorFactory.plot.fillPlot();
-        _schedulePlotterEditorFactory.plot.repaint();
-    }
-    
     /** Initialize local variables.
      * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
@@ -260,18 +215,10 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         _lastTimeScheduled.clear();
         _initializeActorsToSchedule();
         _actors.add(this);
-    
-        if (_schedulePlotterEditorFactory.plot != null) {
-            _schedulePlotterEditorFactory.plot.clear(false);
-            _schedulePlotterEditorFactory.plot.clearLegends();
-    
-            for (NamedObj actor : _actors) {
-                _schedulePlotterEditorFactory.plot.addLegend(
-                        _actors.indexOf(actor), actor.getName());
-                event(actor, 0.0, null);
-            }
-            _schedulePlotterEditorFactory.plot.doLayout();
-        } 
+        
+        for (ScheduleListener listener : _schedulePlotListeners) {
+            listener.initialize(_actors, this);
+        }
     }
 
     /** Return true to indicate that this decorator should
@@ -293,7 +240,25 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     public boolean lastScheduledActorFinished() {
         return _lastActorFinished;
     }
+    
+    /** Notify schedule listeners about rescheduling events.
+     * @param entity Entity that is being scheduled.
+     * @param time Time when entity is being scheduled.
+     * @param eventType Type of event.
+     */
+    public void notifyScheduleListeners(NamedObj entity, Double time, ExecutionEventType eventType) {
+        if (_schedulePlotListeners != null) {
+            for (ScheduleListener listener : _schedulePlotListeners) {
+                listener.event(entity, time, eventType);
+            }
+        }
+    }
 
+    /** Iterate through resource mapping output ports and if they contain
+     *  tokens, inform the director of the actors in the tokens that these
+     *  actors can resume execution. 
+     *  @throws illegalActionException Not explicitly thrown here.
+     */
     @Override
     public boolean postfire() throws IllegalActionException {
         // TODO Auto-generated method stub
@@ -307,7 +272,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                     if (recordToken.get("actor") != null && 
                             ((ObjectToken)recordToken.get("actor")).getValue() != null) {
                         Actor actor = (Actor) ((ObjectToken)recordToken.get("actor")).getValue();
-                        event((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
+                        notifyScheduleListeners((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
                         actor.getExecutiveDirector().resumeActor(actor);
@@ -316,7 +281,6 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                 }
             }
         }
-        
         
         return postfire;
     }
@@ -342,8 +306,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         Director director = ((CompositeActor) getContainer()).getDirector();
         double executionTime = _getExecutionTime(actor);
 
-        event(this, environmentTime.getDoubleValue(), ExecutionEventType.START);
-        event(this, environmentTime.getDoubleValue(), ExecutionEventType.STOP);
+        notifyScheduleListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.START);
+        notifyScheduleListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.STOP);
         return _schedule(actor, environmentTime, deadline, new Time(director,
                 executionTime));
     }
@@ -469,7 +433,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
         if ((_justMonitor && (time == null || !time.equals(currentPlatformTime))) 
                 || !_currentlyExecuting.contains(actor)) {
             _lastTimeScheduled.put(actor, currentPlatformTime);
-            event((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
+            notifyScheduleListeners((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
             if (_requestPorts.get(actor) == null) {
                 throw new IllegalActionException(this, "Actor " + actor + " does not have a" +
                 		" registered requestPort");
@@ -506,6 +470,8 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
      *  finished execution.
      */
     protected boolean _lastActorFinished;
+    
+    protected List<ScheduleListener> _schedulePlotListeners;
 
     /** List of currently executing actors. */
     protected List<Actor> _currentlyExecuting;
@@ -519,8 +485,11 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
                 if (((BooleanToken) decoratorAttributes.enable.getToken())
                         .booleanValue()) {
                     // The entity uses this resource scheduler.
+                    if (_actors == null) {
+                        _actors = new ArrayList<NamedObj>();
+                    }
                     _actors.add(entity); 
-                    event(entity, 0.0, null);
+                    notifyScheduleListeners(entity, 0.0, null);
                 } else if (entity instanceof CompositeActor) {
                     _getAllManagedEntities(((CompositeActor) entity)
                             .deepEntityList());
@@ -565,9 +534,7 @@ public class CompositeResourceScheduler extends TypedCompositeActor implements R
     
     private HashMap<Actor, Time> _lastTimeScheduled;
     
-    private boolean _justMonitor;
-
-    private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
+    private boolean _justMonitor; 
 
     private HashMap<Actor, String> _requestPorts;
 

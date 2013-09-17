@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -113,12 +114,12 @@ public class DynamicCoreAssignmentScheduler extends AtomicResourceScheduler {
                 // This actor is currently executing on this scheduler.
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
-                event(scheduler, currentPlatformTime.getDoubleValue(),
-                        ExecutionEventType.START);
+                notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                            ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                    event(scheduler, currentPlatformTime.getDoubleValue(),
+                    notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
-                }
+                } 
                 _remainingTimeOnCore.put(scheduler, time);
                 _lastActorFinished = scheduler.lastActorFinished();
                 return time;
@@ -135,12 +136,12 @@ public class DynamicCoreAssignmentScheduler extends AtomicResourceScheduler {
             if (remainingTime == null || remainingTime.getDoubleValue() == 0.0) {
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
-                event(scheduler, currentPlatformTime.getDoubleValue(),
+                notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                    event(scheduler, currentPlatformTime.getDoubleValue(),
+                    notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
-                }
+                } 
                 _remainingTimeOnCore.put(scheduler, time);
                 _lastActorFinished = scheduler.lastActorFinished();
                 return time;

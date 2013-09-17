@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
+import ptolemy.actor.lib.resourceScheduler.ScheduleListener;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,6 +52,20 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (cxh)
  */
 public interface ResourceScheduler extends Decorator {
+    
+    /** Add schedule listener. If necessary, initialize list of actors
+     *  scheduled by this resource scheduler.
+     *  @param listener. The listener to be added. 
+     *  @throws IllegalActionException If an error occurs in the initialization
+     *  of actors scheduled by this resource scheduler.
+     */
+    public void addScheduleListener(ScheduleListener listener) throws IllegalActionException;
+
+    /** Return whether an actor is currently waiting for a resource.
+     * @param actor The actor that might be waiting for a resource.
+     * @return True if the actor is waiting for a resource.
+     */
+    public boolean isWaitingForResource(Actor actor);
 
     /** Check whether last actor that was scheduled on this resource
      *  scheduler finished execution.
@@ -87,10 +102,9 @@ public interface ResourceScheduler extends Decorator {
      */
     public Time schedule(Time environmentTime) throws IllegalActionException;
     
-    /** Return whether an actor is currently waiting for a resource.
-     * @param actor The actor that might be waiting for a resource.
-     * @return True if the actor is waiting for a resource.
+    /** Remove schedule listener.
+     * @param listener. The listener to be removed.
      */
-    public boolean isWaitingForResource(Actor actor);
+    public void removeScheduleListener(ScheduleListener listener);
     
 }

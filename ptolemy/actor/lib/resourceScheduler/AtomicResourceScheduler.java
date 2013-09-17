@@ -39,6 +39,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.ResourceScheduler;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.ResourceAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -110,45 +111,33 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         super(container, name);
         ColorAttribute attribute = new ColorAttribute(this, "decoratorHighlightColor");
         attribute.setExpression("{0.0,0.8,0.0,1.0}");
-        _schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(this,
-                this.uniqueName("_editorFactory"));
+        _schedulePlotListeners = new ArrayList<ScheduleListener>();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //                         public variables                      //
-
-    /** Execution time event types. */
-    public static enum ExecutionEventType {
-        /** Started the execution of an actor. */
-        START,
-        /** Stopped the execution of an actor. */
-        STOP,
-        /** Preempted the execution of an actor. */
-        PREEMPTED
-    }
+    
 
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
 
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+    /** Add schedule listener. If necessary, initialize list of actors
+     *  scheduled by this resource scheduler.
+     *  @param listener. The listener to be added. 
+     *  @throws IllegalActionException If an error occurs in the initialization
+     *  of actors scheduled by this resource scheduler.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AtomicResourceScheduler newObject = (AtomicResourceScheduler) super
-                .clone(workspace);
-    
-        try {
-            newObject._schedulePlotterEditorFactory = new SchedulePlotterEditorFactory(
-                    newObject, this.uniqueName("_editorFactory"));
-            newObject._previousY = new HashMap<NamedObj, Double>();
-        } catch (KernelException e) {
-            throw new InternalErrorException(e);
+    public void addScheduleListener(ScheduleListener listener) throws IllegalActionException {
+        _schedulePlotListeners.add(listener);
+        if (_actors == null) {
+            _initializeActorsToSchedule();
         }
-    
-        return newObject;
+        listener.initialize(_actors, this); 
+    }
+
+    /** Remove schedule listener.
+     * @param listener. The listener to be removed.
+     */
+    public void removeScheduleListener(ScheduleListener listener) {
+        _schedulePlotListeners.remove(listener);
     }
 
     /** Return the decorated attributes for the target NamedObj.
@@ -179,54 +168,7 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         return _getEntitiesToDecorate(container);
     }
     
-    /** Plot a new execution event for an actor (i.e. an actor
-     *  started/finished execution, was preempted or resumed).
-     * @param actor The actor.
-     * @param physicalTime The physical time when this scheduling event occurred.
-     * @param scheduleEvent The scheduling event.
-     */
-    public void event(final NamedObj actor, double physicalTime,
-            ExecutionEventType scheduleEvent) {
-        if (_schedulePlotterEditorFactory.plot == null) {
-            return;
-        }
     
-        double x = physicalTime;
-        int actorDataset = _actors.indexOf(actor);
-        if (actorDataset == -1) {
-            return; // actor is not being monitored
-        }
-        if (scheduleEvent == null) {
-            if (_previousY.get(actor) == null) {
-                _previousY.put(actor, (double) actorDataset);
-            }
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    _previousY.get(actor), true);
-            _previousY.put(actor, (double) actorDataset);
-        } else if (scheduleEvent == ExecutionEventType.START) {
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    _previousY.get(actor), true);
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
-            _previousY.put(actor, actorDataset + 0.6);
-        } else if (scheduleEvent == ExecutionEventType.STOP) { 
-            if (_previousY.get(actor) != actorDataset) {
-                _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                        actorDataset + 0.6, true);
-                _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                        actorDataset, true);
-            }
-            _previousY.put(actor, (double) actorDataset);
-        } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
-            _schedulePlotterEditorFactory.plot.addPoint(actorDataset, x,
-                    actorDataset + 0.4, true);
-            _previousY.put(actor, actorDataset + 0.4);
-        }
-        _schedulePlotterEditorFactory.plot.fillPlot();
-        _schedulePlotterEditorFactory.plot.repaint();
-    }
 
     /** Return remaining time actor needs to finish.
      *  @param actor The actor.
@@ -245,6 +187,9 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         return new Time(((CompositeActor) getContainer()).getDirector(), time);
     }
     
+    /** Perform rescheduling if necessary.
+     *  @exception IllegalActionException Not thrown here.
+     */
     @Override
     public void fire() throws IllegalActionException { 
         super.fire();
@@ -266,18 +211,10 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
     
         _initializeActorsToSchedule();
         _actors.add(this);
-    
-        if (_schedulePlotterEditorFactory.plot != null) {
-            _schedulePlotterEditorFactory.plot.clear(false);
-            _schedulePlotterEditorFactory.plot.clearLegends();
-    
-            for (NamedObj actor : _actors) {
-                _schedulePlotterEditorFactory.plot.addLegend(
-                        _actors.indexOf(actor), actor.getName());
-                event(actor, 0.0, null);
-            }
-            _schedulePlotterEditorFactory.plot.doLayout();
-        } 
+        
+        for (ScheduleListener listener : _schedulePlotListeners) {
+            listener.initialize(_actors, this);
+        }
     }
 
     /** Return true to indicate that this decorator should
@@ -308,6 +245,24 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         return _lastActorFinished;
     }
     
+    ///////////////////////////////////////////////////////////////////
+    //                           private methods                     //
+    
+    /** Notify schedule listeners about rescheduling events.
+     * @param entity Entity that is being scheduled.
+     * @param time Time when entity is being scheduled.
+     * @param eventType Type of event.
+     */
+    public void notifyScheduleListeners(NamedObj entity, Double time, ExecutionEventType eventType) {
+        if (_schedulePlotListeners != null) {
+            for (ScheduleListener listener : _schedulePlotListeners) {
+                listener.event(entity, time, eventType);
+            }
+        }
+    }
+
+
+
     /** Override the base class to first set the container, then establish
      *  a connection with any decorated objects it finds in scope in the new
      *  container.
@@ -353,10 +308,10 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
     public Time schedule(Actor actor, Time environmentTime, Time deadline)
             throws IllegalActionException {
         Director director = ((CompositeActor) getContainer()).getDirector();
-        double executionTime = _getExecutionTime(actor);
-
-        event(this, environmentTime.getDoubleValue(), ExecutionEventType.START);
-        event(this, environmentTime.getDoubleValue(), ExecutionEventType.STOP);
+        double executionTime = _getExecutionTime(actor);        
+        notifyScheduleListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.START);
+        notifyScheduleListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.STOP);
+        
         return schedule(actor, environmentTime, deadline, new Time(director,
                 executionTime));
     }
@@ -378,8 +333,8 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         for (NamedObj actor : _actors) {
-            event(actor, ((CompositeActor) getContainer()).getDirector()
-                    .getEnvironmentTime().getDoubleValue(), null);
+            notifyScheduleListeners(actor, ((CompositeActor) getContainer()).getDirector()
+                        .getEnvironmentTime().getDoubleValue(), null); 
         }
     }
 
@@ -452,10 +407,15 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
     ///////////////////////////////////////////////////////////////////
     ////                    protected variables                    ////
 
+    /** Contains the actors inside a ptides platform (=platforms). */
+    protected List<NamedObj> _actors;
     /** True if in the last request to schedule an actor, this actor
      *  finished execution.
      */
     protected boolean _lastActorFinished;
+    
+    /** Last actor that finished execution.
+     */
     protected Actor _lastActorThatFinished;
 
     /** The last time an actor's remaining time was updated due to a scheduling
@@ -468,8 +428,10 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
      */
     protected HashMap<Actor, Time> _remainingTimes;
 
-    /** Contains the actors inside a ptides platform (=platforms). */
-    protected List<NamedObj> _actors;
+    /** Listeners that want to be informed about rescheduling events.
+     */
+    protected List<ScheduleListener> _schedulePlotListeners;
+    
 
     ///////////////////////////////////////////////////////////////////
     //                           private methods                     //
@@ -483,10 +445,17 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
                 if (((BooleanToken) decoratorAttributes.enable.getToken())
                         .booleanValue()) {
                     // The entity uses this resource scheduler.
+                    if (_actors == null) {
+                        _actors = new ArrayList<NamedObj>();
+                    }
                     _actors.add(entity);
                     // Indicate that the actor is not running.
+                    if (_remainingTimes == null) {
+                        _remainingTimes = new HashMap<Actor, Time>();
+                    }
                     _remainingTimes.put((Actor) entity, null);
-                    event(entity, 0.0, null);
+                    notifyScheduleListeners(entity, 0.0, null);
+                    
                 } else if (entity instanceof CompositeActor) {
                     _getAllManagedEntities(((CompositeActor) entity)
                             .deepEntityList());
@@ -512,8 +481,5 @@ public class AtomicResourceScheduler extends TypedAtomicActor implements Resourc
         return toDecorate;
     }
 
-    /** Previous positions of the actor data set. */
-    private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>();
-
-    private SchedulePlotterEditorFactory _schedulePlotterEditorFactory;
+    
 }

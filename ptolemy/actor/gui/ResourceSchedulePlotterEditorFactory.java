@@ -27,23 +27,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor.lib.resourceScheduler;
+package ptolemy.actor.gui;
 
 import java.awt.Frame;
+import java.util.HashMap;
+import java.util.List;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditorFactory;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.ResourceScheduler;
+import ptolemy.actor.lib.resourceScheduler.ScheduleListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.plot.Plot;
 
-/** Factory that creates the schedule plotter.
- * *
+/** Factory that creates the plotter for the schedule of actors on a 
+ *  resource scheduler.
+ * 
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 9.0
@@ -51,8 +51,8 @@ import ptolemy.plot.Plot;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class SchedulePlotterEditorFactory extends EditorFactory {
-
+public class ResourceSchedulePlotterEditorFactory extends EditorFactory implements ScheduleListener {
+    
     /**
      * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
      *
@@ -67,7 +67,7 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
      *                    If the name coincides with an attribute already in
      *                    the container.
      */
-    public SchedulePlotterEditorFactory(NamedObj container, String name)
+    public ResourceSchedulePlotterEditorFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -111,12 +111,109 @@ public class SchedulePlotterEditorFactory extends EditorFactory {
             configuration.createPrimaryTableau(schedulePlotterEffigy);
 
             plot.setVisible(true);
+            
+            if (_actors != null) {
+                _initPlot();
+            }
         } catch (Throwable throwable) {
             throw new InternalErrorException(object, throwable,
                     "Cannot create Schedule Plotter");
         }
     }
+    
+    /** Plot a new execution event for an actor (i.e. an actor
+     *  started/finished execution, was preempted or resumed).
+     * @param actor The actor.
+     * @param physicalTime The physical time when this scheduling event occurred.
+     * @param scheduleEvent The scheduling event.
+     */
+    public void event(final NamedObj actor, double physicalTime,
+            ExecutionEventType scheduleEvent) {
+        if (plot == null) {
+            return;
+        }
+    
+        double x = physicalTime;
+        int actorDataset = _actors.indexOf(actor);
+        if (actorDataset == -1) {
+            return; // actor is not being monitored
+        }
+        if (scheduleEvent == null) {
+            if (_previousY.get(actor) == null) {
+                _previousY.put(actor, (double) actorDataset);
+            }
+            plot.addPoint(actorDataset, x,
+                    _previousY.get(actor), true);
+            _previousY.put(actor, (double) actorDataset);
+        } else if (scheduleEvent == ExecutionEventType.START) {
+            plot.addPoint(actorDataset, x,
+                    _previousY.get(actor), true);
+            plot.addPoint(actorDataset, x,
+                    actorDataset + 0.6, true);
+            _previousY.put(actor, actorDataset + 0.6);
+        } else if (scheduleEvent == ExecutionEventType.STOP) { 
+            if (_previousY.get(actor) != actorDataset) {
+                plot.addPoint(actorDataset, x,
+                        actorDataset + 0.6, true);
+                plot.addPoint(actorDataset, x,
+                        actorDataset, true);
+            }
+            _previousY.put(actor, (double) actorDataset);
+        } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
+            plot.addPoint(actorDataset, x,
+                    actorDataset + 0.6, true);
+            plot.addPoint(actorDataset, x,
+                    actorDataset + 0.4, true);
+            _previousY.put(actor, actorDataset + 0.4);
+        }
+        plot.fillPlot();
+        plot.repaint();
+    }
+    
+    /** Initialize plot. 
+     *  @param actors Actors scheduled by the resource scheduler associated with
+     *    this plot.
+     *  @param scheduler Resource Scheduler associated with this plot.
+     */
+    public void initialize(List<NamedObj> actors, ResourceScheduler scheduler) {
+        _actors = actors;
+        _scheduler = scheduler;
+        if (plot != null) {
+            _initPlot();
+        }
+    }
+    
+    /** Contains the actors inside a ptides platform (=platforms). */
+    protected List<NamedObj> _actors;
+    
+    /** Initialize legend.
+     */
+    private void _initPlot() {
+        plot.clearLegends();
+        plot.clear(false);
+        plot.addLegend(_actors.size() - 1, _scheduler.getName()); 
+        _previousY.put((NamedObj) _scheduler, Double.valueOf(_actors.size() - 1)); 
+        if (plot != null) {
+            plot.clear(false);
+            plot.clearLegends();
+    
+            for (NamedObj actor : _actors) {
+                plot.addLegend(
+                        _actors.indexOf(actor), actor.getName());
+                event(actor, 0.0, null);
+                _previousY.put(actor, Double.valueOf(_actors.indexOf(actor)));
+            }
+            plot.doLayout();
+        } 
+    }
 
+    /** The resource scheduler associated with this plot.
+     */
+    private ResourceScheduler _scheduler;
+
+    /** Previous positions of the actor data set. */
+    private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>(); 
+    
     /** This static variable is increased by 1 every time a new
      *  SchedulePlotter is generated. The id is assigned as a unique
      *  id to every schedule plotter.
