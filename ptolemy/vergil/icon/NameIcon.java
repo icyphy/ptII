@@ -27,6 +27,7 @@
  */
 package ptolemy.vergil.icon;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Point2D;
@@ -191,8 +192,11 @@ public class NameIcon extends EditorIcon {
                 return new BasicRectangle(0, 0, width, height, _getFill(),
                         _getLineWidth());
             } else {
-                return new RoundedRectangle(0, 0, width, height, _getFill(),
+                RoundedRectangle result = new RoundedRectangle(0, 0, width, height, _getFill(),
                         _getLineWidth(), _roundingValue, _roundingValue);
+                // FIXME: For book.
+                // result.setStrokePaint(Color.WHITE);
+                return result;
             }
         } else {
             CompositeFigure result;
@@ -333,8 +337,9 @@ public class NameIcon extends EditorIcon {
      *  @return The label figure.
      */
     protected LabelFigure _getLabel(CompositeFigure background, String name) {
-        LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
-                SwingConstants.CENTER);
+        // FIXME: For book.
+        // LabelFigure label = new LabelFigure(name, _labelFont, 1.0, SwingConstants.CENTER, Color.WHITE);
+        LabelFigure label = new LabelFigure(name, _labelFont, 1.0, SwingConstants.CENTER);
         Rectangle2D backBounds = background.getBackgroundFigure().getBounds();
         label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
         return label;
@@ -345,6 +350,8 @@ public class NameIcon extends EditorIcon {
      *  @return The line width to use in rendering the box.
      */
     protected float _getLineWidth() {
+        // FIXME: For book:
+        // return 3.0f;
         return 1.0f;
     }
 
