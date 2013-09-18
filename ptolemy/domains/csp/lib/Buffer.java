@@ -202,8 +202,9 @@ public class Buffer extends CSPActor {
     /** Return true unless none of the branches were enabled in
      *  the most recent invocation of fire().
      *  @return True if another iteration can occur.
+     *  @exception IllegalActionException If thrown by the base class.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
         super.postfire();
         if (_debugging) {
             _debug("Postfire returns: " + _branchEnabled);
