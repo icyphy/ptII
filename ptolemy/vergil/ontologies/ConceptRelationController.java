@@ -248,6 +248,8 @@ public class ConceptRelationController extends BasicEdgeController {
             c.setAngle(Math.PI / 999.0);
             Arrowhead arrowhead = new Arrowhead();
             c.setHeadEnd(arrowhead);
+            // FIXME: For book.
+            // c.setLineWidth((float) 3.0);
             c.setLineWidth((float) 2.0);
             c.setUserObject(edge);
 
@@ -302,7 +304,13 @@ public class ConceptRelationController extends BasicEdgeController {
                         float[] dashvalues = new float[2];
                         dashvalues[0] = (float) 2.0;
                         dashvalues[1] = (float) 2.0;
-                        Stroke dashed = new BasicStroke(1.0f,
+                        // FIXME: For book
+                        /*
+                        Stroke dashed = new BasicStroke(3.0f,
+                                BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                                0, dashvalues, 0);
+                        */
+                        Stroke dashed = new BasicStroke(2.0f,
                                 BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                                 0, dashvalues, 0);
                         c.setStroke(dashed);
