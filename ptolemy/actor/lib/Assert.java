@@ -27,7 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -35,15 +37,18 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** Check that an assertion predicate is satisfied, and throw an exception if not.
  *  To use this actor, add any number of input ports.
  *  Corresponding output ports will be automatically added.
- *  Specify an expression that references the inputs and yield a boolean result.
+ *  Specify an expression that references the inputs and yields a boolean result.
  *  When the actor fires, if the expression evaluates to false, then the actor
  *  will throw an exception with the message given by the {@link #message} parameter.
  *  Otherwise, it will copy the inputs to the corresponding output ports.
@@ -98,8 +103,24 @@ public class Assert extends Expression {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Assert newObject = (Assert) super.clone(workspace);
-        newObject._outputPortMap = new HashMap<String,TypedIOPort>();
+        Assert newObject = null;
+        // NOTE: The following flag will be copied into the clone.
+        _cloning = true;
+        try {
+            newObject = (Assert) super.clone(workspace);
+            newObject._outputPortMap = new HashMap<String,TypedIOPort>();
+            // Reconstruct the output port map.
+            List<TypedIOPort> inputs = newObject.inputPortList();
+            for (TypedIOPort input : inputs) {
+                String name = input.getName();
+                String outputPortName = _OUTPUT_PORT_PREFIX + name;
+                TypedIOPort output = (TypedIOPort)newObject.getPort(outputPortName);
+                newObject._outputPortMap.put(name, output);
+            }
+        } finally {
+            _cloning = false;
+            newObject._cloning = false;
+        }
         return newObject;
     }
 
@@ -113,8 +134,19 @@ public class Assert extends Expression {
         super.fire();
         
         if (!((BooleanToken)_result).booleanValue()) {
-            throw new IllegalActionException(this, message.stringValue()
-                    + "\nAssertion: " + expression.getExpression());
+            StringBuffer info = new StringBuffer();
+            info.append(message.stringValue());
+            info.append("\nAssertion: ");
+            info.append(expression.getExpression());
+            info.append("\nInput values:\n");
+            for (String name : _tokenMap.keySet()) {
+                info.append("  ");
+                info.append(name);
+                info.append(" = ");
+                info.append(_tokenMap.get(name).toString());
+                info.append("\n");
+            }
+            throw new IllegalActionException(this, info.toString());
         }
         
         // If we get here, assertion has passed.
@@ -124,6 +156,21 @@ public class Assert extends Expression {
             // NOTE: Expression does not seem to allow an input port to be a multiport.
             // If that changes, then we need to iterate here over all input channels.
             outputPort.send(0, _tokenMap.get(inputName));
+        }
+    }
+    
+    /** Override the base class to create a specialized port.
+     *  @param name The name for the new port.
+     *  @return The new port.
+     *  @exception NameDuplicationException If the actor already has a port
+     *   with the specified name.
+     */
+    @Override
+    public Port newPort(String name) throws NameDuplicationException {
+        try {
+            return new AssertPort(this, name);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
         }
     }
     
@@ -140,17 +187,11 @@ public class Assert extends Expression {
      *   name already in the entity.
      */
     @Override
-    protected void _addPort(final TypedIOPort port) throws IllegalActionException,
+    protected void _addPort(TypedIOPort port) throws IllegalActionException,
             NameDuplicationException {
-        
-        // FIXME: Need to also override _removePort to remove corresponding output ports.
-        // FIXME: Need to make sure the port being added is not an output port.
-        // FIXME: If an input port is renamed, need to change the display name of the output port.
-        // Do this by creating a port that is a subclass of TypedIOPort that overrides setName(),
-        // and return that subclass from newPort().
         super._addPort(port);
         
-        if (_creatingOutputPort) {
+        if (_creatingOutputPort || _cloning) {
             return;
         }
 
@@ -158,40 +199,103 @@ public class Assert extends Expression {
         if (name.equals("output") || name.startsWith(_OUTPUT_PORT_PREFIX)) {
             return;
         }
+        // NOTE: Don't want to do this if this Assert is a clone
+        // under construction because later the superclass will try
+        // to clone the output port and will fail.
+        // The _cloning flag above tells us that.
+        _createOutputPort(port);
+    }
+    
+    /** Override the base class to remove the corresponding
+     *  output port, if the specified port is an input port, or
+     *  the corresponding input port, if the specified port is an
+     *  output port.
+     *  @param port The port to remove from this entity.
+     *   name already in the entity.
+     */
+    @Override
+    protected void _removePort(Port port) {
+        super._removePort(port);
+        String name = port.getName();
         
-        // Show the name of the input port.
-        SingletonParameter showName = new SingletonParameter(port, "_showName");
-        showName.setPersistent(false);
-        showName.setExpression("true");
-        
-        ChangeRequest request = new ChangeRequest(this, "Add a matching output port", true) {
-            @Override
-            protected void _execute() throws Exception {
-                _creatingOutputPort = true;
+        // Remove the corresponding output port.
+        // NOTE: If a corresponding output port exists, then remove
+        // it whether this is an output port or not. The user may
+        // have accidentally added an output port.
+        String outputPortName = _OUTPUT_PORT_PREFIX + name;
+        Port outputPort = getPort(outputPortName);
+        if (outputPort != null) {
+            try {
+                outputPort.setContainer(null);
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+        // If this port name matches the pattern of an output
+        // port, then remove the corresponding input port, if it exists.
+        if (name.startsWith(_OUTPUT_PORT_PREFIX)) {
+            // Remove the corresponding input port.
+            String inputName = name.substring(_OUTPUT_PORT_PREFIX.length());
+            Port inputPort = getPort(inputName);
+            if (inputPort != null) {
                 try {
-                    String name = port.getName();
-                    
-                    // If there is already a port with the correct name, use that.
-                    String outputPortName = _OUTPUT_PORT_PREFIX + name;
-                    TypedIOPort outputPort = (TypedIOPort)Assert.this.getPort(outputPortName);
-                    if (outputPort == null) {
-                        outputPort = new TypedIOPort(Assert.this, outputPortName, false, true);
-                        // Display name should match the input port name.
-                        outputPort.setDisplayName(name);
-                        SingletonParameter showName = new SingletonParameter(outputPort, "_showName");
-                        showName.setExpression("true");
-                    }
-                    _outputPortMap.put(name, outputPort);
-                } finally {
-                    _creatingOutputPort = false;
+                    inputPort.setContainer(null);
+                } catch (KernelException e) {
+                    throw new InternalErrorException(e);
                 }
             }
-        };
-        requestChange(request);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+
+    /** Create the corresponding output port for the given input port.
+     *  @param port The input port.
+     *  @throws InternalErrorException If something goes wrong.
+     */
+    private void _createOutputPort(final TypedIOPort port) {
+        // Show the name of the input port.
+        SingletonParameter showName;
+        _creatingOutputPort = true;
+        try {
+            showName = new SingletonParameter(port, "_showName");
+            showName.setPersistent(false);
+            showName.setExpression("true");
+        
+            String name = port.getName();
+
+            // If there is already a port with the correct name, use that.
+            String outputPortName = _OUTPUT_PORT_PREFIX + name;
+            TypedIOPort outputPort = (TypedIOPort)Assert.this.getPort(outputPortName);
+            if (outputPort == null) {
+                outputPort = new TypedIOPort(Assert.this, outputPortName, false, true) {
+                    // Make sure that this output port _never_ appears in MoML.
+                    // If it is allowed to appear, subtle bugs will arise, for example
+                    // when copying and pasting in actor-oriented classes.
+                    public void exportMoML(Writer output, int depth, String name) {}
+                };
+                // Display name should match the input port name.
+                outputPort.setDisplayName(name);
+                showName = new SingletonParameter(outputPort, "_showName");
+                showName.setExpression("true");
+            }
+            _outputPortMap.put(name, outputPort);
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
+        } finally {
+            _creatingOutputPort = false;
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
+    
+    /** Flag indicating that we are being cloned.
+     *  Note that this flag will be cloned into the clone, so it needs
+     *  to be reset in the both the clone and clonee.
+     */
+    private boolean _cloning = false;
     
     /** Flag indicating that we are adding a corresponding output port. */
     private boolean _creatingOutputPort;
@@ -200,5 +304,42 @@ public class Assert extends Expression {
     private HashMap<String,TypedIOPort> _outputPortMap = new HashMap<String,TypedIOPort>();
     
     /** Prefix given to output port names. */
-    private final String _OUTPUT_PORT_PREFIX = "_correspondingOutputPort_";
+    private final static String _OUTPUT_PORT_PREFIX = "_correspondingOutputPort_";
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     inner classes                         ////
+
+    /** Class for ports created by the user for this actor.
+     *  These should all be input ports, in theory.
+     *  This class ensures that if you change the name of the
+     *  port, then the name and displayName of the corresponding output
+     *  port are both changed.
+     */
+    public static class AssertPort extends TypedIOPort {
+        public AssertPort(Assert container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+        // Override setName() to also change the name of the corresponding
+        // output port.
+        public void setName(final String name) 
+                throws IllegalActionException, NameDuplicationException {
+            final String oldName = getName();
+            super.setName(name);
+            // No need to do anything for the first name setting
+            // or if the name is not changing.
+            if (oldName != null && !oldName.equals(name)) {
+                // FIXME: The port dialog complains about this!
+                // But the operation succeeds.
+                Assert container = (Assert)getContainer();
+                TypedIOPort outputPort = container._outputPortMap.get(oldName);
+                if (outputPort != null) {
+                    outputPort.setName(_OUTPUT_PORT_PREFIX + name);
+                    outputPort.setDisplayName(name);
+                    container._outputPortMap.remove(oldName);
+                    container._outputPortMap.put(name, outputPort);
+                }                        
+            }
+        }
+    }
 }
