@@ -158,7 +158,6 @@ public class StaticSchedulingDirector extends Director {
         _savedIterationCount = 0;
         
         _actorFinished = false;
-        _currentlyExecuting = false;
     };
 
     /** Calculate the current schedule, if necessary, and iterate the
@@ -283,7 +282,11 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        return super.postfire() && _postfireReturns;
+        boolean result = super.postfire() && _postfireReturns;
+        if (_debugging) {
+            _debug("Postfire returns: " + result);
+        }
+        return result;
     }
     
     /** Resume the execution of an actor that was previously blocked because
@@ -294,7 +297,6 @@ public class StaticSchedulingDirector extends Director {
     @Override
     public void resumeActor(Actor actor) throws IllegalActionException { 
         _actorFinished = true;
-        _currentlyExecuting = false; 
     }
     
     /** Return true if the director is ready to fire. This method is
@@ -346,12 +348,10 @@ public class StaticSchedulingDirector extends Director {
                 if (!_actorFinished) {
                     boolean finished = _schedule(actor, getModelTime());
                     if (!finished) {
-                        _currentlyExecuting = true;
                         _prefire = false;
                         return false;
                     }
                 }
-                _currentlyExecuting = false;
                 _actorFinished = false;
 
                 if (_savedIterationCount == 0) {
@@ -447,11 +447,7 @@ public class StaticSchedulingDirector extends Director {
     /** The value returned by the prefire() method. */
     protected boolean _prefire = false;
 
-    private boolean _actorFinished;
-    private boolean _currentlyExecuting;
-    private int _lastSchedulePosition;
-    private int _lastIterationCount;
-    
+    private boolean _actorFinished;    
     
     /** Computed schedule that has not been fully executed because this
      *  director is waiting for resources.
