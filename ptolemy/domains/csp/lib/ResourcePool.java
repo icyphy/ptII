@@ -251,9 +251,21 @@ public class ResourcePool extends CSPActor {
     /** Return true unless none of the branches were enabled in
      *  the most recent invocation of fire().
      *  @return True if another iteration can occur.
+     *  @exception IllegalActionException If thrown by the base class.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
+        // FIXME: We deliberately ignore the return value of super.postfire()
+        // here because CSPActor.postfire() returns false.
         super.postfire();
+        // Note that CSPActor.postfire() also ignores the return value
+        // AtomicActor.postfire(), which means that if a stop is
+        // requested, then it is ignored.
+        // However, if we check the value of AtomicActor._stopRequested
+        // and return false if _stopRequested is true, then csp/test/auto/ResourcePool3.xml fails
+        //if (!_stopRequested) {
+        //    return false;
+        //}
+
         return _branchEnabled;
     }
 

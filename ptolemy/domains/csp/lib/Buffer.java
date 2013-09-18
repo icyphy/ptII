@@ -205,10 +205,19 @@ public class Buffer extends CSPActor {
      *  @exception IllegalActionException If thrown by the base class.
      */
     public boolean postfire() throws IllegalActionException {
+        // FIXME: We deliberately ignore the return value of super.postfire()
+        // here because CSPActor.postfire() returns false. 
         super.postfire();
-        if (_debugging) {
-            _debug("Postfire returns: " + _branchEnabled);
-        }
+
+        // Note that CSPActor.postfire() also ignores the return value
+        // AtomicActor.postfire(), which means that if a stop is
+        // requested, then it is ignored.
+        // However, if we check the value of AtomicActor._stopRequested
+        // and return false if _stopRequested is true, then csp/test/auto/Sequencing.xml fails
+        // if (!_stopRequested) {
+        //    return false;
+        //}
+
         return _branchEnabled;
     }
 
