@@ -5,18 +5,18 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{850.0, -150.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 169, 1300, 868}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 110, 1300, 868}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1066, 758]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9159864821934667">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1072.5760569852941, 17.09423828125003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1072.5760569852941, 17.09423828124997}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mass flow rate for hot air should vary from about 0.2 to 2.0.&#10;Flow of cold air should be between 0.8 to 8.0.&#10;Below that range results in an invalid model.&#10;Above that range doesn't achieve enough temperature change.">
@@ -27,21 +27,6 @@
     <entity name="HeatExchanger" class="ptolemy.demo.AirManagementSystem.HeatExchanger">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1070.0, 20.0]">
         </property>
-        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1033, 539, 500, 344}, maximized=false}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-            </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xRange min="0.0" max="1000.0"/>
-<yRange min="1253.2911831399226" max="1662.4454709058189"/>
-</plot>?>
-            </configure>
-        </entity>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <display name="Engine Air Temperature"/>
@@ -101,8 +86,8 @@
 <title>Temperature (K)</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-30.05181347150259" max="109.58549222797927"/>
-<yRange min="245.42690102571277" max="294.9877839356558"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="247.87397265896294" max="306.1668611540281"/>
 </plot>?>
         </configure>
     </entity>

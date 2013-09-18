@@ -29,9 +29,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1446, 914]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.352689392650131">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3011271236350195">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{459.7944335937502, 293.14914203951946}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{480.82924631844577, 306.39111328124983}">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Heat Exchanger">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, -45.0]">
@@ -267,7 +267,7 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The above two actors calculate coefficients hh*Ah&#10;and ha*Aa based on a Modelica model implemented by Yilin Mo.&#10;According to UTC, the numbers are off by a couple of orders of magnitude.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The above two actors calculate coefficients hh*Ah&#10;and ha*Aa based on a Modelica model implemented by Yilin Mo.&#10;According to UTC, the numbers are off by a couple of orders of magnitude,&#10;so the two LinearMap actors have a &quot;fudge&quot; parameter that we use to&#10;bring them into the right range.">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="20">
                 </property>
@@ -320,6 +320,333 @@
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
+    <class name="LinearMap" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 115.0]">
+        </property>
+        <property name="t_grid" class="ptolemy.data.expr.Parameter" value="{200.0,216.67,233.33,250.0,266.67,283.33,300.0,316.67,333.33,366.67}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 140.0]">
+            </property>
+        </property>
+        <property name="hcoef_grid" class="ptolemy.data.expr.Parameter" value="[5.08, 5.12, 5.2, 5.28, 5.37, 5.45, 5.53, 5.61, 5.65, 5.81; &#10;8.17, 8.25, 8.37, 8.54, 8.66, 8.82, 8.94, 9.06, 9.15, 9.35; &#10;10.61, 10.69, 10.85, 11.06, 11.22, 11.38, 11.59, 11.75, 11.91, 12.15; &#10;12.52, 12.68, 12.89, 13.13, 13.37, 13.62, 13.82, 14.02, 14.19, 14.51; &#10;14.15, 14.35, 14.59, 14.88, 15.12, 15.41, 15.65, 15.89, 16.14, 16.54; &#10;15.65, 15.85, 16.1, 16.42, 16.71, 16.99, 17.28, 17.52, 17.8, 18.25; &#10;16.95, 17.19, 17.48, 17.8, 18.13, 18.41, 18.74, 19.02, 19.27, 19.76; &#10;18.13, 18.37, 18.7, 19.06, 19.43, 19.76, 20.08, 20.37, 20.65, 21.18; &#10;19.23, 19.47, 19.84, 20.2, 20.57, 20.93, 21.3, 21.63, 21.95, 22.48; &#10;20.28, 20.53, 20.89, 21.3, 21.67, 22.03, 22.4, 22.76, 23.09, 23.7; &#10;20.28, 20.53, 20.89, 21.3, 21.67, 22.03, 22.4, 22.76, 23.09, 23.7]&#10;">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 110.0]">
+            </property>
+        </property>
+        <property name="m_flow_grid" class="ptolemy.data.expr.Parameter" value="{0.76,1.51,2.27,3.02,3.78,4.54,5.29,6.05,6.8,7.56,8.32}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 170.0]">
+            </property>
+        </property>
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: David Broman and Edward A. Lee">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 70.0]">
+            </property>
+        </property>
+        <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor calculates the produce h* A of the heat transfer coefficient h&#10;and the area A using a table lookup. &#10;The actor is a port of the Modelica model implemented by Yilin Mo.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 10.0]">
+            </property>
+        </property>
+        <property name="fudge" class="ptolemy.data.expr.Parameter" value="100.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 430.0]">
+            </property>
+        </property>
+        <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Fudge factor that makes the behavior reasonable.&#10;Something is wrong with the parameters, as without this,&#10;the outputs are &quot;a couple of orders magnitude too small.&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 440.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 133, 1340, 802}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 692]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1845247141868045">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.63281250000006, 295.8791771213505}">
+        </property>
+        <property name="AnnotationUpdated4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Assert that the temperature and flows&#10;provided lie in range for the tables that&#10;are given.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 365.0]">
+            </property>
+        </property>
+        <port name="transfer" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 295.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="flow" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 245.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="temperature" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 345.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="Interpolation" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="fold(function(hcoef:double, i:int) &#10;   (m_flow &gt;= m_flow_grid(i) &amp;&amp; m_flow &lt;= m_flow_grid(i + 1)) ? ( &#10;       fold(function(hcoef:double, j:int) &#10;          t &gt;= t_grid(j) &amp;&amp; t &lt;= t_grid(j + 1) ? (&#10;                ((m_flow - m_flow_grid(i)) * (t - t_grid(j)) * hcoef_grid(i + 1,j + 1) + &#10;                 (m_flow - m_flow_grid(i)) * (t_grid(j + 1) - t) * hcoef_grid(i + 1,j) + &#10;                 (m_flow_grid(i + 1) - m_flow) * (t - t_grid(j)) * hcoef_grid(i,j + 1) + &#10;                 (m_flow_grid(i + 1) - m_flow) * (t_grid(j + 1) - t) * &#10;                  hcoef_grid(i,j)) / (t_grid(j + 1) - t_grid(j)) / &#10;                 (m_flow_grid(i + 1) - m_flow_grid(i))&#10;          ):hcoef,&#10;       hcoef, iterate(function(x:int)x+1,t_grid.length(),0))&#10;    ):hcoef,&#10;0.0, iterate(function(x:int)x+1,m_flow_grid.length(),0))&#10;&#10;">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 295.0]">
+            </property>
+            <port name="m_flow" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="t" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="fudge">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 295.0]">
+            </property>
+        </entity>
+        <entity name="Assert" class="ptolemy.actor.lib.Assert">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="temp &gt;= t_grid(0) &amp;&amp;&#10;temp &lt;= t_grid(t_grid.length()-1)">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="message" class="ptolemy.data.expr.StringParameter" value="Temperature out of range.">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 345.0}">
+            </property>
+            <port name="temp" class="ptolemy.actor.lib.Assert$AssertPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Assert2" class="ptolemy.actor.lib.Assert">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="flow &gt;= m_flow_grid(0) &amp;&amp;&#10;flow &lt;= m_flow_grid(m_flow_grid.length()-1)">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="message" class="ptolemy.data.expr.StringParameter" value="Flow out of range.">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 245.0]">
+            </property>
+            <port name="flow" class="ptolemy.actor.lib.Assert$AssertPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="transfer" relation="relation4"/>
+        <link port="flow" relation="relation6"/>
+        <link port="temperature" relation="relation5"/>
+        <link port="Interpolation.output" relation="relation2"/>
+        <link port="Interpolation.m_flow" relation="relation"/>
+        <link port="Interpolation.t" relation="relation3"/>
+        <link port="Scale.input" relation="relation2"/>
+        <link port="Scale.output" relation="relation4"/>
+        <link port="Assert.temp" relation="relation5"/>
+        <link port="Assert._correspondingOutputPort_temp" relation="relation3"/>
+        <link port="Assert2.flow" relation="relation6"/>
+        <link port="Assert2._correspondingOutputPort_flow" relation="relation"/>
+    </class>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialTx">
         </property>
@@ -422,366 +749,18 @@
             </property>
         </port>
     </entity>
-    <entity name="LinearMap1" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="InstanceOfLinearMap" class="LinearMap">
         <display name="LinearMap for ha*Aa"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 465.0}">
         </property>
-        <property name="t_grid" class="ptolemy.data.expr.Parameter" value="{200.0,216.67,233.33,250.0,266.67,283.33,300.0,316.67,333.33,366.67}">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 135.0]">
-            </property>
+        <property name="fudge" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
-        <property name="hcoef_grid" class="ptolemy.data.expr.Parameter" value="[5.08, 5.12, 5.2, 5.28, 5.37, 5.45, 5.53, 5.61, 5.65, 5.81; &#10;8.17, 8.25, 8.37, 8.54, 8.66, 8.82, 8.94, 9.06, 9.15, 9.35; &#10;10.61, 10.69, 10.85, 11.06, 11.22, 11.38, 11.59, 11.75, 11.91, 12.15; &#10;12.52, 12.68, 12.89, 13.13, 13.37, 13.62, 13.82, 14.02, 14.19, 14.51; &#10;14.15, 14.35, 14.59, 14.88, 15.12, 15.41, 15.65, 15.89, 16.14, 16.54; &#10;15.65, 15.85, 16.1, 16.42, 16.71, 16.99, 17.28, 17.52, 17.8, 18.25; &#10;16.95, 17.19, 17.48, 17.8, 18.13, 18.41, 18.74, 19.02, 19.27, 19.76; &#10;18.13, 18.37, 18.7, 19.06, 19.43, 19.76, 20.08, 20.37, 20.65, 21.18; &#10;19.23, 19.47, 19.84, 20.2, 20.57, 20.93, 21.3, 21.63, 21.95, 22.48; &#10;20.28, 20.53, 20.89, 21.3, 21.67, 22.03, 22.4, 22.76, 23.09, 23.7; &#10;20.28, 20.53, 20.89, 21.3, 21.67, 22.03, 22.4, 22.76, 23.09, 23.7]&#10;">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 105.0]">
-            </property>
-        </property>
-        <property name="m_flow_grid" class="ptolemy.data.expr.Parameter" value="{0.76,1.51,2.27,3.02,3.78,4.54,5.29,6.05,6.8,7.56,8.32}">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 165.0]">
-            </property>
-        </property>
-        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-            </property>
-            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
-            </property>
-            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
-            </property>
-            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: David Broman">
-                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                    </property>
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
-            </property>
-        </property>
-        <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-            </property>
-            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
-            </property>
-            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor implements the coefficient h_a * A_a of the AMS model in the iCyPhy project. &#10;The actor is a port of the Modelica model implemented by Yilin Mo.">
-                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                    </property>
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 20.0]">
-            </property>
-        </property>
-        <port name="ha_x_Aa" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 295.0]">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="Wa" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 270.0]">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="Ta" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 320.0]">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <entity name="Interpolation" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="fold(function(hcoef:double, i:int) &#10;   (m_flow &gt;= m_flow_grid(i) &amp;&amp; m_flow &lt;= m_flow_grid(i + 1)) ? ( &#10;       fold(function(hcoef:double, j:int) &#10;          t &gt;= t_grid(j) &amp;&amp; t &lt;= t_grid(j + 1) ? (&#10;                ((m_flow - m_flow_grid(i)) * (t - t_grid(j)) * hcoef_grid(i + 1,j + 1) + &#10;                 (m_flow - m_flow_grid(i)) * (t_grid(j + 1) - t) * hcoef_grid(i + 1,j) + &#10;                 (m_flow_grid(i + 1) - m_flow) * (t - t_grid(j)) * hcoef_grid(i,j + 1) + &#10;                 (m_flow_grid(i + 1) - m_flow) * (t_grid(j + 1) - t) * &#10;                  hcoef_grid(i,j)) / (t_grid(j + 1) - t_grid(j)) / &#10;                 (m_flow_grid(i + 1) - m_flow_grid(i))&#10;          ):hcoef,&#10;       hcoef, iterate(function(x:int)x+1,t_grid.length(),0))&#10;    ):hcoef,&#10;0.0, iterate(function(x:int)x+1,m_flow_grid.length(),0))&#10;&#10;">
-                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                    </property>
-                </property>
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 295.0]">
-            </property>
-            <port name="m_flow" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-            <port name="t" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="ha_x_Aa" relation="relation2"/>
-        <link port="Wa" relation="relation"/>
-        <link port="Ta" relation="relation3"/>
-        <link port="Interpolation.output" relation="relation2"/>
-        <link port="Interpolation.m_flow" relation="relation"/>
-        <link port="Interpolation.t" relation="relation3"/>
     </entity>
-    <entity name="LinearMap2" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="InstanceOfLinearMap2" class="LinearMap">
         <display name="LinearMap for hh*Ah"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 540.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 540.0}">
         </property>
-        <property name="t_grid" class="ptolemy.data.expr.Parameter" value="{200.0,216.67,233.33,250.0,266.67,283.33,300.0,316.67,333.33,366.67}">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 135.0]">
-            </property>
-        </property>
-        <property name="hcoef_grid" class="ptolemy.data.expr.Parameter" value="[3.25,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,4.07;&#10;5.69,5.69,5.69,6.1,6.1,6.1,6.1,6.5,6.5,6.5;&#10;7.72,7.72,7.72,7.72,8.13,8.13,8.13,8.54,8.54,8.94;&#10;8.94,9.35,9.35,9.76,9.76,9.76,10.16,10.16,10.57,10.57;&#10;10.57,10.57,10.57,10.98,11.38,11.38,11.79,11.79,12.2,12.2;&#10;11.79,11.79,12.2,12.2,12.6,12.6,13.01,13.41,13.41,13.82;&#10;12.6,13.01,13.01,13.41,13.82,13.82,14.23,14.63,14.63,15.04;&#10;13.82,13.82,14.23,14.63,15.04,15.04,15.45,15.85,15.85,16.26;&#10;14.63,15.04,15.04,15.45,15.85,16.26,16.67,16.67,17.07,17.48;&#10;15.45,15.85,16.26,16.67,16.67,17.07,17.48,17.89,18.29,18.7;&#10;15.45,15.85,16.26,16.67,16.67,17.07,17.48,17.89,18.29,18.7]">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 105.0]">
-            </property>
-        </property>
-        <property name="m_flow_grid" class="ptolemy.data.expr.Parameter" value="{0.19,0.38,0.57,0.76,0.95,1.13,1.32,1.51,1.7,1.89,2.08}">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 165.0]">
-            </property>
-        </property>
-        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-            </property>
-            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
-            </property>
-            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
-            </property>
-            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: David Broman">
-                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                    </property>
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
-            </property>
-        </property>
-        <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-            </property>
-            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
-            </property>
-            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor implements the coefficient h_h * A_h of the AMS model in the iCyPhy project. &#10;The actor is a port of the Modelica model implemented by Yilin Mo.">
-                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                    </property>
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 20.0]">
-            </property>
-        </property>
-        <port name="hh_x_Ah" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 295.0]">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="Wh" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 270.0]">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="Te" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 320.0]">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <entity name="Interpolation" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="fold(function(hcoef:double, i:int) &#10;   (m_flow &gt;= m_flow_grid(i) &amp;&amp; m_flow &lt;= m_flow_grid(i + 1)) ? ( &#10;       fold(function(hcoef:double, j:int) &#10;          t &gt;= t_grid(j) &amp;&amp; t &lt;= t_grid(j + 1) ? (&#10;                ((m_flow - m_flow_grid(i)) * (t - t_grid(j)) * hcoef_grid(i + 1,j + 1) + &#10;                 (m_flow - m_flow_grid(i)) * (t_grid(j + 1) - t) * hcoef_grid(i + 1,j) + &#10;                 (m_flow_grid(i + 1) - m_flow) * (t - t_grid(j)) * hcoef_grid(i,j + 1) + &#10;                 (m_flow_grid(i + 1) - m_flow) * (t_grid(j + 1) - t) * &#10;                  hcoef_grid(i,j)) / (t_grid(j + 1) - t_grid(j)) / &#10;                 (m_flow_grid(i + 1) - m_flow_grid(i))&#10;          ):hcoef,&#10;       hcoef, iterate(function(x:int)x+1,t_grid.length(),0))&#10;    ):hcoef,&#10;0.0, iterate(function(x:int)x+1,m_flow_grid.length(),0))&#10;&#10;">
-                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                    </property>
-                </property>
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 295.0]">
-            </property>
-            <port name="m_flow" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-            <port name="t" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="hh_x_Ah" relation="relation2"/>
-        <link port="Wh" relation="relation"/>
-        <link port="Te" relation="relation3"/>
-        <link port="Interpolation.output" relation="relation2"/>
-        <link port="Interpolation.m_flow" relation="relation"/>
-        <link port="Interpolation.t" relation="relation3"/>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 600}">
+        <property name="fudge" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -812,8 +791,6 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -837,38 +814,34 @@
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[410.0, 465.0]">
-        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Tx" relation="relation6"/>
     <link port="Te" relation="relation"/>
     <link port="Ta" relation="relation11"/>
     <link port="Wh" relation="relation12"/>
     <link port="Th" relation="relation7"/>
-    <link port="Wa" relation="relation8"/>
+    <link port="Wa" relation="relation13"/>
     <link port="Integrator.derivative" relation="relation5"/>
     <link port="Integrator.state" relation="relation6"/>
     <link port="Expression.output" relation="relation5"/>
     <link port="Expression.Te" relation="relation4"/>
     <link port="Expression.Ta" relation="relation11"/>
     <link port="Expression.Tx" relation="relation9"/>
-    <link port="Expression.ha_x_Aa" relation="relation13"/>
+    <link port="Expression.ha_x_Aa" relation="relation8"/>
     <link port="Expression.hh_x_Ah" relation="relation14"/>
     <link port="Expression2.output" relation="relation7"/>
     <link port="Expression2.Tx" relation="relation10"/>
     <link port="Expression2.Te" relation="relation3"/>
     <link port="Expression2.Wh" relation="relation12"/>
     <link port="Expression2.hh_x_Ah" relation="relation14"/>
-    <link port="LinearMap1.ha_x_Aa" relation="relation13"/>
-    <link port="LinearMap1.Wa" relation="relation8"/>
-    <link port="LinearMap1.Ta" relation="relation11"/>
-    <link port="LinearMap2.hh_x_Ah" relation="relation14"/>
-    <link port="LinearMap2.Wh" relation="relation12"/>
-    <link port="LinearMap2.Te" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation14"/>
-    <link port="TimedPlotter.input" relation="relation13"/>
+    <link port="InstanceOfLinearMap.transfer" relation="relation8"/>
+    <link port="InstanceOfLinearMap.flow" relation="relation13"/>
+    <link port="InstanceOfLinearMap.temperature" relation="relation11"/>
+    <link port="InstanceOfLinearMap2.transfer" relation="relation14"/>
+    <link port="InstanceOfLinearMap2.flow" relation="relation12"/>
+    <link port="InstanceOfLinearMap2.temperature" relation="relation"/>
     <link relation1="relation6" relation2="relation10"/>
     <link relation1="relation9" relation2="relation10"/>
     <link relation1="relation3" relation2="relation4"/>

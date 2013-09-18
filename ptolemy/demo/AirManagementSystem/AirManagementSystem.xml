@@ -14,7 +14,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4174261757200146">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.875, 308.7434252829218}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.875, 308.74342528292186}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double click on this comment to see the document on which this model is based.">
@@ -175,14 +175,13 @@
 <title>Temperature at the HX Output</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default stems="yes"/>
+<xRange min="0.0" max="0.23476469830000002"/>
+<yRange min="316.7372262582533" max="322.29380292805973"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="PhysicalPlant" class="ptolemy.demo.AirManagementSystem.PhysicalPlant">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 265.0}">
         </property>
         <entity name="Fork" class="ptolemy.actor.TypedCompositeActor">
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
@@ -198,9 +197,13 @@
                     </property>
                 </port>
             </entity>
+            <entity name="Assert" class="ptolemy.actor.lib.Assert">
+            </entity>
+            <link port="Assert._correspondingOutputPort_Pv" relation="relation4"/>
+            <link port="Assert._correspondingOutputPort_Pc" relation="relation"/>
         </entity>
         <entity name="HeatExchanger" class="ptolemy.demo.AirManagementSystem.HeatExchanger">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={321, 232, 1359, 814}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1680, 1024}, maximized=false}">
             </property>
         </entity>
     </entity>
@@ -220,9 +223,8 @@
 <title>Pressure at the Fork (kPa)</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default marks="dots" stems="yes"/>
+<xRange min="0.0" max="0.23476469830000002"/>
+<yRange min="88.12961181870996" max="1000.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -242,15 +244,14 @@
 <title>Mass Flow Rates (kg/s)</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default marks="dots" stems="yes"/>
+<xRange min="0.0" max="0.23476469830000002"/>
+<yRange min="0.0" max="8.3"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Mass Flow" class="ptolemy.actor.lib.Const">
         <display name="Mass Flow Rate&#10;of Cold Air Through&#10;Heat Exchanger&#10;(in kg/s)"/>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.7">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.8">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">

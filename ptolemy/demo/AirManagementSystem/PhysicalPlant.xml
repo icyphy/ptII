@@ -19,7 +19,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Temperature of &#10;ambient air (in K)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, 30.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pressure of the&#10;cabin (in kPa)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, -120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, -115.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 22, 1620, 992}, maximized=false}">
@@ -36,7 +36,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2273553239627117">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{34.55486668577987, -114.76464843750006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{34.55486668577987, -114.76464843749994}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -232,7 +232,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mass flow rate of&#10;cold air through&#10;the heat exchanger&#10;(in kg/s)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-530.0, 100.0]">
+        </property>
+    </property>
+    <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Limiter should not be needed, but the flow&#10;gets out of range for the tables given without it.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -35.0]">
         </property>
     </property>
     <port name="C1" class="ptolemy.actor.TypedIOPort">
@@ -253,7 +261,7 @@
     </port>
     <port name="Pc" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, -100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, -95.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -267,7 +275,7 @@
     </port>
     <port name="Ta" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, 50.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -318,7 +326,7 @@
     </port>
     <port name="Wa" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, 125.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -340,7 +348,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1082272595796392">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{507.0556640625, 327.1126734164798}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{507.0556640625, 327.11267341647994}">
         </property>
         <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Fork">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 10.0]">
@@ -399,7 +407,7 @@
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mass flow rate&#10;of air through the&#10;heat exchanger&#10;(in kg/s)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 345.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[970.0, 345.0]">
             </property>
         </property>
         <property name="Vfork" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -442,7 +450,7 @@
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: Initial value set to&#10;1000 kPa (ten atmospheres).&#10;Note that setting it to 100kPa&#10;results in NaN due to taking the&#10;sqrt of a negative number.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 170.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 170.0]">
             </property>
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -507,6 +515,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 450.0]">
             </property>
         </property>
+        <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: Assert actor gives a&#10;reasonable error message&#10;rather than allowing NaN&#10;to be calculated.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 175.0]">
+            </property>
+        </property>
         <port name="Wi" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 220.0]">
@@ -551,7 +567,7 @@
         </port>
         <port name="Wh" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 380.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[950.0, 380.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -559,7 +575,7 @@
         <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
             <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="1000.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 305.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 305.0]">
             </property>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -619,7 +635,7 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{695.0, 380.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 380.0]">
             </property>
             <port name="Pv" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -637,6 +653,28 @@
                 </property>
             </port>
         </entity>
+        <entity name="Assert" class="ptolemy.actor.lib.Assert">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="Pv &gt;= Pc">
+            </property>
+            <property name="message" class="ptolemy.data.expr.StringParameter" value="Valve pressure has dropped below cabin pressure.">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 370.0]">
+            </property>
+            <port name="Pv" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="Pc" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -646,7 +684,7 @@
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[600.0, 305.0]">
+            <vertex name="vertex1" value="[575.0, 305.0]">
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -660,20 +698,24 @@
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[800.0, 425.0]">
+            <vertex name="vertex1" value="[890.0, 425.0]">
             </vertex>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[800.0, 380.0]">
+            <vertex name="vertex1" value="[890.0, 380.0]">
             </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="Wi" relation="relation2"/>
         <link port="Wv" relation="relation3"/>
-        <link port="Pc" relation="relation"/>
+        <link port="Pc" relation="relation7"/>
         <link port="Te" relation="relation8"/>
         <link port="Pv" relation="relation6"/>
         <link port="Wh" relation="relation11"/>
@@ -685,9 +727,13 @@
         <link port="Expression.Wh" relation="relation9"/>
         <link port="Expression.Te" relation="relation8"/>
         <link port="Expression2.output" relation="relation11"/>
-        <link port="Expression2.Pv" relation="relation6"/>
+        <link port="Expression2.Pv" relation="relation4"/>
         <link port="Expression2.Pc" relation="relation"/>
         <link port="Expression2.Te" relation="relation8"/>
+        <link port="Assert.Pv" relation="relation6"/>
+        <link port="Assert._correspondingOutputPort_Pv" relation="relation4"/>
+        <link port="Assert.Pc" relation="relation7"/>
+        <link port="Assert._correspondingOutputPort_Pc" relation="relation"/>
         <link relation1="relation9" relation2="relation10"/>
         <link relation1="relation10" relation2="relation11"/>
     </entity>
@@ -779,6 +825,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-210.0, 60.0}">
         </property>
     </entity>
+    <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
+        <property name="bottom" class="ptolemy.data.expr.Parameter" value="0.8">
+        </property>
+        <property name="top" class="ptolemy.data.expr.Parameter" value="8.3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -20.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{-270.0, 100.0}">
         </vertex>
@@ -804,7 +858,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-355.0, -100.0]">
+        <vertex name="vertex1" value="[-355.0, -95.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -828,7 +882,7 @@
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{5.0, 100.0}">
+        <vertex name="vertex1" value="[90.0, 100.0]">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
@@ -838,6 +892,8 @@
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="C1" relation="relation8"/>
     <link port="Pe" relation="relation6"/>
@@ -857,7 +913,7 @@
     <link port="Fork.Te" relation="relation5"/>
     <link port="Fork.Th" relation="relation13"/>
     <link port="Fork.Pv" relation="relation9"/>
-    <link port="Fork.Wh" relation="relation14"/>
+    <link port="Fork.Wh" relation="relation17"/>
     <link port="Valve1.output" relation="relation"/>
     <link port="Valve1.C1" relation="relation8"/>
     <link port="Valve1.Pe" relation="relation6"/>
@@ -873,6 +929,8 @@
     <link port="HeatExchanger.Wh" relation="relation2"/>
     <link port="HeatExchanger.Th" relation="relation13"/>
     <link port="HeatExchanger.Wa" relation="relation4"/>
+    <link port="Limiter.input" relation="relation17"/>
+    <link port="Limiter.output" relation="relation14"/>
     <link relation1="relation2" relation2="relation14"/>
     <link relation1="relation11" relation2="relation15"/>
     <link relation1="relation10" relation2="relation"/>
