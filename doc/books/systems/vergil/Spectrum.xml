@@ -128,7 +128,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Signa Source, Carrier Source, and Spectrum&#10;blocks are hierarchical. Right click or Command-&#10;click (Mac) and select &quot;Open Actor&quot; to view them.&#10;The source actors generate sinusoids, one for the&#10;signal and the other for the carrier.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Signal Source, Carrier Source, and Spectrum&#10;blocks are hierarchical. Right click or Command-&#10;click (Mac) and select &quot;Open Actor&quot; to view them.&#10;The source actors generate sinusoids, one for the&#10;signal and the other for the carrier.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 165.0]">
         </property>
