@@ -548,11 +548,12 @@ public class ModelExecutor extends TypedAtomicActor {
          */
         public void broadcast(Token token) throws NoRoomException,
                 IllegalActionException {
+            // super.broadcast() is not called because we want to send on
+            // the executorPort, not on this port.
+
             // FIXME: This method does not call super.broadcast(),
             // which means that the port event listeners are not
-            // notified.  However, IOPort.broadcast also sends data to
-            // the far receivers, so not calling super.broadcast is
-            // probably ok?
+            // notified for this port.
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             executorPort.broadcast(token);
@@ -753,6 +754,12 @@ public class ModelExecutor extends TypedAtomicActor {
          */
         public void send(int channelIndex, Token token) throws NoRoomException,
                 IllegalActionException {
+            // super.send() is not called because we want to send on
+            // the executorPort, not on this port.
+
+            // FIXME: This method does not call super.send(),
+            // which means that the port event listeners are not
+            // notified for this port. 
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             executorPort.send(channelIndex, token);
@@ -801,6 +808,12 @@ public class ModelExecutor extends TypedAtomicActor {
          */
         public void send(int channelIndex, Token[] tokenArray, int vectorLength)
                 throws NoRoomException, IllegalActionException {
+            // super.send() is not called because we want to send on
+            // the executorPort, not on this port.
+
+            // FIXME: This method does not call super.send(),
+            // which means that the port event listeners are not
+            // notified for this port. 
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             executorPort.send(channelIndex, tokenArray, vectorLength);

@@ -135,6 +135,11 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
         // Show the firingCountLimit parameter last.
         firingCountLimit.moveToLast();
+
+        recursive = new Parameter(this, "recursive");
+        recursive.setTypeEquals(BaseType.BOOLEAN);
+        recursive.setExpression("false");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -180,6 +185,11 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      */
     public StringParameter pattern;
 
+    /** Whether files in the subdirectories should be searched as well.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter recursive;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -191,12 +201,50 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @return True if the specified name matches.
      */
     public boolean accept(File directory, String name) {
-        if (_pattern != null) {
-            Matcher match = _pattern.matcher(name);
-            return match.find();
-        }
+            File file = new File(directory, name);
+            boolean isDirectory = file.isDirectory();
+            boolean isFile = file.isFile();
 
-        return true;
+            try {
+                // FIXME: Maybe cache these for performance reasons.
+                boolean directoriesOnly = ((BooleanToken) listOnlyDirectories
+                        .getToken()).booleanValue();
+                boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
+                    .booleanValue();
+                boolean recursiveValue = ((BooleanToken) recursive.getToken())
+                    .booleanValue();
+
+                if (_debugging) {
+                    _debug("accept(" + directory + ", " + name + ")");
+                }
+                if ( (filesOnly && isFile)
+                        || (directoriesOnly && isDirectory)
+                        || (!directoriesOnly && !filesOnly)) {
+                    //if (!(isFile && directoriesOnly) || isDirectory && _includeDirectories) {
+                    if (_pattern == null || _pattern.matcher(name).matches()) {
+                        if (_debugging) {
+                            _debug("accept(" + directory + ", " + name + "), adding " + file);
+                        }
+                    _files.add(file);
+                    }
+                }
+  
+                if (recursiveValue && isDirectory) {
+                    file.list(this);
+                }
+                if (_debugging) {
+                    _debug("accept(" + directory + ", " + name + "), returning false");
+                }
+                return false;
+            } catch (IllegalActionException ex) {
+                throw new RuntimeException("Failed to read a parameter.", ex);
+            }
+//         if (_pattern != null) {
+//             Matcher match = _pattern.matcher(name);
+//             return match.find();
+//         }
+
+//         return true;
     }
 
     /** Override the base class to locally cache parameter values.
@@ -258,27 +306,35 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                     _debug("Reading directory.");
                 }
 
-                File[] files = sourceFile.listFiles(this);
+                _files = new LinkedList<File>();
+                sourceFile.list(this);
+
+
+//                 File[] files = sourceFile.listFiles(this);
                 ArrayList result = new ArrayList();
 
-                for (int i = 0; i < files.length; i++) {
-                    if (filesOnly && !files[i].isFile()) {
-                        continue;
+//                for (int i = 0; i < files.length; i++) {
+//                     if (filesOnly && !files[i].isFile()) {
+//                         continue;
+//                     }
+
+//                     if (directoriesOnly && !files[i].isDirectory()) {
+//                         continue;
+//                     }
+
+//                     if (accept(null, files[i].getName())) {
+                for (File file: _files) {
+
+                    //String path = files[i].getAbsolutePath();
+
+                    String path = file.getAbsolutePath();
+
+                    if (_debugging) {
+                        _debug("Path: " + path);
                     }
 
-                    if (directoriesOnly && !files[i].isDirectory()) {
-                        continue;
-                    }
-
-                    if (accept(null, files[i].getName())) {
-                        String path = files[i].getAbsolutePath();
-
-                        if (_debugging) {
-                            _debug("Path: " + path);
-                        }
-
-                        result.add(new StringToken(path));
-                    }
+                    result.add(new StringToken(path));
+//                     }
                 }
 
                 if (!emptyDirectoryAllow) {
@@ -463,4 +519,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     ////                         private members                   ////
     // The pattern for the regular expression.
     private Pattern _pattern;
+
+    /** The list the recently found files and directories.
+     */
+    private List<File> _files = new LinkedList<File>();
 }
+

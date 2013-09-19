@@ -205,11 +205,9 @@ public class MapWorker extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called prefire(), which returns true");
-        }
+        boolean returnValue = super.prefire();
         if (inputKey.hasToken(0) && inputValue.hasToken(0)) {
-            return true;
+            return returnValue;
         }
         return false;
     }

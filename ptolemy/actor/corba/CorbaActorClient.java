@@ -167,9 +167,11 @@ public class CorbaActorClient extends TypedAtomicActor {
 
     /** Override the base class to allow arbitrary type changes
      *  for the variables and parameters.
+     *  @exception IllegalActionException If thrown by the base class.
      */
-    public void attributeTypeChanged(Attribute attribute) {
+    public void attributeTypeChanged(Attribute attribute) throws IllegalActionException {
         _typesValid = false; // Set flag to invalidate cached type constraints
+        super.attributeChanged(attribute);
     }
 
     /** Setup the link to the remote actor. This includes creating
@@ -291,6 +293,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  failed or if there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Director dir = getDirector();
 
         if (dir == null) {
@@ -345,8 +348,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                     + ex.getMessage());
         }
 
-        // FIXME: Why don't we return the return value from the parent?
-        return true;
+        return super.postfire();
     }
 
     /** Transfer the input tokens to the remote actor, prefire the remote
@@ -355,6 +357,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  failed or if there is no director.
      */
     public boolean prefire() throws IllegalActionException {
+        boolean superResults = super.prefire();
         Director dir = getDirector();
 
         if (dir == null) {
@@ -380,12 +383,13 @@ public class CorbaActorClient extends TypedAtomicActor {
                     + ex.getMessage());
         }
 
-        return result;
+        return result && superResults;
     }
 
-    /** wrapup the remote actor.
+    /** Wrapup the remote actor.
      */
     public void wrapup() throws IllegalActionException {
+        super.wrapup();
         try {
             if (_remoteActor != null) {
                 // copernicus.kernel.KernelMain.generateCode() calls wrapup()

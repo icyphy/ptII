@@ -582,6 +582,10 @@ public class TransformationRule extends MultiCompositeActor implements
          *  @exception IllegalActionException Not thrown in this class.
          */
         public void initialize() throws IllegalActionException {
+            // FIXME: Director.initialize() does quite a bit,
+            // including calling methods on initializables,
+            // setting up resourceSchedulers, setting the localClock
+            // etc.  Are we sure we don't need that here?
             localClock.resetLocalTime(getModelStartTime());
             localClock.start();
         }
@@ -596,6 +600,10 @@ public class TransformationRule extends MultiCompositeActor implements
          *  @exception IllegalActionException Not thrown in this class.
          */
         public void preinitialize() throws IllegalActionException {
+            // FIXME: Director.preinitialize() does quite a bit,
+            // including calling methods on initializables, validating
+            // settables, calling preinitialize on any actors.  etc.
+            // Are we sure we don't need that here?
             _stopRequested = false;
             _zeroTime = new Time(this, 0.0);
             localClock.initialize();

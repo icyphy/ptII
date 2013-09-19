@@ -155,6 +155,7 @@ public class PullSupplier extends Sink {
      *  @exception IllegalActionException should never be throwed
      */
     public boolean prefire() throws IllegalActionException {
+        boolean returnValue = super.prefire();
         if (!_pullIsWaiting) {
             try {
                 synchronized (_lock) {
@@ -187,7 +188,7 @@ public class PullSupplier extends Sink {
                 _debug(getName(), "hasToken = " + b);
             }
 
-            return b;
+            return b && returnValue;
         }
 
         return false;

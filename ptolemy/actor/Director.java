@@ -841,6 +841,10 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
+        // Note that the inner director in gt.TransformationRule
+        // does not call super.initialize(), so changes made to this
+        // method may apply there.
+
         if (_debugging) {
             _debug("Called initialize().");
         }
@@ -909,9 +913,9 @@ public class Director extends Attribute implements Executable {
      *  acceptable to the domain.  Not thrown in this base class.
      */
     public void initialize(Actor actor) throws IllegalActionException {
-        // FIXME: Note that ProcessDirector does *not*
-        // invoke this method, so changes made here might
-        // apply to ProcessDirector.initialize(Actor).
+        // FIXME: Note that ProcessDirector does *not* invoke this
+        // method, so changes made here might apply to
+        // ProcessDirector.initialize(Actor).
 
         if (_debugging) {
             _debug("Initializing actor: " + ((Nameable) actor).getFullName()
@@ -1146,6 +1150,10 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
+        // Note that the inner director in gt.TransformationRule
+        // does not call super.preinitialize(), so changes made to this
+        // method may apply there.
+
         if (_debugging) {
             _debug(getFullName(), "Preinitializing ...");
         }
@@ -1628,9 +1636,9 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
-        // FIXME: Note that ProcessDirector does *not*
-        // invoke this method, so changes made here might
-        // apply to ProcessDirector.wrapup().
+        // FIXME: Note that ProcessDirector and the inner director in
+        // gt TransformationRule do not invoke this method, so changes
+        // made here might apply to ProcessDirector.wrapup().
 
         if (_debugging) {
             _debug("Director: Called wrapup().");
