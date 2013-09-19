@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.resourceScheduler;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
+import ptolemy.actor.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.DecoratorAttributes;

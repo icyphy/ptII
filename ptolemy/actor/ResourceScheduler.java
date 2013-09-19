@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
-import ptolemy.actor.lib.resourceScheduler.ScheduleListener;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;

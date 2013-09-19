@@ -33,7 +33,7 @@ package ptolemy.actor.lib.resourceScheduler;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
+import ptolemy.actor.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;

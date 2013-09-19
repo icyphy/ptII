@@ -29,11 +29,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 
 
-package ptolemy.actor.lib.resourceScheduler;
+package ptolemy.actor;
 
 import java.util.List;
 
-import ptolemy.actor.ResourceScheduler;
 import ptolemy.kernel.util.NamedObj;
 
 /** This is an interface for a schedule listener. Classes that implement

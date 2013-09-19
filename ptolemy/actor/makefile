@@ -112,6 +112,7 @@ JSRCS = \
 	RelationWidthInference.java \
 	ResourceAttributes.java \
 	ResourceScheduler.java \
+	ScheduleListener.java \
 	StateReceiver.java \
 	StreamExecutionListener.java \
 	SubscriberPort.java \

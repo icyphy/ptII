@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.ResourceScheduler;
-import ptolemy.actor.lib.resourceScheduler.ScheduleListener;
+import ptolemy.actor.ScheduleListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;

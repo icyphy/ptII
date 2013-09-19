@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.lib.resourceScheduler.ScheduleListener.ExecutionEventType;
+import ptolemy.actor.ScheduleListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;

@@ -67,8 +67,7 @@ JSRCS = \
 	FixedPriorityScheduler.java \
 	PriorityResourceAttributes.java \
 	ResourceMappingInputPort.java \
-	ResourceMappingOutputPort.java \
-	ScheduleListener.java
+	ResourceMappingOutputPort.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
