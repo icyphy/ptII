@@ -34,6 +34,7 @@
 /ptolemy/actor/RelationWidthInference.java
 /ptolemy/actor/ResourceAttributes.java
 /ptolemy/actor/ResourceScheduler.java
+/ptolemy/actor/ScheduleListener.java
 /ptolemy/actor/SubscriberPort.java
 /ptolemy/actor/SubscriptionAggregatorPort.java
 /ptolemy/actor/SuperdenseTimeDirector.java
