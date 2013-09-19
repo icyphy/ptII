@@ -29,14 +29,33 @@ package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
+import java.util.LinkedList;
+
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
@@ -45,7 +64,13 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import ptolemy.actor.injection.PortablePlaceable;
+import ptolemy.gui.ExtensionFilenameFilter;
+import ptolemy.gui.ImageExportable;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.UndoListener;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+
 
 ///////////////////////////////////////////////////////////////////
 //// TextEditor
@@ -64,7 +89,7 @@ import ptolemy.gui.UndoListener;
  @Pt.AcceptedRating Red (eal)
  */
 public class TextEditor extends TableauFrame implements DocumentListener,
-        Printable {
+                                                        ImageExportable, Printable {
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -152,6 +177,101 @@ public class TextEditor extends TableauFrame implements DocumentListener,
         }
     }
 
+    // CONTRIBUTED CODE.  The exportImage() methods are from PlotBox,
+    // which says:
+
+    // I wanted the ability to use the Plot object in a servlet and to
+    // write out the resultant images. The following routines,
+    // particularly exportImage(), permit this. I also had to make some
+    // minor changes elsewhere. Rob Kroeger, May 2001.
+
+    // NOTE: This code has been modified by EAL to conform with Ptolemy II
+    // coding style.
+
+    /** Create a BufferedImage and draw this plot to it.
+     *  The size of the returned image matches the current size of the plot.
+     *  This method can be used, for
+     *  example, by a servlet to produce an image, rather than
+     *  requiring an applet to instantiate a PlotBox.
+     *  @return An image filled by the plot.
+     */
+    public synchronized BufferedImage exportImage() {
+        Dimension dimension = getSize();
+        Rectangle rectangle = new Rectangle(dimension.height, dimension.width);
+        return exportImage(new BufferedImage(rectangle.width, rectangle.height,
+                BufferedImage.TYPE_INT_ARGB), rectangle,
+                _defaultImageRenderingHints(), false);
+    }
+
+    /** Draw this plot onto the specified image at the position of the
+     *  specified rectangle with the size of the specified rectangle.
+     *  The plot is rendered using anti-aliasing.
+     *  This can be used to paint a number of different
+     *  plots onto a single buffered image.  This method can be used, for
+     *  example, by a servlet to produce an image, rather than
+     *  requiring an applet to instantiate a PlotBox.
+     *  @param bufferedImage Image onto which the plot is drawn.
+     *  @param rectangle The size and position of the plot in the image.
+     *  @param hints Rendering hints for this plot.
+     *  @param transparent Indicator that the background of the plot
+     *   should not be painted.
+     *  @return The modified bufferedImage.
+     */
+    public synchronized BufferedImage exportImage(BufferedImage bufferedImage,
+            Rectangle rectangle, RenderingHints hints, boolean transparent) {
+        Graphics2D graphics = bufferedImage.createGraphics();
+        graphics.addRenderingHints(_defaultImageRenderingHints());
+
+        if (!transparent) {
+            graphics.setColor(Color.white); // set the background color
+            graphics.fill(rectangle);
+        }
+
+        print(graphics, rectangle);
+        return bufferedImage;
+    }
+
+    /** Export an image of the plot in the specified format.
+     *  If the specified format is not supported, then pop up a message
+     *  window apologizing.
+     *  @param out An output stream to which to send the description.
+     *  @param formatName A format name, such as "gif" or "png".
+     */
+    public synchronized void exportImage(OutputStream out, String formatName) {
+        try {
+            boolean match = false;
+            String[] supportedFormats = ImageIO.getWriterFormatNames();
+            for (String supportedFormat : supportedFormats) {
+                if (formatName.equalsIgnoreCase(supportedFormat)) {
+                    match = true;
+                    break;
+                }
+            }
+            if (!match) {
+                // This exception is caught and reported below.
+                throw new Exception("Format " + formatName + " not supported.");
+            }
+            BufferedImage image = exportImage();
+            if (out == null) {
+                // FIXME: Write image to the clipboard.
+                // final Clipboard clipboard = getToolkit().getSystemClipboard();
+                String message = "Copy to the clipboard is not implemented yet.";
+                JOptionPane.showMessageDialog(this, message,
+                        "Ptolemy Plot Message", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            ImageIO.write(image, formatName, out);
+        } catch (Exception ex) {
+            String message = "Export failed: " + ex.getMessage();
+            JOptionPane.showMessageDialog(this, message,
+                    "Ptolemy Plot Message", JOptionPane.ERROR_MESSAGE);
+
+            // Rethrow the exception so that we don't report success,
+            // and so the stack trace is displayed on standard out.
+            throw (RuntimeException) ex.fillInStackTrace();
+        }
+    }
+
     /** React to notification that there was an insert into the document.
      */
     public void insertUpdate(DocumentEvent e) {
@@ -167,20 +287,13 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
-    public int print(Graphics graphics, PageFormat format, int index)
+    public int print(Graphics graphics, PageFormat format, int index) 
             throws PrinterException {
         if (graphics == null) {
             return Printable.NO_SUCH_PAGE;
         }
 
         Graphics2D graphics2D = (Graphics2D) graphics;
-
-        // Loosely based on
-        // http://forum.java.sun.com/thread.jspa?threadID=217823&messageID=2361189
-        // Found it unwise to use the TextArea font's size,
-        // We area just printing text so use a a font size that will
-        // be generally useful.
-        graphics2D.setFont(getFont().deriveFont(9.0f));
 
         double bottomMargin = format.getHeight() - format.getImageableHeight()
                 - format.getImageableY();
@@ -192,36 +305,50 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                 - format.getImageableY() - bottomMargin)
                 / lineHeight);
 
-        int startLine = linesPerPage * index;
+        int lineYPosition = (int) Math.ceil(format.getImageableY() + lineHeight);
 
-        if (startLine > text.getLineCount()) {
-            return NO_SUCH_PAGE;
+        return _print(graphics2D, index, linesPerPage, lineHeight, (int)format.getImageableX(), lineYPosition, format.getHeight() - bottomMargin);
+
+    }
+
+    /** Print the text to a printer, which is represented by the
+     *  specified graphics object.
+     *  @param graphics The context into which the page is drawn.
+     *  @param drawRect specification of the size.
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     */
+    public int print(Graphics graphics, Rectangle drawRect) {
+        if (graphics == null) {
+            return Printable.NO_SUCH_PAGE;
         }
 
-        //int pageCount = (text.getLineCount()/linesPerPage) + 1;
-        int endLine = startLine + linesPerPage;
-        int linePosition = (int) Math.ceil(format.getImageableY() + lineHeight);
+        graphics.setPaintMode();
 
-        for (int line = startLine; line < endLine; line++) {
-            try {
-                String linetext = text.getText(
-                        text.getLineStartOffset(line),
-                        text.getLineEndOffset(line)
-                                - text.getLineStartOffset(line));
-                graphics2D.drawString(linetext, (int) format.getImageableX(),
-                        linePosition);
-            } catch (BadLocationException e) {
-                // Ignore. Never a bad location.
-            }
+        Graphics2D graphics2D = (Graphics2D) graphics;
 
-            linePosition += lineHeight;
-            if (linePosition > format.getHeight() - bottomMargin) {
-                break;
-            }
-        }
+        // Loosely based on
+        // http://forum.java.sun.com/thread.jspa?threadID=217823&messageID=2361189
+        // Found it unwise to use the TextArea font's size,
+        // We area just printing text so use a a font size that will
+        // be generally useful.
+        graphics2D.setFont(getFont().deriveFont(9.0f));
 
-        return PAGE_EXISTS;
+        // FIXME: we should probably get the color somehow.  Probably exportImage() is being
+        // called with transparent set to false?
+        graphics2D.setColor(java.awt.Color.BLACK);
 
+        // FIXME: Magic Number 5, similar to what is in PlotBox.
+        double bottomMargin = 5;
+
+        double lineHeight = graphics2D.getFontMetrics().getHeight()
+                - graphics2D.getFontMetrics().getLeading() / 2;
+
+        int linesPerPage = (int) Math.floor((drawRect.height - bottomMargin) / lineHeight);
+
+        int lineYPosition = (int)Math.ceil(lineHeight);
+
+        return _print(graphics2D, 0 /* page */, linesPerPage, lineHeight, 0, lineYPosition, drawRect.height - bottomMargin);
     }
 
     /** React to notification that there was a removal from the document.
@@ -271,6 +398,20 @@ public class TextEditor extends TableauFrame implements DocumentListener,
         super.dispose();
     }
 
+    /** Write an image to the specified output stream in the specified
+     *  format.  Supported formats include at least "gif" and "png",
+     *  standard image file formats.  The image is a rendition of the
+     *  current view of the model.
+     *  @param stream The output stream to write to.
+     *  @param format The image format to generate.
+     *  @exception IOException If writing to the stream fails.
+     *  @exception PrinterException  If the specified format is not supported.
+     */
+    public void writeImage(OutputStream stream, String format)
+            throws PrinterException, IOException {
+        exportImage(stream, format);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -287,6 +428,37 @@ public class TextEditor extends TableauFrame implements DocumentListener,
         } else {
             return false;
         }
+    }
+
+    /** Create the items in the File menu's Export section
+     *  This method adds a menu items to export images of the plot
+     *  in GIF, PNG, and possibly PDF.
+     *  @return The items in the File menu.
+     */
+    protected JMenuItem[] _createFileMenuItems() {
+        // This method is similar to ptolemy/actor/gui/PlotTableauFrame.java, but we don't
+        // handle pdfs.
+
+        JMenuItem[] fileMenuItems = super._createFileMenuItems();
+
+        JMenu exportMenu = (JMenu) fileMenuItems[_EXPORT_MENU_INDEX];
+        exportMenu.setEnabled(true);
+
+        // Next do the export GIF action.
+        if (_exportGIFAction == null) {
+            _exportGIFAction = new ExportImageAction("GIF");
+        }
+        JMenuItem exportItem = new JMenuItem(_exportGIFAction);
+        exportMenu.add(exportItem);
+
+        // Next do the export PNG action.
+        if (_exportPNGAction == null) {
+            _exportPNGAction = new ExportImageAction("PNG");
+        }
+        exportItem = new JMenuItem(_exportPNGAction);
+        exportMenu.add(exportItem);
+
+        return fileMenuItems;
     }
 
     /** Display more detailed information than given by _about().
@@ -338,9 +510,168 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     }
 
     // FIXME: Listen for window closing.
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The export to GIF action. */
+    protected Action _exportGIFAction;
+
+    /** The export to PNG action. */
+    protected Action _exportPNGAction;
+
     /** The scroll pane containing the text area. */
     protected JScrollPane _scrollPane;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// ExportImageAction
+
+    /** Export an image. */
+    public class ExportImageAction extends AbstractAction {
+        // FIXME: this is very similar to PlotTableaFrame.ExportImageAction.
+
+        /** Create a new action to export an image.
+         *  @param formatName The name of the format, currently PNG and
+         *  GIF are supported.
+         */
+        public ExportImageAction(String formatName) {
+            super("Export " + formatName);
+            _formatName = formatName.toLowerCase();
+            putValue("tooltip", "Export " + formatName + " image to a file.");
+            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                   ////
+
+        /** Export an image.
+         *  @param e The ActionEvent that invoked this action.
+         */
+        public void actionPerformed(ActionEvent e) {
+            JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+            Color background = null;
+            try {
+                background = jFileChooserBugFix.saveBackground();
+
+                JFileChooser fileDialog = new JFileChooser();
+                fileDialog.setDialogTitle("Specify a file to write to.");
+                LinkedList extensions = new LinkedList();
+                extensions.add(_formatName);
+                fileDialog.addChoosableFileFilter(new ExtensionFilenameFilter(
+                        extensions));
+
+                if (_directory != null) {
+                    fileDialog.setCurrentDirectory(_directory);
+                } else {
+                    // The default on Windows is to open at user.home, which is
+                    // typically an absurd directory inside the O/S installation.
+                    // So we use the current directory instead.
+                    // This will throw a security exception in an applet.
+                    // FIXME: we should support users under applets opening files
+                    // on the server.
+                    String currentWorkingDirectory = StringUtilities
+                            .getProperty("user.dir");
+                    if (currentWorkingDirectory != null) {
+                        fileDialog.setCurrentDirectory(new File(
+                                currentWorkingDirectory));
+                    }
+                }
+
+                // Here, we differ from PlotTableauFrame:
+                int returnVal = fileDialog.showDialog(TextEditor.this,
+                        "Export " + _formatName.toUpperCase());
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    _directory = fileDialog.getCurrentDirectory();
+                    File file = fileDialog.getSelectedFile().getCanonicalFile();
+
+                    if (file.getName().indexOf(".") == -1) {
+                        // If the user has not given the file an extension, add it
+                        file = new File(file.getAbsolutePath() + "."
+                                + _formatName);
+                    }
+                    if (file.exists()) {
+                        if (!MessageHandler.yesNoQuestion("Overwrite "
+                                + file.getName() + "?")) {
+                            return;
+                        }
+                    }
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                        exportImage(out, _formatName);
+                    } finally {
+                        if (out != null) {
+                            out.close();
+                        }
+                    }
+
+                    // Open the PNG file.
+                    // FIXME: We don't do the right thing with PNG files.
+                    // It just opens in a text editor.
+                    // _read(file.toURI().toURL());
+                    MessageHandler.message("Image file exported to "
+                            + file.getName());
+                }
+            } catch (Exception ex) {
+                MessageHandler.error("Export to " + _formatName.toUpperCase()
+                        + " failed", ex);
+            } finally {
+                jFileChooserBugFix.restoreBackground(background);
+            }
+        }
+
+        private String _formatName;
+    }
+
+    /** Return a default set of rendering hints for image export, which
+     *  specifies the use of anti-aliasing.
+     */
+    private RenderingHints _defaultImageRenderingHints() {
+        // From PlotBox
+        RenderingHints hints = new RenderingHints(null);
+        hints.put(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        return hints;
+    }
+
+
+    /** Print the contents of the editor to a Graphics.
+     *  This used both by the print facility and the exportImage facility.
+     *  @param graphics The context into which the page is drawn.
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     */
+    private int _print(Graphics2D graphics2D, int index, int linesPerPage, double lineHeight, int lineXPosition, int linePosition, double bottomLinePosition) {
+
+        int startLine = linesPerPage * index;
+
+        if (startLine > text.getLineCount()) {
+            return NO_SUCH_PAGE;
+        }
+
+        int endLine = startLine + linesPerPage;
+        for (int line = startLine; line < endLine; line++) {
+            try {
+                String linetext = text.getText(
+                        text.getLineStartOffset(line),
+                        text.getLineEndOffset(line)
+                                - text.getLineStartOffset(line));
+                graphics2D.drawString(linetext, lineXPosition,
+                        linePosition);
+            } catch (BadLocationException e) {
+                // Ignore. Never a bad location.
+            }
+
+            linePosition += lineHeight;
+            if (linePosition > bottomLinePosition) {
+                break;
+            }
+        }
+        return PAGE_EXISTS;
+    }
+
 }
