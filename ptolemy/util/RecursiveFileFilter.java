@@ -138,6 +138,27 @@ public class RecursiveFileFilter implements FilenameFilter {
      *   subdirectories.
      *  @param includeFiles Whether files should be included.
      *  @param includeDirectories Whether directories should be included.
+
+     *   the accepted file names.
+     *  @return The array of all the files and directories found.
+     */
+    public static File[] listFiles(File directory, boolean recursive,
+            boolean includeFiles, boolean includeDirectories,
+            String fileFilter) {
+        // gt uses this method.
+        return RecursiveFileFilter.listFiles(directory, recursive,
+                includeFiles, includeDirectories,
+                false, false, fileFilter);
+    }
+
+    /** List all the files and directories within the given directory.
+     *  This method has four parameters to control whether
+     *  files and directories are included.  Not all combinations make sense.
+     *  @param directory The directory.
+     *  @param recursive Whether the filter should recursively list
+     *   subdirectories.
+     *  @param includeFiles Whether files should be included.
+     *  @param includeDirectories Whether directories should be included.
      *  @param filesOnly Whether only files should be included
      *  @param directoriesOnly Whether only directories should be included.
      *  @param fileFilter The filter (with ? and * as wildcards) to filter

@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DirectoryListingRecursive" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 60}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 834, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="List a directory and make sure that this file is present in that directory.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 200.0]">
+        </property>
+    </property>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/ptolemy/actor/lib/io/test/auto">
+        </property>
+        <property name="pattern" class="ptolemy.data.expr.StringParameter" value="DirectoryListing.xml">
+        </property>
+        <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value=".*/DirectoryListing.xml">
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListing.xml">
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 125.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DirectoryListing.output" relation="relation3"/>
+    <link port="StringMatches.matchString" relation="relation2"/>
+    <link port="StringMatches.output" relation="relation"/>
+    <link port="ArrayToSequence.input" relation="relation3"/>
+    <link port="ArrayToSequence.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
