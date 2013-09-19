@@ -28,6 +28,7 @@
 package ptolemy.plot;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -519,11 +520,14 @@ public class Histogram extends PlotBox {
      *  with swing policy.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
+     *  @param drawRect A specification of the size.
      */
-    protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst) {
+    protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst, Rectangle drawRect) {
+        // This method called when images are exported.
+
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
-        super._drawPlot(graphics, clearfirst);
+        super._drawPlot(graphics, clearfirst, drawRect);
 
         _showing = true;
 
