@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.actor.lib.qm;
+package ptolemy.actor.gui;
 
 import java.awt.Color;
 import java.awt.Frame;
@@ -41,12 +41,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.QuantityManagerListener;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditorFactory;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.gui.TableauFrame;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.CompositeEntity;
