@@ -1,29 +1,29 @@
 /* An actor that produces an array that lists the contents of a directory.
 
- @Copyright (c) 2003-2013 The Regents of the University of California.
- All rights reserved.
+   @Copyright (c) 2003-2013 The Regents of the University of California.
+   All rights reserved.
 
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the
- above copyright notice and the following two paragraphs appear in all
- copies of this software.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the
+   above copyright notice and the following two paragraphs appear in all
+   copies of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION 2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION 2
+   COPYRIGHTENDKEY
  */
 package ptolemy.actor.lib.io;
 
@@ -32,9 +32,12 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,6 +59,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.RecursiveFileFilter;
 
 ///////////////////////////////////////////////////////////////////
 //// DirectoryListing
@@ -201,50 +205,61 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @return True if the specified name matches.
      */
     public boolean accept(File directory, String name) {
-            File file = new File(directory, name);
-            boolean isDirectory = file.isDirectory();
-            boolean isFile = file.isFile();
+        // The accept() method is here primarily for backward
+        // compatibility as the DirectoryList class implements
+        // FileFilter.  It could be thet Kepler is using this.
+        if (_recursiveFileFilter == null) {
+            _recursiveFileFilter = new RecursiveFileFilter(_recursive,
+                    true /*includeFiles*/, true /*includeDirectories*/,
+                    _listOnlyFiles, _listOnlyDirectories,
+                    _pattern);
+        }
+        return _recursiveFileFilter.accept(directory, name);
 
-            try {
-                // FIXME: Maybe cache these for performance reasons.
-                boolean directoriesOnly = ((BooleanToken) listOnlyDirectories
-                        .getToken()).booleanValue();
-                boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
-                    .booleanValue();
-                boolean recursiveValue = ((BooleanToken) recursive.getToken())
-                    .booleanValue();
+//             File file = new File(directory, name);
+//             boolean isDirectory = file.isDirectory();
+//             boolean isFile = file.isFile();
 
-                if (_debugging) {
-                    _debug("accept(" + directory + ", " + name + ")");
-                }
-                if ( (filesOnly && isFile)
-                        || (directoriesOnly && isDirectory)
-                        || (!directoriesOnly && !filesOnly)) {
-                    //if (!(isFile && directoriesOnly) || isDirectory && _includeDirectories) {
-                    if (_pattern == null || _pattern.matcher(name).matches()) {
-                        if (_debugging) {
-                            _debug("accept(" + directory + ", " + name + "), adding " + file);
-                        }
-                    _files.add(file);
-                    }
-                }
+//             try {
+//                 // FIXME: Maybe cache these for performance reasons.
+//                 boolean directoriesOnly = ((BooleanToken) listOnlyDirectories
+//                         .getToken()).booleanValue();
+//                 boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
+//                     .booleanValue();
+//                 boolean recursiveValue = ((BooleanToken) recursive.getToken())
+//                     .booleanValue();
+
+//                 if (_debugging) {
+//                     _debug("accept(" + directory + ", " + name + ")");
+//                 }
+//                 if ( (filesOnly && isFile)
+//                         || (directoriesOnly && isDirectory)
+//                         || (!directoriesOnly && !filesOnly)) {
+//                     //if (!(isFile && directoriesOnly) || isDirectory && _includeDirectories) {
+//                     if (_pattern == null || _pattern.matcher(name).matches()) {
+//                         if (_debugging) {
+//                             _debug("accept(" + directory + ", " + name + "), adding " + file);
+//                         }
+//                     _files.add(file);
+//                     }
+//                 }
   
-                if (recursiveValue && isDirectory) {
-                    file.list(this);
-                }
-                if (_debugging) {
-                    _debug("accept(" + directory + ", " + name + "), returning false");
-                }
-                return false;
-            } catch (IllegalActionException ex) {
-                throw new RuntimeException("Failed to read a parameter.", ex);
-            }
-//         if (_pattern != null) {
-//             Matcher match = _pattern.matcher(name);
-//             return match.find();
-//         }
+//                 if (recursiveValue && isDirectory) {
+//                     file.list(this);
+//                 }
+//                 if (_debugging) {
+//                     _debug("accept(" + directory + ", " + name + "), returning false");
+//                 }
+//                 return false;
+//             } catch (IllegalActionException ex) {
+//                 throw new RuntimeException("Failed to read a parameter.", ex);
+//             }
+// //         if (_pattern != null) {
+// //             Matcher match = _pattern.matcher(name);
+// //             return match.find();
+// //         }
 
-//         return true;
+// //         return true;
     }
 
     /** Override the base class to locally cache parameter values.
@@ -255,18 +270,19 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pattern) {
-            try {
-                _pattern = Pattern.compile(pattern.stringValue());
-            } catch (PatternSyntaxException ex) {
-                String patternValue = ((StringToken) pattern.getToken())
-                        .stringValue();
-                throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \""
-                                + patternValue + "\"");
-            }
+            _pattern = pattern.stringValue();
+        } else if (attribute == listOnlyDirectories) {
+            _listOnlyDirectories = ((BooleanToken) listOnlyDirectories
+                .getToken()).booleanValue();
+        } else if (attribute == listOnlyFiles) {
+            _listOnlyFiles = ((BooleanToken) listOnlyFiles
+                .getToken()).booleanValue();
+        } else if (attribute == recursive) {
+            _recursive = ((BooleanToken) recursive
+                .getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
         }
-
-        super.attributeChanged(attribute);
     }
 
     /** Output an array containing file and/or directory names.
@@ -290,11 +306,6 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             }
         }
 
-        boolean directoriesOnly = ((BooleanToken) listOnlyDirectories
-                .getToken()).booleanValue();
-        boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
-                .booleanValue();
-
         boolean emptyDirectoryAllow = ((BooleanToken) allowEmptyDirectory
                 .getToken()).booleanValue();
 
@@ -306,8 +317,15 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                     _debug("Reading directory.");
                 }
 
-                _files = new LinkedList<File>();
-                sourceFile.list(this);
+                File[] listedFiles = RecursiveFileFilter.listFiles(sourceFile,
+                        _recursive,
+                        true /*includeFiles*/,
+                        true /*includeDirectories*/,
+                        _listOnlyFiles, _listOnlyDirectories,
+                        _pattern);
+
+//                 _files = new LinkedList<File>();
+//                 sourceFile.list(this);
 
 
 //                 File[] files = sourceFile.listFiles(this);
@@ -323,7 +341,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 //                     }
 
 //                     if (accept(null, files[i].getName())) {
-                for (File file: _files) {
+//                for (File file: _files) {
+                for (File file: listedFiles) {
 
                     //String path = files[i].getAbsolutePath();
 
@@ -517,11 +536,24 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    // The pattern for the regular expression.
-    private Pattern _pattern;
-
+    
     /** The list the recently found files and directories.
      */
     private List<File> _files = new LinkedList<File>();
+
+    /** Cached value of listOnlyDirectories parameter. */
+    private boolean _listOnlyDirectories;
+
+    /** Cached value of listOnlyFiles parameter. */
+    private boolean _listOnlyFiles;
+
+    /** Cached value of patternparameter. */
+    private String _pattern;
+
+    /** Cached value of recursive parameter. */
+    private boolean _recursive;
+
+    /** RecursiveFileFilter used by the accept() method of this class. */
+    private RecursiveFileFilter _recursiveFileFilter;
 }
 
