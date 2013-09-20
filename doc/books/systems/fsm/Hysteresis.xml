@@ -4,7 +4,7 @@
 <entity name="Hysteresis" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 412]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -27,11 +27,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 817, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 889, 522}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2806341709354327">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{237.71728515624997, 207.57635423483856}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.5, 206.0}">
     </property>
     <property name="initialTemp" class="ptolemy.data.expr.Parameter" value="15.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

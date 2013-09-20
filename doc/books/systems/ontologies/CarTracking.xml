@@ -14,9 +14,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1096, 535]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0024446704021808">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{547.67578125, 302.7543702520718}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{545.1842659883721, 296.0460574127907}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -108,26 +108,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple adaptive cruise control system,&#10;illustrating model-integrated control strategies. A leading&#10;car model produces information that is observed with possible&#10;flaws by a following car. If the following car detects flaws, it&#10;uses a conservative strategy. Otherwise, it tracks the leading&#10;car closely.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 45.0]">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Xiaoljun Liu and Edward A. Lee</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 440.0]">
         </property>
     </property>
     <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">

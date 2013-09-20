@@ -16,7 +16,13 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.004849844856131">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.3603515625, 267.65413684241156}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.36035156249994, 267.65413684241156}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that produces a signal that is not piecewise continuous,&#10;and therefore can exhibit solver-dependent behavior.&#10;&#10;This model is incorrect. The right way to generate this&#10;discontinuity is using a modal model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 260.0]">
+        </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 100.0]">

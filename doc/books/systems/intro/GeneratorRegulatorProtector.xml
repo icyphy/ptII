@@ -4,13 +4,13 @@
 <entity name="GeneratorRegulatorProtector" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1159, 709}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 839, 491}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[925, 599]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 381]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5723285216124692">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.9697265625, 174.48346460894808}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 190.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
@@ -325,9 +325,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.205914258117245">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{664.87109375, 710.0108438485804}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{700.328125, 748.76171875}">
         </property>
         <property name="T" class="ptolemy.data.expr.Parameter" value="5.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -537,11 +537,11 @@
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={530, 412, 861, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 444]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 524]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5095089737953706">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{603.37109375, 640.6498873075363}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{691.7734738372093, 734.5353379360465}">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 525.0]">
@@ -746,9 +746,9 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.498119320463178">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{218.59863281249997, 288.4429496500394}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{310.12734374999997, 366.87617187499995}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>

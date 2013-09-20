@@ -47,15 +47,17 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[356.4280154008864, 24.14431864209112]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 199, 834, 635}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{431.6390778736968, 272.78445648568754}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    This model demonstrates independent chains&#10;of events (IncreaseA's and IncreaseB's). These&#10;events repeatedly schedule the same events, until&#10;the value of A or B reaches 10.&#10;    After running this model, the values of A and B&#10;should both become 10.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 245.0]">

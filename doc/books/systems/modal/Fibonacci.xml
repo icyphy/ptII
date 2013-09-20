@@ -2,28 +2,22 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Fibonacci" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 804, 287}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 804, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[570, 177]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[570, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.106964697933675">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{251.94392903645834, 62.61313374837239}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{251.94392903645834, 219.34803263346356}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates HDF, which has static scheduling like SDF,&#10;but allows production and consumption rates to vary dynamically.&#10;In this example, the factor parameter of a DownSample actor is&#10;varied over the course of execution of the model. The HDF director&#10;calculates a new schedule each time the downsampling rate is&#10;changed. The model produces a Fibonacci sequence.&#10;&#10;In a Fibonacci sequence, each number is the sum of the previous two&#10;numbers. One way to generate such a sequence is to extract the&#10;Fibonacci numbers from a counting sequence (the natural numbers)&#10;by sampling each number that is a Fibonacci number. This can be&#10;done by a DownSample actor where the n-th Fibonacci number is generated&#10;by downsampling with a factor given by the (n-2)th Fibonacci number.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 170.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 405.0]">
         </property>
     </property>
     <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
@@ -32,19 +26,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 440.0]">
-        </property>
-    </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 90.0}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -72,8 +59,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
@@ -83,7 +68,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 60.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 263, 803, 260}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 207, 599, 635}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[365, 149]">
             </property>

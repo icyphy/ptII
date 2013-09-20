@@ -10,26 +10,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 867, 634}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 860, 604}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 494]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.0, 247.0}">
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 35.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
-            <display name="Show parameters"/>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple example for illustrating type inference and conversion.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarWash" class="ptolemy.domains.ptera.kernel.PteraModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
         <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
@@ -10,6 +10,8 @@
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
             <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The upper part of this model simulates a car wash system. The variable named Servers specifies&#10;the number of servers available (initially 3), and the Queue variable records the number of&#10;cars waiting for service (initially 0). The SimulationTime variable defines the duration of an&#10;execution.&#10;&#10;The lower part is an add-on to the model that generates a plot to show the change of&#10;Servers and Queue during execution. After running this model, a plot pops up that&#10;shows the queue size as a function of time.">
@@ -76,7 +78,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 20.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 918, 732}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={370, 159, 939, 732}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 621]">
         </property>
@@ -143,17 +145,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 510.0]">
             </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Servers Available (in blue) and Queue Size (in red)</title>
-<xLabel>time</xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="300.0"/>
-<yRange min="0.0" max="3.0"/>
-</plot>?>
-            </configure>
         </entity>
         <entity name="SendToPlot" class="ptolemy.domains.ptera.kernel.Event">
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
@@ -185,14 +176,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.08962465508989391">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -208,14 +197,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.510858573599481">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="5.0 + 20.0*random()">
             </property>
@@ -234,14 +221,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7515006754491314">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
@@ -257,14 +242,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.4682056140847942">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="3.0 + 5.0*random()">
             </property>
@@ -280,14 +263,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.09010396403193936">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="SimulationTime">
             </property>
@@ -307,14 +288,12 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6495179945965548">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                <display name="initialize"/>
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="3.0 + 5.0 * random()">
             </property>

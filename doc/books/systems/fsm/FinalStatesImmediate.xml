@@ -20,14 +20,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 165.0]">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 275.0]">
-        </property>
-    </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -61,25 +53,18 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={422, 207, 884, 294}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={398, 207, 884, 635}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 183]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1883713187730114">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{281.27610498913646, 101.36581123510055}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{281.2761049891364, 244.83948592462485}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In an iteration where reset is present and true,&#10;this state machine returns to the initial state,&#10;unless it has already reached the final state.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
-            </property>
-        </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                <display name="Background Color"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 300}">
             </property>
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">

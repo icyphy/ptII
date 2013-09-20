@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ChatClient" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 24, 932, 676}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 24, 911, 736}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[698, 566]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[677, 626]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0868692542146083">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{383.50541099221795, 272.96217625243196}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.12045954561785, 315.31674299568965}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 45.0]">
@@ -55,7 +55,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that ChatServer be running providing a chat service&#10;at the specified URL. Such a chat server is available at&#10;&#10;   $PTII/org/ptolemy/ptango/demo/Chat/ChatServer.xml&#10;&#10;which you can access by clicking on this comment.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that ChatServer be running providing a chat service&#10;at the specified URL. Such a chat server is available at&#10;&#10;   $PTII/org/ptolemy/ptango/demo/Chat/ChatServer.xml&#10;&#10;If you are running this model in a local Ptolemy II installation,&#10;you can access the ChatServer model by clicking on this comment.&#10;At this time, the ChatServer demo does not work under WebStart,&#10;so you can only run it after downloading and installing Ptolemy II.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 425.0]">
         </property>
@@ -83,7 +83,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 570.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 710.0]">
         </property>
     </property>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">

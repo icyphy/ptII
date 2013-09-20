@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 84, 835, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 84, 842, 414}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 304]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{304.0, 152.0}">
     </property>
     <property name="Documentation" class="ptolemy.vergil.basic.DocAttribute">
         <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to use the Case actor.&#10;Looking inside the Case actor will reveal that it&#10;has three distinct refinements. Which one is executed&#10;depends on the value of the control input provided to&#10;it. In this example, the control value cycles through&#10;the list {0, 1, 2, 3} repeatedly. The &quot;0&quot; refinement&#10;is executed when the control is 0, the &quot;1&quot; refinement is&#10;executed when the control is 1, and the &quot;default&quot; refinement&#10;is executed otherwise.">

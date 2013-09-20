@@ -44,9 +44,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -55.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3214825563818853">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.578125, 141.37307261163983}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{385.4938953488372, 187.28697311046508}">
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
         <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/books/systems/vergil/TypeModel">

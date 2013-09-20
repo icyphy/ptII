@@ -31,13 +31,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 20.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 288, 943, 449}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 288, 820, 421}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[709, 339]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 311]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2089810841154613">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.0864088710768, 142.9595219775884}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.0, 155.5}">
     </property>
     <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -62,7 +62,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 555.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">

@@ -4,7 +4,7 @@
 <entity name="HierarchicalFSM_Flattened" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 358]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -84,11 +84,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 367, 815, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 367, 865, 468}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5, 179.0}">
     </property>
     <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -152,7 +152,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 290.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 440, 797, 250}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 412, 818, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[584, 140]">
         </property>
@@ -299,20 +299,13 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 80.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 153, 1214, 744}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 153, 1216, 752}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[980, 633]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[982, 641]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.363026765012">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{533.4940411868511, 248.6261292886414}">
-            </property>
-            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                    <display name="Background Color"/>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 550.0]">
-                </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{534.2277024953956, 251.56077452281977}">
             </property>
             <port name="temperature" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>

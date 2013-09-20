@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GeneratorResourceScheduler" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1114, 621}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 934, 615}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[880, 511]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 505]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3928571428571428">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.3076923076923, 239.05128205128204}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.9488372093023, 287.6906976744185}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
@@ -78,11 +78,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 130.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 490.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model with two alternative resource schedulers, one that models&#10;a one-processor execution platform and one that models a &#10;two-processor execution platform. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 460.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -158,7 +159,7 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
-        <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
+        <entity name="Generator" class="doc.books.systems.modelingtime.Generator">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[792, 563]">
             </property>
             <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
@@ -354,7 +355,7 @@
                 </property>
             </entity>
         </entity>
-        <entity name="Contactor" class="ptolemy.demo.ElectricPowerSystem.Contactor">
+        <entity name="Contactor" class="doc.books.systems.modelingtime.Contactor">
             <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                 </property>
@@ -605,8 +606,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>

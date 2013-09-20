@@ -193,7 +193,7 @@
         </property>
         <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 475.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 610.0]">
         </property>
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">

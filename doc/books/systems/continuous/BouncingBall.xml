@@ -23,8 +23,6 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-        </property>
         <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-8">
@@ -43,8 +41,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This continuous-time model uses a modal model
-to simulate a bouncing ball and the GR domain to
-animate it.
+to simulate a bouncing ball.
 
 This is a classic example of a Zeno system, where
 an infinite number of bounce events occur in a finite
@@ -64,35 +61,16 @@ time.  Open the Ball Model to see how it is implemented.</text></svg></configure
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 0.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 812, 634}, maximized=false}">
-    </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu and Edward A. Lee</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 295.0]">
-        </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 204, 812, 634}, maximized=false}">
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">This example requires Java3D. If you do not have
-it installed, you can get it from:
-http://java.sun.com/products/java-media/3D/</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">There is a version of this example in the Ptolemy II
+demo suite that includes a 3-D animation. That version
+is not provided here because the 3-D rendering infrastructure
+does not work under WebStart.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -105,12 +83,12 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 205.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0237044233707169">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.423828125, 257.94355881382046}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.0, 262.0}">
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -134,224 +112,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
 <yRange min="-4.9795207881793424E-5" max="10.0"/>
 </plot>?>
         </configure>
-    </entity>
-    <entity name="Animate Ball" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 240.0]">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
-        </property>
-        <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="33">
-            </property>
-            <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
-            </property>
-            <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 41.0">
-            </property>
-        </property>
-        <port name="position" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 150.0]">
-            </property>
-        </port>
-        <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
-            <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="scalable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="translatable" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0}">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={614, 333, 408, 434}, maximized=false}">
-            </property>
-            <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
-            </property>
-            <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="vertical resolution" class="ptolemy.data.expr.Parameter" value="400">
-            </property>
-            <property name="allow model rotation" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="allow model zooming" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="allow model translation" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="show axes" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="one frame per iteration" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 219.5">
-            </property>
-        </entity>
-        <entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
-            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.1, 0.1}">
-            </property>
-            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
-            </property>
-            <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 110.0">
-            </property>
-        </entity>
-        <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
-            <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 150.0">
-            </property>
-        </entity>
-        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 160.0]">
-            </property>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
-            </property>
-            <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 170.0]">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-        </entity>
-        <entity name="Box3D" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
-            </property>
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7, 0.7, 0.7}">
-            </property>
-            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
-            </property>
-            <property name="Box3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 290.0">
-            </property>
-        </entity>
-        <entity name="Translate3D10" class="ptolemy.domains.gr.lib.Translate3D">
-            <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 310.0">
-            </property>
-        </entity>
-        <entity name="Copy1:Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="-0.65">
-            </property>
-            <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 345.0">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[60.0, 150.0]">
-            </vertex>
-        </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="225.0, 160.0">
-            </vertex>
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="position" relation="relation9"/>
-        <link port="ViewScreen.sceneGraphIn" relation="relation3"/>
-        <link port="ViewScreen.sceneGraphIn" relation="relation12"/>
-        <link port="Sphere3D.sceneGraphOut" relation="relation2"/>
-        <link port="Translate3D.sceneGraphIn" relation="relation2"/>
-        <link port="Translate3D.sceneGraphOut" relation="relation3"/>
-        <link port="Translate3D.yTranslate" relation="relation6"/>
-        <link port="AddSubtract.plus" relation="relation9"/>
-        <link port="AddSubtract.minus" relation="relation5"/>
-        <link port="AddSubtract.output" relation="relation6"/>
-        <link port="Const.output" relation="relation5"/>
-        <link port="Const.trigger" relation="relation9"/>
-        <link port="Box3D.sceneGraphOut" relation="relation11"/>
-        <link port="Translate3D10.sceneGraphIn" relation="relation11"/>
-        <link port="Translate3D10.sceneGraphOut" relation="relation12"/>
-        <link port="Translate3D10.yTranslate" relation="relation4"/>
-        <link port="Copy1:Const.output" relation="relation4"/>
-    </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
-        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 240.0]">
-        </property>
-    </entity>
-    <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 240.0]">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-        </property>
     </entity>
     <entity name="Ball Model" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
@@ -502,8 +262,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
-                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-                </property>
                 <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
@@ -630,19 +388,8 @@ falling in a gravitational field.</text></svg></configure>
         <link port="free.velocity" relation="velocityRelation"/>
         <link port="free.bump" relation="bumpRelation"/>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[120.0, 165.0]">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="TimedPlotter.input" relation="relation2"/>
-    <link port="Animate Ball.position" relation="relation"/>
-    <link port="PeriodicSampler.input" relation="relation2"/>
-    <link port="PeriodicSampler.output" relation="relation3"/>
-    <link port="Scale.input" relation="relation3"/>
-    <link port="Scale.output" relation="relation"/>
-    <link port="Ball Model.position" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="Ball Model.position" relation="relation"/>
 </entity>

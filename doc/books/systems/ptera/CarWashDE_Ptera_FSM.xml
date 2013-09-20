@@ -19,6 +19,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates hierarchical composition between DE (at the top-level) and&#10;Ptera (as components within DE), as well as FSM models hierarchically embedded within&#10;a Ptera event. The FSM model is inside the Update event of the CarGenerator model.&#10;&#10;The CarGenerator component is a Ptera model (look inside to see its internal design) that&#10;generates signals representing car arrivals. It accepts feedback from Servers to adjust&#10;the car arrival rate dynamically. It uses an FSM to accomplish this.&#10;&#10;The Servers component is another Ptera model that simulates the behavior of the queues&#10;and servers. Each time the number of available servers or that of cars in the queue is&#10;changed, it outputs both numbers to the Plotter, which plots the data in a separate&#10;window. After running this model, a plot pops up that shows the system is stable.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 165.0]">
@@ -34,8 +36,6 @@
             <property name="input"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
@@ -199,8 +199,6 @@
             <link port="Update.incomingPort" relation="relation3"/>
         </entity>
         <entity name="UpdateT" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 105.0]">
@@ -331,8 +329,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>

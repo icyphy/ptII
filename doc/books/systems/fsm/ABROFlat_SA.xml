@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={396, 132, 985, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={396, 132, 881, 513}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[647, 403]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.97015861742426, 221.7620501893939}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.6794513081395, 214.97324672965118}">
     </property>
     <property name="test" class="ptolemy.data.expr.Parameter" value="{&#10; {true, nil, nil},&#10; {true, true, nil}, &#10; {true, true, nil},&#10; {nil, nil, true},&#10; {true, true, nil}, &#10; {true, true, nil},&#10; {true, true, true},&#10; {true, true, true},&#10; {true, true, nil}&#10;}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -62,7 +62,7 @@
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[314.0, 119.9462890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 120.0}">
         </property>
         <port name="A" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -100,13 +100,13 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 207, 950, 635}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 207, 788, 393}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 282]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.0448179271709">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.07671232876703, 171.128767123287}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{277.0, 141.0}">
             </property>
             <port name="A" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -310,20 +310,12 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.A&quot;,x=314.0,y=119.9462890625}, tail={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, points={239.0,109.9462890625,239.0,129.9462890625} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, tail={id=&quot;ModalModel.B&quot;,x=314.0,y=119.9462890625}, points={254.0,134.9462890625,254.0,129.9462890625} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, tail={id=&quot;ModalModel.R&quot;,x=314.0,y=119.9462890625}, points={239.0,139.9462890625,239.0,164.9462890625,314.0,164.9462890625} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NonStrictDisplay.input&quot;,x=404.0,y=119.9462890625}, tail={id=&quot;ModalModel.O&quot;,x=314.0,y=119.9462890625}, points={} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>

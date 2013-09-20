@@ -8,11 +8,13 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[656, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2189105971796625">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.99072265624994, 217.73854277525155}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of SR primitive actors&#10;to make a CountDown actor. This (composite) actor outputs&#10;a true on the ready port when it is ready to count. In&#10;the same tick of the clock, the Sequence actor provides it&#10;with a starting number. It then counts down to zero on&#10;each subsequent tick of the clock, emitting true on ready&#10;when it again reaches zero.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 10.0}">
@@ -27,6 +29,8 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The three displays show (left to right):&#10;&#10;- Requested numbers to count down from.&#10;- The enable signal for the EnabledComposite actor.&#10;- The count down for these numbers.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">

@@ -4,13 +4,13 @@
 <entity name="UnitsConverterExampleWithUnitsConverter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={558, 266, 1017, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={558, 266, 920, 588}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[686, 478]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.21519606793637">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{208.55567035478413, 235.92209900531572}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{218.7213481104651, 257.4078579215116}">
     </property>
     <property name="DimensionAnalysis" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
@@ -73,7 +73,7 @@
                     <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value=" divideFunction(multiply, divide)">
                     </property>
                 </property>
-                <entity name="CarTrackingUnitOntology" class="CarTrackingUnitOntology" source="CarTrackingUnitOntology.xml">
+                <entity name="CarTrackingUnitOntology" class="CarTrackingUnitOntology">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 115.0]">
                     </property>
                 </entity>

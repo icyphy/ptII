@@ -29,6 +29,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.794921875, 236.0920271754535}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A cyclic token-ring system composed of three blocks.  This system arbitrates&#10;fairly among requests for exclusive access to a shared resource by marching&#10;a token around a ring.  At each &quot;tick&quot; of the clock, the arbiter grants access&#10;to the first requestor downstream of the block with the token.&#10;&#10;In this model, InstanceOfArbiter1 starts with the token (see the parameter&#10;of the instance).">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 295.0]">
@@ -51,7 +53,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 315.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{420.00736736918606, 354.9815134447675}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Request the token">
@@ -72,6 +74,8 @@
             </property>
         </property>
         <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If this owns the token and a request is made, then grant access.&#10;If this owns the token and no request is made, then pass out permission&#10;to use the token.  If this does not own the token, but the permission&#10;to use the token is passed in, then if a request is made, grant access.&#10;In all cases, pass the permission to use the token to the next arbiter.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 360.0]">

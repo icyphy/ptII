@@ -10,19 +10,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 270, 834, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 270, 824, 646}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 536]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.143637033047847">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.94897460937494, 226.61618031647242}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.0, 268.0}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 495.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 585.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The trigger port of the CurrentTime actor in this model is used to&#10;turn on and off its output. During the time intervals where the&#10;output of the DiscreteClock actor is false, the CurrentTime actor&#10;is disabled, and hence its output will be absent.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 175.0]">
         </property>
     </property>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -43,7 +49,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={858, 532, 314, 199}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1013, 54, 314, 199}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[314, 155]">
         </property>

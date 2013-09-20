@@ -58,6 +58,8 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.62011718749994, 248.92277816074343}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    This model shows a situation where simultaneous events (IncreaseA and IncreaseB)&#10;occur in a predefined order. Since no priority is specified for the transitions from Init,&#10;the names of the events are used to determine that the first instance of the IncreaseA&#10;event is processed before the first instance of IncreaseB.&#10;    During execution, LIFO policy ensures that instances of IncreaseA due to the self &#10;loop execute before the first instance of IncreaseB. After the 10th occurrence of&#10;IncreaseA, the canceling relation cancels the first scheduled IncreaseB. After running, &#10;the value of A should become 10, but the value of B should remain 0. To see this, &#10;change the value of A to something other than 10 and run the model.&#10;    You can also change the execution policy from LIFO to FIFO by right clicking&#10;on the background and selecting Customize-&gt;Configure and deselecting LIFO.&#10;Under the FIFO policy, the final values will be A=10 and B=9.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 235.0]">

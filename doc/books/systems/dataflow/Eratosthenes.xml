@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 915, 581}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 908, 469}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 471]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[674, 359]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.5, 164.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{337.0, 179.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes prime numbers using the sieve of Eratosthenes.&#10;It uses the ActorRecursion actor, which clones a composite actor into&#10;itself upon firing, thus dynamically expanding the topology of the model.&#10;Each iteration outputs one prime number. Change the parameter&#10;iterations in DDF Director to specify number of iterations desired.   ">

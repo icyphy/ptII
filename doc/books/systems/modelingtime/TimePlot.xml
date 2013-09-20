@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimePlot" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={429, 48, 860, 646}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={429, 48, 839, 763}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 536]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 653]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-217.7529296875, -49.375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-228.2529296875, 9.125}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12.0">
@@ -18,11 +18,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-415.0, -270.0}">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-            <display name="Show parameters"/>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 255.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that generates a plot illustrating multiform time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-510.0, 230.0}">
         </property>
     </property>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -49,7 +50,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, -540.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={770, 303, 811, 251}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={758, 397, 834, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
         </property>
@@ -82,16 +83,16 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, -530.0]">
             </property>
         </property>
-        <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, -535.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, -470.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+        <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, -470.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, -535.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -149,7 +150,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{93.6734730113636, -378.3707386363636}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{179.6529433139535, -230.91435319767436}">
         </property>
         <property name="rate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -201,6 +202,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -425.0]">
             </property>
         </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -370.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
         <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, -465.0}">
@@ -211,14 +220,6 @@
         <port name="clockValue" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, -430.0}">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -370.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -270,11 +271,11 @@
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={385, 207, 910, 635}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[676, 121]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[676, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{311.1793150436046, 242.2053942170254}">
             </property>
             <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -443,7 +444,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="c1 (environment), c2 (regular - fast), c3 (slow with offset), c4 (suspend - resume)">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={616, 203, 464, 563}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 395, 464, 563}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[464, 519]">
         </property>
@@ -503,14 +504,14 @@
     </relation>
     <link port="CurrentTime.output" relation="relation"/>
     <link port="CurrentTime.trigger" relation="relation3"/>
-    <link port="Fast.rate" relation="relation7"/>
     <link port="Fast.trigger" relation="relation3"/>
+    <link port="Fast.rate" relation="relation7"/>
     <link port="Fast.output" relation="relation2"/>
     <link port="TriggerOutput.output" relation="relation3"/>
-    <link port="SlowWithOffset.rate" relation="relation5"/>
-    <link port="SlowWithOffset.clockValue" relation="relation9"/>
     <link port="SlowWithOffset.trigger" relation="relation3"/>
     <link port="SlowWithOffset.trigger" relation="relation9"/>
+    <link port="SlowWithOffset.rate" relation="relation5"/>
+    <link port="SlowWithOffset.clockValue" relation="relation9"/>
     <link port="SlowWithOffset.output" relation="relation4"/>
     <link port="SuspendAndResume.trigger" relation="relation3"/>
     <link port="SuspendAndResume.output" relation="relation6"/>

@@ -16,9 +16,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 993, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 857, 476}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[623, 366]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -65,9 +65,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 35.0}">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3420543347786678">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{283.0498046875, 200.93105651285046}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{311.5, 183.0}">
     </property>
     <entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
         <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">

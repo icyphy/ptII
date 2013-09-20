@@ -10,13 +10,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 198, 783, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 246, 783, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0085923023788728">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.3603515625, 266.7051216083024}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.36035156249994, 266.7051216083025}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model using a modal model to correctly&#10;produce a piecewise continuous signal.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
+        </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 100.0]">
@@ -46,7 +52,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="first, second, third">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={485, 578, 284, 249}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={645, 22, 284, 249}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[284, 205]">
         </property>
@@ -59,8 +65,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0000256560062648" max="1.0000824099941439"/>
-<yRange min="-0.13331476549418353" max="2.0624430030938026"/>
+<xRange min="0.0" max="2.0"/>
+<yRange min="0.0" max="3.0"/>
 <default marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -77,6 +83,8 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>

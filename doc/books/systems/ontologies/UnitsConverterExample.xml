@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[591, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2486952962444997">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{241.64282397290214, 230.2484156468532}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.5, 262.0}">
     </property>
     <property name="DimensionAnalysis" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
@@ -73,7 +73,7 @@
                     <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value=" divideFunction(multiply, divide)">
                     </property>
                 </property>
-                <entity name="CarTrackingUnitOntology" class="CarTrackingUnitOntology" source="CarTrackingUnitOntology.xml">
+                <entity name="CarTrackingUnitOntology" class="CarTrackingUnitOntology">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 115.0]">
                     </property>
                 </entity>

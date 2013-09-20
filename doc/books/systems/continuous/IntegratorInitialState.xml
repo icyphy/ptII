@@ -10,22 +10,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 592, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 799, 561}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[565, 451]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1432017811198727">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{159.3603515625, 236.70173873024427}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{282.5, 225.5}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 490.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of the use of the initialState&#10;port of the Integrator actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 240.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">

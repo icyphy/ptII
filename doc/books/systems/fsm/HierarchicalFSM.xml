@@ -88,7 +88,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 262.0}">
     </property>
     <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

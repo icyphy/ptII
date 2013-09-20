@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HammingNumbers" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[656, 464]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[656, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[62, 41]">
     </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
@@ -49,7 +49,7 @@
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
@@ -68,11 +68,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 320.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 869, 574}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 890, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.0, 232.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.0, 262.0}">
     </property>
     <entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">

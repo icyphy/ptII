@@ -4,7 +4,7 @@
 <entity name="HysteresisWithDefault" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[648, 370]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -84,11 +84,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 398, 817, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 398, 882, 480}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0962737096991166">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.33984375, 241.32503681282722}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.0, 185.0}">
     </property>
     <property name="coolingRate" class="ptolemy.data.expr.Parameter" value="-0.05">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -143,14 +143,7 @@
     <entity name="Temperature Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 115.0}">
         </property>
-        <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-            <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
-                <display name="Show parameters"/>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 290.0}">
-            </property>
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 440, 797, 250}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 412, 818, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[584, 140]">
         </property>

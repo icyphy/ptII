@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="SensorModel" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
     </property>
@@ -10,7 +10,7 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Model of a sensor sensing a sinusoidal signal with
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:black">Model of a sensor sensing a sinusoidal signal with
 the specified frequency and phase at the specified
 sampling frequency. This composite actor simulates
 real-time behavior by sleeping the amount of time given by
@@ -99,13 +99,13 @@ the samplingPeriod (in seconds) before producing an output.</text></svg></config
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 59, 964, 482}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 59, 985, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 372]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.5, 186.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.5, 262.0}">
     </property>
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -129,15 +129,15 @@ the samplingPeriod (in seconds) before producing an output.</text></svg></config
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <doc>Sinusoidal waveform output.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 210.0]">
         </property>
     </port>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency*2*PI * samplingPeriod">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 150.0]">
         </property>
@@ -178,11 +178,11 @@ the samplingPeriod (in seconds) before producing an output.</text></svg></config
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 210.0]">
         </property>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 210.0]">
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
