@@ -57,7 +57,6 @@ JSRCS = \
 	ConnectException.java \
 	ICompilerResult.java \
 	IOMCProxy.java \
-	OMCClient.java \
 	OMCLogger.java \
 	OMCProxy.java
 
