@@ -1791,10 +1791,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                             // There are a bunch of things that need to be fixed, but there are also
                             // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
                             // that refer to parameter not present when the model is parsed.
+                            System.out.println("The message below is a Warning, and can be ignored.");
+                            System.out.println("See https://projects.ecoinformatics.org/ecoinfo/issues/6000");
+                            System.out.println("####  Start of Warning ####");
                             new IllegalActionException(this, ex,
                                     "Warning:, there was a problem propagating \""
                                             + getName() + "\".")
                                     .printStackTrace();
+                            System.out.println("####  End of Warning ####");
                             //result = new LinkedList();
                             //result.add(ex);
                         }
