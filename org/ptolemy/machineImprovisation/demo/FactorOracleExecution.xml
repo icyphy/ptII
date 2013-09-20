@@ -2,11 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FactorOracleExecution" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
-    </property>
-    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 75.0}">
-        </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Factor Oracle Generation. Factor Oracle is a data structure that is a probabilistic  &#10;Finite-State Automaton that enables production of at least all the suffixes of a given input sequence.&#10;In this implementation, FactorOracleGenerator actor receives a string as an input sequence, interprets&#10;each character in the string as a &quot;musical letter&quot; and produces a new FSMActor, which produces sequences&#10;of suffixes from the original string ( with possible repetitions of substrings) upon execution.&#10;&#10;The repetitionFactor parameter of FactorOracleGenerator is a probability value which quantifies the&#10;probability of moving along the transitions that produce suffixes of the original string directly. As&#10;repetitionFactor gets closer to 1.0, the automaton becomes less likely to add &quot;creativity&quot; to the output&#10;string by taking alternative jumps and more likely to produce exactly the input string.">
@@ -18,14 +14,14 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9258213427921135">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9231842644747312">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.29833984375, 130.59135388360502}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.70654296874994, 137.38429432744562}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution will produce a Factor Oracle Automaton &#10;connected to a display and will produce an&#10;example execution of the automaton.&#10;&#10;Input string can be arbitrary. The corresponding&#10;FO will be re-created if there is no existing FO &#10;for the input string.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execution will produce two Factor Oracle(FO) Automata:&#10;the FO for the pitches and for the note durations. &#10;&#10;Input string can be arbitrary. The corresponding&#10;FO will be re-created if there is no existing FO &#10;for the input string.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[65.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[115.0, -15.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="FactorOracleGenerator">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -40,10 +36,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 390.0]">
         </property>
     </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 70}">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The midi key indices of the keys pressed">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[95.0, -75.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Midi Keys">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
     <entity name="FactorOracleGenerator" class="org.ptolemy.machineImprovisation.FactorOracleGenerator">
         <property name="repetitionFactor" class="ptolemy.data.expr.Parameter" value="0.7">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 145.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -202,23 +216,26 @@
             </property>
         </property>
     </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;DAABCCAFCC&quot;">
+    <entity name="Midi Keys" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{36,37,38,38,39,37,40,36}">
         </property>
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 135.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 145.0]">
+    </entity>
+    <entity name="Duration" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2,2,1,1,5,1,5}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.18466796875, 197.55891785552532}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="FactorOracleGenerator.input" relation="relation"/>
-    <link port="Const.output" relation="relation"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="FactorOracleGenerator.input" relation="relation2"/>
+    <link port="FactorOracleGenerator.durations" relation="relation"/>
+    <link port="Midi Keys.output" relation="relation2"/>
+    <link port="Duration.output" relation="relation"/>
 </entity>
