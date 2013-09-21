@@ -579,8 +579,9 @@ public class WebServerUtilities {
                     resources.addAll(appInfo.getResourceInfo().get(path));
                     
                     if (appInfo.getTemporaryFileLocation() != null && 
-                            !appInfo.getTemporaryFileLocation().toString()
-                            .isEmpty()) {
+                            (appInfo.getTemporaryFileLocation().getExpression()
+                                != null) && (!appInfo.getTemporaryFileLocation()
+                                        .getExpression().isEmpty())) {
                         
                         try {
                             resources.add(new FileResource(appInfo

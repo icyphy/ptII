@@ -825,7 +825,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 if (value.isEmpty()) {
                     Cookie cookie = new Cookie(label, "");
                     cookie.setMaxAge(0);
-                    cookie.setPath("/");
+                    cookie.setPath("/"); // Cookie visible to all web pages
                     response.addCookie(cookie);
                 } else {
                     // FIXME:  Special character handling?  Copied from previous
@@ -833,7 +833,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     if (value != null && value.indexOf("\"") != -1) {
                         value = value.replace("\"", "");
                     }
-                    response.addCookie(new Cookie(label, value));
+                    Cookie cookie = new Cookie(label, value);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
                 }
             }
         }

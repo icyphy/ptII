@@ -395,11 +395,47 @@ public class WebServer extends AbstractInitializableAttribute {
         // WebServer. Use a LinkedHashSet to preserve the order.
         LinkedHashSet<FileResource> resourceLocations = new LinkedHashSet<FileResource>();
         List<FileParameter> bases = attributeList(FileParameter.class);
-        // To prevent duplicates, keep track of bases added.
+        // To prevent duplicates, keep track of bases added
+        // This set includes the temporary file location
         HashSet<URL> seen = new HashSet<URL>();
         for (FileParameter base : bases) {
+            // If blank, omit  
+            if (base.getExpression() != null 
+                    && !base.getExpression().isEmpty()) {
             try {
-                URL baseURL = base.asURL();
+
+                // Use the ClassLoader to obtain the location (vs. specifying 
+                // a directory on the file system), so that the demos
+                // can also be run from within a .jar file
+                 
+                // If expression starts with $PTII/ , strip this
+                // Assumes .jar file uses $PTII as root location
+                // Assumes full path is given
+                // TODO:  What to do about paths relative to model's location?
+                // Would these work?  None are used so far.
+                String expression = base.getExpression();
+                if (expression.startsWith("$PTII/")) {
+                    expression = expression.substring(6);
+                }
+                
+                // Get directory.  Add trailing "/"
+                // Try ClassLoader first to resolve any directories within
+                // Ptolemy tree.  If the directory is not part of the tree
+                // (e.g. $TMPDIR), the ClassLoader will not find it, so then
+                // use the expression directly
+                String dir;
+                URL baseURL;
+                
+                if (this.getClass().getClassLoader().getResource(expression) 
+                        != null) {
+                    dir = this.getClass().getClassLoader()
+                            .getResource(expression).toExternalForm() + "/";
+                    baseURL = new URL(dir);
+                } else {
+                    dir = expression;
+                    baseURL = base.asURL();
+                }
+                           
                 if (baseURL != null) {
                     URL baseAsURL = base.asURL();
                     if (seen.contains(baseAsURL)) {
@@ -419,11 +455,12 @@ public class WebServer extends AbstractInitializableAttribute {
                 throw new IllegalActionException(this,
                         "Can't access resource base: " + base.stringValue());
             }
+            }
         }
         
         // Throw an exception if resource path is not a valid URI or if a 
         // duplicate path is requested
-        try {
+        try {           
             _appInfo.addResourceInfo(new URI(resourcePath.stringValue()), 
                 resourceLocations);
         } catch(URISyntaxException e) {
