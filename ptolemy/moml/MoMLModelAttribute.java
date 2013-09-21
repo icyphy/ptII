@@ -177,8 +177,11 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
         if (source != null && !source.trim().equals("")) {
             _source = source;
             _model = parser.parse(base, new URL(source));
-        } else if (!text.trim().equals("")) {
+        } else if (text != null && !text.trim().equals("")) {
             _model = parser.parse(base, null, new StringReader(text));
+        } else {
+            // source and text are null.
+            _model = null;
         }
     }
 
