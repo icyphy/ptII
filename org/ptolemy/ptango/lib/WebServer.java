@@ -423,16 +423,13 @@ public class WebServer extends AbstractInitializableAttribute {
                 // Ptolemy tree.  If the directory is not part of the tree
                 // (e.g. $TMPDIR), the ClassLoader will not find it, so then
                 // use the expression directly
-                String dir;
                 URL baseURL;
                 
                 if (this.getClass().getClassLoader().getResource(expression) 
                         != null) {
-                    dir = this.getClass().getClassLoader()
-                            .getResource(expression).toExternalForm() + "/";
-                    baseURL = new URL(dir);
+                    baseURL = new URL(this.getClass().getClassLoader()
+                            .getResource(expression).toExternalForm() + "/");
                 } else {
-                    dir = expression;
                     baseURL = base.asURL();
                 }
                            
