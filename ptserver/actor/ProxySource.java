@@ -135,6 +135,7 @@ public class ProxySource extends ProxyActor {
 
     @Override
     public void initialize() throws IllegalActionException {
+        super.initialize();
         synchronized (this) {
             getProxySourceData().getTokenQueue().clear();
         }

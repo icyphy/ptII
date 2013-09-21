@@ -160,6 +160,22 @@ public class LabVIEWSimulator extends Simulator {
         //        output.send(0, outTok);
     }
 
+    /** Return true and do not check the inputs.
+     *  @return Always return true, indicating that this actor is ready for firing.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // This actor extends Simulator, which extends SDFTransformer.
+        // SDFTransformer.prefire() checks the input ports for the
+        // required number of tokens.  This actor always calls fire(),
+        // so prefire() always returns true.
+        if (_debugging) {
+            _debug("Called prefire()");
+        }
+
+        return true;
+    }
+
     /** Get a double array from the Token.
     *
     * @param t the token which must be a type that can be converted to an ArrayToken
@@ -182,20 +198,6 @@ public class LabVIEWSimulator extends Simulator {
             }
         }
         return result;
-    }
-
-    /** Return true. Overwrites the prefire method in SDFTransformer.
-     *  This actor extends Simulator, which unfortunately extends
-     *  SDFTransformer.
-     *  @return True if this actor is ready for firing, false otherwise.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called prefire()");
-        }
-
-        return true;
     }
 
     /** Start the simulation program. Currently we do this manually, but

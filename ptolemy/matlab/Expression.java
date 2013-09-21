@@ -364,7 +364,7 @@ public class Expression extends TypedAtomicActor {
             }
         }
 
-        return true;
+        return super.prefire();
     }
 
     /** Evaluate the expression and send its result to the output.
@@ -446,7 +446,7 @@ public class Expression extends TypedAtomicActor {
         _iteration.setToken(new IntToken(_iterationCount));
 
         // This actor never requests termination.
-        return true;
+        return super.postfire();
     }
 
     /** Close matlab engine if it was open.
