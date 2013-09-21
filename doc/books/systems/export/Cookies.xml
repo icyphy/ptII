@@ -4,13 +4,13 @@
 <entity name="Cookies" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 22, 830, 966}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={80, 12, 824, 774}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 856]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 657]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.984597074745919">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7605752805686682">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.5836588541667, 343.1486141478242}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.23471309891806, 339.46093749999994}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
@@ -113,7 +113,7 @@
         </port>
     </entity>
     <entity name="HTMLPageAssembler1" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
-        <property name="template" class="ptolemy.data.expr.FileParameter" value="pages/template.html">
+        <property name="template" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies/pages/template.html">
             <display name="Template HTML file"/>
         </property>
         <property name="htmlTitle" class="ptolemy.data.expr.StringParameter" value="Cookies Demo">
@@ -133,7 +133,7 @@
         </port>
     </entity>
     <entity name="HTMLPageAssembler2" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
-        <property name="template" class="ptolemy.data.expr.FileParameter" value="pages/template.html">
+        <property name="template" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies/pages/template.html">
             <display name="Template HTML file"/>
         </property>
         <property name="htmlTitle" class="ptolemy.data.expr.StringParameter" value="Cookies Demo">
