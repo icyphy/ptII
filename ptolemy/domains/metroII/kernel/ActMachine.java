@@ -1,4 +1,4 @@
-/* ActMachine is an abstract wrapper for actors.
+/* ActMachine is an abstract wrapper for actors to adapt to Metro semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -37,15 +37,27 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 /**
  * 
- * ActMachine is an abstract wrapper for actors. ActMachine is a FSM whose states are defined by the enum type 
- * State. Each state represents a state of the wrapped actor. 
- * For example, The State FIRING represents the wrapped actor is being fired. 
+ * ActMachine is an abstract wrapper for actors to adapt to Metro semantics. 
+ * ActMachine wraps an actor and makes it behave like a FSM. We pre-define 
+ * the following states and each state represents a state of the wrapped actor:
+ * <ol>
+ * <li> PREFIRE_BEGIN: prefire() is called by the wrapper but not executed yet; </li>
+ * <li> PREFIRE_END_FIRE_BEGIN: prefire() is executed and returns true. getfire() 
+ * is called by the wrapper but not executed yet; </li>
+ * <li> FIRING: in executing getfire() and is paused by some internal events; </li>
+ * <li> FIRE_END_POSTFIRE_BEGIN: the execution of getfire() ends. postfire() is 
+ * called by the wrapper but not executed yet; </li>
+ * <li> POSTFIRE_END: postfire() is executed. </li>
+ * </ol>
+ * The wrapper explicitly records the current state of the FSM. The state transition
+ * is triggered by a function call to startOrResume(events) with MetroII events as the arguments.
  * 
- * Each state may associate with a MetroII event and
- * these events are supposed to be used as the interface interacting with Metro directors. 
- * For any subclass of ActMachine, the StartOrResumable interface has to be implemented. 
- * StartOrResume() should be implemented as the triggering 
- * function of the FSM. The FSM only reacts when StartOrResume() is called.
+ * For any concrete subclass of ActMachine, the StartOrResumable() interface has to be implemented,  
+ * in which how the FSM react to MetroII events (or in other words, the state transitions) 
+ * should be implemented. 
+ * 
+ * With a concrete implementation of StartOrResumable(), a director (usually a MetroII director) 
+ * is able to manipulate the wrapped actor by calling StartOrResumable() with MetroII events.
  * 
  * @author Liangpeng Guo
  * @version $Id$
@@ -63,7 +75,8 @@ public abstract class ActMachine implements StartOrResumable {
     }
 
     /**
-     * Construct an ActMachine wrapper and initialize the MetroII events
+     * Construct an ActMachine wrapper and initialize a set of the MetroII events that
+     * are associated with the states. Reset the current state.
      * 
      * @param actor the actor to be wrapped.
      */
@@ -91,7 +104,7 @@ public abstract class ActMachine implements StartOrResumable {
     ////                         public methods                    ////
 
     /**
-     * Return the MetroII event associated with the current state. 
+     * Get the MetroII event associated with the current state. 
      * 
      * @return the MetroII event associated with the current state.
      */
@@ -134,7 +147,7 @@ public abstract class ActMachine implements StartOrResumable {
     ////                       protected methods                   ////
 
     /**
-     * Return the wrapped actor.
+     * Get the wrapped actor.
      * 
      * @return the wrapped actor.
      */
@@ -143,7 +156,7 @@ public abstract class ActMachine implements StartOrResumable {
     }
 
     /**
-     * Return the MetroII event associated with the current state and 
+     * Get the MetroII event associated with the current state and 
      * set the state of the event to be PROPOSED.
      * 
      * @return the MetroII event associated with the current state
@@ -167,6 +180,12 @@ public abstract class ActMachine implements StartOrResumable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /**
+     * Trim the model name from a full name of an actor or an event. 
+     * 
+     * @param name A full name of an actor or an event.
+     * @return The trimmed name.
+     */
     private String _trimModelName(String name) {
         assert name.length() > 1;
         int pos = name.indexOf(".", 1);
@@ -206,8 +225,8 @@ public abstract class ActMachine implements StartOrResumable {
      */
     private State _state;
 
-    /** Actor which is being fired
-     *
+    /** 
+     * Actor which is being fired
      */
     private Actor _actor;
 }
