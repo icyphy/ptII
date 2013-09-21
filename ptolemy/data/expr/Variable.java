@@ -1590,6 +1590,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @return A string describing this variable.
      */
     protected String _description(int detail, int indent, int bracket) {
+        // This method intentionally does not call super._description()
+        // because the output here consists of the value returned
+        // by toString() wrapped in curly brackets.  The super._description()
+        // method returns the name wrapped in curly brackets, which is
+        // not what we want.
         try {
             workspace().getReadAccess();
 
