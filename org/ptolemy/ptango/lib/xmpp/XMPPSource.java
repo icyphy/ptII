@@ -209,6 +209,12 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         // the lock so that initialize may be called.  Further invocations of
         // handlePublishedItems might also be called, but these will also wait
         // for initialize().
+        // Note this implementation does NOT guarantee that items will be
+        // handled in order of receipt.  If multiple handlePublishedItems()
+        // methods are blocked, this.notify() will activate one of them, but 
+        // there is no guarantee as to which one.  It's possible that a later 
+        // invocation of handlePublishedItems() would obtain the lock before
+        // an earlier invocation.
         while (!_hasInitialized) {
             try {
                 this.wait(0);
@@ -219,6 +225,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         }
 
         _handlePublishedItems(items);
+        this.notify();  // Notify other handlePublishedItems methods waiting
     }
 
     /** Set _hasInitialized to false, so that invocations of
@@ -266,6 +273,8 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
             try {
                 long elapsedRealTime = System.currentTimeMillis()
                         - _initializeRealTime;
+                // Assume model time is in seconds, not milliseconds.
+                elapsedRealTime = elapsedRealTime / 1000;
                 Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
                 // Note that fireAt() will modify the requested firing time if it is in the past.
                 getDirector().fireAt(XMPPSource.this, timeOfRequest);
@@ -273,7 +282,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
                 throw new InternalErrorException(this, e,
                         "Failed to fire at the current time.");
             }
-
+            
             // Wait until this actor has been fired (thereby producing a token
             // with the received value on its output port) before this method
             // can be called again to receive a new value.
@@ -302,7 +311,6 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
                     break;
                 }
             }
-
         }
     }
 
