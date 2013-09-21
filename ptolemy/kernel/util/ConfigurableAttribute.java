@@ -206,20 +206,6 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         return _defaultText;
     }
 
-    /** Return a name to present to the user. If setDisplayName(String)
-     *  has been called, then return the name specified there, and
-     *  otherwise return the name returned by getName().
-     *  @return A name to present to the user.
-     *  @see #setDisplayName(String)
-     */
-    public String getDisplayName() {
-        if (_displayName != null) {
-            return _displayName;
-        }
-
-        return getName();
-    }
-
     /** Return the the result of calling value().
      *  @return The value, or a description of the exception if one is thrown.
      *  @see #value()
@@ -260,14 +246,6 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
         }
-    }
-
-    /** Set a name to present to the user.
-     *  @param name A name to present to the user.
-     *  @see #getDisplayName()
-     */
-    public void setDisplayName(String name) {
-        _displayName = name;
     }
 
     /** Set the value of the string attribute and notify the container
