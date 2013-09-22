@@ -91,8 +91,14 @@ public class UnitExpr implements UnitPresentation {
      */
     public String descriptiveForm() {
         Iterator iter = _uTerms.iterator();
-        StringBuffer retv = new StringBuffer(
-                ((UnitTerm) iter.next()).descriptiveForm());
+        StringBuffer retv = new StringBuffer();
+        if (iter.hasNext()) {
+            String descriptiveForm = ((UnitTerm) iter.next()).descriptiveForm();
+            // Coverity: UnitTerm.descriptiveForm() could return null.
+            if (descriptiveForm != null) {
+                retv.append(descriptiveForm);
+            }
+        }
 
         while (iter.hasNext()) {
             retv.append(" " + ((UnitTerm) iter.next()).descriptiveForm());
