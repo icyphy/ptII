@@ -534,7 +534,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         }
                     }
                 }
-                _namespaceTranslationTable.put(oldValue, value);
+                if (_namespaceTranslationTable == null) {
+                    throw new InternalErrorException("_namespaceTranslationTable was null, which should not happen.");
+                } else {
+                    _namespaceTranslationTable.put(oldValue, value);
+                }
             }
         } else {
             // If we have a non-default namespace, then prepend the namespace.
@@ -3976,23 +3980,21 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Load an associated icon, if there is one.
         _loadIconForClass(className, reference);
 
-        // Record the import to avoid repeated reading
-        if (reference != null) {
-            if (_imports == null) {
-                _imports = new HashMap();
-            }
-            // NOTE: The index into the HashMap is the URL, not
-            // its string representation. The URL class overrides
-            // equal() so that it returns true if two URLs refer
-            // to the same file, regardless of whether they have
-            // the same string representation.
-            // NOTE: The value in the HashMap is a weak reference
-            // so that we don't keep all models ever created just
-            // because of this _imports field. If there are no
-            // references to the model other than the one in
-            // _imports, it can be garbage collected.
-            _imports.put(url, new WeakReference(reference));
+        // Record the import to avoid repeated reading.
+        if (_imports == null) {
+            _imports = new HashMap();
         }
+        // NOTE: The index into the HashMap is the URL, not
+        // its string representation. The URL class overrides
+        // equal() so that it returns true if two URLs refer
+        // to the same file, regardless of whether they have
+        // the same string representation.
+        // NOTE: The value in the HashMap is a weak reference
+        // so that we don't keep all models ever created just
+        // because of this _imports field. If there are no
+        // references to the model other than the one in
+        // _imports, it can be garbage collected.
+        _imports.put(url, new WeakReference(reference));
 
         return reference;
     }
