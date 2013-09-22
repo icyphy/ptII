@@ -174,18 +174,21 @@ public class Transform extends GTEvent implements ConfigurableEntity,
     public void configure(URL base, String source, String text)
             throws Exception {
         _configureSource = source;
-        text = text.trim();
-        if (!text.equals("")) {
-            MoMLParser parser = new MoMLParser(workspace());
-            _configurer.removeAllEntities();
-            parser.setContext(_configurer);
-            parser.parse(base, source, new StringReader(text));
-            _transformation = (TransformationRule) _configurer.entityList()
+        // Coverity: MoMLParser.endElement() could call configure() with text==null.
+        if (text != null) {
+            text = text.trim();
+            if (!text.equals("")) {
+                MoMLParser parser = new MoMLParser(workspace());
+                _configurer.removeAllEntities();
+                parser.setContext(_configurer);
+                parser.parse(base, source, new StringReader(text));
+                _transformation = (TransformationRule) _configurer.entityList()
                     .get(0);
-            TransformationMode helper = new TransformationMode(_transformation,
-                    "_helper");
-            helper.setPersistent(false);
-            _clearURI(_transformation);
+                TransformationMode helper = new TransformationMode(_transformation,
+                        "_helper");
+                helper.setPersistent(false);
+                _clearURI(_transformation);
+            }
         }
     }
 
