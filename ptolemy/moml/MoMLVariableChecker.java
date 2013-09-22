@@ -401,51 +401,49 @@ public class MoMLVariableChecker {
             Variable masterVariable = (Variable) masterAttribute;
             ParserScope parserScope = masterVariable.getParserScope();
             if (parserScope instanceof ModelScope) {
-                if (masterVariable != null) {
-                    Variable node = masterVariable.getVariable(nodeName);
+                Variable node = masterVariable.getVariable(nodeName);
 
-                    if (node == null) {
-                        // Needed when we are copying a composite that contains
-                        // an Expression that refers to an upscope Parameter.
-                        node = masterVariable;
+                if (node == null) {
+                    // Needed when we are copying a composite that contains
+                    // an Expression that refers to an upscope Parameter.
+                    node = masterVariable;
+                }
+
+                if (node == _previousNode) {
+                    // We've already seen this node, so stop
+                    // looping through the getToken() loop.
+                    return false;
+                }
+                _previousNode = node;
+
+                try {
+                    String moml = node.exportMoML().replaceFirst(
+                            "<property",
+                            "<property createIfNecessary=\"true\"");
+
+                    if (hideVariables) {
+                        moml = _insertHiddenMoMLTagIntoProperty(moml);
                     }
 
-                    if (node == _previousNode) {
-                        // We've already seen this node, so stop
-                        // looping through the getToken() loop.
-                        return false;
+                    // Insert the new variable so that other
+                    // variables may use it.
+
+                    MoMLChangeRequest change = new MoMLChangeRequest(
+                            parsedContainer, parsedContainer, moml);
+
+                    if (parsedContainer != null) {
+                        // If we are parsing the moml for the first
+                        // time, then the parsedContainer might be null.
+                        parsedContainer.requestChange(change);
                     }
-                    _previousNode = node;
+                    _variableBuffer.append(moml);
 
-                    try {
-                        String moml = node.exportMoML().replaceFirst(
-                                "<property",
-                                "<property createIfNecessary=\"true\"");
-
-                        if (hideVariables) {
-                            moml = _insertHiddenMoMLTagIntoProperty(moml);
-                        }
-
-                        // Insert the new variable so that other
-                        // variables may use it.
-
-                        MoMLChangeRequest change = new MoMLChangeRequest(
-                                parsedContainer, parsedContainer, moml);
-
-                        if (parsedContainer != null) {
-                            // If we are parsing the moml for the first
-                            // time, then the parsedContainer might be null.
-                            parsedContainer.requestChange(change);
-                        }
-                        _variableBuffer.append(moml);
-
-                        // Rerun the getToken() call in case there are
-                        // other problem variables.
-                        doRerun = true;
-                    } catch (Throwable ex2) {
-                        // Ignore and hope the user pastes into a
-                        // location where the variable is defined
-                    }
+                    // Rerun the getToken() call in case there are
+                    // other problem variables.
+                    doRerun = true;
+                } catch (Throwable ex2) {
+                    // Ignore and hope the user pastes into a
+                    // location where the variable is defined
                 }
             }
         }
