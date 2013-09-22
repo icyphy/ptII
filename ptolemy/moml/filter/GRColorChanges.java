@@ -68,6 +68,7 @@ public class GRColorChanges extends MoMLFilterSimple {
         if (attributeValue != null && attributeName != null) {
             if (attributeValue.equals("RGB color")
                     && attributeName.equals("name")
+                    && container != null
                     && _actorsWithRGBColor.contains(container.getClass()
                             .getName())) {
                 // NOTE: This relies on their being no nested
