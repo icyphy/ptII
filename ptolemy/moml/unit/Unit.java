@@ -169,11 +169,14 @@ public class Unit implements UnitPresentation {
                 if (_type[i] != 0) {
                     Unit baseUnit = UnitLibrary.getBaseUnit(i);
 
-                    if (_type[i] == 1) {
-                        desc.append(" " + baseUnit.getPrimaryLabel());
-                    } else {
-                        desc.append(" " + baseUnit.getPrimaryLabel() + "^"
-                                + _type[i]);
+                    // Coverity: getBaseUnit() could return null;
+                    if (baseUnit != null) {
+                        if (_type[i] == 1) {
+                            desc.append(" " + baseUnit.getPrimaryLabel());
+                        } else {
+                            desc.append(" " + baseUnit.getPrimaryLabel() + "^"
+                                    + _type[i]);
+                        }
                     }
                 }
             }
