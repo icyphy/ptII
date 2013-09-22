@@ -196,14 +196,16 @@ public class UnitAttribute extends AbstractSettableAttribute {
             if (getName().equals("_unitConstraints")) {
                 Vector uEquations = UnitLibrary.getParser().parseEquations(
                         expression);
-                UnitConstraints uConstraints = new UnitConstraints();
+                // Coverity: UParser.parseEquations() could return null.
+                if (uEquations != null) {
+                    UnitConstraints uConstraints = new UnitConstraints();
 
-                for (int i = 0; i < uEquations.size(); i++) {
-                    uConstraints.addConstraint((UnitEquation) uEquations
-                            .elementAt(i));
+                    for (int i = 0; i < uEquations.size(); i++) {
+                        uConstraints.addConstraint((UnitEquation) uEquations
+                                .elementAt(i));
+                    }
+                    setUnitConstraints(uConstraints);
                 }
-
-                setUnitConstraints(uConstraints);
             }
 
             if (getName().equals("_units")) {
