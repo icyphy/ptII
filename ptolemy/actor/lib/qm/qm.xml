@@ -47,7 +47,7 @@
   <entity name="AFDX_SW" class="ptolemy.actor.lib.qm.AFDXSwitch"> 
   </entity>
  
-  <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.gui.qm.QuantityManagerMonitor"> 
+  <entity name="QuantityManagerMonitor" class="ptolemy.actor.gui.QuantityManagerMonitor"> 
   </entity>
 
   <entity name="CanBus" class="ptolemy.actor.lib.qm.CanBus">
