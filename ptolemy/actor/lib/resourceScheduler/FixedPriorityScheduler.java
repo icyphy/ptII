@@ -205,9 +205,6 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
             Time lasttime = _lastTimeScheduled.get(executing);
             Time timePassed = currentPlatformTime.subtract(lasttime);
             remainingTime = _remainingTimes.get(executing).subtract(timePassed);
-            if (remainingTime.getDoubleValue() < 0) {
-                throw new IllegalActionException(this, "");
-            }
             _remainingTimes.put(executing, remainingTime);
             if (!_currentlyExecuting.contains(actor) && executing != actor) {
                 if (_preemptive) {
@@ -298,13 +295,13 @@ public class FixedPriorityScheduler extends AtomicResourceScheduler {
         for (int i = 0; i < actors.length; i++) {
             Actor actorInArray = (Actor) actors[i];
             double actorInArrayPriority = _getPriority(actorInArray); 
-            if (!added && priority > actorInArrayPriority) { // has lower priority  
+            if (!added && priority >= actorInArrayPriority) { // has lower priority  
                 _currentlyExecuting.push(actor);
                 _remainingTimes.put(actor, executionTime); 
                 added = true;
             } 
             _currentlyExecuting.push(actorInArray);
-        }   
+        }    
     }
     
     /** Schedule a new actor which possibly preempts currently executing
