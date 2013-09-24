@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Spectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -147,14 +147,14 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0290592855022">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.5400390625, 241.2302005597015}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.54003906249994, 241.2302005597015}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Signa Source, Carrier Source, and Spectrum&#10;blocks are hierarchical. Right click or Command-&#10;click (Mac) and select &quot;Open Actor&quot; to view them.&#10;The source actors generate sinusoids, one for the&#10;signal and the other for the carrier.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Signal Source, Carrier Source, and Spectrum&#10;blocks are hierarchical. Right click or Command-&#10;click (Mac) and select &quot;Open Actor&quot; to view them.&#10;The source actors generate sinusoids, one for the&#10;signal and the other for the carrier.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 125.0]">
         </property>

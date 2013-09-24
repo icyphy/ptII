@@ -483,7 +483,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1845247141868045">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.63281250000006, 295.8791771213505}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.63281250000006, 295.87917712135055}">
         </property>
         <property name="AnnotationUpdated4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
