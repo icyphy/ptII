@@ -73,6 +73,7 @@ OTHER_FILES_TO_BE_JARED = \
 	GeneratorRegulatorProtectorSimXRhapsodyFMU.xml \
 	GeneratorRegulatorProtectorSimXRhapsodyFMUMetronomy.xml \
 	GeneratorRegulatorProtectorTuLiP.xml \
+	GeneratorRegulatorProtectorWithBusNotAsAspect.xml \
 	GeneratorRegulatorProtectorWithConstraintMonitor.xml \
 	GeneratorRegulatorProtectorWithDecorator.xml \
 	GeneratorRegulatorProtectorWithLogging.xml \
