@@ -125,7 +125,11 @@ public class RelationWidthInference {
                 }
             }
 
-            long startTime = new Date().getTime();
+            long startTime = 0L; 
+            // FindBugs: avoid dead local store.
+            if (logTimings) {
+                startTime = new Date().getTime();
+            }
 
             try {
                 _topLevel.workspace().getWriteAccess();
@@ -218,7 +222,11 @@ public class RelationWidthInference {
                                     + " ms.");
                 }
 
-                long afterinit = new Date().getTime();
+                long afterinit = 0L;
+                // FindBugs: avoid dead local store.
+                if (logTimings) {
+                   afterinit = new Date().getTime();
+                }
 
                 boolean continueInference = true;
 

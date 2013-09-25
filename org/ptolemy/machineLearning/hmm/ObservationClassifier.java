@@ -175,8 +175,6 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
    {
        int nStates = prior.length;
        double[][] alphas = new double[y.length][nStates]; 
-       double[][] betas = new double[y.length][nStates]; 
-       double[] Py = new double[y.length];
        double[][] gamma = new double[y.length][nStates];
        // do this with org.apache.commons.math3.distribution
        //later NormalDistribution gaussian = ...

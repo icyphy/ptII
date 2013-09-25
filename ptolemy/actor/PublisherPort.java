@@ -462,11 +462,11 @@ public class PublisherPort extends PubSubPort {
         if (port instanceof SubscriberPort) {
             results.add((SubscriberPort) port);
         } else {
-            Receiver[][] receivers = null;
             if (port.isOutput() && port.isInput()) {
                 throw new IllegalActionException(port,
                         "Can't handle port that is both input and output.");
             }
+            Receiver[][] receivers = null;
             if (port.isOutput()) {
                 receivers = port.getRemoteReceivers();
             } else if (port.isInput()) {

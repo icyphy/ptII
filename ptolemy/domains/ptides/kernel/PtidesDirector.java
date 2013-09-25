@@ -1512,7 +1512,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
     }
 
     private int _getNumberOfFutureEventsFrom(Actor actor) {
-        HashMap<Actor, Integer> sinkActorEventQueueSize = new HashMap();
         int maxEvents = 0;
         // Find all sink actors.
         for (Object object : actor.outputPortList()) {
@@ -1968,7 +1967,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
         Parameter parameter = (Parameter) port.getAttribute("relativeDeadline");
         if (parameter == null) {
             try {
-                parameter = new Parameter(port, "relativeDeadline", token);
+                // Findbugs: avoid a dead local store here.
+                /* parameter = */ new Parameter(port, "relativeDeadline", token);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(port,
                         "relativeDeadline parameter already exists at "

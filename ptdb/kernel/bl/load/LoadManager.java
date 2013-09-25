@@ -477,10 +477,9 @@ public class LoadManager {
 
         MoMLParser parser = new MoMLParser();
 
-        Entity entity = new Entity();
         parser.resetAll();
 
-        entity = (Entity) parser.parse(dbModel.getModel());
+        Entity entity = (Entity) parser.parse(dbModel.getModel());
 
         return entity;
 

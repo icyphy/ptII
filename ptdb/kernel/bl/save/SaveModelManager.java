@@ -99,7 +99,10 @@ public class SaveModelManager {
     public ArrayList<XMLDBModel> getFirstLevelParents(XMLDBModel baseModel)
             throws DBConnectionException, DBExecutionException {
 
-        ArrayList<XMLDBModel> parentsList = new ArrayList<XMLDBModel>();
+        // Findbugs: avoid a dead local store here.  FindBugs is
+        // mistaken in thinking that parentList could be a dead local
+        // store if we set it here.
+        ArrayList<XMLDBModel> parentsList = null;
 
         if (baseModel == null || baseModel.getModelName() == null
                 || baseModel.getModelName().length() == 0) {
@@ -135,6 +138,10 @@ public class SaveModelManager {
 
                 dbConnection.closeConnection();
             }
+        }
+
+        if (parentsList == null) {
+            parentsList = new ArrayList<XMLDBModel>();
         }
 
         return parentsList;
@@ -726,7 +733,6 @@ public class SaveModelManager {
     private void updateCache(XMLDBModel xmlDBModel)
             throws DBConnectionException, DBExecutionException {
 
-        ArrayList<XMLDBModel> hierarchy = new ArrayList();
         ArrayList<XMLDBModel> modelsToRemoveList = new ArrayList();
 
         DBConnection dbConnection = null;
@@ -740,7 +746,7 @@ public class SaveModelManager {
             FetchHierarchyTask fetchHierarchyTask = new FetchHierarchyTask();
             fetchHierarchyTask.setModelsList(modelList);
 
-            hierarchy = dbConnection
+            ArrayList<XMLDBModel> hierarchy = dbConnection
                     .executeFetchHierarchyTask(fetchHierarchyTask);
 
             if (hierarchy != null && hierarchy.size() > 0) {

@@ -271,7 +271,6 @@ public class BrowserLauncher {
             throw new IOException("Unable to locate browser: " + errorMessage);
         }
 
-        String errorMessage = "";
         String args[];
 
         switch (jvm) {

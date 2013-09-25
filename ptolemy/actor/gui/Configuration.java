@@ -315,7 +315,6 @@ public class Configuration extends CompositeEntity implements
             }
         }
 
-        containedObjects = deepCompositeEntityList().iterator();
         for (CompositeEntity composite : deepCompositeEntityList()) {
             CompositeEntity clonedComposite = (CompositeEntity) composite
                     .clone(new Workspace("clonedCompositeWorkspace"));

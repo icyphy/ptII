@@ -36,7 +36,8 @@ public class DTDValidator {
 	    b.setErrorHandler(new MyErrorHandler());
 	    // Parse document
 	    //	    Document d = b.parse(args[0]);
-	    Document d = b.parse(new java.io.FileInputStream(fil), 
+            // Findbugs: avoid a dead local store here.
+	    /* Document d = */ b.parse(new java.io.FileInputStream(fil), 
 				 args[1] + File.separator);
 	} 
 	catch(SAXException e) {

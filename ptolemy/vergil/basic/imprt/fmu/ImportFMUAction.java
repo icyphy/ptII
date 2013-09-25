@@ -185,7 +185,6 @@ public class ImportFMUAction extends AbstractAction {
                         fmuFileParameter.setExpression(fmuFileName);
                         fmuFileParameter.setPersistent(false);
                         fmuFileParameter.setVisibility(Settable.EXPERT);
-                        fmuFileName = fmuFileParameter.asFile().getCanonicalPath();
 
                         FMUImport.importFMU(this, fmuFileParameter, context, x, y, _lastModelExchange);
                     } finally {

@@ -81,7 +81,8 @@ public class SharedParameterJUnitTest {
         // - The only way to be removed from there, is when a call
         // ....setContainer() is done with null or another container.
 
-        SharedParameter sharedParameter = new SharedParameter(compositeActor, "sharedParameter", null, "4.5" );
+        // Findbugs: avoid a dead local store here.
+        /* SharedParameter sharedParameter = */ new SharedParameter(compositeActor, "sharedParameter", null, "4.5" );
 
         Collection<Initializable> initializables = _getInitializableField(compositeActor);
 

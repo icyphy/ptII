@@ -655,7 +655,7 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
-            channel++;
+            //channel++;
         }
 
         if (output) {
@@ -3862,8 +3862,7 @@ public class IOPort extends ComponentPort {
 
                 result.append("remotereceivers {\n");
 
-                Receiver[][] receivers = null;
-                receivers = getRemoteReceivers();
+                Receiver[][] receivers = getRemoteReceivers();
 
                 if (receivers != null) {
                     for (Receiver[] receiver : receivers) {
