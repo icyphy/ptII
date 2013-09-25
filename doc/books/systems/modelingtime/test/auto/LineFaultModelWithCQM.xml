@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="LineFaultModelWithCQM" class="ptolemy.actor.TypedCompositeActor">
+<entity name="LineFaultModelWithCompositeCommunicationAspect" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, -160.0]">
         </property>
@@ -304,7 +304,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -317,7 +317,7 @@
             </port>
             <port name="period" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -330,7 +330,7 @@
             </port>
             <port name="start" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -343,7 +343,7 @@
             </port>
             <port name="stop" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -364,7 +364,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -377,7 +377,7 @@
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -398,7 +398,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -411,7 +411,7 @@
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -509,7 +509,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -549,7 +549,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -568,11 +568,9 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
-            </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -773,7 +771,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -794,11 +792,9 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
-            </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -815,7 +811,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -850,11 +846,9 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="Bus">
-            </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -1034,7 +1028,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1047,7 +1041,7 @@
         </port>
         <port name="period" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1060,7 +1054,7 @@
         </port>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1073,7 +1067,7 @@
         </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1092,7 +1086,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1112,7 +1106,7 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1126,7 +1120,7 @@
         <port name="minus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1146,7 +1140,7 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1160,7 +1154,7 @@
         <port name="minus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1202,7 +1196,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -1222,7 +1216,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -1301,7 +1295,7 @@
             <property name="input"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1318,7 +1312,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Bus" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+    <entity name="Bus" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
         <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -1335,13 +1329,13 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{128.7116279069767, 55.33978015988367}">
         </property>
-        <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="in" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 85.0]">
             </property>
         </entity>
-        <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
+        <entity name="out" class="ptolemy.actor.lib.aspect.CommunicationResponsePort">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 85.0]">
             </property>
         </entity>

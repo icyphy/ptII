@@ -37,11 +37,11 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** A receiver that delegates to another receiver all method calls except
  *  {@link #put(Token)} (and its variants), for which it delegates to a
- *  quantity manager. The delegated receiver and the quantity manager are
+ *  communication aspect. The delegated receiver and the communication aspect are
  *  specified as constructor arguments.
  *  <p>
  *  This can be used, for example, when multiple communication links share
- *  resources. The quantity manager can, for example, delay the delivery
+ *  resources. The communication aspect can, for example, delay the delivery
  *  of tokens to the delegated receiver to take into account resource
  *  availability. It could also be used to make a centralized record
  *  of various communications.
@@ -57,22 +57,22 @@ import ptolemy.kernel.util.IllegalActionException;
 public class IntermediateReceiver extends AbstractReceiver {
 
     /** Construct an intermediate receiver with no container that wraps the
-     *  specified receiver using the specified quantity manager.
-     *  @param qm The quantity manager that receives tokens received by this receiver.
+     *  specified receiver using the specified communication aspect.
+     *  @param qm The communication aspect that receives tokens received by this receiver.
      *  @param receiver The receiver wrapped by this intermediate receiver.
      */
-    public IntermediateReceiver(QuantityManager qm, Receiver receiver) {
+    public IntermediateReceiver(CommunicationAspect qm, Receiver receiver) {
         _receiver = receiver;
         quantityManager = qm;
     }
 
     /** Construct an intermediate receiver with no container that wraps the
-     *  specified receiver using the specified quantity manager.
-     *  @param qm The quantity manager that receives tokens received by this receiver.
+     *  specified receiver using the specified communication aspect.
+     *  @param qm The communication aspect that receives tokens received by this receiver.
      *  @param receiver The receiver wrapped by this intermediate receiver.
      *  @param port The port wrapped by this intermediate receiver
      */
-    public IntermediateReceiver(QuantityManager qm, Receiver receiver,
+    public IntermediateReceiver(CommunicationAspect qm, Receiver receiver,
             IOPort port) {
         _receiver = receiver;
         quantityManager = qm;
@@ -82,8 +82,8 @@ public class IntermediateReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Quantity manager that receives tokens from this receiver. */
-    public QuantityManager quantityManager;
+    /** communication aspect that receives tokens from this receiver. */
+    public CommunicationAspect quantityManager;
 
     /** The source actor that sent a token to this receiver. */
     public Actor source;
@@ -91,7 +91,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reset the quantity manager and the receiver that we delegate to.
+    /** Reset the communication aspect and the receiver that we delegate to.
      */
     public void clear() throws IllegalActionException {
         quantityManager.reset();
@@ -151,7 +151,7 @@ public class IntermediateReceiver extends AbstractReceiver {
         return _receiver.isKnown();
     }
 
-    /** Forward the specified token to quantity manager specified in
+    /** Forward the specified token to communication aspect specified in
      *  the constructor.
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {

@@ -107,7 +107,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{570.0, 295.0}">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -120,7 +120,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -155,19 +155,19 @@
         </property>
         <property name="generatorOutputImpedance" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ResourceMappingInputPort">
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ExecutionRequestPort">
             </property>
         </property>
         <port name="drive" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -182,7 +182,7 @@
         </port>
         <port name="contactor" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -196,7 +196,7 @@
             </property>
         </port>
         <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -207,7 +207,7 @@
                 </property>
             </property>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -223,7 +223,7 @@
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -235,7 +235,7 @@
                 </property>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -253,7 +253,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -265,7 +265,7 @@
                 </property>
             </entity>
             <entity name="Default" class="ptolemy.domains.sr.lib.Default">
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -283,7 +283,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -295,7 +295,7 @@
                 </property>
             </entity>
             <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -308,7 +308,7 @@
             </entity>
         </entity>
         <entity name="Contactor" class="ptolemy.demo.ElectricPowerSystem.Contactor">
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -319,7 +319,7 @@
                 </property>
             </property>
             <entity name="When" class="ptolemy.domains.sr.lib.When">
-                <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -338,7 +338,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -350,7 +350,7 @@
             </property>
         </entity>
         <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -362,7 +362,7 @@
             </property>
         </entity>
         <entity name="ZeroOrderHold2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -374,7 +374,7 @@
             </property>
         </entity>
         <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -391,7 +391,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 220.0}">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -417,7 +417,7 @@
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -431,7 +431,7 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -448,14 +448,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 220.0]">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ResourceMappingInputPort">
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ExecutionRequestPort">
             </property>
         </property>
         <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.0, 1.0}">
@@ -464,7 +464,7 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -481,7 +481,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -519,7 +519,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 225.0]">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -628,7 +628,7 @@
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 220.0}">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -640,7 +640,7 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -655,14 +655,14 @@
     <entity name="Controller" class="Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 210.0]">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ResourceMappingInputPort2">
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ExecutionRequestPort2">
             </property>
         </property>
         <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.6, 0.0, 1.0}">
@@ -671,7 +671,7 @@
             <property name="input"/>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {LogMessages}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogMessages">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -689,7 +689,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -701,7 +701,7 @@
             </property>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -713,7 +713,7 @@
             </property>
         </entity>
         <entity name="PID" class="ptolemy.domains.de.lib.PID">
-            <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -725,7 +725,7 @@
             </property>
         </entity>
     </entity>
-    <entity name="LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
+    <entity name="LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
         <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.0,1.0}">
         </property>
         <property name="justMonitor" class="ptolemy.data.expr.Parameter" value="true">
@@ -738,13 +738,13 @@
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <entity name="ResourceMappingInputPort" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
+        <entity name="ExecutionRequestPort" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 160.0]">
             </property>
         </entity>
-        <entity name="ResourceMappingInputPort2" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
+        <entity name="ExecutionRequestPort2" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 245.0]">
@@ -790,8 +790,8 @@
             <vertex name="vertex1" value="{195.0, 30.0}">
             </vertex>
         </relation>
-        <link port="ResourceMappingInputPort.output" relation="relation"/>
-        <link port="ResourceMappingInputPort2.output" relation="relation3"/>
+        <link port="ExecutionRequestPort.output" relation="relation"/>
+        <link port="ExecutionRequestPort2.output" relation="relation3"/>
         <link port="RecordDisassembler.input" relation="relation"/>
         <link port="RecordDisassembler.actor" relation="relation2"/>
         <link port="RecordDisassembler2.input" relation="relation3"/>
@@ -799,7 +799,7 @@
         <link port="Display.input" relation="relation2"/>
         <link port="Display.input" relation="relation4"/>
     </entity>
-    <entity name="LogMessages" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+    <entity name="LogMessages" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
         <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,1.0,1.0}">
         </property>
         <property name="justMonitor" class="ptolemy.data.expr.Parameter" value="true">
@@ -810,7 +810,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 415.0]">
         </property>
-        <property name="DecoratorAttributesFor_CompositeResourceScheduler" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -820,12 +820,12 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
-        <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="in" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 185.0]">
             </property>
-            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -836,12 +836,12 @@
                 </property>
             </property>
         </entity>
-        <entity name="in2" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="in2" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 255.0]">
             </property>
-            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -852,12 +852,12 @@
                 </property>
             </property>
         </entity>
-        <entity name="in3" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="in3" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 315.0]">
             </property>
-            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -877,7 +877,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 265.0]">
             </property>
-            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -902,7 +902,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 125.0]">
             </property>
-            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -927,7 +927,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 230.0]">
             </property>
-            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -952,7 +952,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 295.0]">
             </property>
-            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+            <property name="DecoratorAttributesFor_LogExecutions" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="LogExecutions">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">

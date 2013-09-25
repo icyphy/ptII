@@ -334,7 +334,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <entity name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
+            <entity name="EDFScheduler" class="ptolemy.actor.lib.aspect.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 80}">
                 </property>
             </entity>

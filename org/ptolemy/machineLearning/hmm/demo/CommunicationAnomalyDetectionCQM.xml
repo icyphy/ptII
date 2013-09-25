@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CommunicationAnomalyDetectionCQM" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CommunicationAnomalyDetectionCompositeCommunicationAspect" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -101,7 +101,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -114,7 +114,7 @@
             </port>
             <port name="period" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -127,7 +127,7 @@
             </port>
             <port name="start" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -140,7 +140,7 @@
             </port>
             <port name="stop" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -164,7 +164,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -179,7 +179,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -194,7 +194,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -213,7 +213,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -238,7 +238,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -332,7 +332,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, 300.0}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -355,7 +355,7 @@
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -369,7 +369,7 @@
             <port name="minus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -392,7 +392,7 @@
                 <property name="multiport"/>
                 <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -574,7 +574,7 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -591,7 +591,7 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -608,7 +608,7 @@
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -906,7 +906,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -919,7 +919,7 @@
             </port>
             <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -937,7 +937,7 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -950,7 +950,7 @@
             </port>
             <port name="control" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -968,7 +968,7 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -981,7 +981,7 @@
             </port>
             <port name="control" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1002,7 +1002,7 @@
                 <property name="input"/>
                 <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1015,7 +1015,7 @@
             </port>
             <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1037,7 +1037,7 @@
                 <property name="multiport"/>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1054,7 +1054,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ServiceChannel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1202,7 +1202,7 @@
         <link port="Expression.output" relation="relation8"/>
         <link port="Expression.in" relation="relation4"/>
     </entity>
-    <entity name="ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+    <entity name="ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
             </property>
@@ -1299,13 +1299,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 85.0}">
             </property>
         </property>
-        <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="in" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 470.0}">
             </property>
         </entity>
-        <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
+        <entity name="out" class="ptolemy.actor.lib.aspect.CommunicationResponsePort">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 470.0}">
             </property>
             <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
@@ -1864,7 +1864,7 @@
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="UpdateCQMToken" class="ptolemy.actor.lib.RecordUpdater">
+        <entity name="UpdateCompositeCommunicationAspectToken" class="ptolemy.actor.lib.RecordUpdater">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 450.0}">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1917,7 +1917,7 @@
             </property>
             <vertex name="vertex1" value="{55.0, 470.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;in.output&quot;,x=15.0,y=470.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={} },{ head={id=&quot;Expression.input&quot;,x=140.0,y=470.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={} },{ head={id=&quot;UpdateCQMToken.input&quot;,x=425.0,y=450.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={385.0,460.0,385.0,420.0,55.0,420.0} },{ head={id=&quot;CommunicationDelay.port&quot;,x=120.0,y=650.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={55.0,650.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;in.output&quot;,x=15.0,y=470.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={} },{ head={id=&quot;Expression.input&quot;,x=140.0,y=470.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={} },{ head={id=&quot;UpdateCompositeCommunicationAspectToken.input&quot;,x=425.0,y=450.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={385.0,460.0,385.0,420.0,55.0,420.0} },{ head={id=&quot;CommunicationDelay.port&quot;,x=120.0,y=650.0}, tail={id=&quot;relation3.vertex1&quot;,x=55.0,y=470.0}, points={55.0,650.0} } }">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1925,11 +1925,11 @@
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;UpdateLabels.output&quot;,x=295.0,y=460.0}, tail={id=&quot;UpdateCQMToken.token&quot;,x=425.0,y=450.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;UpdateLabels.output&quot;,x=295.0,y=460.0}, tail={id=&quot;UpdateCompositeCommunicationAspectToken.token&quot;,x=425.0,y=450.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.input&quot;,x=590.0,y=470.0}, tail={id=&quot;UpdateCQMToken.output&quot;,x=425.0,y=450.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.input&quot;,x=590.0,y=470.0}, tail={id=&quot;UpdateCompositeCommunicationAspectToken.output&quot;,x=425.0,y=450.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -1983,9 +1983,9 @@
         <link port="UpdateLabels.label" relation="relation8"/>
         <link port="Expression.output" relation="relation6"/>
         <link port="Expression.input" relation="relation3"/>
-        <link port="UpdateCQMToken.output" relation="relation"/>
-        <link port="UpdateCQMToken.input" relation="relation3"/>
-        <link port="UpdateCQMToken.token" relation="relation4"/>
+        <link port="UpdateCompositeCommunicationAspectToken.output" relation="relation"/>
+        <link port="UpdateCompositeCommunicationAspectToken.input" relation="relation3"/>
+        <link port="UpdateCompositeCommunicationAspectToken.token" relation="relation4"/>
         <link port="LatencyDistribution.input" relation="relation2"/>
         <link port="LatencyDistribution.input" relation="relation9"/>
         <link port="LatencyDistribution.input" relation="relation10"/>

@@ -273,7 +273,7 @@
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </property>
-            <entity name="ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler">
+            <entity name="ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 60.0]">
                 </property>
                 <property name="etRamp" class="ptolemy.data.expr.Parameter" value="0.3">
@@ -430,7 +430,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 5.0]">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -518,7 +518,7 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[384.0, 305.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -539,7 +539,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -569,7 +569,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -599,7 +599,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -620,7 +620,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -641,7 +641,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -663,7 +663,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -688,7 +688,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -709,7 +709,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -740,7 +740,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -761,7 +761,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -786,7 +786,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -816,7 +816,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -954,7 +954,7 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[249.828125, 81.75]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -980,7 +980,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1016,7 +1016,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1037,7 +1037,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1067,7 +1067,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1088,7 +1088,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1110,7 +1110,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1135,7 +1135,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1203,7 +1203,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, -15.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1231,7 +1231,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1280,7 +1280,7 @@
                     </property>
                     <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1350,7 +1350,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1442,7 +1442,7 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 90.0]">
                             </property>
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1746,7 +1746,7 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[366.0, 250.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1762,7 +1762,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1787,7 +1787,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1812,7 +1812,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1837,7 +1837,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1853,7 +1853,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1878,7 +1878,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1894,7 +1894,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1919,7 +1919,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1935,7 +1935,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1951,7 +1951,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1976,7 +1976,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1992,7 +1992,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2008,7 +2008,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2034,7 +2034,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2055,7 +2055,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2069,7 +2069,7 @@
                     <entity name="Register" class="ptolemy.domains.de.lib.Register">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 55.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2083,7 +2083,7 @@
                     <entity name="Register2" class="ptolemy.domains.de.lib.Register">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 85.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2097,7 +2097,7 @@
                     <entity name="Register3" class="ptolemy.domains.de.lib.Register">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 115.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2122,7 +2122,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2147,7 +2147,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2163,7 +2163,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2179,7 +2179,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2193,7 +2193,7 @@
                     <entity name="Register4" class="ptolemy.domains.de.lib.Register">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 150.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2218,7 +2218,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2243,7 +2243,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2259,7 +2259,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2275,7 +2275,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2289,7 +2289,7 @@
                     <entity name="Register5" class="ptolemy.domains.de.lib.Register">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 190.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2575,7 +2575,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -2677,7 +2677,7 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 550.0]">
                             </property>
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3081,7 +3081,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3175,7 +3175,7 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 75.0]">
                             </property>
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3296,7 +3296,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3418,7 +3418,7 @@
                         </property>
                         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3436,7 +3436,7 @@
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3460,7 +3460,7 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 260.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3487,7 +3487,7 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 330.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3514,7 +3514,7 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 370.0]">
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3594,7 +3594,7 @@
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3686,7 +3686,7 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 75.0]">
                             </property>
                         </property>
-                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                        <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                             </property>
                             <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3802,12 +3802,12 @@
                     <link port="_Controller.request" relation="requestRelation"/>
                     <link port="_Controller.done" relation="doneRelation"/>
                 </entity>
-                <entity name="DiscreteClock" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
+                <entity name="DiscreteClock" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 60.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3818,12 +3818,12 @@
                         </property>
                     </property>
                 </entity>
-                <entity name="Ramp" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
+                <entity name="Ramp" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 135.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3834,7 +3834,7 @@
                         </property>
                     </property>
                 </entity>
-                <entity name="resumeDiscreteClock" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingOutputPort">
+                <entity name="resumeDiscreteClock" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
                     <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 60.0]">
@@ -3845,7 +3845,7 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="resumeRamp" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingOutputPort">
+                <entity name="resumeRamp" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
                     <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
@@ -3856,7 +3856,7 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="resumeSpectrum" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingOutputPort">
+                <entity name="resumeSpectrum" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
                     <property name="Parameter" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 65.0]">
@@ -3870,7 +3870,7 @@
                 <entity name="Register" class="ptolemy.domains.de.lib.Register">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 60.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3884,7 +3884,7 @@
                 <entity name="Register2" class="ptolemy.domains.de.lib.Register">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 135.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3895,12 +3895,12 @@
                         </property>
                     </property>
                 </entity>
-                <entity name="Spectrum" class="ptolemy.actor.lib.resourceScheduler.ResourceMappingInputPort">
+                <entity name="Spectrum" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
                     <property name="value" class="ptolemy.data.expr.Parameter" value="">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 65.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -3914,7 +3914,7 @@
                 <entity name="Register3" class="ptolemy.domains.de.lib.Register">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 65.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -4109,7 +4109,7 @@
                     <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -4139,7 +4139,7 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
                 </property>
-                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -4174,7 +4174,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 125.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -4205,7 +4205,7 @@
                         <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                    <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -4244,7 +4244,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 210.0]">
                 </property>
-                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.resourceScheduler.CompositeResourceScheduler$CompositeResourceSchedulerAttributes">
+                <property name="DecoratorAttributesFor_ArchitectureMappingModel" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.ArchitectureMappingModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">

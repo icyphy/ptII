@@ -222,7 +222,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -232,7 +232,7 @@
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -269,7 +269,7 @@
         </property>
         <port name="drive" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -279,7 +279,7 @@
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -292,7 +292,7 @@
         </port>
         <port name="contactor" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -304,7 +304,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {SpecificationMonitor}">
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -341,7 +341,7 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -351,7 +351,7 @@
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -368,7 +368,7 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -378,7 +378,7 @@
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -399,7 +399,7 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -411,7 +411,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {SpecificationMonitor}">
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -428,7 +428,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -440,7 +440,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {SpecificationMonitor, SpecificationMonitor3}">
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -573,7 +573,7 @@
         </property>
         <port name="voltage" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -583,7 +583,7 @@
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -597,7 +597,7 @@
             </property>
         </port>
     </entity>
-    <entity name="SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+    <entity name="SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
         <property name="justMonitor" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -606,7 +606,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 405.0]">
         </property>
-        <entity name="contactor" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="contactor" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 170.0]">
@@ -627,7 +627,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -642,7 +642,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -657,7 +657,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1058,7 +1058,7 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1070,13 +1070,13 @@
                 </property>
             </port>
         </entity>
-        <entity name="fault" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="fault" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 225.0]">
             </property>
         </entity>
-        <entity name="onOff" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="onOff" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 280.0]">
@@ -1138,7 +1138,7 @@
         <link port="RecordDisassembler3.input" relation="relation4"/>
         <link port="RecordDisassembler3.token" relation="relation7"/>
     </entity>
-    <entity name="SpecificationMonitor3" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+    <entity name="SpecificationMonitor3" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
         <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,1.0,1.0}">
         </property>
         <property name="justMonitor" class="ptolemy.data.expr.Parameter" value="true">
@@ -1149,13 +1149,13 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 405.0]">
         </property>
-        <entity name="voltage" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="voltage" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 170.0]">
             </property>
         </entity>
-        <entity name="fault" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="fault" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 225.0]">
@@ -1194,7 +1194,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1204,7 +1204,7 @@
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1219,7 +1219,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1229,7 +1229,7 @@
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1473,7 +1473,7 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1483,7 +1483,7 @@
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_SpecificationMonitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="SpecificationMonitor3">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">

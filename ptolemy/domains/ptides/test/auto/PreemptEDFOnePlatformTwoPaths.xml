@@ -392,10 +392,10 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <entity name="NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
+            <entity name="NPFCFSCore" class="ptolemy.actor.lib.aspect.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 70.0}">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -413,7 +413,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -438,7 +438,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -471,7 +471,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -504,7 +504,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
-                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_NPFCFSCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.NPFCFSCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">

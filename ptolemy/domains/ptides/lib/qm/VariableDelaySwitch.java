@@ -30,12 +30,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.qm;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.Director;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.QuantityManager;
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.qm.BasicSwitch;
-import ptolemy.actor.QuantityManagerListener.EventType;
+import ptolemy.actor.lib.aspect.BasicSwitch; 
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A {@link QuantityManager} actor that applies packet-size and priority
+ * A {@link CommunicationAspect} actor that applies packet-size and priority
  * dependent delay to incoming packets. Intended to use with RecordTokens only.
  * Assumes record token includes the encapsulated packages with a label "packets"
  * and a TCP header with label "TCPlabel"
@@ -215,7 +215,7 @@ public class VariableDelaySwitch extends BasicSwitch {
                         + _priorityDelay + _packetSizeDelay), new Object[] {
                         receiver, token }));
         _tokenCount++;
-        sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
+        sendCommunicationEvent((Actor) source.getContainer().getContainer(), 0,
                 _tokenCount, EventType.RECEIVED);
         _scheduleRefire();
 

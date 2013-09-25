@@ -44,7 +44,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ResourceScheduler;
+import ptolemy.actor.ActorExecutionAspect;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Const;
@@ -467,7 +467,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
 
         int depth = 1;
-        if (!(actor instanceof ResourceScheduler)) {
+        if (!(actor instanceof ActorExecutionAspect)) {
             depth = _getDepthOfActor(actor);
         }
         
@@ -1757,7 +1757,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         
         // resource scheduler events are only safe to process when physical time 
         // equals event timestamp.
-        if (event.actor() instanceof ResourceScheduler) {
+        if (event.actor() instanceof ActorExecutionAspect) {
             if ((event.timeStamp().compareTo(localClock.getLocalTime())) > 0) {
                 if (_debugging) {
                     _debug("*** resourceScheduler !safe" + event);

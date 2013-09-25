@@ -426,7 +426,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                     + container);
                         }
                         if (_debugging) {
-                            _debug("Fire method called in the quantity manager");
+                            _debug("Fire method called in the communication aspect");
                         }
                         if (_needNewGenerator) {
                             _createGenerator();
@@ -599,7 +599,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
                         } //end of if
                         if (_debugging) {
-                            _debug("at the end of preinitialize in the timing quantity manager.");
+                            _debug("at the end of preinitialize in the timing communication aspect.");
                         }
                     }
 

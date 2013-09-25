@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ResourceScheduler" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ExecutionAspect" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -324,10 +324,10 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
-            <entity name="FPScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <entity name="FPScheduler" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 50.0]">
                 </property>
-                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -349,7 +349,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[119.5, 115.0]">
                 </property>
-                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -379,7 +379,7 @@
                 <doc>Create periodic timed events.</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[29.5, 285.0]">
                 </property>
-                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -409,7 +409,7 @@
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[299.5, 130.0]">
                 </property>
-                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -439,7 +439,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="3.5">
                 </property>
-                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -466,7 +466,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -495,7 +495,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[124.5, 285.0]">
                 </property>
-                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">

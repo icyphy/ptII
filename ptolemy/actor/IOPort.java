@@ -245,8 +245,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** If a quantity manager is added, removed or modified,
-     *  invalidate the list of quantity managers which is read again
+    /** If a communication aspect is added, removed or modified,
+     *  invalidate the list of communication aspects which is read again
      *  in the preinitialize phase.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the new color
@@ -257,9 +257,9 @@ public class IOPort extends ComponentPort {
         if (attribute instanceof ResourceAttributes) {
             Decorator decorator = ((ResourceAttributes) attribute)
                     .getDecorator();
-            if (decorator != null && decorator instanceof QuantityManager) {
-                // Invalidate list of quantity managers.
-                _qmListValid = false;
+            if (decorator != null && decorator instanceof CommunicationAspect) {
+                // Invalidate list of communication aspects.
+                _communicationAspectsValid = false;
                 if (isOpaque()) {
                     createReceivers();
                 }
@@ -533,7 +533,7 @@ public class IOPort extends ComponentPort {
         newObject._widthEqualToParameter = new HashSet<Parameter>();
         newObject._widthEqualToPort = new HashSet<IOPort>();
         newObject._defaultWidth = -1;
-        newObject._qmList = new ArrayList();
+        newObject._communicationAspects = new ArrayList();
 
         return newObject;
     }
@@ -1348,32 +1348,32 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Return the list of quantity managers in this port.
-     *  A quantity manager is a {@link Parameter} whose value is an
+    /** Return the list of communication aspects in this port.
+     *  A communication aspect is a {@link Parameter} whose value is an
      *  {@link ObjectToken} that references an object that implements
-     *  the {@link QuantityManager} interface.
-     *  Update the sequence number of quantity managers.
-     *  @return The list of quantity managers.
+     *  the {@link CommunicationAspect} interface.
+     *  Update the sequence number of communication aspects.
+     *  @return The list of communication aspects.
      *  @exception IllegalActionException Thrown if the token of the parameter
-     *      containing the quantity manager object cannot be retrieved.
+     *      containing the communication aspect object cannot be retrieved.
      */
-    public List<QuantityManager> getQuantityManagers()
+    public List<CommunicationAspect> getQuantityManagers()
             throws IllegalActionException {
-        if (_qmList == null) {
-            _qmList = new ArrayList<QuantityManager>();
+        if (_communicationAspects == null) {
+            _communicationAspects = new ArrayList<CommunicationAspect>();
         } 
         
-        HashMap<Integer, QMAttributes> _qmMap = new HashMap<Integer, QMAttributes>();
+        HashMap<Integer, CommunicationAspectAttributes> _communicationAspectMap = new HashMap<Integer, CommunicationAspectAttributes>();
         int sequenceNumber = 1;
-        List<QMAttributes> qmlist = this.attributeList(QMAttributes.class);
-        if (qmlist.size() > 0) {
+        List<CommunicationAspectAttributes> communicationAspectList = this.attributeList(CommunicationAspectAttributes.class);
+        if (communicationAspectList.size() > 0) {
             try {
                 _workspace.getWriteAccess(); 
             
-                List<QMAttributes> enabledAttributes = new ArrayList();
+                List<CommunicationAspectAttributes> enabledAttributes = new ArrayList();
                 
-                for (int i = 0; i < qmlist.size(); i++) {
-                    QMAttributes attribute = qmlist.get(i);
+                for (int i = 0; i < communicationAspectList.size(); i++) {
+                    CommunicationAspectAttributes attribute = communicationAspectList.get(i);
                     if (((BooleanToken)attribute.enable.getToken()).booleanValue()) {
                         enabledAttributes.add(attribute);
                         int s = ((IntToken)attribute.sequenceNumber.getToken()).intValue();
@@ -1386,28 +1386,28 @@ public class IOPort extends ComponentPort {
                 }
                 sequenceNumber = sequenceNumber + 1;
                 for (int i = 0; i < enabledAttributes.size(); i++) {
-                    final QMAttributes attribute = enabledAttributes.get(i);
+                    final CommunicationAspectAttributes attribute = enabledAttributes.get(i);
                     final int seqNum = sequenceNumber;
-                    QuantityManager qm = (QuantityManager) attribute.getDecorator();
+                    CommunicationAspect communicationAspect = (CommunicationAspect) attribute.getDecorator();
                     int oldSeqNum = ((IntToken) attribute.sequenceNumber.getToken()).intValue();
-                    if (oldSeqNum == -1 && qm != null && !_qmList.contains(qm)) {
+                    if (oldSeqNum == -1 && communicationAspect != null && !_communicationAspects.contains(communicationAspect)) {
                         attribute.sequenceNumber.setToken(new IntToken(seqNum)); 
-                        _qmMap.put(seqNum, attribute); 
+                        _communicationAspectMap.put(seqNum, attribute); 
                         sequenceNumber = sequenceNumber + 1;
                     } else {   
-                        _qmMap.put(oldSeqNum, attribute);  
+                        _communicationAspectMap.put(oldSeqNum, attribute);  
                         
                     }
                 } 
-                _qmList.clear();
-                Iterator<Integer> iterator = _qmMap.keySet().iterator();
+                _communicationAspects.clear();
+                Iterator<Integer> iterator = _communicationAspectMap.keySet().iterator();
                 int i = 1;
                 while (iterator.hasNext()) {
                     
-                    QMAttributes attribute = _qmMap.get(iterator.next()); 
+                    CommunicationAspectAttributes attribute = _communicationAspectMap.get(iterator.next()); 
                     attribute.sequenceNumber.setToken(new IntToken(i));
                     i = i + 1;
-                    _qmList.add((QuantityManager) attribute.getDecorator());
+                    _communicationAspects.add((CommunicationAspect) attribute.getDecorator());
                 } 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1415,8 +1415,8 @@ public class IOPort extends ComponentPort {
                 _workspace.doneWriting();
             }
         }
-        _qmListValid = true;
-        return _qmList;  
+        _communicationAspectsValid = true;
+        return _communicationAspects;  
     }
 
     /** If the port is an input, return the receivers that receive data
@@ -2259,9 +2259,9 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Invalide the quantity manager list. */
-    public void invalidateQMList() {
-        _qmListValid = false;
+    /** Invalide the communication aspect list. */
+    public void invalidateCommunicationAspects() {
+        _communicationAspectsValid = false;
     }
     
     /** Return true if the port is an input.  The port is an input
@@ -4341,15 +4341,15 @@ public class IOPort extends ComponentPort {
     }
 
     /** If this port has parameters whose values are tokens that contain
-     *  an object implementing {@link QuantityManager}, then wrap the
-     *  receiver specified in the argument using those quantity managers.
+     *  an object implementing {@link CommunicationAspect}, then wrap the
+     *  receiver specified in the argument using those communication aspects.
      *  If there are no such parameters, then simply return the specified
      *  receiver. If there is one such parameter, then use the quantity
      *  manager to wrap the specified receiver in a new receiver, and return
      *  that receiver. If there are two such parameters, then use the second
-     *  quantity manager to create a receiver that wraps that created by the
-     *  first quantity manager. Etc.
-     *  @see QuantityManager
+     *  communication aspect to create a receiver that wraps that created by the
+     *  first communication aspect. Etc.
+     *  @see CommunicationAspect
      *  @param receiver The receiver to wrap.
      *  @param channel Channel id used to determine the source port.
      *  @return Either a new receiver wrapping the specified receiver,
@@ -4360,10 +4360,10 @@ public class IOPort extends ComponentPort {
     protected Receiver _wrapReceiver(Receiver receiver, int channel)
             throws IllegalActionException {
         Receiver result = receiver;
-        List<QuantityManager> qmList = getQuantityManagers();
+        List<CommunicationAspect> communicationAspects = getQuantityManagers();
         if (isInput()) {
-            for (int i = qmList.size() - 1; i >= 0; i--) {
-                QuantityManager quantityManager = qmList.get(i);
+            for (int i = communicationAspects.size() - 1; i >= 0; i--) {
+                CommunicationAspect quantityManager = communicationAspects.get(i);
                 if (quantityManager != null) {
                     result = quantityManager.createIntermediateReceiver(result);
                 }
@@ -4374,8 +4374,8 @@ public class IOPort extends ComponentPort {
                         .get(channel).getContainer();
             }
         } else {
-            for (int i = 0; i < qmList.size(); i++) {
-                QuantityManager quantityManager = qmList.get(i);
+            for (int i = 0; i < communicationAspects.size(); i++) {
+                CommunicationAspect quantityManager = communicationAspects.get(i);
                 result = quantityManager.createIntermediateReceiver(result);
             }
         }
@@ -4853,8 +4853,8 @@ public class IOPort extends ComponentPort {
 
     private transient long _insideReceiversVersion = -1;
 
-    // If port is linked to a quantity manager then all tokens
-    // are sent to the quantity manager. Receivers and farreceivers
+    // If port is linked to a communication aspect then all tokens
+    // are sent to the communication aspect. Receivers and farreceivers
     // are replaced by this intermediate receiver.
     private IntermediateReceiver _intermediateFarReceiver;
 
@@ -4866,13 +4866,13 @@ public class IOPort extends ComponentPort {
     private transient int _numberOfSources;
     private transient long _numberOfSourcesVersion = -1;
 
-    /** List of quantity managers specified for the port. */
-    private List<QuantityManager> _qmList;
+    /** List of communication aspects specified for the port. */
+    private List<CommunicationAspect> _communicationAspects;
 
-    /** True if list of quantity managers was not modified since
+    /** True if list of communication aspects was not modified since
      *  it was last modified.
      */
-    private boolean _qmListValid = false;
+    private boolean _communicationAspectsValid = false;
 
     // A cache of the sink port list.
     private transient LinkedList<IOPort> _sinkPortList;

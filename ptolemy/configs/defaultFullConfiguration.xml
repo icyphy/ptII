@@ -159,6 +159,7 @@
       <configure>
         <?moml
           <group>
+          <input source="ptolemy/actor/lib/aspect/aspect.xml"/>
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
         <!-- Backtracking actors -->
             <input source="ptolemy/backtrack/backtrack.xml"/>
@@ -208,8 +209,6 @@
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>
-            <input source="ptolemy/actor/lib/qm/qm.xml"/>
-            <input source="ptolemy/actor/lib/resourceScheduler/resourceScheduler.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
             <input source="ptolemy/domains/wireless/wireless.xml"/>

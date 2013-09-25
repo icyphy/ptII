@@ -1,0 +1,457 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CheckExecutionTimeConstraints" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 55}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 68, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.00000000000003}">
+    </property>
+    <property name="ScaleExecutionTime" class="ptolemy.data.expr.Parameter" value="0.595062695824">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 445.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Actor Scale is executed on an EDFScheduler with an execution time&#10;given as a unifrom distribution between 0.5 and 1.1. &#10;This model throws an exception if the execution time exceeds 1.0.&#10;The CompositeCommunicationAspect C records tokens sent to the Scale&#10;and sent by the Scale and compares the timestamps and produces&#10;the exception.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 255.0]">
+        </property>
+    </property>
+    <entity name="C" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
+        <property name="justMonitor" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 110.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+        <entity name="in1" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 100.0}">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="in2" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 210.0}">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
+            <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
+                    </property>
+                    <property name="ge" class="ptolemy.kernel.util.StringAttribute" value="&gt;=">
+                    </property>
+                    <property name="lt" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+                    </property>
+                    <property name="le" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
+                    </property>
+                    <property name="eq" class="ptolemy.kernel.util.StringAttribute" value="==">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 185.0}">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 210.0]">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 100.0}">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 210.0}">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 150.0]">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 100.0]">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, true, false, true, true, false}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 185.0]">
+            </property>
+            <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{315.0, 175.0}">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[205.0, 210.0]">
+            </vertex>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in1.output" relation="relation6"/>
+        <link port="in2.output" relation="relation"/>
+        <link port="Comparator.left" relation="relation5"/>
+        <link port="Comparator.right" relation="relation4"/>
+        <link port="Comparator.output" relation="relation7"/>
+        <link port="Const.output" relation="relation4"/>
+        <link port="Const.trigger" relation="relation5"/>
+        <link port="CurrentTime.output" relation="relation8"/>
+        <link port="CurrentTime.trigger" relation="relation6"/>
+        <link port="CurrentTime2.output" relation="relation9"/>
+        <link port="CurrentTime2.trigger" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation9"/>
+        <link port="AddSubtract.minus" relation="relation2"/>
+        <link port="AddSubtract.output" relation="relation5"/>
+        <link port="Queue.input" relation="relation8"/>
+        <link port="Queue.output" relation="relation2"/>
+        <link port="Queue.trigger" relation="relation9"/>
+        <link port="NonStrictTest.input" relation="relation7"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="ScaleExecutionTime">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 1.0, 1.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {C}">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="C">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {C}">
+            </property>
+        </port>
+    </entity>
+    <entity name="EDFScheduler" class="ptolemy.actor.lib.aspect.EDFScheduler">
+        <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,1.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 115.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+    </entity>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="1.1">
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 415.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+    </entity>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ScaleExecutionTime">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 415.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 405.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5950626958, 2.9386344215, 4.5425952209, 6.5402720056, 8.9608941904, 10.6364007966, 12.89619177, 14.9840041345, 16.517890606, 18.9867020708, 21.067249735, 22.5916401629, 25.0461657546, 27.099487761, 28.8239955795}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.06364007966E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_EDFScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EDFScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[275.0, 415.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="Scale.input" relation="relation"/>
+    <link port="Scale.output" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation3"/>
+    <link port="CurrentTime.trigger" relation="relation2"/>
+    <link port="Uniform.output" relation="relation5"/>
+    <link port="Uniform.trigger" relation="relation4"/>
+    <link port="SetVariable.input" relation="relation5"/>
+    <link port="DiscreteClock2.output" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
+</entity>

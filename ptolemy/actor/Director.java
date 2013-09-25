@@ -589,6 +589,17 @@ public class Director extends Attribute implements Executable {
         return getModelTime().getDoubleValue();
     }
 
+    /** Compute the deadline for an actor firing. In this base class, the deadline
+     *  is set to the maximum value.
+     * @param actor The actor.
+     * @param timestamp The timestamp of the event that triggered the firing.
+     * @return The deadline.
+     * @throws IllegalActionException Thrown in subclasses.
+     */
+    public Time getDeadline(Actor actor, Time timestamp) throws IllegalActionException {
+        return Time.POSITIVE_INFINITY;
+    }
+
     /** Get current environment time.
      *  This is the current time of the enclosing executive
      *  director, if there is one, and null otherwise.
@@ -865,11 +876,11 @@ public class Director extends Attribute implements Executable {
         localClock.start();
 
         _resourceScheduling = false;
-        _resourceSchedulers = new ArrayList<ResourceScheduler>();
-        _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
+        _resourceSchedulers = new ArrayList<ActorExecutionAspect>();
+        _schedulerForActor = new HashMap<Actor, ActorExecutionAspect>();
         for (Object entity : getContainer().attributeList(
-                ResourceScheduler.class)) {
-            ResourceScheduler scheduler = (ResourceScheduler) entity;
+                ActorExecutionAspect.class)) {
+            ActorExecutionAspect scheduler = (ActorExecutionAspect) entity;
             _resourceSchedulers.add(scheduler);
             ((Actor)scheduler).initialize();
         }
@@ -930,7 +941,7 @@ public class Director extends Attribute implements Executable {
     
     /** Resume the execution of an actor that was previously blocked because
      *  it didn't have all the resources it needed for execution. This method
-     *  is called by {@link ResourceScheduler} actors.
+     *  is called by {@link ActorExecutionAspect} actors.
      *  
      *  In this base class, the implementation is empty. Derived directors
      *  should override this method to handle resuming of actor execution.
@@ -1780,6 +1791,30 @@ public class Director extends Attribute implements Executable {
         return true;
     }
 
+    /** Find the ResourceScheduler for the actor. Only one ResourceScheduler
+     * 
+     *  @param actor The actor to be scheduled.
+     *  @return the resource scheduler.
+     * @throws IllegalActionException 
+     */
+    protected ActorExecutionAspect _getResourceScheduler(Actor actor) throws IllegalActionException {
+        if (_schedulerForActor == null) {
+            _schedulerForActor = new HashMap<Actor, ActorExecutionAspect>();
+        }
+        ActorExecutionAspect result = _schedulerForActor.get(actor);
+        if (result == null) {
+            for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
+                    .attributeList(ResourceAttributes.class)) {
+                if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
+                    result = (ActorExecutionAspect) resourceAttributes.getDecorator();
+                    _schedulerForActor.put(actor, result);  
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
     /** Transfer at most one data token from the given input port of
      *  the container to the ports it is connected to on the inside.
      *  This method delegates the operation to the IOPort, so that the
@@ -1895,7 +1930,7 @@ public class Director extends Attribute implements Executable {
      */
     protected boolean _schedule(Actor actor, Time timestamp)
             throws IllegalActionException {
-        ResourceScheduler scheduler = _getResourceScheduler(actor);
+        ActorExecutionAspect scheduler = _getResourceScheduler(actor);
         Time time = null;
         Boolean finished = true;
         if (timestamp == null) {
@@ -1907,7 +1942,7 @@ public class Director extends Attribute implements Executable {
             time = scheduler.schedule(actor, environmentTime, 
                     getDeadline(actor, timestamp));
             if (_nextScheduleTime == null) {
-                _nextScheduleTime = new HashMap<ResourceScheduler, Time>();
+                _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
             }
             _nextScheduleTime.put(scheduler, time);
             finished = _actorFinished(actor);
@@ -1925,17 +1960,6 @@ public class Director extends Attribute implements Executable {
         return time == null || finished;
     }
     
-    /** Compute the deadline for an actor firing. In this base class, the deadline
-     *  is set to the maximum value.
-     * @param actor The actor.
-     * @param timestamp The timestamp of the event that triggered the firing.
-     * @return The deadline.
-     * @throws IllegalActionException Thrown in subclasses.
-     */
-    public Time getDeadline(Actor actor, Time timestamp) throws IllegalActionException {
-        return Time.POSITIVE_INFINITY;
-    }
-
     /** Set of actors that have returned false from  postfire(),
      *  indicating that they do not wish to be iterated again.
      */
@@ -1960,13 +1984,13 @@ public class Director extends Attribute implements Executable {
 
     /** Resource schedulers in the container of this director.
      */
-    protected List<ResourceScheduler> _resourceSchedulers;
+    protected List<ActorExecutionAspect> _resourceSchedulers;
     
     /** Next time the scheduler wants to be executed. */
-    protected HashMap<ResourceScheduler, Time> _nextScheduleTime;
+    protected HashMap<ActorExecutionAspect, Time> _nextScheduleTime;
 
     /** Contains a map of actors and the ResourceScheduler that is specified for the actor. */
-    protected HashMap<Actor, ResourceScheduler> _schedulerForActor;
+    protected HashMap<Actor, ActorExecutionAspect> _schedulerForActor;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
@@ -1995,30 +2019,6 @@ public class Director extends Attribute implements Executable {
                 ((Actor) actor).createReceivers();
             }
         }
-    }
-
-    /** Find the ResourceScheduler for the actor. Only one ResourceScheduler
-     * 
-     *  @param actor The actor to be scheduled.
-     *  @return the resource scheduler.
-     * @throws IllegalActionException 
-     */
-    protected ResourceScheduler _getResourceScheduler(Actor actor) throws IllegalActionException {
-        if (_schedulerForActor == null) {
-            _schedulerForActor = new HashMap<Actor, ResourceScheduler>();
-        }
-        ResourceScheduler result = _schedulerForActor.get(actor);
-        if (result == null) {
-            for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
-                    .attributeList(ResourceAttributes.class)) {
-                if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
-                    result = (ResourceScheduler) resourceAttributes.getDecorator();
-                    _schedulerForActor.put(actor, result);  
-                    break;
-                }
-            }
-        }
-        return result;
     }
 
     /** Initialize parameters. This is called by the constructor.

@@ -267,7 +267,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <property name="FPPCore" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 70.0]">
                 </property>
             </property>
@@ -332,7 +332,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
-                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FPPCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -580,7 +580,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
             </property>
-            <property name="FPPCore" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <property name="FPPCore" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 70.0]">
                 </property>
             </property>
@@ -647,7 +647,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
-                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -746,7 +746,7 @@
                 </property>
                 <property name="clearEarlierEvents" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -774,7 +774,7 @@
                     </property>
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -796,7 +796,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 190.0}">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -820,7 +820,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 230.0}">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -844,7 +844,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 270.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -868,7 +868,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 310.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -892,7 +892,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 350.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -908,7 +908,7 @@
                 <entity name="Counter" class="ptolemy.actor.lib.Counter">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 240.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -942,7 +942,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 330.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -969,7 +969,7 @@
                     </property>
                     <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -985,7 +985,7 @@
                 <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 330.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1009,7 +1009,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 475.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1035,7 +1035,7 @@
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 475.0]">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1060,7 +1060,7 @@
                     </property>
                     <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1078,7 +1078,7 @@
                     </property>
                     <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.resourceScheduler.PriorityResourceAttributes">
+                    <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform3.PtidesPlatformContents.FPPCore">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">

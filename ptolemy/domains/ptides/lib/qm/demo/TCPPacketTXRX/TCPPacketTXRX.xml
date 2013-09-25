@@ -40,10 +40,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-345.0, -135.0]">
         </property>
     </property>
-    <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.qm.QuantityManagerMonitor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.0, -30.0]">
-        </property>
-    </entity>
     <entity name="LocalClk2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-377.5, 240.0]">
         </property>
@@ -107,7 +103,7 @@
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
+        <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesDirector">
             <property name="assumedPlatformTimeSynchronizationErrorBound" class="ptolemy.actor.parameters.SharedParameter" value="5.0">
             </property>
             <property name="forceActorsToProcessEventsInTimestampOrder" class="ptolemy.data.expr.Parameter" value="false">
@@ -268,7 +264,7 @@
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
+        <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesDirector">
             <property name="assumedPlatformTimeSynchronizationErrorBound" class="ptolemy.actor.parameters.SharedParameter" value="5.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 60}">
@@ -465,7 +461,7 @@
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
+        <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesDirector">
             <property name="assumedPlatformTimeSynchronizationErrorBound" class="ptolemy.actor.parameters.SharedParameter" value="5.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 60}">

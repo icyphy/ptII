@@ -262,7 +262,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{221.5, 111.0}">
             </property>
-            <entity name="FPScheduler" class="ptolemy.actor.lib.resourceScheduler.FixedPriorityScheduler">
+            <entity name="FPScheduler" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 65}">
                 </property>
             </entity>

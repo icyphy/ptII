@@ -36,7 +36,7 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.qm.CompositeQuantityManager;
+import ptolemy.actor.lib.aspect.CompositeCommunicationAspect;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.BooleanToken;

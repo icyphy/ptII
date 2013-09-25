@@ -29,11 +29,11 @@ package ptolemy.vergil.kernel;
 
 import java.awt.event.ActionEvent;
 
-import ptolemy.actor.ResourceScheduler;
+import ptolemy.actor.ActorExecutionAspect;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.ResourceSchedulePlotterEditorFactory;
+import ptolemy.actor.gui.ExecutionAspectPlotterEditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.kernel.util.KernelException;
@@ -116,12 +116,12 @@ public class ListenToAction extends FigureAction {
             debugTableau.setDebuggable(object);
             
             // If the actor is a ResourceScheduler, open Plot as well.
-            if (object instanceof ResourceScheduler) {
+            if (object instanceof ActorExecutionAspect) {
                 //Effigy plotEffigy = new 
-                ResourceSchedulePlotterEditorFactory factory = new ResourceSchedulePlotterEditorFactory(object,
+                ExecutionAspectPlotterEditorFactory factory = new ExecutionAspectPlotterEditorFactory(object,
                             object.uniqueName("_editorFactory")); 
                 
-                ((ResourceScheduler)object).addScheduleListener(factory);
+                ((ActorExecutionAspect)object).addScheduleListener(factory);
                 factory.createEditor(object, this.getFrame());
             }
         } catch (KernelException ex) {

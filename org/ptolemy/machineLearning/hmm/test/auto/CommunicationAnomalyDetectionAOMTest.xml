@@ -103,7 +103,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -116,7 +116,7 @@
             </port>
             <port name="period" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -129,7 +129,7 @@
             </port>
             <port name="start" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -142,7 +142,7 @@
             </port>
             <port name="stop" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -166,7 +166,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -181,7 +181,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -196,7 +196,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -215,7 +215,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -240,7 +240,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CommunicationChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -308,7 +308,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, 200.0}">
             </property>
-            <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -324,7 +324,7 @@
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="">
             </property>
-            <property name="DecoratorAttributesFor_AnomalyDetection" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+            <property name="DecoratorAttributesFor_AnomalyDetection" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -346,7 +346,7 @@
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 430.0}">
                 </property>
-                <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -356,7 +356,7 @@
                     <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -385,7 +385,7 @@
             <link port="port" relation="relation"/>
             <link port="Const.trigger" relation="relation"/>
         </entity>
-        <entity name="AnomalyDetection" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+        <entity name="AnomalyDetection" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
             <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,0.6,1.0}">
             </property>
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -408,14 +408,14 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-79.91684229651173, -61.86041969476747}">
             </property>
-            <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
+            <entity name="in" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-865.0, -120.0}">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -425,7 +425,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_AnomalyDetection" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_AnomalyDetection" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -437,7 +437,7 @@
                     </property>
                 </port>
             </entity>
-            <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
+            <entity name="out" class="ptolemy.actor.lib.aspect.CommunicationResponsePort">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-790.0, -55.0}">
                 </property>
             </entity>
@@ -601,7 +601,7 @@
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -611,7 +611,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -628,7 +628,7 @@
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -638,7 +638,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -655,7 +655,7 @@
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -665,7 +665,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -837,7 +837,7 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -847,7 +847,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -860,7 +860,7 @@
                 </port>
                 <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -870,7 +870,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -888,7 +888,7 @@
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -898,7 +898,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -911,7 +911,7 @@
                 </port>
                 <port name="control" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -921,7 +921,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -939,7 +939,7 @@
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -949,7 +949,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -962,7 +962,7 @@
                 </port>
                 <port name="control" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -972,7 +972,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -993,7 +993,7 @@
                     <property name="input"/>
                     <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1003,7 +1003,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1016,7 +1016,7 @@
                 </port>
                 <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1026,7 +1026,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1048,7 +1048,7 @@
                     <property name="multiport"/>
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager2" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1058,7 +1058,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1075,7 +1075,7 @@
                 </property>
                 <port name="increment" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1085,7 +1085,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1098,7 +1098,7 @@
                 </port>
                 <port name="decrement" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1108,7 +1108,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1121,7 +1121,7 @@
                 </port>
                 <port name="reset" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1131,7 +1131,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1158,7 +1158,7 @@
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_CompositeQuantityManager" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor/Actuator.AnomalyDetection">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1168,7 +1168,7 @@
                         <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                     </property>
-                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1211,7 +1211,7 @@
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                    <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                         <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                         </property>
                         <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1376,7 +1376,7 @@
         <link port="data" relation="relation"/>
         <link port="DataAnalysis.port" relation="relation"/>
     </entity>
-    <entity name="CommunicationFaultModel" class="ptolemy.actor.lib.qm.CompositeQuantityManager">
+    <entity name="CommunicationFaultModel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1482,13 +1482,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 80.0}">
             </property>
         </property>
-        <entity name="in" class="ptolemy.actor.lib.qm.CQMInputPort">
+        <entity name="in" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 595.0}">
             </property>
         </entity>
-        <entity name="out" class="ptolemy.actor.lib.qm.CQMOutputPort">
+        <entity name="out" class="ptolemy.actor.lib.aspect.CommunicationResponsePort">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{775.0, 505.0}">
             </property>
             <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
@@ -1538,7 +1538,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.qm.CompositeQuantityManager$CQMAttributes">
+                <property name="DecoratorAttributesFor_ServiceChannel" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CommunicationFaultModel">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1550,7 +1550,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="UpdateCQMToken" class="ptolemy.actor.lib.RecordUpdater">
+        <entity name="UpdateCompositeCommunicationAspectToken" class="ptolemy.actor.lib.RecordUpdater">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 485.0}">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1603,7 +1603,7 @@
             </property>
             <vertex name="vertex1" value="{50.0, 595.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=115.0,y=595.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={} },{ head={id=&quot;UpdateCQMToken.input&quot;,x=540.0,y=485.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={500.0,495.0,500.0,415.0,150.0,415.0,150.0,455.0,50.0,455.0} },{ head={id=&quot;in.output&quot;,x=10.0,y=595.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={} },{ head={id=&quot;Expression.input&quot;,x=210.0,y=455.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={50.0,455.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=115.0,y=595.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={} },{ head={id=&quot;UpdateCompositeCommunicationAspectToken.input&quot;,x=540.0,y=485.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={500.0,495.0,500.0,415.0,150.0,415.0,150.0,455.0,50.0,455.0} },{ head={id=&quot;in.output&quot;,x=10.0,y=595.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={} },{ head={id=&quot;Expression.input&quot;,x=210.0,y=455.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=595.0}, points={50.0,455.0} } }">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1611,11 +1611,11 @@
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;UpdateLabels.output&quot;,x=405.0,y=495.0}, tail={id=&quot;UpdateCQMToken.token&quot;,x=540.0,y=485.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;UpdateLabels.output&quot;,x=405.0,y=495.0}, tail={id=&quot;UpdateCompositeCommunicationAspectToken.token&quot;,x=540.0,y=485.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.input&quot;,x=700.0,y=505.0}, tail={id=&quot;UpdateCQMToken.output&quot;,x=540.0,y=485.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.input&quot;,x=700.0,y=505.0}, tail={id=&quot;UpdateCompositeCommunicationAspectToken.output&quot;,x=540.0,y=485.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -1648,9 +1648,9 @@
         <link port="UpdateLabels.label" relation="relation2"/>
         <link port="Expression.output" relation="relation6"/>
         <link port="Expression.input" relation="relation3"/>
-        <link port="UpdateCQMToken.output" relation="relation"/>
-        <link port="UpdateCQMToken.input" relation="relation3"/>
-        <link port="UpdateCQMToken.token" relation="relation4"/>
+        <link port="UpdateCompositeCommunicationAspectToken.output" relation="relation"/>
+        <link port="UpdateCompositeCommunicationAspectToken.input" relation="relation3"/>
+        <link port="UpdateCompositeCommunicationAspectToken.token" relation="relation4"/>
         <link port="Observation Test.enable" relation="relation12"/>
         <link port="Observation Test.output" relation="relation7"/>
         <link port="State Test.enable" relation="relation12"/>

@@ -382,7 +382,7 @@
                     </property>
                 </port>
             </entity>
-            <entity name="EDFScheduler" class="ptolemy.actor.lib.resourceScheduler.EDFScheduler">
+            <entity name="EDFScheduler" class="ptolemy.actor.lib.aspect.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
                 </property>
             </entity>

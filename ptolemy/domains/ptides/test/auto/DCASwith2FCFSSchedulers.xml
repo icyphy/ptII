@@ -226,11 +226,11 @@
             </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
-            <entity name="FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
+            <entity name="FCFSScheduler" class="ptolemy.actor.lib.aspect.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 75.0]">
                 </property>
             </entity>
-            <entity name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.DynamicCoreAssignmentScheduler">
+            <entity name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.DynamicCoreAssignmentScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 380.0]">
                 </property>
                 <property name="core1" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
@@ -239,7 +239,7 @@
                 </property>
             </entity>
             <entity
-                name="FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.FCFSScheduler">
+                name="FCFSScheduler2" class="ptolemy.actor.lib.aspect.FCFSScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 75.0}">
                 </property>
             </entity>
@@ -258,7 +258,7 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="4">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -266,7 +266,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -274,7 +274,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -305,7 +305,7 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="5">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -313,7 +313,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -321,7 +321,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -353,7 +353,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -361,7 +361,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -369,7 +369,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -405,7 +405,7 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -413,7 +413,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -421,7 +421,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -452,7 +452,7 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -460,7 +460,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -468,7 +468,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -500,7 +500,7 @@
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -508,7 +508,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -516,7 +516,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -547,7 +547,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -555,7 +555,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -563,7 +563,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -590,7 +590,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -598,7 +598,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -606,7 +606,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -634,7 +634,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -642,7 +642,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -650,7 +650,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -678,7 +678,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -686,7 +686,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -694,7 +694,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -722,7 +722,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -730,7 +730,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -738,7 +738,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -764,7 +764,7 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.DynamicCoreAssignmentScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -772,7 +772,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -780,7 +780,7 @@
                     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes">
+                <property name="DecoratorAttributesFor_FCFSScheduler2" class="ptolemy.actor.lib.aspect.ExecutionTimeResourceAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.FCFSScheduler">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">

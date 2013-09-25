@@ -118,8 +118,8 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     ////                         public methods                    ////
 
     /** If a publish and subscribe channel is set, then set up the connections.
-     *  If a quantity manager is added, removed or modified update the list of
-     *  quantity managers.
+     *  If an aspect is added, removed or modified update the list of
+     *  aspects.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Thrown if the new color attribute cannot
      *      be created.

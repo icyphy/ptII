@@ -86,6 +86,7 @@ JSRCS = \
 	BrowserTableau.java \
 	CheckModelSize.java \
 	ColorAttribute.java \
+	CommunicationAspectMonitor.java \
 	CompositeActorApplication.java \
 	CompositeActorSimpleApplication.java \
 	Console.java \
@@ -146,8 +147,7 @@ JSRCS = \
 	PtolemyQuery.java \
 	PtolemyTableauFactory.java \
 	PtolemyFrame.java \
-	PtolemyPreferences.java \
-	QuantityManagerMonitor.java \
+	PtolemyPreferences.java \ 
 	QueryUtilities.java \
 	RenameConfigurer.java \
 	RenameDialog.java \

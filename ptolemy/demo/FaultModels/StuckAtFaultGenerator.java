@@ -33,12 +33,12 @@ package ptolemy.demo.FaultModels;
 import java.util.HashMap;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.QuantityManager;
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.qm.AtomicQuantityManager;
-import ptolemy.actor.QuantityManagerListener.EventType;
+import ptolemy.actor.lib.aspect.AtomicCommunicationAspect; 
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** This actor is an {@link QuantityManager} that, when its
+/** This actor is an {@link CommunicationAspect} that, when its
  *  ...
  *  @author Ilge Akkaya, Patricia Derler, Edward A. Lee
  *  @version $Id: StuckAtFaultGenerator.java 67150 2013-08-16 19:32:50Z ilgea $
@@ -61,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class StuckAtFaultGenerator extends AtomicQuantityManager {
+public class StuckAtFaultGenerator extends AtomicCommunicationAspect {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a
@@ -111,9 +111,9 @@ public class StuckAtFaultGenerator extends AtomicQuantityManager {
     }
 
     /** Create a receiver to mediate a communication via the specified receiver. This
-     *  receiver is linked to a specific port of the quantity manager.
+     *  receiver is linked to a specific port of the communication aspect.
      *  @param receiver Receiver whose communication is to be mediated.
-     *  @param port Port of the quantity manager.
+     *  @param port Port of the communication aspect.
      *  @return A new receiver.
      *  @exception IllegalActionException If the receiver cannot be created.
      */
@@ -357,7 +357,7 @@ public class StuckAtFaultGenerator extends AtomicQuantityManager {
             } else {
                 _tokens.put(new Object[] { receiver, token });
                 _tokenCount++;
-                sendQMTokenEvent((Actor) source.getContainer().getContainer(),
+                sendCommunicationEvent((Actor) source.getContainer().getContainer(),
                         0, _tokenCount, EventType.RECEIVED);
                 if (_tokens.size() == 1) { // no refiring has been scheduled
                     _scheduleRefire();
@@ -378,7 +378,7 @@ public class StuckAtFaultGenerator extends AtomicQuantityManager {
     }
 
     /**
-     * Reset the quantity manager and clear the tokens.
+     * Reset the communication aspect and clear the tokens.
      */
     public void reset() {
         //_tokens.clear();
@@ -432,7 +432,7 @@ public class StuckAtFaultGenerator extends AtomicQuantityManager {
     /** Tokens stored for processing. */
     private FIFOQueue _tokens;
 
-    /** Hold the receivers tied to this quantity manager in an array, to avoid duplicates */
+    /** Hold the receivers tied to this communication aspect in an array, to avoid duplicates */
     private HashMap<Receiver, Receiver> _wrappedReceivers;
 
 }

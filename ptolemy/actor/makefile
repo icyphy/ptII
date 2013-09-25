@@ -73,10 +73,14 @@ JSRCS = \
 	AbstractInitializableAttribute.java \
 	AbstractReceiver.java \
 	Actor.java \
+	ActorExecutionAspect.java \
 	ActorFiringListener.java \
 	ApplicationConfigurer.java \
 	AtomicActor.java \
 	CompositeActor.java \
+	CommunicationAspect.java \
+	CommunicationAspectListener.java \
+	CommunicationAspectAttributes.java \
 	ConstantPublisherPort.java \
 	DesignPatternGetMoMLAction.java \
 	Director.java \
@@ -103,15 +107,11 @@ JSRCS = \
 	NoTokenException.java \
 	PublisherPort.java \
 	PubSubPort.java \
-	QMAttributes.java \
-	QuantityManager.java \
-	QuantityManagerListener.java \
 	QuasiTransparentDirector.java \
 	QueueReceiver.java \
 	Receiver.java \
 	RelationWidthInference.java \
 	ResourceAttributes.java \
-	ResourceScheduler.java \
 	ScheduleListener.java \
 	StateReceiver.java \
 	StreamExecutionListener.java \

@@ -41,7 +41,7 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.IOPort; 
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
-import ptolemy.actor.QuantityManager;
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.PtolemyPreferences; 
@@ -438,20 +438,20 @@ public class IOPortController extends AttributeController {
                 fill = Color.black;
             }
 
-            // Handle quantity managers.
+            // Handle communication aspects.
             try {
                 if (port instanceof IOPort) {
-                    List<QuantityManager> qmList = ((IOPort) port).getQuantityManagers();
-                    if (qmList != null && qmList.size() > 0) {
+                    List<CommunicationAspect> communicationAspects = ((IOPort) port).getQuantityManagers();
+                    if (communicationAspects != null && communicationAspects.size() > 0) {
                         Object object = null;
                         if (((IOPort) port).isOutput()) {
-                            object = qmList.get(0);
+                            object = communicationAspects.get(0);
                         } else {
-                            object = qmList.get(qmList.size() - 1);
+                            object = communicationAspects.get(communicationAspects.size() - 1);
                         }
                         ColorAttribute color = null;
                         if (object != null) {
-                            color = (ColorAttribute)((NamedObj) object).getAttribute(QuantityManager.decoratorHighlightColorName);
+                            color = (ColorAttribute)((NamedObj) object).getAttribute(CommunicationAspect.decoratorHighlightColorName);
                         }
                         if (color != null) {
                             fill = color.asColor();
@@ -465,17 +465,17 @@ public class IOPortController extends AttributeController {
                             info = new StringAttribute(port, "_showInfo");
                         }
 
-                        StringBuffer qmStringBuffer = new StringBuffer();
-                        for (int j = 0; j < qmList.size(); j++) {
-                            NamedObj namedObj = (NamedObj) qmList.get(j);
+                        StringBuffer aspectsStringBuffer = new StringBuffer();
+                        for (int j = 0; j < communicationAspects.size(); j++) {
+                            NamedObj namedObj = (NamedObj) communicationAspects.get(j);
                             if (namedObj != null) {
-                                if (qmStringBuffer.length() > 0) {
-                                    qmStringBuffer.append(", ");
+                                if (aspectsStringBuffer.length() > 0) {
+                                    aspectsStringBuffer.append(", ");
                                 }
-                                qmStringBuffer.append(namedObj.getName());
+                                aspectsStringBuffer.append(namedObj.getName());
                             }
                         }
-                        info.setExpression("QM = {" + qmStringBuffer.toString() + "}");
+                        info.setExpression("Aspects: " + aspectsStringBuffer.toString());
                     } else {
                         // No QuantityManager in use anymore, clean up _showInfo
                         // string.
@@ -488,11 +488,11 @@ public class IOPortController extends AttributeController {
                         if (info != null && 
                                 info instanceof StringAttribute) {
                             String infoString = ((StringAttribute)info).getValueAsString();
-                            if (infoString.contains("QM = {")) {
-                                int start = infoString.indexOf("QM = {");
-                                int end = infoString.indexOf("}", start);
-                                String qmInfo = infoString.substring(start, end + 1);
-                                infoString = infoString.replace(qmInfo, "");
+                            if (infoString.contains("Aspects:")) {
+                                int start = infoString.indexOf("Aspects: ");
+                                int end = infoString.indexOf("", start);
+                                String aspectInfo = infoString.substring(start, end + 1);
+                                infoString = infoString.replace(aspectInfo, "");
                                 infoString = infoString.trim();
                                 ((StringAttribute)info).setExpression(infoString);
                             }

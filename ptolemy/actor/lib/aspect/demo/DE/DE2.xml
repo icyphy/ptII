@@ -1,0 +1,2856 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DE2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 15.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 22, 930, 713}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 603]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ramp3 and Ramp4&#10;are scheduled on&#10;a 2 processor&#10;system&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 340.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Scale2 is&#10;scheduled on &#10;an FP Core">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ramp and Ramp2&#10;are scheduled on&#10;a 1 processor&#10;system&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 200.0]">
+        </property>
+    </property>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={731, 58, 500, 230}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 35.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="1.3"/>
+<yRange min="0.0" max="3.0"/>
+<default connected="no" marks="various" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 0.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 0.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 110.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.4">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 100.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+    </entity>
+    <entity name="1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 235.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{412.0, 284.181640625}">
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <entity name="in1" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 80.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="Server" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.7">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <port name="executionTime" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="in2" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 195.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 140.0]">
+            </property>
+            <property name="DecoratorAttributesFor_oneProcessor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="ExecutionResponsePort" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 140.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[210.0, 140.0]">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in1.output" relation="relation2"/>
+        <link port="Server.input" relation="relation3"/>
+        <link port="Server.output" relation="relation4"/>
+        <link port="Server.serviceTime" relation="relation"/>
+        <link port="RecordDisassembler.input" relation="relation3"/>
+        <link port="RecordDisassembler.executionTime" relation="relation"/>
+        <link port="in2.output" relation="relation5"/>
+        <link port="Merge.input" relation="relation2"/>
+        <link port="Merge.input" relation="relation5"/>
+        <link port="Merge.output" relation="relation3"/>
+        <link port="ExecutionResponsePort.input" relation="relation4"/>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 215.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.6">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 275.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.7">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 380.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{412.0, 284.181640625}">
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <entity name="in1" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 140.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="Server" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.6">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <port name="executionTime" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="in2" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 335.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="Server2" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.7">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 340.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 395.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <port name="executionTime" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="ExecutionResponsePort" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 140.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="ExecutionResponsePort2" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 340.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[210.0, 140.0]">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[210.0, 340.0]">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in1.output" relation="relation3"/>
+        <link port="Server.input" relation="relation3"/>
+        <link port="Server.output" relation="relation4"/>
+        <link port="Server.serviceTime" relation="relation"/>
+        <link port="RecordDisassembler.input" relation="relation3"/>
+        <link port="RecordDisassembler.executionTime" relation="relation"/>
+        <link port="in2.output" relation="relation2"/>
+        <link port="Server2.input" relation="relation2"/>
+        <link port="Server2.output" relation="relation6"/>
+        <link port="Server2.serviceTime" relation="relation5"/>
+        <link port="RecordDisassembler2.input" relation="relation2"/>
+        <link port="RecordDisassembler2.executionTime" relation="relation5"/>
+        <link port="ExecutionResponsePort.input" relation="relation4"/>
+        <link port="ExecutionResponsePort2.input" relation="relation6"/>
+    </entity>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 365.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.6">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.6">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 425.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.7">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.7">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 520.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 6.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 6.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="56.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="36.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
+                </property>
+            </property>
+            <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, 4.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, 17.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="rectangle5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{24.0, 12.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{13.0, 11.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{7.0, 4.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{7.0, 17.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{13.0, 4.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="13.0">
+                </property>
+            </property>
+            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 11.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="rectangle6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-16.0, 4.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-14.0, 4.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="rectangle7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{36.0, 11.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{29.0, -3.0}">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="13.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="13.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+                </property>
+            </property>
+            <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{26.0, -5.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+            </property>
+            <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{29.0, -3.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-2.0">
+                </property>
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesMirrorPort">
+            <property name="output"/>
+        </port>
+        <port name="port2" class="ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesMirrorPort">
+            <property name="output"/>
+        </port>
+        <port name="port3" class="ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesMirrorPort">
+            <property name="input"/>
+        </port>
+        <entity name="PtidesPlatformContents" class="ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesPlatformContents">
+            <property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 55.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 389, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+            </property>
+            <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ramp and Ramp2&#10;are scheduled on&#10;a 1 processor&#10;system&#10;">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 20.0]">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <port name="port" class="ptolemy.domains.ptides.lib.PtidesPort">
+                <property name="output"/>
+                <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="sourcePlatformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 220.0]">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.domains.ptides.lib.PtidesPort">
+                <property name="output"/>
+                <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="sourcePlatformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 160.0]">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </port>
+            <port name="port3" class="ptolemy.domains.ptides.lib.PtidesPort">
+                <property name="input"/>
+                <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="sourcePlatformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
+                </property>
+            </port>
+            <entity name="1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 165.0]">
+                </property>
+                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{412.0, 284.181640625}">
+                </property>
+                <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <entity name="in1" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 80.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="Server" class="ptolemy.domains.de.lib.Server">
+                    <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.7">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <port name="executionTime" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="out" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
+                    <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 140.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="in2" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 195.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 140.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_oneProcessor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="[210.0, 140.0]">
+                    </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="in1.output" relation="relation2"/>
+                <link port="Server.input" relation="relation3"/>
+                <link port="Server.output" relation="relation4"/>
+                <link port="Server.serviceTime" relation="relation"/>
+                <link port="RecordDisassembler.input" relation="relation3"/>
+                <link port="RecordDisassembler.executionTime" relation="relation"/>
+                <link port="out.input" relation="relation4"/>
+                <link port="in2.output" relation="relation5"/>
+                <link port="Merge.input" relation="relation2"/>
+                <link port="Merge.input" relation="relation5"/>
+                <link port="Merge.output" relation="relation3"/>
+            </entity>
+            <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+                <property name="init" class="ptolemy.actor.parameters.PortParameter" value="3">
+                </property>
+                <doc>Create a sequence of tokens with increasing value</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 160.0]">
+                </property>
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.6">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.6">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.6">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.6">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in1">
+                    </property>
+                </property>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
+                <property name="init" class="ptolemy.actor.parameters.PortParameter" value="3">
+                </property>
+                <doc>Create a sequence of tokens with increasing value</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 220.0}">
+                </property>
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.7">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.7">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.7">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.7">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                    </property>
+                </property>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </port>
+            </entity>
+            <entity name="2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 230.0]">
+                </property>
+                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{412.0, 284.181640625}">
+                </property>
+                <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <entity name="in1" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 140.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="Server" class="ptolemy.domains.de.lib.Server">
+                    <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.6">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <port name="executionTime" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="out" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
+                    <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 140.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="in2" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 335.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="Server2" class="ptolemy.domains.de.lib.Server">
+                    <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0.7">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 340.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 395.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <port name="executionTime" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="out2" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
+                    <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 340.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                        </property>
+                        <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                        </property>
+                    </port>
+                </entity>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="[210.0, 140.0]">
+                    </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="[210.0, 340.0]">
+                    </vertex>
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                    </property>
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="in1.output" relation="relation3"/>
+                <link port="Server.input" relation="relation3"/>
+                <link port="Server.output" relation="relation4"/>
+                <link port="Server.serviceTime" relation="relation"/>
+                <link port="RecordDisassembler.input" relation="relation3"/>
+                <link port="RecordDisassembler.executionTime" relation="relation"/>
+                <link port="out.input" relation="relation4"/>
+                <link port="in2.output" relation="relation2"/>
+                <link port="Server2.input" relation="relation2"/>
+                <link port="Server2.output" relation="relation6"/>
+                <link port="Server2.serviceTime" relation="relation5"/>
+                <link port="RecordDisassembler2.input" relation="relation2"/>
+                <link port="RecordDisassembler2.executionTime" relation="relation5"/>
+                <link port="out2.input" relation="relation6"/>
+            </entity>
+            <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 160.0]">
+                </property>
+                <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_1Processor2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </port>
+            </entity>
+            <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 220.0]">
+                </property>
+                <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_2Processors2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_1Processor2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.1Processor">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                    </property>
+                    <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </port>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="[145.0, 150.0]">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation5"/>
+            <link port="port2" relation="relation"/>
+            <link port="port3" relation="relation2"/>
+            <link port="Ramp3.output" relation="relation4"/>
+            <link port="Ramp3.trigger" relation="relation2"/>
+            <link port="Ramp4.output" relation="relation3"/>
+            <link port="Ramp4.trigger" relation="relation2"/>
+            <link port="TimeDelay.input" relation="relation4"/>
+            <link port="TimeDelay.output" relation="relation"/>
+            <link port="TimeDelay2.input" relation="relation3"/>
+            <link port="TimeDelay2.output" relation="relation5"/>
+        </entity>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[150.0, 0.0]">
+        </vertex>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="TimedPlotter.input" relation="relation7"/>
+    <link port="TimedPlotter.input" relation="relation8"/>
+    <link port="TimedPlotter.input" relation="relation9"/>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="Scale.input" relation="relation4"/>
+    <link port="Scale.output" relation="relation"/>
+    <link port="Scale2.input" relation="relation4"/>
+    <link port="Scale2.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation6"/>
+    <link port="Ramp.trigger" relation="relation4"/>
+    <link port="Ramp2.output" relation="relation3"/>
+    <link port="Ramp2.trigger" relation="relation4"/>
+    <link port="Ramp3.output" relation="relation5"/>
+    <link port="Ramp3.trigger" relation="relation4"/>
+    <link port="Ramp4.output" relation="relation7"/>
+    <link port="Ramp4.trigger" relation="relation4"/>
+    <link port="PtidesPlatform.port" relation="relation8"/>
+    <link port="PtidesPlatform.port2" relation="relation9"/>
+    <link port="PtidesPlatform.port3" relation="relation4"/>
+</entity>
