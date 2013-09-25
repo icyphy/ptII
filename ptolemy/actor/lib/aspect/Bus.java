@@ -41,7 +41,7 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ResourceAttributes; 
+import ptolemy.actor.ExecutionAttributes; 
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;

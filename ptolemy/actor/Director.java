@@ -248,8 +248,8 @@ public class Director extends Attribute implements Executable {
         newObject._startTime = null;
         newObject._stopTime = null;
         newObject._zeroTime = new Time(newObject); 
-        newObject._resourceSchedulers = null;
-        newObject._schedulerForActor = null;
+        newObject._executionAspects = null;
+        newObject._aspectForActor = null;
         newObject._nextScheduleTime = null;
         return newObject;
     }
@@ -876,13 +876,13 @@ public class Director extends Attribute implements Executable {
         localClock.start();
 
         _resourceScheduling = false;
-        _resourceSchedulers = new ArrayList<ActorExecutionAspect>();
-        _schedulerForActor = new HashMap<Actor, ActorExecutionAspect>();
+        _executionAspects = new ArrayList<ActorExecutionAspect>();
+        _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
         for (Object entity : getContainer().attributeList(
                 ActorExecutionAspect.class)) {
-            ActorExecutionAspect scheduler = (ActorExecutionAspect) entity;
-            _resourceSchedulers.add(scheduler);
-            ((Actor)scheduler).initialize();
+            ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
+            _executionAspects.add(aspect);
+            ((Actor)aspect).initialize();
         }
         if (_nextScheduleTime != null) {
             _nextScheduleTime.clear();
@@ -934,7 +934,7 @@ public class Director extends Attribute implements Executable {
         }
 
         actor.initialize();
-        if (_getResourceScheduler(actor) != null) {
+        if (_getExecutionAspect(actor) != null) {
             _resourceScheduling = true;
         }
     }
@@ -1683,8 +1683,8 @@ public class Director extends Attribute implements Executable {
      *  @return True if the actor finished execution.
      */
     protected boolean _actorFinished(Actor actor) {
-        return _schedulerForActor.get(actor) != null
-                && _schedulerForActor.get(actor).lastScheduledActorFinished();
+        return _aspectForActor.get(actor) != null
+                && _aspectForActor.get(actor).lastScheduledActorFinished();
     }
     
     /** Consult all attributes contained by the container of this director
@@ -1791,23 +1791,23 @@ public class Director extends Attribute implements Executable {
         return true;
     }
 
-    /** Find the ResourceScheduler for the actor. Only one ResourceScheduler
+    /** Find the ExecutionAspect for the actor. Only one ExecutionAspect
      * 
      *  @param actor The actor to be scheduled.
-     *  @return the resource scheduler.
+     *  @return The aspect.
      * @throws IllegalActionException 
      */
-    protected ActorExecutionAspect _getResourceScheduler(Actor actor) throws IllegalActionException {
-        if (_schedulerForActor == null) {
-            _schedulerForActor = new HashMap<Actor, ActorExecutionAspect>();
+    protected ActorExecutionAspect _getExecutionAspect(Actor actor) throws IllegalActionException {
+        if (_aspectForActor == null) {
+            _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
         }
-        ActorExecutionAspect result = _schedulerForActor.get(actor);
+        ActorExecutionAspect result = _aspectForActor.get(actor);
         if (result == null) {
-            for (ResourceAttributes resourceAttributes : ((NamedObj) actor)
-                    .attributeList(ResourceAttributes.class)) {
-                if (((BooleanToken)resourceAttributes.enable.getToken()).booleanValue()) {
-                    result = (ActorExecutionAspect) resourceAttributes.getDecorator();
-                    _schedulerForActor.put(actor, result);  
+            for (ExecutionAttributes executionAttributes : ((NamedObj) actor)
+                    .attributeList(ExecutionAttributes.class)) {
+                if (((BooleanToken)executionAttributes.enable.getToken()).booleanValue()) {
+                    result = (ActorExecutionAspect) executionAttributes.getDecorator();
+                    _aspectForActor.put(actor, result);  
                     break;
                 }
             }
@@ -1919,7 +1919,7 @@ public class Director extends Attribute implements Executable {
         return result;
     }
 
-    /** Schedule an actor for execution on a ResourceScheduler. If the actor can
+    /** Schedule an actor for execution on a ExecutionAspect. If the actor can
      *  execute this method returns true. If resources are not available this
      *  method returns false.
      *  @param actor The actor.
@@ -1930,24 +1930,24 @@ public class Director extends Attribute implements Executable {
      */
     protected boolean _schedule(Actor actor, Time timestamp)
             throws IllegalActionException {
-        ActorExecutionAspect scheduler = _getResourceScheduler(actor);
+        ActorExecutionAspect aspect = _getExecutionAspect(actor);
         Time time = null;
         Boolean finished = true;
         if (timestamp == null) {
             timestamp = getModelTime();
         }
-        if (scheduler != null) {
-            Time environmentTime = ((CompositeActor)  scheduler
+        if (aspect != null) {
+            Time environmentTime = ((CompositeActor)  aspect
                     .getContainer()).getDirector().getEnvironmentTime();
-            time = scheduler.schedule(actor, environmentTime, 
+            time = aspect.schedule(actor, environmentTime, 
                     getDeadline(actor, timestamp));
             if (_nextScheduleTime == null) {
                 _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
             }
-            _nextScheduleTime.put(scheduler, time);
+            _nextScheduleTime.put(aspect, time);
             finished = _actorFinished(actor);
             if (time != null && time.getDoubleValue() > 0.0) {
-                CompositeActor container = (CompositeActor)  scheduler
+                CompositeActor container = (CompositeActor)  aspect
                         .getContainer();
                 Time fireAtTime = environmentTime;
                 if (!time.equals(Time.POSITIVE_INFINITY)) {
@@ -1976,21 +1976,21 @@ public class Director extends Attribute implements Executable {
      */
     protected transient Set<Initializable> _initializables;
 
-    /** True if any of the directed actors specifies a ResourceScheduler
-     *  in the parameters and this ResourceScheduler exists on this or
+    /** True if any of the directed actors specifies a ExecutionAspect
+     *  in the parameters and this ExecutionAspect exists on this or
      *  a hierarchy level above (i.e. has not been deleted).
      */
     protected boolean _resourceScheduling;
 
-    /** Resource schedulers in the container of this director.
+    /** ExecutionAspects in the container of this director.
      */
-    protected List<ActorExecutionAspect> _resourceSchedulers;
+    protected List<ActorExecutionAspect> _executionAspects;
     
-    /** Next time the scheduler wants to be executed. */
+    /** Next time the aspect wants to be executed. */
     protected HashMap<ActorExecutionAspect, Time> _nextScheduleTime;
 
-    /** Contains a map of actors and the ResourceScheduler that is specified for the actor. */
-    protected HashMap<Actor, ActorExecutionAspect> _schedulerForActor;
+    /** Contains a map of actors and the ExecutionAspect that is specified for the actor. */
+    protected HashMap<Actor, ActorExecutionAspect> _aspectForActor;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;

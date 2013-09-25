@@ -254,8 +254,8 @@ public class IOPort extends ComponentPort {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute instanceof ResourceAttributes) {
-            Decorator decorator = ((ResourceAttributes) attribute)
+        if (attribute instanceof ExecutionAttributes) {
+            Decorator decorator = ((ExecutionAttributes) attribute)
                     .getDecorator();
             if (decorator != null && decorator instanceof CommunicationAspect) {
                 // Invalidate list of communication aspects.

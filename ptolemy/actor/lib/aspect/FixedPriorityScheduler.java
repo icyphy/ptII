@@ -68,7 +68,7 @@ with the following parameters:
 
 For usage and supported directors {@link ptolemy.actor.ActorExecutionAspect}.
 
-When using this ResourceScheduler in the Ptides domain, the platform
+When using this ExecutionAspect in the Ptides domain, the platform
 time in Ptides will be used to schedule execution times. When
  the Ptides director requests that an actor fire, if this resource is
 free, it will immediately schedule it. Otherwise, it will queue it to be
@@ -163,7 +163,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     /** Perform rescheduling actions when no new actor requests to be
      *  scheduled.
      * @param environmentTime The outside time.
-     * @return Relative time when this Scheduler has to be executed
+     * @return Relative time when this aspect has to be executed
      *    again to perform rescheduling actions.
      * @exception IllegalActionException Thrown in subclasses.   
      */
@@ -181,12 +181,12 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     }
     
     /** Schedule a new actor for execution and return the next time
-     *  this scheduler has to perform a reschedule.
+     *  this aspect has to perform a reschedule.
      *  @param actor The actor to be scheduled.
      *  @param currentPlatformTime The current platform time.
      *  @param deadline The event deadline - not used here.
      *  @param executionTime The execution time of the actor.
-     *  @return Relative time when this Scheduler has to be executed
+     *  @return Relative time when this aspect has to be executed
      *    again.
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.

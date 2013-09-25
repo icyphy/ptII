@@ -584,7 +584,7 @@ public class TransformationRule extends MultiCompositeActor implements
         public void initialize() throws IllegalActionException {
             // FIXME: Director.initialize() does quite a bit,
             // including calling methods on initializables,
-            // setting up resourceSchedulers, setting the localClock
+            // setting up executionAspects, setting the localClock
             // etc.  Are we sure we don't need that here?
             localClock.resetLocalTime(getModelStartTime());
             localClock.start();

@@ -44,7 +44,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspect; 
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ResourceAttributes;
+import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute; 
 import ptolemy.data.IntToken;

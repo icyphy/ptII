@@ -42,7 +42,7 @@ import ptolemy.actor.ExecutionAspectListener;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
 import ptolemy.actor.gui.ColorAttribute; 
-import ptolemy.actor.ResourceAttributes;
+import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Workspace;
  *  token with the actor and its execution time is 
  *  created on this requestPort whenever the director wants to schedule
  *  the actor. When this token is received by a ResourceMappingOutputport
- *  inside this composite resource scheduler, the director is informed 
+ *  inside this CompositeExecutionAspect, the director is informed 
  *  that the actor can now fire. 
  *
  * @author Patricia Derler
@@ -107,7 +107,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         _justMonitor = false;
         
         _lastTimeScheduled = new HashMap<Actor, Time>(); 
-        _schedulePlotListeners = new ArrayList<ExecutionAspectListener>();
+        _executionAspectListeners = new ArrayList<ExecutionAspectListener>();
     }
     
     /** This parameter indicates whether the tokens received via the 
@@ -122,13 +122,13 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     //                           public methods                      //
     
     /** Add schedule listener. If necessary, initialize list of actors
-     *  scheduled by this resource scheduler.
+     *  scheduled by this ExecutionAspect.
      *  @param listener. The listener to be added. 
      *  @throws IllegalActionException If an error occurs in the initialization
-     *  of actors scheduled by this resource scheduler.
+     *  of actors scheduled by this ExecutionAspect.
      */
     public void addScheduleListener(ExecutionAspectListener listener) throws IllegalActionException {
-        _schedulePlotListeners.add(listener);
+        _executionAspectListeners.add(listener);
         if (_actors == null) {
             _initializeActorsToSchedule();
         }
@@ -139,7 +139,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      * @param listener. The listener to be removed.
      */
     public void removeScheduleListener(ExecutionAspectListener listener) {
-        _schedulePlotListeners.remove(listener);
+        _executionAspectListeners.remove(listener);
     }
 
     /** React to the change of the <i>justMonitor</i> attribute by
@@ -181,7 +181,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *   null if the specified target is not an Actor.
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) { 
-        if (target instanceof Actor && !_isPartOfResourceScheduler(target)) {
+        if (target instanceof Actor && !_isPartOfExecutionAspect(target)) {
             try {
                 return new CompositeExecutionAspectAttributes(target, this);
             } catch (KernelException ex) {
@@ -194,7 +194,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     }
     
     /** Return a list of the entities deeply contained by the container
-     *  of this resource scheduler.
+     *  of this ExecutionAspect.
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
@@ -204,7 +204,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     
     /** Initialize local variables.
      * @exception IllegalActionException Thrown if list of actors
-     *   scheduled by this scheduler cannot be retrieved.
+     *   decorated by this aspect cannot be retrieved.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -217,7 +217,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         _initializeActorsToSchedule();
         _actors.add(this);
         
-        for (ExecutionAspectListener listener : _schedulePlotListeners) {
+        for (ExecutionAspectListener listener : _executionAspectListeners) {
             listener.initialize(_actors, this);
         }
     }
@@ -242,14 +242,14 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         return _lastActorFinished;
     }
     
-    /** Notify schedule listeners about rescheduling events.
+    /** Notify execution listeners about rescheduling events.
      * @param entity Entity that is being scheduled.
      * @param time Time when entity is being scheduled.
      * @param eventType Type of event.
      */
-    public void notifyScheduleListeners(NamedObj entity, Double time, ExecutionEventType eventType) {
-        if (_schedulePlotListeners != null) {
-            for (ExecutionAspectListener listener : _schedulePlotListeners) {
+    public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType) {
+        if (_executionAspectListeners != null) {
+            for (ExecutionAspectListener listener : _executionAspectListeners) {
                 listener.event(entity, time, eventType);
             }
         }
@@ -273,7 +273,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
                     if (recordToken.get("actor") != null && 
                             ((ObjectToken)recordToken.get("actor")).getValue() != null) {
                         Actor actor = (Actor) ((ObjectToken)recordToken.get("actor")).getValue();
-                        notifyScheduleListeners((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
+                        notifyExecutionListeners((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
                         actor.getExecutiveDirector().resumeActor(actor);
@@ -287,17 +287,17 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     }
 
     /** Schedule an actor for execution and return the next time
-     *  this scheduler has to perform a reschedule. Derived classes
+     *  this aspect has to perform an action. Derived classes
      *  must implement this method to actually schedule actors, this
-     *  base class implementation just creates events for scheduler
+     *  base class implementation just creates events for aspect
      *  activity that is displayed in the plotter. This
-     *  base class implementation just creates events for scheduler
+     *  base class implementation just creates events for aspect
      *  activity that is displayed in the plotter.
      *  @param actor The actor to be scheduled.
      *  @param environmentTime The current platform time.
      *  @param deadline The deadline timestamp of the event to be scheduled.
      *  This can be the same as the environmentTime. 
-     *  @return Relative time when this Scheduler has to be executed
+     *  @return Relative time when this aspect has to be executed
      *    again to perform rescheduling actions.
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
@@ -307,8 +307,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         Director director = ((CompositeActor) getContainer()).getDirector();
         double executionTime = _getExecutionTime(actor);
 
-        notifyScheduleListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.START);
-        notifyScheduleListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.STOP);
+        notifyExecutionListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.START);
+        notifyExecutionListeners(this, environmentTime.getDoubleValue(), ExecutionEventType.STOP);
         return _schedule(actor, environmentTime, deadline, new Time(director,
                 executionTime));
     }
@@ -316,7 +316,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     /** Perform rescheduling actions when no new actor requests to be
      *  scheduled.
      * @param environmentTime The outside time.
-     * @return Relative time when this Scheduler has to be executed
+     * @return Relative time when this aspect has to be executed
      *    again to perform rescheduling actions.
      * @exception IllegalActionException Thrown in subclasses.   
      */
@@ -393,8 +393,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     protected double _getExecutionTime(Actor actor)
             throws IllegalActionException {
         double executionTime = 0.0;
-        for (ExecutionTimeResourceAttributes resourceAttributes : ((NamedObj) actor)
-                .attributeList(ExecutionTimeResourceAttributes.class)) {
+        for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
+                .attributeList(ExecutionTimeAttributes.class)) {
             if (resourceAttributes.getDecorator().equals(this)) {
                 Token token = resourceAttributes.executionTime.getToken();
                 if (token != null) {
@@ -416,9 +416,9 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @param currentPlatformTime The current platform time.
      *  @param deadline The deadline of the event.
      *  @param executionTime The execution time of the actor.
-     *  @return Relative time when this Scheduler has to be executed
+     *  @return Relative time when this aspect has to be executed
      *    again.
-     *  @exception IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
     
@@ -434,7 +434,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         if ((_justMonitor && (time == null || !time.equals(currentPlatformTime))) 
                 || !_currentlyExecuting.contains(actor)) {
             _lastTimeScheduled.put(actor, currentPlatformTime);
-            notifyScheduleListeners((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
+            notifyExecutionListeners((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
             if (_requestPorts.get(actor) == null) {
                 throw new IllegalActionException(this, "Actor " + actor + " does not have a" +
                 		" registered requestPort");
@@ -472,7 +472,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      */
     protected boolean _lastActorFinished;
     
-    protected List<ExecutionAspectListener> _schedulePlotListeners;
+    protected List<ExecutionAspectListener> _executionAspectListeners;
 
     /** List of currently executing actors. */
     protected List<Actor> _currentlyExecuting;
@@ -480,17 +480,17 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     private void _getAllManagedEntities(List<NamedObj> entities)
             throws IllegalActionException {
         for (NamedObj entity : entities) {
-            ResourceAttributes decoratorAttributes = (ResourceAttributes) entity
+            ExecutionAttributes decoratorAttributes = (ExecutionAttributes) entity
                     .getDecoratorAttributes(this);
             if (decoratorAttributes != null) {
                 if (((BooleanToken) decoratorAttributes.enable.getToken())
                         .booleanValue()) {
-                    // The entity uses this resource scheduler.
+                    // The entity uses this ExecutionAspect.
                     if (_actors == null) {
                         _actors = new ArrayList<NamedObj>();
                     }
                     _actors.add(entity); 
-                    notifyScheduleListeners(entity, 0.0, null);
+                    notifyExecutionListeners(entity, 0.0, null);
                 } else if (entity instanceof CompositeActor) {
                     _getAllManagedEntities(((CompositeActor) entity)
                             .deepEntityList());
@@ -502,7 +502,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     ///////////////////////////////////////////////////////////////////
     //                          private variables                    //
 
-    private boolean _isPartOfResourceScheduler(NamedObj actor) {
+    private boolean _isPartOfExecutionAspect(NamedObj actor) {
         if (actor instanceof ActorExecutionAspect) {
             return true;
         }
@@ -539,14 +539,14 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
 
     private HashMap<Actor, String> _requestPorts;
 
-    /** Attributes for actors decorated by this composite resource
-     *  scheduler. The attributes in this base class only contain 
+    /** Attributes for actors decorated by this CompositeExecutionAspects. 
+     *  The attributes in this base class only contain 
      *  the name of the port that will receive scheduling requests
      *  from the director for the decorated actor.
      *  @author Patricia Derler
      */
     public static class CompositeExecutionAspectAttributes extends
-            ExecutionTimeResourceAttributes {
+            ExecutionTimeAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -582,7 +582,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         public Parameter requestPort;
 
         /** If attribute <i>requestPort</i> report the new value 
-         *  to the resource scheduler. 
+         *  to the ExecutionAspect. 
          *  @param attribute The changed parameter.
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
@@ -591,10 +591,10 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
                 throws IllegalActionException {
             if (attribute == requestPort) {
                 Actor actor = (Actor) getContainer();
-                CompositeExecutionAspect scheduler = (CompositeExecutionAspect) getDecorator();
+                CompositeExecutionAspect aspect = (CompositeExecutionAspect) getDecorator();
                 String portName = ((StringToken) ((Parameter) attribute).getToken()).stringValue();
-                if (scheduler != null && !portName.equals("") /*&& enabled()*/) {
-                    scheduler.setRequestPort(actor, portName);
+                if (aspect != null && !portName.equals("") /*&& enabled()*/) {
+                    aspect.setRequestPort(actor, portName);
                 }
             } else {
                 super.attributeChanged(attribute);

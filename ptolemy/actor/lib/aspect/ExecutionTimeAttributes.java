@@ -1,5 +1,5 @@
 /* Container for decorator attributes that are provided to actors by
- * a resource scheduler.
+ * an ExecutionAspect.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -28,14 +28,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor;
+package ptolemy.actor.lib.aspect;
 
-import ptolemy.data.BooleanToken;
+import ptolemy.actor.ExecutionAttributes;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
-import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -44,7 +44,8 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
 Container for decorator attributes that are provided to actors by
-a ResourceScheduler. The resource scheduler decorates actors
+a ExecutionAspect that schedules execution times. 
+The ExecutionAspect decorates actors
 in a model with the attributes contained by this object.
 
  @author  Patricia Derler
@@ -54,7 +55,7 @@ in a model with the attributes contained by this object.
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class ResourceAttributes extends DecoratorAttributes {
+public class ExecutionTimeAttributes extends ExecutionAttributes {
 
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
@@ -62,7 +63,7 @@ public class ResourceAttributes extends DecoratorAttributes {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public ResourceAttributes(NamedObj target, Decorator decorator)
+    public ExecutionTimeAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
         super(target, decorator);
         _init();
@@ -74,49 +75,41 @@ public class ResourceAttributes extends DecoratorAttributes {
      *  @throws IllegalActionException If the superclass throws it.
      *  @throws NameDuplicationException If the superclass throws it.
      */
-    public ResourceAttributes(NamedObj target, String name)
+    public ExecutionTimeAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
         super(target, name);
         _init();
     }
     
-    
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The enable parameter specifies whether the decorated actor uses
-     *  the resource scheduler decorator.
-     *  This is a boolean that defaults to false.
+    /** The executionTime parameter specifies the execution time of the
+     *  decorated object. This means the time that the decorated actor occupies
+     *  the decorator resource when it fires.
+     *  This is a double that defaults to 0.0.
      */
-    public Parameter enable; 
-
+    public Parameter executionTime;
     
+
     ///////////////////////////////////////////////////////////////////
     ////                        public methods                     ////
     
     /** React to a change in an attribute.  If the attribute is
-     *  <i>enable</i>, remember the value.
+     *  <i>executionTime</i>, check that it is non-negative.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == enable) {
-            _enabled = ((BooleanToken)enable.getToken()).booleanValue();
+        if (attribute == executionTime) {
+            double value = ((DoubleToken)executionTime.getToken()).doubleValue();
+            if (value < 0.0) {
+                throw new IllegalActionException(getContainer(),
+                        "Cannot specify a negative number for executionTime.");
+            }
         }
         super.attributeChanged(attribute);
     }
     
-    /** Return whether the decorator associated with this attribute is 
-     *  enabled.
-     *  @return True if enabled.
-     */
-    public boolean enabled() {
-        return _enabled;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -124,14 +117,13 @@ public class ResourceAttributes extends DecoratorAttributes {
      */
     private void _init() {
         try {
-            enable = new Parameter(this, "enable");
-            enable.setExpression("false");
-            enable.setTypeEquals(BaseType.BOOLEAN); 
+            executionTime = new Parameter(this, "executionTime");
+            executionTime.setExpression("0.0");
+            executionTime.setTypeEquals(BaseType.DOUBLE);
         } catch (KernelException ex) {
             // This should not occur.
             throw new InternalErrorException(ex);
         }
     }
     
-    private boolean _enabled;
 }

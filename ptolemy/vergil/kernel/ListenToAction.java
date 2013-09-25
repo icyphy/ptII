@@ -115,7 +115,7 @@ public class ListenToAction extends FigureAction {
                             + object.getName()));
             debugTableau.setDebuggable(object);
             
-            // If the actor is a ResourceScheduler, open Plot as well.
+            // If the actor is an ExecutionAspect, open Plot as well.
             if (object instanceof ActorExecutionAspect) {
                 //Effigy plotEffigy = new 
                 ExecutionAspectPlotterEditorFactory factory = new ExecutionAspectPlotterEditorFactory(object,

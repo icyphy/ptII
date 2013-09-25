@@ -41,7 +41,7 @@ import ptolemy.actor.ExecutionAspectListener;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.ResourceAttributes;
+import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -72,14 +72,14 @@ is decorated with these this parameter:
 This base class is not used but to use derived classes, drag them into a model 
 and enable the actors that will use the resource. 
 
-Currently, the following Directors honor ResourceScheduler settings:
+Currently, the following Directors honor ExecutionAspect settings:
 <ul>
-<li> PtidesDirector. A ResourceScheduler on a PtidesPlatform will cause the 
+<li> PtidesDirector. A ExecutionAspect on a PtidesPlatform will cause the 
 platform time at which actors produce their outputs
 to be delayed by the specified execution time beyond the platform time at
 which the resource becomes available to execute the actor. </li>
-<li> DEDirector. Note that using a ResourceScheduler in a DE model
-will change the MoC and nondeterminism is introduced with ResourceSchedulers.
+<li> DEDirector. Note that using a ExecutionAspect in a DE model
+will change the MoC and nondeterminism is introduced with ExecutionAspects.
 </li>
 <li> SDF Director, if contained hierarchically directly or via multiple
 hierarchy layers by a PtidesDirector. </li>
@@ -150,7 +150,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor && !(target instanceof ActorExecutionAspect)) {
             try {
-                return new ResourceAttributes(target, this);
+                return new ExecutionAttributes(target, this);
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
@@ -373,8 +373,8 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     protected double _getExecutionTime(Actor actor)
             throws IllegalActionException {
         double executionTime = 0.0;
-        for (ExecutionTimeResourceAttributes resourceAttributes : ((NamedObj) actor)
-                .attributeList(ExecutionTimeResourceAttributes.class)) {
+        for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
+                .attributeList(ExecutionTimeAttributes.class)) {
             if (resourceAttributes.getDecorator() != null && 
                     resourceAttributes.getDecorator().equals(this)) {
                 Token token = resourceAttributes.executionTime.getToken();
@@ -440,7 +440,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     private void _getAllManagedEntities(List<NamedObj> entities)
             throws IllegalActionException {
         for (NamedObj entity : entities) {
-            ResourceAttributes decoratorAttributes = (ResourceAttributes) entity
+            ExecutionAttributes decoratorAttributes = (ExecutionAttributes) entity
                     .getDecoratorAttributes(this);
             if (decoratorAttributes != null) {
                 if (((BooleanToken) decoratorAttributes.enable.getToken())

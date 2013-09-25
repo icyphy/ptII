@@ -50,7 +50,7 @@ a {@link ptolemy.actor.ActorExecutionAspect}.
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PriorityResourceAttributes extends ExecutionTimeResourceAttributes {
+public class PriorityResourceAttributes extends ExecutionTimeAttributes {
 
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.

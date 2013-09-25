@@ -1,4 +1,4 @@
-/* This actor implements an output port in a composite resource scheduler.
+/* This actor implements an output port in a CompositeExecutionAspect.
 
 @Copyright (c) 2011-2013 The Regents of the University of California.
 All rights reserved.
@@ -34,13 +34,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 
-/** This actor implements an output port in a composite resource scheduler
- *  (@link CompositeResourceScheduler).
+/** This actor implements an output port in a CompositeExecutionAspect
+ *  (@link CompositeExecutionAspect).
 *   This actor simply stores the token from the input and provides methods
 *   to access the token. A token in this port is a RecordToken containing
 *   an actor object and the execution time of this actor. The meaning is that
 *   the actor can resume execution. 
-*   The CompositeResourceScheduler calls these methods.
+*   The CompositeExecutionAspect calls these methods.
 *
 *  @author Patricia Derler
 *  @version $Id$

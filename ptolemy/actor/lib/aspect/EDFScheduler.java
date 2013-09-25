@@ -85,7 +85,7 @@ public class EDFScheduler extends FixedPriorityScheduler {
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor) {
             try {
-                return new ExecutionTimeResourceAttributes(target, this);
+                return new ExecutionTimeAttributes(target, this);
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);

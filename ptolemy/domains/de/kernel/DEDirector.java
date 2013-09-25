@@ -1279,7 +1279,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void resumeActor(Actor actor) throws IllegalActionException { 
         List<DEEvent> events = _actorsInExecution.get(actor);
-        Time time = ((CompositeActor)_getResourceScheduler(actor).getContainer()).getDirector().getModelTime();
+        Time time = ((CompositeActor)_getExecutionAspect(actor).getContainer()).getDirector().getModelTime();
         if (events == null || events.size() == 0) {
             events = null;
         }
@@ -1638,8 +1638,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         if (_resourceScheduling) {
-            if (_schedulerForActor.get(actor) != null
-                    && _schedulerForActor.get(actor)
+            if (_aspectForActor.get(actor) != null
+                    && _aspectForActor.get(actor)
                             .isWaitingForResource(actor)) {
                 Object[] eventArray = _eventQueue.toArray();
                 for (Object object : eventArray) {
@@ -2329,7 +2329,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // the requested resources, create a new event with a future 
                     // timestamp. 
                     Time nextScheduleTime = _nextScheduleTime.get(
-                            _schedulerForActor.get(actorToFire)).add(
+                            _aspectForActor.get(actorToFire)).add(
                             getModelTime());
                     if (_actorsInExecution == null) {
                         _actorsInExecution = new HashMap();
@@ -2363,7 +2363,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             throws IllegalActionException {
         boolean schedule = super._schedule(actor, timestamp);
         if (!schedule) {
-            ActorExecutionAspect scheduler = _getResourceScheduler(actor);
+            ActorExecutionAspect scheduler = _getExecutionAspect(actor);
             ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
                     (Actor) scheduler,
                     getModelTime().add(_nextScheduleTime.get(scheduler)));

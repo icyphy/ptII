@@ -266,11 +266,7 @@
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
-            </property>
-            <property name="FPPCore" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 70.0]">
-                </property>
-            </property>
+            </property> 
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -579,11 +575,7 @@
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
-            </property>
-            <property name="FPPCore" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 70.0]">
-                </property>
-            </property>
+            </property> 
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
                 <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -642,9 +634,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 250.0]">
                 </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="timeDelayValue">
-                </property>
-                <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FPPCore">
-                </property>
+                </property> 
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
                 <property name="DecoratorAttributesFor_FPPCore" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">

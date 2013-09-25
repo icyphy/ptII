@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.ResourceAttributes;
+import ptolemy.actor.ExecutionAttributes;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -240,9 +240,9 @@ public class IconController extends ParameterizedNodeController {
     
                 for (Decorator decorator : decorators) {
                     DecoratorAttributes decoratorAttributes = object.getDecoratorAttributes(decorator);
-                    if (decoratorAttributes instanceof ResourceAttributes) {
+                    if (decoratorAttributes instanceof ExecutionAttributes) {
                         if (decoratorAttributes.getDecorator() != null && 
-                                ((ResourceAttributes)decoratorAttributes).enabled()) {
+                                ((ExecutionAttributes)decoratorAttributes).enabled()) {
                             try {
                                 if (object.getAttribute("_decoratorHighlightColor") == null) {
                                     highlightColor = new ColorAttribute(object, "_decoratorHighlightColor");

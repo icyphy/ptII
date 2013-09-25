@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class CommunicationAspectAttributes extends ResourceAttributes {
+public class CommunicationAspectAttributes extends ExecutionAttributes {
 
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
