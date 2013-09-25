@@ -26,25 +26,15 @@
   </li>
   <li> To check out the ptII svn repository with <b>read-only</b> access:
     <pre>
-      svn co https://source.eecs.berkeley.edu/svn/chess/ptII/trunk ptII
+      svn co https://repo.eecs.berkeley.edu/svn-anon/projects/eal/ptII/trunk ptII
     </pre>
-    <br/><b>Note:</b> Most users will select <code>https://</code> because
+    <b>Note:</b> Most users will select the <code><b>/svn-anon/</b></code> URL above because
     they will be accessing the tree with <b>read-only</b> Subversion access.
-    <br/>If you have an 
-    <a href="http://chess.eecs.berkeley.edu/ptexternal/#in_browser" target="_top">ssh account</a>
-    on <code>source.eecs.berkeley.edu</code>, then check out ptII with
-    read/write access:
-    <pre>
-      svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
-    </pre>
-    Or, if your user id on source.eecs is different than your current user id
-    on your machine:
-    <pre>
-      svn co svn+ssh://<i>yourID@</i>source.eecs.berkeley.edu/chess/ptII/trunk ptII
-    </pre>
-    <br/>We provide read/write access via https to our sponsors.  Most read/write
-    access occurs via svn+ssh:// because ssh users can set their own
-    passwords, whereas http users currently cannot.
+    <br/>If you have an UC Berkeley EECS LDAP account or have an external account on <code>repo.eecs.berkeley.edu</code>, then check out ptII with read/write access:</p>
+
+	<pre>
+	  svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
+	</pre>
   </li>
 
   <li><a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>

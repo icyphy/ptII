@@ -120,36 +120,23 @@ run <code>svn --version</code>.  To start  a DOS Shell:
 	<br/>To check out the ptII svn repository with <b>read-only</b> access:
 
 	<pre>
-	  https://source.eecs.berkeley.edu/svn/chess/ptII
-	</pre>
-	or
-	<pre>
-	  svn://source.eecs.berkeley.edu/chess/ptII
+	  https://repo.eecs.berkeley.edu/svn-anon/projects/eal/ptII
 	</pre>
 
 	<p><b>Note:</b> Most users will select <code>https://</code> or 
 	  <code>svn://</code> because
 	  they will be accessing the tree with <b>read-only</b> Subversion access.
-	  <br/>If you have an 
-	  <a href="http://chess.eecs.berkeley.edu/ptexternal/#in_browser" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
-	  read/write access:</p>
+	  <br/>If you have an UC Berkeley EECS LDAP account or have an external account on <code>repo.eecs.berkeley.edu</code>, then check out ptII with read/write access:</p>
 
 	<pre>
-	  svn+ssh://source.eecs.berkeley.edu/chess/ptII
-	</pre>
-	Or, if your user id on source.eecs is different than your current user id
-	on your machine:
-	<pre>
-	  svn+ssh://<i>yourID</i>@source.eecs.berkeley.edu/chess/ptII
+	  https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/
 	</pre>
 	Read/writes users may want to check "Save authentication".
 
 	<p>Click <code>Finish</code></p>
 
 	<p>Read/write users will be prompted for their
-	  source.eecs.berkeley.edu username and password. This
-	  typically happens more than once since in case the svn+ssh
-	  protocol is being used passwords are not cached </p>
+	  repo.eecs.berkeley.edu username and password.</p>
       </li>
 
       <li>If you get a "Certificate Problem" window, then select
