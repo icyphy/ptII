@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/resourceScheduler/demo/DE
+ME =		ptolemy/actor/lib/aspect/demo/DE
 
 DIRS =
 
