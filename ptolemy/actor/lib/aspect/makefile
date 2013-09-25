@@ -86,7 +86,7 @@ JSRCS = \
 	EDFScheduler.java \
 	ExecutionRequestPort.java \
 	ExecutionResponsePort.java \
-	ExecutionTimeResourceAttributes.java \
+	ExecutionTimeAttributes.java \
 	FCFSScheduler.java \
 	FixedPriorityScheduler.java \
 	PriorityResourceAttributes.java \
@@ -102,11 +102,7 @@ MISC_FILES = #test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'AtomicResourceScheduler$$ExecutionEventType.class' \
-	'CompositeResourceScheduler$$CompositeResourceSchedulerAttributes.class' \
-	'CompositeResourceScheduler$$ExecutionEventType.class' \
-	'ResourceScheduler$$ExecutionEventType.class'
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
