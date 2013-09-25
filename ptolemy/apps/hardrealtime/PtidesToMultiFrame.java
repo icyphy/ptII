@@ -43,9 +43,9 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.DiscreteClock;
-import ptolemy.actor.lib.TimeDelay;
-import ptolemy.actor.lib.resourceScheduler.EDFScheduler;
-import ptolemy.actor.lib.resourceScheduler.ExecutionTimeResourceAttributes;
+import ptolemy.actor.lib.TimeDelay; 
+import ptolemy.actor.lib.aspect.EDFScheduler;
+import ptolemy.actor.lib.aspect.ExecutionTimeAttributes;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -302,8 +302,8 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
 
     private double _getActorExecutionTime(Actor actor) {
         double executionTime = 0.0;
-        for (ExecutionTimeResourceAttributes resourceAttributes : ((NamedObj) actor)
-                .attributeList(ExecutionTimeResourceAttributes.class)) {
+        for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
+                .attributeList(ExecutionTimeAttributes.class)) {
             try {
                 EDFScheduler scheduler = ((TypedCompositeActor) getContainer()).entityList(EDFScheduler.class).get(0);
                 if (resourceAttributes.getDecorator().equals(scheduler)) {
