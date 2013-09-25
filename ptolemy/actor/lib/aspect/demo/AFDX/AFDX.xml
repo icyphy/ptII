@@ -64,10 +64,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 65.0]">
         </property>
     </property>
-    <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
-    </property>
-    <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
-    </property>
     <property name="tB" class="ptolemy.data.expr.Parameter" value="0.030">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -175,24 +171,16 @@
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
-            </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
-            </property>
+            </property> 
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW1, AFDX_SW2, AFDX_SW3">
-            </property>
-            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
-            </property>
-            <property name="qm3" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
-            </property>
-            <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
-            </property>
+            </property> 
             <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.CommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -202,7 +190,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -212,7 +200,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -252,20 +240,16 @@
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 250.0}">
-            </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
-            </property>
+            </property> 
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW1">
-            </property>
-            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
-            </property>
+            </property> 
             <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.CommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -275,7 +259,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -285,7 +269,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -299,24 +283,16 @@
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 290.0}">
-            </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
-            </property>
+            </property> 
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW3, AFDX_SW2, AFDX_SW1">
-            </property>
-            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
-            </property>
-            <property name="qm3" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
-            </property>
-            <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
-            </property>
+            </property> 
             <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.CommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -326,7 +302,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -336,7 +312,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -412,7 +388,7 @@
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -422,7 +398,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -432,7 +408,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -474,7 +450,7 @@
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -484,7 +460,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -494,7 +470,7 @@
                 <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -692,17 +668,9 @@
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
-            </property>
-            <property name="qm" class="ptolemy.data.expr.Parameter" value="AFDX_ESs">
-            </property>
+            </property> 
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: AFDX_ESs, AFDX_SW1, AFDX_SW2, AFDX_SW3">
-            </property>
-            <property name="qm2" class="ptolemy.data.expr.Parameter" value="AFDX_SW1">
-            </property>
-            <property name="qm3" class="ptolemy.data.expr.Parameter" value="AFDX_SW2">
-            </property>
-            <property name="qm4" class="ptolemy.data.expr.Parameter" value="AFDX_SW3">
-            </property>
+            </property> 
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="2.4">
