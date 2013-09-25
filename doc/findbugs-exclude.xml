@@ -57,6 +57,9 @@
     <Match classregex="polyglot.*"/>
     <Match classregex="ppg.*"/>
     <Match classregex="ptolemy.data..*Parser.*"/>
+    <Match classregex="ptolemy.actor.ptalon.PtalonPopulator"/>
+    <Match classregex="ptolemy.actor.ptalon.PtalonRecognizer"/>
+    <Match classregex="ptolemy.actor.ptalon.PtalonScopeChecker"/>
     <Match classregex="ptolemy.data.unit.UParser"/>
     <Match classregex="ptolemy.data.unit.UParserTokenManager"/>
     <Match classregex="scm.*"/>
