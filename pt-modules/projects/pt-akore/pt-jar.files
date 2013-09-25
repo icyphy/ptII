@@ -2,13 +2,19 @@
 /ptolemy/actor/AbstractInitializableAttribute.java
 /ptolemy/actor/AbstractReceiver.java
 /ptolemy/actor/Actor.java
+/ptolemy/actor/ActorExecutionAspect.java
 /ptolemy/actor/ActorFiringListener.java
 /ptolemy/actor/ApplicationConfigurer.java
 /ptolemy/actor/AtomicActor.java
+/ptolemy/actor/CommunicationAspect.java
+/ptolemy/actor/CommunicationAspectAttributes.java
+/ptolemy/actor/CommunicationAspectListener.java
 /ptolemy/actor/CompositeActor.java
 /ptolemy/actor/ConstantPublisherPort.java
 /ptolemy/actor/Director.java
 /ptolemy/actor/Executable.java
+/ptolemy/actor/ExecutionAspectListener.java
+/ptolemy/actor/ExecutionAttributes.java
 /ptolemy/actor/ExecutionListener.java
 /ptolemy/actor/FiringEvent.java
 /ptolemy/actor/FiringsRecordable.java
@@ -27,14 +33,9 @@
 /ptolemy/actor/NoTokenException.java
 /ptolemy/actor/PubSubPort.java
 /ptolemy/actor/PublisherPort.java
-/ptolemy/actor/QMAttributes.java
-/ptolemy/actor/QuantityManager.java
 /ptolemy/actor/QuasiTransparentDirector.java
 /ptolemy/actor/Receiver.java
 /ptolemy/actor/RelationWidthInference.java
-/ptolemy/actor/ResourceAttributes.java
-/ptolemy/actor/ResourceScheduler.java
-/ptolemy/actor/ScheduleListener.java
 /ptolemy/actor/SubscriberPort.java
 /ptolemy/actor/SubscriptionAggregatorPort.java
 /ptolemy/actor/SuperdenseTimeDirector.java
@@ -330,6 +331,4 @@
 /ptolemy/graph/analysis/strategy/SourceNodeStrategy.java
 /ptolemy/graph/analysis/strategy/Strategy.java
 # May
-/ptolemy/actor/QuantityManager.java
-/ptolemy/actor/QuantityManagerListener.java
 /ptolemy/actor/TimeRegulator.java
