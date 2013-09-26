@@ -327,8 +327,7 @@ public class EditParametersDialog extends ComponentDialog implements
                 "ptolemy.data.expr.Parameter",
                 "ptolemy.data.expr.FileParameter",
                 "ptolemy.kernel.util.StringAttribute",
-                "ptolemy.actor.gui.ColorAttribute",
-                "ptolemy.actor.lib.qm.QuantityManagerAttribute"
+                "ptolemy.actor.gui.ColorAttribute"
                 }, "ptolemy.data.expr.Parameter", true);
         
 
