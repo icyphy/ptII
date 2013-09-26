@@ -121,7 +121,7 @@ public class ListenToAction extends FigureAction {
                 ExecutionAspectPlotterEditorFactory factory = new ExecutionAspectPlotterEditorFactory(object,
                             object.uniqueName("_editorFactory")); 
                 
-                ((ActorExecutionAspect)object).addScheduleListener(factory);
+                ((ActorExecutionAspect)object).addExecutingListener(factory);
                 factory.createEditor(object, this.getFrame());
             }
         } catch (KernelException ex) {

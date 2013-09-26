@@ -127,7 +127,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this ExecutionAspect.
      */
-    public void addScheduleListener(ExecutionAspectListener listener) throws IllegalActionException {
+    public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException {
         _executionAspectListeners.add(listener);
         if (_actors == null) {
             _initializeActorsToSchedule();
@@ -138,7 +138,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     /** Remove schedule listener.
      * @param listener. The listener to be removed.
      */
-    public void removeScheduleListener(ExecutionAspectListener listener) {
+    public void removeExecutionListener(ExecutionAspectListener listener) {
         _executionAspectListeners.remove(listener);
     }
 

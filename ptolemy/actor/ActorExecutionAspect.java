@@ -58,7 +58,7 @@ public interface ActorExecutionAspect extends Decorator {
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
-    public void addScheduleListener(ExecutionAspectListener listener) throws IllegalActionException;
+    public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException;
 
     /** Return whether an actor is currently waiting for a resource.
      * @param actor The actor that might be waiting for a resource.
@@ -104,6 +104,6 @@ public interface ActorExecutionAspect extends Decorator {
     /** Remove schedule listener.
      * @param listener. The listener to be removed.
      */
-    public void removeScheduleListener(ExecutionAspectListener listener);
+    public void removeExecutionListener(ExecutionAspectListener listener);
     
 }
