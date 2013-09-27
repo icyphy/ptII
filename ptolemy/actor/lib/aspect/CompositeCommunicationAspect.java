@@ -202,7 +202,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-        List<NamedObj> list = new ArrayList();
+        List<NamedObj> list = new ArrayList<NamedObj>();
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object object : container.deepEntityList()) {
             if (object instanceof Actor) {

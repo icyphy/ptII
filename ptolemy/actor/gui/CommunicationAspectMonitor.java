@@ -85,7 +85,7 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nplot the schedule.</text></svg>");
 
-        new QuantityManagerEditorFactory(this, "_editorFactory");
+        new CommunicationAspectMonitorEditorFactory(this, "_editorFactory");
 
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
@@ -122,7 +122,7 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
 
         double x = time;
         double y = 0;//_quantityManagers.indexOf(qm);
-        int actorDataset = _quantityManagers.indexOf(qm);
+        int actorDataset = _communicationAspects.indexOf(qm);
         if (event == null) {
             plot.addPoint(actorDataset, x, y, false);
         } else if (event == EventType.RECEIVED) {
@@ -142,14 +142,14 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _quantityManagers = new ArrayList();
+        _communicationAspects = new ArrayList<CommunicationAspect>();
         if (getContainer() instanceof CompositeActor) {
             Director director = ((CompositeActor) getContainer()).getDirector();
             List<Actor> list = ((CompositeActor) director.getContainer())
                     .entityList();
             for (Actor actor : list) {
                 if (actor instanceof CommunicationAspect) {
-                    _quantityManagers.add((CommunicationAspect) actor);
+                    _communicationAspects.add((CommunicationAspect) actor);
                     ((CommunicationAspect) actor).registerListener(this);
                 }
             }
@@ -158,12 +158,12 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
         if (plot != null) {
             plot.clear(false);
             plot.clearLegends();
-            colors = new Color[_quantityManagers.size()];
-            for (CommunicationAspect qm : _quantityManagers) {
-                int idx = _quantityManagers.indexOf(qm);
-                plot.addLegend(idx, ((NamedObj) qm).getName());
+            colors = new Color[_communicationAspects.size()];
+            for (CommunicationAspect aspect : _communicationAspects) {
+                int idx = _communicationAspects.indexOf(aspect);
+                plot.addLegend(idx, ((NamedObj) aspect).getName());
                 plot.addPoint(idx, 0.0, /*idx*/0, false);
-                colors[idx] = ((ColorAttribute)((NamedObj) qm).getAttribute(CommunicationAspect.decoratorHighlightColorName)).asColor();
+                colors[idx] = ((ColorAttribute)((NamedObj) aspect).getAttribute(CommunicationAspect.decoratorHighlightColorName)).asColor();
             }
 
             plot.doLayout();
@@ -176,13 +176,13 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
     //                           private variables                   //
 
     /** List of communication aspects used in the model. */
-    private List<CommunicationAspect> _quantityManagers;
+    private List<CommunicationAspect> _communicationAspects;
 
     ///////////////////////////////////////////////////////////////////
     //                        inner classes                          //
 
     /** Factory that creates the schedule plotter. */
-    public class QuantityManagerEditorFactory extends EditorFactory {
+    public class CommunicationAspectMonitorEditorFactory extends EditorFactory {
         // This class needs to be public for shallow code generation.
         /**
          * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
@@ -198,7 +198,7 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
          *                    If the name coincides with an attribute already in
          *                    the container.
          */
-        public QuantityManagerEditorFactory(NamedObj container, String name)
+        public CommunicationAspectMonitorEditorFactory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
