@@ -361,7 +361,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="QuantityManagerMonitor" class="ptolemy.actor.CommunicationAspectMonitor">
+    <entity name="CommunicationAspectMonitor" class="ptolemy.actor.gui.CommunicationAspectMonitor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 435.0]">
         </property>
     </entity>
