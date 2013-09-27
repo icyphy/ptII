@@ -183,7 +183,7 @@
             </property>
         </port>
     </entity>
-    <entity name="QuantityManagerMonitor" class="ptolemy.actor.lib.aspect.QuantityManagerMonitor">
+    <entity name="CommunicationAspectMonitor" class="ptolemy.actor.gui.CommunicationAspectMonitor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 335.0]">
         </property>
     </entity>
