@@ -169,7 +169,7 @@
             </property>
         </port>
     </entity>
-    <entity name="CommunicationAspectMonitor" class="ptolemy.actor.lib.aspect.CommunicationAspectMonitor">
+    <entity name="CommunicationAspectMonitor" class="ptolemy.actor.gui.CommunicationAspectMonitor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 335.0]">
         </property>
     </entity>
