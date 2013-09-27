@@ -1357,7 +1357,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Thrown if the token of the parameter
      *      containing the communication aspect object cannot be retrieved.
      */
-    public List<CommunicationAspect> getQuantityManagers()
+    public List<CommunicationAspect> getCommunicationAspects()
             throws IllegalActionException {
         if (_communicationAspects == null) {
             _communicationAspects = new ArrayList<CommunicationAspect>();
@@ -4359,12 +4359,12 @@ public class IOPort extends ComponentPort {
     protected Receiver _wrapReceiver(Receiver receiver, int channel)
             throws IllegalActionException {
         Receiver result = receiver;
-        List<CommunicationAspect> communicationAspects = getQuantityManagers();
+        List<CommunicationAspect> communicationAspects = getCommunicationAspects();
         if (isInput()) {
             for (int i = communicationAspects.size() - 1; i >= 0; i--) {
-                CommunicationAspect quantityManager = communicationAspects.get(i);
-                if (quantityManager != null) {
-                    result = quantityManager.createIntermediateReceiver(result);
+                CommunicationAspect communicationAspect = communicationAspects.get(i);
+                if (communicationAspect != null) {
+                    result = communicationAspect.createIntermediateReceiver(result);
                 }
             }
             if (result instanceof IntermediateReceiver) {
@@ -4374,8 +4374,8 @@ public class IOPort extends ComponentPort {
             }
         } else {
             for (int i = 0; i < communicationAspects.size(); i++) {
-                CommunicationAspect quantityManager = communicationAspects.get(i);
-                result = quantityManager.createIntermediateReceiver(result);
+                CommunicationAspect communicationAspect = communicationAspects.get(i);
+                result = communicationAspect.createIntermediateReceiver(result);
             }
         }
         // FIXME what if isInput && isOutput??

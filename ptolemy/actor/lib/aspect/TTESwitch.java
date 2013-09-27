@@ -70,10 +70,7 @@ import ptolemy.kernel.util.Workspace;
  *  time-triggered ethernet implementation an offline calculated schedule ensures that only
  *  one time-triggered message is received by the TTESwitch at a time.
  *  Event-triggered tokens are processed in FIFO order.
- *  <p>
- *  This actor will be used on any communication where the receiving
- *  port has a parameter named "QuantityManager" that refers by name
- *  to the instance of this actor.
+ *  <p>.
  *
  *  @author Patricia Derler
  *  @version $Id$

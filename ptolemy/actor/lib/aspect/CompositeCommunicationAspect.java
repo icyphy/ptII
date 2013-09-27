@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
 public class CompositeCommunicationAspect extends TypedCompositeActor implements
         CommunicationAspect, Decorator {
 
-    /** Construct a CompositeQuantityManager in the specified workspace with
+    /** Construct a CompositeCommunicationAspectAttributes in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
      *  use the default workspace.  You should set the local director or
@@ -104,7 +104,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         _initialize();
     }
 
-    /** Construct a CompositeQuantityManager with a name and a container.
+    /** Construct a CompositeCommunicationAspectAttributes with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -431,7 +431,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
 
     /** Attributes for ports decorated by this composite communication aspect.
      *  A port on an actor decorated by a composite communication aspect must
-     *  specify the port in the CompositeQuantityManager 
+     *  specify the port in the CompositeCommunicationAspect. 
      *  that input tokens are routed to.
      * 
      *  @author Patricia Derler

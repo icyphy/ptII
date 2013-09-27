@@ -441,7 +441,7 @@ public class IOPortController extends AttributeController {
             // Handle communication aspects.
             try {
                 if (port instanceof IOPort) {
-                    List<CommunicationAspect> communicationAspects = ((IOPort) port).getQuantityManagers();
+                    List<CommunicationAspect> communicationAspects = ((IOPort) port).getCommunicationAspects();
                     if (communicationAspects != null && communicationAspects.size() > 0) {
                         Object object = null;
                         if (((IOPort) port).isOutput()) {
@@ -477,7 +477,7 @@ public class IOPortController extends AttributeController {
                         }
                         info.setExpression("Aspects: " + aspectsStringBuffer.toString());
                     } else {
-                        // No QuantityManager in use anymore, clean up _showInfo
+                        // No CommunicationAspect in use anymore, clean up _showInfo
                         // string.
                         
                         // Use Attribute here instead of StringAttribute since

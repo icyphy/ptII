@@ -339,7 +339,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
 
                     Actor actor;
                     if (receiver instanceof IntermediateReceiver) {
-                        actor = (Actor) ((IntermediateReceiver) receiver).quantityManager;
+                        actor = (Actor) ((IntermediateReceiver) receiver).communicationAspect;
                     } else {
                         actor = (Actor) receiver.getContainer().getContainer();
                     }

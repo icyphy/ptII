@@ -58,24 +58,24 @@ public class IntermediateReceiver extends AbstractReceiver {
 
     /** Construct an intermediate receiver with no container that wraps the
      *  specified receiver using the specified communication aspect.
-     *  @param qm The communication aspect that receives tokens received by this receiver.
+     *  @param aspect The communication aspect that receives tokens received by this receiver.
      *  @param receiver The receiver wrapped by this intermediate receiver.
      */
-    public IntermediateReceiver(CommunicationAspect qm, Receiver receiver) {
+    public IntermediateReceiver(CommunicationAspect aspect, Receiver receiver) {
         _receiver = receiver;
-        quantityManager = qm;
+        communicationAspect = aspect;
     }
 
     /** Construct an intermediate receiver with no container that wraps the
      *  specified receiver using the specified communication aspect.
-     *  @param qm The communication aspect that receives tokens received by this receiver.
+     *  @param aspect The communication aspect that receives tokens received by this receiver.
      *  @param receiver The receiver wrapped by this intermediate receiver.
      *  @param port The port wrapped by this intermediate receiver
      */
-    public IntermediateReceiver(CommunicationAspect qm, Receiver receiver,
+    public IntermediateReceiver(CommunicationAspect aspect, Receiver receiver,
             IOPort port) {
         _receiver = receiver;
-        quantityManager = qm;
+        communicationAspect = aspect;
         _port = port;
     }
 
@@ -83,7 +83,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     ////                         public variables                  ////
 
     /** communication aspect that receives tokens from this receiver. */
-    public CommunicationAspect quantityManager;
+    public CommunicationAspect communicationAspect;
 
     /** The source actor that sent a token to this receiver. */
     public Actor source;
@@ -94,7 +94,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     /** Reset the communication aspect and the receiver that we delegate to.
      */
     public void clear() throws IllegalActionException {
-        quantityManager.reset();
+        communicationAspect.reset();
         //_receiver.reset();
     }
 
@@ -155,7 +155,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  the constructor.
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
-        quantityManager.sendToken(this, _receiver, token);
+        communicationAspect.sendToken(this, _receiver, token);
     }
 
     /** Set the container of the internal receiver.

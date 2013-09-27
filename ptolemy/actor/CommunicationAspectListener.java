@@ -45,7 +45,7 @@ public interface CommunicationAspectListener {
 
     /** The event that is sent by the communication aspect and processed
      *  by the listener.
-     *  @param quantityManager The communication aspect that sent the event.
+     *  @param communicationAspect The communication aspect that sent the event.
      *  @param source The source actor that caused the event in the
      *      communication aspect.
      *  @param messageId The ID of the message that caused the event in
@@ -55,7 +55,7 @@ public interface CommunicationAspectListener {
      *  @param eventType The type of the event.
      *  @param time The timestamp of the event.
      */
-    public void event(CommunicationAspect quantityManager, Actor source,
+    public void event(CommunicationAspect communicationAspect, Actor source,
             int messageId, int messageCnt, double time, EventType eventType);
 
     /** Type of the event. */

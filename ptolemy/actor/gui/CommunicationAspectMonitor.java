@@ -121,7 +121,7 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
         }
 
         double x = time;
-        double y = 0;//_quantityManagers.indexOf(qm);
+        double y = 0;
         int actorDataset = _communicationAspects.indexOf(qm);
         if (event == null) {
             plot.addPoint(actorDataset, x, y, false);

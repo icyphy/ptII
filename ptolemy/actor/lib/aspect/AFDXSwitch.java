@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  *  the delivery of the specified token to the specified receiver
  *  according to a service rule. This communication aspect is used on
  *  input ports by setting a parameter with an ObjectToken that refers
- *  to this QuantityManager at the port. Note that the name of this
+ *  to this CommunicationAspect at the port. Note that the name of this
  *  parameter is irrelevant.
  *
  *  <p>This communication aspect implements an AFDX switch. It has a parameter
@@ -373,7 +373,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
 
                     Actor actor;
                     if (receiver instanceof IntermediateReceiver) {
-                        actor = (Actor) ((IntermediateReceiver) receiver).quantityManager;
+                        actor = (Actor) ((IntermediateReceiver) receiver).communicationAspect;
                     } else {
                         actor = (Actor) receiver.getContainer().getContainer();
                     }
