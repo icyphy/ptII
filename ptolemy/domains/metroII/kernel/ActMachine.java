@@ -1,4 +1,4 @@
-/* ActMachine is an abstract wrapper for actors to adapt to Metro semantics.
+/* ActMachine is an abstract wrapper for actors to adapt to MetroII semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -37,17 +37,19 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 /**
  * 
- * ActMachine is an abstract wrapper for actors to adapt to Metro semantics. 
- * ActMachine wraps an actor and makes it behave like a FSM. We pre-define 
+ * ActMachine is an abstract wrapper for actors to adapt to MetroII semantics. 
+ * ActMachine wraps an actor with a set of FSM interfaces so that the actor 
+ * can be be seen as a FSM from outside. We pre-define 
  * the following states and each state represents a state of the wrapped actor:
  * <ol>
- * <li> PREFIRE_BEGIN: prefire() is called by the wrapper but not executed yet; </li>
- * <li> PREFIRE_END_FIRE_BEGIN: prefire() is executed and returns true. getfire() 
- * is called by the wrapper but not executed yet; </li>
- * <li> FIRING: in executing getfire() and is paused by some internal events; </li>
- * <li> FIRE_END_POSTFIRE_BEGIN: the execution of getfire() ends. postfire() is 
- * called by the wrapper but not executed yet; </li>
- * <li> POSTFIRE_END: postfire() is executed. </li>
+ * <li> PREFIRE_BEGIN: before prefire() is called; </li>
+ * <li> PREFIRE_END_FIRE_BEGIN: after prefire() is called, returns 
+ * true and before getfire() is called; </li>
+ * <li> FIRING: getfire() is being called but is interrupted by some 
+ * internal MetroII events; </li>
+ * <li> FIRE_END_POSTFIRE_BEGIN: after getfire() completes and before 
+ * postfire() is called; </li>
+ * <li> POSTFIRE_END: after postfire() is called. </li>
  * </ol>
  * The wrapper explicitly records the current state of the FSM. The state transition
  * is triggered by a function call to startOrResume(events) with MetroII events as the arguments.

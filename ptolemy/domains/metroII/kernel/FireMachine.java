@@ -1,4 +1,4 @@
-/* Abstract wrapper for getfire function.
+/* FireMachine is an abstract wrapper for actors to adapt to MetroII semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -36,23 +36,41 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 //// FireMachine
 
 /**
-* 
-* Abstract wrapper for getfire function. FireMachine is a FSM. The states of the FSM represent
-* the state of the getfire function. Each state may associate with a MetroII event and 
-* these events are supposed to be used as the interface interacting with outside. 
-* The StartOrResumable interface has to be implemented by subclass as the triggering 
-* function of the FSM, in which the transitions are going to be defined.
-* 
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+ * 
+ * FireMachine is an abstract wrapper for actors to adapt to MetroII semantics. 
+ * FireMachine wraps an actor with a set of FSM interfaces so that the actor 
+ * can be be seen as a FSM from outside. We pre-define 
+ * the following states and each state represents a state of the wrapped actor:
+ * <ol>
+ * <li> START: the initial state; </li>
+ * <li> BEGIN: before getfire() is called; </li>
+ * <li> FIRING: getfire() is being called but is interrupted by some 
+ * internal MetroII events; </li>
+ * <li> END: after getfire() completes; </li>
+ * <li> FINAL: the final state. </li>
+ * </ol>
+ * The wrapper explicitly records the current state of the FSM. The state transition
+ * is triggered by a function call to startOrResume(events) with MetroII events as the arguments.
+ * 
+ * For any concrete subclass of ActMachine, the StartOrResumable() interface has to be implemented,  
+ * in which how the FSM react to MetroII events (or in other words, the state transitions) 
+ * should be implemented. 
+ * 
+ * The difference between ActMachine (@see ActMachine) and FireMachine is that the FireMachine 
+ * only wrap the getfire() function while ActMachine also wraps prefire() and postfire(). 
+ * With a concrete implementation of StartOrResumable(), a director (usually a MetroII director) 
+ * is able to control the firing of an actor by calling StartOrResumable() with MetroII events.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
 public abstract class FireMachine implements StartOrResumable {
 
-    /** Fire state
+    /** Predefined states for the wrapped actor.
      */
     public enum State {
         START, BEGIN, PROCESS, END, FINAL
@@ -61,7 +79,7 @@ public abstract class FireMachine implements StartOrResumable {
     /**
      * Construct an FireMachine wrapper and initialize the MetroII events
      * 
-     * @param actor the actor whose getfire is to be wrapped.
+     * @param actor the actor whose getfire() is to be wrapped.
      */
     public FireMachine(Actor actor) {
         _actor = actor;

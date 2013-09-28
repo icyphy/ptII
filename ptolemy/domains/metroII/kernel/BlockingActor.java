@@ -1,4 +1,4 @@
-/* BlockingActor is a basic wrapper for Ptolemy actor.
+/* BlockingActor is a basic wrapper for Ptolemy actors to adapt to Metro semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -36,18 +36,46 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * MetroIIActorBasicWrapper is a basic wrapper for Ptolemy actor. 
- * It provides an implementation of ActMachine. More specifically, the wrapper implements a startOrResume() function 
- * that associates the state of ActMachine with the state of the wrapped actor as follows: 
+ * BlockingActor is a basic wrapper for Ptolemy actors to adapt to MetroII semantics. 
+ * BlockingActor provides an implementation of the state transitions for the abstract 
+ * wrapper ActMachine (@see ActMachine), which wraps an actor with a set of FSM 
+ * interfaces so that the actor can be seen as a FSM from outside. More specifically, 
+ * BlockingActor implements the startOrResume(event_list) function that gives how the FSM 
+ * reacts to the Metro events. 
+ * 
+ * The ActMachine has the following states. Each represents a state of the wrapped actor:
  * <ol>
- * <li> PREFIRE_BEGIN represents prefire() will be called but not yet being called. </li>
- * <li> PREFIRE_END_FIRE_BEGIN represents prefire() is called and returns true. getfire() will be called. </li>
- * <li> FIRE_END_POSTFIRE_BEGIN represents getfire() is called and returns properly. postfire() will be called.</li>
- * <li> POSTFIRE_END represents postfire() is called</li>
+ * <li> PREFIRE_BEGIN: the state before prefire() is called; </li>
+ * <li> PREFIRE_END_FIRE_BEGIN: the state after prefire() is called, returns 
+ * true and before getfire() is called; </li>
+ * <li> FIRING: the state when getfire() is being called but is interrupted by some 
+ * internal Metro events; </li>
+ * <li> FIRE_END_POSTFIRE_BEGIN: the state after getfire() completes and before 
+ * postfire() is called; </li>
+ * <li> POSTFIRE_END: the state after postfire() is called. </li>
  * </ol>
- * When startOrResume() is called, the wrapper checks if the Metro event associated with the current state is notified. 
- * If the event is notified, call related function of the wrapped actor, transition to the next state, and propose the 
- * Metro event associated with the next state. For example, 
+ *
+ * And each state is associated with a 'state event', which is the full name of the actor 
+ * without model name plus one of the following suffixes: 
+ * <ol>
+ * <li> PREFIRE_BEGIN </li>
+ * <li> FIRE_BEGIN </li>
+ * <li> FIRING </li>
+ * <li> POSTFIRE_BEGIN </li>
+ * <li> POSTFIRE_END </li>
+ * </ol>
+ * For example, 'Ramp' is the name of a top level actor in a model 'Test'. The full actor 
+ * name should be 'Test.Ramp'. The Metro event associated with the state PREFIRE_BEGIN 
+ * of the actor is 'Ramp.PREFIRE_BEGIN'. 
+ *
+ * When startOrResume(event_list) is called, the wrapper checks if the Metro event associated with 
+ * the current state is notified. If the event is notified, call related function of the 
+ * wrapped actor, transition to the next state, and propose the Metro event associated with 
+ * the next state. Otherwise stay in the current state. The 'next' state is defined as follows: 
+ * PREFIRE_BEGIN -> PREFIRE_END_FIRE_BEGIN -> FIRING -> FIRE_END_POSTFIRE_BEGIN -> POSTFIRE_END
+ * -> PREFIRE_BEGIN.
+ * 
+ * The outgoing transitions for PREFIRE_BEGIN is as follows:  
  * 
  *               guard: PREFIRE_BEGIN is notified   
  *               action: call prefire(), propose FIRE_BEGIN
@@ -57,8 +85,10 @@ import ptolemy.kernel.util.IllegalActionException;
  *               action: propose PREFIRE_BEGIN
  * PREFIRE_BEGIN ---------------------------------------> PREFIRE_BEGIN
  *  
- *  
- *
+ * 'propose' means setting the state of the Metro event to be 'PROPOSED' and adding it into 
+ * event_list (the parameter of startOrResume(event_list)). Thus the caller of startOrResume 
+ * will get a reference to the proposed event. 
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -68,7 +98,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class BlockingActor extends ActMachine {
 
-    /** Construct a basic wrapper.
+    /** Construct a basic wrapper and wrap the input actor.
      *
      * @param actor The actor
      */
@@ -80,30 +110,36 @@ public class BlockingActor extends ActMachine {
     ////                         public methods                    ////
 
     /**
-     * Dispose the current execution.
+     * Dispose the current state and reset to PREFIRE_BEGIN.
      */
     public void reset() {
         setState(State.PREFIRE_BEGIN);
     }
 
     /**
-    * The functions prefire(), fire() and postfire()
-    * are wrapped in startOrResume() as follows:
-    * <ol>
-    * <li> Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for
-    * the event being notified</li>
-    * <li> prefire() </li>
-    * <li> Propose MetroII event PREFIRE_END_FIRE_BEGIN and wait for the
-    * event being notified</li>
-    * <li> fire() </li>
-    * <li> Propose MetroII event FIRE_END_POSTFIRE_BEGIN and wait for the
-    * the event being notified</li>
-    * <li> postfire() </li>
-    * </ol>
-    * where 'wait' means checking the status of MetroII event. If notified,
-    * continue execution, otherwise proposing the same event again.
+    * When startOrResume(event_list) is called, the wrapper checks if the Metro event associated with 
+    * the current state is notified. If the event is notified, call related function of the 
+    * wrapped actor, transition to the next state, and propose the Metro event associated with 
+    * the next state. Otherwise stay in the current state. The 'next' state is defined as follows: 
+    * PREFIRE_BEGIN -> PREFIRE_END_FIRE_BEGIN -> FIRING -> FIRE_END_POSTFIRE_BEGIN -> POSTFIRE_END
+    * -> PREFIRE_BEGIN.
+    * 
+    * The outgoing transitions for PREFIRE_BEGIN is as follows:  
+    * 
+    *               guard: PREFIRE_BEGIN is notified   
+    *               action: call prefire(), propose FIRE_BEGIN
+    * PREFIRE_BEGIN ---------------------------------------> PREFIRE_END_FIRE_BEGIN
+    *  
+    *               guard: PREFIRE_BEGIN is not notified   
+    *               action: propose PREFIRE_BEGIN
+    * PREFIRE_BEGIN ---------------------------------------> PREFIRE_BEGIN
+    *  
+    * 'propose' means setting the state of the Metro event to be 'PROPOSED' and adding it into 
+    * event_list (the parameter of startOrResume(event_list)). Thus the caller of startOrResume 
+    * will get a reference to the proposed event. 
     *
-    * @param metroIIEventList A list of MetroII events.
+    * @param metroIIEventList a list of MetroII events that are proposed. It is set by startOrResume()
+    * not the caller.
     */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)

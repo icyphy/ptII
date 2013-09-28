@@ -36,15 +36,15 @@ import java.util.Hashtable;
 /** <p> EventDictionary is a dictionary that associates the event name and the event ID.
  *  The event name is the key and the event ID is the value. When a new event name is 
  *  added into the dictionary, a new id is created and associated with the added event name. </p>
-*
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+ *
+ *
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
 public class EventDictionary implements Cloneable {
 
     /**
