@@ -58,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
 *
 */
 public class MetroIICompositeActor extends TypedCompositeActor implements
-        MetroEventHandler {
+        GetFirable {
 
     /**
      * Construct a MetroIICompositeActor
@@ -172,8 +172,8 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 }
 
                 // _director.fire();
-                if (_director instanceof MetroEventHandler) {
-                    ((MetroEventHandler) _director).getfire(resultHandler);
+                if (_director instanceof GetFirable) {
+                    ((GetFirable) _director).getfire(resultHandler);
                 } else {
                     _director.fire();
                 }

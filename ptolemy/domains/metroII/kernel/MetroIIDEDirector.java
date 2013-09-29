@@ -1,4 +1,5 @@
-/*
+/* MetroIIDEDirector is a Discrete Event (DE) director that adapts to MetroII semantics.
+
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 1995-2013 The Regents of the University of California.
@@ -54,13 +55,44 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+///////////////////////////////////////////////////////////////////
+//// MetroIIDEDirector
+
+/**
+ * MetroIIDEDirector is a Discrete Event (DE) director that adapts to MetroII
+ * semantics. In DE director, events are totally ordered and executed. 
+ * In MetroIIDEDirector, these events are called Ptolemy events that are 
+ * still totally ordered. But the execution of Ptolemy events has some 
+ * variances. Typically, a Ptolemy event is associated with a fire() action 
+ * of an actor. Executing the Ptolemy event triggers the firing of 
+ * the actor. In MetroIIDEDirector, the firing has two variances, depending 
+ * on the types of the actor: 
+ * <ol>
+ * <li> If the actor is a normal Ptolemy actor, the execution of 
+ * the event instantly triggers fire() of the actor. </li>
+ * <li> If the actor is a MetroII actor, the execution of the event will 
+ * trigger a MetroII event to be PROPOSED. The firing will not be executed 
+ * until the MetroII event is NOTIFIED. </li>
+ * </ol> 
+ * A MetroII actor is one of the following actors:
+ * <ol>
+ * <li> A Ptolemy actor that is wrapped by a wrappers that implements 
+ * ActMachine (@see ActMachine) or FireMachine (@see FireMachine). </li>
+ * 
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
 public class MetroIIDEDirector extends DEDirector implements
-        MetroEventHandler {
+        GetFirable {
 
     public MetroIIDEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
         setEmbedded(false);
         _initializeParameters();
         
@@ -105,7 +137,7 @@ public class MetroIIDEDirector extends DEDirector implements
             _pendingIteration.clear();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                if (actor instanceof MetroEventHandler) {
+                if (actor instanceof GetFirable) {
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
                 }
@@ -400,7 +432,7 @@ public class MetroIIDEDirector extends DEDirector implements
                     int result = actorAndState.getSecond();
 
                     if (actorAndState.getFirst() != null
-                            && !(actorAndState.getFirst() instanceof MetroEventHandler)) {
+                            && !(actorAndState.getFirst() instanceof GetFirable)) {
 
                         Actor actorToFire = actorAndState.getFirst(); 
                         boolean refire; 

@@ -275,7 +275,7 @@ public class MetroIIDirector extends Director {
             _actorList.clear();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                if (actor instanceof MetroEventHandler) {
+                if (actor instanceof GetFirable) {
                     _actorList.add(new ResumableFire(actor));
                 } else {
                     _actorList.add(new BlockingFire(actor));

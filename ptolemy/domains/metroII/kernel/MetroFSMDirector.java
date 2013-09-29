@@ -1,4 +1,4 @@
-/* MetroFSMDirector extends FSMDirector to support Metro semantics.
+/* MetroFSMDirector extends FSMDirector to support MetroII semantics.
  
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
 ////MetroFSMDirector
 
 /** 
-* MetroFSMDirector extends FSMDirector to support Metro semantics.
+* MetroFSMDirector extends FSMDirector to support MetroII semantics.
 *
 * @author Liangpeng Guo
 * @version $Id: MetroFSMDirector.java 66808 2013-07-03 00:20:58Z glp $
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
 *
 */
 public class MetroFSMDirector extends FSMDirector implements
-        MetroEventHandler {
+        GetFirable {
 
     /**
      * Construct a MetroFSMDirector. 

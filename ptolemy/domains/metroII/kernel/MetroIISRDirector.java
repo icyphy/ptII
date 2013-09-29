@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
 // FIXME: needs a class comment.
 
 public class MetroIISRDirector extends SRDirector implements
-        MetroEventHandler {
+        GetFirable {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in

@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
 *
 */
 public class MetroSequentialSDFDirector extends SDFDirector implements
-        MetroEventHandler {
+        GetFirable {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -150,7 +150,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
             _pendingIteration.clear();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                if (actor instanceof MetroEventHandler) {
+                if (actor instanceof GetFirable) {
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
                 } else {

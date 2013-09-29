@@ -1,4 +1,4 @@
-/* Interface for MetroII event handler.
+/* Yieldadapter interface for getfire().
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -55,7 +55,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * @Pt.AcceptedRating Red (glp)
  */
 
-public interface MetroEventHandler {
+public interface GetFirable {
 
     /**
      * Return the iterator for the caller function of getfire().

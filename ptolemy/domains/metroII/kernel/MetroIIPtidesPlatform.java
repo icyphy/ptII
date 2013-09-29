@@ -558,7 +558,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      *  RecordTokens in NetworkPorts.
      */
     private class PtidesPlatformDirector extends Director implements
-            MetroEventHandler {
+            GetFirable {
 
         /** Construct an PtidesPlatformDirector in the specified workspace with
          *  no container and an empty string as a name. You can then change
@@ -874,8 +874,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
             try {
                 Director director = _getEmbeddedPtidesDirector();
-                if (director instanceof MetroEventHandler) {
-                    return ((MetroEventHandler) director).adapter();
+                if (director instanceof GetFirable) {
+                    return ((GetFirable) director).adapter();
                 }
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
@@ -890,8 +890,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
             try {
                 Director director = _getEmbeddedPtidesDirector();
-                if (director instanceof MetroEventHandler) {
-                    ((MetroEventHandler) director).getfire(resultHandler);
+                if (director instanceof GetFirable) {
+                    ((GetFirable) director).getfire(resultHandler);
                 } else {
                     director.fire();
                 }

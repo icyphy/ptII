@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
 *
 */
 public class MetroIISystemCDirector extends Director implements
-        MetroEventHandler {
+        GetFirable {
 
     /** Construct a MetroIISystemCDirector with a name and a container.
      *  The container argument must not be null, or a

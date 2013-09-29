@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 *
 */
 public class MetroModalModel extends ModalModel implements
-        MetroEventHandler {
+        GetFirable {
 
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -173,8 +173,8 @@ public class MetroModalModel extends ModalModel implements
                 }
 
                 // _director.fire();
-                if (_director instanceof MetroEventHandler) {
-                    ((MetroEventHandler) _director).getfire(resultHandler);
+                if (_director instanceof GetFirable) {
+                    ((GetFirable) _director).getfire(resultHandler);
                 } else {
                     _director.fire();
                 }
