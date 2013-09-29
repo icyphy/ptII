@@ -60,7 +60,11 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * MetroIIDEDirector is a Discrete Event (DE) director that adapts to MetroII
- * semantics. In DE director, events are totally ordered and executed. 
+ * semantics. This MoC is mainly used to design the functional model, 
+ * in which some actors can be mapped to an architectural models. This 
+ * allows users to explore choices about how the model can be implemented.
+ *  
+ * In DE director, events are totally ordered and executed. 
  * In MetroIIDEDirector, these events are called Ptolemy events that are 
  * still totally ordered. But the execution of Ptolemy events has some 
  * variances. Typically, a Ptolemy event is associated with a fire() action 
@@ -74,11 +78,22 @@ import ptolemy.kernel.util.Workspace;
  * trigger a MetroII event to be PROPOSED. The firing will not be executed 
  * until the MetroII event is NOTIFIED. </li>
  * </ol> 
- * A MetroII actor is one of the following actors:
- * <ol>
- * <li> A Ptolemy actor that is wrapped by a wrappers that implements 
- * ActMachine (@see ActMachine) or FireMachine (@see FireMachine). </li>
+ * A MetroII actor is a Ptolemy actor that implements GetFirable interface, 
+ * which includes MetroIICompositeActor. To understand MetroII event and its
+ * states (e.g. PROPOSED, WAITING, NOTIFIED), please @see MetroIIDirector. 
  * 
+ * By using a MetroII actor under the MetroIIDEDirector, the user understands 
+ * the firing of the MetroII actor might be delayed because the scheduling 
+ * is not solely determined by the MetroIIDEDirector but also determined 
+ * by MetroIIDirector on the upper level and the architectural 
+ * model which the MetroII actor is mapped onto. This introduces some 
+ * non-determinisms. But these non-determinisms are desirable and can be used 
+ * to optimize the architectures. 
+ * 
+ * It's highly recommend that the MetroIIDEDirector is NOT placed in a 
+ * MetroIICompositeActor under another MetroIIDEDirector because there would 
+ * be a semantic conflict if the enclosed MetroIIDEDirector directs a normal 
+ * Ptolemy actor.  
  * 
  * @author Liangpeng Guo
  * @version $Id$
