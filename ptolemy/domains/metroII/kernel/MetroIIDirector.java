@@ -187,6 +187,9 @@ public class MetroIIDirector extends Director {
      */
     public Parameter iterations;
 
+    /**
+     * Option parameter whether trace info is printed out.
+     */
     public Parameter printTrace;
 
     /**

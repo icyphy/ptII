@@ -105,6 +105,19 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIDEDirector extends DEDirector implements
         GetFirable {
 
+    /** Construct a director in the given container with the given
+     *  name.  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  If the name argument is
+     *  null, then the name is set to the empty string. Increment the
+     *  version number of the workspace.
+     *
+     * @param container Container of the director.
+     * @param name Name of this director. 
+     * @throws IllegalActionException If the director is not compatible
+     *   with the specified container. May be thrown in a derived class.
+     * @throws NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */
     public MetroIIDEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -138,6 +151,21 @@ public class MetroIIDEDirector extends DEDirector implements
         return newObject;
     }
 
+    /** Initialize the model controlled by this director. Call the
+     *  initialize() of super class and then wrap each actor that
+     *  is controlled by this director.
+     *
+     *  This method should typically be invoked once per execution, after the
+     *  preinitialization phase, but before any iteration. It may be
+     *  invoked in the middle of an execution, if reinitialization is
+     *  desired.
+     *
+     *  This method is <i>not</i> synchronized on the workspace,
+     *  so the caller should be.
+     *
+     *  @exception IllegalActionException If the initialize() method of
+     *   one of the associated actors throws it.
+     */
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -185,9 +213,23 @@ public class MetroIIDEDirector extends DEDirector implements
         super.stop();
     }
     
-
+    /**
+     * Option parameter whether trace info is printed out.
+     */
     public Parameter printTrace;
 
+    /**
+     * Return the actor that is about to fire and its state.
+     * 
+     * @return 0 if firing can be executed, and 
+     *  the next event in event queue should be checked for processing;
+     *  -1 if there's no actor to fire, and we should not keep firing;
+     *  1 if there's no actor to fire, but the next event should be
+     *  checked for processing.
+     * @throws IllegalActionException If the firing actor throws it, or
+     *   event queue is not ready, or an event is missed, or time is set
+     *   backwards.
+     */
     protected Pair<Actor, Integer> _checkNextActorToFire()
             throws IllegalActionException {
         // Find the next actor to be fired.
@@ -410,6 +452,19 @@ public class MetroIIDEDirector extends DEDirector implements
 
     }
 
+    /** Fire actors according to events in the event queue. Whether the actual 
+     * firing of an actor can be done also depend on the MetroII events associated 
+     * with the actor if the actor is a MetroII actor. Only when the associated 
+     * MetroII event is NOTIFIED, the firing can be executed. Otherwise the state 
+     * of the MetroII event will be checked again along with 'the next event'. Note 
+     * that 'the next event' is the next event globally, which could be either 
+     * the next event in the event queue of MetroIIDEDirector or the event in 
+     * architectural model which this model is mapped to.  
+     *  
+     *  @see #_checkNextActorToFire
+     *  @exception IllegalActionException If we couldn't process an event
+     *  or if an event of smaller timestamp is found within the event queue.
+     */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {
@@ -473,6 +528,7 @@ public class MetroIIDEDirector extends DEDirector implements
                                 _debug(new FiringEvent(this, actorToFire,
                                         FiringEvent.BEFORE_PREFIRE));
 
+//                   
 //                                if (!actorToFire.prefire()) {
 //                                    _debug("*** Prefire returned false.");
 //                                    break;
@@ -491,6 +547,7 @@ public class MetroIIDEDirector extends DEDirector implements
                                         FiringEvent.BEFORE_POSTFIRE));
 
                                 if (!actorToFire.postfire()) {
+                     
                                     _debug("*** Postfire returned false:",
                                             ((Nameable) actorToFire).getName());
 
@@ -508,6 +565,7 @@ public class MetroIIDEDirector extends DEDirector implements
                                 // list of disabled actors.
                                 if (!((CompositeEntity) getContainer())
                                         .deepContains((NamedObj) actorToFire)) {
+                     
                                     _disableActor(actorToFire);
                                     break;
                                 }
@@ -526,6 +584,7 @@ public class MetroIIDEDirector extends DEDirector implements
 
                                 // NOTE: It is the fact that we postfire actors now that makes
                                 // this director not comply with the actor abstract semantics.
+                     
                                 // However, it's quite a redesign to make it comply, and the
                                 // semantics would not be backward compatible. It really needs
                                 // to be a new director to comply.
@@ -544,6 +603,7 @@ public class MetroIIDEDirector extends DEDirector implements
                             // In theory, both are errors. One possible fix for the latter
                             // case would be to requeue the token with a larger microstep.
                             // A possible fix for the former (if we can detect it) would
+                     
                             // be to throw an exception. This would be far better than
                             // going into an infinite loop.
                             Iterator<?> inputPorts = actorToFire.inputPortList().iterator();
@@ -561,6 +621,7 @@ public class MetroIIDEDirector extends DEDirector implements
                                         }
                                         // refire only if can be scheduled.
                                         if (!_resourceScheduling ||  
+                     
                                                 _schedule(actorToFire, getModelTime())) {
                                             refire = true;
                     
@@ -667,6 +728,7 @@ public class MetroIIDEDirector extends DEDirector implements
                         //                                    refire = true;
                         //                                    _pendingIteration.put(actor.getFullName(),
                         //                                            _pendingIteration.get(actor
+                     
                         //                                                    .getFullName()) + 1);
                         //                                    break;
                         //                                }
