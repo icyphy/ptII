@@ -461,7 +461,9 @@ public class MetroIIDEDirector extends DEDirector implements
      * the next event in the event queue of MetroIIDEDirector or the event in 
      * architectural model which this model is mapped to.  
      *  
-     *  @see #_checkNextActorToFire
+     *  The time advancing is via proposing a MetroII event with time tag as its 
+     *  quantity (@see TimeScheduler). 
+     *  
      *  @exception IllegalActionException If we couldn't process an event
      *  or if an event of smaller timestamp is found within the event queue.
      */
@@ -801,9 +803,16 @@ public class MetroIIDEDirector extends DEDirector implements
         }
     }
 
+    /**
+     * Since the MetroIIDEDirector is always used inside a MetroIICompositeActor, 
+     * the adapter() in MetroIICompositeActor is responsible for creating the 
+     * iterator of getfire(), this adapter() should never be called.
+     *
+     * @return iterator
+     */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
-        // TODO Auto-generated method stub
+        assert false; 
         return null;
     }
 
@@ -834,9 +843,18 @@ public class MetroIIDEDirector extends DEDirector implements
      */
     private Hashtable<String, FireMachine> _actorDictionary = new Hashtable<String, FireMachine>();
 
+    /**
+     * The list of current live MetroII events
+     */
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 
+    /**
+     * The list of actors that are governed by MetroIIDEDirector
+     */
     private ArrayList<Actor> actorList = new ArrayList<Actor>();
 
+    /**
+     * The pending iterations for refiring actor. 
+     */
     private Hashtable<String, Integer> _pendingIteration = new Hashtable<String, Integer>();
 }

@@ -70,10 +70,30 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
  */
 public abstract class ActMachine implements StartOrResumable {
 
-    /** Actor state
+    /** 
+     * Predefined states to indicate the internal state of the wrapped actor. 
      */
     public enum State {
-        PREFIRE_BEGIN, PREFIRE_END_FIRE_BEGIN, FIRING, FIRE_END_POSTFIRE_BEGIN, POSTFIRE_END
+        /**
+         * before prefire() is called
+         */
+        PREFIRE_BEGIN, 
+        /**
+         * after prefire() is called, returns true and before getfire() is called
+         */
+        PREFIRE_END_FIRE_BEGIN, 
+        /**
+         * getfire() is being called but is interrupted by some internal MetroII events
+         */
+        FIRING, 
+        /**
+         * after getfire() completes and before postfire() is called
+         */
+        FIRE_END_POSTFIRE_BEGIN, 
+        /**
+         * after postfire() is called
+         */
+        POSTFIRE_END
     }
 
     /**
@@ -129,8 +149,9 @@ public abstract class ActMachine implements StartOrResumable {
     }
 
     /**
-     * Get the state of the wrapped actor
+     * Get the state of the wrapped actor.
      * 
+     * @see #setState
      * @return The state.
      */
     public State getState() {
@@ -138,7 +159,7 @@ public abstract class ActMachine implements StartOrResumable {
     }
 
     /**
-     * Reset the state to be PREFIRE_BEGIN
+     * Reset the state to be PREFIRE_BEGIN.
      */
     @Override
     public void reset() {
@@ -171,9 +192,10 @@ public abstract class ActMachine implements StartOrResumable {
     }
 
     /**
-     * Set the state of the wrapped actor
+     * Set the state of the wrapped actor.
      * 
-     * @param state
+     * @see #getState
+     * @param state The state to be set
      */
     protected void setState(State state) {
         _state = state;

@@ -1,4 +1,5 @@
-/*
+/* MetroIIDEDirectorForPtides is an intermediate class for MetroIIPtidesDirector to extend. 
+
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 1995-2013 The Regents of the University of California.
@@ -18,9 +19,13 @@ SUCH DAMAGE.
 
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+MERCHANTABILITY AND FITNES        
+
+S FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATI        
+
+ON TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
@@ -55,13 +60,46 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+///////////////////////////////////////////////////////////////////
+//// MetroIIDEDirectorForPtides
+
+/** 
+ * MetroIIDEDirectorForPtides is an intermediate class for MetroIIPtidesDirector 
+ * to extend. MetroIIPtidesDirector cannot extend PtidesDirector 
+ * because the super class DEDirector does not support MetroII semantics. 
+ * We choose to not extend MetroIIDEDirector either, because all the 
+ * actors under MetroIIPtidesDirector can be considered as MetroII
+ * actors. The assumption greatly simplifies the implementation. 
+ * 
+ * MetroIIDEDirectorForPtides is a much simpler version of MetroIIDEDirector 
+ * with the assumption that all the actors are MetroII actors. 
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
 public class MetroIIDEDirectorForPtides extends DEDirector implements
         GetFirable {
 
+    /** Construct a director in the given container with the given
+     *  name.  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  If the name argument is
+     *  null, then the name is set to the empty string. Increment the
+     *  version number of the workspace.
+     *
+     * @param container Container of the director.
+     * @param name Name of this director. 
+     * @throws IllegalActionException If the director is not compatible
+     *   with the specified container. May be thrown in a derived class.
+     * @throws NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */
     public MetroIIDEDirectorForPtides(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
         _initializeParameters();
     }
 
@@ -84,6 +122,24 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
         return newObject;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                    public fields                         ////
+    
+    /** Initialize the model controlled by this director. Call the
+     *  initialize() of super class and then wrap each actor that
+     *  is controlled by this director.
+     *
+     *  This method should typically be invoked once per execution, after the
+     *  preinitialization phase, but before any iteration. It may be
+     *  invoked in the middle of an execution, if reinitialization is
+     *  desired.
+     *
+     *  This method is <i>not</i> synchronized on the workspace,
+     *  so the caller should be.
+     *
+     *  @exception IllegalActionException If the initialize() method of
+     *   one of the associated actors throws it.
+     */
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -106,7 +162,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                 }
             }
         }
-
     }
 
     public static class Pair<F, S> {
@@ -131,9 +186,12 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
         }
 
         public S getSecond() {
-            return second;
+            return second;        
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                   protected fields                        ////
 
     protected Pair<PtidesEvent, Integer> _checkNextEventToFire()
             throws IllegalActionException {
@@ -145,7 +203,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
         } else {
             actorToFire = null;
         }
-
+        
         // Check whether the actor to be fired is null.
         // -- If the actor to be fired is null,
         // There are two conditions that the actor to be fired
@@ -193,7 +251,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
         // the actor to be fired is the container of this director,
         // and if so, return to give the outside domain a chance to react
         // to that event. This strategy assumed that the
-        // topological sort would always assign the composite actor the
+        // topological sort would always assign the composcannot extend PtidesDirector because ite actor the
         // lowest priority, which would guarantee that all the inside actors
         // have fired (reacted to their triggers) before the composite
         // actor is what is returned. However, the priority no longer
@@ -229,7 +287,7 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
             // Debugging. Report everything.
             // If the actor to be fired is not contained by the container,
             // it may just be deleted. Put this actor to the
-            // list of disabled actors.
+            // list of disabled actors.cannot extend PtidesDirector because 
             if (!((CompositeEntity) getContainer())
                     .deepContains((NamedObj) actorToFire)) {
                 _debug("Actor no longer under the control of this director. Disabling actor.");
@@ -363,10 +421,26 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
     }
 
-    //    public int getFiringEventSize() {
-    //        return _eventList.size(); 
-    //    }
-
+    /** 
+     * Fire actors according to Ptides events in the event queue. Whether the actual 
+     * firing of an actor can be done also depend on the MetroII events associated 
+     * with the actor if the actor is a MetroII actor. Only when the associated 
+     * MetroII event is NOTIFIED, the firing can be executed. Once a MetroII 
+     * event is executed, we check again if there are any more events could be 
+     * executed. 
+     * 
+     * getfire() starts with looking at all the Ptides events that are ready to be 
+     * processed. For each actor that is ready to fire, the startOrResume() interface 
+     * is called, which in turns calls the getfire() of the actor. These calls to 
+     * startOrResume() (yields) returns with the MetroII events that are PROPOSED. 
+     * This getfire() 'yield returns' with all these PROPOSED MetroII events. 
+     * 
+     * The getfire() normally exits when no more actors proposing MetroII events.  
+     *  
+     *  
+     *  @exception IllegalActionException If we couldn't process an event
+     *  or if an event of smaller timestamp is found within the event queue.
+     */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {
@@ -390,6 +464,8 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
                 while (true) {
                     Pair<PtidesEvent, Integer> eventAndState = _checkNextEventToFire();
+                    // TODO Auto-generated constructor stub
+
 
                     int result = eventAndState.second;
 
@@ -406,6 +482,8 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
                         _eventList.add(eventAndState.first);
                         stable = false;
+                        // TODO Auto-generated constructor stub
+
 
                         if (((BooleanToken) printTrace.getToken())
                                 .booleanValue()) {
