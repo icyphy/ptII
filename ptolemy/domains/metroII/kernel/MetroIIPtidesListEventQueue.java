@@ -45,7 +45,10 @@ import ptolemy.kernel.util.InvalidStateException;
  *  Event queue that is a linked list. This provides a totally ordered sorted event
  *  queue. It also allows all events to be accessed in the order they are sorted.
  *
- *  @author Jia Zou
+ *  This is identical to PtidesListEventQueue except receivers are mapped to 
+ *  MetroIIPtidesReceiver.
+ *
+ *  @author Jia Zou, Liangpeng Guo
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jiazou)

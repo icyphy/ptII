@@ -125,11 +125,6 @@ import ptolemy.kernel.util.Workspace;
  * NOTIFIED, otherwise the status is updated to WAITING.
  * </p>
  *
- * <p> Known issues:
- * <ol>
- * <li> the execution may not stop properly. </li>
- * </ol>
- * </p>
  *
  * @author Liangpeng Guo
  * @version $Id$

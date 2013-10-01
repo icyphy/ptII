@@ -53,8 +53,11 @@ import ptolemy.kernel.util.InternalErrorException;
  * receiver. However we still want to extend DEReceiver so that the structure
  * is uniform in that PtidesBasicDirector extends DEDirector, and PtidesBasicReceiver
  * extends DEReceiver.
+ * 
+ * This class is identical to PtidesReceiver except Ptides directors are mapped 
+ * to MetroIIPtidesDirector.
  *
- * @author Jia Zou, Slobodan Matic
+ * @author Jia Zou, Slobodan Matic, Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (jiazou)

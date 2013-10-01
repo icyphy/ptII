@@ -90,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  * non-determinisms. But these non-determinisms are desirable and can be used 
  * to optimize the architectures. 
  * 
- * It's highly recommend that the MetroIIDEDirector is NOT placed in a 
+ * It's highly recommend no to place MetroIIDEDirector in a 
  * MetroIICompositeActor under another MetroIIDEDirector because there would 
  * be a semantic conflict if the enclosed MetroIIDEDirector directs a normal 
  * Ptolemy actor.  
@@ -798,7 +798,6 @@ public class MetroIIDEDirector extends DEDirector implements
                 _debug("MetroIIDE director fired!");
             }
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

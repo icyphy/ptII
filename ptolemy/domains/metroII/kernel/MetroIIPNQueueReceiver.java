@@ -36,8 +36,14 @@ import ptolemy.data.Token;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
-// FIXME: Class Comment.  What does this class do?  Why is it necessary to subclass PNQueueReceiver.
+///////////////////////////////////////////////////////////////////
+//// MetroIIPNQueueReceiver
 
+/**
+ * 
+ * @author glp
+ *
+ */
 public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
     // FIXME: FindBugs says:

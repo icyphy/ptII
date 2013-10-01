@@ -1,4 +1,4 @@
-/* Director for MetroII compatible Synchronous Reactive semantic.
+/* MetroIISRDirector is a Synchronous Reactive (SR) director that adapts to MetroII semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -50,8 +50,34 @@ import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// MetroIISRDirector
-// FIXME: needs a class comment.
+// 
 
+/**
+ * MetroIISRDirector is a Synchronous Reactive (SR) director that adapts 
+ * to MetroII semantics. 
+ *  
+ * In MetroIISRDirector, the actor firing will first trigger a MetroII 
+ * event to be PROPOSED. The firing will not be executed until the MetroII 
+ * event is NOTIFIED. In other words, all the actors under MetroIISRDirector 
+ * are considered as MetroII actors.
+ * 
+ * By using a MetroIISRDirector, the user understands 
+ * the firing of the MetroII actor might be affected  
+ * by MetroIIDirector on the upper level and the architectural 
+ * model which the MetroII actor is mapped onto. This introduces some 
+ * non-determinisms and thus the way it reaches the fixed point depends on the 
+ * architectural implementation. The MetroIISRDirector guarantees that 
+ * the states are not updated (postfire() are not called) until the model 
+ * reaches the fixed point. These non-determinisms are desirable 
+ * and can be used to optimize the architectures. 
+
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
 public class MetroIISRDirector extends SRDirector implements
         GetFirable {
 
@@ -136,6 +162,17 @@ public class MetroIISRDirector extends SRDirector implements
                 });
     }
 
+    /**
+     * the actor firing will first trigger a MetroII 
+     * event to be PROPOSED. The firing will not be executed until the MetroII 
+     * event is NOTIFIED. In other words, all the actors under MetroIISRDirector 
+     * are considered as MetroII actors.
+     * 
+     * By using a MetroIISRDirector, the user understands 
+     * the firing of the MetroII actor might be affected  
+     * by MetroIIDirector on the upper level and the architectural 
+     * model which the MetroII actor is mapped onto.
+     */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {
@@ -205,7 +242,6 @@ public class MetroIISRDirector extends SRDirector implements
                         + iterationCount + " iterations.");
             }
         } catch (IllegalActionException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 

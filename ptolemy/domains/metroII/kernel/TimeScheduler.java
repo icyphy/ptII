@@ -35,9 +35,9 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 ///////////////////////////////////////////////////////////////////
 ////MetroIIActorGeneralWrapper
 
-/** <p>
+/** 
 * TimeScheduler is a ConstraintSolver that handles the time quantity for MetroIIDirector.
-* </p>
+* 
 *
 * @author Liangpeng Guo
 * @version $Id$

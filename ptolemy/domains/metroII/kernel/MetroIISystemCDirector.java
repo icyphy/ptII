@@ -157,7 +157,8 @@ public class MetroIISystemCDirector extends Director implements
                 ev = EventVector.parseFrom(fis);
             } finally {
                 fis.close();
-            }
+            }            // TODO Auto-generated catch block
+
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

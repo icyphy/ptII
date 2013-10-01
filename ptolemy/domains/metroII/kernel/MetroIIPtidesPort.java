@@ -51,7 +51,10 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 /** A specialized port for Ptides platform I/O implementing
  *  functionality for sensors, actuators and network ports.
  *
- *  @author Patricia Derler
+ *  This class is identical to PtidesPort except Ptides director 
+ *  is mapped to MetroIIPtidesDirector
+ *
+ *  @author Patricia Derler, Liangpeng Guo
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (derler)

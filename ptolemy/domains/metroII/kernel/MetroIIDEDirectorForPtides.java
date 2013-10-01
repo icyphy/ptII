@@ -81,7 +81,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (glp)
  *
  */
-public class MetroIIDEDirectorForPtides extends DEDirector implements
+public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         GetFirable {
 
     /** Construct a director in the given container with the given
@@ -164,6 +164,14 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
         }
     }
 
+    /**
+     * Pair is a data structure used to store two elements. 
+     * 
+     * @author Liangpeng Guo
+     *
+     * @param <F> The first element
+     * @param <S> The second element
+     */
     public static class Pair<F, S> {
         private F first; //first member of pair
         private S second; //second member of pair
@@ -193,6 +201,25 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                   protected fields                        ////
 
+    /**
+     * _checkNextEventToFire finds the next Ptides event to fire and returns it 
+     * with an integer indicating: 0 if firing can be executed, and 
+     *  the next event in event queue should be checked for processing;
+     *  -1 if there's no actor to fire, and we should not keep firing;
+     *  1 if there's no actor to fire, but the next event should be
+     *  checked for processing.
+     * 
+     * @return A pair of elements in which the first one is Ptides event safe 
+     * to be processed, the second one is the state indicating: 0 if 
+     * firing can be executed, and the next event in event queue should 
+     * be checked for processing; -1 if there's no actor to fire, 
+     * and we should not keep firing; 1 if there's no actor to fire, 
+     * but the next event should be checked for processing.
+     * 
+     * @throws IllegalActionException If the firing actor throws it, or
+     *   event queue is not ready, or an event is missed, or time is set
+     *   backwards.
+     */
     protected Pair<PtidesEvent, Integer> _checkNextEventToFire()
             throws IllegalActionException {
         // Find the next actor to be fired.
@@ -437,7 +464,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
      * 
      * The getfire() normally exits when no more actors proposing MetroII events.  
      *  
-     *  
      *  @exception IllegalActionException If we couldn't process an event
      *  or if an event of smaller timestamp is found within the event queue.
      */
@@ -457,15 +483,8 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
             do {
                 stable = true;
 
-                //if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                //    System.out.println(this.getFullName() + ": " + "Time "
-                //            + this.getModelTime());
-                //}
-
                 while (true) {
                     Pair<PtidesEvent, Integer> eventAndState = _checkNextEventToFire();
-                    // TODO Auto-generated constructor stub
-
 
                     int result = eventAndState.second;
 
@@ -482,7 +501,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
 
                         _eventList.add(eventAndState.first);
                         stable = false;
-                        // TODO Auto-generated constructor stub
 
 
                         if (((BooleanToken) printTrace.getToken())
@@ -493,9 +511,6 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                                     + eventAndState.first.actor().getName());
                         }
                     }
-                    //}
-                    // after actor firing, the subclass may wish to perform some book keeping
-                    // procedures. However in this class the following method does nothing.
                     _actorFired();
 
                     /*
@@ -582,33 +597,53 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
                 _debug("MetroIIDE director fired!");
             }
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /**
+     * Since the MetroIIDEDirectorForPtides is always used inside a MetroIICompositeActor, 
+     * the adapter() in MetroIICompositeActor is responsible for creating the 
+     * iterator of getfire(), this adapter() should never be called.
+     *
+     * @return iterator
+     */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
-        // TODO Auto-generated method stub
+        assert false; 
         return null;
     }
 
+    /**
+     * Option parameter whether trace info is printed out.
+     */
     public Parameter printTrace;
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    protected PtidesEvent _getNextEventToFire() throws IllegalActionException {
-        assert false;
-        return null;
-    }
+    /**
+     * 
+     */
+    /**
+     * Ptides director need to provide the implementation.
+     * 
+     * @return Ptides event that is safe to process
+     * @throws IllegalActionException
+     */
+    protected abstract PtidesEvent _getNextEventToFire() throws IllegalActionException ;
 
-    protected void _setLogicalTime(PtidesEvent ptidesEvent) {
-        assert false;
-    }
+    /**
+     * Ptides director need to provide the implementation.
+     * 
+     * @param ptidesEvent Ptides event the logical time is set to.
+     */
+    protected abstract void _setLogicalTime(PtidesEvent ptidesEvent);
 
-    protected void _resetLogicalTime() {
-    }
+    /**
+     * Reset the logical time.
+     */
+    protected abstract void _resetLogicalTime();
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
@@ -640,9 +675,14 @@ public class MetroIIDEDirectorForPtides extends DEDirector implements
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
 
+    /**
+     * The list of MetroII events that are currently being processed.
+     */
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 
+    /**
+     * The list of Ptides events that are currently being processed.
+     */
     protected ArrayList<PtidesEvent> _eventList = new ArrayList<PtidesEvent>();
 
-    // private Map<IOPort, Map<IOPort, Boolean>> _causalityPortTable = new HashMap<IOPort, Map<IOPort, Boolean>>();
 }

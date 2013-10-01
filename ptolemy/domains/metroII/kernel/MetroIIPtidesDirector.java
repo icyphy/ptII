@@ -1,4 +1,4 @@
-/* This director implements the MetroII compatible Ptides programming model.
+/* MetroIIPtidesDirector adapts Ptides programming model to MetroII semantics.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.
@@ -77,9 +77,11 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ * MetroIIPtidesDirector adapts Ptides programming model to MetroII semantics.
+ * 
+ * Most methods are identical to PtidesDirector except
  *
- *
- *  @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou
+ *  @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou, Liangpeng Guo
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *
@@ -383,6 +385,13 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return super.getMicrostep();
     }
 
+    /**
+     * Calculate the minimal delay in logical time between two ports.
+     * 
+     * @param ports1 The source port. 
+     * @param ports2 The sink port.
+     * @return The minimal delay between the two ports.
+     */
     public double minDelayBetween(Collection<IOPort> ports1, Collection<IOPort> ports2) {
         double minDelay = Time.POSITIVE_INFINITY.getDoubleValue();
         for (IOPort p1 : ports1) {
@@ -397,6 +406,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return minDelay; 
     }
     
+    /**
+     * Calculate whether Ptides event e1 could possibly affect Ptides event e2. 
+     * 
+     * @param e1 The first Ptides event. 
+     * @param e2 The second Ptides event.
+     * @return True if e1 could causally affect e2; false otherwise.
+     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     */
     public boolean causallyAffect(PtidesEvent e1, PtidesEvent e2)
             throws IllegalActionException {
 
@@ -445,6 +462,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
+    /**
+     * Calculate whether any Ptides event in eventArray could causally affect event. 
+     * 
+     * @param eventArray A collection of Ptides event
+     * @param event An event
+     * @return True if any event in eventArray could causally affect event; false otherwise.
+     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     */
     public boolean isCausallyAffected(Collection<PtidesEvent> eventArray,
             PtidesEvent event) throws IllegalActionException {
         for (PtidesEvent e : eventArray) {
@@ -455,11 +480,25 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return false;
     }
 
+    /**
+     * Calculate whether any Ptides event currently being processed could causally affect event. 
+     * 
+     * @param event An event 
+     * @return True if any event currently being processed could causally affect event; false otherwise.
+     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     */
     public boolean isFiringEventCausallyAffect(PtidesEvent event)
             throws IllegalActionException {
         return isCausallyAffected(_eventList, event);
     }
 
+    /**
+     * Calculate whether any Ptides event pending could causally affect event. 
+     * 
+     * @param event A Ptides event
+     * @return True if any pending Ptides event could causally affect event; false otherwise.
+     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     */
     public boolean isPendingEventCausallyAffect(PtidesEvent event)
             throws IllegalActionException {
         ArrayList<PtidesEvent> eventArray = new ArrayList<PtidesEvent>(
@@ -477,6 +516,11 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return isCausallyAffected(eventArray.subList(0, eventId), event);
     }
 
+    /**
+     * Before super.getfire() is called, transfer all input events that are ready are
+     * transferred. After super.getfire() is called, transfer all output events that
+     * are ready are transferred.
+     */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
 
@@ -893,12 +937,18 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return null;
     }
 
+    /**
+     * Set logical time to that of the ptidesEvent
+     */
     protected void _setLogicalTime(PtidesEvent ptidesEvent) {
         _currentLogicalTime = ptidesEvent.timeStamp();
         _currentLogicalIndex = ptidesEvent.microstep();
         _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
     }
 
+    /**
+     * reset logical time to null.
+     */
     protected void _resetLogicalTime() {
         _currentLogicalTime = null;
     }
@@ -1722,11 +1772,29 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /**
+     * 
+     */
     private double _clockSynchronizationErrorBound;
+    
+    /**
+     * Current logical time.
+     */
     private Time _currentLogicalTime;
+    
+    /**
+     * Current source time stamp.
+     */
     private Time _currentSourceTimestamp;
+    
+    /**
+     * current logical index.
+     */
     private int _currentLogicalIndex;
 
+    /**
+     * Input event queue.
+     */
     private HashMap<Time, List<PtidesEvent>> _inputEventQueue;
 
     /** Connected input ports for an input port which may produce a pure
@@ -1739,10 +1807,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      */
     private Map<TypedIOPort, Double> _relativeDeadlineForPureEvent;
 
+    /** Deadline for event at ptides output ports. 
+     */
     private HashMap<Time, List<PtidesEvent>> _outputEventQueue;
 
+    /**
+     * 
+     */
     private HashMap<MetroIIPtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
+    /** Separate event queue for pure events. 
+     */
     private DEEventQueue _pureEvents;
 
 }

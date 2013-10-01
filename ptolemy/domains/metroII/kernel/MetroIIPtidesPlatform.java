@@ -89,8 +89,12 @@ import ptolemy.kernel.util.Workspace;
  *
  *  FIXME: The base class seems to have some support for
  *  ParameterPorts but nothing that really works?
+ *  
+ *  This class is identical to PtidesPlatform except ports are mapped 
+ *  to MetroIIPtidesPort, composite actors are mapped to MetroIICompositeActor, 
+ *  and Ptides director is mapped to MetroIIPtidesDirector
  *
- * @author Patricia Derler
+ * @author Patricia Derler, Liangpeng Guo
    @version $Id$
    @since Ptolemy II 0.2
 

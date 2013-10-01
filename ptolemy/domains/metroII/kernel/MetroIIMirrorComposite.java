@@ -59,10 +59,14 @@ import ptolemy.moml.HandlesInternalLinks;
 //// MirrorComposite
 
 /**
+ * 
  A composite that contain one actor and mirror the ports and
  parameters of that actor.
+ 
+  This class is duplicate of MirrorComposite except it extends 
+  MetroIICompositeActor instead of CompositeActor.
 
- @author Edward A. Lee
+ @author Edward A. Lee, Liangpeng Guo
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
