@@ -366,7 +366,22 @@ public class FileUtilities {
         File file = new File(name);
 
         if (file.isAbsolute()) {
+        	// If the URL has a "fragment" (also called a reference), which is
+        	// a pointer into the file, we have to strip that off before we
+        	// get the file, and the reinsert it before returning the URL.
+        	String fragment = null;
             if (!file.canRead()) {
+            	
+            	// FIXME: Need to strip off the fragment part
+            	// (the "reference") of the name (after the #),
+            	// if there is one, and add it in again by calling set()
+            	// on the URL at the end.
+            	String[] splitName = name.split("#");
+            	if (splitName.length > 1) {
+            		name = splitName[0];
+            		fragment = splitName[1];
+            	}
+            	
                 // FIXME: This is a hack.
                 // Expanding the configuration with Ptolemy II installed
                 // in a directory with spaces in the name fails on
@@ -397,7 +412,11 @@ public class FileUtilities {
                 }
             }
 
-            return file.toURI().toURL();
+            URL result = file.toURI().toURL();
+            if (fragment != null) {
+            	result = new URL(result.toString() + "#" + fragment);
+            }
+            return result;
         } else {
             // Try relative to the base directory.
             if (baseDirectory != null) {
