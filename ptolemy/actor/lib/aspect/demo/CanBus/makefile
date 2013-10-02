@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II actor.lib.net Datagram demo 
+# Makefile for Ptolemy II aspect oriented CanBus demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2011 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -53,7 +53,6 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	CanBus.xml \
 	CanBusVariousCollisions.xml
-
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
