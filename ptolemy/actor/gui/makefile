@@ -147,11 +147,10 @@ JSRCS = \
 	PtolemyQuery.java \
 	PtolemyTableauFactory.java \
 	PtolemyFrame.java \
-	PtolemyPreferences.java \ 
+	PtolemyPreferences.java \
 	QueryUtilities.java \
 	RenameConfigurer.java \
 	RenameDialog.java \
-	ResourceSchedulePlotterEditorFactory.java \
 	RunTableau.java \
 	SizeAttribute.java \
 	TableauFrame.java \
