@@ -51,8 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CompositeQM.xml
-
+	CompositeQM.xml \
+	CheckExecutionTimeConstraints.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

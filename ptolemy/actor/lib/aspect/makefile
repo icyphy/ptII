@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II scripting actors
+# Makefile for Ptolemy II aspect oriented programming actors.
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011-2013 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/aspect
 
-DIRS = 		demo #test
+DIRS = 		demo test
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -57,6 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 	CommunicationRequestPortIcon.xml \
 	CommunicationResponsePortIcon.xml \
 	CompositeCommunicationAspectIcon.xml \
+	CompositeExecutionAspectIcon.xml \
 	CrossbarSwitchIcon.xml \
 	DynamicCoreAssignmentSchedulerIcon.xml \
 	EDFSchedulerIcon.xml \
@@ -71,12 +72,14 @@ OTHER_FILES_TO_BE_JARED = \
 JSRCS = \
 	AFDXESs.java \
 	AFDXSwitch.java \
+	AFDXVlCfg.java \
 	AFDXVlink.java \
 	AtomicCommunicationAspect.java \
 	AtomicExecutionAspect.java \
 	BasicSwitch.java \
 	Bus.java \
 	CanBus.java \
+	CanBusPriority.java \
 	CommunicationRequestPort.java \
 	CommunicationResponsePort.java \
 	CompositeCommunicationAspect.java \
@@ -97,12 +100,19 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = #test
+MISC_FILES = test doc-files
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo
+	demo \
+	'AFDXESs$$AFDXESsAttributes.class' \
+	'AFDXSwitch$$AfdxSwitchAttributes.class' \
+	'BasicSwitch$$BasicSwitchAttributes.class' \
+	'Bus$$BusAttributes.class' \
+	'CanBus$$CanBusAttributes.class' \
+	'CompositeCommunicationAspect$$CompositeCommunicationAspectAttributes.class' \
+	'CompositeExecutionAspect$$CompositeExecutionAspectAttributes.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
