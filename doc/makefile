@@ -575,7 +575,7 @@ ALLPACKAGES = \
 	org.ptolemy.machineImprovisation \
 	org.ptolemy.machineLearning.hmm \
 	ptolemy.actor.process \
-	ptolemy.actor.lib.anomaly \
+	ptolemy.actor.lib.aspect \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.qm \
 	ptolemy.actor.lib.resourceScheduler \

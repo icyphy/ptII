@@ -193,6 +193,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/gt"/>
             <file src="../../jar_dist/ptolemy/actor/gt/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/gt/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/aspect/aspect.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/aspect"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/aspect/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/aspect/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/colt.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/demo/demo.jar"

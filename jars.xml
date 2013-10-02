@@ -42,6 +42,8 @@
     <include name="ptolemy/actor/gui/jnlp/SpaceApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.jar" />
     <include name="ptolemy/actor/gui/run/run.jar" />
+    <include name="ptolemy/actor/lib/aspect/aspect.jar" />
+    <include name="ptolemy/actor/lib/aspect/demo/demo.jar" />
     <include name="ptolemy/actor/lib/colt/colt.jar" />
     <include name="ptolemy/actor/lib/colt/demo/demo.jar" />
     <include name="ptolemy/actor/lib/comm/demo/demo.jar" />
@@ -3987,6 +3989,27 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="doc/codeDocVisualSense/**"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/aspect/aspect.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/aspect/aspect.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/aspect/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/aspect/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/aspect/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/aspect/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/aspect/demo/*/*.xml"/>
       </fileset>
     </jar>
 
