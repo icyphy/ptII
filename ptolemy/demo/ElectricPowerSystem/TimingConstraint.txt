@@ -1,0 +1,6 @@
+Cost constraint given in English
+--------------------------------
+
+* Contactor responds within 0.5 seconds to fault signal.
+* Contactor responds within 0.5 seconds to onOff signal.
+* Feedback control latency is 0.1 seconds.

@@ -1,0 +1,4 @@
+Cost constraint given in English
+--------------------------------
+
+Sum of component costs must not exceed $100.

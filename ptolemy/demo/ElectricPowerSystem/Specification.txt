@@ -1,0 +1,16 @@
+Specification for Supervisory Controller
+----------------------------------------
+
+The specification in ordinary English:
+  - with translations into local terminology.
+
+If fault occurs, open contactor within X time regardless of other inputs and leave open (no reset)
+  - fault == true => contactor == false within X time
+If switch is on, close contactor within Y1 time
+  - onOff == true => contactor == true within Y1 time
+If switch is off, open contactor within Y2 time
+  - onOff == false => contactor == false within Y2 time
+If input > threshold for Z1 time, fault output = true
+  - voltage > threshold for Z1 time => fault == true
+If input < threshold for Z2 time, fault output = false
+  - voltage < threshold for Z2 time => fault == false
