@@ -577,8 +577,6 @@ ALLPACKAGES = \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
 	ptolemy.actor.lib.net \
-	ptolemy.actor.lib.qm \
-	ptolemy.actor.lib.resourceScheduler \
 	ptolemy.actor.lib.video \
 	ptolemy.actor.lib.vhdl \
 	ptolemy.caltrop \
