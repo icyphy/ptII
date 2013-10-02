@@ -938,7 +938,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Set logical time to that of the ptidesEvent
+     * Set logical time to that of the ptidesEvent.
      */
     protected void _setLogicalTime(PtidesEvent ptidesEvent) {
         _currentLogicalTime = ptidesEvent.timeStamp();

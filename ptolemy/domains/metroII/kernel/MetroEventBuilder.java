@@ -49,8 +49,10 @@ public class MetroEventBuilder {
      * Construct an event builder.
      */
     public MetroEventBuilder() {
-        // TODO Auto-generated constructor stub
-    }
+     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Convert a time value from one resolution to another resolution.

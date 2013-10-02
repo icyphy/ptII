@@ -55,8 +55,9 @@ import ptolemy.kernel.util.IllegalActionException;
 public class NonBlockingFire extends FireMachine {
 
     /**
-     * Construct a NonBlocingfire by wrapping the actor
-     * @param actor Actor to be wrapped
+     * Construct a NonBlocingfire by wrapping the actor.
+     * 
+     * @param actor actor to be wrapped.
      */
     public NonBlockingFire(Actor actor) {
         super(actor);
@@ -64,7 +65,10 @@ public class NonBlockingFire extends FireMachine {
 
     /**
      * if the current state is START, call fire() of the wrapped actor, 
-     * and transition to FINAL
+     * and transition to FINAL.
+     * 
+     * @param metroIIEventList the list of MetroII events that trigger 
+     * startOrResume().
      */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -74,7 +78,6 @@ public class NonBlockingFire extends FireMachine {
             setState(State.FINAL);
         } 
         else {
-            // invalid state; 
             assert false; 
         }
     }

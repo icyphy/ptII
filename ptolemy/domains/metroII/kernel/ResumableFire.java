@@ -103,6 +103,8 @@ public class ResumableFire extends FireMachine {
     * continue execution, otherwise proposing the same event again.
     *
     * @param metroIIEventList A list of MetroII events.
+     * @throws throws IllegalActionException if the associated action (e.g. firing) 
+     * is not permitted.
     */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -184,7 +186,7 @@ public class ResumableFire extends FireMachine {
     ////                   protected fields                        ////
 
     /**
-     * Thread that is firing the actor
+     * YieldAdapterIterator that is used to trigger actions of the wrapped actor.
      */
     protected YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
 

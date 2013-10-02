@@ -41,7 +41,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 ///////////////////////////////////////////////////////////////////
 //// MappingConstraintSolver
 
-/** <p> The constraint solver is used to enforce the user defined
+/** The constraint solver is used to enforce the user defined
  *  constraints on the scheduling via updating the event status. The
  *  mapping constraint solver is used to update the event status based
  *  on mapping constraints. The mapping constraint is a type of
@@ -50,10 +50,8 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  *  precisely, the mapping constraint is satisfied when both events
  *  are in presence. An event status is updated to
  *  NOTIFIED when it satisfies all the constraints. Otherwise the
- *  event status is updated to WAITING. </p>
- *
- *  <p>
- *  The mapping constraint resolution has three steps:</p>
+ *  event status is updated to WAITING.
+ *  The mapping constraint resolution has three steps:
  *  <ol>
  *  <li> Step 1: reset() is called to initialize the solver. </li>
  *  <li> Step 2: presentMetroIIEvent(event id) is called for each
@@ -62,7 +60,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  *  returns true if the event satisfies all the mapping
  *  constraints. </li>
  *  </ol>
- *  </p>
+ * 
  *
  * @author Liangpeng Guo
  * @version $Id$
@@ -79,9 +77,11 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
     
     /**
-     * Clone MappingConstraintSolver
-     * @throws CloneNotSupportedException 
+     * Clone MappingConstraintSolver.
+     * 
+     * @throws CloneNotSupportedException the object's class does not implement the Cloneable interface.
      */
+    @Override
     public MappingConstraintSolver clone() throws CloneNotSupportedException {
         MappingConstraintSolver newObject = (MappingConstraintSolver) super.clone(); 
         // FIXME: I'm not sure if we want to call clone like this.  Typically, we
@@ -96,6 +96,9 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         return newObject; 
         
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the adjacency matrix of mapping constraints as a 
      *  string.
@@ -114,14 +117,14 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * turn on debugging option
+     * Turn on debugging option.
      */
     public void turnOnDebugging() {
         _debugging = true;
     }
 
     /**
-     * turn off debugging option
+     * Turn off debugging option.
      */
     public void turnOffDebugging() {
         _debugging = false;
@@ -199,8 +202,8 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Return the number of mapping constraints
-     * @return the number of mapping constraints
+     * Return the number of mapping constraints.
+     * @return the number of mapping constraints.
      */
     public int numConstraints() {
         return _mapping.edgeSize();
@@ -214,9 +217,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Read mapping constraints from a file
+     * Read mapping constraints from a file.
+     * 
      * @param filename Filename of the mapping constraint file.
-     * @exception IOException
+     * @exception IOException a failed or interrupted I/O operations has occurred.
      */
     public void readMapping(String filename) throws IOException {
         FileInputStream stream = new FileInputStream(filename);
@@ -235,9 +239,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Add a mapping constraint
-     * @param eventName1 first event in the mapping
-     * @param eventName2 second event in the mapping
+     * Add a mapping constraint.
+     * 
+     * @param eventName1 first event in the mapping.
+     * @param eventName2 second event in the mapping.
      */
     public void addMapping(String eventName1, String eventName2) {
         _eventIDDictionary.add(eventName1);

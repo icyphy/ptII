@@ -192,20 +192,37 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     
     /**
-     *  @return True if port is an actuator port.
+     * Returns true if this object is actuator port.
+     * 
+     *  @return true if port is an actuator port.
      */
     public boolean isActuatorPort() {
         return isOutput() && !_isNetworkPort;
     }
 
+    /**
+     * Returns true if this object is sensor port.
+     * 
+     * @return true if this object is sensor port.
+     */
     public boolean isSensorPort() {
         return isInput() && !_isNetworkPort;
     }
 
+    /**
+     * Returns true if this object is network receiver port.
+     * 
+     * @return true if this object is network receiver port.
+     */
     public boolean isNetworkReceiverPort() {
         return isInput() && _isNetworkPort;
     }
 
+    /**
+     * Returns true if this object is network transmitter port.
+     * 
+     * @return true if this object is network transmitter port.
+     */
     public boolean isNetworkTransmitterPort() {
         return isOutput() && _isNetworkPort;
     }

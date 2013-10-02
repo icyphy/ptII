@@ -73,6 +73,9 @@ public class ResumableActor extends ActMachine {
      *
      * @param metroIIEventList the list of MetroII events getfire()
      * returns.
+     * 
+     * @throws throws IllegalActionException if the associated action (e.g. firing) 
+     * is not permitted.
      */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -161,7 +164,7 @@ public class ResumableActor extends ActMachine {
     ////                   protected fields                        ////
 
     /**
-     * Thread that is firing the actor
+     * YieldAdapterIterator that is used to trigger actions of the wrapped actor.
      */
     protected YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
 

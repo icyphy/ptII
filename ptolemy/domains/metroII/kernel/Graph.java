@@ -30,7 +30,7 @@ package ptolemy.domains.metroII.kernel;
 import java.util.ArrayList;
 
 ///////////////////////////////////////////////////////////////////
-////Graph
+//// Graph
 
 /**
 * 
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 public class Graph implements Cloneable {
 
     /**
-     * Construct a linked list
+     * Construct a linked list.
      */
     public Graph() {
         _nodeConnection = new ArrayList<ArrayList<Integer>>();
@@ -57,8 +57,11 @@ public class Graph implements Cloneable {
     ////                         public methods                    ////
 
     /**
-     * Clone the linked list
+     * Clone the linked list.
+     *
+     * @throws CloneNotSupportedException the object's class does not implement the Cloneable interface.
      */
+    @Override
     public Graph clone() throws CloneNotSupportedException {
         Graph newObject = (Graph) super.clone(); 
         newObject._nodeConnection = (ArrayList<ArrayList<Integer>>) _nodeConnection.clone(); 
@@ -136,16 +139,16 @@ public class Graph implements Cloneable {
 
     /**
      * Return the size of edges.
-     * @return the size of edges
+     * @return the size of edges.
      */
     public int edgeSize() {
         return _edge.size();
     }
 
     /**
-     * Get the edge with the given edge ID
-     * @param edgeId the edge Id
-     * @return the edge
+     * Get the edge with the given edge ID.
+     * @param edgeId the edge Id.
+     * @return the edge.
      */
     public Pair<Integer, Integer> getEdge(int edgeId) {
         return _edge.get(edgeId);

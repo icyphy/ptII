@@ -61,14 +61,14 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
         GetFirable {
 
     /**
-     * Construct a MetroIICompositeActor
+     * Construct a MetroIICompositeActor.
      */
     public MetroIICompositeActor() {
-        // TODO Auto-generated constructor stub
     }
 
     /**
-     * Construct a MetroIICompositeActor based on a given worksapce
+     * Construct a MetroIICompositeActor based on a given worksapce.
+     * 
      *  @param workspace The workspace for this object.
      */
     public MetroIICompositeActor(Workspace workspace) {
@@ -76,9 +76,10 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     }
 
     /**
-     * Construct a MetroIICompositeActor based on a given container and a name
-     *  @param container Container of the director.
-     *  @param name Name of this director.
+     * Construct a MetroIICompositeActor based on a given container and a name.
+     * 
+     *  @param container container of the director.
+     *  @param name name of this director.
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.  May be thrown in a derived class.
      *  @exception NameDuplicationException If the container is not a
@@ -89,8 +90,13 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
-     * YieldAdapter interface
+     * Return the iterator for the caller function of getfire().
+     *
+     * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()

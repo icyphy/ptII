@@ -149,7 +149,9 @@ public class MetroIISRDirector extends SRDirector implements
     ////                         public methods                    ////
 
     /**
-     * YieldAdapter interface.
+     * Return the iterator for the caller function of getfire().
+     *
+     * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()

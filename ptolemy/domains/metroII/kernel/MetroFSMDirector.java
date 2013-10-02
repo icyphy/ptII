@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-////MetroFSMDirector
+//// MetroFSMDirector
 
 /** 
 * MetroFSMDirector extends FSMDirector to support MetroII semantics.
@@ -71,7 +71,8 @@ public class MetroFSMDirector extends FSMDirector implements
     }
 
     /**
-     * Construct a MetroFSMDirector based on a given container and a name
+     * Construct a MetroFSMDirector based on a given container and a name.
+     * 
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
@@ -84,8 +85,13 @@ public class MetroFSMDirector extends FSMDirector implements
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
-     * YieldAdapter interface
+     * Return the iterator for the caller function of getfire().
+     *
+     * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
@@ -146,7 +152,6 @@ public class MetroFSMDirector extends FSMDirector implements
             try {
                 super.fire();
             } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

@@ -49,8 +49,8 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  */
 public interface ConstraintSolver {
     /**
-     * Update the MetroII events in the specified list
-     * @param metroIIEventList A list of MetroII events to be updated
+     * Update the MetroII events in the specified list.
+     * @param metroIIEventList a list of MetroII events to be updated.
      */
     public void resolve(Iterable<Event.Builder> metroIIEventList);
 }

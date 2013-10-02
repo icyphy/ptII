@@ -48,15 +48,18 @@ import java.util.Hashtable;
 public class EventDictionary implements Cloneable {
 
     /**
-     * Construct an EventDictionary
+     * Construct an EventDictionary.
      */
     public EventDictionary() {
         _eventName2ID = new Hashtable<String, Integer>();
     }
 
     /**
-     * Clone an EventDictionary
+     * Clone an EventDictionary.
+     * 
+     * @throws CloneNotSupportedException the object's class does not implement the Cloneable interface.
      */
+    @Override
     public EventDictionary clone() throws CloneNotSupportedException {
         EventDictionary newObject = (EventDictionary) super.clone();
         newObject._eventName2ID = (Hashtable<String, Integer>) _eventName2ID

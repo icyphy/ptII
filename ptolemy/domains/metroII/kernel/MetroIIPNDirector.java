@@ -69,13 +69,13 @@ import ptolemy.kernel.util.Workspace;
  * receiver. Similarly, the actor is blocked until 'Put.Begin' is
  * NOTIFIED. </p>
  *
- * Known issue: threads created by Yieldadapter correctly stop but
+ * <p> Known issue: threads created by Yieldadapter correctly stop but
  * the ones created by ProcessDirector do not. It seems stop() is
  * called for each thread in ProcessDirector.stop() but no effect
  * can be observed. Don't know why.
- * BTW, stop() is a deprecated function in java.
+ * BTW, stop() is a deprecated function in java. </p>
  *
- *
+ * <p> The implementation is obsolete and needs to be updated. </p>
  *
  * @author Liangpeng Guo
  * @version $Id$
@@ -107,9 +107,12 @@ public class MetroIIPNDirector extends PNDirector implements
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Clone the director into the specified workspace.
      *  @param workspace The workspace for the new object.
-     *  @return A new actor.
+     *  @return a new MetroIIPNDirector.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
@@ -149,14 +152,17 @@ public class MetroIIPNDirector extends PNDirector implements
 
     /**
      * Add a proposed MetroII event into the director's event list.
-     * @param e
+     * 
+     * @param e the event to be added.
      */
     public synchronized void addProposedMetroIIEvent(Event.Builder e) {
         _proposedMetroIIEventList.add(e);
     }
 
     /**
-     * Implement YieldAdapter interface.
+     * Return the iterator for the caller function of getfire().
+     *
+     * @return iterator the iterator for the caller function of getfire()
      */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {

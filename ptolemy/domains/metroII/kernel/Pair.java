@@ -50,32 +50,40 @@ public class Pair<F, S> {
     }
     
     /**
-     * Set the first element
-     * @param first Value to be assigned to the first element
+     * Set the first element.
+     * @param first Value to be assigned to the first element.
+     * 
+     * @see #getFirst
      */
     public void setFirst(F first) {
         this.first = first;
     }
 
     /**
-     * Set the second element
-     * @param second Value to be assigned to the second element
+     * Set the second element.
+     * @param second Value to be assigned to the second element.
+     * 
+     * @see #getSecond
      */
     public void setSecond(S second) {
         this.second = second;
     }
 
     /**
-     * Get the first element
+     * Get the first element.
      * @return The first element in the pair.
+     * 
+     * @see #setFirst
      */
     public F getFirst() {
         return first;
     }
 
     /**
-     * Get the second element
+     * Get the second element.
      * @return The second element in the pair.
+     * 
+     * @see #setSecond
      */
     public S getSecond() {
         return second;
@@ -85,12 +93,12 @@ public class Pair<F, S> {
     ////                         private fields                    ////
 
     /**
-     * First element of the pair
+     * First element of the pair.
      */
     private F first;
     
     /**
-     * Second element of the pair
+     * Second element of the pair.
      */
     private S second; 
 

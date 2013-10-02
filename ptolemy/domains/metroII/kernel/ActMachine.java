@@ -75,23 +75,23 @@ public abstract class ActMachine implements StartOrResumable {
      */
     public enum State {
         /**
-         * before prefire() is called
+         * The state before prefire() is called.
          */
         PREFIRE_BEGIN, 
         /**
-         * after prefire() is called, returns true and before getfire() is called
+         * The state after prefire() is called, returns true and before getfire() is called.
          */
         PREFIRE_END_FIRE_BEGIN, 
         /**
-         * getfire() is being called but is interrupted by some internal MetroII events
+         * The state when getfire() is being called but is interrupted by some internal MetroII events.
          */
         FIRING, 
         /**
-         * after getfire() completes and before postfire() is called
+         * The state after getfire() completes and before postfire() is called.
          */
         FIRE_END_POSTFIRE_BEGIN, 
         /**
-         * after postfire() is called
+         * The state after postfire() is called.
          */
         POSTFIRE_END
     }

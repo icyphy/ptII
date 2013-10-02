@@ -1,4 +1,4 @@
-/* Yieldadapter interface for getfire().
+/* GetFirable is the Yieldadapter interface for actors.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -33,8 +33,11 @@ import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 
+///////////////////////////////////////////////////////////////////
+//// GetFirable
+
 /**
- * Yieldadapter interface for getfire(), Any class implementing
+ * GetFirable is the Yieldadapter interface for actors. Any class implementing
  * this interface has the ability to 'yield return' in getfire()
  * by calling 'resultHandler.handleResult(events)'.
  *
@@ -43,7 +46,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * time YieldAdapterIterable.next() is called, getfire()
  * starts or resumes from the last execution and runs until the
  * next 'yield return' or 'return'. YieldAdapterIterable.next()
- * returns an iterable<Event.Builder>, which is the list of
+ * returns an iterable, which is the list of
  * events passed by 'resultHandler.handleResult(events)'. If
  * YieldAdapterIterable.hasNext() returns false, it means
  * getfire() has reached 'return' and terminated.
@@ -60,7 +63,7 @@ public interface GetFirable {
     /**
      * Return the iterator for the caller function of getfire().
      *
-     * @return iterator
+     * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter();
 
@@ -68,7 +71,7 @@ public interface GetFirable {
      * An implementation of getfire() has the ability to 'yield return'
      * in getfire() by calling 'resultHandler.handleResult(events)'.
      *
-     * @param resultHandler Iterable of events 'yield returned'
+     * @param resultHandler iterable of events 'yield returned'.
      * @exception CollectionAbortedException
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)

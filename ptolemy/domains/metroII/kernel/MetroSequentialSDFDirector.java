@@ -163,7 +163,9 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
     }
 
     /**
-     * YieldAdapter interface
+     * Return the iterator for the caller function of getfire().
+     *
+     * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()

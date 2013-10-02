@@ -31,7 +31,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 
 ///////////////////////////////////////////////////////////////////
-////MetroDebugger
+//// MetroDebugger
 
 /** 
  * MetroDebugger is a debugging facility for Metro directors. 
@@ -50,28 +50,35 @@ public class MetroDebugger implements Cloneable {
      * Construct a MetroDebugger with no info printed by default.
      */
     public MetroDebugger() {
-        // TODO Auto-generated constructor stub
         turnOffDebugging();
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
-     * Clone a MetroDebugger
+     * Clone a MetroDebugger.
+     * 
+     * @throws CloneNotSupportedException the object's class does not implement the Cloneable interface.
      */
+    @Override
     public MetroDebugger clone() throws CloneNotSupportedException {
         MetroDebugger newObject = (MetroDebugger) super.clone(); 
         return newObject; 
     }
 
     /**
-     * Set the string to be printed out at the beginning of each line
-     * @param prefix Prefix string of each line 
+     * Set the string to be printed out at the beginning of each line.
+     * 
+     * @param prefix prefix string of each line .
      */
     public void setPrefix(String prefix) {
         _prefix = prefix;
     }
 
     /**
-     * Return whether debugging info is being printed
+     * Return whether debugging info is being printed.
+     * 
      * @return whether debugging info is being printed.
      */
     public boolean debugging() {
@@ -93,8 +100,9 @@ public class MetroDebugger implements Cloneable {
     }
 
     /**
-     * Print out a title
-     * @param title the title to be printed out
+     * Print out a title.
+     * 
+     * @param title the title to be printed out.
      */
     public void printTitle(String title) {
         if (!_debugging) {
@@ -104,8 +112,9 @@ public class MetroDebugger implements Cloneable {
     }
 
     /**
-     * Print out text
-     * @param text the text to be printed out
+     * Print out text.
+     * 
+     * @param text the text to be printed out.
      */
     public void printText(String text) {
         if (!_debugging) {
@@ -115,8 +124,9 @@ public class MetroDebugger implements Cloneable {
     }
 
     /**
-     * Print out the details o Must be slow witted tof a Metro event
-     * @param event the event to be printed out
+     * Print out the details of a MetroII event.
+     * 
+     * @param event the event to be printed out.
      */
     public void printMetroEvent(Builder event) {
         if (!_debugging) {
@@ -136,8 +146,9 @@ public class MetroDebugger implements Cloneable {
     }
 
     /**
-     * Print out the details of a list of Metro events
-     * @param metroIIEventList the event list
+     * Print out the details of a list of MetroII events.
+     * 
+     * @param metroIIEventList the event list.
      */
     public void printMetroEvents(Iterable<Builder> metroIIEventList) {
         if (!_debugging) {
@@ -151,8 +162,9 @@ public class MetroDebugger implements Cloneable {
     }
 
     /**
-     * Print out the details of notified events in a list
-     * @param metroIIEventList the event list 
+     * Print out the details of notified events in a list.
+     * 
+     * @param metroIIEventList the event list.
      */
     public void printNotifiedMetroEvents(Iterable<Builder> metroIIEventList) {
         if (!_debugging) {
@@ -165,13 +177,16 @@ public class MetroDebugger implements Cloneable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                    private fields                         ////
+
     /**
-     * Prefix of each line
+     * Prefix of each line.
      */
     private String _prefix = "DEBUG: ";
 
     /**
-     * Whether the debugging info is printed 
+     * Whether the debugging info is printed.d
      */
     private boolean _debugging = false;
 

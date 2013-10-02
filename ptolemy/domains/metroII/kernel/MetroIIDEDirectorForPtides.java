@@ -173,29 +173,69 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
      * @param <S> The second element
      */
     public static class Pair<F, S> {
-        private F first; //first member of pair
-        private S second; //second member of pair
-
+        /**
+         * Construct a pair of elements. 
+         * 
+         * @param first the first element.
+         * @param second the second element.
+         */
         public Pair(F first, S second) {
             this.first = first;
             this.second = second;
         }
 
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /**
+         * Set the first element in the pair. 
+         * 
+         * @param first the element to be set.
+         */
         public void setFirst(F first) {
             this.first = first;
         }
 
+        /**
+         * Set the second element in the pair. 
+         * 
+         * @param second the element to be set.
+         */
         public void setSecond(S second) {
             this.second = second;
         }
 
+        /**
+         * Get the first element in the pair. 
+         * 
+         * @return the first element.
+         */
         public F getFirst() {
             return first;
         }
 
+        /**
+         * Get the second element in the pair.
+         * 
+         * @return the second element.
+         */
         public S getSecond() {
             return second;        
         }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private fields                    ////
+
+        /**
+         * The first element in the pair.
+         */
+        private F first; 
+        
+        /**
+         * The second element in the pair. 
+         */
+        private S second; 
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -649,7 +689,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     ////                       protected variables                 ////
 
     /**
-     * The list of actors governed by MetroIIDEDirector
+     * The list of actors governed by MetroIIDEDirector.
      */
     protected Hashtable<String, FireMachine> _actorDictionary = new Hashtable<String, FireMachine>();
 
@@ -671,7 +711,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     ////                         private variables                 ////
 
     /**
-     * Lookup table for actor by MetroII event name
+     * Lookup table for actor by MetroII event name.
      */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
 

@@ -80,6 +80,9 @@ public class MetroIISystemCDirector extends Director implements
         initialize();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Clone the object into the specified workspace. The new object
      *  is <i>not</i> added to the directory of that workspace (you
      *  must do this yourself if you want it there).
@@ -97,8 +100,9 @@ public class MetroIISystemCDirector extends Director implements
     }
 
     /**
-     * Push Metro events into the pipe
-     * @param events
+     * Push Metro events into the pipe.
+     * 
+     * @param events the events to be added into the pipe.
      */
     public void pushEvents(Iterable<Event.Builder> events) {
         if (_debugging) {
@@ -142,8 +146,9 @@ public class MetroIISystemCDirector extends Director implements
     }
 
     /**
-     * Synchronize the status of events from the pipe
-     * @param events
+     * Synchronize the status of events from the pipe.
+     * 
+     * @param events the events to be synchronized from the pipe.
      */
     public void syncEvents(LinkedList<Event.Builder> events) {
         if (_debugging) {
@@ -183,9 +188,10 @@ public class MetroIISystemCDirector extends Director implements
     }
 
     /**
-     * Check if at least one event is notified in the event vector
-     * @param events Event vector
-     * @return Whether there is at least one event notified
+     * Check if at least one event is notified in the event vector.
+     * 
+     * @param events event vector to be checked.
+     * @return true if there is at least one event notified.
      */
     public boolean atLeastOneNotified(Iterable<Event.Builder> events) {
         for (Builder event : events) {
@@ -197,7 +203,7 @@ public class MetroIISystemCDirector extends Director implements
     }
 
     /**
-     * Fire the wrapped Metro-SystemC model
+     * Fire the wrapped Metro-SystemC model.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -256,7 +262,9 @@ public class MetroIISystemCDirector extends Director implements
     }
 
     /**
-     * YieldAdapter interface
+     * Return the iterator for the caller function of getfire().
+     *
+     * @return iterator the iterator for the caller function of getfire().
      */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
@@ -271,8 +279,9 @@ public class MetroIISystemCDirector extends Director implements
     }
 
     /**
-     * Initialize the pipe connecting to Metro-SystemC
+     * Initialize the pipe connecting to Metro-SystemC.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

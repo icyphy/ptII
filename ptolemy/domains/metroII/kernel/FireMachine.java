@@ -44,8 +44,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
  * <ol>
  * <li> START: the initial state; </li>
  * <li> BEGIN: before getfire() is called; </li>
- * <li> FIRING: getfire() is being called but is interrupted by some 
- * internal MetroII events; </li>
+ * <li> FIRING: getfire() 'yield returns' some internal MetroII events; </li>
  * <li> END: after getfire() completes; </li>
  * <li> FINAL: the final state. </li>
  * </ol>
@@ -73,7 +72,26 @@ public abstract class FireMachine implements StartOrResumable {
     /** Predefined states for the wrapped actor.
      */
     public enum State {
-        START, BEGIN, PROCESS, END, FINAL
+        /**
+         * The initial state.
+         */
+        START, 
+        /**
+         * The state before getfire() is called.
+         */
+        BEGIN,
+        /**
+         * The state when getfire() 'yield returns' some internal MetroII events.
+         */
+        PROCESS, 
+        /**
+         * The state after getfire() normally completes.
+         */
+        END, 
+        /**
+         * The final state.
+         */
+        FINAL
     }
 
     /**
@@ -168,7 +186,7 @@ public abstract class FireMachine implements StartOrResumable {
     /**
      * Set the state of the wrapped actor.
      * 
-     * @param state
+     * @param state the state to be set.
      * @see #getState()
      */
     protected void setState(State state) {
@@ -178,6 +196,12 @@ public abstract class FireMachine implements StartOrResumable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /**
+     * Trim the substring until (including) '.' from name.
+     * 
+     * @param name the input string.
+     * @return
+     */
     private String _trimModelName(String name) {
         assert name.length() > 1;
         int pos = name.indexOf(".", 1);
@@ -188,27 +212,27 @@ public abstract class FireMachine implements StartOrResumable {
     ////                         private fields                    ////
 
     /**
-     * Fire begin event
+     * Fire begin event.
      */
     final private Builder _BeginEvent;
 
     /**
-     * Processing fire event
+     * Processing fire event.
      */
     final private Builder _ProcessEvent;
 
     /**
-     * Fire end event
+     * Fire end event.
      */
     final private Builder _EndEvent;
 
     /**
-     * The wrapped actor
+     * The wrapped actor.
      */
     private Actor _actor;
 
     /**
-     * The state of the fire function
+     * The state of the fire function.
      */
     private State _state;
 }

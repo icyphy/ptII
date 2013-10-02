@@ -46,12 +46,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-////MetroModalModel
+//// MetroModalModel
 
 /** 
-* MetroModalModel extends ModalModel to support enclosing Metr.oFSMDirector
+* MetroModalModel extends ModalModel to support enclosing Metr.oFSMDirector.
 *
-* @author Liangpeng Guo
+* @author Liangpeng Guo.
 * @version $Id$
 * @since Ptolemy II 9.1
 * @Pt.ProposedRating Red (glp)
@@ -93,7 +93,9 @@ public class MetroModalModel extends ModalModel implements
     }
 
     /**
-     * YieldAdapter interface
+     * Return the iterator for the caller function of getfire().
+     *
+     * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()

@@ -68,12 +68,14 @@ public interface StartOrResumable {
      *  the execution based on updated MetroII Events.
      *
      *  @param metroIIEventList List of MetroII Events
-     *  @exception IllegalActionException.
+     * @throws throws IllegalActionException if the associated action (e.g. firing) 
+     * is not permitted.
      */
     public void startOrResume(LinkedList<Event.Builder> metroIIEventList)
             throws IllegalActionException;
 
-    /** Reset the state of startOrResumable
+    /** 
+     * Reset the state of startOrResumable.
      *
      */
     public void reset();

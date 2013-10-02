@@ -1,4 +1,5 @@
-/*
+/* MetroIIPNQueueReceiver adapts token transfer to MetroII semantics.
+
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 1995-2013 The Regents of the University of California.
@@ -31,6 +32,7 @@ package ptolemy.domains.metroII.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
@@ -40,36 +42,47 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MetroIIPNQueueReceiver
 
 /**
+ * <p> MetroIIPNQueueReceiver adapts token transfer to MetroII semantics. 
+ * Each get() or put() is associated with two MetroII events.
+ * The data token transfer will not occur until the associated MetroII 
+ * events are NOTIFIED. </p>
  * 
- * @author glp
- *
+ * <p> The implementation is obsolete and needs to be updated. </p>
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
  */
 public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
-    // FIXME: FindBugs says:
-    // "PNQueueReceiver.java:-1, MF_CLASS_MASKS_FIELD, Priority: Normal
-    // Class defines field that masks a superclass field
-    // This class defines a field with the same name as a visible
-    // instance field in a superclass. This is confusing, and may
-    // indicate an error if methods update or access one of the fields
-    // when they wanted the other."
-    // The issue here is that PNQueueReceiver has a _director field
 
-    // FIXME: Put protected fields after public.
-    /** The director in charge of this receiver. */
-    protected MetroIIPNDirector _director;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    // FIXME: comment?
+    /**
+     * Return the director in charge. 
+     * @return the director in charge. 
+     */
     public MetroIIPNDirector getDirector() {
-        return _director;
+        return _localDirector;
     }
 
-    // FIXME: comment?
+    /** Get a token from this receiver. If the receiver is empty then
+     *  block until a token becomes available. If this receiver is
+     *  terminated during the execution of this method, then throw a
+     *  TerminateProcessException.
+     *  
+     *  The method will not return until the 'xxx.get.end' MetroII event
+     *  is NOTIFIED.
+     *  
+     *  @return The token contained by this receiver.
+     */
     public Token get() {
-        // FIXME: rename t to token.  We tend not to use single letter variable names except for things like i,j,k.
-        Token t = super.get();
+        Token token = super.get();
         try {
-            _director.proposeMetroIIEvent(".get.end");
+            _localDirector.proposeMetroIIEvent(".get.end");
         } catch (InterruptedException e) {
             _terminate = true;
         }
@@ -77,13 +90,20 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
             throw new TerminateProcessException(
                     "Interrupted when proposing MetroII events.");
         }
-        return t;
+        return token;
     }
 
-    // FIXME: comment?
+    /** Put a token on the queue contained in this receiver.
+     *  The 'put' will not occur until the associated MetroII 
+     *  event '*.put.begin' is NOTIFIED.
+     *  
+     *  @param token The token to be put in the receiver, or null to not put anything.
+     *  @exception NoRoomException If during initialization, capacity cannot be increased
+     *   enough to accommodate initial tokens.
+     */
     public void put(Token token) {
         try {
-            _director.proposeMetroIIEvent(".put.begin");
+            _localDirector.proposeMetroIIEvent(".put.begin");
         } catch (InterruptedException e) {
             _terminate = true;
         }
@@ -95,11 +115,17 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         super.put(token);
     }
 
-    // FIXME: comment?
+    /** Set the container. This overrides the base class to record
+     *  the director.
+     *  @param port The container.
+     *  @exception IllegalActionException If the container is not of
+     *   an appropriate subclass of IOPort, or if the container's director
+     *   is not an instance of PNDirector.
+     */
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
         if (port == null) {
-            _director = null;
+            _localDirector = null;
         } else {
             Actor actor = (Actor) port.getContainer();
             Director director;
@@ -122,7 +148,16 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
                                 + "since the director is not a PNDirector.");
             }
 
-            _director = (MetroIIPNDirector) director;
+            _localDirector = (MetroIIPNDirector) director;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** 
+     * The director in charge of this receiver. 
+     */
+    protected MetroIIPNDirector _localDirector;
+
 }

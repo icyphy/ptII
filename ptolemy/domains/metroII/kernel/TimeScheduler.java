@@ -49,15 +49,16 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 public class TimeScheduler implements ConstraintSolver, Cloneable {
 
     /**
-     * Construct a time scheduler
+     * Construct a time scheduler.
      */
     public TimeScheduler() {
         initialize(); 
     }
     
     /**
-     * Clone a time scheduler
+     * Clone a time scheduler.
      */
+    @Override
     public TimeScheduler clone() throws CloneNotSupportedException {
         TimeScheduler newObject = (TimeScheduler) super.clone();
         newObject._debugger = (MetroDebugger) _debugger.clone(); 
@@ -65,21 +66,21 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Initialize the current time value
+     * Initialize the current time value.
      */
     public void initialize() {
         current_time = 0; 
     }
 
     /**
-     * Turn on debugging printing
+     * Turn on debugging printing.
      */
     public void turnOnDebugging() {
         _debugger.turnOnDebugging();
     }
 
     /**
-     * Turn off debugging printing
+     * Turn off debugging printing.
      */
     public void turnOffDebugging() {
         _debugger.turnOffDebugging();
@@ -162,12 +163,12 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     ////                    private fields                         ////
     
     /**
-     * debugger
+     * Debugger.
      */
     private MetroDebugger _debugger = new MetroDebugger();
 
     /**
-     * Current time value 
+     * Current time value.
      */
     private long current_time;
     

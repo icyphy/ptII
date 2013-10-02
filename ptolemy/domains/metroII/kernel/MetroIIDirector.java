@@ -188,7 +188,7 @@ public class MetroIIDirector extends Director {
     public Parameter printTrace;
 
     /**
-     * Option parameter whether debug info is printed out
+     * Option parameter whether debug info is printed out.
      */
     public Parameter printDebug;
 
