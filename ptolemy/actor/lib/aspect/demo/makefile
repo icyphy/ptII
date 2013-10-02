@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy actor.lib.net demos
+# Makefile for Java Ptolemy aspect oriented demos
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2013 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -48,11 +48,11 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	qm/AFDX.jar \
-	qm/Bus.jar \
-	qm/TTE.jar \
-	qm/Switch.jar \
-	qm/CompositeQM.jar
+	AFDX/AFDX.jar \
+	Bus/Bus.jar \
+	TTE/TTE.jar \
+	Switch/Switch.jar \
+	CompositeQM/CompositeQM.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
