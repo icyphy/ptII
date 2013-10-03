@@ -32,6 +32,7 @@ package ptolemy.actor.lib.aspect;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -139,6 +140,21 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
      */
     public void removeExecutionListener(ExecutionAspectListener listener) {
         _schedulePlotListeners.remove(listener);
+    }
+    
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FixedPriorityScheduler newObject = (FixedPriorityScheduler) super.clone(workspace);
+        newObject._schedulePlotListeners = new ArrayList<ExecutionAspectListener>();
+        newObject._lastTimeScheduled = new HashMap<Actor, Time>();
+        newObject._actors = new ArrayList<NamedObj>();
+        newObject._remainingTimes = new HashMap<Actor, Time>();
+         return newObject;
     }
 
     /** Return the decorated attributes for the target NamedObj.

@@ -30,15 +30,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.aspect;
 
+import java.util.HashSet;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratorAttributes;
@@ -47,6 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 /**
 This is a fixed priority scheduler resource manager on a single processor or core.
@@ -128,6 +132,20 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
         if (attribute == preemptive) {
             _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
         }
+    }
+    
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FixedPriorityScheduler newObject = (FixedPriorityScheduler) super.clone(workspace);
+        newObject._currentlyExecuting = new Stack<Actor>();
+        newObject._preemptive = true;
+
+        return newObject;
     }
     
     /** Return the decorated attributes for the target NamedObj.
