@@ -59,6 +59,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.RecursiveFileFilter;
 
 ///////////////////////////////////////////////////////////////////
@@ -241,6 +242,18 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DirectoryListing newObject = (DirectoryListing) super.clone(workspace);
+        newObject._files = new LinkedList<File>();
+        return newObject;
     }
 
     /** Output an array containing file and/or directory names.
