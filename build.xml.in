@@ -223,6 +223,8 @@ For example:
     <delete quiet="true" verbose="no" includeemptydirs="true">
       <fileset dir="${basedir}"
 	       includes="**/*.class" />
+      <fileset dir="${basedir}"
+	       includes="*_l4j.xml" />
     </delete>
   </target>
 
