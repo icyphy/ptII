@@ -468,6 +468,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
 	org/json/json.jar \
+	ptolemy/actor/lib/aspect/aspect.jar \
+	ptolemy/actor/lib/aspect/demo/demo.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
