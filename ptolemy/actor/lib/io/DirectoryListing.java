@@ -215,7 +215,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             _recursiveFileFilter = new RecursiveFileFilter(_recursive,
                     true /*includeFiles*/, true /*includeDirectories*/,
                     _listOnlyFiles, _listOnlyDirectories,
-                    _pattern);
+                    _pattern, false /*escape*/);
         }
         return _recursiveFileFilter.accept(directory, name);
     }
@@ -242,18 +242,6 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         } else {
             super.attributeChanged(attribute);
         }
-    }
-
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DirectoryListing newObject = (DirectoryListing) super.clone(workspace);
-        newObject._files = new LinkedList<File>();
-        return newObject;
     }
 
     /** Output an array containing file and/or directory names.
@@ -293,7 +281,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                         true /*includeFiles*/,
                         true /*includeDirectories*/,
                         _listOnlyFiles, _listOnlyDirectories,
-                        _pattern);
+                        _pattern, false /*escape*/);
 
                 ArrayList result = new ArrayList();
                 for (File file: listedFiles) {
@@ -490,10 +478,6 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     
-    /** The list the recently found files and directories.
-     */
-    private List<File> _files = new LinkedList<File>();
-
     /** Cached value of listOnlyDirectories parameter. */
     private boolean _listOnlyDirectories;
 
