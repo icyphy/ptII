@@ -160,9 +160,10 @@
     <include name="ptolemy/moml/demo/demo.jar" />
     <include name="ptolemy/plot/plotapplication.jar" />
     <include name="ptolemy/ptsupport.jar" />
-    <include name="ptolemy/vergil/basic/export/web/web.jar" />
     <include name="ptolemy/vergil/basic/export/export.jar" />
     <include name="ptolemy/vergil/basic/export/exportFull.jar" />
+    <include name="ptolemy/vergil/basic/export/html/html.jar" />
+    <include name="ptolemy/vergil/basic/export/web/web.jar" />
     <include name="ptolemy/vergil/basic/imprt/fmu/fmuFull.jar" />
     <include name="ptolemy/vergil/basic/layout/layout.jar" />
     <include name="ptolemy/vergil/gt/gt.jar" />
@@ -725,16 +726,6 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/vergil/basic/export/web/web.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/vergil/basic/export/web/web.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/export/web/*.class"/>
-	<include name="ptolemy/vergil/basic/export/web/*.xml"/>
-      </fileset>
-    </jar>
-
     <!-- ptolemy/vergil/basic/export/export.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/vergil/basic/export/export.jar"
@@ -772,6 +763,34 @@
 	<include name="ptolemy/vergil/basic/export/html/javascript/*.gif"/>
 	<include name="ptolemy/vergil/basic/export/html/javascript/*.js"/>
 	<include name="ptolemy/vergil/basic/export/html/javascript/*.png"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/vergil/basic/export/html/html.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/export/html/html.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/html/*.class"/>
+	<include name="ptolemy/vergil/basic/export/html/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.css"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.htm"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.gif"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.js"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.png"/>
+      </fileset>
+    </jar>
+
+
+    <!-- ptolemy/vergil/basic/export/web/web.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/export/web/web.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/web/*.class"/>
+	<include name="ptolemy/vergil/basic/export/web/*.xml"/>
       </fileset>
     </jar>
 
@@ -2088,6 +2107,22 @@
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/sdf/lib/vq/data/data.jar"
 	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/sdf/lib/vq/data/*.dat"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/sdf/lib/vq/data/seq/missa/*.qcf"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/sdf/lib/vq/vq.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/sdf/lib/vq/vq.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/sdf/lib/vq/*.class"/>
+	<include name="ptolemy/domains/sdf/lib/vq/*.xml"/>
+      </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/lib/vq/data/*.dat"/>
       </fileset>
