@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -141,7 +142,10 @@ public class RecursiveFileFilter implements FilenameFilter {
                 || ((_filesOnly && isFile)
                         || (_directoriesOnly && isDirectory)
                         || (!_directoriesOnly && !_filesOnly))) {
-            if (_pattern == null || _pattern.matcher(name).matches()) {
+            // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
+            // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
+            Matcher match = _pattern.matcher(name);
+            if (_pattern == null || match.matches() || match.find()) {
                 _files.add(file);
             }
         }
