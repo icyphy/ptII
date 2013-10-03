@@ -149,7 +149,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FixedPriorityScheduler newObject = (FixedPriorityScheduler) super.clone(workspace);
+        AtomicExecutionAspect newObject = (AtomicExecutionAspect) super.clone(workspace);
         newObject._schedulePlotListeners = new ArrayList<ExecutionAspectListener>();
         newObject._lastTimeScheduled = new HashMap<Actor, Time>();
         newObject._actors = new ArrayList<NamedObj>();
