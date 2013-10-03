@@ -191,6 +191,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
          * Set the first element in the pair. 
          * 
          * @param first the element to be set.
+         * @see #getFirst
          */
         public void setFirst(F first) {
             this.first = first;
@@ -200,6 +201,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
          * Set the second element in the pair. 
          * 
          * @param second the element to be set.
+         * @see #getSecond
          */
         public void setSecond(S second) {
             this.second = second;
@@ -209,6 +211,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
          * Get the first element in the pair. 
          * 
          * @return the first element.
+         * @see #setFirst
          */
         public F getFirst() {
             return first;
@@ -218,6 +221,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
          * Get the second element in the pair.
          * 
          * @return the second element.
+         * @see #setSecond
          */
         public S getSecond() {
             return second;        

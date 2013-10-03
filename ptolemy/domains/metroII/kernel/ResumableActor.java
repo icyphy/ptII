@@ -74,7 +74,7 @@ public class ResumableActor extends ActMachine {
      * @param metroIIEventList the list of MetroII events getfire()
      * returns.
      * 
-     * @throws throws IllegalActionException if the associated action (e.g. firing) 
+     * @throws IllegalActionException if the associated action (e.g. firing) 
      * is not permitted.
      */
     @Override

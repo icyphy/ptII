@@ -4,7 +4,7 @@
 <entity name="PrintingPress-Metro" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1535, 876}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1615, 1026}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1401, 935]">
     </property>
@@ -50,7 +50,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -30.0]">
             </property>
         </property>
         <property name="startupInterval" class="ptolemy.data.expr.Parameter" value="120.0">
@@ -69,7 +69,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -155.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -10.0]">
             </property>
         </property>
         <property name="systemSamplingInterval" class="ptolemy.data.expr.Parameter" value="0.40">
@@ -88,7 +88,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 10.0]">
             </property>
         </property>
         <property name="systemStart" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -107,7 +107,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -115.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 30.0]">
             </property>
         </property>
         <property name="paperThickness" class="ptolemy.data.expr.Parameter" value="0.000075">
@@ -126,7 +126,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -191.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -46.0]">
             </property>
         </property>
         <property name="fullRollRadius" class="ptolemy.data.expr.Parameter" value="0.7">
@@ -145,21 +145,21 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -211.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -66.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1535, 876}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1615, 1026}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1401, 935]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7155808050284058">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9134226672959718">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{709.550202702703, 280.93750000000006}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{600.421875, 233.04046099928115}">
         </property>
         <property name="MetroIIDEDirector" class="ptolemy.domains.metroII.kernel.MetroIIDEDirector">
             <property name="printTrace" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, -225.0]">
             </property>
         </property>
         <property name="coreRadius" class="ptolemy.data.expr.Parameter" value="0.07">
@@ -178,11 +178,11 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -230.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -85.0]">
             </property>
         </property>
         <entity name="driveRoller" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, -25.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, -235.0]">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -725,7 +725,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 475.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 265.0]">
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -738,7 +738,7 @@
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 795.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 585.0]">
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -748,13 +748,13 @@
             </property>
         </entity>
         <entity name="reserveFeedPaperRadius" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={663, 358, 609, 212}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={664, 386, 609, 212}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 189]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 705.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 495.0]">
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -773,7 +773,7 @@
             </configure>
         </entity>
         <entity name="DriveController(MetroII)" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 465.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 255.0]">
             </property>
             <property name="Kp" class="ptolemy.data.expr.Parameter" value="16.0">
             </property>
@@ -1143,7 +1143,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={189, 313, 914, 615}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={190, 313, 914, 615}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                     </property>
@@ -1433,7 +1433,7 @@
             <link port="MetroIIPtidesPlatform.port4" relation="relation4"/>
         </entity>
         <entity name="feedRoller" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, -25.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, -235.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={133, 105, 968, 607}, maximized=false}">
             </property>
@@ -2483,7 +2483,7 @@
         </entity>
         <entity name="FeedController" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
             <display name="FeedController(MetroII)"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 460.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
             </property>
             <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
@@ -3363,13 +3363,13 @@
         </entity>
         <entity name="feedPaperVelocity" class="ptolemy.actor.lib.gui.TimedPlotter">
             <display name="feedPaperVelocity, error"/>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={661, 124, 608, 193}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={662, 152, 608, 193}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 170]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 520.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 310.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3391,7 +3391,7 @@
         </entity>
         <entity name="DtoFTrackingController" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
             <display name="DtoFTrackingController(MetroII)"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 335.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 125.0]">
             </property>
             <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="systemSamplingInterval">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -4014,13 +4014,13 @@
             <link port="MetroIIPtidesPlatform.port4" relation="relation7"/>
         </entity>
         <entity name="driveToFeedError" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={663, 610, 611, 181}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={664, 638, 611, 181}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[611, 158]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 400.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 190.0]">
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -4041,13 +4041,13 @@
         <entity name="feedPaperRadius" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 122, 579, 195}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 150, 579, 195}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[579, 172]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 255.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 45.0]">
             </property>
             <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="180">
             </property>
@@ -4072,7 +4072,7 @@
             </configure>
         </entity>
         <entity name="DriveTargetProfile" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 710.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 500.0]">
             </property>
             <property name="Interval" class="ptolemy.data.expr.Parameter" value="100.0">
             </property>
@@ -5099,7 +5099,7 @@
             </property>
             <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 575.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 365.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -5354,7 +5354,7 @@
         </entity>
         <entity name="FeedTargetProfile" class="ptolemy.actor.TypedCompositeActor">
             <display name="Feed Target Profile"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 700.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 490.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 245, 920, 607}, maximized=false}">
             </property>
@@ -6538,7 +6538,7 @@
             <link port="PtidesPlatform.port3" relation="relation6"/>
         </entity>
         <entity name="reserveFeedRoller" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, -30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, -240.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 130, 970, 636}, maximized=false}">
             </property>
@@ -7681,7 +7681,7 @@
         </entity>
         <entity name="ContactController" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
             <display name="ContactController(MetroII)"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, 15.0]">
             </property>
             <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="systemSamplingInterval">
             </property>
@@ -8478,7 +8478,7 @@
         </entity>
         <entity name="remainingPaperDetector" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
             <display name="remainingPaperDetector(MetroII)"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, -15.0]">
             </property>
             <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="systemSamplingInterval">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -9279,7 +9279,7 @@
         </entity>
         <entity name="DtoRTrackingController" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
             <display name="DtoRTrackingController(MetroII)"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, 335.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, 125.0]">
             </property>
             <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="systemSamplingInterval">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -10008,7 +10008,7 @@
         </entity>
         <entity name="ReserveController" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
             <display name="ReserveController(MetroII)"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, 470.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, 260.0]">
             </property>
             <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
@@ -10896,17 +10896,17 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1260.0, 515.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1160.0, 305.0]">
             </property>
         </entity>
         <entity name="reserveFeedPaperRadius2" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 357, 580, 211}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 385, 580, 211}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 188]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1270.0, 65.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1170.0, -145.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -10921,13 +10921,13 @@
             </configure>
         </entity>
         <entity name="feedPaperRadius2" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 826, 585, 194}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 734, 585, 194}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[585, 171]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1225.0, 830.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, 620.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -10948,7 +10948,7 @@
             </configure>
         </entity>
         <entity name="reserveFeedMonitor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1365.0, 550.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1265.0, 340.0]">
             </property>
             <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="systemSamplingInterval">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -11057,7 +11057,7 @@
             </entity>
             <entity name="reserveFeedPaperVelocity" class="ptolemy.actor.lib.gui.TimedPlotter">
                 <display name="reserveFeedPaperVelocity, error"/>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 609, 582, 183}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 637, 582, 183}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 160]">
                 </property>
@@ -11368,7 +11368,7 @@
         </entity>
         <entity name="ReserveTargetProfile" class="ptolemy.actor.TypedCompositeActor">
             <display name="Reserve Target Profile"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, 700.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, 490.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={328, 321, 920, 607}, maximized=false}">
             </property>
@@ -12430,13 +12430,13 @@
             <link port="PtidesPlatform.port2" relation="relation3"/>
         </entity>
         <entity name="driveToReserveError" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={667, 827, 604, 192}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={668, 736, 604, 192}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 169]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1275.0, 405.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1175.0, 195.0]">
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -12459,7 +12459,7 @@
             </property>
             <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1070.0, 830.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[970.0, 620.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -12876,7 +12876,7 @@
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[365.0, 455.0]">
+            <vertex name="vertex1" value="[265.0, 245.0]">
             </vertex>
             <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
             </property>
@@ -12884,7 +12884,7 @@
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[350.0, 710.0]">
+            <vertex name="vertex1" value="[250.0, 500.0]">
             </vertex>
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
@@ -12894,7 +12894,7 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
-            <vertex name="vertex1" value="[540.0, 710.0]">
+            <vertex name="vertex1" value="[440.0, 500.0]">
             </vertex>
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
@@ -12906,13 +12906,13 @@
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[620.0, 690.0]">
+            <vertex name="vertex1" value="[520.0, 480.0]">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[630.0, 335.0]">
+            <vertex name="vertex1" value="[530.0, 125.0]">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -12920,19 +12920,19 @@
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[190.0, 455.0]">
+            <vertex name="vertex1" value="[90.0, 245.0]">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[385.0, -25.0]">
+            <vertex name="vertex1" value="[285.0, -235.0]">
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[525.0, 385.0]">
+            <vertex name="vertex1" value="[425.0, 175.0]">
             </vertex>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -12940,7 +12940,7 @@
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[655.0, 195.0]">
+            <vertex name="vertex1" value="[555.0, -15.0]">
             </vertex>
         </relation>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
@@ -12950,7 +12950,7 @@
         <relation name="relation22" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[940.0, 345.0]">
+            <vertex name="vertex1" value="[840.0, 135.0]">
             </vertex>
         </relation>
         <relation name="relation23" class="ptolemy.actor.TypedIORelation">
@@ -12958,7 +12958,7 @@
         <relation name="relation24" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[1165.0, 560.0]">
+            <vertex name="vertex1" value="[1065.0, 350.0]">
             </vertex>
         </relation>
         <relation name="relation20" class="ptolemy.actor.TypedIORelation">
@@ -12966,7 +12966,7 @@
         <relation name="relation25" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[1325.0, 460.0]">
+            <vertex name="vertex1" value="[1225.0, 250.0]">
             </vertex>
         </relation>
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
@@ -12974,7 +12974,7 @@
         <relation name="relation26" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[915.0, 470.0]">
+            <vertex name="vertex1" value="[815.0, 260.0]">
             </vertex>
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
@@ -12984,7 +12984,7 @@
         <relation name="relation31" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[960.0, 225.0]">
+            <vertex name="vertex1" value="[860.0, 15.0]">
             </vertex>
         </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
@@ -12994,115 +12994,115 @@
         <relation name="relation29" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation30" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[915.0, 235.0]">
+            <vertex name="vertex1" value="[815.0, 25.0]">
             </vertex>
         </relation>
         <relation name="relation32" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[1000.0, 285.0]">
+            <vertex name="vertex1" value="[900.0, 75.0]">
             </vertex>
         </relation>
         <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[1000.0, 215.0]">
+            <vertex name="vertex1" value="[900.0, 5.0]">
             </vertex>
         </relation>
         <relation name="relation34" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[190.0, 475.0]">
+            <vertex name="vertex1" value="[90.0, 265.0]">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[1000.0, 10.0]">
+            <vertex name="vertex1" value="[900.0, -200.0]">
             </vertex>
         </relation>
         <relation name="relation35" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[620.0, 450.0]">
+            <vertex name="vertex1" value="[520.0, 240.0]">
             </vertex>
         </relation>
         <relation name="relation36" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[980.0, -30.0]">
+            <vertex name="vertex1" value="[880.0, -240.0]">
             </vertex>
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[915.0, 700.0]">
+            <vertex name="vertex1" value="[815.0, 490.0]">
             </vertex>
         </relation>
         <relation name="relation37" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[940.0, 700.0]">
+            <vertex name="vertex1" value="[840.0, 490.0]">
             </vertex>
         </relation>
         <relation name="relation38" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[1325.0, 325.0]">
+            <vertex name="vertex1" value="[1225.0, 115.0]">
             </vertex>
         </relation>
         <relation name="relation39" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[365.0, 10.0]">
+            <vertex name="vertex1" value="[265.0, -200.0]">
             </vertex>
         </relation>
         <relation name="relation40" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[365.0, 690.0]">
+            <vertex name="vertex1" value="[265.0, 480.0]">
             </vertex>
         </relation>
         <relation name="relation41" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[190.0, 690.0]">
+            <vertex name="vertex1" value="[90.0, 480.0]">
             </vertex>
         </relation>
         <relation name="relation42" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[365.0, -35.0]">
+            <vertex name="vertex1" value="[265.0, -245.0]">
             </vertex>
         </relation>
         <relation name="relation43" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[915.0, 840.0]">
+            <vertex name="vertex1" value="[815.0, 630.0]">
             </vertex>
         </relation>
         <relation name="relation44" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[940.0, 185.0]">
+            <vertex name="vertex1" value="[840.0, -25.0]">
             </vertex>
         </relation>
         <relation name="relation45" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[1000.0, 325.0]">
+            <vertex name="vertex1" value="[900.0, 115.0]">
             </vertex>
         </relation>
         <relation name="relation46" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[960.0, 205.0]">
+            <vertex name="vertex1" value="[860.0, -5.0]">
             </vertex>
         </relation>
         <relation name="relation47" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[365.0, 325.0]">
+            <vertex name="vertex1" value="[265.0, 115.0]">
             </vertex>
         </relation>
         <relation name="relation48" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[350.0, 475.0]">
+            <vertex name="vertex1" value="[250.0, 265.0]">
             </vertex>
         </relation>
         <relation name="relation49" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[630.0, 440.0]">
+            <vertex name="vertex1" value="[530.0, 230.0]">
             </vertex>
         </relation>
         <relation name="relation50" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[630.0, -45.0]">
+            <vertex name="vertex1" value="[530.0, -255.0]">
             </vertex>
         </relation>
         <relation name="relation51" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[620.0, 575.0]">
+            <vertex name="vertex1" value="[520.0, 365.0]">
             </vertex>
         </relation>
         <relation name="relation52" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[915.0, 460.0]">
+            <vertex name="vertex1" value="[815.0, 250.0]">
             </vertex>
         </relation>
         <relation name="relation53" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[645.0, 480.0]">
+            <vertex name="vertex1" value="[545.0, 270.0]">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[980.0, 480.0]">
+            <vertex name="vertex1" value="[880.0, 270.0]">
             </vertex>
         </relation>
         <relation name="relation54" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[655.0, 440.0]">
+            <vertex name="vertex1" value="[555.0, 230.0]">
             </vertex>
         </relation>
         <relation name="relation55" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[190.0, 730.0]">
+            <vertex name="vertex1" value="[90.0, 520.0]">
             </vertex>
         </relation>
         <link port="driveRoller.paperVelocity" relation="relation42"/>

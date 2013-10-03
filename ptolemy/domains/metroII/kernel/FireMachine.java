@@ -95,7 +95,7 @@ public abstract class FireMachine implements StartOrResumable {
     }
 
     /**
-     * Construct an FireMachine wrapper and initialize the MetroII events
+     * Construct an FireMachine wrapper and initialize the MetroII events.
      * 
      * @param actor the actor whose getfire() is to be wrapped.
      */
