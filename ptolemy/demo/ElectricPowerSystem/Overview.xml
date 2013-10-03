@@ -45,13 +45,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 480.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1215, 913}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 64, 1205, 921}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[981, 803]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 811]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{249.67203851744182, 151.15994276889535}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.23488372093027, 143.6674418604651}">
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, 375.0]">
@@ -187,7 +187,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Imperative&#10;Programs">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[517.5, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 185.0]">
         </property>
     </property>
     <property name="Ellipse6" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -221,13 +221,13 @@
         </property>
     </property>
     <property name="Ellipse7" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-52.5, -157.5">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="214.99999999999997">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="135.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="175.0">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,0.3}">
         </property>
@@ -239,7 +239,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Temporal&#10;  Logics">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-92.49999999999999, -192.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, -230.0]">
         </property>
     </property>
     <property name="Ellipse8" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -265,11 +265,11 @@
         </property>
     </property>
     <property name="Ellipse9" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="382.5, -187.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="332.5, -187.5">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="285.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="185.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="125.0">
         </property>
@@ -305,7 +305,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ptides">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, -60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, -95.0]">
         </property>
     </property>
     <property name="Ellipse11" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -338,7 +338,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 455.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/Generator.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -428,7 +428,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 340.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1090,7 +1090,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[447.5, -197.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, -175.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/TimingConstraint.txt">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1253,7 +1253,7 @@
         </property>
     </relation>
     <relation name="relation18" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="eloborates">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
@@ -1295,15 +1295,19 @@
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="eloborates">
+        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.5601880816727323">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.8405262435073313">
         </property>
     </relation>
     <relation name="relation24" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="aspect">
+        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.1710916078685707">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.3195500806194915">
         </property>
     </relation>
     <relation name="relation25" class="ptolemy.data.ontologies.ConceptRelation">
@@ -1313,9 +1317,9 @@
         </property>
     </relation>
     <relation name="relation26" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.13622549797326847">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.0434079472514408">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.23739909710421">
         </property>
     </relation>
     <relation name="relation27" class="ptolemy.data.ontologies.ConceptRelation">
