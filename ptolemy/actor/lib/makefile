@@ -109,8 +109,6 @@ PTCLASSALLJARS = \
 	javasound/javasound.jar \
 	jopio/jopio.jar \
 	net/net.jar \
-	qm/qm.jar \
-	resourceScheduler/resourceScheduler.jar \
 	security/security.jar \
 	vhdl/vhdl.jar \
 	video/video.jar \
