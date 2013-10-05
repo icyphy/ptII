@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FMIPPIncME1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={720, 112, 934, 634}, maximized=false}">
     </property>
@@ -27,9 +27,9 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Under Mac OS X, this model uses libincrementalFMU_wrap.dylib&#10;and libfmipp.so in $PTII/lib.  &#10;&#10;The output should be the count in seconds.  Perhaps the problem has to do with integer conversion&#10;&#10;To run this fmu, run&#10;java -classpath $PTII:${PTII}/lib/jna.jar org.ptolemy.fmi.driver.FMUModelExchange $PTII/ptolemy/actor/lib/fmi/test/auto/incME1.fmu 5.0 0.5">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Under Mac OS X, this model uses libincrementalFMU_wrap.dylib&#10;and libfmipp.so in $PTII/lib.  &#10;&#10;The output should be the count in seconds.  Perhaps the problem has to do with integer conversion?&#10;&#10;However, after conversion to use doubles, it looks like this code is not invoking the eventUpdate() method in incME1.c?&#10;&#10;To run this fmu, run&#10;java -classpath $PTII:${PTII}/lib/jna.jar org.ptolemy.fmi.driver.FMUModelExchange $PTII/ptolemy/actor/lib/fmi/test/auto/incME1.fmu 5.0 0.5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 185.0]">
         </property>
     </property>
     <entity name="FMUModelExchange" class="ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">
