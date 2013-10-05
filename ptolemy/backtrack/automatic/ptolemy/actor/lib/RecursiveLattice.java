@@ -135,6 +135,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
     // Forward prediction error
     // _forward(0) = x(n)
     // Backward:  Compute the w's for the next round
+    // Invoke any initializable methods.
     // Get a copy of the current filter state that we can modify.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -299,6 +300,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
      * Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException  {
+        super.initialize();
         for (int i = 0; i < _forward.length; i++) {
             $ASSIGN$_forward(i, 0.0);
             $ASSIGN$_forwardCache(i, 0.0);

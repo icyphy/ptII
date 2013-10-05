@@ -153,9 +153,11 @@ public class Multiplexor extends Transformer implements Rollbackable {
     }
 
     /**     
-     * Initialize to the default, which is to use channel zero. 
+     * Initialize to the default, which is to use channel zero.
+     * @exception IllegalActionException If a derived class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException  {
+        super.initialize();
         $ASSIGN$_selectChannel(null);
     }
 

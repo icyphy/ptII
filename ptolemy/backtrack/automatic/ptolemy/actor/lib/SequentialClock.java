@@ -279,6 +279,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * offsets parameters don't match.
      */
     public boolean postfire() throws IllegalActionException  {
+        if (!super.postfire()) {
+            return false;
+        }
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
         if (_firstFiring) {
             $ASSIGN$_cycleStartTime(getDirector().getModelTime());
@@ -303,6 +306,9 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException  {
+        if (!super.prefire()) {
+            return false;
+        }
         ArrayToken val = (ArrayToken)values.getToken();
         if (val == null || val.length() <= _phase) {
             throw new IllegalActionException(this, "Offsets and values parameters lengths do not match.");

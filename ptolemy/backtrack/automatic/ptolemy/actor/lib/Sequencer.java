@@ -158,6 +158,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * <i>startingSequenceNumber</i> parameter causes an exception.
      */
     public void initialize() throws IllegalActionException  {
+        super.initialize();
         $ASSIGN$_fireProducedOutput(false);
         $ASSIGN$_nextSequenceNumber(((IntToken)startingSequenceNumber.getToken()).intValue());
         _pending.clear();
