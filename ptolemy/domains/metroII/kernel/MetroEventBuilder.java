@@ -33,33 +33,37 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 ///////////////////////////////////////////////////////////////////
 ////MetroEventBuilder
 
-/** 
-* MetroEventBuilder is a set of routines that create Metro events.
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+/**
+ * MetroEventBuilder is a set of routines that create Metro events.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
 public class MetroEventBuilder {
 
     /**
      * Construct an event builder.
      */
     public MetroEventBuilder() {
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Convert a time value from one resolution to another resolution.
-     * Note that this method may result in a loss of precision.
-     * @param timeValue input time value in type 'long'
-     * @param fromResolution the resolution associated with timeValue
-     * @param toResolution the resolution it's converting to
+     * Convert a time value from one resolution to another resolution. Note that
+     * this method may result in a loss of precision.
+     * 
+     * @param timeValue
+     *            input time value in type 'long'
+     * @param fromResolution
+     *            the resolution associated with timeValue
+     * @param toResolution
+     *            the resolution it's converting to
      * @return the new time value.
      */
     static public long convert(long timeValue, double fromResolution,
@@ -79,9 +83,13 @@ public class MetroEventBuilder {
 
     /**
      * Create a proposed Metro event.
-     * @param eventName The name of the event
-     * @param timeValue The time value of the event
-     * @param resolution The resolution associated with the time value
+     * 
+     * @param eventName
+     *            The name of the event
+     * @param timeValue
+     *            The time value of the event
+     * @param resolution
+     *            The resolution associated with the time value
      * @return A Metro event with the given name and the time tag
      */
     static public Builder newProposedEvent(String eventName, long timeValue,
@@ -109,7 +117,9 @@ public class MetroEventBuilder {
 
     /**
      * Create a proposed Metro event.
-     * @param eventName The name of the event
+     * 
+     * @param eventName
+     *            The name of the event
      * @return A Metro event with the given name
      */
     static public Builder newProposedEvent(String eventName) {
@@ -122,9 +132,11 @@ public class MetroEventBuilder {
     }
 
     /**
-     * Trim the substring from the beginning to the first delimiter '.' from a given string. 
-     * Example: XXX.YYY.ZZZ -> YYY.ZZZ
-     * @param name The input string
+     * Trim the substring from the beginning to the first delimiter '.' from a
+     * given string. Example: XXX.YYY.ZZZ -> YYY.ZZZ
+     * 
+     * @param name
+     *            The input string
      * @return The trimmed string
      */
     static public String trimModelName(String name) {

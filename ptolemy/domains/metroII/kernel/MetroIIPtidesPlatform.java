@@ -73,52 +73,57 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** This composite implements a Ptides platform,
- *  which is used for the design of distributed real-time systems.
- *  The main reason for implementing this composite is to allow for
- *  special treatment of tokens on input and output ports. Ptides
- *  platforms can only contain the following ports: SensorPort,
- *  ActuatorPort, NetworkReceiverPort, NetworkTransmitterPort.
- *  A Ptides platform must contain a PtidesDirector.
- *  <p>
- *  Network ports receive and transmit RecordTokens that encapsuate
- *  Ptides events (timestamp and value).
- *  A NetworkReceiverPort extracts the timestamp of the
- *  Ptides event in the RecordToken and creates a new event on the
- *  event queue on the PtidesDirector with this timestamp.
- *
- *  FIXME: The base class seems to have some support for
- *  ParameterPorts but nothing that really works?
- *  
- *  This class is identical to PtidesPlatform except ports are mapped 
- *  to MetroIIPtidesPort, composite actors are mapped to MetroIICompositeActor, 
- *  and Ptides director is mapped to MetroIIPtidesDirector
- *
+/**
+ * This composite implements a Ptides platform, which is used for the design of
+ * distributed real-time systems. The main reason for implementing this
+ * composite is to allow for special treatment of tokens on input and output
+ * ports. Ptides platforms can only contain the following ports: SensorPort,
+ * ActuatorPort, NetworkReceiverPort, NetworkTransmitterPort. A Ptides platform
+ * must contain a PtidesDirector.
+ * 
+ * <p>
+ * Network ports receive and transmit RecordTokens that encapsuate Ptides events
+ * (timestamp and value). A NetworkReceiverPort extracts the timestamp of the
+ * Ptides event in the RecordToken and creates a new event on the event queue on
+ * the PtidesDirector with this timestamp.
+ * </p>
+ * 
+ * FIXME: The base class seems to have some support for ParameterPorts but
+ * nothing that really works?
+ * 
+ * <p>
+ * This class is identical to PtidesPlatform except ports are mapped to
+ * MetroIIPtidesPort, composite actors are mapped to MetroIICompositeActor, and
+ * Ptides director is mapped to MetroIIPtidesDirector.
+ * </p>
+ * 
  * @author Patricia Derler, Liangpeng Guo
-   @version $Id$
-   @since Ptolemy II 0.2
-
-   @Pt.ProposedRating Red (derler)
-   @Pt.AcceptedRating Red (derler)
+ * @version $Id$
+ * @since Ptolemy II 0.2
+ * @Pt.ProposedRating Red (derler)
+ * @Pt.AcceptedRating Red (derler)
  */
 public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
-    /** Create an actor with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  This actor will have no
-     *  local director initially, and its executive director will be simply
-     *  the director of the container.
-     *  You should set a director before attempting to execute it.
-     *  @param container The container actor.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
+    /**
+     * Create an actor with a name and a container. The container argument must
+     * not be null, or a NullPointerException will be thrown. This actor will
+     * use the workspace of the container for synchronization and version
+     * counts. If the name argument is null, then the name is set to the empty
+     * string. Increment the version of the workspace. This actor will have no
+     * local director initially, and its executive director will be simply the
+     * director of the container. You should set a director before attempting to
+     * execute it.
+     * 
+     * @param container
+     *            The container actor.
+     * @param name
+     *            The name of this actor.
+     * @exception IllegalActionException
+     *                If the container is incompatible with this actor.
+     * @exception NameDuplicationException
+     *                If the name coincides with an actor already in the
+     *                container.
      */
     public MetroIIPtidesPlatform(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -126,18 +131,21 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         _init();
     }
 
-    /** Construct an PtidesPlatform in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
+    /**
+     * Construct an PtidesPlatform in the specified workspace with no container
+     * and an empty string as a name. You can then change the name with
+     * setName(). If the workspace argument is null, then use the default
+     * workspace. You should set the local director or executive director before
+     * attempting to send data to the actor or to execute it. Add the actor to
+     * the workspace directory. Increment the version number of the workspace.
+     * 
+     * @param workspace
+     *            The workspace that will list the actor.
+     * @exception IllegalActionException
+     *                If the container is incompatible with this actor.
+     * @exception NameDuplicationException
+     *                If the name coincides with an actor already in the
+     *                container.
      */
     public MetroIIPtidesPlatform(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -148,13 +156,16 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the object into the specified workspace. This overrides
-     *  the base class to set the association with iterationCount.
-     *  @param workspace The workspace for the new object.
-     *  @return A new NamedObj.
-     *  @exception CloneNotSupportedException If any of the attributes
-     *   cannot be cloned.
-     *  @see #exportMoML(Writer, int, String)
+    /**
+     * Clone the object into the specified workspace. This overrides the base
+     * class to set the association with iterationCount.
+     * 
+     * @param workspace
+     *            The workspace for the new object.
+     * @return A new NamedObj.
+     * @exception CloneNotSupportedException
+     *                If any of the attributes cannot be cloned.
+     * @see #exportMoML(Writer, int, String)
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIPtidesPlatform result = (MetroIIPtidesPlatform) super
@@ -186,14 +197,17 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         return result;
     }
 
-    /** FIXME: Return SensorPort or ActuatorPort. How do i know if
-     *  the port is an input or an output?
-     *
-     *  Override the base class to return a specialized port.
-     *  @param name The name of the port to create.
-     *  @return A new instance of PtidesMirrorPort, an inner class.
-     *  @exception NameDuplicationException If the container already has a port
-     *  with this name.
+    /**
+     * FIXME: Return SensorPort or ActuatorPort. How do i know if the port is an
+     * input or an output?
+     * 
+     * Override the base class to return a specialized port.
+     * 
+     * @param name
+     *            The name of the port to create.
+     * @return A new instance of PtidesMirrorPort, an inner class.
+     * @exception NameDuplicationException
+     *                If the container already has a port with this name.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -217,10 +231,12 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         super._addPort(port);
     }
 
-    /** Read inputs from ParameterPorts and update the paramter of the
-     *  associatedPort.
-     *  @exception IllegalActionException If reading from parameter associated
-     *  with port fails.
+    /**
+     * Read inputs from ParameterPorts and update the paramter of the
+     * associatedPort.
+     * 
+     * @exception IllegalActionException
+     *                If reading from parameter associated with port fails.
      */
     protected void _transferPortParameterInputs() throws IllegalActionException {
         // Need to read from port parameters
@@ -253,16 +269,20 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
     }
 
-    /** Check types from a source port to a group of destination ports,
-     *  assuming the source port is connected to all the ports in the
-     *  group of destination ports.  Return a list of instances of
-     *  Inequality that have type conflicts.  This overrides the base
-     *  class so that if one of the ports belongs to this PtidesPlatform
-     *  actor, then its element type is compared against the inside port.
-     *  @param sourcePort The source port.
-     *  @param destinationPortList A list of destination ports.
-     *  @return A list of instances of Inequality indicating the
-     *   type constraints that are not satisfied.
+    /**
+     * Check types from a source port to a group of destination ports, assuming
+     * the source port is connected to all the ports in the group of destination
+     * ports. Return a list of instances of Inequality that have type conflicts.
+     * This overrides the base class so that if one of the ports belongs to this
+     * PtidesPlatform actor, then its element type is compared against the
+     * inside port.
+     * 
+     * @param sourcePort
+     *            The source port.
+     * @param destinationPortList
+     *            A list of destination ports.
+     * @return A list of instances of Inequality indicating the type constraints
+     *         that are not satisfied.
      */
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
@@ -329,16 +349,18 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         return result;
     }
 
-    /** Return the type constraints on all connections starting from the
-     *  specified source port to all the ports in a group of destination
-     *  ports. This overrides the base class to ensure that if the source
-     *  port or the destination port is a port of this composite, then
-     *  the port is forced to be an array type and the proper constraint
-     *  on the element type of the array is made. If the source port
-     *  has no possible sources of data, then no type constraints are
-     *  added for it.
-     *  @param sourcePort The source port.
-     *  @return A list of instances of Inequality.
+    /**
+     * Return the type constraints on all connections starting from the
+     * specified source port to all the ports in a group of destination ports.
+     * This overrides the base class to ensure that if the source port or the
+     * destination port is a port of this composite, then the port is forced to
+     * be an array type and the proper constraint on the element type of the
+     * array is made. If the source port has no possible sources of data, then
+     * no type constraints are added for it.
+     * 
+     * @param sourcePort
+     *            The source port.
+     * @return A list of instances of Inequality.
      */
     protected List _destinationTypeConstraints(TypedIOPort sourcePort) {
         Iterator<IOPort> destinationPorts;
@@ -377,7 +399,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                     }
 
                     if (destinationPort instanceof MetroIIPtidesPort
-                            && ((MetroIIPtidesPort) destinationPort).isSensorPort()) {
+                            && ((MetroIIPtidesPort) destinationPort)
+                                    .isSensorPort()) {
                         Inequality ineq = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
@@ -400,7 +423,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                     Inequality ineq = null;
                     if (sourcePort instanceof MetroIIPtidesPort
-                            && ((MetroIIPtidesPort) sourcePort).isActuatorPort()) {
+                            && ((MetroIIPtidesPort) sourcePort)
+                                    .isActuatorPort()) {
                         ineq = new Inequality(sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                     } else if (sourcePort instanceof MetroIIPtidesPort
@@ -437,18 +461,24 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         platformDirector.setName(uniqueName("PtidesPlatformDirector"));
     }
 
-    /** Check if given MirrorPort is associated with a NetworkReceiverPort.
-     *  @param port The MirrorPort.
-     *  @return True if is associated with a NetworkReceiverPort.
+    /**
+     * Check if given MirrorPort is associated with a NetworkReceiverPort.
+     * 
+     * @param port
+     *            The MirrorPort.
+     * @return True if is associated with a NetworkReceiverPort.
      */
     private boolean _isAssociatedWithNetworkReceiver(Port port) {
         return ((MetroIIPtidesPort) ((MirrorPort) port).getAssociatedPort())
                 .isNetworkReceiverPort();
     }
 
-    /** Check if given MirrorPort is associated with a NetworkTransmitterPort.
-     *  @param port The MirrorPort.
-     *  @return True if is associated with a NetworkTransmitterPort.
+    /**
+     * Check if given MirrorPort is associated with a NetworkTransmitterPort.
+     * 
+     * @param port
+     *            The MirrorPort.
+     * @return True if is associated with a NetworkTransmitterPort.
      */
     private boolean _isAssociatedWithNetworkTransmitter(Port port) {
         return ((MetroIIPtidesPort) ((MirrorPort) port).getAssociatedPort())
@@ -458,12 +488,14 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** The Ptides type that is sent over the network. This is a RecordType
-     *  containing timestamp, microstep and payload.
+    /**
+     * The Ptides type that is sent over the network. This is a RecordType
+     * containing timestamp, microstep and payload.
      */
     public static class PtidesNetworkType extends RecordType {
 
-        /** Create a new default PtidesNetworkType.
+        /**
+         * Create a new default PtidesNetworkType.
          */
         public PtidesNetworkType() {
             super(LABELS, TYPES);
@@ -477,15 +509,18 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         public static String[] LABELS = new String[] { "timestamp",
                 "microstep", "payload" };
 
-        /** Label of the timestamp that is transmitted within the RecordToken.
+        /**
+         * Label of the timestamp that is transmitted within the RecordToken.
          */
         private static final String timestamp = "timestamp";
 
-        /** Label of the microstep that is transmitted within the RecordToken.
+        /**
+         * Label of the microstep that is transmitted within the RecordToken.
          */
         private static final String microstep = "microstep";
 
-        /** Label of the payload that is transmitted within the RecordToken.
+        /**
+         * Label of the payload that is transmitted within the RecordToken.
          */
         private static final String payload = "payload";
 
@@ -494,35 +529,43 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ///////////////////////////////////////////////////////////////////
     //// PtidesComposite
 
-    /** This is a specialized composite actor for use in PtidesPlatform.
-     *  In particular, it ensures that if ports are added or deleted
-     *  locally, then corresponding ports will be added or deleted
-     *  in the container.  That addition will result in appropriate
-     *  connections being made.
+    /**
+     * This is a specialized composite actor for use in PtidesPlatform. In
+     * particular, it ensures that if ports are added or deleted locally, then
+     * corresponding ports will be added or deleted in the container. That
+     * addition will result in appropriate connections being made.
      */
     public static class PtidesPlatformContents extends
             MetroIIMirrorComposite.MetroIIMirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
-        /** Construct an actor with a name and a container.
-         *  @param container The container.
-         *  @param name The name of this actor.
-         *  @exception IllegalActionException If the container is incompatible
-         *   with this actor.
-         *  @exception NameDuplicationException If the name coincides with
-         *   an actor already in the container.
+        /**
+         * Construct an actor with a name and a container.
+         * 
+         * @param container
+         *            The container.
+         * @param name
+         *            The name of this actor.
+         * @exception IllegalActionException
+         *                If the container is incompatible with this actor.
+         * @exception NameDuplicationException
+         *                If the name coincides with an actor already in the
+         *                container.
          */
         public PtidesPlatformContents(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
-        /** Override the base class to return a specialized port.
-         *  @param name The name of the port to create.
-         *  @return A new instance of PtidesMirrorPort, an inner class.
-         *  @exception NameDuplicationException If the container already has
-         *  a port with this name.
+        /**
+         * Override the base class to return a specialized port.
+         * 
+         * @param name
+         *            The name of the port to create.
+         * @return A new instance of PtidesMirrorPort, an inner class.
+         * @exception NameDuplicationException
+         *                If the container already has a port with this name.
          */
         public Port newPort(String name) throws NameDuplicationException {
             try {
@@ -534,11 +577,15 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             }
         }
 
-        /** Return a specialized ParameterPort.
-         * @param name The name of the port to create.
+        /**
+         * Return a specialized ParameterPort.
+         * 
+         * @param name
+         *            The name of the port to create.
          * @return The new ParameterPort.
-         * @exception NameDuplicationException Thrown if the container already has
-         *  a port with this name.
+         * @exception NameDuplicationException
+         *                Thrown if the container already has a port with this
+         *                name.
          */
         public Port newParameterPort(String name)
                 throws NameDuplicationException {
@@ -556,26 +603,29 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ///////////////////////////////////////////////////////////////////
     //// PtidesPlatformDirector
 
-    /** This is a specialized director that forwards most functionality
-     *  to the embedded PtidesDirector. Transferring inputs and outputs
-     *  is modified in order to deal with building and extracting
-     *  RecordTokens in NetworkPorts.
+    /**
+     * This is a specialized director that forwards most functionality to the
+     * embedded PtidesDirector. Transferring inputs and outputs is modified in
+     * order to deal with building and extracting RecordTokens in NetworkPorts.
      */
-    private class PtidesPlatformDirector extends Director implements
-            GetFirable {
+    private class PtidesPlatformDirector extends Director implements GetFirable {
 
-        /** Construct an PtidesPlatformDirector in the specified workspace with
-         *  no container and an empty string as a name. You can then change
-         *  the name with setName(). If the workspace argument is null, then
-         *  use the default workspace.  You should set the local director or
-         *  executive director before attempting to send data to the actor
-         *  or to execute it. Add the actor to the workspace directory.
-         *  Increment the version number of the workspace.
-         *  @param workspace The workspace that will list the actor.
-         *  @exception IllegalActionException If the container is incompatible
-         *   with this actor.
-         *  @exception NameDuplicationException If the name coincides with
-         *   an actor already in the container.
+        /**
+         * Construct an PtidesPlatformDirector in the specified workspace with
+         * no container and an empty string as a name. You can then change the
+         * name with setName(). If the workspace argument is null, then use the
+         * default workspace. You should set the local director or executive
+         * director before attempting to send data to the actor or to execute
+         * it. Add the actor to the workspace directory. Increment the version
+         * number of the workspace.
+         * 
+         * @param workspace
+         *            The workspace that will list the actor.
+         * @exception IllegalActionException
+         *                If the container is incompatible with this actor.
+         * @exception NameDuplicationException
+         *                If the name coincides with an actor already in the
+         *                container.
          */
         public PtidesPlatformDirector(Workspace workspace)
                 throws IllegalActionException, NameDuplicationException {
@@ -583,18 +633,23 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             setPersistent(false);
         }
 
-        /** Invoke fire of the embedded PtidesDirector.
-         *  @exception IllegalActionException Thrown by embedded
-         *  PtidesDirector.
+        /**
+         * Invoke fire of the embedded PtidesDirector.
+         * 
+         * @exception IllegalActionException
+         *                Thrown by embedded PtidesDirector.
          */
         public void fire() throws IllegalActionException {
             _getEmbeddedPtidesDirector().fire();
         }
 
-        /** Forward this call to the director that governs this
-         *  PtidesPlatform actor.
-         *  @exception IllegalActionException Thrown if fireContainerAt
-         *  of the enclosing director cannot be invoked.
+        /**
+         * Forward this call to the director that governs this PtidesPlatform
+         * actor.
+         * 
+         * @exception IllegalActionException
+         *                Thrown if fireContainerAt of the enclosing director
+         *                cannot be invoked.
          */
         public Time fireContainerAt(Time time) throws IllegalActionException {
             if (getContainer() instanceof Actor) {
@@ -613,9 +668,11 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                     + "enclosing director cannot be invoked.");
         }
 
-        /** Get current environment time from the director that contains
-         *  this PtidesPlatform actor.
-         *  @return Environment time.
+        /**
+         * Get current environment time from the director that contains this
+         * PtidesPlatform actor.
+         * 
+         * @return Environment time.
          */
         public Time getEnvironmentTime() {
             if (getContainer() instanceof Actor) {
@@ -633,48 +690,59 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             return localClock.getLocalTime();
         }
 
-        /** Invoke initialize of the embedded PtidesDirector.
-         *  @exception IllegalActionException Thrown by embedded
-         *  PtidesDirector.
+        /**
+         * Invoke initialize of the embedded PtidesDirector.
+         * 
+         * @exception IllegalActionException
+         *                Thrown by embedded PtidesDirector.
          */
         public void initialize() throws IllegalActionException {
             super.initialize();
             //_getEmbeddedPtidesDirector().initialize();
         }
 
-        /** Return a new instance of QueueReceiver.
-         *  @return A new instance of QueueReceiver.
-         *  @see QueueReceiver
+        /**
+         * Return a new instance of QueueReceiver.
+         * 
+         * @return A new instance of QueueReceiver.
+         * @see QueueReceiver
          */
         public Receiver newReceiver() {
             return new QueueReceiver();
         }
 
-        /** Call prefire of super class to update local time and
-         *  invoke prefire of the embedded PtidesDirector.
-         *  @exception IllegalActionException Thrown by embedded
-         *  PtidesDirector.
+        /**
+         * Call prefire of super class to update local time and invoke prefire
+         * of the embedded PtidesDirector.
+         * 
+         * @exception IllegalActionException
+         *                Thrown by embedded PtidesDirector.
          */
         public boolean prefire() throws IllegalActionException {
             super.prefire();
             return _getEmbeddedPtidesDirector().prefire();
         }
 
-        /** Invoke postfire of the embedded PtidesDirector.
-         *  @exception IllegalActionException Thrown by embedded
-         *  PtidesDirector.
+        /**
+         * Invoke postfire of the embedded PtidesDirector.
+         * 
+         * @exception IllegalActionException
+         *                Thrown by embedded PtidesDirector.
          */
         public boolean postfire() throws IllegalActionException {
             return _getEmbeddedPtidesDirector().postfire();
         }
 
-        /** Transfer data from an input port of the
-         *  container to the ports it is connected to on the inside.
-         *  This method extracts tokens from a record token if the
-         *  associated port is a network port.
-         *  @exception IllegalActionException Not thrown in this base class.
-         *  @param port The port to transfer tokens from.
-         *  @return True if at least one data token is transferred.
+        /**
+         * Transfer data from an input port of the container to the ports it is
+         * connected to on the inside. This method extracts tokens from a record
+         * token if the associated port is a network port.
+         * 
+         * @exception IllegalActionException
+         *                Not thrown in this base class.
+         * @param port
+         *            The port to transfer tokens from.
+         * @return True if at least one data token is transferred.
          */
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
@@ -788,13 +856,17 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             return result;
         }
 
-        /** Transfer data from the inside receivers of an output port of the
-         *  container to the ports it is connected to on the outside.
-         *  Create a RecordToken if the associated port is a NetworkTransmitterPort.
-         *  @exception IllegalActionException Not thrown in this base class.
-         *  @param port The port to transfer tokens from.
-         *  @return True if at least one data token is transferred.
-         *  @see IOPort#transferOutputs
+        /**
+         * Transfer data from the inside receivers of an output port of the
+         * container to the ports it is connected to on the outside. Create a
+         * RecordToken if the associated port is a NetworkTransmitterPort.
+         * 
+         * @exception IllegalActionException
+         *                Not thrown in this base class.
+         * @param port
+         *            The port to transfer tokens from.
+         * @return True if at least one data token is transferred.
+         * @see IOPort#transferOutputs
          */
         public boolean transferOutputs(IOPort port)
                 throws IllegalActionException {
@@ -824,8 +896,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                             Token[] values = new Token[] {
                                     new DoubleToken(timestamp.getDoubleValue()),
-                                    new IntToken(microstep),
-                                    t };
+                                    new IntToken(microstep), t };
 
                             RecordToken record = new RecordToken(
                                     PtidesNetworkType.LABELS, values);
@@ -851,9 +922,12 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         //////////////////////////////////////////////////////////////
         ////                   private methods                    ////
 
-        /** Get the PtidesDirector that is contained by the PtidesComposite.
-         *  @return The PtidesDirector.
-         *  @exception IllegalActionException If no PtidesDirector is contained.
+        /**
+         * Get the PtidesDirector that is contained by the PtidesComposite.
+         * 
+         * @return The PtidesDirector.
+         * @exception IllegalActionException
+         *                If no PtidesDirector is contained.
          */
         private Director _getEmbeddedPtidesDirector()
                 throws IllegalActionException {
@@ -885,7 +959,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            return null; 
+            return null;
         }
 
         @Override
@@ -911,20 +985,21 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ///////////////////////////////////////////////////////////////////
     //// PtidesMirrorPort
 
-    /** This is a specialized port for PtidesPlatform.
-     *  If the container is an instance of PtidesPlatform,
-     *  then it handles type conversions between
-     *  the record types and the payload field of the record used
-     *  in NetworkPorts.
+    /**
+     * This is a specialized port for PtidesPlatform. If the container is an
+     * instance of PtidesPlatform, then it handles type conversions between the
+     * record types and the payload field of the record used in NetworkPorts.
      */
     public static class PtidesMirrorPort extends MirrorPort {
-        /** Construct a port in the specified workspace with an empty
-         *  string as a name. You can then change the name with setName().
-         *  If the workspace argument
-         *  is null, then use the default workspace.
-         *  The object is added to the workspace directory.
-         *  Increment the version number of the workspace.
-         *  @param workspace The workspace that will list the port.
+        /**
+         * Construct a port in the specified workspace with an empty string as a
+         * name. You can then change the name with setName(). If the workspace
+         * argument is null, then use the default workspace. The object is added
+         * to the workspace directory. Increment the version number of the
+         * workspace.
+         * 
+         * @param workspace
+         *            The workspace that will list the port.
          */
         public PtidesMirrorPort(Workspace workspace) {
             // This constructor is needed for Shallow codgen.
@@ -938,11 +1013,17 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         // enclosing class is, so it would not be able to instantiate
         // these ports.
 
-        /** Create a new instance of a port for PtidesPlatform.
-         *  @param container The container for the port.
-         *  @param name The name of the port.
-         *  @exception IllegalActionException Not thrown in this base class.
-         *  @exception NameDuplicationException Not thrown in this base class.
+        /**
+         * Create a new instance of a port for PtidesPlatform.
+         * 
+         * @param container
+         *            The container for the port.
+         * @param name
+         *            The name of the port.
+         * @exception IllegalActionException
+         *                Not thrown in this base class.
+         * @exception NameDuplicationException
+         *                Not thrown in this base class.
          */
         public PtidesMirrorPort(TypedCompositeActor container, String name)
                 throws IllegalActionException, NameDuplicationException {
@@ -957,12 +1038,15 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             // setPersistent(false);
         }
 
-        /** Override the base class to not convert the token if it is a PtidesPlatform.
-         *  FIXME: correct?
-         *  @param token The token to convert.
-         *  @return The converted token.
-         *  @exception IllegalActionException If the conversion is
-         *   invalid.
+        /**
+         * Override the base class to not convert the token if it is a
+         * PtidesPlatform. FIXME: correct?
+         * 
+         * @param token
+         *            The token to convert.
+         * @return The converted token.
+         * @exception IllegalActionException
+         *                If the conversion is invalid.
          */
         public Token convert(Token token) throws IllegalActionException {
             if (!(getContainer() instanceof MetroIIPtidesPlatform)

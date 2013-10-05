@@ -28,30 +28,35 @@
 package ptolemy.domains.metroII.kernel;
 
 /**
- * Pair is a container for a pair of values, which may be of different types (F and S). 
- * The individual values can be accessed through its public methods.
- *
+ * Pair is a container for a pair of values, which may be of different types (F
+ * and S). The individual values can be accessed through its public methods.
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class Pair<F, S> {
     /**
      * Construct a Pair with two values.
-     * @param first First value
-     * @param second Second value
+     * 
+     * @param first
+     *            First value
+     * @param second
+     *            Second value
      */
     public Pair(F first, S second) {
         this.first = first;
         this.second = second;
     }
-    
+
     /**
      * Set the first element.
-     * @param first Value to be assigned to the first element.
+     * 
+     * @param first
+     *            Value to be assigned to the first element.
      * 
      * @see #getFirst
      */
@@ -61,7 +66,9 @@ public class Pair<F, S> {
 
     /**
      * Set the second element.
-     * @param second Value to be assigned to the second element.
+     * 
+     * @param second
+     *            Value to be assigned to the second element.
      * 
      * @see #getSecond
      */
@@ -71,6 +78,7 @@ public class Pair<F, S> {
 
     /**
      * Get the first element.
+     * 
      * @return The first element in the pair.
      * 
      * @see #setFirst
@@ -81,6 +89,7 @@ public class Pair<F, S> {
 
     /**
      * Get the second element.
+     * 
      * @return The second element in the pair.
      * 
      * @see #setSecond
@@ -96,10 +105,10 @@ public class Pair<F, S> {
      * First element of the pair.
      */
     private F first;
-    
+
     /**
      * Second element of the pair.
      */
-    private S second; 
+    private S second;
 
 }

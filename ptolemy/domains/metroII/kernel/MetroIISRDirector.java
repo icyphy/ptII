@@ -53,41 +53,47 @@ import ptolemy.kernel.util.Workspace;
 // 
 
 /**
- * MetroIISRDirector is a Synchronous Reactive (SR) director that adapts 
- * to MetroII semantics. 
- *  
- * In MetroIISRDirector, the actor firing will first trigger a MetroII 
- * event to be PROPOSED. The firing will not be executed until the MetroII 
- * event is NOTIFIED. In other words, all the actors under MetroIISRDirector 
- * are considered as MetroII actors.
+ * MetroIISRDirector is a Synchronous Reactive (SR) director that adapts to
+ * MetroII semantics.
  * 
- * By using a MetroIISRDirector, the user understands 
- * the firing of the MetroII actor might be affected  
- * by MetroIIDirector on the upper level and the architectural 
- * model which the MetroII actor is mapped onto. This introduces some 
- * non-determinisms and thus the way it reaches the fixed point depends on the 
- * architectural implementation. The MetroIISRDirector guarantees that 
- * the states are not updated (postfire() are not called) until the model 
- * reaches the fixed point. These non-determinisms are desirable 
- * and can be used to optimize the architectures. 
-
+ * <p>
+ * In MetroIISRDirector, the actor firing will first trigger a MetroII event to
+ * be PROPOSED. The firing will not be executed until the MetroII event is
+ * NOTIFIED. In other words, all the actors under MetroIISRDirector are
+ * considered as MetroII actors.
+ * </p>
+ * 
+ * <p>
+ * By using a MetroIISRDirector, the user understands the firing of the MetroII
+ * actor might be affected by MetroIIDirector on the upper level and the
+ * architectural model which the MetroII actor is mapped onto. This introduces
+ * some non-determinisms and thus the way it reaches the fixed point depends on
+ * the architectural implementation. The MetroIISRDirector guarantees that the
+ * states are not updated (postfire() are not called) until the model reaches
+ * the fixed point. These non-determinisms are desirable and can be used to
+ * optimize the architectures.
+ * </p>
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
-public class MetroIISRDirector extends SRDirector implements
-        GetFirable {
+public class MetroIISRDirector extends SRDirector implements GetFirable {
 
-    /** Construct a director in the default workspace with an empty string
-     *  as its name. The director is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+    /**
+     * Construct a director in the default workspace with an empty string as its
+     * name. The director is added to the list of objects in the workspace.
+     * Increment the version number of the workspace.
+     * 
+     * @exception IllegalActionException
+     *                If the name has a period in it, or the director is not
+     *                compatible with the specified container.
+     * @exception NameDuplicationException
+     *                If the container already contains an entity with the
+     *                specified name.
      */
     public MetroIISRDirector() throws IllegalActionException,
             NameDuplicationException {
@@ -95,14 +101,19 @@ public class MetroIISRDirector extends SRDirector implements
         _init();
     }
 
-    /** Construct a director in the given workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace for this object.
-     *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+    /**
+     * Construct a director in the given workspace with an empty name. The
+     * director is added to the list of objects in the workspace. Increment the
+     * version number of the workspace.
+     * 
+     * @param workspace
+     *            The workspace for this object.
+     * @exception IllegalActionException
+     *                If the name has a period in it, or the director is not
+     *                compatible with the specified container.
+     * @exception NameDuplicationException
+     *                If the container already contains an entity with the
+     *                specified name.
      */
     public MetroIISRDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -110,17 +121,21 @@ public class MetroIISRDirector extends SRDirector implements
         _init();
     }
 
-    /** Construct a director in the given container with the given name.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *  @param container Container of the director.
-     *  @param name Name of this director.
-     *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.
-     *  @exception NameDuplicationException If the name collides with an
-     *   attribute in the container.
+    /**
+     * Construct a director in the given container with the given name. The
+     * container argument must not be null, or a NullPointerException will be
+     * thrown. If the name argument is null, then the name is set to the empty
+     * string. Increment the version number of the workspace.
+     * 
+     * @param container
+     *            Container of the director.
+     * @param name
+     *            Name of this director.
+     * @exception IllegalActionException
+     *                If the director is not compatible with the specified
+     *                container.
+     * @exception NameDuplicationException
+     *                If the name collides with an attribute in the container.
      */
     public MetroIISRDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -128,13 +143,16 @@ public class MetroIISRDirector extends SRDirector implements
         _init();
     }
 
-    /** Clone the object into the specified workspace. The new object
-     *  is <i>not</i> added to the directory of that workspace (you
-     *  must do this yourself if you want it there).
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
+    /**
+     * Clone the object into the specified workspace. The new object is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * 
+     * @param workspace
+     *            The workspace for the cloned object.
+     * @exception CloneNotSupportedException
+     *                Not thrown in this base class
+     * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIISRDirector newObject = (MetroIISRDirector) super
@@ -150,7 +168,7 @@ public class MetroIISRDirector extends SRDirector implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -165,15 +183,14 @@ public class MetroIISRDirector extends SRDirector implements
     }
 
     /**
-     * the actor firing will first trigger a MetroII 
-     * event to be PROPOSED. The firing will not be executed until the MetroII 
-     * event is NOTIFIED. In other words, all the actors under MetroIISRDirector 
-     * are considered as MetroII actors.
+     * the actor firing will first trigger a MetroII event to be PROPOSED. The
+     * firing will not be executed until the MetroII event is NOTIFIED. In other
+     * words, all the actors under MetroIISRDirector are considered as MetroII
+     * actors.
      * 
-     * By using a MetroIISRDirector, the user understands 
-     * the firing of the MetroII actor might be affected  
-     * by MetroIIDirector on the upper level and the architectural 
-     * model which the MetroII actor is mapped onto.
+     * By using a MetroIISRDirector, the user understands the firing of the
+     * MetroII actor might be affected by MetroIIDirector on the upper level and
+     * the architectural model which the MetroII actor is mapped onto.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -192,8 +209,8 @@ public class MetroIISRDirector extends SRDirector implements
                     if (!_actorsFinishedExecution.contains(actor)) {
                         // check if the actor is ready to fire.
                         if (_isReadyToFire(actor)) {
-                            Event.Builder builder = makeEventBuilder(
-                                    actor.getFullName());
+                            Event.Builder builder = makeEventBuilder(actor
+                                    .getFullName());
                             _nameToActor.put(builder.getName(), actor);
                             _events.add(builder);
                         } else {
@@ -262,7 +279,9 @@ public class MetroIISRDirector extends SRDirector implements
 
     /**
      * Create a MetroII event.
-     * @param name MetroII event name
+     * 
+     * @param name
+     *            MetroII event name
      * @return MetroII event builder
      */
     private Event.Builder makeEventBuilder(String name) {

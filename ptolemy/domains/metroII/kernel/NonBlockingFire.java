@@ -34,43 +34,45 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * NonBlockingFire is a wrapper for Ptolemy actor. It provides an implementation of FireMachine. 
- * More specifically, the wrapper implements a startOrResume() function 
- * that associates the state of FireMachine with the state of fire() of the wrapped actor as follows: 
+ * NonBlockingFire is a wrapper for Ptolemy actor. It provides an implementation
+ * of FireMachine. More specifically, the wrapper implements a startOrResume()
+ * function that associates the state of FireMachine with the state of fire() of
+ * the wrapped actor as follows:
  * <ol>
- * <li> START: initial state </li>
- * <li> FINAL: final state </li>
+ * <li>START: initial state</li>
+ * <li>FINAL: final state</li>
  * </ol>
- * When startOrResume() is called, if the current state is START, the wrapper calls fire() of the wrapped actor, 
- * and transition to FINAL
- *   
- *
+ * When startOrResume() is called, if the current state is START, the wrapper
+ * calls fire() of the wrapped actor, and transition to FINAL
+ * 
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class NonBlockingFire extends FireMachine {
 
     /**
      * Construct a NonBlocingfire by wrapping the actor.
      * 
-     * @param actor actor to be wrapped.
+     * @param actor
+     *            actor to be wrapped.
      */
     public NonBlockingFire(Actor actor) {
         super(actor);
     }
 
     /**
-     * if the current state is START, call fire() of the wrapped actor, 
-     * and transition to FINAL.
+     * if the current state is START, call fire() of the wrapped actor, and
+     * transition to FINAL.
      * 
-     * @param metroIIEventList the list of MetroII events that trigger 
-     * startOrResume().
-     * @throws IllegalActionException if the associated action (e.g. firing) 
-     * is not permitted.
+     * @param metroIIEventList
+     *            the list of MetroII events that trigger startOrResume().
+     * @throws IllegalActionException
+     *             if the associated action (e.g. firing) is not permitted.
      */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -78,10 +80,9 @@ public class NonBlockingFire extends FireMachine {
         if (getState() == State.START) {
             actor().fire();
             setState(State.FINAL);
-        } 
-        else {
-            assert false; 
+        } else {
+            assert false;
         }
     }
-    
+
 }

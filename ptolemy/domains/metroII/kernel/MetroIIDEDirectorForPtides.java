@@ -63,39 +63,45 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MetroIIDEDirectorForPtides
 
-/** 
- * MetroIIDEDirectorForPtides is an intermediate class for MetroIIPtidesDirector 
- * to extend. MetroIIPtidesDirector cannot extend PtidesDirector 
- * because the super class DEDirector does not support MetroII semantics. 
- * We choose to not extend MetroIIDEDirector either, because all the 
- * actors under MetroIIPtidesDirector can be considered as MetroII
- * actors. The assumption greatly simplifies the implementation. 
+/**
+ * MetroIIDEDirectorForPtides is an intermediate class for MetroIIPtidesDirector
+ * to extend. MetroIIPtidesDirector cannot extend PtidesDirector because the
+ * super class DEDirector does not support MetroII semantics. We choose to not
+ * extend MetroIIDEDirector either, because all the actors under
+ * MetroIIPtidesDirector can be considered as MetroII actors. The assumption
+ * greatly simplifies the implementation.
  * 
- * MetroIIDEDirectorForPtides is a much simpler version of MetroIIDEDirector 
- * with the assumption that all the actors are MetroII actors. 
+ * <p>
+ * MetroIIDEDirectorForPtides is a much simpler version of MetroIIDEDirector
+ * with the assumption that all the actors are MetroII actors.
+ * </p>
  * 
  * @author Liangpeng Guo
- * @version $Id$
+ * @version $Id: MetroIIDEDirectorForPtides.java 67634 2013-10-03 17:12:51Z glp$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         GetFirable {
 
-    /** Construct a director in the given container with the given
-     *  name.  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  If the name argument is
-     *  null, then the name is set to the empty string. Increment the
-     *  version number of the workspace.
-     *
-     * @param container Container of the director.
-     * @param name Name of this director. 
-     * @throws IllegalActionException If the director is not compatible
-     *   with the specified container. May be thrown in a derived class.
-     * @throws NameDuplicationException If the container is not a
-     *   CompositeActor and the name collides with an entity in the container.
+    /**
+     * Construct a director in the given container with the given name. The
+     * container argument must not be null, or a NullPointerException will be
+     * thrown. If the name argument is null, then the name is set to the empty
+     * string. Increment the version number of the workspace.
+     * 
+     * @param container
+     *            Container of the director.
+     * @param name
+     *            Name of this director.
+     * @throws IllegalActionException
+     *             If the director is not compatible with the specified
+     *             container. May be thrown in a derived class.
+     * @throws NameDuplicationException
+     *             If the container is not a CompositeActor and the name
+     *             collides with an entity in the container.
      */
     public MetroIIDEDirectorForPtides(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -103,13 +109,16 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         _initializeParameters();
     }
 
-    /** Clone the object into the specified workspace. The new object
-     *  is <i>not</i> added to the directory of that workspace (you
-     *  must do this yourself if you want it there).
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
+    /**
+     * Clone the object into the specified workspace. The new object is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * 
+     * @param workspace
+     *            The workspace for the cloned object.
+     * @exception CloneNotSupportedException
+     *                Not thrown in this base class
+     * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIDEDirectorForPtides newObject = (MetroIIDEDirectorForPtides) super
@@ -124,21 +133,26 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                    public fields                         ////
-    
-    /** Initialize the model controlled by this director. Call the
-     *  initialize() of super class and then wrap each actor that
-     *  is controlled by this director.
-     *
-     *  This method should typically be invoked once per execution, after the
-     *  preinitialization phase, but before any iteration. It may be
-     *  invoked in the middle of an execution, if reinitialization is
-     *  desired.
-     *
-     *  This method is <i>not</i> synchronized on the workspace,
-     *  so the caller should be.
-     *
-     *  @exception IllegalActionException If the initialize() method of
-     *   one of the associated actors throws it.
+
+    /**
+     * Initialize the model controlled by this director. Call the initialize()
+     * of super class and then wrap each actor that is controlled by this
+     * director.
+     * 
+     * <p>
+     * This method should typically be invoked once per execution, after the
+     * preinitialization phase, but before any iteration. It may be invoked in
+     * the middle of an execution, if reinitialization is desired.
+     * </p>
+     * 
+     * <p>
+     * This method is <i>not</i> synchronized on the workspace, so the caller
+     * should be.
+     * </p>
+     * 
+     * @exception IllegalActionException
+     *                If the initialize() method of one of the associated actors
+     *                throws it.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -165,19 +179,23 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     }
 
     /**
-     * Pair is a data structure used to store two elements. 
+     * Pair is a data structure used to store two elements.
      * 
      * @author Liangpeng Guo
-     *
-     * @param <F> The first element
-     * @param <S> The second element
+     * 
+     * @param <F>
+     *            The first element
+     * @param <S>
+     *            The second element
      */
     public static class Pair<F, S> {
         /**
-         * Construct a pair of elements. 
+         * Construct a pair of elements.
          * 
-         * @param first the first element.
-         * @param second the second element.
+         * @param first
+         *            the first element.
+         * @param second
+         *            the second element.
          */
         public Pair(F first, S second) {
             this.first = first;
@@ -188,9 +206,10 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         ////                         public methods                    ////
 
         /**
-         * Set the first element in the pair. 
+         * Set the first element in the pair.
          * 
-         * @param first the element to be set.
+         * @param first
+         *            the element to be set.
          * @see #getFirst
          */
         public void setFirst(F first) {
@@ -198,9 +217,10 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         }
 
         /**
-         * Set the second element in the pair. 
+         * Set the second element in the pair.
          * 
-         * @param second the element to be set.
+         * @param second
+         *            the element to be set.
          * @see #getSecond
          */
         public void setSecond(S second) {
@@ -208,7 +228,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         }
 
         /**
-         * Get the first element in the pair. 
+         * Get the first element in the pair.
          * 
          * @return the first element.
          * @see #setFirst
@@ -224,7 +244,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
          * @see #setSecond
          */
         public S getSecond() {
-            return second;        
+            return second;
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -233,12 +253,12 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         /**
          * The first element in the pair.
          */
-        private F first; 
-        
+        private F first;
+
         /**
-         * The second element in the pair. 
+         * The second element in the pair.
          */
-        private S second; 
+        private S second;
 
     }
 
@@ -246,23 +266,22 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     ////                   protected fields                        ////
 
     /**
-     * _checkNextEventToFire finds the next Ptides event to fire and returns it 
-     * with an integer indicating: 0 if firing can be executed, and 
-     *  the next event in event queue should be checked for processing;
-     *  -1 if there's no actor to fire, and we should not keep firing;
-     *  1 if there's no actor to fire, but the next event should be
-     *  checked for processing.
+     * _checkNextEventToFire finds the next Ptides event to fire and returns it
+     * with an integer indicating: 0 if firing can be executed, and the next
+     * event in event queue should be checked for processing; -1 if there's no
+     * actor to fire, and we should not keep firing; 1 if there's no actor to
+     * fire, but the next event should be checked for processing.
      * 
-     * @return A pair of elements in which the first one is Ptides event safe 
-     * to be processed, the second one is the state indicating: 0 if 
-     * firing can be executed, and the next event in event queue should 
-     * be checked for processing; -1 if there's no actor to fire, 
-     * and we should not keep firing; 1 if there's no actor to fire, 
-     * but the next event should be checked for processing.
+     * @return A pair of elements in which the first one is Ptides event safe to
+     *         be processed, the second one is the state indicating: 0 if firing
+     *         can be executed, and the next event in event queue should be
+     *         checked for processing; -1 if there's no actor to fire, and we
+     *         should not keep firing; 1 if there's no actor to fire, but the
+     *         next event should be checked for processing.
      * 
-     * @throws IllegalActionException If the firing actor throws it, or
-     *   event queue is not ready, or an event is missed, or time is set
-     *   backwards.
+     * @throws IllegalActionException
+     *             If the firing actor throws it, or event queue is not ready,
+     *             or an event is missed, or time is set backwards.
      */
     protected Pair<PtidesEvent, Integer> _checkNextEventToFire()
             throws IllegalActionException {
@@ -274,7 +293,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         } else {
             actorToFire = null;
         }
-        
+
         // Check whether the actor to be fired is null.
         // -- If the actor to be fired is null,
         // There are two conditions that the actor to be fired
@@ -492,24 +511,27 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
 
     }
 
-    /** 
-     * Fire actors according to Ptides events in the event queue. Whether the actual 
-     * firing of an actor can be done also depend on the MetroII events associated 
-     * with the actor if the actor is a MetroII actor. Only when the associated 
-     * MetroII event is NOTIFIED, the firing can be executed. Once a MetroII 
-     * event is executed, we check again if there are any more events could be 
-     * executed. 
+    /**
+     * Fire actors according to Ptides events in the event queue. Whether the
+     * actual firing of an actor can be done also depend on the MetroII events
+     * associated with the actor if the actor is a MetroII actor. Only when the
+     * associated MetroII event is NOTIFIED, the firing can be executed. Once a
+     * MetroII event is executed, we check again if there are any more events
+     * could be executed.
      * 
-     * getfire() starts with looking at all the Ptides events that are ready to be 
-     * processed. For each actor that is ready to fire, the startOrResume() interface 
-     * is called, which in turns calls the getfire() of the actor. These calls to 
-     * startOrResume() (yields) returns with the MetroII events that are PROPOSED. 
-     * This getfire() 'yield returns' with all these PROPOSED MetroII events. 
+     * getfire() starts with looking at all the Ptides events that are ready to
+     * be processed. For each actor that is ready to fire, the startOrResume()
+     * interface is called, which in turns calls the getfire() of the actor.
+     * These calls to startOrResume() (yields) returns with the MetroII events
+     * that are PROPOSED. This getfire() 'yield returns' with all these PROPOSED
+     * MetroII events.
      * 
-     * The getfire() normally exits when no more actors proposing MetroII events.  
-     *  
-     *  @exception IllegalActionException If we couldn't process an event
-     *  or if an event of smaller timestamp is found within the event queue.
+     * The getfire() normally exits when no more actors proposing MetroII
+     * events.
+     * 
+     * @exception IllegalActionException
+     *                If we couldn't process an event or if an event of smaller
+     *                timestamp is found within the event queue.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -545,7 +567,6 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
 
                         _eventList.add(eventAndState.first);
                         stable = false;
-
 
                         if (((BooleanToken) printTrace.getToken())
                                 .booleanValue()) {
@@ -595,23 +616,25 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
                         firing.actor().postfire();
                         firing.reset();
 
-                        Iterator<?> inputPorts = firing.actor().inputPortList().iterator();
-                        boolean refire = false; 
+                        Iterator<?> inputPorts = firing.actor().inputPortList()
+                                .iterator();
+                        boolean refire = false;
                         while (inputPorts.hasNext() && !refire) {
                             IOPort port = (IOPort) inputPorts.next();
 
                             // iterate all the channels of the current input port.
                             for (int i = 0; i < port.getWidth(); i++) {
-                                if (port.hasToken(i) && firing.actor().prefire()) {
+                                if (port.hasToken(i)
+                                        && firing.actor().prefire()) {
                                     refire = true;
                                     firing.startOrResume(metroIIEventList);
                                     firingEventList.add(ptidesEvent);
                                     _events.addAll(metroIIEventList);
-                                    break; 
+                                    break;
                                 }
                             }
                         }
-                        
+
                         if (_debugging) {
                             _debug(new FiringEvent(this, actor,
                                     FiringEvent.AFTER_POSTFIRE));
@@ -646,15 +669,16 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     }
 
     /**
-     * Since the MetroIIDEDirectorForPtides is always used inside a MetroIICompositeActor, 
-     * the adapter() in MetroIICompositeActor is responsible for creating the 
-     * iterator of getfire(), this adapter() should never be called.
-     *
+     * Since the MetroIIDEDirectorForPtides is always used inside a
+     * MetroIICompositeActor, the adapter() in MetroIICompositeActor is
+     * responsible for creating the iterator of getfire(), this adapter() should
+     * never be called.
+     * 
      * @return iterator
      */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
-        assert false; 
+        assert false;
         return null;
     }
 
@@ -675,12 +699,14 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
      * @return Ptides event that is safe to process
      * @throws IllegalActionException
      */
-    protected abstract PtidesEvent _getNextEventToFire() throws IllegalActionException ;
+    protected abstract PtidesEvent _getNextEventToFire()
+            throws IllegalActionException;
 
     /**
      * Ptides director need to provide the implementation.
      * 
-     * @param ptidesEvent Ptides event the logical time is set to.
+     * @param ptidesEvent
+     *            Ptides event the logical time is set to.
      */
     protected abstract void _setLogicalTime(PtidesEvent ptidesEvent);
 
@@ -700,9 +726,11 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize parameters. This is called by the constructor.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+    /**
+     * Initialize parameters. This is called by the constructor.
+     * 
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {

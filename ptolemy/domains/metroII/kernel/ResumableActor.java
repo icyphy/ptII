@@ -39,22 +39,25 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// MetroIIActorGeneralWrapper
 
-/** <p>
- * ResumableActor is used to wrap any MetroII
- * compatible actor with MetroIIActorInterface.
+/**
+ * <p>
+ * ResumableActor is used to wrap any MetroII compatible actor with
+ * MetroIIActorInterface.
  * </p>
- *
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class ResumableActor extends ActMachine {
-    /** Construct a Actor-Thread pair.
-     *
-     * @param actor The actor
+    /**
+     * Construct a Actor-Thread pair.
+     * 
+     * @param actor
+     *            The actor
      */
     public ResumableActor(Actor actor) {
         super(actor);
@@ -64,18 +67,18 @@ public class ResumableActor extends ActMachine {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Start or resume the execution of an actor. The execution means
-     * calling prefire(), getfire(), and postfire(). The
-     * execution of getfire() is encapsulated in a thread (implemented
-     * in YieldAdapter @see net.jimblackler.Utils.YieldAdapter).
-     * The thread pauses when getfire() yield-returns a list of MetroII
-     * events.
-     *
-     * @param metroIIEventList the list of MetroII events getfire()
-     * returns.
+    /**
+     * Start or resume the execution of an actor. The execution means calling
+     * prefire(), getfire(), and postfire(). The execution of getfire() is
+     * encapsulated in a thread (implemented in YieldAdapter @see
+     * net.jimblackler.Utils.YieldAdapter). The thread pauses when getfire()
+     * yield-returns a list of MetroII events.
      * 
-     * @throws IllegalActionException if the associated action (e.g. firing) 
-     * is not permitted.
+     * @param metroIIEventList
+     *            the list of MetroII events getfire() returns.
+     * 
+     * @throws IllegalActionException
+     *             if the associated action (e.g. firing) is not permitted.
      */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -164,7 +167,8 @@ public class ResumableActor extends ActMachine {
     ////                   protected fields                        ////
 
     /**
-     * YieldAdapterIterator that is used to trigger actions of the wrapped actor.
+     * YieldAdapterIterator that is used to trigger actions of the wrapped
+     * actor.
      */
     protected YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
 

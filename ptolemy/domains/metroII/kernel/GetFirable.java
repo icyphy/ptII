@@ -41,6 +41,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * this interface has the ability to 'yield return' in getfire()
  * by calling 'resultHandler.handleResult(events)'.
  *
+ * <p>
  * Instead of calling getfire() directly, the caller function
  * should obtain an YieldAdapterIterable from adapter(). Every
  * time YieldAdapterIterable.next() is called, getfire()
@@ -50,7 +51,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * events passed by 'resultHandler.handleResult(events)'. If
  * YieldAdapterIterable.hasNext() returns false, it means
  * getfire() has reached 'return' and terminated.
- *
+ * </p>
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1

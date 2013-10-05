@@ -48,43 +48,50 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MetroModalModel
 
-/** 
-* MetroModalModel extends ModalModel to support enclosing Metr.oFSMDirector.
-*
-* @author Liangpeng Guo.
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
-public class MetroModalModel extends ModalModel implements
-        GetFirable {
+/**
+ * MetroModalModel extends ModalModel to support enclosing Metr.oFSMDirector.
+ * 
+ * @author Liangpeng Guo.
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
+public class MetroModalModel extends ModalModel implements GetFirable {
 
-    /** Construct a modal model in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.
-     *  @param workspace The workspace that will list the actor.
-     *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+    /**
+     * Construct a modal model in the specified workspace with no container and
+     * an empty string as a name. You can then change the name with setName().
+     * If the workspace argument is null, then use the default workspace.
+     * 
+     * @param workspace
+     *            The workspace that will list the actor.
+     * @exception IllegalActionException
+     *                If the name has a period in it, or the director is not
+     *                compatible with the specified container.
+     * @exception NameDuplicationException
+     *                If the container already contains an entity with the
+     *                specified name.
      */
-    public MetroModalModel(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public MetroModalModel(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
     }
 
-    /** Construct a modal model with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
+    /**
+     * Construct a modal model with a name and a container. The container
+     * argument must not be null, or a NullPointerException will be thrown.
+     * 
+     * @param container
+     *            The container.
+     * @param name
+     *            The name of this actor.
+     * @exception IllegalActionException
+     *                If the container is incompatible with this actor.
+     * @exception NameDuplicationException
+     *                If the name coincides with an actor already in the
+     *                container.
      */
     public MetroModalModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -94,7 +101,7 @@ public class MetroModalModel extends ModalModel implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -109,20 +116,19 @@ public class MetroModalModel extends ModalModel implements
     }
 
     /**
-     * getfire() should be identical to getfire() of MetroCompositeActor. 
+     * getfire() should be identical to getfire() of MetroCompositeActor.
      * 
-     *  If this actor is opaque, transfer any data from the input ports
-     *  of this composite to the ports connected on the inside, and then
-     *  invoke the fire() method of its local director.
-     *  The transfer is accomplished by calling the transferInputs() method
-     *  of the local director (the exact behavior of which depends on the
-     *  domain).  If the actor is not opaque, throw an exception.
-     *  This method is read-synchronized on the workspace, so the
-     *  fire() method of the director need not be (assuming it is only
-     *  called from here).  After the fire() method of the director returns,
-     *  send any output data created by calling the local director's
-     *  transferOutputs method.
-     *
+     * If this actor is opaque, transfer any data from the input ports of this
+     * composite to the ports connected on the inside, and then invoke the
+     * fire() method of its local director. The transfer is accomplished by
+     * calling the transferInputs() method of the local director (the exact
+     * behavior of which depends on the domain). If the actor is not opaque,
+     * throw an exception. This method is read-synchronized on the workspace, so
+     * the fire() method of the director need not be (assuming it is only called
+     * from here). After the fire() method of the director returns, send any
+     * output data created by calling the local director's transferOutputs
+     * method.
+     * 
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -203,7 +209,7 @@ public class MetroModalModel extends ModalModel implements
 
     ///////////////////////////////////////////////////////////////////
     ////                    private methods                        ////
-    
+
     /**
      * Update the expression with 'MetroFSMDirector' instead of 'FSMDirector'
      */

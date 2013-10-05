@@ -53,71 +53,87 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MetroSequentialSDFDirector
 
-/** 
-* MetroSequentialSDFDirector extends SDFDirector to support Metro semantics.
-* The order of actor firing should be static and identical to fire(). Each 
-* actor is fired only if the associated Metro event is notified.
-* 
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+/**
+ * MetroSequentialSDFDirector extends SDFDirector to support Metro semantics.
+ * The order of actor firing should be static and identical to fire(). Each
+ * actor is fired only if the associated Metro event is notified.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id: MetroSequentialSDFDirector.java 67619 2013-10-02 20:32:10Z glp$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
 public class MetroSequentialSDFDirector extends SDFDirector implements
         GetFirable {
 
-    /** Construct a director in the default workspace with an empty string
-     *  as its name. The director is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+    /**
+     * Construct a director in the default workspace with an empty string as its
+     * name. The director is added to the list of objects in the workspace.
+     * Increment the version number of the workspace.
+     * 
+     * @exception IllegalActionException
+     *                If the name has a period in it, or the director is not
+     *                compatible with the specified container.
+     * @exception NameDuplicationException
+     *                If the container already contains an entity with the
+     *                specified name.
      */
     public MetroSequentialSDFDirector() throws IllegalActionException,
             NameDuplicationException {
     }
 
-    /** Construct a director in the given workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace for this object.
-     *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
+    /**
+     * Construct a director in the given workspace with an empty name. The
+     * director is added to the list of objects in the workspace. Increment the
+     * version number of the workspace.
+     * 
+     * @param workspace
+     *            The workspace for this object.
+     * @exception IllegalActionException
+     *                If the name has a period in it, or the director is not
+     *                compatible with the specified container.
+     * @exception NameDuplicationException
+     *                If the container already contains an entity with the
+     *                specified name.
      */
     public MetroSequentialSDFDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
-    /** Construct a director in the given container with the given name.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *  @param container Container of the director.
-     *  @param name Name of this director.
-     *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.
-     *  @exception NameDuplicationException If the name collides with an
-     *   attribute in the container.
+    /**
+     * Construct a director in the given container with the given name. The
+     * container argument must not be null, or a NullPointerException will be
+     * thrown. If the name argument is null, then the name is set to the empty
+     * string. Increment the version number of the workspace.
+     * 
+     * @param container
+     *            Container of the director.
+     * @param name
+     *            Name of this director.
+     * @exception IllegalActionException
+     *                If the director is not compatible with the specified
+     *                container.
+     * @exception NameDuplicationException
+     *                If the name collides with an attribute in the container.
      */
     public MetroSequentialSDFDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    /** Clone the object into the specified workspace. The new object
-     *  is <i>not</i> added to the directory of that workspace (you
-     *  must do this yourself if you want it there).
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
+    /**
+     * Clone the object into the specified workspace. The new object is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * 
+     * @param workspace
+     *            The workspace for the cloned object.
+     * @exception CloneNotSupportedException
+     *                Not thrown in this base class
+     * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroSequentialSDFDirector newObject = (MetroSequentialSDFDirector) super
@@ -134,8 +150,8 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
     ////                         public methods                    ////
 
     /**
-     * Initialize the list of actors. The actors implementing MetroEventHandler are wrapped by ResumableFire,
-     * otherwise are wrapped by BlockingFire. 
+     * Initialize the list of actors. The actors implementing MetroEventHandler
+     * are wrapped by ResumableFire, otherwise are wrapped by BlockingFire.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -164,7 +180,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -179,7 +195,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
     }
 
     /**
-     * The order of actor firing should be static and identical to fire(). Each 
+     * The order of actor firing should be static and identical to fire(). Each
      * actor is fired only if the associated Metro event is notified.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
@@ -215,7 +231,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
                             FiringEvent.BEFORE_ITERATE, iterationCount));
                 }
                 _pendingIteration.put(actor.getFullName(), iterationCount);
-                
+
                 int returnValue = Executable.NOT_READY;
                 FireMachine firingProcess = _actorDictionary.get(actor
                         .getFullName());
@@ -267,7 +283,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
-    
+
     /**
      * List of actors governed by MetroIIDEDirector
      */

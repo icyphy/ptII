@@ -60,33 +60,39 @@ import ptolemy.moml.HandlesInternalLinks;
 
 /**
  * 
- A composite that contain one actor and mirror the ports and
- parameters of that actor.
- 
-  This class is duplicate of MirrorComposite except it extends 
-  MetroIICompositeActor instead of CompositeActor.
-
- @author Edward A. Lee, Liangpeng Guo
- @version $Id$
- @since Ptolemy II 6.1
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (neuendor)
+ * A composite that contain one actor and mirror the ports and parameters of
+ * that actor.
+ * 
+ * <p>
+ * This class is identical to MirrorComposite except it extends
+ * MetroIICompositeActor instead of CompositeActor.
+ * </p>
+ * 
+ * @author Edward A. Lee, Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 6.1
+ * @Pt.ProposedRating Yellow (eal)
+ * @Pt.AcceptedRating Red (neuendor)
  */
 public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         HandlesInternalLinks {
 
-    /** Create an actor with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The container actor.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
+    /**
+     * Create an actor with a name and a container. The container argument must
+     * not be null, or a NullPointerException will be thrown. This actor will
+     * use the workspace of the container for synchronization and version
+     * counts. If the name argument is null, then the name is set to the empty
+     * string. Increment the version of the workspace.
+     * 
+     * @param container
+     *            The container actor.
+     * @param name
+     *            The name of this actor.
+     * @exception IllegalActionException
+     *                If the container is incompatible with this actor.
+     * @exception NameDuplicationException
+     *                If the name coincides with an actor already in the
+     *                container.
      */
     public MetroIIMirrorComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -94,35 +100,42 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         _init(true);
     }
 
-    /** Construct a MirrorComposite in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
+    /**
+     * Construct a MirrorComposite in the specified workspace with no container
+     * and an empty string as a name. You can then change the name with
+     * setName(). If the workspace argument is null, then use the default
+     * workspace. You should set the local director or executive director before
+     * attempting to send data to the actor or to execute it. Add the actor to
+     * the workspace directory. Increment the version number of the workspace.
+     * 
+     * @param workspace
+     *            The workspace that will list the actor.
      */
     public MetroIIMirrorComposite(Workspace workspace) {
         super(workspace);
         _init(true);
     }
 
-    /** Create an actor with a name and a container that optionally
-     *  mirrors the ports that are instances of ParameterPort.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The container actor.
-     *  @param name The name of this actor.
-     *  @param mirrorParameterPorts If false, then ports that are instances of
-     *   ParameterPort are not mirrored.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
+    /**
+     * Create an actor with a name and a container that optionally mirrors the
+     * ports that are instances of ParameterPort. The container argument must
+     * not be null, or a NullPointerException will be thrown. This actor will
+     * use the workspace of the container for synchronization and version
+     * counts. If the name argument is null, then the name is set to the empty
+     * string. Increment the version of the workspace.
+     * 
+     * @param container
+     *            The container actor.
+     * @param name
+     *            The name of this actor.
+     * @param mirrorParameterPorts
+     *            If false, then ports that are instances of ParameterPort are
+     *            not mirrored.
+     * @exception IllegalActionException
+     *                If the container is incompatible with this actor.
+     * @exception NameDuplicationException
+     *                If the name coincides with an actor already in the
+     *                container.
      */
     public MetroIIMirrorComposite(CompositeEntity container, String name,
             boolean mirrorParameterPorts) throws IllegalActionException,
@@ -134,17 +147,21 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the object into the specified workspace. This overrides
-     *  the base class to set up the associations in the mirror ports
-     *  and to set a flag indicating that cloning is complete.
-     *  @param workspace The workspace for the new object.
-     *  @return A new NamedObj.
-     *  @exception CloneNotSupportedException If any of the attributes
-     *   cannot be cloned.
-     *  @see #exportMoML(Writer, int, String)
+    /**
+     * Clone the object into the specified workspace. This overrides the base
+     * class to set up the associations in the mirror ports and to set a flag
+     * indicating that cloning is complete.
+     * 
+     * @param workspace
+     *            The workspace for the new object.
+     * @return A new NamedObj.
+     * @exception CloneNotSupportedException
+     *                If any of the attributes cannot be cloned.
+     * @see #exportMoML(Writer, int, String)
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIMirrorComposite result = (MetroIIMirrorComposite) super.clone(workspace);
+        MetroIIMirrorComposite result = (MetroIIMirrorComposite) super
+                .clone(workspace);
 
         // Fix port associations.
         Iterator entities = result.entityList().iterator();
@@ -169,11 +186,14 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         return result;
     }
 
-    /** Override the base class to return a specialized port.
-     *  @param name The name of the port to create.
-     *  @return A new instance of IteratePort, an inner class.
-     *  @exception NameDuplicationException If the container already has a port
-     *  with this name.
+    /**
+     * Override the base class to return a specialized port.
+     * 
+     * @param name
+     *            The name of the port to create.
+     * @return A new instance of IteratePort, an inner class.
+     * @exception NameDuplicationException
+     *                If the container already has a port with this name.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -194,11 +214,14 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         }
     }
 
-    /** Create a new ParameterMirrorPort.
-     *  @param name The name of the port to create.
-     *  @return A new instance of PtidesMirrorPort, an inner class.
-     *  @exception NameDuplicationException If the container already has a port
-     *  with this name.
+    /**
+     * Create a new ParameterMirrorPort.
+     * 
+     * @param name
+     *            The name of the port to create.
+     * @return A new instance of PtidesMirrorPort, an inner class.
+     * @exception NameDuplicationException
+     *                If the container already has a port with this name.
      */
     public Port newParameterPort(String name) throws NameDuplicationException {
         try {
@@ -214,16 +237,21 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Override the base class to queue a change request to remove
-     *  any previously contained entity and its mirrored ports, and
-     *  to mirror the ports of the added entity.
-     *  @param entity Entity to contain.
-     *  @exception IllegalActionException If the entity has no name, or the
-     *   action would result in a recursive containment structure, or the
-     *   argument does not implement the TypedActor interface.
-     *  @exception NameDuplicationException If the name collides with a name
-     *   already on the actor contents list, or if the added element is a
-     *   class definition.
+    /**
+     * Override the base class to queue a change request to remove any
+     * previously contained entity and its mirrored ports, and to mirror the
+     * ports of the added entity.
+     * 
+     * @param entity
+     *            Entity to contain.
+     * @exception IllegalActionException
+     *                If the entity has no name, or the action would result in a
+     *                recursive containment structure, or the argument does not
+     *                implement the TypedActor interface.
+     * @exception NameDuplicationException
+     *                If the name collides with a name already on the actor
+     *                contents list, or if the added element is a class
+     *                definition.
      */
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
@@ -343,14 +371,19 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         requestChange(request);
     }
 
-    /** Add a port to this actor. This overrides the base class to
-     *  mirror the new port in the contained actor, if there is one,
-     *  and to establish a connection to a port on the contained actor.
-     *  @param port The TypedIOPort to add to this actor.
-     *  @exception IllegalActionException If the port is not an instance
-     *   of IteratePort, or the port has no name.
-     *  @exception NameDuplicationException If the port name collides with a
-     *   name already in the actor.
+    /**
+     * Add a port to this actor. This overrides the base class to mirror the new
+     * port in the contained actor, if there is one, and to establish a
+     * connection to a port on the contained actor.
+     * 
+     * @param port
+     *            The TypedIOPort to add to this actor.
+     * @exception IllegalActionException
+     *                If the port is not an instance of IteratePort, or the port
+     *                has no name.
+     * @exception NameDuplicationException
+     *                If the port name collides with a name already in the
+     *                actor.
      */
     protected void _addPort(Port port) throws IllegalActionException,
             NameDuplicationException {
@@ -453,13 +486,17 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         requestChange(request);
     }
 
-    /** Override the base class to describe contained entities,
-     *  attributes, and ports, but not inside links or relations.
-     *  The rest of the contents are generated automatically when a
-     *  contained entity is inserted.
-     *  @param output The output to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
+    /**
+     * Override the base class to describe contained entities, attributes, and
+     * ports, but not inside links or relations. The rest of the contents are
+     * generated automatically when a contained entity is inserted.
+     * 
+     * @param output
+     *            The output to write to.
+     * @param depth
+     *            The depth in the hierarchy, to determine indenting.
+     * @exception IOException
+     *                If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
@@ -485,10 +522,12 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         }
     }
 
-    /** Override the base class to remove the ports and inside relations
-     *  of this actor. This method assumes the caller has write access
-     *  on the workspace.
-     *  @param entity The entity being removed from this entity.
+    /**
+     * Override the base class to remove the ports and inside relations of this
+     * actor. This method assumes the caller has write access on the workspace.
+     * 
+     * @param entity
+     *            The entity being removed from this entity.
      */
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
@@ -523,11 +562,13 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
         }
     }
 
-    /** Override the base class to remove the associated port on the
-     *  inside entity and the link to it, if there is one.
-     *  This method assumes the caller has write access on the
-     *  workspace.
-     *  @param port The port being removed from this entity.
+    /**
+     * Override the base class to remove the associated port on the inside
+     * entity and the link to it, if there is one. This method assumes the
+     * caller has write access on the workspace.
+     * 
+     * @param port
+     *            The port being removed from this entity.
      */
     protected void _removePort(final Port port) {
         super._removePort(port);
@@ -585,8 +626,11 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the class.
-     *  @param mirrorParameterPorts If true, then mirror instances of ParameterPort.
+    /**
+     * Initialize the class.
+     * 
+     * @param mirrorParameterPorts
+     *            If true, then mirror instances of ParameterPort.
      */
     private void _init(boolean mirrorParameterPorts) {
         setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
@@ -603,34 +647,44 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
     ///////////////////////////////////////////////////////////////////
     //// MirrorCompositeContents
 
-    /** This is a specialized composite actor for use in MirrorComposite.
-     *  In particular, it ensures that if ports are added or deleted
-     *  locally, then corresponding ports will be added or deleted
-     *  in the container.  That addition will result in appropriate
-     *  connections being made.
+    /**
+     * This is a specialized composite actor for use in MirrorComposite. In
+     * particular, it ensures that if ports are added or deleted locally, then
+     * corresponding ports will be added or deleted in the container. That
+     * addition will result in appropriate connections being made.
      */
-    public static class MetroIIMirrorCompositeContents extends MetroIICompositeActor {
+    public static class MetroIIMirrorCompositeContents extends
+            MetroIICompositeActor {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
-        /** Construct an actor with a name and a container.
-         *  @param container The container.
-         *  @param name The name of this actor.
-         *  @exception IllegalActionException If the container is incompatible
-         *   with this actor.
-         *  @exception NameDuplicationException If the name coincides with
-         *   an actor already in the container.
+        /**
+         * Construct an actor with a name and a container.
+         * 
+         * @param container
+         *            The container.
+         * @param name
+         *            The name of this actor.
+         * @exception IllegalActionException
+         *                If the container is incompatible with this actor.
+         * @exception NameDuplicationException
+         *                If the name coincides with an actor already in the
+         *                container.
          */
-        public MetroIIMirrorCompositeContents(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+        public MetroIIMirrorCompositeContents(CompositeEntity container,
+                String name) throws IllegalActionException,
+                NameDuplicationException {
             super(container, name);
         }
 
-        /** Override the base class to return a specialized port.
-         *  @param name The name of the port to create.
-         *  @return A new instance of MirrorPort.
-         *  @exception NameDuplicationException If the container already has
-         *  a port with this name.
+        /**
+         * Override the base class to return a specialized port.
+         * 
+         * @param name
+         *            The name of the port to create.
+         * @return A new instance of MirrorPort.
+         * @exception NameDuplicationException
+         *                If the container already has a port with this name.
          */
         public Port newPort(String name) throws NameDuplicationException {
             try {
@@ -642,14 +696,19 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
             }
         }
 
-        /** Add a port to this actor. This overrides the base class to
-         *  add a corresponding port to the container using a change
-         *  request, if that port does not already exist.
-         *  @param port The TypedIOPort to add to this actor.
-         *  @exception IllegalActionException If the port is not an instance of
-         *   MirrorPort, or the port has no name.
-         *  @exception NameDuplicationException If the port name
-         *  collides with a name already in the actor.
+        /**
+         * Add a port to this actor. This overrides the base class to add a
+         * corresponding port to the container using a change request, if that
+         * port does not already exist.
+         * 
+         * @param port
+         *            The TypedIOPort to add to this actor.
+         * @exception IllegalActionException
+         *                If the port is not an instance of MirrorPort, or the
+         *                port has no name.
+         * @exception NameDuplicationException
+         *                If the port name collides with a name already in the
+         *                actor.
          */
         protected void _addPort(final Port port) throws IllegalActionException,
                 NameDuplicationException {

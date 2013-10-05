@@ -42,12 +42,15 @@ import ptolemy.kernel.util.IllegalActionException;
 //// MetroIIPNQueueReceiver
 
 /**
- * <p> MetroIIPNQueueReceiver adapts token transfer to MetroII semantics. 
- * Each get() or put() is associated with two MetroII events.
- * The data token transfer will not occur until the associated MetroII 
- * events are NOTIFIED. </p>
+ * <p>
+ * MetroIIPNQueueReceiver adapts token transfer to MetroII semantics. Each get()
+ * or put() is associated with two MetroII events. The data token transfer will
+ * not occur until the associated MetroII events are NOTIFIED.
+ * </p>
  * 
- * <p> The implementation is obsolete and needs to be updated. </p>
+ * <p>
+ * The implementation is obsolete and needs to be updated.
+ * </p>
  * 
  * @author Liangpeng Guo
  * @version $Id$
@@ -57,27 +60,27 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Return the director in charge. 
-     * @return the director in charge. 
+     * Return the director in charge.
+     * 
+     * @return the director in charge.
      */
     public MetroIIPNDirector getDirector() {
         return _localDirector;
     }
 
-    /** Get a token from this receiver. If the receiver is empty then
-     *  block until a token becomes available. If this receiver is
-     *  terminated during the execution of this method, then throw a
-     *  TerminateProcessException.
-     *  
-     *  The method will not return until the 'xxx.get.end' MetroII event
-     *  is NOTIFIED.
-     *  
-     *  @return The token contained by this receiver.
+    /**
+     * Get a token from this receiver. If the receiver is empty then block until
+     * a token becomes available. If this receiver is terminated during the
+     * execution of this method, then throw a TerminateProcessException.
+     * 
+     * The method will not return until the 'xxx.get.end' MetroII event is
+     * NOTIFIED.
+     * 
+     * @return The token contained by this receiver.
      */
     public Token get() {
         Token token = super.get();
@@ -93,13 +96,16 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         return token;
     }
 
-    /** Put a token on the queue contained in this receiver.
-     *  The 'put' will not occur until the associated MetroII 
-     *  event '*.put.begin' is NOTIFIED.
-     *  
-     *  @param token The token to be put in the receiver, or null to not put anything.
-     *  @exception NoRoomException If during initialization, capacity cannot be increased
-     *   enough to accommodate initial tokens.
+    /**
+     * Put a token on the queue contained in this receiver. The 'put' will not
+     * occur until the associated MetroII event '*.put.begin' is NOTIFIED.
+     * 
+     * @param token
+     *            The token to be put in the receiver, or null to not put
+     *            anything.
+     * @exception NoRoomException
+     *                If during initialization, capacity cannot be increased
+     *                enough to accommodate initial tokens.
      */
     public void put(Token token) {
         try {
@@ -115,12 +121,15 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
         super.put(token);
     }
 
-    /** Set the container. This overrides the base class to record
-     *  the director.
-     *  @param port The container.
-     *  @exception IllegalActionException If the container is not of
-     *   an appropriate subclass of IOPort, or if the container's director
-     *   is not an instance of PNDirector.
+    /**
+     * Set the container. This overrides the base class to record the director.
+     * 
+     * @param port
+     *            The container.
+     * @exception IllegalActionException
+     *                If the container is not of an appropriate subclass of
+     *                IOPort, or if the container's director is not an instance
+     *                of PNDirector.
      */
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
@@ -155,8 +164,8 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** 
-     * The director in charge of this receiver. 
+    /**
+     * The director in charge of this receiver.
      */
     protected MetroIIPNDirector _localDirector;
 

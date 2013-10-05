@@ -33,17 +33,17 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 ///////////////////////////////////////////////////////////////////
 //// MetroDebugger
 
-/** 
- * MetroDebugger is a debugging facility for Metro directors. 
- * It enables printing information in a customized format.
- *
+/**
+ * MetroDebugger is a debugging facility for Metro directors. It enables
+ * printing information in a customized format.
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
-*/
+ * 
+ */
 public class MetroDebugger implements Cloneable {
 
     /**
@@ -52,25 +52,28 @@ public class MetroDebugger implements Cloneable {
     public MetroDebugger() {
         turnOffDebugging();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
      * Clone a MetroDebugger.
      * 
-     * @throws CloneNotSupportedException the object's class does not implement the Cloneable interface.
+     * @throws CloneNotSupportedException
+     *             the object's class does not implement the Cloneable
+     *             interface.
      */
     @Override
     public MetroDebugger clone() throws CloneNotSupportedException {
-        MetroDebugger newObject = (MetroDebugger) super.clone(); 
-        return newObject; 
+        MetroDebugger newObject = (MetroDebugger) super.clone();
+        return newObject;
     }
 
     /**
      * Set the string to be printed out at the beginning of each line.
      * 
-     * @param prefix prefix string of each line .
+     * @param prefix
+     *            prefix string of each line .
      */
     public void setPrefix(String prefix) {
         _prefix = prefix;
@@ -102,7 +105,8 @@ public class MetroDebugger implements Cloneable {
     /**
      * Print out a title.
      * 
-     * @param title the title to be printed out.
+     * @param title
+     *            the title to be printed out.
      */
     public void printTitle(String title) {
         if (!_debugging) {
@@ -114,7 +118,8 @@ public class MetroDebugger implements Cloneable {
     /**
      * Print out text.
      * 
-     * @param text the text to be printed out.
+     * @param text
+     *            the text to be printed out.
      */
     public void printText(String text) {
         if (!_debugging) {
@@ -126,7 +131,8 @@ public class MetroDebugger implements Cloneable {
     /**
      * Print out the details of a MetroII event.
      * 
-     * @param event the event to be printed out.
+     * @param event
+     *            the event to be printed out.
      */
     public void printMetroEvent(Builder event) {
         if (!_debugging) {
@@ -148,7 +154,8 @@ public class MetroDebugger implements Cloneable {
     /**
      * Print out the details of a list of MetroII events.
      * 
-     * @param metroIIEventList the event list.
+     * @param metroIIEventList
+     *            the event list.
      */
     public void printMetroEvents(Iterable<Builder> metroIIEventList) {
         if (!_debugging) {
@@ -164,7 +171,8 @@ public class MetroDebugger implements Cloneable {
     /**
      * Print out the details of notified events in a list.
      * 
-     * @param metroIIEventList the event list.
+     * @param metroIIEventList
+     *            the event list.
      */
     public void printNotifiedMetroEvents(Iterable<Builder> metroIIEventList) {
         if (!_debugging) {

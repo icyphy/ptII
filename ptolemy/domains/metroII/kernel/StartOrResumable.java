@@ -37,46 +37,50 @@ import ptolemy.kernel.util.IllegalActionException;
 //// StartOrResumable
 
 /**
- * StartOrResumable defines the interface of an actor to MetroIIDirector.
- * This interface defines the common functionality in atomic actor and composite actor.
- *
+ * StartOrResumable defines the interface of an actor to MetroIIDirector. This
+ * interface defines the common functionality in atomic actor and composite
+ * actor.
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
-*/
+ */
 
 public interface StartOrResumable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** <p>
-     *  If startOrResume() resumes from the state it saves last time.
-     *  The state means local variables, stacks or anything it needs to
-     *  resume the execution of last time.
-     *  Continue iteratively executing the actor until any MetroII Event is
-     *  proposed. When MetroII Events are proposed, the function returns with the
-     *  state saved and the proposed events added into metroIIEventList.
-     *  </p>
-     *
-     *  IMPORTANT: the references of MetroII Events could be part of the state of the
-     *  function. The events are returned in metroIIEventList and may be updated
-     *  externally (the event status may change from PROPOSED to WAITING or NOTIFIED).
-     *  Therefore, when the function resumes the state, it should continue
-     *  the execution based on updated MetroII Events.
-     *
-     *  @param metroIIEventList List of MetroII Events
-     *  @throws IllegalActionException if the associated action (e.g. firing) 
-     *  is not permitted.
+    /**
+     * <p>
+     * If startOrResume() resumes from the state it saves last time. The state
+     * means local variables, stacks or anything it needs to resume the
+     * execution of last time. Continue iteratively executing the actor until
+     * any MetroII Event is proposed. When MetroII Events are proposed, the
+     * function returns with the state saved and the proposed events added into
+     * metroIIEventList.
+     * </p>
+     * <p>
+     * IMPORTANT: the references of MetroII Events could be part of the state of
+     * the function. The events are returned in metroIIEventList and may be
+     * updated externally (the event status may change from PROPOSED to WAITING
+     * or NOTIFIED). Therefore, when the function resumes the state, it should
+     * continue the execution based on updated MetroII Events.
+     * </p>
+     * 
+     * @param metroIIEventList
+     *            List of MetroII Events
+     * @throws IllegalActionException
+     *             if the associated action (e.g. firing) is not permitted.
      */
     public void startOrResume(LinkedList<Event.Builder> metroIIEventList)
             throws IllegalActionException;
 
-    /** 
+    /**
      * Reset the state of startOrResumable.
-     *
+     * 
      */
     public void reset();
 

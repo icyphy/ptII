@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.metroII.kernel;
 
-
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
@@ -35,33 +34,33 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 ///////////////////////////////////////////////////////////////////
 ////MetroIIActorGeneralWrapper
 
-/** 
-* TimeScheduler is a ConstraintSolver that handles the time quantity for MetroIIDirector.
-* 
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+/**
+ * TimeScheduler is a ConstraintSolver that handles the time quantity for
+ * MetroIIDirector.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
 public class TimeScheduler implements ConstraintSolver, Cloneable {
 
     /**
      * Construct a time scheduler.
      */
     public TimeScheduler() {
-        initialize(); 
+        initialize();
     }
-    
+
     /**
      * Clone a time scheduler.
      */
     @Override
     public TimeScheduler clone() throws CloneNotSupportedException {
         TimeScheduler newObject = (TimeScheduler) super.clone();
-        newObject._debugger = (MetroDebugger) _debugger.clone(); 
+        newObject._debugger = (MetroDebugger) _debugger.clone();
         return newObject;
     }
 
@@ -69,7 +68,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
      * Initialize the current time value.
      */
     public void initialize() {
-        current_time = 0; 
+        current_time = 0;
     }
 
     /**
@@ -85,13 +84,14 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     public void turnOffDebugging() {
         _debugger.turnOffDebugging();
     }
-    
+
     /**
-     * Resolve the time constraints. Notified only the next events with the most recent time tag.
+     * Resolve the time constraints. Notified only the next events with the most
+     * recent time tag.
      */
     @Override
     public void resolve(Iterable<Builder> metroIIEventList) {
-        _debugger.printTitle("TimeScheduler Begins at Time " + current_time); 
+        _debugger.printTitle("TimeScheduler Begins at Time " + current_time);
         _debugger.printMetroEvents(metroIIEventList);
 
         long time = Long.MAX_VALUE;
@@ -143,7 +143,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
             if (event.getStatus() == Status.PROPOSED) {
                 if (!event.hasTime()) {
                     Event.Time.Builder builder = Event.Time.newBuilder();
-                    builder.setValue(current_time); 
+                    builder.setValue(current_time);
                     event.setTime(builder);
                 }
             }
@@ -154,14 +154,14 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
                 event.setStatus(Status.NOTIFIED);
             }
         }
-        
+
         _debugger.printMetroEvents(metroIIEventList);
-        _debugger.printTitle("TimeScheduler Ends at Time " + current_time); 
+        _debugger.printTitle("TimeScheduler Ends at Time " + current_time);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
-    
+
     /**
      * Debugger.
      */
@@ -171,5 +171,5 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
      * Current time value.
      */
     private long current_time;
-    
+
 }

@@ -42,22 +42,26 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
 /**
- *  Event queue that is a linked list. This provides a totally ordered sorted event
- *  queue. It also allows all events to be accessed in the order they are sorted.
- *
- *  This is identical to PtidesListEventQueue except receivers are mapped to 
- *  MetroIIPtidesReceiver.
- *
- *  @author Jia Zou, Liangpeng Guo
- *  @version $Id$
- *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (jiazou)
- *  @Pt.AcceptedRating Red (jiazou)
- *
+ * Event queue that is a linked list. This provides a totally ordered sorted
+ * event queue. It also allows all events to be accessed in the order they are
+ * sorted.
+ * 
+ * <p>
+ * This is identical to PtidesListEventQueue except receivers are mapped to
+ * MetroIIPtidesReceiver.
+ * </p>
+ * 
+ * @author Jia Zou, Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (jiazou)
+ * @Pt.AcceptedRating Red (jiazou)
+ * 
  */
 public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
-    /** Construct an empty event queue.
+    /**
+     * Construct an empty event queue.
      */
     public MetroIIPtidesListEventQueue() {
         // Construct a calendar queue _cQueue with its default parameters:
@@ -65,15 +69,19 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         _listQueue = new LinkedList();
     }
 
-    /** Clear the event queue.
+    /**
+     * Clear the event queue.
      */
     public void clear() {
         _listQueue.clear();
     }
 
-    /** Get the smallest event from the event queue.
-     *  @return a PtidesEvent object.
-     *  @exception InvalidStateException if the getFirst() method of the queue throws it.
+    /**
+     * Get the smallest event from the event queue.
+     * 
+     * @return a PtidesEvent object.
+     * @exception InvalidStateException
+     *                if the getFirst() method of the queue throws it.
      */
     public PtidesEvent get() throws InvalidStateException {
         PtidesEvent result = (PtidesEvent) _listQueue.getFirst();
@@ -83,10 +91,14 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         return result;
     }
 
-    /** Get the event from the event queue that is pointed by the index.
-     *  @param index an int specifying the index.
-     *  @return a DEEvent object pointed to by the index.
-     *  @exception InvalidStateException if get() method of the queue throws it.
+    /**
+     * Get the event from the event queue that is pointed by the index.
+     * 
+     * @param index
+     *            an int specifying the index.
+     * @return a DEEvent object pointed to by the index.
+     * @exception InvalidStateException
+     *                if get() method of the queue throws it.
      */
     public PtidesEvent get(int index) throws InvalidStateException {
         PtidesEvent result = (PtidesEvent) _listQueue.get(index);
@@ -96,15 +108,21 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         return result;
     }
 
-    /** Check if the event queue is empty.
+    /**
+     * Check if the event queue is empty.
      */
     public boolean isEmpty() {
         return _listQueue.isEmpty();
     }
 
-    /** Put the event queue into the event queue, and then sort it by timestamp order.
-     *  @param event a DEEvent object.
-     *  @exception IllegalActionException if the addFirst() method of the queue throws it.
+    /**
+     * Put the event queue into the event queue, and then sort it by timestamp
+     * order.
+     * 
+     * @param event
+     *            a DEEvent object.
+     * @exception IllegalActionException
+     *                if the addFirst() method of the queue throws it.
      */
     public void put(DEEvent event) throws IllegalActionException {
         if (_debugging) {
@@ -114,31 +132,32 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         Collections.sort(_listQueue);
     }
 
-    /** Returns the size of this event queue.
+    /**
+     * Returns the size of this event queue.
      */
     public int size() {
         return _listQueue.size();
     }
 
-    /** Take this event and remove it from the event queue.
-     *  If the event is a DEEvent, then put the token of this event into the
-     *  receiver.
-     *  <p>
-     *  NOTE: this method should only be called once for each event in the event
-     *  queue, unless the event is not a DEEvent. Because each time this method
-     *  is called, the token associated with this event is transferred to the receiver.
-     *  Also, the same event should not be taken out of the event queue and then put
-     *  into the event queue multiple times.
-     *
-     *  @return The event associated with this index in the event queue.
-     *  @exception InvalidStateException
+    /**
+     * Take this event and remove it from the event queue. If the event is a
+     * DEEvent, then put the token of this event into the receiver.
+     * <p>
+     * NOTE: this method should only be called once for each event in the event
+     * queue, unless the event is not a DEEvent. Because each time this method
+     * is called, the token associated with this event is transferred to the
+     * receiver. Also, the same event should not be taken out of the event queue
+     * and then put into the event queue multiple times.
+     * 
+     * @return The event associated with this index in the event queue.
+     * @exception InvalidStateException
      */
     public PtidesEvent take() throws InvalidStateException {
         PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove();
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
-            ((MetroIIPtidesReceiver) ptidesEvent.receiver()).putToReceiver(ptidesEvent
-                    .token());
+            ((MetroIIPtidesReceiver) ptidesEvent.receiver())
+                    .putToReceiver(ptidesEvent.token());
         }
         if (_debugging) {
             _debug("--- taking from queue: " + ptidesEvent);
@@ -146,19 +165,22 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         return ptidesEvent;
     }
 
-    /** Take this event and remove it from the event queue.
-     *  If the event is a DEEvent, then put the token of this event into the
-     *  receiver.
-     *  <p>
-     *  NOTE: this method should only be called once for each event in the event
-     *  queue, unless the event is not a DEEvent. Because each time this method
-     *  is called, the token associated with this event is transferred to the receiver.
-     *  Also, the same event should not be taken out of the event queue and then put
-     *  into the event queue multiple times.
-     *
-     *  @param index The index of this event in the event queue.
-     *  @return The event associated with this index in the event queue.
-     *  @exception InvalidStateException
+    /**
+     * Take this event and remove it from the event queue. If the event is a
+     * DEEvent, then put the token of this event into the receiver.
+     * 
+     * <p>
+     * NOTE: this method should only be called once for each event in the event
+     * queue, unless the event is not a DEEvent. Because each time this method
+     * is called, the token associated with this event is transferred to the
+     * receiver. Also, the same event should not be taken out of the event queue
+     * and then put into the event queue multiple times.
+     * </p>
+     * 
+     * @param index
+     *            The index of this event in the event queue.
+     * @return The event associated with this index in the event queue.
+     * @exception InvalidStateException
      */
     public PtidesEvent take(int index) throws InvalidStateException {
         PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove(index);
@@ -176,15 +198,19 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         return ptidesEvent;
     }
 
-    /** Return an array representation of this event queue.
-     *  @return an array of Objects in the list.
+    /**
+     * Return an array representation of this event queue.
+     * 
+     * @return an array of Objects in the list.
      */
     public Object[] toArray() {
         return _listQueue.toArray();
     }
 
-    /** Add a debugger listen for this event queue.
-     *  @see #removeDebugListener
+    /**
+     * Add a debugger listen for this event queue.
+     * 
+     * @see #removeDebugListener
      */
     public void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -199,8 +225,10 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         _debugging = true;
     }
 
-    /** Remove the debugger listen for this event queue.
-     *  @see #addDebugListener
+    /**
+     * Remove the debugger listen for this event queue.
+     * 
+     * @see #addDebugListener
      */
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -217,10 +245,13 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         return;
     }
 
-    /** Send a debug message to all debug listeners that have registered.
-     *  By convention, messages should not include a newline at the end.
-     *  The newline will be added by the listener, if appropriate.
-     *  @param message The message.
+    /**
+     * Send a debug message to all debug listeners that have registered. By
+     * convention, messages should not include a newline at the end. The newline
+     * will be added by the listener, if appropriate.
+     * 
+     * @param message
+     *            The message.
      */
     private final void _debug(String message) {
         if (_debugListeners == null || !_debugging) {

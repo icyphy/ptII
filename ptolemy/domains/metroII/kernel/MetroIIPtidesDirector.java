@@ -79,28 +79,36 @@ import ptolemy.kernel.util.Workspace;
 /**
  * MetroIIPtidesDirector adapts Ptides programming model to MetroII semantics.
  * 
- * Most methods are identical to PtidesDirector except
- *
- *  @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou, Liangpeng Guo
- *  @version $Id$
- *  @since Ptolemy II 8.1
- *
- *  @Pt.ProposedRating Red (derler)
- *  @Pt.AcceptedRating Red (derler)
+ * <p>
+ * Most methods are identical to PtidesDirector except directors are mapped to
+ * MetroIIPtidesdirector instead of PtidesDirector.
+ * </p>
+ * 
+ * @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou, Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * 
+ * @Pt.ProposedRating Red (derler)
+ * @Pt.AcceptedRating Red (derler)
  */
 public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
-    /** Construct a director in the given container with the given name.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *  @param container Container of the director.
-     *  @param name Name of this director.
-     *  @exception IllegalActionException If the
-     *   director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container not a
-     *   CompositeActor and the name collides with an entity in the container.
+    /**
+     * Construct a director in the given container with the given name. The
+     * container argument must not be null, or a NullPointerException will be
+     * thrown. If the name argument is null, then the name is set to the empty
+     * string. Increment the version number of the workspace.
+     * 
+     * @param container
+     *            Container of the director.
+     * @param name
+     *            Name of this director.
+     * @exception IllegalActionException
+     *                If the director is not compatible with the specified
+     *                container.
+     * @exception NameDuplicationException
+     *                If the container not a CompositeActor and the name
+     *                collides with an entity in the container.
      */
     public MetroIIPtidesDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -114,41 +122,49 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
     }
 
-    /** Clone the object into the specified workspace. The new object
-     *  is <i>not</i> added to the directory of that workspace (you
-     *  must do this yourself if you want it there).
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
+    /**
+     * Clone the object into the specified workspace. The new object is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * 
+     * @param workspace
+     *            The workspace for the cloned object.
+     * @exception CloneNotSupportedException
+     *                Not thrown in this base class
+     * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIPtidesDirector newObject = (MetroIIPtidesDirector) super
                 .clone(workspace);
 
-        newObject._eventList = (ArrayList<PtidesEvent>) _eventList.clone(); 
+        newObject._eventList = (ArrayList<PtidesEvent>) _eventList.clone();
         return newObject;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
-    /** Bound on clock synchronization error across all platforms.
-     *  FIXME: eventually set parameter per platform or for some
-     *  platforms.
+    /**
+     * Bound on clock synchronization error across all platforms. FIXME:
+     * eventually set parameter per platform or for some platforms.
      */
     public SharedParameter clockSynchronizationErrorBound;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a new event to the input queue. Compute the time when
-     *  this input can be consumed and store in queue. The time depends on
-     *  the device delay.
-     *  @param sourcePort the source port.
-     *  @param event New input event.
-     *  @param deviceDelay The device delay.
-     *  @exception IllegalActionException If device delay parameter cannot be computed.
+    /**
+     * Add a new event to the input queue. Compute the time when this input can
+     * be consumed and store in queue. The time depends on the device delay.
+     * 
+     * @param sourcePort
+     *            the source port.
+     * @param event
+     *            New input event.
+     * @param deviceDelay
+     *            The device delay.
+     * @exception IllegalActionException
+     *                If device delay parameter cannot be computed.
      */
     public void addInputEvent(MetroIIPtidesPort sourcePort, PtidesEvent event,
             double deviceDelay) throws IllegalActionException {
@@ -187,10 +203,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Update the director parameters when attributes are changed.
-     *  @param attribute The changed parameter.
-     *  @exception IllegalActionException If the parameter set is not valid.
-     *  Not thrown in this class.
+    /**
+     * Update the director parameters when attributes are changed.
+     * 
+     * @param attribute
+     *            The changed parameter.
+     * @exception IllegalActionException
+     *                If the parameter set is not valid. Not thrown in this
+     *                class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -203,20 +223,20 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the default dependency between input and output ports,
-     * which for the Ptides domain is a {@link SuperdenseDependency}.
-     *
-     * @return The default dependency that describes a time delay of 0.0,
-     *          and a index delay of 0 between ports.
+     * Return the default dependency between input and output ports, which for
+     * the Ptides domain is a {@link SuperdenseDependency}.
+     * 
+     * @return The default dependency that describes a time delay of 0.0, and a
+     *         index delay of 0 between ports.
      */
     public Dependency defaultDependency() {
         return SuperdenseDependency.OTIMES_IDENTITY;
     }
 
     /**
-     * Before super.fire() is called, transfer all input events that are ready are
-     * transferred. After super.fire() is called, transfer all output events that
-     * are ready are transferred.
+     * Before super.fire() is called, transfer all input events that are ready
+     * are transferred. After super.fire() is called, transfer all output events
+     * that are ready are transferred.
      */
     public void fire() throws IllegalActionException {
 
@@ -298,12 +318,18 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Add a pure event to the queue of pure events.
-     *  @param actor Actor to fire.
-     *  @param time Time the actor should be fired at.
-     *  @param index Microstep the actor should be fired at.
-     *  @return The time the actor requested to be refired at.
-     * @exception IllegalActionException If firing of the container doesn't succeed.
+    /**
+     * Add a pure event to the queue of pure events.
+     * 
+     * @param actor
+     *            Actor to fire.
+     * @param time
+     *            Time the actor should be fired at.
+     * @param index
+     *            Microstep the actor should be fired at.
+     * @return The time the actor requested to be refired at.
+     * @exception IllegalActionException
+     *                If firing of the container doesn't succeed.
      */
     public Time fireAt(Actor actor, Time time, int index)
             throws IllegalActionException {
@@ -339,32 +365,37 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return time;
     }
 
-    /** Return the source timestamp of the event that is currently
-     *  being processed. If no event is being processed,
-     *  (i.e. event is analyzed for safe to process, actor is fired, ...) this
-     *  method can return null or the timestamp of the previous event.
-     *  This method should not be called if no event is currently being
-     *  processed.
+    /**
+     * Return the source timestamp of the event that is currently being
+     * processed. If no event is being processed, (i.e. event is analyzed for
+     * safe to process, actor is fired, ...) this method can return null or the
+     * timestamp of the previous event. This method should not be called if no
+     * event is currently being processed.
+     * 
      * @return The current source timestamp.
      */
     public Time getCurrentSourceTimestamp() {
         return _currentSourceTimestamp;
     }
 
-    /** Return a superdense time index for the current time,
-     *  where the index is equal to the microstep.
-     *  @return A superdense time index.
-     *  @see #setIndex(int)
-     *  @see ptolemy.actor.SuperdenseTimeDirector
+    /**
+     * Return a superdense time index for the current time, where the index is
+     * equal to the microstep.
+     * 
+     * @return A superdense time index.
+     * @see #setIndex(int)
+     * @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getIndex() {
         return getMicrostep();
     }
 
-    /** Return the local time or, (i) if an actor is executing or (ii) an input
-     *  token is read, (i) the timestamp of the event that caused the actor
-     *  execution or (ii) the timestamp of the input event.
-     *  @return The local time or the semantic
+    /**
+     * Return the local time or, (i) if an actor is executing or (ii) an input
+     * token is read, (i) the timestamp of the event that caused the actor
+     * execution or (ii) the timestamp of the input event.
+     * 
+     * @return The local time or the semantic
      */
     @Override
     public Time getModelTime() {
@@ -374,8 +405,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return super.getModelTime();
     }
 
-    /** Return the current microstep or the microstep of the event, if
-     *  an actor is currently executing.
+    /**
+     * Return the current microstep or the microstep of the event, if an actor
+     * is currently executing.
      */
     @Override
     public int getMicrostep() {
@@ -388,73 +420,76 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     /**
      * Calculate the minimal delay in logical time between two ports.
      * 
-     * @param ports1 The source port. 
-     * @param ports2 The sink port.
+     * @param ports1
+     *            The source port.
+     * @param ports2
+     *            The sink port.
      * @return The minimal delay between the two ports.
      */
-    public double minDelayBetween(Collection<IOPort> ports1, Collection<IOPort> ports2) {
+    public double minDelayBetween(Collection<IOPort> ports1,
+            Collection<IOPort> ports2) {
         double minDelay = Time.POSITIVE_INFINITY.getDoubleValue();
         for (IOPort p1 : ports1) {
             for (IOPort p2 : ports2) {
-                double t = _getSuperdenseDependencyPair(p1,
-                        p2).timeValue();
+                double t = _getSuperdenseDependencyPair(p1, p2).timeValue();
                 if (t < minDelay) {
                     minDelay = t;
                 }
             }
         }
-        return minDelay; 
+        return minDelay;
     }
-    
+
     /**
-     * Calculate whether Ptides event e1 could possibly affect Ptides event e2. 
+     * Calculate whether Ptides event e1 could possibly affect Ptides event e2.
      * 
-     * @param e1 The first Ptides event. 
-     * @param e2 The second Ptides event.
+     * @param e1
+     *            The first Ptides event.
+     * @param e2
+     *            The second Ptides event.
      * @return True if e1 could causally affect e2; false otherwise.
-     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     * @throws IllegalActionException
+     *             Thrown if causality interface cannot be computed.
      */
     public boolean causallyAffect(PtidesEvent e1, PtidesEvent e2)
             throws IllegalActionException {
 
-        ArrayList<IOPort> ports1 = new ArrayList<IOPort>(); 
+        ArrayList<IOPort> ports1 = new ArrayList<IOPort>();
         if (e1.isPureEvent()) {
             for (IOPort outputPort : (List<IOPort>) e1.actor().outputPortList()) {
-                ports1.addAll(outputPort.deepConnectedInPortList()); 
+                ports1.addAll(outputPort.deepConnectedInPortList());
             }
+        } else {
+            ports1.add(e1.ioPort());
         }
-        else {
-            ports1.add(e1.ioPort()); 
-        }
-        
+
         ArrayList<IOPort> ports2 = new ArrayList<IOPort>();
         if (e2.isPureEvent()) {
-            ports2.addAll((List<IOPort>) e2.actor().inputPortList()); 
-        }
-        else {
+            ports2.addAll((List<IOPort>) e2.actor().inputPortList());
+        } else {
             Actor actor = e2.actor();
             CausalityInterface causality = actor.getCausalityInterface();
-            Collection<IOPort> equivalentPorts = causality
-                    .equivalentPorts(e2.ioPort());
-            ports2.addAll(equivalentPorts); 
+            Collection<IOPort> equivalentPorts = causality.equivalentPorts(e2
+                    .ioPort());
+            ports2.addAll(equivalentPorts);
         }
-        double minDelay = minDelayBetween(ports1, ports2); 
-        
-//        if (e1.ioPort() != null && e2.ioPort() != null) {
-//            System.out
-//                    .println(e1.ioPort().getName()
-//                            + " "
-//                            + e2.ioPort().getName()
-//                            + " "
-//                            + e1.timeStamp()
-//                            + " "
-//                            + e2.timeStamp()
-//                            + " "
-//                            + minDelay
-//                            + " "
-//                            + (e1.timeStamp().add(minDelay)
-//                                    .compareTo(e2.timeStamp()) <= 0));
-//        }
+        double minDelay = minDelayBetween(ports1, ports2);
+
+        //        if (e1.ioPort() != null && e2.ioPort() != null) {
+        //            System.out
+        //                    .println(e1.ioPort().getName()
+        //                            + " "
+        //                            + e2.ioPort().getName()
+        //                            + " "
+        //                            + e1.timeStamp()
+        //                            + " "
+        //                            + e2.timeStamp()
+        //                            + " "
+        //                            + minDelay
+        //                            + " "
+        //                            + (e1.timeStamp().add(minDelay)
+        //                                    .compareTo(e2.timeStamp()) <= 0));
+        //        }
         if (e1.timeStamp().add(minDelay).compareTo(e2.timeStamp()) <= 0) {
             return true;
         } else {
@@ -463,12 +498,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate whether any Ptides event in eventArray could causally affect event. 
+     * Calculate whether any Ptides event in eventArray could causally affect
+     * event.
      * 
-     * @param eventArray A collection of Ptides event
-     * @param event An event
-     * @return True if any event in eventArray could causally affect event; false otherwise.
-     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     * @param eventArray
+     *            A collection of Ptides event
+     * @param event
+     *            An event
+     * @return True if any event in eventArray could causally affect event;
+     *         false otherwise.
+     * @throws IllegalActionException
+     *             Thrown if causality interface cannot be computed.
      */
     public boolean isCausallyAffected(Collection<PtidesEvent> eventArray,
             PtidesEvent event) throws IllegalActionException {
@@ -481,11 +521,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate whether any Ptides event currently being processed could causally affect event. 
+     * Calculate whether any Ptides event currently being processed could
+     * causally affect event.
      * 
-     * @param event An event 
-     * @return True if any event currently being processed could causally affect event; false otherwise.
-     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     * @param event
+     *            An event
+     * @return True if any event currently being processed could causally affect
+     *         event; false otherwise.
+     * @throws IllegalActionException
+     *             Thrown if causality interface cannot be computed.
      */
     public boolean isFiringEventCausallyAffect(PtidesEvent event)
             throws IllegalActionException {
@@ -493,11 +537,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate whether any Ptides event pending could causally affect event. 
+     * Calculate whether any Ptides event pending could causally affect event.
      * 
-     * @param event A Ptides event
-     * @return True if any pending Ptides event could causally affect event; false otherwise.
-     * @throws IllegalActionException Thrown if causality interface cannot be computed.
+     * @param event
+     *            A Ptides event
+     * @return True if any pending Ptides event could causally affect event;
+     *         false otherwise.
+     * @throws IllegalActionException
+     *             Thrown if causality interface cannot be computed.
      */
     public boolean isPendingEventCausallyAffect(PtidesEvent event)
             throws IllegalActionException {
@@ -517,9 +564,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Before super.getfire() is called, transfer all input events that are ready are
-     * transferred. After super.getfire() is called, transfer all output events that
-     * are ready are transferred.
+     * Before super.getfire() is called, transfer all input events that are
+     * ready are transferred. After super.getfire() is called, transfer all
+     * output events that are ready are transferred.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -534,6 +581,12 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         _currentSourceTimestamp = event.sourceTimestamp();
                         _currentLogicalIndex = event.microstep();
                         event.receiver().put(event.token());
+
+                        System.out
+                                .println("input: " + event.token().getClass());
+                        System.out.println(this.getFullName());
+                        System.out.println(event.receiver());
+
                         _currentLogicalTime = null;
                         if (_debugging) {
                             _debug("iiiiiiii - transfer inputs from "
@@ -596,6 +649,11 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         _currentSourceTimestamp = event.sourceTimestamp();
                         _currentLogicalIndex = event.microstep();
                         event.ioPort().send(0, event.token());
+
+                        System.out.println("output:");
+                        System.out.println(this.getFullName());
+                        System.out.println(event.receiver());
+
                         _currentLogicalTime = null;
                         ptidesOutputPortList.poll();
                         if (_debugging) {
@@ -612,10 +670,12 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Initialize all the actors and variables. Perform static analysis on
-     *  superdense dependencies between input ports in the topology.
-     *  @exception IllegalActionException If any of the methods contained
-     *  in initialize() throw it.
+    /**
+     * Initialize all the actors and variables. Perform static analysis on
+     * superdense dependencies between input ports in the topology.
+     * 
+     * @exception IllegalActionException
+     *                If any of the methods contained in initialize() throw it.
      */
     public void initialize() throws IllegalActionException {
         _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
@@ -628,8 +688,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         super.initialize();
     }
 
-    /** Return a new receiver of the type {@link PtidesReceiver}.
-     *  @return A new PtidesReceiver.
+    /**
+     * Return a new receiver of the type {@link PtidesReceiver}.
+     * 
+     * @return A new PtidesReceiver.
      */
     public Receiver newReceiver() {
         if (_debugging && _verbose) {
@@ -639,11 +701,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return new MetroIIPtidesReceiver();
     }
 
-    /** Return false if there are no more actors to be fired or the stop()
-     *  method has been called.
-     *  @return True If this director will be fired again.
-     *  @exception IllegalActionException If the stopWhenQueueIsEmpty parameter
-     *   does not contain a valid token, or refiring can not be requested.
+    /**
+     * Return false if there are no more actors to be fired or the stop() method
+     * has been called.
+     * 
+     * @return True If this director will be fired again.
+     * @exception IllegalActionException
+     *                If the stopWhenQueueIsEmpty parameter does not contain a
+     *                valid token, or refiring can not be requested.
      */
     public boolean postfire() throws IllegalActionException {
         // Do not call super.postfire() because that requests a
@@ -718,10 +783,12 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return result;
     }
 
-    /** Override the base class to not set model time to that of the
-     *  enclosing director. This method always returns true, deferring the
-     *  decision about whether to fire an actor to the fire() method.
-     *  @return True.
+    /**
+     * Override the base class to not set model time to that of the enclosing
+     * director. This method always returns true, deferring the decision about
+     * whether to fire an actor to the fire() method.
+     * 
+     * @return True.
      * @exception IllegalActionException
      */
     public boolean prefire() throws IllegalActionException {
@@ -734,8 +801,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return true;
     }
 
-    /** Call the preinitialize of the super class and create new event
-     *  Queue.
+    /**
+     * Call the preinitialize of the super class and create new event Queue.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -748,34 +815,42 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         _currentLogicalTime = null;
     }
 
-    /** Model time is only used for correct execution of actors and the
-     * scheduler will determine whether another event can be fired in
-     * the current firing of the platform, so this method isn't needed.
-     * By always returning true, _getNextActorToFire() will be called which
-     * runs the scheduler.
-     *  @return true Always.
+    /**
+     * Model time is only used for correct execution of actors and the scheduler
+     * will determine whether another event can be fired in the current firing
+     * of the platform, so this method isn't needed. By always returning true,
+     * _getNextActorToFire() will be called which runs the scheduler.
+     * 
+     * @return true Always.
      */
     protected boolean _checkForNextEvent() {
         return true;
     }
 
-    /** Put a trigger event into the event queue.
-     *  <p>
-     *  The trigger event has the same timestamp as that of the director.
-     *  The microstep of this event is always equal to the current microstep
-     *  of this director. The depth for the queued event is the
-     *  depth of the destination IO port. Finally, the token and the
-     *  destination receiver are also stored in the event.
-     *  </p><p>
-     *  If the event queue is not ready or the actor that contains the
-     *  destination port is disabled, do nothing.</p>
-     *
-     *  @param ioPort The destination IO port.
-     *  @param token The token associated with this event.
-     *  @param receiver The destination receiver.
-     *  @exception IllegalActionException If the time argument is not the
-     *  current time, or the depth of the given IO port has not be calculated,
-     *  or the new event can not be enqueued.
+    /**
+     * Put a trigger event into the event queue.
+     * <p>
+     * The trigger event has the same timestamp as that of the director. The
+     * microstep of this event is always equal to the current microstep of this
+     * director. The depth for the queued event is the depth of the destination
+     * IO port. Finally, the token and the destination receiver are also stored
+     * in the event.
+     * </p>
+     * <p>
+     * If the event queue is not ready or the actor that contains the
+     * destination port is disabled, do nothing.
+     * </p>
+     * 
+     * @param ioPort
+     *            The destination IO port.
+     * @param token
+     *            The token associated with this event.
+     * @param receiver
+     *            The destination receiver.
+     * @exception IllegalActionException
+     *                If the time argument is not the current time, or the depth
+     *                of the given IO port has not be calculated, or the new
+     *                event can not be enqueued.
      */
     protected void _enqueueTriggerEvent(IOPort ioPort, Token token,
             Receiver receiver) throws IllegalActionException {
@@ -857,12 +932,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Compute the deadline for an actor that requests a firing at time
-     *  <i>timestamp</i>.
-     *  @param actor The actor that requests firing.
-     *  @param timestamp The time when the actor wants to be fired.
-     *  @return The deadline for the actor.
-     *  @exception IllegalActionException If time objects cannot be created.
+    /**
+     * Compute the deadline for an actor that requests a firing at time
+     * <i>timestamp</i>.
+     * 
+     * @param actor
+     *            The actor that requests firing.
+     * @param timestamp
+     *            The time when the actor wants to be fired.
+     * @return The deadline for the actor.
+     * @exception IllegalActionException
+     *                If time objects cannot be created.
      */
     protected double _getDeadline(Actor actor, Time timestamp)
             throws IllegalActionException {
@@ -882,14 +962,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return timestamp.add(relativeDeadline).getDoubleValue();
     }
 
-    /** Return the value stored in a parameter associated with
-     *  the NamedObj.
-     *  @param object The object that has the parameter.
-     *  @param parameterName The name of the parameter to be retrieved.
-     *  @return the value of the named parameter if the parameter is not
-     *  null. Otherwise return null.
-     *  @exception IllegalActionException If thrown while getting the value
-     *  of the parameter.
+    /**
+     * Return the value stored in a parameter associated with the NamedObj.
+     * 
+     * @param object
+     *            The object that has the parameter.
+     * @param parameterName
+     *            The name of the parameter to be retrieved.
+     * @return the value of the named parameter if the parameter is not null.
+     *         Otherwise return null.
+     * @exception IllegalActionException
+     *                If thrown while getting the value of the parameter.
      */
     protected static Double _getDoubleParameterValue(NamedObj object,
             String parameterName) throws IllegalActionException {
@@ -901,14 +984,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return null;
     }
 
-    /** Return the value stored in a parameter associated with
-     *  the NamedObj.
-     *  @param object The object that has the parameter.
-     *  @param parameterName The name of the parameter to be retrieved.
-     *  @return the value of the named parameter if the parameter is not
-     *  null. Otherwise return null.
-     *  @exception IllegalActionException If thrown while getting the value
-     *  of the parameter.
+    /**
+     * Return the value stored in a parameter associated with the NamedObj.
+     * 
+     * @param object
+     *            The object that has the parameter.
+     * @param parameterName
+     *            The name of the parameter to be retrieved.
+     * @return the value of the named parameter if the parameter is not null.
+     *         Otherwise return null.
+     * @exception IllegalActionException
+     *                If thrown while getting the value of the parameter.
      */
     protected static Integer _getIntParameterValue(NamedObj object,
             String parameterName) throws IllegalActionException {
@@ -920,10 +1006,12 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return null;
     }
 
-    /** Return the actor to fire in this iteration, or null if no actor should
-     * be fired. Since _checkForNextEvent() always
-     * returns true, this method will keep being called until it returns null.
-     * @throws IllegalActionException 
+    /**
+     * Return the actor to fire in this iteration, or null if no actor should be
+     * fired. Since _checkForNextEvent() always returns true, this method will
+     * keep being called until it returns null.
+     * 
+     * @throws IllegalActionException
      */
     protected PtidesEvent _getNextEventToFire() throws IllegalActionException {
         PtidesEvent event = _getNextEventFrom(_pureEvents);
@@ -956,7 +1044,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** List of all input ports in the model (actuator and network transmitter
+    /**
+     * List of all input ports in the model (actuator and network transmitter
      * ports are also considered input ports).
      */
     protected List<TypedIOPort> _inputPorts;
@@ -967,17 +1056,20 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     /** The earliest time this director should be refired. */
     protected Time _nextFireTime;
 
-    /** Store the superdense dependency between pairs of input ports using
-     * nested Maps. Providing the source input as a key will return a Map
-     * value, where the destination input port can be used as a key to return
-     * the superdense dependency.
+    /**
+     * Store the superdense dependency between pairs of input ports using nested
+     * Maps. Providing the source input as a key will return a Map value, where
+     * the destination input port can be used as a key to return the superdense
+     * dependency.
      */
     protected Map<IOPort, Map<IOPort, SuperdenseDependency>> _superdenseDependencyPair;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Add input port to list.
+    /**
+     * Add input port to list.
+     * 
      * @param inputPort
      */
     private void _addInputPort(TypedIOPort inputPort) {
@@ -1002,13 +1094,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Calculate the delay offset for each input port.
-     * The delay offset is used in the safe-to-process analysis
-     * to know when no future events can occur at a sensor or network
-     * receiver port that can result in an event arriving at an input port
-     * with an earlier timestamp than the event currently there.
-     * @exception IllegalActionException If cannot set 'delayOffset' parameter
-     * for an input port.
+    /**
+     * Calculate the delay offset for each input port. The delay offset is used
+     * in the safe-to-process analysis to know when no future events can occur
+     * at a sensor or network receiver port that can result in an event arriving
+     * at an input port with an earlier timestamp than the event currently
+     * there.
+     * 
+     * @exception IllegalActionException
+     *                If cannot set 'delayOffset' parameter for an input port.
      */
     private void _calculateDelayOffsets() throws IllegalActionException {
 
@@ -1088,12 +1182,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Calculate the relative deadline for each input port. The relative
+    /**
+     * Calculate the relative deadline for each input port. The relative
      * deadline is used along with the timestamp of the event at the input port
      * to determine the earliest time that this event may cause for an event
      * that needs to be output at an actuator or network transmitter.
-     * @exception IllegalActionException If cannot set 'relativeDeadline'
-     * parameter or cannot get device delay bound.
+     * 
+     * @exception IllegalActionException
+     *                If cannot set 'relativeDeadline' parameter or cannot get
+     *                device delay bound.
      */
     private void _calculateRelativeDeadlines() throws IllegalActionException {
 
@@ -1147,12 +1244,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Calculate the superdense dependency (minimum model time delay) between
+    /**
+     * Calculate the superdense dependency (minimum model time delay) between
      * all source and destination input ports. The Floyd-Warshall algorithm is
      * used to calculate the minimum model time delay paths.
-     * @exception IllegalActionException If the container is not a
-     * TypedCompositeActor.
-     * TODO: Assumes all channels have same dependency as multiport.
+     * 
+     * @exception IllegalActionException
+     *                If the container is not a TypedCompositeActor. TODO:
+     *                Assumes all channels have same dependency as multiport.
      */
     private void _calculateSuperdenseDependenices()
             throws IllegalActionException {
@@ -1312,17 +1411,19 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Get the next actor that can be fired from a specified event queue.
-     *  Check whether the event is safe to process, the actors prefire
-     *  returns true and the event can be scheduled. Because Ptides does
-     *  not store tokens in receivers but keeps them in the event until
-     *  the actor is really fired, we have to temporarily put tokens into
-     *  receivers and then remove them in order for the prefire to give
-     *  correct results.
-     *  @param queue The event queue.
-     *  @return The next actor to fire or null.
-     *  @exception IllegalActionException Thrown by safeToProcess, prefire
-     *    or schedule.
+    /**
+     * Get the next actor that can be fired from a specified event queue. Check
+     * whether the event is safe to process, the actors prefire returns true and
+     * the event can be scheduled. Because Ptides does not store tokens in
+     * receivers but keeps them in the event until the actor is really fired, we
+     * have to temporarily put tokens into receivers and then remove them in
+     * order for the prefire to give correct results.
+     * 
+     * @param queue
+     *            The event queue.
+     * @return The next actor to fire or null.
+     * @exception IllegalActionException
+     *                Thrown by safeToProcess, prefire or schedule.
      */
     private PtidesEvent _getNextEventFrom(DEEventQueue queue)
             throws IllegalActionException {
@@ -1415,11 +1516,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return maxEvents;
     }
 
-    /** Return the value of the 'relativeDeadline' parameter for an input
-     * port or the maximum double value if no parameter is found.
-     * @param port Input port.
+    /**
+     * Return the value of the 'relativeDeadline' parameter for an input port or
+     * the maximum double value if no parameter is found.
+     * 
+     * @param port
+     *            Input port.
      * @return Relative Deadline of input port.
-     * @exception IllegalActionException If cannot read parameter.
+     * @exception IllegalActionException
+     *                If cannot read parameter.
      */
     private Double _getRelativeDeadline(TypedIOPort port)
             throws IllegalActionException {
@@ -1431,11 +1536,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Return the superdense dependency between a source and a destination
-     * input port. If the mapping does not exist, it is assumed to be
+    /**
+     * Return the superdense dependency between a source and a destination input
+     * port. If the mapping does not exist, it is assumed to be
      * SuperdenseDependency.OPLUS_IDENTITY.
-     * @param source Source input port.
-     * @param destination Destination input port.
+     * 
+     * @param source
+     *            Source input port.
+     * @param destination
+     *            Destination input port.
      * @return The Superdense dependency.
      */
     private SuperdenseDependency _getSuperdenseDependencyPair(IOPort source,
@@ -1449,15 +1558,23 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Handle timing error on a MetroIIPtidesPort.
-     *
-     * FIXME: for now this can only drop the event that caused the error or throw a message.
-     * TODO: implement different behaviors.
-     * @param port The port where the error occurred.
-     * @param event The event that caused the error; i.e. that arrived too late or out of order.
-     * @param message The error message.
-     * @return A new PtidesEvent that can be safely processed or null if no event should be processed.
-     * @exception IllegalActionException If error handling actor throws this.
+    /**
+     * Handle timing error on a MetroIIPtidesPort.
+     * 
+     * FIXME: for now this can only drop the event that caused the error or
+     * throw a message. TODO: implement different behaviors.
+     * 
+     * @param port
+     *            The port where the error occurred.
+     * @param event
+     *            The event that caused the error; i.e. that arrived too late or
+     *            out of order.
+     * @param message
+     *            The error message.
+     * @return A new PtidesEvent that can be safely processed or null if no
+     *         event should be processed.
+     * @exception IllegalActionException
+     *                If error handling actor throws this.
      */
     private PtidesEvent _handleTimingError(MetroIIPtidesPort port,
             PtidesEvent event, String message) throws IllegalActionException {
@@ -1601,11 +1718,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         throw new IllegalActionException(port, message);
     }
 
-    /** Check if event is safe to process.
-     * @param event The event to be checked.
+    /**
+     * Check if event is safe to process.
+     * 
+     * @param event
+     *            The event to be checked.
      * @return true if the event is safe to process.
-     * @exception IllegalActionException If the delayOffset a parameter
-     * cannot be read.
+     * @exception IllegalActionException
+     *                If the delayOffset a parameter cannot be read.
      */
     private boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
@@ -1668,12 +1788,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return false;
     }
 
-    /** Store the superdense dependency between a source and destination input
+    /**
+     * Store the superdense dependency between a source and destination input
      * port. If the mapping does not exist, it is assumed to be
      * SuperdenseDependency.OPLUS_IDENTITY.
-     * @param source Source input port.
-     * @param destination Destination input port.
-     * @param dependency Superdense dependency.
+     * 
+     * @param source
+     *            Source input port.
+     * @param destination
+     *            Destination input port.
+     * @param dependency
+     *            Superdense dependency.
      */
     private void _putSuperdenseDependencyPair(TypedIOPort source,
             TypedIOPort destination, SuperdenseDependency dependency) {
@@ -1682,11 +1807,14 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Remove all events with the same tag and at the same actor from the
-     * event queue.
-     * @param event The event.
+    /**
+     * Remove all events with the same tag and at the same actor from the event
+     * queue.
+     * 
+     * @param event
+     *            The event.
      * @return A list of all events with same tag and at the same actor as the
-     * event.
+     *         event.
      */
     private List<PtidesEvent> _removeEventsFromQueue(DEEventQueue queue,
             PtidesEvent event) {
@@ -1709,10 +1837,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         return eventList;
     }
 
-    /** Set the value of the 'delayOffset' parameter for a NamedObj.
-     * @param namedObj The NamedObj to have the parameter set.
-     * @param delayOffset Delay offset for safe-to-process analysis.
-     * @exception IllegalActionException If cannot set parameter.
+    /**
+     * Set the value of the 'delayOffset' parameter for a NamedObj.
+     * 
+     * @param namedObj
+     *            The NamedObj to have the parameter set.
+     * @param delayOffset
+     *            Delay offset for safe-to-process analysis.
+     * @exception IllegalActionException
+     *                If cannot set parameter.
      */
     private void _setDelayOffset(NamedObj namedObj, Double delayOffset)
             throws IllegalActionException {
@@ -1735,9 +1868,12 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
     }
 
-    /** Set the next time to fire the director to the provided time if it is earlier than
-     * the currently set next fire time.
-     * @param time The next fire time.
+    /**
+     * Set the next time to fire the director to the provided time if it is
+     * earlier than the currently set next fire time.
+     * 
+     * @param time
+     *            The next fire time.
      */
     private void _setNextFireTime(Time time) {
         if (_nextFireTime == null) {
@@ -1747,10 +1883,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         }
     }
 
-    /** Set the value of the 'relativeDeadline' parameter for an input port.
-     * @param port Input port.
-     * @param relativeDeadline Relative deadline for input port.
-     * @exception IllegalActionException If cannot set parameter.
+    /**
+     * Set the value of the 'relativeDeadline' parameter for an input port.
+     * 
+     * @param port
+     *            Input port.
+     * @param relativeDeadline
+     *            Relative deadline for input port.
+     * @exception IllegalActionException
+     *                If cannot set parameter.
      */
     private void _setRelativeDeadline(TypedIOPort port, Double relativeDeadline)
             throws IllegalActionException {
@@ -1776,17 +1917,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * 
      */
     private double _clockSynchronizationErrorBound;
-    
+
     /**
      * Current logical time.
      */
     private Time _currentLogicalTime;
-    
+
     /**
      * Current source time stamp.
      */
     private Time _currentSourceTimestamp;
-    
+
     /**
      * current logical index.
      */
@@ -1797,17 +1938,20 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      */
     private HashMap<Time, List<PtidesEvent>> _inputEventQueue;
 
-    /** Connected input ports for an input port which may produce a pure
-     * event. Used to calculate _relativeDeadlineForPureEvent.
+    /**
+     * Connected input ports for an input port which may produce a pure event.
+     * Used to calculate _relativeDeadlineForPureEvent.
      */
     private Map<TypedIOPort, Set<TypedIOPort>> _inputPortsForPureEvent;
 
-    /** Map the input port where an event caused a pure event to the relative
+    /**
+     * Map the input port where an event caused a pure event to the relative
      * deadline for that pure event.
      */
     private Map<TypedIOPort, Double> _relativeDeadlineForPureEvent;
 
-    /** Deadline for event at ptides output ports. 
+    /**
+     * Deadline for event at ptides output ports.
      */
     private HashMap<Time, List<PtidesEvent>> _outputEventQueue;
 
@@ -1816,7 +1960,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      */
     private HashMap<MetroIIPtidesPort, Queue<PtidesEvent>> _ptidesOutputPortEventQueue;
 
-    /** Separate event queue for pure events. 
+    /**
+     * Separate event queue for pure events.
      */
     private DEEventQueue _pureEvents;
 

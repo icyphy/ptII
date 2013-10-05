@@ -51,28 +51,33 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MetroSystemCDirector
 
-/** 
-* MetroIISystemCDirector wraps a Metro-SystemC model as a Metro actor in Ptolemy.
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
-public class MetroIISystemCDirector extends Director implements
-        GetFirable {
+/**
+ * MetroIISystemCDirector wraps a Metro-SystemC model as a Metro actor in
+ * Ptolemy.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
+public class MetroIISystemCDirector extends Director implements GetFirable {
 
-    /** Construct a MetroIISystemCDirector with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
+    /**
+     * Construct a MetroIISystemCDirector with a name and a container. The
+     * container argument must not be null, or a NullPointerException will be
+     * thrown.
+     * 
+     * @param container
+     *            The container.
+     * @param name
+     *            The name of this actor.
+     * @exception IllegalActionException
+     *                If the container is incompatible with this actor.
+     * @exception NameDuplicationException
+     *                If the name coincides with an actor already in the
+     *                container.
      */
     public MetroIISystemCDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -83,13 +88,16 @@ public class MetroIISystemCDirector extends Director implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the object into the specified workspace. The new object
-     *  is <i>not</i> added to the directory of that workspace (you
-     *  must do this yourself if you want it there).
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
+    /**
+     * Clone the object into the specified workspace. The new object is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * 
+     * @param workspace
+     *            The workspace for the cloned object.
+     * @exception CloneNotSupportedException
+     *                Not thrown in this base class
+     * @return The new Attribute.
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -102,7 +110,8 @@ public class MetroIISystemCDirector extends Director implements
     /**
      * Push Metro events into the pipe.
      * 
-     * @param events the events to be added into the pipe.
+     * @param events
+     *            the events to be added into the pipe.
      */
     public void pushEvents(Iterable<Event.Builder> events) {
         if (_debugging) {
@@ -148,7 +157,8 @@ public class MetroIISystemCDirector extends Director implements
     /**
      * Synchronize the status of events from the pipe.
      * 
-     * @param events the events to be synchronized from the pipe.
+     * @param events
+     *            the events to be synchronized from the pipe.
      */
     public void syncEvents(LinkedList<Event.Builder> events) {
         if (_debugging) {
@@ -162,7 +172,7 @@ public class MetroIISystemCDirector extends Director implements
                 ev = EventVector.parseFrom(fis);
             } finally {
                 fis.close();
-            }            // TODO Auto-generated catch block
+            } // TODO Auto-generated catch block
 
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
@@ -190,7 +200,8 @@ public class MetroIISystemCDirector extends Director implements
     /**
      * Check if at least one event is notified in the event vector.
      * 
-     * @param events event vector to be checked.
+     * @param events
+     *            event vector to be checked.
      * @return true if there is at least one event notified.
      */
     public boolean atLeastOneNotified(Iterable<Event.Builder> events) {
@@ -207,51 +218,51 @@ public class MetroIISystemCDirector extends Director implements
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
-//        if (!createProcess) {
-//            new Thread() {
-//                public void run() {
-//                    String s = null;
-//                    try {
-//                        // using the Runtime exec method:
-//                        Process p = Runtime.getRuntime().exec(
-//                                "ptolemy/metroII/single-cpu");
-//
-//                        BufferedReader stdInput = new BufferedReader(
-//                                new InputStreamReader(p.getInputStream()));
-//
-//                        BufferedReader stdError = new BufferedReader(
-//                                new InputStreamReader(p.getErrorStream()));
-//
-//                        // read the output from the command
-//                        System.out
-//                                .println("Here is the standard output of the command:\n");
-//                        while ((s = stdInput.readLine()) != null) {
-//                            System.out.println(s);
-//                        }
-//
-//                        // read any errors from the attempted command
-//                        System.out
-//                                .println("Here is the standard error of the command (if any):\n");
-//                        while ((s = stdError.readLine()) != null) {
-//                            System.out.println(s);
-//                        }
-//
-//                        // System.exit(0);
-//                    } catch (IOException e) {
-//                        System.out
-//                                .println("exception happened - here's what I know: ");
-//                        e.printStackTrace();
-//                        System.exit(-1);
-//                    }
-//                }
-//            }.start();
-//            createProcess = true;
-//
-//        }
-//
-//        while (!createProcess) {
-//
-//        }
+        //        if (!createProcess) {
+        //            new Thread() {
+        //                public void run() {
+        //                    String s = null;
+        //                    try {
+        //                        // using the Runtime exec method:
+        //                        Process p = Runtime.getRuntime().exec(
+        //                                "ptolemy/metroII/single-cpu");
+        //
+        //                        BufferedReader stdInput = new BufferedReader(
+        //                                new InputStreamReader(p.getInputStream()));
+        //
+        //                        BufferedReader stdError = new BufferedReader(
+        //                                new InputStreamReader(p.getErrorStream()));
+        //
+        //                        // read the output from the command
+        //                        System.out
+        //                                .println("Here is the standard output of the command:\n");
+        //                        while ((s = stdInput.readLine()) != null) {
+        //                            System.out.println(s);
+        //                        }
+        //
+        //                        // read any errors from the attempted command
+        //                        System.out
+        //                                .println("Here is the standard error of the command (if any):\n");
+        //                        while ((s = stdError.readLine()) != null) {
+        //                            System.out.println(s);
+        //                        }
+        //
+        //                        // System.exit(0);
+        //                    } catch (IOException e) {
+        //                        System.out
+        //                                .println("exception happened - here's what I know: ");
+        //                        e.printStackTrace();
+        //                        System.exit(-1);
+        //                    }
+        //                }
+        //            }.start();
+        //            createProcess = true;
+        //
+        //        }
+        //
+        //        while (!createProcess) {
+        //
+        //        }
         syncEvents(events);
 
         do {
@@ -263,7 +274,7 @@ public class MetroIISystemCDirector extends Director implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire().
      */
     @Override
@@ -293,33 +304,33 @@ public class MetroIISystemCDirector extends Director implements
         }
         events = new LinkedList<Event.Builder>();
 
-//        createProcess = false;
+        //        createProcess = false;
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
-    
+
     /**
      * Current event list
      */
     private LinkedList<Event.Builder> events;
 
-//    /**
-//     * Whether a process is created for the wrapped Metro-SystemC model
-//     */
-//    private boolean createProcess;
+    //    /**
+    //     * Whether a process is created for the wrapped Metro-SystemC model
+    //     */
+    //    private boolean createProcess;
 
     /**
      * Path of the pipe
      */
     private String path;
-    
+
     /**
      * Name of the incoming pipe
      */
     private String pipe2server = "m2event_ptolemy_buffer";
-    
+
     /**
      * Name of the outcoming pipe
      */

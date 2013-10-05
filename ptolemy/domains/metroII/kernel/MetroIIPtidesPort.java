@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-package ptolemy.domains.metroII.kernel; 
+package ptolemy.domains.metroII.kernel;
 
 import java.util.HashMap;
 
@@ -48,25 +48,34 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 
-/** A specialized port for Ptides platform I/O implementing
- *  functionality for sensors, actuators and network ports.
- *
- *  This class is identical to PtidesPort except Ptides director 
- *  is mapped to MetroIIPtidesDirector
- *
- *  @author Patricia Derler, Liangpeng Guo
- *  @version $Id$
- *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (derler)
- *  @Pt.AcceptedRating
+/**
+ * A specialized port for Ptides platform I/O implementing functionality for
+ * sensors, actuators and network ports.
+ * 
+ * <p>
+ * This class is identical to PtidesPort except Ptides director is mapped to
+ * MetroIIPtidesDirector.
+ * </p>
+ * 
+ * @author Patricia Derler, Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (derler)
+ * @Pt.AcceptedRating
  */
 public class MetroIIPtidesPort extends MirrorPort {
 
-    /** Create a new PtidesPort with a given container and a name.
-     * @param container The container of the port.
-     * @param name The name of the port.
-     * @exception IllegalActionException If parameters cannot be set.
-     * @exception NameDuplicationException If name already exists.
+    /**
+     * Create a new PtidesPort with a given container and a name.
+     * 
+     * @param container
+     *            The container of the port.
+     * @param name
+     *            The name of the port.
+     * @exception IllegalActionException
+     *                If parameters cannot be set.
+     * @exception NameDuplicationException
+     *                If name already exists.
      */
     public MetroIIPtidesPort(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -108,9 +117,10 @@ public class MetroIIPtidesPort extends MirrorPort {
         _setIconAndParameterVisibility();
     }
 
-    /** Actuate at event timestamp parameter that defaults to the boolean value TRUE.
-     *  If this parameter is set to FALSE, an actuator can produce outputs as soon
-     *  as they are available.
+    /**
+     * Actuate at event timestamp parameter that defaults to the boolean value
+     * TRUE. If this parameter is set to FALSE, an actuator can produce outputs
+     * as soon as they are available.
      */
     public Parameter actuateAtEventTimestamp;
 
@@ -120,8 +130,9 @@ public class MetroIIPtidesPort extends MirrorPort {
     /** Device delay bound parameter that defaults to the double value 0.0. */
     public Parameter deviceDelayBound;
 
-    /** Flag that is true if the port is a network receiver or transmitter.
-     *  The flag defaults to false.
+    /**
+     * Flag that is true if the port is a network receiver or transmitter. The
+     * flag defaults to false.
      */
     public Parameter isNetworkPort;
 
@@ -131,24 +142,32 @@ public class MetroIIPtidesPort extends MirrorPort {
     /** Platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter platformDelayBound;
 
-    /** Source platform delay bound parameter that defaults to the double value 0.0. */
+    /**
+     * Source platform delay bound parameter that defaults to the double value
+     * 0.0.
+     */
     public Parameter sourcePlatformDelayBound;
 
-    /** Return true if actuation should happen at event timestamp and false if
-     *  actuation can happen sooner.
-     *  @return whether actuation should be done at the event timestamp.
+    /**
+     * Return true if actuation should happen at event timestamp and false if
+     * actuation can happen sooner.
+     * 
+     * @return whether actuation should be done at the event timestamp.
      */
     public boolean actuateAtEventTimestamp() {
         return _actuateAtEventTimestamp;
     }
 
-    /** React to a change in an attribute.  This method is called by
-     *  a contained attribute when its value changes.  This overrides
-     *  the base class so that if the attribute is an instance of
-     *  TypeAttribute, then it sets the type of the port.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container.
+    /**
+     * React to a change in an attribute. This method is called by a contained
+     * attribute when its value changes. This overrides the base class so that
+     * if the attribute is an instance of TypeAttribute, then it sets the type
+     * of the port.
+     * 
+     * @param attribute
+     *            The attribute that changed.
+     * @exception IllegalActionException
+     *                If the change is not acceptable to this container.
      */
     @Override
     public void attributeChanged(Attribute attribute)
@@ -166,9 +185,12 @@ public class MetroIIPtidesPort extends MirrorPort {
         }
     }
 
-    /** Return the timestamp and sourceTimestamp for a specific token.
-     *  @param t The token.
-     *  @return The timestamp.
+    /**
+     * Return the timestamp and sourceTimestamp for a specific token.
+     * 
+     * @param t
+     *            The token.
+     * @return The timestamp.
      */
     public Object[] getTimeStampForToken(Token t) {
         Object[] times = _transmittedTokenTimestamps.get(t);
@@ -180,21 +202,23 @@ public class MetroIIPtidesPort extends MirrorPort {
         return times;
     }
 
-    /** Get the microstep of the event that contained the token.
-     * @param t The token.
+    /**
+     * Get the microstep of the event that contained the token.
+     * 
+     * @param t
+     *            The token.
      * @return The microstep.
      */
     public int getMicrostepForToken(Token t) {
-        Integer microstep = _transmittedTokenMicrosteps.get(t); 
-        _transmittedTokenMicrosteps.remove(t); 
+        Integer microstep = _transmittedTokenMicrosteps.get(t);
+        _transmittedTokenMicrosteps.remove(t);
         return microstep;
     }
 
-    
     /**
      * Returns true if this object is actuator port.
      * 
-     *  @return true if port is an actuator port.
+     * @return true if port is an actuator port.
      */
     public boolean isActuatorPort() {
         return isOutput() && !_isNetworkPort;
@@ -242,21 +266,27 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     }
 
-    /** Save token and remember timestamp of the token. Then call send of
-     *  super class.
-     *  @param channelIndex The index of the channel, from 0 to width-1.
-     *  @param token The token to send, or null to send no token.
-     *  @exception IllegalActionException If the token to be sent cannot
-     *   be converted to the type of this port, or if the token is null.
-     *  @exception NoRoomException If there is no room in the receiver.
+    /**
+     * Save token and remember timestamp of the token. Then call send of super
+     * class.
+     * 
+     * @param channelIndex
+     *            The index of the channel, from 0 to width-1.
+     * @param token
+     *            The token to send, or null to send no token.
+     * @exception IllegalActionException
+     *                If the token to be sent cannot be converted to the type of
+     *                this port, or if the token is null.
+     * @exception NoRoomException
+     *                If there is no room in the receiver.
      */
     @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         Time timestamp = ((CompositeActor) getContainer()).getDirector()
                 .getModelTime();
-        int microstep = ((MetroIIPtidesDirector)((CompositeActor) getContainer()).getDirector())
-                .getIndex();
+        int microstep = ((MetroIIPtidesDirector) ((CompositeActor) getContainer())
+                .getDirector()).getIndex();
         Time sourceTimestamp = ((MetroIIPtidesDirector) ((CompositeActor) getContainer())
                 .getDirector()).getCurrentSourceTimestamp();
         if (sourceTimestamp == null) {
@@ -280,11 +310,12 @@ public class MetroIIPtidesPort extends MirrorPort {
         super.send(channelIndex, token);
     }
 
-
-
-    /** Change visibility of parameters depending on the type of
-     *  port. FIXME: change icon!
-     *  @exception IllegalActionException Thrown if icon cannot be changed.
+    /**
+     * Change visibility of parameters depending on the type of port. FIXME:
+     * change icon!
+     * 
+     * @exception IllegalActionException
+     *                Thrown if icon cannot be changed.
      */
     private void _setIconAndParameterVisibility() throws IllegalActionException {
         try {
@@ -358,5 +389,4 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     private HashMap<Token, Integer> _transmittedTokenCnt;
 
-    
 }

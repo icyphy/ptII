@@ -42,21 +42,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 /**
- * Receivers in the Ptides domain use a timed queue to sort events in
- * the receivers.
- * Tokens are stored in the receiver as a pair of token and tag, to help
- * methods such as hasToken() to indicate whether there is a token of the
- * requested tag. This receiver is needed because events can be processed
- * out of timestamp order, thus tokens are transmitted between actors out
- * of timestamp order. Some of this code is copied from PtidesReceiver written
- * by Patricia Derler, since we want to have a sorted list of events at each
- * receiver. However we still want to extend DEReceiver so that the structure
- * is uniform in that PtidesBasicDirector extends DEDirector, and PtidesBasicReceiver
+ * Receivers in the Ptides domain use a timed queue to sort events in the
+ * receivers. Tokens are stored in the receiver as a pair of token and tag, to
+ * help methods such as hasToken() to indicate whether there is a token of the
+ * requested tag. This receiver is needed because events can be processed out of
+ * timestamp order, thus tokens are transmitted between actors out of timestamp
+ * order. Some of this code is copied from PtidesReceiver written by Patricia
+ * Derler, since we want to have a sorted list of events at each receiver.
+ * However we still want to extend DEReceiver so that the structure is uniform
+ * in that PtidesBasicDirector extends DEDirector, and PtidesBasicReceiver
  * extends DEReceiver.
  * 
- * This class is identical to PtidesReceiver except Ptides directors are mapped 
+ * <p>
+ * This class is identical to PtidesReceiver except Ptides directors are mapped
  * to MetroIIPtidesDirector.
- *
+ * </p>
+ * 
  * @author Jia Zou, Slobodan Matic, Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -74,24 +75,25 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
     /**
      * Construct an empty queue with the specified IOPort container.
-     *
+     * 
      * @param container
      *            The IOPort that contains this receiver.
      * @exception IllegalActionException
      *                If this receiver cannot be contained by the proposed
      *                container.
      */
-    public MetroIIPtidesReceiver(IOPort container) throws IllegalActionException {
+    public MetroIIPtidesReceiver(IOPort container)
+            throws IllegalActionException {
         super(container);
     }
 
     /**
-     * Wrap the token in an DETokenEvent and post the trigger event to the director.
-     * The director will be responsible to dequeue the trigger event at the
-     * correct timestamp and microstep and invoke the corresponding actor whose
-     * input port contains this receiver. This receiver may contain more than
-     * one events.
-     *
+     * Wrap the token in an DETokenEvent and post the trigger event to the
+     * director. The director will be responsible to dequeue the trigger event
+     * at the correct timestamp and microstep and invoke the corresponding actor
+     * whose input port contains this receiver. This receiver may contain more
+     * than one events.
+     * 
      * @param token
      *            The token to be put, or null to not put a token.
      */
@@ -106,10 +108,13 @@ public class MetroIIPtidesReceiver extends DEReceiver {
         }
     }
 
-    /** Actually put the token into this receiver. This method should be called
-     *  by the director when to token is ready to be processed by the actor
-     *  where this receiver resides.
-     *  @param token The token to be put to this receiver, or null to put no token.
+    /**
+     * Actually put the token into this receiver. This method should be called
+     * by the director when to token is ready to be processed by the actor where
+     * this receiver resides.
+     * 
+     * @param token
+     *            The token to be put to this receiver, or null to put no token.
      */
     public void putToReceiver(Token token) {
         if (token != null) {
@@ -117,10 +122,13 @@ public class MetroIIPtidesReceiver extends DEReceiver {
         }
     }
 
-    /** Remove the token from the list of stored tokens. This is only used
-     *  to remove tokens that were stored temporarily in the receiver to
-     *  check whether the actor's prefire returns true.
-     * @param token The token to be removed.
+    /**
+     * Remove the token from the list of stored tokens. This is only used to
+     * remove tokens that were stored temporarily in the receiver to check
+     * whether the actor's prefire returns true.
+     * 
+     * @param token
+     *            The token to be removed.
      */
     public void remove(Token token) {
         _tokens.remove(token);
@@ -136,7 +144,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      * Otherwise, it's the executive director of the container of its port.Note
      * that the director returned is guaranteed to be non-null. This method is
      * read synchronized on the workspace.
-     *
+     * 
      * @return An instance of DEDirector.
      * @exception IllegalActionException
      *                If there is no container port, or if the port has no
@@ -198,7 +206,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
         /**
          * Construct an Event with a token and time stamp.
-         *
+         * 
          * @param token
          *            Token for the event.
          * @param tag
@@ -214,7 +222,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
         /**
          * Return the tag of this event.
-         *
+         * 
          * @return The tag of the event.
          */
         public Tag getTag() {
@@ -223,7 +231,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
         /**
          * Return the token of this event.
-         *
+         * 
          * @return The token of the event.
          */
         public Token getToken() {
@@ -244,19 +252,19 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      * to compare Tokens, therefore am comparing DoubleTokens and IntTokens
      * here. If other kinds of Tokens are used, this Comparer needs to be
      * extended.
-     *
+     * 
      * @author Jia Zou, Slobodan Matic, Patricia Derler
-     *
+     * 
      */
     public static class TagComparator implements Comparator {
 
         /**
          * Compare two events according to time stamps and values.
-         *
+         * 
          * FIXME Because there is no general compare method for tokens, I
          * implemented the comparison for int and double tokens. A more general
          * compare is required.
-         *
+         * 
          * @param arg0
          *            First event.
          * @param arg1

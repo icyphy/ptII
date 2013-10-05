@@ -46,21 +46,20 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MetroFSMDirector
 
-/** 
-* MetroFSMDirector extends FSMDirector to support MetroII semantics.
-*
-* @author Liangpeng Guo
-* @version $Id: MetroFSMDirector.java 66808 2013-07-03 00:20:58Z glp $
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
-public class MetroFSMDirector extends FSMDirector implements
-        GetFirable {
+/**
+ * MetroFSMDirector extends FSMDirector to support MetroII semantics.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id: MetroFSMDirector.java 66808 2013-07-03 00:20:58Z glp $
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
+public class MetroFSMDirector extends FSMDirector implements GetFirable {
 
     /**
-     * Construct a MetroFSMDirector. 
+     * Construct a MetroFSMDirector.
      * 
      * @throws IllegalActionException
      * @throws NameDuplicationException
@@ -73,12 +72,16 @@ public class MetroFSMDirector extends FSMDirector implements
     /**
      * Construct a MetroFSMDirector based on a given container and a name.
      * 
-     *  @param container Container of the director.
-     *  @param name Name of this director.
-     *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.  May be thrown in a derived class.
-     *  @exception NameDuplicationException If the container is not a
-     *   CompositeActor and the name collides with an entity in the container.
+     * @param container
+     *            Container of the director.
+     * @param name
+     *            Name of this director.
+     * @exception IllegalActionException
+     *                If the director is not compatible with the specified
+     *                container. May be thrown in a derived class.
+     * @exception NameDuplicationException
+     *                If the container is not a CompositeActor and the name
+     *                collides with an entity in the container.
      */
     public MetroFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -90,7 +93,7 @@ public class MetroFSMDirector extends FSMDirector implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -104,24 +107,26 @@ public class MetroFSMDirector extends FSMDirector implements
                 });
     }
 
-
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
+    /**
+     * Clone the object into the specified workspace. The new object is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * 
+     * @param workspace
+     *            The workspace for the cloned object.
+     * @exception CloneNotSupportedException
+     *                Not thrown in this base class
+     * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroFSMDirector newObject = (MetroFSMDirector) super
-                .clone(workspace);
+        MetroFSMDirector newObject = (MetroFSMDirector) super.clone(workspace);
         newObject.events = new ArrayList<Event.Builder>();
         return newObject;
     }
 
     /**
-     *  Keep proposing the event associated with the current state until it's notified. 
-     *  Then call fire() 
+     * Keep proposing the event associated with the current state until it's
+     * notified. Then call fire()
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -143,7 +148,8 @@ public class MetroFSMDirector extends FSMDirector implements
 
             Event.Builder eb;
             do {
-                eb = MetroEventBuilder.newProposedEvent(MetroEventBuilder.trimModelName(currentState.getFullName()));
+                eb = MetroEventBuilder.newProposedEvent(MetroEventBuilder
+                        .trimModelName(currentState.getFullName()));
                 events.add(eb);
                 resultHandler.handleResult(events);
                 events.remove(events.size() - 1);
@@ -159,10 +165,10 @@ public class MetroFSMDirector extends FSMDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
-    
+
     /**
      * Current MetroII event list
      */
     private ArrayList<Event.Builder> events = new ArrayList<Event.Builder>();
-    
+
 }

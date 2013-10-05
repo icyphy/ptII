@@ -40,21 +40,25 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// ResumableFire
 
-/** 
- * ResumableFire is a wrapper for Ptolemy actor. It provides an implementation of FireMachine. 
- * More specifically, the wrapper implements a startOrResume() function 
- * that associates the state of FireMachine with the state of fire() of the wrapped actor as follows: 
+/**
+ * ResumableFire is a wrapper for Ptolemy actor. It provides an implementation
+ * of FireMachine. More specifically, the wrapper implements a startOrResume()
+ * function that associates the state of FireMachine with the state of fire() of
+ * the wrapped actor as follows:
  * <ol>
- * <li> START: initial state </li>
- * <li> BEGIN: prefire() is called and returns true. getfire() will be called. </li>
- * <li> PROCESS: getfire() is being called, may be suspended but not terminated yet
- * <li> END: getfire() is called and returns properly. </li>
- * <li> FINAL: final state </li>
+ * <li>START: initial state</li>
+ * <li>BEGIN: prefire() is called and returns true. getfire() will be called.</li>
+ * <li>PROCESS: getfire() is being called, may be suspended but not terminated
+ * yet
+ * <li>END: getfire() is called and returns properly.</li>
+ * <li>FINAL: final state</li>
  * </ol>
- * When startOrResume() is called, the wrapper checks if the Metro event associated with the current state is notified. 
- * If the event is notified, call related function of the wrapped actor, transition to the next state, and propose the 
- * Metro event associated with the next state. For example, 
+ * When startOrResume() is called, the wrapper checks if the Metro event
+ * associated with the current state is notified. If the event is notified, call
+ * related function of the wrapped actor, transition to the next state, and
+ * propose the Metro event associated with the next state. For example,
  * 
+ * <pre>
  *       action: propose FIRE_BEGIN
  * START ---------------------------------------> BEGIN
  * 
@@ -65,56 +69,59 @@ import ptolemy.kernel.util.IllegalActionException;
  *       guard: FIRE_BEGIN is not notified   
  *       action: propose FIRE_BEGIN
  * BEGIN ---------------------------------------> BEGIN
- *  
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+ * </pre>
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
 public class ResumableFire extends FireMachine {
 
     /**
      * Construct a ResumableFire by wrapping the actor.
-     * @param actor Actor to be wrapped
+     * 
+     * @param actor
+     *            Actor to be wrapped
      */
     public ResumableFire(Actor actor) {
         super(actor);
     }
 
     /**
-    * The functions prefire(), getfire() and postfire()
-    * are wrapped in startOrResume() as follows:
-    * <ol>
-    * <li> Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for
-    * the event being notified</li>
-    * <li> prefire() </li>
-    * <li> Propose MetroII event PREFIRE_END_FIRE_BEGIN and wait for the
-    * event being notified</li>
-    * <li> Repeated calling getfire(eventList) and proposing events in the returned eventList 
-    * until getfire(eventList) terminates properly </li>
-    * <li> Propose MetroII event FIRE_END_POSTFIRE_BEGIN and wait for the
-    * the event being notified</li>
-    * <li> postfire() </li>
-    * </ol>
-    * where 'wait' means checking the status of MetroII event. If notified,
-    * continue execution, otherwise proposing the same event again.
-    *
-    * @param metroIIEventList A list of MetroII events.
-    * @throws IllegalActionException if the associated action (e.g. firing) 
-    * is not permitted.
-    */
+     * The functions prefire(), getfire() and postfire() are wrapped in
+     * startOrResume() as follows:
+     * <ol>
+     * <li>Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for the
+     * event being notified</li>
+     * <li>prefire()</li>
+     * <li>Propose MetroII event PREFIRE_END_FIRE_BEGIN and wait for the event
+     * being notified</li>
+     * <li>Repeated calling getfire(eventList) and proposing events in the
+     * returned eventList until getfire(eventList) terminates properly</li>
+     * <li>Propose MetroII event FIRE_END_POSTFIRE_BEGIN and wait for the the
+     * event being notified</li>
+     * <li>postfire()</li>
+     * </ol>
+     * where 'wait' means checking the status of MetroII event. If notified,
+     * continue execution, otherwise proposing the same event again.
+     * 
+     * @param metroIIEventList
+     *            A list of MetroII events.
+     * @throws IllegalActionException
+     *             if the associated action (e.g. firing) is not permitted.
+     */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
             throws IllegalActionException {
         if (getState() == State.START) {
             setState(State.BEGIN);
             metroIIEventList.add(proposeStateEvent());
-        /**
-         * Start executing the wrapped actor in the thread.
-         */
+            /**
+             * Start executing the wrapped actor in the thread.
+             */
         } else if (getState() == State.BEGIN) {
             assert getStateEvent().getName().contains("FIRE_BEGIN");
             if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
@@ -166,7 +173,7 @@ public class ResumableFire extends FireMachine {
             // do nothing
         } else {
             // unknown state; 
-            assert false; 
+            assert false;
         }
     }
 
@@ -179,14 +186,15 @@ public class ResumableFire extends FireMachine {
             _eventIterator.dispose();
             actor().stop();
         }
-        super.reset(); 
+        super.reset();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                   protected fields                        ////
 
     /**
-     * YieldAdapterIterator that is used to trigger actions of the wrapped actor.
+     * YieldAdapterIterator that is used to trigger actions of the wrapped
+     * actor.
      */
     protected YieldAdapterIterator<Iterable<Event.Builder>> _eventIterator;
 

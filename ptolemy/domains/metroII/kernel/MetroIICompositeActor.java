@@ -47,16 +47,17 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MetroCompositeActor
 
-/** 
-* MetroIICompositeActor extends the composite actor to support enclosing Metro directors. 
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 9.1
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+/**
+ * MetroIICompositeActor extends the composite actor to support enclosing Metro
+ * directors.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 9.1
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
 public class MetroIICompositeActor extends TypedCompositeActor implements
         GetFirable {
 
@@ -69,7 +70,8 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     /**
      * Construct a MetroIICompositeActor based on a given worksapce.
      * 
-     *  @param workspace The workspace for this object.
+     * @param workspace
+     *            The workspace for this object.
      */
     public MetroIICompositeActor(Workspace workspace) {
         super(workspace);
@@ -78,12 +80,16 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     /**
      * Construct a MetroIICompositeActor based on a given container and a name.
      * 
-     *  @param container container of the director.
-     *  @param name name of this director.
-     *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.  May be thrown in a derived class.
-     *  @exception NameDuplicationException If the container is not a
-     *   CompositeActor and the name collides with an entity in the container.
+     * @param container
+     *            container of the director.
+     * @param name
+     *            name of this director.
+     * @exception IllegalActionException
+     *                If the director is not compatible with the specified
+     *                container. May be thrown in a derived class.
+     * @exception NameDuplicationException
+     *                If the container is not a CompositeActor and the name
+     *                collides with an entity in the container.
      */
     public MetroIICompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -95,7 +101,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -110,22 +116,21 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     }
 
     /**
-     * getfire() should be identical to fire() except it calls the getfire() of 
-     * enclosed director instead of fire(). When getfire() is called, the enclosed
-     * director should be a Metro director.   
-     * 
-     *  If this actor is opaque, transfer any data from the input ports
-     *  of this composite to the ports connected on the inside, and then
-     *  invoke the fire() method of its local director.
-     *  The transfer is accomplished by calling the transferInputs() method
-     *  of the local director (the exact behavior of which depends on the
-     *  domain).  If the actor is not opaque, throw an exception.
-     *  This method is read-synchronized on the workspace, so the
-     *  fire() method of the director need not be (assuming it is only
-     *  called from here).  After the fire() method of the director returns,
-     *  send any output data created by calling the local director's
-     *  transferOutputs method.
-     *
+     * getfire() should be identical to fire() except it calls the getfire() of
+     * enclosed director instead of fire(). When getfire() is called, the
+     * enclosed director should be a Metro director.
+     * <p>
+     * If this actor is opaque, transfer any data from the input ports of this
+     * composite to the ports connected on the inside, and then invoke the
+     * fire() method of its local director. The transfer is accomplished by
+     * calling the transferInputs() method of the local director (the exact
+     * behavior of which depends on the domain). If the actor is not opaque,
+     * throw an exception. This method is read-synchronized on the workspace, so
+     * the fire() method of the director need not be (assuming it is only called
+     * from here). After the fire() method of the director returns, send any
+     * output data created by calling the local director's transferOutputs
+     * method.
+     * </p>
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
