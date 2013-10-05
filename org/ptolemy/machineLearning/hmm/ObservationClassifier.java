@@ -1,8 +1,6 @@
+/* An observation classifier
 
-
-/* An FFT.
-
-Copyright (c) 1998-2013 The Regents of the University of California.
+Copyright (c) 2013 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -40,9 +38,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-///////////////////////////////////////////////////////////////////
-////FFT
 import ptolemy.kernel.util.Workspace;
+
+///////////////////////////////////////////////////////////////////
+//// ObservationClassifier
 
 /**
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
@@ -74,7 +73,7 @@ governing the Markovian process representing the hidden state evolution. The <i>
 
  @see org.ptolemy.machineLearning.hmm.ParameterEstimator
  @see org.ptolemy.machineLearning.hmm.HMMGaussianClassifier
- @see org.ptolemy.machineLearning.hmm.HMMMultinomial 
+ @see org.ptolemy.machineLearning.hmm.HMMMultinomialClassifier 
 
  @author Ilge Akkaya
  @version $Id$

@@ -641,7 +641,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** Print the contents of the editor to a Graphics.
      *  This used both by the print facility and the exportImage facility.
-     *  @param graphics The context into which the page is drawn.
+     *  @param graphics2D The context into which the page is drawn.
      *  @return PAGE_EXISTS if the page is rendered successfully, or
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      */

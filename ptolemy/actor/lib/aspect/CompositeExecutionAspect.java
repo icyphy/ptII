@@ -123,7 +123,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this ExecutionAspect.
-     *  @param listener. The listener to be added. 
+     *  @param listener The listener to be added. 
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this ExecutionAspect.
      */
@@ -136,7 +136,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     }
 
     /** Remove schedule listener.
-     * @param listener. The listener to be removed.
+     * @param listener The listener to be removed.
      */
     public void removeExecutionListener(ExecutionAspectListener listener) {
         _executionAspectListeners.remove(listener);

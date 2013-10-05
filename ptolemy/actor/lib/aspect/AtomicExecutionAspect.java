@@ -123,7 +123,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
 
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this resource scheduler.
-     *  @param listener. The listener to be added. 
+     *  @param listener The listener to be added. 
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
@@ -136,7 +136,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     }
 
     /** Remove schedule listener.
-     * @param listener. The listener to be removed.
+     * @param listener The listener to be removed.
      */
     public void removeExecutionListener(ExecutionAspectListener listener) {
         _schedulePlotListeners.remove(listener);

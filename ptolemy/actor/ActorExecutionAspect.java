@@ -54,7 +54,7 @@ public interface ActorExecutionAspect extends Decorator {
     
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this resource scheduler.
-     *  @param listener. The listener to be added. 
+     *  @param listener The listener to be added. 
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
@@ -102,7 +102,7 @@ public interface ActorExecutionAspect extends Decorator {
     public Time schedule(Time environmentTime) throws IllegalActionException;
     
     /** Remove schedule listener.
-     * @param listener. The listener to be removed.
+     * @param listener The listener to be removed.
      */
     public void removeExecutionListener(ExecutionAspectListener listener);
     

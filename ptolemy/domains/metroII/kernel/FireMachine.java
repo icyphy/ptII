@@ -200,7 +200,7 @@ public abstract class FireMachine implements StartOrResumable {
      * Trim the substring until (including) '.' from name.
      * 
      * @param name the input string.
-     * @return
+     * @return The trimmed string.
      */
     private String _trimModelName(String name) {
         assert name.length() > 1;
