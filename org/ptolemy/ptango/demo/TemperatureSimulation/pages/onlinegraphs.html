@@ -32,6 +32,12 @@
 		<script src="http://d3js.org/d3.v3.min.js"> </script>
 		<script src="tempmap.js"> </script>
 		<script src="graphs.js"> </script> 
+		
+		<!-- The Ptolemy web server will add the following script tag when the page is served.  
+		     This defines a variable called "online" whose existence is checked in graphs.js.
+			 The readData() method in graphs.js uses this variable to determine whether to 
+			 get online data from the server, or use stored offline files. -->
+		<script> var online = true; </script> 
 
 		<title> Scaife Hall Building Information </title>
 	</head>
@@ -49,21 +55,13 @@
  	<!-- Content -->
 	<div>
 		<div id="info">
-			<div id="text"> Cooling setpoint: </div>
-			<!-- Toggle radio group and checkbox from jQueryUI -->
-			<!--  Click handlers are registered in graphs.js to take advantage
-			      of jQuery's this object to retrieve id of item clicked -->
-			<div id="radio-group" class="radio-group">
-				<input type="radio" id="radio21" name="radio"/>
-					<label for="radio21" id="radio21Label"> 21&deg;C</label>
-				<input type="radio" id="radio23" name="radio" checked="checked"/>
-					<label for="radio23" id="radio23Label">23&deg;C</label>
-				<input type="radio" id="radio25" name="radio" />
-					<label for="radio25" id="radio25Label">25&deg;C</label>
-			</div>  
+			<div id="text"> Cooling setpoint (&deg;C): </div>
 			
+			<input type="text" name="setpoint" id="setpoint" size="3"  value="23" /> 
+			<input type="button" name="calculate" id="calculate" value="Calculate" />
+
 			<input type="checkbox" id="checkbox" />
-				<label for="checkbox" id="checkboxLabel"> Show Floorplan</label>
+			<label for="checkbox" id="checkboxLabel"> Show Floorplan</label>
 
 		</div>
 		
@@ -72,6 +70,14 @@
 		</div>
 
 		
+	</div>
+				
+	
+	<!--  Used for greying out page while loading.  See:  
+		  http://stackoverflow.com/questions/1964839/jquery-please-wait-loading-animation-->
+	<div id="loading" class="modal"> 
+			<h1 id="loadingMessage"> Calculating... </h1>
+			<div id="progressBar"> </div> 
 	</div>
 	
 	<!-- Footer --> 

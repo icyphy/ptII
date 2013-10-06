@@ -141,21 +141,51 @@ var dragLine = d3.behavior.drag()
 // Remove once room shapes are working
 var startX = chartWidth + 6*padding, startY = 0;
 
+// True if the page is served from Ptolemy; false if loaded offline
+var isOnline;
+
 // Function executed once page is loaded
 $(document).ready(function() {
+	// Check if page is being served online, or loaded offline
+	if (typeof(online) == 'undefined') {
+		isOnline = false;
+	} else { 
+		isOnline = true;
+	}
+	
 	// Register click handlers
-	$("#radio21Label").click(readData);
-	$("#radio23Label").click(readData);
-	$("#radio25Label").click(readData);
+	if (isOnline) {
+		$("#calculate").click(readDataOnline);
+		
+		// Hide loading message
+		$("#loading").hide(); 
+	}
+	else {
+		$("#radio21Label").click(readDataOffline);
+		$("#radio23Label").click(readDataOffline);
+		$("#radio25Label").click(readDataOffline);
+	}
 	$("#checkboxLabel").click(showHideFloorplan);
 	
-	// Formatting for radio buttons.  From jQueryUI
-	// Ensure page starts with middle button (23 degrees C) checked
+	// Formatting for buttons.  From jQueryUI
+	// Ensure offline page starts with middle button (23 degrees C) checked
 	// Trigger a click event to check this button and kick off data import
+	if (isOnline) {
+		$("#calculate").button();
+		$("#calculate").trigger("click");	// Simulate a click to call readData()
+	}
+	else {
+		$("#radio-group").buttonset();
+		$("#radio23Label").trigger("click"); // Simulate a click to call readData()
+	}
+	
 	$("#checkbox").prop("checked", false);
 	$("#checkbox").button();
-	$("#radio-group").buttonset();
-	$("#radio23Label").trigger("click");
+	
+	// Create the progress bar (in hidden div loading) 
+	// http://jqueryui.com/progressbar/#indeterminate
+	 $( "#progressBar" ).progressbar({ value: false });
+	 $("#progressBar").progressbar("option", "value", false);
 });
 
 // Create an SVG element showing the temperature graph
@@ -371,8 +401,69 @@ function createGraph() {
 	setTemperatures(0);
 }
 
+// Request data from the Ptolemy server
+function readDataOnline(){
+	// If first view, create temperature graph
+	// Import data that was exported from Ptolemy TemperatureSimulation. 
+	// Use d3's XMLHttpRequest function:
+	// https://github.com/mbostock/d3/wiki/Requests
+	if (firstView) {
+		// GET default temperature file from web server
+		d3.csv("temperatures23setpoint.csv", function(error, csv) {
+			if (error) {
+				alert("Unable to import temperature data");
+			} else {
+				data = csv;
+				firstView = false;
+				createGraph();
+			}
+		});
+	} else { 
+		
+		// For subsequent views, post the cooling setpoint to the server
+		// The server will calculate the results and save the data in 
+		// temperatures.csv (on the server)
+		// Wait for a reply to the POST, indicating data is ready, then
+		// GET the data file
+		
+		var setpoint = $("#setpoint").val();
+		
+		// Range checking - Range is current max/min shown on graph.  
+		// In future, could check where simulation breaks down
+		var minLimit = 18;
+		var maxLimit = 27;
+		
+		if (setpoint < minLimit || setpoint > maxLimit) {
+			alert("Please choose a setpoint between " + minLimit + " and " + maxLimit);
+		} else {
+			// Create wait dialog message including setpoint
+			$("#loadingMessage").html("Calculating for setpoint of " + setpoint + "...");
+		
+			$.ajax({
+				url: 'eplus',
+				type: 'POST',
+				dataType: 'text',
+				data: {setpoint: setpoint},
+				success: function(result) {
+					d3.csv("temperatures.csv", function(error, csv) {
+						if (error) {
+							alert("Error retrieving results from server");
+						} else {
+							data = csv;
+							updateGraph();
+						}
+					});
+				},
+				error: function(e) {
+					alert("Error running server-side simulation");
+				}
+			});
+		}
+	}
+}
+
 // Read the appropriate data file according to the chosen cooling setpoint
-function readData(){
+function readDataOffline(){
 	var filename = "temperatures21setpoint.csv";
 	
 	// If first view, create temperature graph
@@ -472,7 +563,17 @@ function updateGraph(){
 		.attr("d", function(d) {return lineFunction(d.values); });
 	
 	// Update room map
-	setTemperatures(verticalLineIndex);
-	
+	setTemperatures(verticalLineIndex);	
 }
+
+// Grey out page while loading.  See:
+// http://stackoverflow.com/questions/1964839/jquery-please-wait-loading-animation
+
+$(document).ajaxStart(function() { 
+	 $("#loading").show();
+});
+
+$(document).ajaxStop(function() { 
+     $("#loading").hide(); 
+});
 
