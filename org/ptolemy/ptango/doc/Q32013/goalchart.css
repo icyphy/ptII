@@ -1,0 +1,107 @@
+/* Styling for standard elements */
+html {
+	/* Specify root element size as a percentage due to IE problem with ems. */
+	font-size: 100%; /* Typically 16px */
+}
+
+body {
+	/* Specify body font size as a percentage due to IE problem with ems. */
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 100%; /* Typically 16px */
+}
+
+h1 {
+	/* Remaining fonts specified relative to containing element's font size */
+	font-family: sans-serif;
+	font-size: 1.5em; /* 24px / 16px */
+}
+
+h2 {
+	font-family: sans-serif;
+	font-size: 1.25em; /* 24px / 16px */
+}
+
+h3 {
+	font-family: sans-serif;
+	font-size: 1em; /* 24px / 16px */
+}
+
+.stage, .deliverable, .panel, .date{
+	margin-left: .3%;
+	margin-right: .3%;
+	float: left;
+	text-align: center;
+	width: 23%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #2a2f60;
+}
+
+.stage {
+	background-color:#2a2f60;
+	color: #ffffff;
+}
+
+.deliverable {
+	background-color:#5e6489;
+	color: #ffffff;	
+}
+
+
+.date {
+	background-color:#c19e36;
+	font-weight: bold;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	color: #ffffff;
+}
+
+
+.img {
+	float: left;
+}
+
+.images {
+	padding: 0.5em;
+}
+
+#summary, #header {
+	margin 0 auto;
+	width: 90%;
+	float: left;
+	padding: 1em;
+	text-align: center;
+	color: #2a2f60;
+}
+
+#header {
+	font-size: 1.25em;
+}
+
+#webserver {
+	list-style-type: none;
+	padding-left: 10px;
+	background-image: url('webserver.png');
+	background-repeat: no-repeat;
+	background-position: 0 .5em;
+}
+
+
+/* Some colors:
+color:#e7c254;  yellow
+background:#252c58;
+background:#5e6489;
+background-color:#556b8c;
+#c19e36; yellow-gold
+background-color:#5e6489;
+#616688; dotted menu border
+#e3d6bf; dotted pagelinks border
+
+	border-style: solid;
+	border-width: 1px;	
+	border-color: #c19e36;
+	
+	border-color: #667396;
+*/
+
