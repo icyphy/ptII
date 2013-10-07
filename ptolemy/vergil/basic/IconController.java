@@ -231,8 +231,7 @@ public class IconController extends ParameterizedNodeController {
                 // clear highlighting
                 Attribute highlightColor = object.getAttribute("_decoratorHighlightColor");
                 if (highlightColor != null) {
-                    object.removeAttribute(highlightColor);
-                    object.validateSettables();
+                    object.removeAttribute(highlightColor); 
                 }
                 
                 List<Decorator> decorators = new ArrayList();
