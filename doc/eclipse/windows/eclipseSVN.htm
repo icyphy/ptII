@@ -25,12 +25,10 @@
     <p>For other ways to set up Eclipse and Ptolemy II, see
       the <a href="project.htm" target="main">Setting up Eclipse to manage your Ptolemy II development Environment</a> page.</p>
 
-    <p>There are at least two Subversion plugins for Eclipse,
-    Subversive and Subclipse.  Either will work, for a brief
-    comparison,
-    see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#SubclipseVsSubversion#in_browser" target="_top">Subclipse vs. Subversion</a>.  The instructions
-    below are for Subversive. To use Subclipse,
-    see <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse#7-installing-subversion-svn#in_browser" target="_top">Installing Subversion (SVN) into Eclipse</a>.</p>
+    <p>There are at least two Subversion plugins for Eclipse, Subversive and Subclipse.  Either will work, for a brief comparison, see 
+      <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#SubclipseVsSubversion#in_browser" target="_top">Subclipse vs. Subversion</a>.
+      The instructions below are for Subversive. To use Subclipse, see
+      <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse#7-installing-subversion-svn#in_browser" target="_top">Installing Subversion (SVN) into Eclipse</a>.</p>
 
     <p>The <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" target="_top">Subversive</a> Eclipse plug-in adds Subversion to
       Eclipse.  After installation, you can use either Eclipse to manage
@@ -43,7 +41,7 @@
 	<br/>The first time software is to be added the menu will be:
 	<code>Help</code> | <code>Install New Software</code> 
       </li>
-      <li>In the "Work with" field, select "Juno - http://download.eclipse.org/releases/juno" from the drop down.  The install facility will take a few moments to connect to the site and determine
+      <li>In the "Work with" field, select "Kepler - http://download.eclipse.org/releases/kepler" from the drop down.  The install facility will take a few moments to connect to the site and determine
 	what is available.
       </li>
       <li>Expand the "Collaboration" tab and check the box next to
@@ -55,7 +53,11 @@
       <li> When the "Software Updates" window appears and asks about a
 	restart, select "Restart Now" and restart.
       </li>
-      <li> When Eclipse restarts, the "Workspace Launcher" window will appear.  Click on "OK".
+      <li> When Eclipse restarts, the "Workspace Launcher" window will appear.  
+	<b>If you are upgrading Eclipse, it is best if you choose a new workspace directory.</b>
+	If the workspace directory contains an project from a previous version of Eclipse, then
+	there could be issues.
+	</br>After choosing a new workspace directory, click on "OK".
       <li> The "Subversion Connector Discovery" window will pop up.  
 	<br/> If it does not, bring up the preferences window:
 	<br/> <code>Window</code> | <code>Preferences</code>
@@ -64,9 +66,9 @@
 	will pop up.  (See <a href="http://www.polarion.com/products/svn/subversive/connector_discovery.php#in_browser" target="_top">http://www.polarion.com/products/svn/subversive/connector_discovery.php</a>
 	for details.)
       </li>
-      <li> In the "Subversion Connector Discovery" window, what version
-	you select depends on what version of svn is installed on your
-	machine.  
+      <li> In the "Subversion Connector Discovery" window, select a
+      Subversion connector compatible with the version of svn
+      installed on your machine.
 	<br/>To determine which version of Subversion is being run, start up a DOS or Cygwin shell and
 run <code>svn --version</code>.  To start  a DOS Shell:
 	<dl>
@@ -79,8 +81,8 @@ run <code>svn --version</code>.  To start  a DOS Shell:
 	<pre>
 	  svn --version
 	</pre>
-	<br/>If <code>svn --version</code> returns 1.5, then install SVN Kit 1.2.3
-	<br/>If <code>svn --version</code> returns 1.6, then install SVN Kit 1.3.7
+	<br/>If <code>svn --version</code> returns 1.6, then install SVN Kit 1.3.8 or equivalent.
+	<br/>If <code>svn --version</code> returns 1.7, then install SVN Kit 1.7.9 or equivalent.
 	<br/>If you do not have the <code>svn</code> command installed, then select the most
 	recent SVN Kit and you <i>should</i> be able to download ptII using the SVN Kit supplied by Eclipse.
 
@@ -105,12 +107,13 @@ run <code>svn --version</code>.  To start  a DOS Shell:
       <li> When prompted for a restart, select "Restart Now".
       </li>
 
-      <li> After Eclipse has restarted, the next steps is to download the <code>ptII</code>
+      <li> After Eclipse has restarted, the next steps are to download the <code>ptII</code>
 	Subversion repository.
 
 	<br/>In Eclipse, add the ptII SVN Repository:
 
 	<br/><code>Window</code> | <code>Show View</code> | <code>Other</code> | <code>SVN</code> | <code>SVN Repositories</code>
+	<br/>To see the SVN Repositories pane, you may need to close the Eclipse Welcome Window by clicking on the x in the tab.
       </li>
 
       <li>In the SVN Repository view, right click,
@@ -123,17 +126,16 @@ run <code>svn --version</code>.  To start  a DOS Shell:
 	  https://repo.eecs.berkeley.edu/svn-anon/projects/eal/ptII
 	</pre>
 
-	<p><b>Note:</b> Most users will select <code>https://</code> or 
-	  <code>svn://</code> because
+	<p><b>Note:</b> Most users will select the <code><b>/svn-anon/</b></code> URL above because
 	  they will be accessing the tree with <b>read-only</b> Subversion access.
-	  <br/>If you have an UC Berkeley EECS LDAP account or have an external account on <code>repo.eecs.berkeley.edu</code>, then check out ptII with read/write access:</p>
+	  <br/>If you have an UC Berkeley EECS LDAP account or have an external account on <code>repo.eecs.berkeley.edu</code>, then check out ptII with <b>read/write access</b>:</p>
 
 	<pre>
 	  https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/
 	</pre>
 	Read/writes users may want to check "Save authentication".
 
-	<p>Click <code>Finish</code></p>
+	<p>Click "Finish"</p>
 
 	<p>Read/write users will be prompted for their
 	  repo.eecs.berkeley.edu username and password.</p>
@@ -164,6 +166,8 @@ run <code>svn --version</code>.  To start  a DOS Shell:
       <ol>
 	<li> In the "Check Out As" window, keep the default,
 	  <code>Check out as a project configured using the New Project Wizard</code>, then hit <code>Finish</code>.
+	  <br/>(If <code>Check out as a project configure using the New Project Wizard</code> is disabled, then the
+	  problem is someone checked a <code>.project</code> file into the repository.) 
 	  <center>
 	    <p><img src="../../img/eclipseCheckOutAs.png" alt="Eclipse Check Out As Window" width="630" height="497"></p>
 	  </center>
@@ -206,9 +210,9 @@ run <code>svn --version</code>.  To start  a DOS Shell:
 	<li><b>If you have read/write access</b> go to <a href="setupSubversion.htm" target="main">Setup the Subversion Configuration to Sane Settings</a> so that if you commit files, they will have the appropriate settings.
 	</li>
 
-      <li>The next step is to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>.
+	<li>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
 	</li>
 
-    </ol>
+      </ol>
   </body>
 </html>

@@ -43,12 +43,28 @@
   <li>Create the ptII project
     <ol>
       <li> In <code>File</code> | <code>New</code> | <code>Project</code>,
-	select 'Java project'.
-	In the 'Contents' box, click on 'Create project from existing source'
-	and browse to the PTII directory. Finish.
+	select 'Java project'.</li>
+      <li> In the "Create a Java Project" window, uncheck the "Use default location" and browse to the location
+	of the ptII tree checked out above.
 
-      <li>When asked if you want to shift to the Java perspective, click on Yes.
+	  <br/>Below is the "Create a Java Project" window:
+	  <center>
+	    <p><img src="../../img/eclipseNewJavaProject.png" alt="Eclipse Create a Java Project Window" width="555" height="709"></p>
+	  </center>
+        Then hit "Next".  There may be a delay while the wizart reads the directory.
+      </li>
+      <li>In the "Java Settings" window, check the "Allow output folders for source folders" checkbox.
+	<br/>Below is the "Java Settings" window:
+	  <center>
+	    <p><img src="../../img/eclipseNewJavaProject2.png" alt="Eclipse Create a Java Project Window" width="551" height="707"></p>
+	  </center>
+	  Then hit "Finish".
+      </li>
+      <li>When asked if you want to shift to the Java perspective, click on Yes.</li>
+      <li>If you there is a message about ClassDoc missing, then see <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse#classdoc-missing" target="_top">ClassDoc Missing</a> on the Kepler site.  That page also has instructions for adding <code>tools.jar</code>.
+      </li>
     </ol>
+    
   </li>
 
   <li><b>If you have read/write access</b> go
