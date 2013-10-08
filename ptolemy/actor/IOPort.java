@@ -1407,7 +1407,10 @@ public class IOPort extends ComponentPort {
                     CommunicationAspectAttributes attribute = _communicationAspectMap.get(iterator.next()); 
                     attribute.sequenceNumber.setToken(new IntToken(i));
                     i = i + 1;
-                    _communicationAspects.add((CommunicationAspect) attribute.getDecorator());
+                    Decorator decorator = attribute.getDecorator();
+                    if (decorator != null) {
+                        _communicationAspects.add((CommunicationAspect) decorator);
+                    }
                 } 
             } catch (Exception e) {
                 e.printStackTrace();
