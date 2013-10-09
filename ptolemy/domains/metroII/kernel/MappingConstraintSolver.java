@@ -41,74 +41,79 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 ///////////////////////////////////////////////////////////////////
 //// MappingConstraintSolver
 
-/** The constraint solver is used to enforce the user defined
- *  constraints on the scheduling via updating the event status. The
- *  mapping constraint solver is used to update the event status based
- *  on mapping constraints. The mapping constraint is a type of
- *  rendezvous constraint. Each mapping constraint is a event pair,
- *  which requires the events are scheduled at the same time. More
- *  precisely, the mapping constraint is satisfied when both events
- *  are in presence. An event status is updated to
- *  NOTIFIED when it satisfies all the constraints. Otherwise the
- *  event status is updated to WAITING.
- *  The mapping constraint resolution has three steps:
- *  <ol>
- *  <li> Step 1: reset() is called to initialize the solver. </li>
- *  <li> Step 2: presentMetroIIEvent(event id) is called for each
- *  PROPOSED or WAITING event. </li>
- *  <li> Step 3: isSatisfied(event id) is called for each event. It
- *  returns true if the event satisfies all the mapping
- *  constraints. </li>
- *  </ol>
+/**
+ * The constraint solver is used to enforce the user defined constraints on the
+ * scheduling via updating the event status. The mapping constraint solver is
+ * used to update the event status based on mapping constraints. The mapping
+ * constraint is a type of rendezvous constraint. Each mapping constraint is a
+ * event pair, which requires the events are scheduled at the same time. More
+ * precisely, the mapping constraint is satisfied when both events are in
+ * presence. An event status is updated to NOTIFIED when it satisfies all the
+ * constraints. Otherwise the event status is updated to WAITING. The mapping
+ * constraint resolution has three steps:
+ * <ol>
+ * <li>Step 1: reset() is called to initialize the solver.</li>
+ * <li>Step 2: presentMetroIIEvent(event id) is called for each PROPOSED or
+ * WAITING event.</li>
+ * <li>Step 3: isSatisfied(event id) is called for each event. It returns true
+ * if the event satisfies all the mapping constraints.</li>
+ * </ol>
  * 
- *
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
-    /** Construct a mapping constraint solver.
+    /**
+     * Construct a mapping constraint solver.
      */
     public MappingConstraintSolver() {
     }
-    
+
     /**
      * Clone MappingConstraintSolver.
      * 
-     * @throws CloneNotSupportedException the object's class does not implement the Cloneable interface.
+     * @throws CloneNotSupportedException
+     *             the object's class does not implement the Cloneable
+     *             interface.
      */
     @Override
     public MappingConstraintSolver clone() throws CloneNotSupportedException {
-        MappingConstraintSolver newObject = (MappingConstraintSolver) super.clone(); 
+        MappingConstraintSolver newObject = (MappingConstraintSolver) super
+                .clone();
         // FIXME: I'm not sure if we want to call clone like this.  Typically, we
         // would just instantiate new versions of the fields.
         if (_counter == null) {
             newObject._counter = null;
         } else {
-            newObject._counter = (ConstraintCounter) _counter.clone(); 
+            newObject._counter = (ConstraintCounter) _counter.clone();
         }
-        newObject._mapping = (Graph) _mapping.clone(); 
-        newObject._eventIDDictionary = (EventDictionary) _eventIDDictionary.clone(); 
-        return newObject; 
-        
+        newObject._mapping = (Graph) _mapping.clone();
+        newObject._eventIDDictionary = (EventDictionary) _eventIDDictionary
+                .clone();
+        return newObject;
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the adjacency matrix of mapping constraints as a 
-     *  string.
-     *  @return the adjacency matrix.
+    /**
+     * Return the adjacency matrix of mapping constraints as a string.
+     * 
+     * @return the adjacency matrix.
      */
     public String toString() {
         return _counter.toString();
     }
 
-    /** Check if the debugging option is checked.
+    /**
+     * Check if the debugging option is checked.
      * 
      * @return the state of debugging option
      */
@@ -131,14 +136,13 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Resolve the MetroII event list, updating the event status based
-     * on the mapping constraints. The mapping constraint is a type of
-     * rendezvous constraint. Each mapping constraint is a event pair,
-     * which requires the events are scheduled at the same time. More
-     * precisely, the mapping constraint is satisfied when both events
-     * are in presence. An event status is updated to
-     * NOTIFIED when it satisfies all the constraints. Otherwise the
-     * event status is updated to WAITING.
+     * Resolve the MetroII event list, updating the event status based on the
+     * mapping constraints. The mapping constraint is a type of rendezvous
+     * constraint. Each mapping constraint is a event pair, which requires the
+     * events are scheduled at the same time. More precisely, the mapping
+     * constraint is satisfied when both events are in presence. An event status
+     * is updated to NOTIFIED when it satisfies all the constraints. Otherwise
+     * the event status is updated to WAITING.
      */
     @Override
     public void resolve(Iterable<Event.Builder> metroIIEventList) {
@@ -203,14 +207,15 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Return the number of mapping constraints.
+     * 
      * @return the number of mapping constraints.
      */
     public int numConstraints() {
         return _mapping.edgeSize();
     }
 
-    /** 
-     * Initialize the constraint solver. 
+    /**
+     * Initialize the constraint solver.
      **/
     public void reset() {
         _counter = new ConstraintCounter(numConstraints());
@@ -219,8 +224,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     /**
      * Read mapping constraints from a file.
      * 
-     * @param filename Filename of the mapping constraint file.
-     * @exception IOException a failed or interrupted I/O operations has occurred.
+     * @param filename
+     *            Filename of the mapping constraint file.
+     * @exception IOException
+     *                a failed or interrupted I/O operations has occurred.
      */
     public void readMapping(String filename) throws IOException {
         FileInputStream stream = new FileInputStream(filename);
@@ -241,8 +248,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     /**
      * Add a mapping constraint.
      * 
-     * @param eventName1 first event in the mapping.
-     * @param eventName2 second event in the mapping.
+     * @param eventName1
+     *            first event in the mapping.
+     * @param eventName2
+     *            second event in the mapping.
      */
     public void addMapping(String eventName1, String eventName2) {
         _eventIDDictionary.add(eventName1);
@@ -260,31 +269,35 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     ////                    private fields                         ////
 
     /**
-     * ConstraintCounter maintains a counter for each constraint. When increaseCount(Iterable<Integer> ids) is called,
-     * the counter of the constraint whose id is in ids is increased by the number of appearances in ids.
+     * ConstraintCounter maintains a counter for each constraint. When
+     * increaseCount(Iterable<Integer> ids) is called, the counter of the
+     * constraint whose id is in ids is increased by the number of appearances
+     * in ids.
      * 
      * @author glp
-     *
+     * 
      */
     private static class ConstraintCounter implements Cloneable {
 
         /**
          * Construct and initialize the counter for each constraint.
-         * @param size the largest possible id of the constraints + 1. 
+         * 
+         * @param size
+         *            the largest possible id of the constraints + 1.
          */
         public ConstraintCounter(int size) {
             _size = size;
             _count = new int[_size];
             reset();
         }
-        
+
         /**
          * Clone the ConstraintCounter
          */
         public ConstraintCounter clone() throws CloneNotSupportedException {
-            ConstraintCounter newObject = (ConstraintCounter) super.clone(); 
-            newObject._count = (int[]) _count.clone(); 
-            return newObject; 
+            ConstraintCounter newObject = (ConstraintCounter) super.clone();
+            newObject._count = (int[]) _count.clone();
+            return newObject;
         }
 
         /**
@@ -296,7 +309,9 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
         /**
          * return the first id in ids whose counter is greater than 1.
-         * @param ids a vector of ids
+         * 
+         * @param ids
+         *            a vector of ids
          * @return the first id in ids whose counter is greater than 1.
          */
         public int firstGreaterThanOne(Iterable<Integer> ids) {
@@ -318,8 +333,11 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
 
         /**
-         * The counter of the constraint whose id is in ids is increased by the number of appearances in ids.
-         * @param ids the vector of ids
+         * The counter of the constraint whose id is in ids is increased by the
+         * number of appearances in ids.
+         * 
+         * @param ids
+         *            the vector of ids
          */
         public void increaseCount(Iterable<Integer> ids) {
             for (Integer id : ids) {
@@ -328,8 +346,11 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
 
         /**
-         * The counter of the constraint whose id is in ids is decreased by the number of appearances in ids.
-         * @param ids the vector of ids
+         * The counter of the constraint whose id is in ids is decreased by the
+         * number of appearances in ids.
+         * 
+         * @param ids
+         *            the vector of ids
          */
         public void decreaseCount(Iterable<Integer> ids) {
             for (Integer id : ids) {

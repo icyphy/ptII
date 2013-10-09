@@ -1,4 +1,4 @@
-/* Director for simplified MetroII semantic.
+/* A MetroII Director governs the execution of actors with simplified MetroII semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -57,71 +57,69 @@ import ptolemy.kernel.util.Workspace;
 /**
  * <p>
  * A MetroII Director governs the execution of actors with simplified MetroII
- * semantics.
+ * execution semantics. The major distinction from other directors is the way
+ * MetroIIDirector fires the actors. In stead of explicitly calling fire() of
+ * the governing actors, MetroIIDirector implicitly fires actors by exchanging
+ * MetroII events with actors (@see
+ * ptolemy.domains.metroII.kernel.util.ProtoBuf.Event). Under MetroIIDirector,
+ * each actor is wrapped by either BlockingFire (@see BlockingFire) or
+ * ResumableFire (@see ResumableFire). With a wrapper, the firing of an actor is
+ * a process which executes and then blocks to generate MetroII events. Each
+ * MetroII event has one of the following states: PROPOSED, WAITING, and
+ * NOTIFIED. When the firing of an actor blocks to generate MetroII events, the
+ * events are sent to MetroIIDirector with the state of PROPOSED. This is also
+ * referred to as proposing MetroII events. MetroIIDirector delegates the events
+ * to constraint solvers (@see ConstraintSolver) which update the event states
+ * to either WAITING or NOTIFIED. If any event state of a process is updated to
+ * NOTIFIED, the process is supposed to resume execution. The resumed execution
+ * may depend on the updated events.
  * </p>
  * 
  * <p>
- * The MetroIIActorInterface has to be implemented for each actor governed by
- * MetroIIDirector. Each actor can be seen as a process. FIXME: The process
- * could pause with MetroII events (@see
- * ptolemy.domains.metroII.kernel.util.ProtoBuf.Event) returned (to this
- * director). We say the actor is proposing MetroII events. The MetroII events
- * are then modified by the MetroIIDirector, which delegates events to a
- * constraint solver (@see ConstraintSolver). When the process is resumed, the
- * continued execution depends on the updated MetroII events.
+ * The execution of MetroIIDirector has two phases. In Phase 1, MetroIIDirector
+ * repeatedly fires each actor (no particular order should be presumed). As
+ * mentioned, each firing is a process runs and then blocks to propose MetroII
+ * events. Phase 1 ends when all processes of firing are blocked. In Phase 2,
+ * MetroIIDirector delegates all the proposed events to constraint solvers (@see
+ * ConstraintSolver), which updates the states of MetroII events based on the
+ * constraints. In particular, MappingConstraintSolver (MappingConstraintSolver)
+ * is a constraint solver that resolves rendezvous constraints. A rendezvous
+ * constraint requires the specified pair of MetroII events must be proposed
+ * together, otherwise the states will be updated to WAITING. A collection of
+ * two completed phases is referred to as an iteration. After constraint
+ * resolving in Phase 2, MetroIIDirector goes back to Phase 1, in which each
+ * existing process has a chance to react to the updated MetroII events. The
+ * process with at least one NOTIFIED event is supposed to resume execution
+ * while the process with all events WAITING keeps blocked. If the process of
+ * firing successfully completes in last iteration, a new process will be
+ * created as long as prefire() returns true. The actor with postfire() returns
+ * false will not be fired any more.
  * </p>
  * 
  * <p>
- * Each iteration of the MetroIIDirector has two phases. In Phase 1,
- * MetroIIDirector calls each actor (no particular order should be presumed. See
- * Note 1). Each actor runs until it wants to propose MetroII events; The actor
- * saves the state and returns MetroII events. In Phase 2, MetroIIDirector calls
- * the MappingConstraintSolver, which updates the MetroII events based on the
- * Constraint solver (@see ConstraintSolver).
- * </p>
- * <p>
- * Note 1: In MetroII (complete version), the order of actors being called is
- * determined by the SystemC scheduler.
- * </p>
- * 
- * <p>
- * A simple way to implement the MetroIIActorInterface is to have each actor
- * wrapped by one of the following wrappers:
- * <ol>
- * <li>MetroIIActorBasicWrapper @see MetroIIActorBasicWrapper</li>
- * <li>MetroIIActorGeneralWrapper @see MetroIIActorGeneralWrapper</li>
- * </ol>
- * MetroIIActorBasicWrapper is used for wrapping a Ptolemy actor that implements
- * prefire(), fire(), and postfire(). Wrapped by MetroIIActorBasicWrapper, the
- * actor will be blocked at three occasions:
- * <ol>
- * <li>Before prefire()</li>
- * <li>After prefire() and before fire()</li>
- * <li>After fire() and before postfire()</li>
- * </ol>
- * A MetroII event will be proposed (return to this MetroIIDirector) at each
- * occasion. The actor is blocked until the event is notified.
- * </p>
- * <p>
- * MetroIIActorGeneralWrapper is used for wrapping a Ptolemy actor which
- * implements MetroIIEventHandler (@see MetroIIEventHandler), i.e. an actor that
- * implements prefire(), getfire(), and postfire() (e.g. MetroIICompositeActor
- * that contains MetroIIPNDirector). In addition to proposing events before
- * prefire(), after prefire() and before fire(), after fire() and before
- * postfire(), as MetroIIActorBasicWrapper does, MetroIIActorGeneralWrapper
- * allows events to be proposed during getfire().
+ * An actor that implements GetFirable interface (@see GetFirable) is wrapped by
+ * ResumableFire (@see ResumableFire). Otherwise it's wrapped by BlockingFire (@see
+ * BlockingFire). Particularly, the MetroIIComposite, MetroIIModalModel,
+ * MetroPtidesPlatform have GetFirable interface implemented and are thus
+ * wrapped by ResumableFire. And all other ordinary Ptolemy actors are wrapped
+ * by BlockingFire. If an actor is wrapped by BlockingFire, the firing of an
+ * actor has two MetroII events associated: FIRE_BEGIN and FIRE_END. FIRE_BEGIN
+ * is first proposed and the firing blocks. When FIRE_BEGIN is NOTIFIED, fire()
+ * is called and FIRE_END is proposed. When FIRE_END is NOTIFIED, the firing
+ * successfully completes. The firing is atomic and there is no chance to
+ * propose events during firing. If an actor is wrapped by ResumableFire, in
+ * addition to FIRE_BEGIN and FIRE_END, getfire(MetroII event list) is called
+ * instead of fire(). The process of firing may not only block on FIRE_BEGIN and
+ * FIRE_END, but also block on the internal events of getfire(MetroII event
+ * list).
  * </p>
  * 
  * <p>
- * An example of a constraint solver is MappingConstraintSolver (@see
- * MappingConstraintSolver). MappingConstraintSolver updates the MetroII event
- * status based on the given mapping constraints. A MetroII event is in one of
- * the three statuses: PROPOSED, WAITING, NOTIFIED. A mapping constraint is a
- * rendezvous constraint that requires all the specified events are present when
- * resolving. If an event satisfies all the constraints, the status will be
- * updated to NOTIFIED, otherwise the status is updated to WAITING.
+ * In ResumableFire, the 'start', 'block', and 'resume' are realized using
+ * YieldAdapter {@link http://jimblackler.net/blog/?p=61}. The underlying
+ * mechanism is to create, suspend, and resume a java thread. And proposed
+ * MetroII events are returned by the parameters of startOrResume(). 
  * </p>
- * 
  * 
  * @author Liangpeng Guo
  * @version $Id$
