@@ -100,7 +100,7 @@ import ptolemy.kernel.util.Workspace;
  * An actor that implements GetFirable interface (@see GetFirable) is wrapped by
  * ResumableFire (@see ResumableFire). Otherwise it's wrapped by BlockingFire (@see
  * BlockingFire). Particularly, the MetroIIComposite, MetroIIModalModel,
- * MetroPtidesPlatform have GetFirable interface implemented and are thus
+ * MetroIIPtidesPlatform have GetFirable interface implemented and are thus
  * wrapped by ResumableFire. And all other ordinary Ptolemy actors are wrapped
  * by BlockingFire. If an actor is wrapped by BlockingFire, the firing of an
  * actor has two MetroII events associated: FIRE_BEGIN and FIRE_END. FIRE_BEGIN
