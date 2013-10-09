@@ -4657,7 +4657,6 @@ PTQUICKTIME_DIR=
 
 # Set to the location of the QTJava.zip file
 QTJAVA_ZIP=
-set -x
 # We only need to look for Java3D if the gr domain is present
 QUICKTIME_USER_DIR="$PTII/ptolemy/domains/gr/lib/quicktime"
 
@@ -4741,7 +4740,7 @@ else
         updateClasspath "$QTJAVA_ZIP"
     fi
 fi 
-set +x
+
 #--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
