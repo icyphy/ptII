@@ -484,14 +484,14 @@ public class IOPortController extends AttributeController {
                         // the attribute could be e.g. a StringParameter, which 
                         // is an Attribute but not a StringAttribute                   
                         Attribute info = (Attribute) port
-                                .getAttribute("_showInfo"); 
+                                .getAttribute("_showInfo");
                         if (info != null && 
                                 info instanceof StringAttribute) {
                             String infoString = ((StringAttribute)info).getValueAsString();
                             if (infoString.contains("Aspects:")) {
                                 int start = infoString.indexOf("Aspects: ");
-                                int end = infoString.indexOf("", start);
-                                String aspectInfo = infoString.substring(start, end + 1);
+                                int end = infoString.length();
+                                String aspectInfo = infoString.substring(start, end);
                                 infoString = infoString.replace(aspectInfo, "");
                                 infoString = infoString.trim();
                                 ((StringAttribute)info).setExpression(infoString);
