@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.aspect;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +56,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.ConstraintMonitor.ConstraintMonitorAttributes;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -66,6 +68,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /** This class implements functionality of a composite communication aspect.
@@ -163,6 +166,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         CompositeCommunicationAspect newObject = (CompositeCommunicationAspect) super
                 .clone(workspace);
         newObject._parameters = new HashMap<IOPort, List<Attribute>>();
+        newObject._decoratedObjects = null;
+        newObject._decoratedObjectsVersion = -1L;
         return newObject;
     }
 
@@ -202,6 +207,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
+    	if (workspace().getVersion() == _decoratedObjectsVersion) {
+            return _decoratedObjects;
+        }
+    	_decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> list = new ArrayList<NamedObj>();
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object object : container.deepEntityList()) {
@@ -211,6 +220,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
                 }
             }
         }
+        _decoratedObjects = list;
         return list;
     }
 
@@ -329,7 +339,9 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
-                decoratedObject.getDecoratorAttributes(this);
+                CompositeCommunicationAspectAttributes decoratorAttributes = (CompositeCommunicationAspectAttributes)
+                        decoratedObject.getDecoratorAttributes(this);
+                setInputPortName((Port) decoratedObject, decoratorAttributes._inputPort);
             }
         }
     }
@@ -416,6 +428,12 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** Cached list of decorated objects. */
+	private List<NamedObj> _decoratedObjects;
+	
+	/** Version for _decoratedObjects. */
+	private long _decoratedObjectsVersion = -1L;
 
     private HashMap<CommunicationRequestPort, Token> _tokens;
 

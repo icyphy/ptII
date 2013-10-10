@@ -301,7 +301,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
-                decoratedObject.getDecoratorAttributes(this);
+            	decoratedObject.getDecoratorAttributes(this);
             }
         }
     }

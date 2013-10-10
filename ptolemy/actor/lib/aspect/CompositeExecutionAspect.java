@@ -42,6 +42,7 @@ import ptolemy.actor.ExecutionAspectListener;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
 import ptolemy.actor.gui.ColorAttribute; 
+import ptolemy.actor.lib.aspect.CompositeCommunicationAspect.CompositeCommunicationAspectAttributes;
 import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -54,6 +55,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
@@ -98,7 +100,6 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         super(container, name); 
         ColorAttribute attribute = new ColorAttribute(this, "decoratorHighlightColor");
         attribute.setExpression("{0.0,0.8,0.0,1.0}"); 
-        _requestPorts = new HashMap<Actor, String>();
         _previousY = new HashMap<NamedObj, Double>();
         
         justMonitor = new Parameter(this, "justMonitor");
@@ -344,8 +345,12 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
             List<NamedObj> decoratedObjects = decoratedObjects();
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
-                // already exist, and associate it with this decorator.
-                decoratedObject.getDecoratorAttributes(this);
+                // already exist, and associate it with this decorator. 
+                CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes)
+                        decoratedObject.getDecoratorAttributes(this);
+                if (decoratedObject instanceof Actor) {
+                	setRequestPort((Actor) decoratedObject, decoratorAttributes._requestPortName);
+                }
             }
         }
     }
@@ -356,6 +361,9 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @param portName The request port.
      */
     public void setRequestPort(Actor actor, String portName) {
+    	if (_requestPorts == null) {
+    		_requestPorts = new HashMap<Actor, String>();
+    	}
         _requestPorts.put(actor, portName);
     }
 
@@ -593,8 +601,9 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
                 Actor actor = (Actor) getContainer();
                 CompositeExecutionAspect aspect = (CompositeExecutionAspect) getDecorator();
                 String portName = ((StringToken) ((Parameter) attribute).getToken()).stringValue();
-                if (aspect != null && !portName.equals("") /*&& enabled()*/) {
-                    aspect.setRequestPort(actor, portName);
+                if (aspect != null && !portName.equals("") && enabled()) {
+                	_requestPortName = portName;
+                    aspect.setRequestPort(actor, _requestPortName);
                 }
             } else {
                 super.attributeChanged(attribute);
@@ -637,6 +646,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
                 throw new InternalErrorException(ex);
             }
         }
+        
+        private String _requestPortName;
     }
 
 }

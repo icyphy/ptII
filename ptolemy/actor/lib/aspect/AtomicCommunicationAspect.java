@@ -140,6 +140,10 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
+    	if (workspace().getVersion() == _decoratedObjectsVersion) {
+            return _decoratedObjects;
+        }
+    	_decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> list = new ArrayList();
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object object : container.deepEntityList()) {
@@ -149,6 +153,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
                 }
             }
         }
+        _decoratedObjects = list;
         return list;
     }
     
@@ -170,6 +175,9 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
                 .clone(workspace);
         newObject._listeners = null;
         newObject._parameters = null;
+        
+        newObject._decoratedObjects = null;
+        newObject._decoratedObjectsVersion = -1L;
         return newObject;
     }
 
@@ -278,6 +286,12 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
+    
+	/** Cached list of decorated objects. */
+	private List<NamedObj> _decoratedObjects;
+	
+	/** Version for _decoratedObjects. */
+	private long _decoratedObjectsVersion = -1L;
 
     /** Listeners registered to receive events from this object. */
     private ArrayList<CommunicationAspectListener> _listeners;

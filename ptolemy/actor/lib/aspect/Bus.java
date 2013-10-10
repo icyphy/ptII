@@ -42,6 +42,7 @@ import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.ExecutionAttributes; 
+import ptolemy.actor.lib.aspect.CompositeCommunicationAspect.CompositeCommunicationAspectAttributes;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
@@ -376,6 +377,34 @@ public class Bus extends AtomicCommunicationAspect {
                     + receiver.getContainer().getFullName() + ": " + token);
         }
     }
+    
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                BusAttributes decoratorAttributes = (BusAttributes)
+                        decoratedObject.getDecoratorAttributes(this);
+                setMessageLength((IOPort) decoratedObject, decoratorAttributes._messageLength);
+            }
+        }
+    }
+
 
     /** Set the message length for tokens sent to this actor port.
      *  @param port The actor port. 
@@ -496,7 +525,8 @@ public class Bus extends AtomicCommunicationAspect {
                     if (bus != null) {
                         Token token = messageLength.getToken();
                         if (token != null) {
-                            bus.setMessageLength(port, ((ScalarToken)token).doubleValue());
+                        	_messageLength = ((ScalarToken)token).doubleValue();
+                            bus.setMessageLength(port, _messageLength);
                         } 
                     }
                 }
@@ -514,11 +544,14 @@ public class Bus extends AtomicCommunicationAspect {
             try {
                 messageLength = new Parameter(this, "messageLength");
                 messageLength.setExpression("1");
+                _messageLength = 1;
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
             }
         }
+        
+        private double _messageLength;
     }
 
     

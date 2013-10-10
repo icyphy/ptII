@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.aspect;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
@@ -41,6 +42,7 @@ import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.ExecutionAttributes; 
+import ptolemy.actor.lib.aspect.CompositeCommunicationAspect.CompositeCommunicationAspectAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
@@ -443,6 +445,18 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         if (getDirector() != null && !(getDirector() instanceof DEDirector)) {
             throw new IllegalActionException(this,
                     "This communication aspect is currently only supported in the DE domain.");
+        }
+        
+        if (container != null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                BasicSwitchAttributes decoratorAttributes = (BasicSwitchAttributes)
+                        decoratedObject.getDecoratorAttributes(this);
+                setPortIn((IOPort) decoratedObject, decoratorAttributes._portIn);
+                setPortOut((IOPort) decoratedObject, decoratorAttributes._portOut);
+            }
         }
     }
 
