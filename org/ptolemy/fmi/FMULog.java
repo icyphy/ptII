@@ -125,7 +125,7 @@ public class FMULog {
                     case 'o': // Unsigned octal
                     case 'x': // Unsigned hex
                     case 'X': // Unsigned hex
-                    case 'u': // Unsigned decimal which must be converted to 'd' since String.format() doesn’t handle it.
+                    case 'u': // Unsigned decimal which must be converted to 'd' since String.format() doesnot handle it.
                         out.append(String.format("%" + flags.toString() + (msg[i] == 'u' ? 'd' : msg[i]),
                                         foundLong ? Native.ffi_closure_va_uint64(ffi_cif) : Native.ffi_closure_va_uint32(ffi_cif)));
                         break;
