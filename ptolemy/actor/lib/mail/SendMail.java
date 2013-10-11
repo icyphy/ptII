@@ -402,7 +402,7 @@ public class SendMail extends TypedAtomicActor {
             mimeMessage.setFrom(new InternetAddress(fromValue));
 
             if (!replyToValue.equals("")) {
-                ArrayList<Address> replyToAddresses = new ArrayList();
+                ArrayList<Address> replyToAddresses = new ArrayList<Address>();
                 tokenizer = new StringTokenizer(replyToValue, ",");
                 while (tokenizer.hasMoreTokens()) {
                     replyToAddresses.add(new InternetAddress(tokenizer
