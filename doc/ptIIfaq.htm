@@ -1051,7 +1051,7 @@ This method requires that you have PDF printer drivers installed on
     <li> Download <code>iText.jar</code> from
     <a href="http://itextpdf.com" target="_top">http://itextpdf.com</a>
     and place <code>iText.jar</code> as
-    <code>$PTII/ptolemy/vergil/misc/itext/iText.jar</code></li>
+    <code>$PTII/vendors/misc/itext/iText.jar</code></li>
     <li>Rerun <code>configure</code> or add <code>iText.jar</code> to
   your classpath.</li>
     <li>Edit
@@ -1061,6 +1061,12 @@ This method requires that you have PDF printer drivers installed on
     <li>Build and run.  The File -&gt; Export -&gt; menu should now
     have a Export PDF menu choice</li>
  </ul>
+
+  <h3>White Background</h3>
+  To get a white background, drag in a Utilities -&gt;
+  LocalPreferences and set the background color.  To avoid including
+  the LocalPreferences attribute in your output, zoom out, move the
+  LocalPreferences icon away from your model and then zoom back in.
 
   <h3>Tweaking the PDF</h3>
   If need be, edit the results in Adobe Illustrator, including combining figures
