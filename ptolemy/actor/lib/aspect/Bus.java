@@ -411,6 +411,9 @@ public class Bus extends AtomicCommunicationAspect {
      *  @param messageLength The message length. 
      */
     public void setMessageLength(IOPort port, double messageLength) {
+    	if (_messageLengths == null) {
+    		_messageLengths = new Hashtable<IOPort, Double>();
+    	}
         _messageLengths.put(port, messageLength);
     }
 
