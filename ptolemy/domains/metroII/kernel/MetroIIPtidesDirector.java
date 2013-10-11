@@ -78,13 +78,25 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * MetroIIPtidesDirector adapts Ptides programming model to MetroII semantics.
+ * Instead of firing actors sequentially, MetroIIPtides simultaneously fires
+ * actors by calling startOrResume(MetroII event list) (@see StartOrResumable).
+ * This implies that each firing is a process that executes and blocks to
+ * propose MetroII events. The proposed events from actors will be passed to
+ * upper level directors and ultramately passed to MetroIIDirector (@see
+ * MetroIIDirector), where the states of the MetroII events are updated based on
+ * constraint resolution and architectural models. In other words, the order of
+ * firing may be affected by the architectural model. But causality should not
+ * be violated because the actors ready to fire simultaneously are obtained by
+ * causality analysis (@see #isCausallyAffected(Collection<PtidesEvent>,
+ * PtidesEvent)).
  * 
  * <p>
  * Most methods are identical to PtidesDirector except directors are mapped to
  * MetroIIPtidesdirector instead of PtidesDirector.
  * </p>
  * 
- * @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou, Liangpeng Guo
+ * @author Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou,
+ *         Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 8.1
  * 

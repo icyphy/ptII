@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (glp)
  * 
  */
-public class MetroFSMDirector extends FSMDirector implements GetFirable {
+public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
 
     /**
      * Construct a MetroFSMDirector.
@@ -64,7 +64,7 @@ public class MetroFSMDirector extends FSMDirector implements GetFirable {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public MetroFSMDirector() throws IllegalActionException,
+    public MetroIIFSMDirector() throws IllegalActionException,
             NameDuplicationException {
         super();
     }
@@ -83,7 +83,7 @@ public class MetroFSMDirector extends FSMDirector implements GetFirable {
      *                If the container is not a CompositeActor and the name
      *                collides with an entity in the container.
      */
-    public MetroFSMDirector(CompositeEntity container, String name)
+    public MetroIIFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -119,7 +119,7 @@ public class MetroFSMDirector extends FSMDirector implements GetFirable {
      * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroFSMDirector newObject = (MetroFSMDirector) super.clone(workspace);
+        MetroIIFSMDirector newObject = (MetroIIFSMDirector) super.clone(workspace);
         newObject.events = new ArrayList<Event.Builder>();
         return newObject;
     }
@@ -148,7 +148,7 @@ public class MetroFSMDirector extends FSMDirector implements GetFirable {
 
             Event.Builder eb;
             do {
-                eb = MetroEventBuilder.newProposedEvent(MetroEventBuilder
+                eb = MetroIIEventBuilder.newProposedEvent(MetroIIEventBuilder
                         .trimModelName(currentState.getFullName()));
                 events.add(eb);
                 resultHandler.handleResult(events);

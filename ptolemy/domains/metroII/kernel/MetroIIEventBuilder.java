@@ -43,12 +43,12 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
  * @Pt.AcceptedRating Red (glp)
  * 
  */
-public class MetroEventBuilder {
+public class MetroIIEventBuilder {
 
     /**
      * Construct an event builder.
      */
-    public MetroEventBuilder() {
+    public MetroIIEventBuilder() {
     }
 
     ///////////////////////////////////////////////////////////////////

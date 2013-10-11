@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (glp)
  * 
  */
-public class MetroSequentialSDFDirector extends SDFDirector implements
+public class MetroIISequentialSDFDirector extends SDFDirector implements
         GetFirable {
 
     /**
@@ -80,7 +80,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
      *                If the container already contains an entity with the
      *                specified name.
      */
-    public MetroSequentialSDFDirector() throws IllegalActionException,
+    public MetroIISequentialSDFDirector() throws IllegalActionException,
             NameDuplicationException {
     }
 
@@ -98,7 +98,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
      *                If the container already contains an entity with the
      *                specified name.
      */
-    public MetroSequentialSDFDirector(Workspace workspace)
+    public MetroIISequentialSDFDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
@@ -119,7 +119,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
      * @exception NameDuplicationException
      *                If the name collides with an attribute in the container.
      */
-    public MetroSequentialSDFDirector(CompositeEntity container, String name)
+    public MetroIISequentialSDFDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -136,7 +136,7 @@ public class MetroSequentialSDFDirector extends SDFDirector implements
      * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroSequentialSDFDirector newObject = (MetroSequentialSDFDirector) super
+        MetroIISequentialSDFDirector newObject = (MetroIISequentialSDFDirector) super
                 .clone(workspace);
         newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
                 .clone();

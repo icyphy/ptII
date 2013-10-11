@@ -384,7 +384,7 @@ public class MetroIIDirector extends Director {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIDirector newObject = (MetroIIDirector) super.clone(workspace);
-        newObject._debugger = (MetroDebugger) _debugger.clone();
+        newObject._debugger = (MetroIIDebugger) _debugger.clone();
         newObject._mappingConstraintSolver = (MappingConstraintSolver) _mappingConstraintSolver
                 .clone();
         newObject._actorList = (LinkedList<FireMachine>) _actorList.clone();
@@ -442,7 +442,7 @@ public class MetroIIDirector extends Director {
     /**
      * Debugger
      */
-    private MetroDebugger _debugger = new MetroDebugger();
+    private MetroIIDebugger _debugger = new MetroIIDebugger();
 
     /** The iteration count. */
     protected int _iterationCount = 0;

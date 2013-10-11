@@ -60,7 +60,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     @Override
     public TimeScheduler clone() throws CloneNotSupportedException {
         TimeScheduler newObject = (TimeScheduler) super.clone();
-        newObject._debugger = (MetroDebugger) _debugger.clone();
+        newObject._debugger = (MetroIIDebugger) _debugger.clone();
         return newObject;
     }
 
@@ -165,7 +165,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     /**
      * Debugger.
      */
-    private MetroDebugger _debugger = new MetroDebugger();
+    private MetroIIDebugger _debugger = new MetroIIDebugger();
 
     /**
      * Current time value.

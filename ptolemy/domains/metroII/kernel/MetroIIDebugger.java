@@ -44,12 +44,12 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
  * @Pt.AcceptedRating Red (glp)
  * 
  */
-public class MetroDebugger implements Cloneable {
+public class MetroIIDebugger implements Cloneable {
 
     /**
      * Construct a MetroDebugger with no info printed by default.
      */
-    public MetroDebugger() {
+    public MetroIIDebugger() {
         turnOffDebugging();
     }
 
@@ -64,8 +64,8 @@ public class MetroDebugger implements Cloneable {
      *             interface.
      */
     @Override
-    public MetroDebugger clone() throws CloneNotSupportedException {
-        MetroDebugger newObject = (MetroDebugger) super.clone();
+    public MetroIIDebugger clone() throws CloneNotSupportedException {
+        MetroIIDebugger newObject = (MetroIIDebugger) super.clone();
         return newObject;
     }
 

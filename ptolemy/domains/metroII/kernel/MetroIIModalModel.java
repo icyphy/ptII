@@ -1,4 +1,4 @@
-/* MetroModalModel extends ModalModel to support enclosing MetroFSMDirector.
+/* MetroIIModalModel extends ModalModel to support enclosing MetroFSMDirector.
  
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 //// MetroModalModel
 
 /**
- * MetroModalModel extends ModalModel to support enclosing Metr.oFSMDirector.
+ * MetroIIModalModel extends ModalModel to support enclosing MetroIIFSMDirector.
  * 
  * @author Liangpeng Guo.
  * @version $Id$
@@ -58,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (glp)
  * 
  */
-public class MetroModalModel extends ModalModel implements GetFirable {
+public class MetroIIModalModel extends ModalModel implements GetFirable {
 
     /**
      * Construct a modal model in the specified workspace with no container and
@@ -74,7 +74,7 @@ public class MetroModalModel extends ModalModel implements GetFirable {
      *                If the container already contains an entity with the
      *                specified name.
      */
-    public MetroModalModel(Workspace workspace) throws IllegalActionException,
+    public MetroIIModalModel(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
         super(workspace);
     }
@@ -93,7 +93,7 @@ public class MetroModalModel extends ModalModel implements GetFirable {
      *                If the name coincides with an actor already in the
      *                container.
      */
-    public MetroModalModel(CompositeEntity container, String name)
+    public MetroIIModalModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
@@ -211,12 +211,12 @@ public class MetroModalModel extends ModalModel implements GetFirable {
     ////                    private methods                        ////
 
     /**
-     * Update the expression with 'MetroFSMDirector' instead of 'FSMDirector'
+     * Update the expression with 'MetroIIFSMDirector' instead of 'FSMDirector'
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         directorClass
-                .setExpression("ptolemy.domains.metroII.kernel.MetroFSMDirector");
+                .setExpression("ptolemy.domains.metroII.kernel.MetroIIFSMDirector");
     }
 
 }

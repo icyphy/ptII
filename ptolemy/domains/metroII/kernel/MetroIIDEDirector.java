@@ -499,7 +499,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                         + "  with microstep as " + _microstep);
             }
 
-            Event.Builder idleEvent = MetroEventBuilder.newProposedEvent(
+            Event.Builder idleEvent = MetroIIEventBuilder.newProposedEvent(
                     getFullName() + ".Idle", Long.MAX_VALUE,
                     getTimeResolution());
             do {
@@ -785,7 +785,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                             .getLongValue();
                 }
 
-                idleEvent = MetroEventBuilder.newProposedEvent(getFullName()
+                idleEvent = MetroIIEventBuilder.newProposedEvent(getFullName()
                         + ".Idle", idleEventTimeStamp, getTimeResolution());
 
                 // System.out.print("idle event time: "+idleEvent.getTime()); 
