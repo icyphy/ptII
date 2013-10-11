@@ -64,6 +64,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /** This is a composite execution aspect. Actors decorated by this 
@@ -340,17 +341,17 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        super.setContainer((CompositeEntity) container);
+        super.setContainer((CompositeEntity) container); 
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
-            for (NamedObj decoratedObject : decoratedObjects) {
+            for (NamedObj decoratedObject : decoratedObjects) { 
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator. 
                 CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes)
                         decoratedObject.getDecoratorAttributes(this);
                 if (decoratedObject instanceof Actor) {
                 	setRequestPort((Actor) decoratedObject, decoratorAttributes._requestPortName);
-                }
+                } 
             }
         }
     }
@@ -361,10 +362,12 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @param portName The request port.
      */
     public void setRequestPort(Actor actor, String portName) {
-    	if (_requestPorts == null) {
-    		_requestPorts = new HashMap<Actor, String>();
-    	}
-        _requestPorts.put(actor, portName);
+    	if (portName != null) { 
+    		if (_requestPorts == null) {
+        		_requestPorts = new HashMap<Actor, String>();
+        	}
+    		_requestPorts.put(actor, portName);
+    	} 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -443,10 +446,16 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
                 || !_currentlyExecuting.contains(actor)) {
             _lastTimeScheduled.put(actor, currentPlatformTime);
             notifyExecutionListeners((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
-            if (_requestPorts.get(actor) == null) {
-                throw new IllegalActionException(this, "Actor " + actor + " does not have a" +
-                		" registered requestPort");
-            }
+            if (_requestPorts == null || _requestPorts.get(actor) == null) {
+            	CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes)
+                        ((NamedObj)actor).getDecoratorAttributes(this);
+            	String portName = ((StringParameter)decoratorAttributes.getAttribute("requestPort")).getValueAsString();
+            	if (portName == null || portName.equals("")) {
+            		throw new IllegalActionException(this, "Actor " + actor + " does not have a" +
+                    		" registered requestPort");
+            	}
+            	setRequestPort(actor, portName);
+            } 
             ExecutionRequestPort requestPort = (ExecutionRequestPort) getEntity(_requestPorts.get(actor));
             if (requestPort != null) { 
                 RecordToken recordToken = new RecordToken(
