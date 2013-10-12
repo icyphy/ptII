@@ -1,0 +1,38 @@
+/* Need the [data-role="header"] to make this selector more specific than 
+   the selectors used in the default jQuery css styling (which we use some of).
+   Selectors are applied least-specific to most-specific 
+   */
+
+*[data-role="header"], *[data-role="footer"] {
+	border: 1px solid #4c4b49 /*{b-bar-border}*/;
+	background: #a90000 /*{b-bar-background-color}*/;
+	color: #ffffff /*{b-bar-color}*/;
+}
+
+*[data-role="header"] {
+	font-weight: bold;
+	position:relative;
+	text-align:left;
+	width: 100%;
+}
+
+*[data-role="header"] img {
+	float: right;
+}
+
+*[data-role="header"] h1 {
+	position: relative;
+	top: 0px;
+	left: 10px;
+	height: 36px;
+}
+
+
+*[data-role="footer"] {
+	font-weight: normal;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 0px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+

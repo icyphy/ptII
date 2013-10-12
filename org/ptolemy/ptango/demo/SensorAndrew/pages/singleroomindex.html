@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<!-- Prevents against cross-site scripting attacks that use UTF-7 -->
+		<meta charset='utf-8'>
+		
+		<!--  Set width to pixel width of screen, so display isn't zoomed out
+		      by default.  Mainly for mobile, but doesn't hurt on desktop. -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!--  jQuery library 
+			  Use Google CDN when possible, since it is very common, and 
+		      will probably already have downloaded to user's device.  
+		      Scripts are generally cached by the device once downloaded,
+		      with each CDN seen as unique, even if the script is the same.  -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"> </script>
+		
+		<!--  Script that issues GET requests to server to refresh data -->
+		<script src="longpolling.js"> </script>
+		
+		<title> Sensor Andrew Feed </title>
+	</head>
+	
+	<body>
+	
+	<div id="sensorreadings">
+		<div id="room208"> </div>
+	</div>
+	
+	</body>
+</html>
