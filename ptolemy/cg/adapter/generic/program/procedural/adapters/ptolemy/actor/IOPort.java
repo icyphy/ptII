@@ -298,7 +298,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             code.append(_eol + "{" + _eol);
             TypedIOPort port = (TypedIOPort) getComponent();
             Type type = port.getType();
-            if (dataToken.toString().equals("object(null)")) {
+            if (dataToken.equals("object(null)")) {
                 // This model needs to convert object(null) to object.
                 // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelayObjectNull.xml
                 System.out

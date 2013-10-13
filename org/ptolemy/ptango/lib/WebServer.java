@@ -126,7 +126,7 @@ public class WebServer extends AbstractInitializableAttribute {
         String path;
         if (modelURI != null && modelURI.getPath() != null
                 && !modelURI.getPath().isEmpty()) {
-            path = modelURI.getPath().toString();
+            path = modelURI.getPath();
             int slash = path.lastIndexOf("/");
             if (slash != -1) {
                 path = path.substring(0, slash);

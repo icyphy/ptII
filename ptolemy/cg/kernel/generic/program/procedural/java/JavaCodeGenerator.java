@@ -860,7 +860,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             //FIXME: temporarily statically assign types, is there any better way to do that?
             //            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
             code.append("#define PTCG_TYPE_" + typesArray[i] + " "
-                    + codeGenTypeValue(typesArray[i].toString()) + _eol);
+                    + codeGenTypeValue(typesArray[i]) + _eol);
 
             //            code.append("private static final short TYPE_" + typesArray[i] + " = " + i
             code.append("private static final short TYPE_" + typesArray[i]

@@ -146,7 +146,7 @@ public class MetroIIDebugger implements Cloneable {
 
         buffer = buffer.concat(" " + event.getStatus().toString());
 
-        buffer = buffer.concat(" " + event.getName().toString());
+        buffer = buffer.concat(" " + event.getName());
 
         System.out.println(buffer);
     }
