@@ -452,6 +452,7 @@ public class FMUFile {
         List<File> files = new LinkedList<File>();
         FileInputStream fileInputStream = null;
         ZipInputStream zipInputStream = null;
+	File destinationFile = null;
         try {
             fileInputStream = new FileInputStream(zipFileName);
             zipInputStream = new ZipInputStream(new BufferedInputStream(
@@ -460,7 +461,7 @@ public class FMUFile {
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 // System.out.println("Extracting: " + entry);
                 String entryName = entry.getName();
-                File destinationFile = new File(topDirectory, entryName);
+                destinationFile = new File(topDirectory, entryName);
                 File destinationParent = destinationFile.getParentFile();
                 // If the directory does not exist, create it.
                 if (!destinationParent.isDirectory()
@@ -484,6 +485,7 @@ public class FMUFile {
                             // Is the flush() really necessary?
                             destination.flush();
                             destination.close();
+			    destination = null;
                         }
                     }
                 }
