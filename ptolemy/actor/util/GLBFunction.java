@@ -134,7 +134,7 @@ public class GLBFunction extends MonotonicFunction {
      */
     public Type[] getConstants() {
         _updateArguments();
-        return _cachedTypes.toArray(new Type[0]);
+        return _cachedTypes.toArray(new Type[_cachedTypes.size()]);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,7 +173,7 @@ public class GLBFunction extends MonotonicFunction {
                 _cachedTypes.add(((TypedIOPort) destination).getType());
             }
         }
-        _cachedTerms = portTypeTermList.toArray(new InequalityTerm[0]);
+        _cachedTerms = portTypeTermList.toArray(new InequalityTerm[portTypeTermList.size()]);
         _previousWorkspaceVersion = _sourcePort.getContainer().workspace()
                 .getVersion();
     }

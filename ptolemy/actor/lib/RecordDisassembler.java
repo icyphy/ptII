@@ -235,8 +235,8 @@ public class RecordDisassembler extends TypedAtomicActor {
         // constrain the input record to have the required fields:
         // input <= {x = GENERAL, y = GENERAL}
         result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
-                new RecordType(labels.toArray(new String[0]), types
-                        .toArray(new Type[0])))));
+                                new RecordType(labels.toArray(new String[labels.size()]), types
+                                        .toArray(new Type[types.size()])))));
 
         // NOTE: refrain from using port.setTypeAtMost() or
         // port.setTypeAtLeast(), because after removing an output port, the

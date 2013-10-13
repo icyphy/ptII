@@ -247,8 +247,8 @@ public class TCPPacketTransmitter extends OutputDevice {
                 RecordToken TCPHeader = getTCPHeader();
                 // form the packet that is ready to be sent
                 _completePayload = new RecordToken(
-                        _tokenLabels.toArray(new String[0]),
-                        _tokenValues.toArray(new Token[0]));
+                        _tokenLabels.toArray(new String[_tokenLabels.size()]),
+                        _tokenValues.toArray(new Token[_tokenValues.size()]));
                 String[] fullTCPlabels = new String[] { TCPlabel, tokens };
                 Token[] fullTCPvalues = new Token[] { TCPHeader,
                         _completePayload };
@@ -323,8 +323,8 @@ public class TCPPacketTransmitter extends OutputDevice {
             RecordToken TCPHeader = getTCPHeader();
             // form the packet that is ready to be sent
             _completePayload = new RecordToken(
-                    _tokenLabels.toArray(new String[0]),
-                    _tokenValues.toArray(new Token[0]));
+                    _tokenLabels.toArray(new String[_tokenLabels.size()]),
+                    _tokenValues.toArray(new Token[_tokenValues.size()]));
             String[] fullTCPlabels = new String[] { TCPlabel, tokens };
             Token[] fullTCPvalues = new Token[] { TCPHeader, _completePayload };
 

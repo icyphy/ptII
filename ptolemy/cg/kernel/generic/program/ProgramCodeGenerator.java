@@ -314,16 +314,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 result = "Matrix";
             } else if (ptType instanceof RecordType) {
                 RecordType rType = (RecordType)ptType;
-                result = "";
+                StringBuffer arrayResult = new StringBuffer();
                 for (String label : rType.labelSet()) {
                     Type t = null;
                     try {
                         t = (Type) rType.getTypeTerm(label).getValue();
                     } catch (IllegalActionException e) {
                     }
-                    result += codeGenType(t) + ",";
+                    arrayResult.append(codeGenType(t) + ",");
                 }
-                result = result.substring(0, result.length() - 1);
+                result = arrayResult.toString().substring(0, arrayResult.length() - 1);
             }
         }
         if (result == null || result.length() == 0) {

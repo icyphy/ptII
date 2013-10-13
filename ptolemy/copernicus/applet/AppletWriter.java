@@ -2155,7 +2155,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
             jarOutputStream.closeEntry();
         }
-        return (String[]) entriesAdded.toArray(new String[0]);
+        return (String[]) entriesAdded.toArray(new String[entriesAdded.size()]);
     }
 
     // Return a Map that maps user specified classes to jar files.

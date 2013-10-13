@@ -714,7 +714,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Generate the MoML to carry out the deletion.
 
             moml.append(_deleteMoML(graphModel,
-                    selection.toArray(new Object[] {}), model));
+                            selection.toArray(new Object[selection.size()]), model));
 
             moml.append("<entity name=\"" + compositeActorName
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");

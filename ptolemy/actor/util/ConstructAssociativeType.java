@@ -131,7 +131,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
                 portTypeTermList.add(portTypeTerm);
             }
         }
-        return portTypeTermList.toArray(new InequalityTerm[0]);
+        return portTypeTermList.toArray(new InequalityTerm[portTypeTermList.size()]);
     }
 
     /** The list of ports used to construct the AssociativeType. */
