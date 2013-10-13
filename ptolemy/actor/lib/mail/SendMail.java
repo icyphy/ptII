@@ -295,14 +295,14 @@ public class SendMail extends TypedAtomicActor {
         SMTPPort.update();
         String SMTPPortValue = ((StringToken) SMTPPort.getToken())
                 .stringValue();
-        if (SMTPPortValue != "") {
+        if (!SMTPPortValue.equals("")) {
             _props.put("mail.smtp.port", SMTPPortValue);
         } else {
             _props.remove("mail.smtp.port");
         }
 
         if (((BooleanToken) enableSSL.getToken()).booleanValue()) {
-            if (SMTPPortValue != "") {
+            if (!SMTPPortValue.equals("")) {
                 _props.put("mail.smtp.socketFactory.port", SMTPPortValue);
             } else {
                 _props.remove("mail.smtp.socketFactory.port");
@@ -330,7 +330,7 @@ public class SendMail extends TypedAtomicActor {
 
         String passwordValue = ((StringToken) password.getToken())
                 .stringValue();
-        if (passwordValue != "") {
+        if (!passwordValue.equals("")) {
             _password = passwordValue.toCharArray();
         }
 
