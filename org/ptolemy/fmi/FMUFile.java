@@ -490,7 +490,11 @@ public class FMUFile {
             }
         } finally {
             if (destination != null) {
-                destination.close();
+                try {
+                    destination.close();
+                } catch (IOException ex) {
+                    System.out.println("FMUFile.unzip(): Failed to close \"" + destinationFile + "\"");
+                }
             }
             if (zipInputStream != null) {
                 zipInputStream.close();
