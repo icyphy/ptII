@@ -209,8 +209,12 @@ public class Excel extends TypedAtomicActor {
         //        }
 
         try {
-            // Excel output
-            workbook.write();
+            if (workbook == null) {
+                throw new NullPointerException("The workbook was not initialized?");
+            } else {
+                // Excel output
+                workbook.write();
+            }
 
             // Call to macro
             Runtime.getRuntime().exec(
