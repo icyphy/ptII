@@ -167,35 +167,46 @@ public class HttpPost extends TypedAtomicActor {
             if (urlValue == null || urlValue.isEmpty()) {
                 throw new IllegalActionException("No URL provided.");
             }
+            StringBuffer response = new StringBuffer();
             try {
                 URL url = new URL(urlValue);
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
-                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-                writer.write(data.toString());
-                writer.flush();
+                OutputStreamWriter writer = null;
+                try {
+                    writer = new OutputStreamWriter(connection.getOutputStream());
+                    writer.write(data.toString());
+                    writer.flush();
                 
-                if (_debugging) {
-                    _debug("Posted: " + data.toString());
-                    _debug("To URL: " + url.toString());
-                    _debug("Waiting for response.");
-                }
+                    if (_debugging) {
+                        _debug("Posted: " + data.toString());
+                        _debug("To URL: " + url.toString());
+                        _debug("Waiting for response.");
+                    }
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuffer response = new StringBuffer();
-                String line;
-                // FIXME: Need a timeout here!
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                    if (!line.endsWith("\n")) {
-                        response.append("\n");
+                    BufferedReader reader = null;
+                    try {
+                        String line;
+                        // FIXME: Need a timeout here!
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                            if (!line.endsWith("\n")) {
+                                response.append("\n");
+                            }
+                        }
+                        if (_debugging) {
+                            _debug("Received response: " + response.toString());
+                        }
+                    } finally {
+                        if (reader != null) {
+                            reader.close();
+                        }
+                    }
+                } finally {
+                    if (writer != null) {
+                        writer.close();
                     }
                 }
-                if (_debugging) {
-                    _debug("Received response: " + response.toString());
-                }
-                writer.close();
-                reader.close();
                 
                 output.send(0, new StringToken(response.toString()));
             } catch (IOException ex) {
