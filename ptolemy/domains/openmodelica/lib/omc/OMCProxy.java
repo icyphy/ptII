@@ -260,12 +260,12 @@ public class OMCProxy implements IOMCProxy {
         // Split the result by "," in order to have access to each variable.
         String[] variables = variableList.split(",");
         CompilerResult readSimulationResult = null;
-        String simulationResult = null;
+        StringBuffer simulationResult = new StringBuffer();
 
         for (String variable : variables) {
 
             // Delete the first and last quotation.
-            variableBuffer = new StringBuffer(variable.toString());
+            variableBuffer = new StringBuffer(variable);
             variableBuffer.deleteCharAt(0);
             variableList = variableBuffer.deleteCharAt(
                     variableBuffer.length() - 1).toString();
@@ -279,18 +279,19 @@ public class OMCProxy implements IOMCProxy {
                     + modelName + "_res.csv\",{" + variableList + "}," + 2
                     + ")");
 
-            if (simulationResult == null)
-                simulationResult = variableList + " "
-                        + readSimulationResult.getFirstResult();
-            else
-                simulationResult += variableList + " "
-                        + readSimulationResult.getFirstResult();
+            if (simulationResult.length() == 0) {
+                simulationResult.append(variableList + " "
+                        + readSimulationResult.getFirstResult());
+            } else {
+                simulationResult.append(variableList + " "
+                        + readSimulationResult.getFirstResult());
+            }
         }
 
         // The matrix of the variable's values which is read from the simulation result file. 
         System.out.println(simulationResult);
 
-        return simulationResult;
+        return simulationResult.toString();
     }
 
     /** Create an instance of OMCProxy object in order to provide a global point of access to the instance.
@@ -372,7 +373,7 @@ public class OMCProxy implements IOMCProxy {
         _filePath = _systemPath
                 + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
 
-        File file = new File(_filePath.toString());
+        File file = new File(_filePath);
 
         if (file.exists()) {
             loggerInfo = fileName + " found at " + _filePath;
