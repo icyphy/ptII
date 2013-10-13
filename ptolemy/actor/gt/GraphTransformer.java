@@ -1267,8 +1267,11 @@ public class GraphTransformer extends ChangeRequest {
 
                 List<?> linkedObjectList = relation.linkedObjectsList();
                 for (Object linkedObject : linkedObjectList) {
-                    Object replacementLinkedObject = _patternToReplacement
-                            .get(linkedObject);
+                    Object replacementLinkedObject = null;
+                    // FindBugs: GC: Suspicious calls to generic collection methods.
+                    if (linkedObject instanceof NamedObj) {
+                        replacementLinkedObject = _patternToReplacement.get((NamedObj)linkedObject);
+                    }
                     if (replacementLinkedObject == null) {
                         continue;
                     }

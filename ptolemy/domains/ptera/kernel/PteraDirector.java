@@ -227,6 +227,8 @@ public class PteraDirector extends Director implements ValueListener {
         }
         for (TimedEvent timedEvent : _eventQueue) {
             if (!timedEvent.canceled
+                    // FindBugs: GC: Suspicious calls to generic collection methods
+                    && timedEvent instanceof TypedActor
                     && (timedEvent.contents == event || refinementSet
                             .contains(timedEvent.contents))) {
                 return timedEvent;
