@@ -159,8 +159,8 @@ public class MigrateModelsManager {
 
                 String fileContent = _getContent(directory);
 
-                if (checkContent == false || checkContent
-                        && _checkFileContent(fileContent)) {
+                if (checkContent == false || (checkContent
+                                && _checkFileContent(fileContent))) {
 
                     _createDBModel(modelName, fileContent,
                             directory.getAbsolutePath());
