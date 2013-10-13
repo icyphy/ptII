@@ -47,7 +47,7 @@ include $(CONFIG)
 PTPACKAGE = 	fmu
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTAUXALLJAR =	fmuFull.jar
+#PTAUXALLJAR =	fmuFull.jar
 
 #PTCLASSALLJAR = 
 # Include the .class files from these jars in PTCLASSALLJAR

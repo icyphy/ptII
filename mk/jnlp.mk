@@ -243,7 +243,7 @@ PTFMI_JARS = \
 	org/ptolemy/fmi/fmi.jar \
 	ptolemy/actor/lib/fmi/fmi.jar \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
-	ptolemy/vergil/basic/imprt/fmu/fmuFull.jar
+	ptolemy/vergil/basic/imprt/fmu/fmu.jar
 
 BCVTB_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/BCVTBApplication.jar
