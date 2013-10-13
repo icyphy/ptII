@@ -3122,7 +3122,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // there already is a property with this name, we
                     // don't handle this property
                     String value = (String) _attributes.get("value");
-                    _handlePropertyElement(className, propertyName, value);
+                    if (propertyName == null) {
+                        throw new InternalErrorException("FindBugs: propertyName must not be null when calling _handlePropertyName()");
+                    } else {
+                        _handlePropertyElement(className, propertyName, value);
+                    }
                 }
 
                 //////////////////////////////////////////////////////////////
