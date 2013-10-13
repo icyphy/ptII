@@ -315,6 +315,14 @@ public class Assert extends Expression {
      *  port are both changed.
      */
     public static class AssertPort extends TypedIOPort {
+        /** Construct a port for this actor.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the port cannot be contained
+         *   by the proposed container.
+         *  @exception NameDuplicationException If the container already has a
+         *  port with this name.
+         */
         public AssertPort(Assert container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);

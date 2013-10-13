@@ -71,7 +71,12 @@ public class Ramp extends SequenceSource {
      *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
      *  port. Initialize <i>init</i>
      *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
-
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public Ramp(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {

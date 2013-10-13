@@ -68,7 +68,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     ///////////////////////////////////////////////////////////////////
     ////                         Public methods                    ////
     
-    /** Generate the constructor code for the specified director
+    /** Generate the constructor code for the specified director.
      * In this class we initialize the director with its internal
      * parameters and fields as well as with the depths of the actors
      * 

@@ -110,7 +110,7 @@ public class PtidesPreemptiveEDFDirector
     }
 
     /** Generate the interrupt code.
-     *  @exception IllegalActionExceptino If there is a problem
+     *  @exception IllegalActionException If there is a problem
      *  accessing the model.
      */
     public void generateInterruptCode() throws IllegalActionException {
@@ -180,7 +180,7 @@ public class PtidesPreemptiveEDFDirector
     }
 
     /** Generate the interrupt vector table.
-     *  @exception IllegalActionExceptino If there is a problem
+     *  @exception IllegalActionException If there is a problem
      *  accessing the model.
      */
     public String generateInterruptVectorTableCode()

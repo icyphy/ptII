@@ -326,7 +326,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
         }
     }
 
-    /** Return true unless super.postfire() returns false;
+    /** Return true unless super.postfire() returns false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {

@@ -114,9 +114,9 @@ public class DEDirector extends Director {
 //                .booleanValue();
     }
     
-    /** Generate the constructor code for the specified director
+    /** Generate the constructor code for the specified director.
      * In this class we initialize the director with its internal
-     * parameters and fields as well as with the depths of the actors
+     * parameters and fields as well as with the depths of the actors.
      * 
      * @return The generated constructor code
      * @throws IllegalActionException Not thrown in this base class.

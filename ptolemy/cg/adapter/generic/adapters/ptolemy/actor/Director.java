@@ -155,11 +155,12 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
         return new HashSet<String>();
     }
     
-    /** Generate the constructor code for the specified director
-     * This is only used in the C Code generation
-     * Therefore in this base class returns an empty string
+    /** Generate the constructor code for the specified director.
+     * This is only used in the C Code generation.
      * 
-     * @return an empty string in this base class
+     * @return If the container is an instance of the PtidesPlatform,
+     * then return constructor code.  Otherwise return the empty
+     * string.
      * @throws IllegalActionException Not thrown in this base class.
      */
     public String generateConstructorCode() throws IllegalActionException {

@@ -41,23 +41,23 @@ import java.util.Map;
  */
 public class RenesasUtilities {
 
-    /** Interrupt handler A */
+    /** Interrupt handler A. */
     public static char INTERRUPT_HANDLER_LETTER_156 = 'A';
-    /** Interrupt handler B */
+    /** Interrupt handler B. */
     public static char INTERRUPT_HANDLER_LETTER_157 = 'B';
-    /** Interrupt handler C */
+    /** Interrupt handler C. */
     public static char INTERRUPT_HANDLER_LETTER_158 = 'C';
-    /** Interrupt handler D */
+    /** Interrupt handler D. */
     public static char INTERRUPT_HANDLER_LETTER_159 = 'D';
-    /** Interrupt handler E */
+    /** Interrupt handler E. */
     public static char INTERRUPT_HANDLER_LETTER_162 = 'E';
-    /** Interrupt handler F */
+    /** Interrupt handler F. */
     public static char INTERRUPT_HANDLER_LETTER_180 = 'A';
-    /** Interrupt handler G */
+    /** Interrupt handler G. */
     public static char INTERRUPT_HANDLER_LETTER_181 = 'B';
-    /** Interrupt handler H */
+    /** Interrupt handler H. */
     public static char INTERRUPT_HANDLER_LETTER_182 = 'C';
-    /** Interrupt handler I */
+    /** Interrupt handler I. */
     public static char INTERRUPT_HANDLER_LETTER_183 = 'D';
 
     /** The interrupt handler letters map from Integers to CHaracters. */

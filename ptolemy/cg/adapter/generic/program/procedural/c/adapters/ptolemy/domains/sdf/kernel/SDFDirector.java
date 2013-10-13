@@ -91,7 +91,7 @@ public class SDFDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Generate the constructor code for the specified director
+    /** Generate the constructor code for the specified director.
      * In this class we initialize the director with its internal
      * parameters and fields as well as with the depths of the actors
      * 
@@ -228,7 +228,7 @@ public class SDFDirector
         return result.toString();
     }
     
-    /** Generate The functions' declaration code for this director
+    /** Generate The functions' declaration code for this director.
     *
     *  @return The functions' declaration function code.
     *  @exception IllegalActionException If thrown while generating code.
@@ -514,6 +514,7 @@ public class SDFDirector
     
     /** Generate the code representing the schedule statically inferred from the
      *  Ptolemy model.
+     *  @return the code representing the schedule.
      *  @throws IllegalActionException if something happens while writing the code
      */
     public String generateSchedule() throws IllegalActionException {
@@ -1057,7 +1058,7 @@ public class SDFDirector
     }
     
     /** Returns the sanitized name of this director
-     *  adapter
+     *  adapter.
      * 
      * @return The name of the director
      */
@@ -1123,6 +1124,15 @@ public class SDFDirector
 
         return processCode(code.toString());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** The name of the director in a format suitable to be used as a
+     * variable name.
+     */
+    protected String _sanitizedDirectorName;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1272,10 +1282,8 @@ public class SDFDirector
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                        ////
+    ////                         private members                   ////
     
-    protected String _sanitizedDirectorName;
-
     private int _portNumber = 0;
 
     private boolean _doubleFlag;
