@@ -193,18 +193,16 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
         plot.clear(false);
         plot.addLegend(_actors.size() - 1, _scheduler.getName()); 
         _previousY.put((NamedObj) _scheduler, Double.valueOf(_actors.size() - 1)); 
-        if (plot != null) {
-            plot.clear(false);
-            plot.clearLegends();
+        plot.clear(false);
+        plot.clearLegends();
     
-            for (NamedObj actor : _actors) {
-                plot.addLegend(
-                        _actors.indexOf(actor), actor.getName());
-                event(actor, 0.0, null);
-                _previousY.put(actor, Double.valueOf(_actors.indexOf(actor)));
-            }
-            plot.doLayout();
-        } 
+        for (NamedObj actor : _actors) {
+            plot.addLegend(
+                    _actors.indexOf(actor), actor.getName());
+            event(actor, 0.0, null);
+            _previousY.put(actor, Double.valueOf(_actors.indexOf(actor)));
+        }
+        plot.doLayout();
     }
 
     /** The resource scheduler associated with this plot.

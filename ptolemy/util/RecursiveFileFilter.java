@@ -145,7 +145,7 @@ public class RecursiveFileFilter implements FilenameFilter {
             // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
             // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
             Matcher match = _pattern.matcher(name);
-            if (_pattern == null || match.matches() || match.find()) {
+            if (match.matches() || match.find()) {
                 _files.add(file);
             }
         }
@@ -172,7 +172,7 @@ public class RecursiveFileFilter implements FilenameFilter {
      *   subdirectories.
      *  @param includeFiles Whether files should be included.
      *  @param includeDirectories Whether directories should be included.
-
+     *  @param fileFilter The filter (with ? and * as wildcards) to filter
      *   the accepted file names.
      *  @return The array of all the files and directories found.
      */
@@ -193,6 +193,7 @@ public class RecursiveFileFilter implements FilenameFilter {
      *   subdirectories.
      *  @param includeFiles Whether files should be included.
      *  @param includeDirectories Whether directories should be included.
+     *  @param fileFilter The filter (with ? and * as wildcards) to filter
      *   the accepted file names.
      *  @param escape True if a string with ? and * as wildcards is to
      *  be converted into a Java regular expression.  The DirectoryListing
