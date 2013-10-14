@@ -75,13 +75,6 @@ public interface ActorExecutionAspect extends Decorator {
      */
     public boolean lastScheduledActorFinished();
     
-    /** Notify execution listeners about rescheduling events.
-     * @param entity Entity that is being scheduled.
-     * @param time Time when entity is being scheduled.
-     * @param eventType Type of event.
-     */ 
-    public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType);
-    
     /** Schedule an actor for execution and return the next time
      *  this scheduler has to perform a reschedule. Derived classes
      *  must implement this method to actually schedule actors, this

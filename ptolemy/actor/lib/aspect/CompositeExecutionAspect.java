@@ -264,8 +264,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      * @param entity Entity that is being scheduled.
      * @param time Time when entity is being scheduled.
      * @param eventType Type of event.
-     */ 
-    @Override
+     */  
     public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType) {
         if (_executionAspectListeners != null) {
             for (ExecutionAspectListener listener : _executionAspectListeners) {
