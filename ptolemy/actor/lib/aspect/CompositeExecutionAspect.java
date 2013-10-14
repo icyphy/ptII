@@ -255,6 +255,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @return True if last actor that was scheduled finished
      *   execution.
      */
+    @Override
     public boolean lastScheduledActorFinished() {
         return _lastActorFinished;
     }
@@ -263,7 +264,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      * @param entity Entity that is being scheduled.
      * @param time Time when entity is being scheduled.
      * @param eventType Type of event.
-     */
+     */ 
+    @Override
     public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType) {
         if (_executionAspectListeners != null) {
             for (ExecutionAspectListener listener : _executionAspectListeners) {
@@ -319,6 +321,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
+    @Override
     public Time schedule(Actor actor, Time environmentTime, Time deadline)
             throws IllegalActionException {
         Director director = ((CompositeActor) getContainer()).getDirector();
@@ -337,6 +340,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *    again to perform rescheduling actions.
      * @exception IllegalActionException Thrown in subclasses.   
      */
+    @Override
     public Time schedule(Time environmentTime) throws IllegalActionException {
         return getDirector().getModelNextIterationTime();
     }
@@ -375,7 +379,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  for the actor.
      *  @param actor The actor.
      *  @param portName The request port.
-     */
+     */ 
     public void setRequestPort(Actor actor, String portName) {
     	if (portName != null) { 
     		if (_requestPorts == null) {
@@ -398,24 +402,12 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         _getAllManagedEntities(entities);
     }
 
-    /** Get the deadline for an actor that requests a firing at time
-     *  <i>timestamp</i>. This base class just returns the maximum value.
-     *  @param actor The actor that requests firing.
-     *  @param timestamp The time when the actor wants to be fired.
-     *  @return The deadline for the actor.
-     *  @exception IllegalActionException If time objects cannot be created.
-     */
-    protected Time _getDeadline(Actor actor, Time timestamp)
-            throws IllegalActionException {
-        return Time.POSITIVE_INFINITY;
-    }
-
     /** Get the execution time of an actor. If the actor does not have an attribute
      *  specifying the execution time, return the minimum execution time.
      * @param actor The actor.
      * @return The execution time.
      * @throws IllegalActionException Thrown in attribute or token cannot be read.
-     */
+     */ 
     protected double _getExecutionTime(Actor actor)
             throws IllegalActionException {
         double executionTime = 0.0;
@@ -446,7 +438,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *    again.
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
-     */ 
+     */  
     protected Time _schedule(Actor actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {   
         _lastActorFinished = false; 

@@ -29,9 +29,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
+import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 /** An interface for objects that can intervene in the execution of actors.
  *  A director that executes actors decorated by a resource scheduler has to
@@ -72,6 +74,13 @@ public interface ActorExecutionAspect extends Decorator {
      *  finished.
      */
     public boolean lastScheduledActorFinished();
+    
+    /** Notify execution listeners about rescheduling events.
+     * @param entity Entity that is being scheduled.
+     * @param time Time when entity is being scheduled.
+     * @param eventType Type of event.
+     */ 
+    public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType);
     
     /** Schedule an actor for execution and return the next time
      *  this scheduler has to perform a reschedule. Derived classes
