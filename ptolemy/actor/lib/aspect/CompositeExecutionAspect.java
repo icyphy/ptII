@@ -112,6 +112,9 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         _executionAspectListeners = new ArrayList<ExecutionAspectListener>();
     }
     
+	///////////////////////////////////////////////////////////////////
+	//                           public variables                    //
+    
     /** This parameter indicates whether the tokens received via the 
      *  ImmediateReceivers are immediately forwarded to the wrapped 
      *  receivers or whether they are delayed by this communication aspect
@@ -129,6 +132,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this ExecutionAspect.
      */
+    @Override
     public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException {
         _executionAspectListeners.add(listener);
         if (_actors == null) {
@@ -140,6 +144,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     /** Remove schedule listener.
      * @param listener The listener to be removed.
      */
+    @Override
     public void removeExecutionListener(ExecutionAspectListener listener) {
         _executionAspectListeners.remove(listener);
     }
@@ -166,6 +171,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CompositeExecutionAspect newObject = (CompositeExecutionAspect) super
                 .clone(workspace);  
@@ -182,6 +188,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) { 
         if (target instanceof Actor && !_isPartOfExecutionAspect(target)) {
             try {
@@ -199,6 +206,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  of this ExecutionAspect.
      *  @return A list of the objects decorated by this decorator.
      */
+    @Override
     public List<NamedObj> decoratedObjects() {
         CompositeEntity container = (CompositeEntity) getContainer();
         return _getEntitiesToDecorate(container);
@@ -227,10 +235,17 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     /** Return true to indicate that this decorator should
      *  decorate objects across opaque hierarchy boundaries.
      */
+    @Override
     public boolean isGlobalDecorator() {
         return true;
     }
     
+    /** Check whether the execution of an actor is handled by
+     *  this aspect actor. 
+     *  @return True, if the actor execution is handled by this 
+     *  aspect actor. 
+     */
+    @Override
     public boolean isWaitingForResource(Actor actor) {
         return _currentlyExecuting.contains(actor);
     }
@@ -431,9 +446,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *    again.
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
-     */
-    
-    
+     */ 
     protected Time _schedule(Actor actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {   
         _lastActorFinished = false; 
@@ -489,51 +502,39 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      */
     protected boolean _lastActorFinished;
     
+    /** Listeners that want to be informed about execution events.
+     */
     protected List<ExecutionAspectListener> _executionAspectListeners;
 
     /** List of currently executing actors. */
     protected List<Actor> _currentlyExecuting;
 
-    private void _getAllManagedEntities(List<NamedObj> entities)
-            throws IllegalActionException {
-        for (NamedObj entity : entities) {
-            ExecutionAttributes decoratorAttributes = (ExecutionAttributes) entity
-                    .getDecoratorAttributes(this);
-            if (decoratorAttributes != null) {
-                if (((BooleanToken) decoratorAttributes.enable.getToken())
-                        .booleanValue()) {
-                    // The entity uses this ExecutionAspect.
-                    if (_actors == null) {
-                        _actors = new ArrayList<NamedObj>();
-                    }
-                    _actors.add(entity); 
-                    notifyExecutionListeners(entity, 0.0, null);
-                } else if (entity instanceof CompositeActor) {
-                    _getAllManagedEntities(((CompositeActor) entity)
-                            .deepEntityList());
-                }
-            }
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
-    //                          private variables                    //
+    //                          private methods                      //
 
-    private boolean _isPartOfExecutionAspect(NamedObj actor) {
-        if (actor instanceof ActorExecutionAspect) {
-            return true;
-        }
-        CompositeEntity container = (CompositeEntity) actor.getContainer();
-        while (container != null) {
-            if (container instanceof ActorExecutionAspect) {
-                return true;
-            }
-            container = (CompositeEntity) container.getContainer();
-        }
-        return false;
-    }
+    private void _getAllManagedEntities(List<NamedObj> entities)
+	        throws IllegalActionException {
+	    for (NamedObj entity : entities) {
+	        ExecutionAttributes decoratorAttributes = (ExecutionAttributes) entity
+	                .getDecoratorAttributes(this);
+	        if (decoratorAttributes != null) {
+	            if (((BooleanToken) decoratorAttributes.enable.getToken())
+	                    .booleanValue()) {
+	                // The entity uses this ExecutionAspect.
+	                if (_actors == null) {
+	                    _actors = new ArrayList<NamedObj>();
+	                }
+	                _actors.add(entity); 
+	                notifyExecutionListeners(entity, 0.0, null);
+	            } else if (entity instanceof CompositeActor) {
+	                _getAllManagedEntities(((CompositeActor) entity)
+	                        .deepEntityList());
+	            }
+	        }
+	    }
+	}
 
-    private List<NamedObj> _getEntitiesToDecorate(CompositeEntity container) {
+	private List<NamedObj> _getEntitiesToDecorate(CompositeEntity container) {
         List<NamedObj> toDecorate = new ArrayList<NamedObj>();
         List entities = container.entityList();
         for (Object entity : entities) {
@@ -547,7 +548,27 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         return toDecorate;
     }
 
-    /** Previous positions of the actor data set. */
+	///////////////////////////////////////////////////////////////////
+	//                          private variables                    //
+    
+    ///////////////////////////////////////////////////////////////////
+	//                          private methods                      //
+	
+	private boolean _isPartOfExecutionAspect(NamedObj actor) {
+	    if (actor instanceof ActorExecutionAspect) {
+	        return true;
+	    }
+	    CompositeEntity container = (CompositeEntity) actor.getContainer();
+	    while (container != null) {
+	        if (container instanceof ActorExecutionAspect) {
+	            return true;
+	        }
+	        container = (CompositeEntity) container.getContainer();
+	    }
+	    return false;
+	}
+
+	/** Previous positions of the actor data set. */
     private HashMap<NamedObj, Double> _previousY;
     
     private HashMap<Actor, Time> _lastTimeScheduled;
