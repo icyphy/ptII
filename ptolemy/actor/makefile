@@ -86,6 +86,7 @@ JSRCS = \
 	Director.java \
 	DoNothingDirector.java \
 	Executable.java \
+	ExecutionAspectHelper.java \
 	ExecutionListener.java \
 	FiringEvent.java \
 	FiringsRecordable.java \

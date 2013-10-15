@@ -230,11 +230,11 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
                     double newActorPriority = _getPriority(actor);
                     if (newActorPriority < executingPriority) {
                         if (remainingTime.getDoubleValue() == 0.0) {
-                            notifyScheduleListeners((NamedObj) _currentlyExecuting.peek(),
+                        	notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.STOP);
                         } else {
-                            notifyScheduleListeners((NamedObj) executing,
+                        	notifyExecutionListeners((NamedObj) executing,
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.PREEMPTED);
                         } 
@@ -261,7 +261,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
 
         if (remainingTime.getDoubleValue() == 0.0
                 && _currentlyExecuting.peek() == actor) {
-            notifyScheduleListeners((NamedObj) _currentlyExecuting.peek(),
+        	notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
             _remainingTimes.put(_currentlyExecuting.peek(), null);
@@ -269,7 +269,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             if (_currentlyExecuting.size() > 0) {
                 remainingTime = _remainingTimes.get(_currentlyExecuting.peek());
                 if (remainingTime.getDoubleValue() > 0.0) {
-                    notifyScheduleListeners((NamedObj) _currentlyExecuting.peek(),
+                	notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
                             currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.START);
                 }
@@ -331,7 +331,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     private void scheduleNewActor(Actor actor, Time currentPlatformTime,
             Time executionTime) {
         _currentlyExecuting.push(actor);
-        notifyScheduleListeners((NamedObj) actor, currentPlatformTime.getDoubleValue(),
+        notifyExecutionListeners((NamedObj) actor, currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.START); 
         _remainingTimes.put(actor, executionTime);
         _lastTimeScheduled.put(actor, currentPlatformTime);

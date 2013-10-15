@@ -114,10 +114,10 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
                 // This actor is currently executing on this scheduler.
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
-                notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                    notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                	notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
                 } 
                 _remainingTimeOnCore.put(scheduler, time);
@@ -136,10 +136,10 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
             if (remainingTime == null || remainingTime.getDoubleValue() == 0.0) {
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
-                notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                    notifyScheduleListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                	notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
                 } 
                 _remainingTimeOnCore.put(scheduler, time);
@@ -155,17 +155,13 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
         return minimumRemainingTime;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //                        protected methods                      //
-
     /** Override the base class to list all contained resource schedulers
      *  instead of actors.
      *  @exception IllegalActionException Thrown if actor parameters
      *    cannot be read.
      */
     @Override
-    protected void _initializeActorsToSchedule()
-            throws IllegalActionException {
+    public void initializeDecoratedActors() throws IllegalActionException {
         _actors = new ArrayList<NamedObj>();
 
         for (Attribute attribute : (List<Attribute>) this.attributeList()) {

@@ -109,7 +109,7 @@ public class FCFSScheduler extends AtomicExecutionAspect {
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
-            notifyScheduleListeners((NamedObj) currentlyExecuting,
+            notifyExecutionListeners((NamedObj) currentlyExecuting,
                         currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);
         }
@@ -129,7 +129,7 @@ public class FCFSScheduler extends AtomicExecutionAspect {
         _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
 
         if (remainingTime.getDoubleValue() == 0.0) {
-            notifyScheduleListeners((NamedObj) currentlyExecuting,
+        	notifyExecutionListeners((NamedObj) currentlyExecuting,
                         currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.STOP); 
 

@@ -1939,7 +1939,7 @@ public class Director extends Attribute implements Executable {
         if (aspect != null) {
             Time environmentTime = ((CompositeActor)  aspect
                     .getContainer()).getDirector().getEnvironmentTime();
-            time = aspect.schedule(actor, environmentTime, 
+            time = ExecutionAspectHelper.schedule(aspect, actor, environmentTime, 
                     getDeadline(actor, timestamp));
             if (_nextScheduleTime == null) {
                 _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
