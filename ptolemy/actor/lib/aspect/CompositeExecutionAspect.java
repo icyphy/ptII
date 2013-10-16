@@ -202,6 +202,30 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         return ExecutionAspectHelper.getEntitiesToDecorate(container);
     }
     
+    /** Get the execution time of an actor. If the actor does not have an attribute
+     *  specifying the execution time, return the minimum execution time.
+     * @param actor The actor.
+     * @return The execution time.
+     * @throws IllegalActionException Thrown in attribute or token cannot be read.
+     */
+    @Override
+    public double getExecutionTime(Actor actor)
+            throws IllegalActionException {
+        double executionTime = 0.0;
+        for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
+                .attributeList(ExecutionTimeAttributes.class)) {
+            if (resourceAttributes.getDecorator() != null && 
+                    resourceAttributes.getDecorator().equals(this)) {
+                Token token = resourceAttributes.executionTime.getToken();
+                if (token != null) {
+                    executionTime = ((DoubleToken) token).doubleValue();
+                }
+                break;
+            }
+        }
+        return executionTime;
+    }
+    
     /** Initialize local variables.
      * @exception IllegalActionException Thrown if list of actors
      *   decorated by this aspect cannot be retrieved.

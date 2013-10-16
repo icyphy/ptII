@@ -87,7 +87,6 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
      *  This is a double that defaults to 0.0.
      */
     public Parameter executionTime;
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                        public methods                     ////

@@ -32,14 +32,10 @@ package ptolemy.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
-import ptolemy.actor.lib.aspect.ExecutionTimeAttributes;
-import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
+import ptolemy.actor.ExecutionAspectListener.ExecutionEventType; 
+import ptolemy.actor.util.Time; 
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.CompositeEntity; 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -72,29 +68,6 @@ public class ExecutionAspectHelper {
         } 
         return toDecorate;
     }
-	
-	/** Get the execution time of an actor. If the actor does not have an attribute
-     *  specifying the execution time, return the minimum execution time.
-     * @param actor The actor.
-     * @return The execution time.
-     * @throws IllegalActionException Thrown in attribute or token cannot be read.
-     */
-    public static double getExecutionTime(ActorExecutionAspect aspect, Actor actor)
-            throws IllegalActionException {
-        double executionTime = 0.0;
-        for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
-                .attributeList(ExecutionTimeAttributes.class)) {
-            if (resourceAttributes.getDecorator() != null && 
-                    resourceAttributes.getDecorator().equals(aspect)) {
-                Token token = resourceAttributes.executionTime.getToken();
-                if (token != null) {
-                    executionTime = ((DoubleToken) token).doubleValue();
-                }
-                break;
-            }
-        }
-        return executionTime;
-    }
      
     /** Schedule an actor for execution and return the next time
      *  this aspect has to perform an action. Derived classes
@@ -115,7 +88,7 @@ public class ExecutionAspectHelper {
     public static Time schedule(ActorExecutionAspect aspect, Actor actor, Time environmentTime, Time deadline)
             throws IllegalActionException {
         Director director = ((CompositeActor) ((ComponentEntity)aspect).getContainer()).getDirector();
-        double executionTime = ExecutionAspectHelper.getExecutionTime(aspect, actor);
+        double executionTime = aspect.getExecutionTime(actor);
         aspect.notifyExecutionListeners(((NamedObj)aspect), environmentTime.getDoubleValue(), ExecutionEventType.START);
         aspect.notifyExecutionListeners(((NamedObj)aspect), environmentTime.getDoubleValue(), ExecutionEventType.STOP);
         return aspect.schedule(actor, environmentTime, deadline, new Time(director,

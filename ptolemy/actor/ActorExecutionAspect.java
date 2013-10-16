@@ -67,6 +67,14 @@ public interface ActorExecutionAspect extends Decorator {
      *  @exception IllegalActionException If the decorator parameters cannot be read.
      */
     public void initializeDecoratedActors() throws IllegalActionException;
+    
+    /** Get the execution time of an actor. If the actor does not have an attribute
+     *  specifying the execution time, return the minimum execution time.
+     * @param actor The actor.
+     * @return The execution time.
+     * @throws IllegalActionException Thrown in attribute or token cannot be read.
+     */
+    public double getExecutionTime(Actor actor) throws IllegalActionException;
 
     /** Return whether an actor is currently waiting for a resource.
      * @param actor The actor that might be waiting for a resource.

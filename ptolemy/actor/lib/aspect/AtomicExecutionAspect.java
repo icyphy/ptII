@@ -44,6 +44,8 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
@@ -187,7 +189,29 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
 	    }
 	}
 
-
+	/** Get the execution time of an actor. If the actor does not have an attribute
+     *  specifying the execution time, return the minimum execution time.
+     * @param actor The actor.
+     * @return The execution time.
+     * @throws IllegalActionException Thrown in attribute or token cannot be read.
+     */
+	@Override
+    public double getExecutionTime(Actor actor)
+            throws IllegalActionException {
+        double executionTime = 0.0;
+        for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
+                .attributeList(ExecutionTimeAttributes.class)) {
+            if (resourceAttributes.getDecorator() != null && 
+                    resourceAttributes.getDecorator().equals(this)) {
+                Token token = resourceAttributes.executionTime.getToken();
+                if (token != null) {
+                    executionTime = ((DoubleToken) token).doubleValue();
+                }
+                break;
+            }
+        }
+        return executionTime;
+    }
 
 	/** Return remaining time actor needs to finish.
      *  @param actor The actor.
