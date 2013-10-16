@@ -13,6 +13,7 @@
 /ptolemy/actor/ConstantPublisherPort.java
 /ptolemy/actor/Director.java
 /ptolemy/actor/Executable.java
+/ptolemy/actor/ExecutionAspectHelper.java
 /ptolemy/actor/ExecutionAspectListener.java
 /ptolemy/actor/ExecutionAttributes.java
 /ptolemy/actor/ExecutionListener.java
