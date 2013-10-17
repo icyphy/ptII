@@ -36,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 235.0]">
         </property>
     </entity>
-    <entity name="MetroModalModel" class="ptolemy.domains.metroII.kernel.MetroModalModel">
+    <entity name="MetroModalModel" class="ptolemy.domains.metroII.kernel.MetroIIModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 285.0]">
@@ -194,7 +194,7 @@ Then delete this annotation.</text>
         <link port="state.output" relation="outputRelation"/>
         <link port="state2.output" relation="outputRelation"/>
     </entity>
-    <entity name="MetroModalModel2" class="ptolemy.domains.metroII.kernel.MetroModalModel">
+    <entity name="MetroModalModel2" class="ptolemy.domains.metroII.kernel.MetroIIModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 180.0]">
