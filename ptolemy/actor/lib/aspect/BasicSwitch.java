@@ -219,8 +219,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         BasicSwitch newObject = (BasicSwitch) super.clone(workspace); 
-        _ioPortToSwitchInPort = new HashMap<Port, Integer>();
-        _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
+        newObject._ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        newObject._ioPortToSwitchOutPort = new HashMap<Port, Integer>();
         newObject._nextFireTime = null;
         newObject._inputTokens = new HashMap<Integer, TreeSet<TimedEvent>>();
         newObject._outputTokens = new HashMap<Integer, TreeSet<TimedEvent>>();
