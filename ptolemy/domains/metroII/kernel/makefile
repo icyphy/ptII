@@ -60,9 +60,9 @@ JSRCS = \
 	GetFirable.java \
 	Graph.java \
 	MappingConstraintSolver.java \
-	MetroDebugger.java \
-	MetroEventBuilder.java \
-	MetroFSMDirector.java \
+	MetroIIDebugger.java \
+	MetroIIEventBuilder.java \
+	MetroIFSMDirector.java \
 	MetroIICompositeActor.java \
 	MetroIIDEDirector.java \
 	MetroIIDEDirectorForPtides.java \
@@ -77,8 +77,8 @@ JSRCS = \
 	MetroIIPtidesReceiver.java \
 	MetroIISRDirector.java \
 	MetroIISystemCDirector.java \
-	MetroModalModel.java \
-	MetroSequentialSDFDirector.java \
+	MetroIIModalModel.java \
+	MetroIISequentialSDFDirector.java \
 	NonBlockingFire.java \
 	Pair.java \
 	ResumableActor.java \
