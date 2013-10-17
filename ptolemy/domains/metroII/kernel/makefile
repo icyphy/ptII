@@ -62,7 +62,7 @@ JSRCS = \
 	MappingConstraintSolver.java \
 	MetroIIDebugger.java \
 	MetroIIEventBuilder.java \
-	MetroIFSMDirector.java \
+	MetroIIFSMDirector.java \
 	MetroIICompositeActor.java \
 	MetroIIDEDirector.java \
 	MetroIIDEDirectorForPtides.java \
