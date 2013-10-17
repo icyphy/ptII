@@ -26,6 +26,7 @@
 
  */
 package org.ptolemy.fmi;
+import java.util.Locale;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -215,15 +216,6 @@ public class FMUFile {
                 }
             }
         }
-
-        // FMI 2.0beta4 requires file:// even though file:/C:/ is legitimate.
-        // See https://trac.fmi-standard.org/ticket/146
-        if (fmuResourceLocation.startsWith("file:/")
-                && !fmuResourceLocation.startsWith("file://")) {
-            fmuResourceLocation = "file://" + fmuResourceLocation.substring(6);
-            System.out.println("FMUFile: fmuResource did started with file:/, not file://, now it is " + fmuResourceLocation);
-        }
-
 
         // Remove any trailing slash.
         if (fmuResourceLocation.endsWith("/")) {
