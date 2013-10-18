@@ -4,13 +4,13 @@
 <entity name="AFDX" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 31, 905, 695}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 31, 905, 695}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 585]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8453453453453453">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.96447602131445, 342.2793315663854}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.9644760213145, 342.27933156638534}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.21">
@@ -524,166 +524,6 @@
         <link port="Scale2.input" relation="relation2"/>
         <link port="Scale2.output" relation="relation4"/>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="N2,N4.1,N4.2,N3">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 222, 482, 164}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 120]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 285.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.lib.aspect.AFDXESs$AFDXESsAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="vlinkName" class="ptolemy.data.expr.Parameter" value="&quot;VL&quot;">
-                </property>
-                <property name="bag" class="ptolemy.data.expr.Parameter" value="0.0">
-                    <display name="bag (ms)"/>
-                </property>
-                <property name="frameSize" class="ptolemy.data.expr.Parameter" value="0">
-                    <display name="frameSize (bits)"/>
-                </property>
-                <property name="schedulerMultiplexorName" class="ptolemy.data.expr.Parameter" value="&quot;Scheduler multiplexor name&quot;">
-                </property>
-            </property>
-            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.46E-4" max="0.20014600000000002"/>
-<yRange min="1.2" max="5.3999999999999995"/>
-<default connected="no" marks="various"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="VL11,VL12">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 60, 482, 160}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 116]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 165.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="DecoratorAttributesFor_AFDX_ESs" class="ptolemy.actor.lib.aspect.AFDXESs$AFDXESsAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_ESs">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="vlinkName" class="ptolemy.data.expr.Parameter" value="&quot;VL&quot;">
-                </property>
-                <property name="bag" class="ptolemy.data.expr.Parameter" value="0.0">
-                    <display name="bag (ms)"/>
-                </property>
-                <property name="frameSize" class="ptolemy.data.expr.Parameter" value="0">
-                    <display name="frameSize (bits)"/>
-                </property>
-                <property name="schedulerMultiplexorName" class="ptolemy.data.expr.Parameter" value="&quot;Scheduler multiplexor name&quot;">
-                </property>
-            </property>
-            <property name="DecoratorAttributesFor_AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW1">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-            <property name="DecoratorAttributesFor_AFDX_SW2" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW2">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-            <property name="DecoratorAttributesFor_AFDX_SW3" class="ptolemy.actor.lib.aspect.AFDXSwitch$AfdxSwitchAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AFDX_SW3">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter2</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="0.2"/>
-<yRange min="1.0" max="2.0"/>
-<default connected="no" marks="various"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="AFDX_ESs" class="ptolemy.actor.lib.aspect.AFDXESs">
         <doc>A communication aspect that manages all AFDX End-Systems.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{580, 40}">
@@ -707,33 +547,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 140.0]">
         </property>
     </entity>
-    <entity name="D2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 385, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 515.0]">
-        </property>
-    </entity>
-    <entity name="D41" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 500, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 580.0]">
-        </property>
-    </entity>
-    <entity name="D42" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 584, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 645.0]">
-        </property>
-    </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 380.0]">
         </property>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
@@ -746,12 +562,64 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 645.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.2, 1.8, 1.2, 1.8}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.4, 3.6, 2.4, 3.6}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.6, 5.4, 3.6, 5.4}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 490.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5.0, 5.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 430.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest5" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.41E-4, 0.032444, 0.150444, 0.182444}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest6" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.46E-4, 0.200146}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 580.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest7" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9.01E-4, 0.032904, 0.150904, 0.182904}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 645.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest8" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 550.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest9" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.5, 1.0, 1.5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 190.0]">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[400.0, 240.0]">
         </vertex>
@@ -772,10 +640,8 @@
         <vertex name="vertex1" value="[440.0, 475.0]">
         </vertex>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[490.0, 380.0]">
+        <vertex name="vertex1" value="[475.0, 380.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -790,31 +656,39 @@
         <vertex name="vertex1" value="[140.0, 310.0]">
         </vertex>
     </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="N1.port" relation="relation12"/>
     <link port="N1.port2" relation="relation13"/>
     <link port="N2.port" relation="relation12"/>
     <link port="N2.port2" relation="relation4"/>
     <link port="N3.port" relation="relation12"/>
-    <link port="N3.port2" relation="relation9"/>
+    <link port="N3.port2" relation="relation14"/>
     <link port="N4.port" relation="relation13"/>
     <link port="N4.port2" relation="relation6"/>
     <link port="N4.port3" relation="relation7"/>
     <link port="N4.port4" relation="relation11"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
-    <link port="TimedPlotter.input" relation="relation7"/>
-    <link port="TimedPlotter.input" relation="relation8"/>
-    <link port="TimedPlotter.input" relation="relation9"/>
-    <link port="TimedPlotter2.input" relation="relation12"/>
-    <link port="TimedPlotter2.input" relation="relation13"/>
-    <link port="D2.input" relation="relation"/>
-    <link port="D41.input" relation="relation3"/>
-    <link port="D42.input" relation="relation2"/>
-    <link port="CurrentTime.output" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation9"/>
     <link port="CurrentTime.trigger" relation="relation10"/>
-    <link port="CurrentTime2.output" relation="relation3"/>
+    <link port="CurrentTime2.output" relation="relation"/>
     <link port="CurrentTime2.trigger" relation="relation7"/>
-    <link port="CurrentTime3.output" relation="relation2"/>
+    <link port="CurrentTime3.output" relation="relation3"/>
     <link port="CurrentTime3.trigger" relation="relation11"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="NonStrictTest2.input" relation="relation14"/>
+    <link port="NonStrictTest3.input" relation="relation8"/>
+    <link port="NonStrictTest4.input" relation="relation7"/>
+    <link port="NonStrictTest5.input" relation="relation9"/>
+    <link port="NonStrictTest6.input" relation="relation"/>
+    <link port="NonStrictTest7.input" relation="relation3"/>
+    <link port="NonStrictTest8.input" relation="relation13"/>
+    <link port="NonStrictTest9.input" relation="relation12"/>
     <link relation1="relation4" relation2="relation5"/>
     <link relation1="relation5" relation2="relation6"/>
     <link relation1="relation5" relation2="relation10"/>

@@ -71,8 +71,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 JSRCS = \
 	AFDXESs.java \
-	AFDXSwitch.java \
-	AFDXVlCfg.java \
+	AFDXSwitch.java \ 
 	AFDXVlink.java \
 	AtomicCommunicationAspect.java \
 	AtomicExecutionAspect.java \

@@ -74,7 +74,7 @@ import ptolemy.kernel.util.Workspace;
  *      <i>AFDX standard document</i>.
  *       
  *  @author Gilles Lasnier
- *  @version $Id$
+ *  @version $Id: AFDXESs.java 67578 2013-09-25 19:35:12Z pd $
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Yellow (glasnier)

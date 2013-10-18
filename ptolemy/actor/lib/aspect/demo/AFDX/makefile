@@ -51,8 +51,6 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	AFDXMulticastSimple.xml \
-	AFDXsimple.xml \
 	AFDX.xml
 
 EXTRA_SRCS = \

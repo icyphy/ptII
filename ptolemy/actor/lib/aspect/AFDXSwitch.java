@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
  *  This implementation is based on the basic switch implementation.
  *
  *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
- *  @version $Id$
+ *  @version $Id: AFDXSwitch.java 67593 2013-09-27 00:26:07Z pd $
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Yellow (glasnier)
