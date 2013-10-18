@@ -835,6 +835,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + "ptolemy/backtrack/backtrack.jar");
                 }
                 results.put(className, "ptolemy/backtrack/backtrack.jar");
+            } else if (className.contains("ptolemy.actor.lib.aspect")) {
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars aspect: " + className
+                            + " " + "ptolemy/actor/lib/aspect/aspect.jar");
+                }
+                results.put(className, "ptolemy/actor/lib/aspect/aspect.jar");
             } else if (className.contains("ptolemy.actor.lib.jai")) {
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars JAI: " + className
