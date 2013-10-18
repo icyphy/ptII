@@ -52,8 +52,8 @@ public class ExecutionAspectHelper {
 	
 	/** Execution aspects are decorators and this method recursively computes 
 	 *  all entities inside a given container that are decorated by execution aspects.
-	 *  @param container
-	 *  @return
+	 *  @param container The container.
+	 *  @return All entities to decorate.
 	 */
 	public static List<NamedObj> getEntitiesToDecorate(CompositeEntity container) {
         List<NamedObj> toDecorate = new ArrayList<NamedObj>();
