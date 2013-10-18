@@ -68,14 +68,14 @@
       </external-property>
     </entry>
     <entry>
-      <string>hudson-plugins-dry-DryPublisher</string>
+      <string>hudson-plugins-checkstyle-CheckStylePublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
     </entry>
     <entry>
-      <string>hudson-plugins-checkstyle-CheckStylePublisher</string>
+      <string>hudson-plugins-dry-DryPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
@@ -89,17 +89,17 @@
       </boolean-property>
     </entry>
     <entry>
-      <string>org-hudsonci-plugins-snapshotmonitor-SnapshotTrigger</string>
-      <trigger-property>
-        <propertyOverridden>false</propertyOverridden>
-      </trigger-property>
-    </entry>
-    <entry>
       <string>hudson-plugins-disk_usage-DiskUsageProperty</string>
       <base-property>
         <originalValue class="hudson.plugins.disk_usage.DiskUsageProperty"/>
         <propertyOverridden>false</propertyOverridden>
       </base-property>
+    </entry>
+    <entry>
+      <string>org-hudsonci-plugins-snapshotmonitor-SnapshotTrigger</string>
+      <trigger-property>
+        <propertyOverridden>false</propertyOverridden>
+      </trigger-property>
     </entry>
     <entry>
       <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
@@ -140,14 +140,14 @@
       </boolean-property>
     </entry>
     <entry>
-      <string>hudson-plugins-git-GitPublisher</string>
+      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
       </external-property>
     </entry>
     <entry>
-      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
+      <string>hudson-plugins-git-GitPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
@@ -192,6 +192,13 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
+      <string>cleanWorkspaceRequired</string>
+      <boolean-property>
+        <originalValue class="boolean">false</originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </boolean-property>
+    </entry>
+    <entry>
       <string>hudson-tasks-test-AggregatedTestResultPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -199,11 +206,16 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
-      <string>cleanWorkspaceRequired</string>
-      <boolean-property>
-        <originalValue class="boolean">false</originalValue>
+      <string>hudson-tasks-junit-JUnitResultArchiver</string>
+      <external-property>
+        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
+          <testResults>reports/junit/*.xml</testResults>
+          <keepLongStdio>false</keepLongStdio>
+          <testDataPublishers/>
+        </originalValue>
         <propertyOverridden>false</propertyOverridden>
-      </boolean-property>
+        <modified>true</modified>
+      </external-property>
     </entry>
     <entry>
       <string>htmlpublisher-HtmlPublisher</string>
@@ -231,18 +243,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
-      <string>hudson-tasks-junit-JUnitResultArchiver</string>
-      <external-property>
-        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
-          <testResults>reports/junit/*.xml</testResults>
-          <keepLongStdio>false</keepLongStdio>
-          <testDataPublishers/>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>true</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>hudson-tasks-Fingerprinter</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -264,13 +264,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
-      <string>parametersDefinitionProperties</string>
-      <copy-write-list-property>
-        <originalValue class="hudson.util.CopyOnWriteList"/>
-        <propertyOverridden>false</propertyOverridden>
-      </copy-write-list-property>
-    </entry>
-    <entry>
       <string>hudson-tasks-JavadocArchiver</string>
       <external-property>
         <originalValue class="hudson.tasks.JavadocArchiver">
@@ -280,6 +273,13 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
+    </entry>
+    <entry>
+      <string>parametersDefinitionProperties</string>
+      <copy-write-list-property>
+        <originalValue class="hudson.util.CopyOnWriteList"/>
+        <propertyOverridden>false</propertyOverridden>
+      </copy-write-list-property>
     </entry>
     <entry>
       <string>hudson-plugins-warnings-WarningsPublisher</string>
@@ -322,6 +322,12 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
+    </entry>
+    <entry>
+      <string>customWorkspace</string>
+      <string-property>
+        <propertyOverridden>false</propertyOverridden>
+      </string-property>
     </entry>
     <entry>
       <string>hudson-plugins-emailext-ExtendedEmailPublisher</string>
@@ -424,12 +430,6 @@ ${FAILED_TESTS}
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
       </external-property>
-    </entry>
-    <entry>
-      <string>customWorkspace</string>
-      <string-property>
-        <propertyOverridden>false</propertyOverridden>
-      </string-property>
     </entry>
     <entry>
       <string>quietPeriod</string>
@@ -574,13 +574,6 @@ $WORKSPACE/adm/bin/killXServer</command>
       </base-property>
     </entry>
     <entry>
-      <string>concurrentBuild</string>
-      <boolean-property>
-        <originalValue class="boolean">false</originalValue>
-        <propertyOverridden>false</propertyOverridden>
-      </boolean-property>
-    </entry>
-    <entry>
       <string>hudson-tasks-ArtifactArchiver</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -588,32 +581,17 @@ $WORKSPACE/adm/bin/killXServer</command>
       </external-property>
     </entry>
     <entry>
+      <string>concurrentBuild</string>
+      <boolean-property>
+        <originalValue class="boolean">false</originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </boolean-property>
+    </entry>
+    <entry>
       <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyTrigger</string>
       <trigger-property>
         <propertyOverridden>false</propertyOverridden>
       </trigger-property>
-    </entry>
-    <entry>
-      <string>scm</string>
-      <scm-property>
-        <originalValue class="hudson.scm.SubversionSCM">
-          <locations>
-            <hudson.scm.SubversionSCM_-ModuleLocation>
-              <remote>https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk</remote>
-              <local>.</local>
-              <depthOption>infinity</depthOption>
-              <ignoreExternalsOption>false</ignoreExternalsOption>
-            </hudson.scm.SubversionSCM_-ModuleLocation>
-          </locations>
-          <excludedRegions></excludedRegions>
-          <includedRegions></includedRegions>
-          <excludedUsers></excludedUsers>
-          <excludedRevprop></excludedRevprop>
-          <excludedCommitMessages></excludedCommitMessages>
-          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-      </scm-property>
     </entry>
     <entry>
       <string>hudson-plugins-findbugs-FindBugsPublisher</string>
@@ -648,10 +626,32 @@ $WORKSPACE/adm/bin/killXServer</command>
       </external-property>
     </entry>
     <entry>
+      <string>scm</string>
+      <scm-property>
+        <originalValue class="hudson.scm.SubversionSCM">
+          <locations>
+            <hudson.scm.SubversionSCM_-ModuleLocation>
+              <remote>https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk</remote>
+              <local>.</local>
+              <depthOption>infinity</depthOption>
+              <ignoreExternalsOption>false</ignoreExternalsOption>
+            </hudson.scm.SubversionSCM_-ModuleLocation>
+          </locations>
+          <excludedRegions></excludedRegions>
+          <includedRegions></includedRegions>
+          <excludedUsers></excludedUsers>
+          <excludedRevprop></excludedRevprop>
+          <excludedCommitMessages></excludedCommitMessages>
+          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </scm-property>
+    </entry>
+    <entry>
       <string>hudson-triggers-TimerTrigger</string>
       <trigger-property>
         <originalValue class="hudson.triggers.TimerTrigger">
-          <spec>5 20 * * *</spec>
+          <spec>15 20 * * *</spec>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
       </trigger-property>
@@ -669,35 +669,35 @@ $WORKSPACE/adm/bin/killXServer</command>
   <creationTime>1340923181338</creationTime>
   <properties>
     <hudson.security.AuthorizationMatrixProperty>
-      <permission>hudson.model.Item.Configure:eal</permission>
-      <permission>hudson.model.Item.Configure:cxh</permission>
-      <permission>hudson.model.Item.Configure:cxbrooks</permission>
-      <permission>hudson.model.Item.Configure:marten</permission>
+      <permission>hudson.model.Item.Workspace:eal</permission>
+      <permission>hudson.model.Item.Workspace:cxh</permission>
+      <permission>hudson.model.Item.Workspace:cxbrooks</permission>
+      <permission>hudson.model.Item.Workspace:marten</permission>
       <permission>hudson.model.Item.Read:anonymous</permission>
       <permission>hudson.model.Item.Read:eal</permission>
       <permission>hudson.model.Item.Read:cxh</permission>
       <permission>hudson.model.Item.Read:cxbrooks</permission>
       <permission>hudson.model.Item.Read:marten</permission>
-      <permission>hudson.model.Run.Delete:eal</permission>
-      <permission>hudson.model.Run.Delete:cxh</permission>
-      <permission>hudson.model.Run.Delete:cxbrooks</permission>
-      <permission>hudson.model.Run.Delete:marten</permission>
-      <permission>hudson.model.Item.Workspace:eal</permission>
-      <permission>hudson.model.Item.Workspace:cxh</permission>
-      <permission>hudson.model.Item.Workspace:cxbrooks</permission>
-      <permission>hudson.model.Item.Workspace:marten</permission>
-      <permission>hudson.model.Run.Update:eal</permission>
-      <permission>hudson.model.Run.Update:cxh</permission>
-      <permission>hudson.model.Run.Update:cxbrooks</permission>
-      <permission>hudson.model.Run.Update:marten</permission>
-      <permission>hudson.model.Item.Build:eal</permission>
-      <permission>hudson.model.Item.Build:cxh</permission>
-      <permission>hudson.model.Item.Build:cxbrooks</permission>
-      <permission>hudson.model.Item.Build:marten</permission>
       <permission>hudson.model.Item.Delete:eal</permission>
       <permission>hudson.model.Item.Delete:cxh</permission>
       <permission>hudson.model.Item.Delete:cxbrooks</permission>
       <permission>hudson.model.Item.Delete:marten</permission>
+      <permission>hudson.model.Item.Build:eal</permission>
+      <permission>hudson.model.Item.Build:cxh</permission>
+      <permission>hudson.model.Item.Build:cxbrooks</permission>
+      <permission>hudson.model.Item.Build:marten</permission>
+      <permission>hudson.model.Run.Delete:eal</permission>
+      <permission>hudson.model.Run.Delete:cxh</permission>
+      <permission>hudson.model.Run.Delete:cxbrooks</permission>
+      <permission>hudson.model.Run.Delete:marten</permission>
+      <permission>hudson.model.Run.Update:eal</permission>
+      <permission>hudson.model.Run.Update:cxh</permission>
+      <permission>hudson.model.Run.Update:cxbrooks</permission>
+      <permission>hudson.model.Run.Update:marten</permission>
+      <permission>hudson.model.Item.Configure:eal</permission>
+      <permission>hudson.model.Item.Configure:cxh</permission>
+      <permission>hudson.model.Item.Configure:cxbrooks</permission>
+      <permission>hudson.model.Item.Configure:marten</permission>
     </hudson.security.AuthorizationMatrixProperty>
   </properties>
   <cascadingChildrenNames class="java.util.concurrent.CopyOnWriteArraySet"/>
