@@ -30,18 +30,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package ptolemy.actor.lib.fmi.fmipp;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMIModelDescription;
+import org.ptolemy.fmi.FMUFile;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.lib.fmi.fmipp.swig.IncrementalFMU;
 import ptolemy.actor.lib.fmi.fmipp.swig.SWIGTYPE_p_double;
@@ -504,7 +498,7 @@ public class FMUModelExchange extends Transformer {
         //	_count = 0;
         //	_sum = null;
 
-        if (fmuFile.getExpression() == "") {
+        if (fmuFile.getExpression().equals("")) {
             throw new IllegalActionException(this, "Error: No FMU given!");
         }
 
