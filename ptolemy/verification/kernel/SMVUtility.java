@@ -2104,8 +2104,7 @@ public class SMVUtility {
                                             try {
                                                 Integer.parseInt(offset);
                                             } catch (Exception exInner) {
-                                                // Return the format is not
-                                                // supported by the system.
+                                                throw new RuntimeException(" Th return the format \"" + offset + "\" is notsupported by the system.", exInner);
                                             }
 
                                         }

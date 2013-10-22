@@ -728,7 +728,7 @@ public class WebServerUtilities {
             
             try {
                 _server.stop();
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
                 // Nothing to do here since the thread will terminate next
             }
             return;

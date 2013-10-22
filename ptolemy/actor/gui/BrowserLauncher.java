@@ -201,6 +201,7 @@ public class BrowserLauncher {
                 urlFile = new File(url);
             } catch (Exception ex) {
                 // Ignored, we try to fix this below.
+                urlFile = null;
             }
 
             if (urlFile == null || !urlFile.exists()) {

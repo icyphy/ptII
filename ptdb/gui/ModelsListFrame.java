@@ -39,6 +39,7 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -298,8 +299,9 @@ public class ModelsListFrame extends javax.swing.JFrame {
         }
         try {
             _pageNumberCombo.setSelectedIndex(_currentPageNumber - 1);
-        } catch (Exception e) {
-
+        } catch (Throwable throwable) {
+            throw new InternalErrorException("Could not set selected index to "
+                    + (_currentPageNumber - 1));
         }
     }
 

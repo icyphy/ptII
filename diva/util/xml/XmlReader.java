@@ -440,7 +440,7 @@ public class XmlReader extends LoggableOp {
                     if (str != null) {
                         result = str;
                     }
-                } catch (Exception ex) {
+                } catch (Throwable throwable) {
                     // if the resource is not found, then ignore.
                 }
             }

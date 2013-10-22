@@ -117,7 +117,10 @@ public class JFileChooserBugFix {
                     javax.swing.text.StyleConstants.ResolveAttribute);
             background = styleSheet.getBackground(bodyAttribute);
         } catch (Exception ex) {
-            // Ignore, we just won't set the background.
+            if (!_printedMessage) {
+                _printedMessage = true;
+                System.out.println("Failed to set the background of the file dialog:" + ex);
+            }
         }
 
         try {
@@ -140,4 +143,9 @@ public class JFileChooserBugFix {
 
     /** The HTMLEditorKit*/
     private HTMLEditorKit _HTMLEditorKit;
+
+    /** True if we have printed the message about failing to set the 
+     *  background.
+     */
+    private boolean _printedMessage;
 }

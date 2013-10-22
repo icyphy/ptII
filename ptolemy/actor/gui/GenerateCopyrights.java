@@ -388,6 +388,7 @@ public class GenerateCopyrights {
             }
         } catch (Exception ex) {
             // Ignore and use the default applicationCopyright
+            applicationCopyright = defaultApplicationCopyright;
         }
 
         String applicationName = _getApplicationName(configuration);

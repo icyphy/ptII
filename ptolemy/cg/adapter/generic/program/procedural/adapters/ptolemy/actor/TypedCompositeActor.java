@@ -523,6 +523,7 @@ public class TypedCompositeActor extends
                     reference = getReference(inputPort.getName(), false);
                 } catch (Exception ex) {
                     // Ignore and fall through to the next attempt, which looks for the port in the executive director context.
+                    reference = "";
                 }
                 if (!reference.equals("")) {
                     tempCode.append(reference);

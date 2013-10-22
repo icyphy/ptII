@@ -635,6 +635,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             modelFile = new File(modelPath);
         } catch (Exception ex) {
             // Ignore, perhaps modelURI points to a remote model.
+            modelFile = null;
         }
         if (modelFile == null
                 || sharedObjectFile.lastModified() < modelFile.lastModified()) {

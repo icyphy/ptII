@@ -25,6 +25,7 @@
  *
  */
 package diva.canvas.toolbox;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.awt.Shape;
@@ -35,6 +36,7 @@ import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -238,7 +240,8 @@ public class GraphicsParser {
 
             try {
                 ttype = t.nextToken();
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
+                throw new RuntimeException(throwable);
             }
 
             if (ttype == StreamTokenizer.TT_EOF) {
@@ -253,7 +256,8 @@ public class GraphicsParser {
 
             try {
                 ttype = t.nextToken();
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
+                throw new RuntimeException(throwable);
             }
 
             if (ttype == StreamTokenizer.TT_EOF) {
@@ -274,7 +278,7 @@ public class GraphicsParser {
     /** Given a string, return a color.
      */
     private static Color lookupColor(String color) {
-        String s = color.toLowerCase();
+        String s = color.toLowerCase(Locale.getDefault());
 
         if (s.equals("black")) {
             return Color.black;

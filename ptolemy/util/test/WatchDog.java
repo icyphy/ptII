@@ -99,11 +99,12 @@ public class WatchDog {
                     watchDogWentOff = true;
 
                     if (_exitOnTimeOut) {
-                        String userDir = "util.testsuite.WatchDog went off";
+                        String userDir = "";
                         try {
                             userDir = System.getProperty("user.dir");
                         } catch (Exception ex) {
                             // ignore
+                            userDir = "util.testsuite.WatchDog went off";
                         }
                         System.out.println("The string below is so that "
                                 + "the nightly build will notice\n"

@@ -252,14 +252,14 @@ public class XmlElement {
     }
 
     /**
-     * Remove an attribute from this element
+     * Remove an attribute from this element.
      */
     public void removeAttribute(String name) {
         _attributes.remove(name);
     }
 
     /**
-     * Remove a child element from this element
+     * Remove a child element from this element.
      */
     public void removeElement(XmlElement e) {
         e.setParent(null);
@@ -290,28 +290,29 @@ public class XmlElement {
     }
 
     /**
-     * Set the type of this element
+     * Set the type of this element.
      */
     public void setType(String s) {
         _type = s;
     }
 
     /**
-     * Convert this element to a string in XML
+     * Convert this element to a string in XML.
      */
     public String toString() {
         StringWriter sw = new StringWriter();
 
         try {
             writeXML(sw, "");
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
 
         return sw.toString();
     }
 
     /**
-     * Print this element to a Writer
+     * Print this element to a Writer.
      */
     public void writeXML(Writer out, String prefix) throws IOException {
         out.write(prefix + "<" + getType());

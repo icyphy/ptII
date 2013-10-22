@@ -88,10 +88,7 @@ public class XMLParserTest extends TestSuite {
 
                 Writer w = new StringWriter();
 
-                try {
-                    writer.write(document, w);
-                } catch (Exception e) {
-                }
+                writer.write(document, w);
 
                 xmlout = w.toString();
             }
@@ -122,7 +119,7 @@ public class XMLParserTest extends TestSuite {
 
                     try {
                         line = input.readLine();
-                    } catch (Exception e) {
+                    } catch (Throwable throwable) {
                     }
                 }
 
