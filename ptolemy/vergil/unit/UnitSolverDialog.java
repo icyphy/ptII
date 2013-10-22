@@ -502,7 +502,8 @@ public class UnitSolverDialog extends PtolemyDialog implements
                     Object edge = edges.next();
                     Object relation = _graphModel.getSemanticObject(edge);
 
-                    if (_relations.contains(relation)) {
+                    if (relation instanceof Relation
+                            && _relations.contains(relation)) {
                         Figure relationFigure = _controller.getFigure(edge);
                         _selectionModel.addSelection(relationFigure);
                     }
