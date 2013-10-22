@@ -80,16 +80,22 @@ import ptolemy.util.MessageHandler;
  *  of the <i>reallySendMail</i> parameter to true. Upon completion
  *  of an execution, <i>reallySendMail</i> will be set back to false
  *  (in the wrapup() method) to help prevent accidental duplicate
- *  mailings.
+ *  mailings.</p>
  *  <p>
- *  This actor requires that the javamail package be present, and that
- *  at least the mailapi.jar and smtp.jar files be in the CLASSPATH.
- *  Install javamail in $PTII/vendors/oracle, then run configure in
- *  $PTII. In Eclipse, you will then need to refresh the project.
- *  If for some reason the smtp.jar is missing, then you will get
- *  a cryptic NoSuchProviderException.
+ *  This actor requires the JavaMail 1.5 javax.mail.jar file be in the
+ *  classpath.</p>
+ *  <p>To use this actor, download <code>javax.mail.jar</code>
+ *  <a href="https://java.net/projects/javamail/pages/Home"><code>https://java.net/projects/javamail/pages/Home</code></a> and place it in
+ *  <code>$PTII/vendors/misc/javamail</code>.  Below are the steps:</p>
+ *  <pre>   
+ *    cd $PTII/vendors/misc/javamail
+ *     wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
+ *     cd $PTII
+ *     ./configure
+ *  </pre>
+ *  <p>In Eclipse, you will then need to refresh the project.</p> * 
  *
- *  @author Edward A. Lee
+ * @author Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Yellow (eal)
