@@ -2586,8 +2586,11 @@ else
     You need not download the JavaMail interface unless you
     plan on using the Ptolemy actors that send email.
     The JavaMail interface can be downloaded from
-    https://java.net/projects/javamail/pages/Home
-    an untar'd into $PTII/vendors/misc. ])
+    https://java.net/projects/javamail/pages/Home with
+      cd $PTII/vendors/misc/javamail
+      wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
+      cd $PTII
+      ./configure])
 	# Note that we don't substitute in the ${PTII} here
 	JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
     fi
