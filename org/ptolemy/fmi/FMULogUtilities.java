@@ -84,6 +84,7 @@ public class FMULogUtilities {
      * names of the variables.
      * @param messageString The string that has had the % directed
      * processed.  The input will be of the format "foo #r1234# bar".
+     * @return a String with the variable references replaced.
      */   
     public static String replaceVariableReferences(FMIModelDescription modelDescription,
            String messageString) {

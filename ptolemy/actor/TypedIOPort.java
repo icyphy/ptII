@@ -432,7 +432,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Indicates whether conversion of received tokens is enabled or not.
      *  @return True if conversion is enabled, or false otherwise.
-     *  @see setAutomaticTypeConversion(boolean)
+     *  @see #setAutomaticTypeConversion(boolean)
      */
     public boolean getAutomaticTypeConversion() {
         return _automaticTypeConversion;
@@ -610,7 +610,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  converted.
      *  @param automaticTypeConversion False in order to disable 
      *  conversion of received tokens, true otherwise.
-     *  @see getAutomaticTypeConversion
+     *  @see #getAutomaticTypeConversion()
      */
     public void setAutomaticTypeConversion(boolean automaticTypeConversion) {
         _automaticTypeConversion = automaticTypeConversion;

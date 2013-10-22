@@ -153,6 +153,8 @@ public class FMIModelDescription {
     /** Return a class that provides a callback function
      *  that allocates memory, but retains a reference
      *  so that the memory does not get gc'd.
+     *  @return The class that provides a callback function that
+     *  allocates memory.
      */
     public FMULibrary.FMUAllocateMemory getFMUAllocateMemory() {
 	return _fmuAllocateMemory;

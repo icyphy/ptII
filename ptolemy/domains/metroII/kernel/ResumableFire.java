@@ -31,7 +31,6 @@ import java.util.LinkedList;
 
 import net.jimblackler.Utils.YieldAdapterIterable;
 import net.jimblackler.Utils.YieldAdapterIterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
@@ -49,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * <li>START: initial state</li>
  * <li>BEGIN: prefire() is called and returns true. getfire() will be called.</li>
  * <li>PROCESS: getfire() is being called, may be suspended but not terminated
- * yet
+ * yet</li>
  * <li>END: getfire() is called and returns properly.</li>
  * <li>FINAL: final state</li>
  * </ol>

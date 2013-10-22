@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.kernel.generic.program.procedural.c;
+import java.util.Locale;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -82,12 +83,12 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.JVMBitWidth;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
-import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// CCodeGenerator
@@ -1369,7 +1370,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         String directoryCommons = directory + "commons/";
 
-        _deleteDirectory(directory);
+        try {
+            _deleteDirectory(directory);
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex, "Failed to delete \""
+                    + directory + "\"");
+        }
         // add the includes to the makefile
         if (!_includes.contains("-I " + directoryCommons))
             _includes.add("-I " + directoryCommons);
@@ -1413,8 +1419,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         
         // appending the .h multi-inclusions protection macro
-        codeMainH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase() + "_MAIN_H" + _eol 
-                + "#define NO_" + _sanitizedModelName.toUpperCase() + "_MAIN_H" + _eol);
+        codeMainH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_MAIN_H" + _eol 
+                + "#define NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_MAIN_H" + _eol);
         
         //////////////////////////////////////////////////////////////
         // Writing the Manager (main) file                          //
@@ -1482,8 +1488,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         //////////////////////////////////////////////////
         
         // appending the .h multi-inclusions protection macro
-        codeTypesH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase() + "_TYPES_H" + _eol 
-                + "#define NO_" + _sanitizedModelName.toUpperCase() + "_TYPES_H" + _eol);
+        codeTypesH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_TYPES_H" + _eol 
+                + "#define NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_TYPES_H" + _eol);
         
         // Get any include or import lines needed by the variable declarations.
         codeTypesH.append(_eol + typeResolutionCode[0]);
@@ -1580,6 +1586,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return _executeCommands();
     }
     
+    /** Generate the code for a constructor.
+     *  @param actor The actor for which constructor code shall be generated.
+     *  @return The constructor code.
+     */  
     protected String _generateConstructorCode(Actor actor) throws IllegalActionException {
         StringBuffer result = new StringBuffer(_eol);
         String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
@@ -1618,6 +1628,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return result.toString();
     }
     
+    /** Generate the code for a constructor.
+     *  @param actor The Composite actor for which constructor code
+     *  shall be generated.
+     *  @return The constructor code.
+     */  
     protected String _generateConstructorCode(CompositeActor actor) throws IllegalActionException {
         StringBuffer result = new StringBuffer(_eol);
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
@@ -1685,6 +1700,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return result.toString();
     }
     
+    /** Generate the code to access ports for an actor.
+     *  @param actor The actor for which code shall be generated.
+     *  @return The port accessor code.
+     */  
     protected String _generatePortsAccessorsCode(Actor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
         StringBuffer result = new StringBuffer();
@@ -1703,6 +1722,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return result.toString();
     }
     
+    /** Generate the code to access ports for a composite actor.
+     *  @param actor The actor for which code shall be generated.
+     *  @return The port accessor code.
+     */  
     protected String _generatePortsAccessorsCode(CompositeActor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
         StringBuffer result = new StringBuffer();
@@ -1718,6 +1741,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return result.toString();
     }
     
+    /** Generate the code to declare the accessors to ports.
+     *  @param actor The actor for which code shall be generated.
+     *  @return The port accessor declaration code.
+     */  
     protected String _generatePortsAccessorsDeclaration(Actor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
         StringBuffer result = new StringBuffer();
@@ -1734,6 +1761,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return result.toString();
     }
     
+    /** Generate the code to declare the accessors to ports.
+     *  @param actor The composite actor for which code shall be generated.
+     *  @return The port accessor declaration code.
+     */  
     protected String _generatePortsAccessorsDeclaration(CompositeActor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
         StringBuffer result = new StringBuffer();
@@ -1939,8 +1970,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // appending the .h multi-inclusions protection macro
         codeContainerH.append("#ifndef NO_"
-                + sanitizedActorName.toUpperCase() + "_H" + _eol
-                + "#define NO_" + sanitizedActorName.toUpperCase() + "_H"
+                + sanitizedActorName.toUpperCase(Locale.getDefault()) + "_H" + _eol
+                + "#define NO_" + sanitizedActorName.toUpperCase(Locale.getDefault()) + "_H"
                 + _eol);
         codeContainerH.append(generateCopyright());
         codeContainerC.append(generateCopyright());
@@ -2167,8 +2198,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         CCode.append("}" + _eol);
         
         StringBuffer HCode = new StringBuffer(generateCopyright() + _eol);
-        HCode.append("#ifndef _" + sanitizedContainerName.toUpperCase() + "_H_" + _eol +
-                "#define _" + sanitizedContainerName.toUpperCase() + "_H_" + _eol);
+        HCode.append("#ifndef _" + sanitizedContainerName.toUpperCase(Locale.getDefault()) + "_H_" + _eol +
+                "#define _" + sanitizedContainerName.toUpperCase(Locale.getDefault()) + "_H_" + _eol);
         
         HCode.append("#include \"_" + actorType + ".h\"" + _eol);
         HCode.append("#include \"_AtomicActor.h\"" + _eol);
@@ -2397,8 +2428,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 //        codeDirectorC.append(generateCopyright());
 //
 //        codeDirectorH.append("#ifndef NO_"
-//                + sanitizedDirectorName.toUpperCase() + "_H" + _eol
-//                + "#define NO_" + sanitizedDirectorName.toUpperCase() + "_H"
+//                + sanitizedDirectorName.toUpperCase(Locale.getDefault()) + "_H" + _eol
+//                + "#define NO_" + sanitizedDirectorName.toUpperCase(Locale.getDefault()) + "_H"
 //                + _eol);
 //        
 //        codeDirectorH.append(_generateIncludeFiles(directorAdapter));       
@@ -3163,7 +3194,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return types;
     }
 
-    static private void _deleteDirectory(String emplacement) {
+    /** Delete a directory.
+     *  @exception IOException Thrown if a subdiretory cannot be deleted.
+     */
+    static private void _deleteDirectory(String emplacement)
+            throws IOException {
         File path = new File(emplacement);
         if (path.exists()) {
             File[] files = path.listFiles();
@@ -3172,7 +3207,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     _deleteDirectory(files[i].getAbsolutePath());
                 }
                 if (!files[i].delete()) {
-                    // FIXME : Throw something
+                    throw new IOException("Failed to delete \""
+                            + files[i] + "\"");
                 }
             }
         }

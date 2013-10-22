@@ -450,6 +450,7 @@ public class ModalBasePort extends TypedIOPort {
      *  mirror ports.
      *  This method is write-synchronized on the workspace, and increments
      *  the version of the workspace.
+     *  @param name The name.
      *  @exception IllegalActionException If the name has a period.
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.

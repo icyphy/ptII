@@ -180,6 +180,7 @@ public class PtidesPreemptiveEDFDirector
     }
 
     /** Generate the interrupt vector table.
+     *  @return The interrupt vector table.
      *  @exception IllegalActionException If there is a problem
      *  accessing the model.
      */
