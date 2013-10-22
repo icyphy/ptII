@@ -1506,7 +1506,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
     }
 
-    private class ParentModelItemPanel extends JPanel {
+    private static class ParentModelItemPanel extends JPanel {
 
         /**
          * Construct the ParentModelItemPanel.
