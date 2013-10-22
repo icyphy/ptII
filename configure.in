@@ -1620,15 +1620,15 @@ if test -z "$PTDOCLETS_DIR"; then
 else
    addToolsJarToEclipse=yes
 
-   case "`uname -s`" in
-	Darwin) 
-	    case "$TOOLS_JAR" in
-		*/Classes/classes.jar)
-		    addToolsJarToEclipse=no
-  	            AC_MSG_WARN([Not including $TOOLS_JAR 
-   to the Eclipse classpath under Darwin because it is already present.]);;
-            esac;;
-   esac
+#   case "`uname -s`" in
+#	Darwin) 
+#	    case "$TOOLS_JAR" in
+#		*/Classes/classes.jar)
+#		    addToolsJarToEclipse=no
+#  	            AC_MSG_WARN([Not including $TOOLS_JAR 
+#   to the Eclipse classpath under Darwin because it is already present.]);;
+#            esac;;
+#   esac
 
     if test "$addToolsJarToEclipse" = "yes" ; then
        updateClasspath "$TOOLS_JAR"
@@ -2541,7 +2541,7 @@ fi
 
 #--------------------------------------------------------------------
 #       JavaMail is a Java interface that sends email
-#	http://www.oracle.com/technetwork/java/index-138643.html
+#	https://java.net/projects/javamail/pages/Home
 #--------------------------------------------------------------------
 
 # PTJAVAMAIL_DIR is set to mail
@@ -2549,8 +2549,8 @@ fi
 PTJAVAMAIL_DIR=
 
 # JavaMail Directory.  JavaMail is available from
-# http://www.oracle.com/technetwork/java/index-138643.html
-JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+# https://java.net/projects/javamail/pages/Home
+JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
 
 # Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
 PTJAVAMAIL_JARS=
@@ -2563,35 +2563,33 @@ if test ! -d "$JAVAMAIL_USER_DIR"; then
 else
     AC_MSG_CHECKING([for JavaMail directory])
     AC_ARG_WITH(javamail, [  --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
-                          defaults to \$PTII/vendors/oracle/javamail],
+                          defaults to \$PTII/vendors/misc/javamail],
 	JAVAMAIL_DIR=$withval,
-	JAVAMAIL_DIR=$PTII/vendors/oracle/javamail)
+	JAVAMAIL_DIR=$PTII/vendors/misc/javamail)
 
-    if test -f "$JAVAMAIL_DIR/mail.jar"; then
+    if test -f "$JAVAMAIL_DIR/javax.mail.jar"; then
 	# Set to mail and used in
-	# $PTII/ptolemy/actor/libmakefile if mail.jar was found.
+	# $PTII/ptolemy/actor/lib/makefile if javax.mail.jar was found.
 	PTJAVAMAIL_DIR=mail
         # PTJAVAMAIL_PACKAGES is used in ptII/doc/makefile
 	PTJAVAMAIL_PACKAGES="ptolemy.actor.lib.mail"
 
-	PTJAVAMAIL_JARS="${JAVAMAIL_DIR}/mail.jar"
-        updateClasspath "$JAVAMAIL_DIR/mail.jar"
+	PTJAVAMAIL_JARS="${JAVAMAIL_DIR}/javax.mail.jar"
+        updateClasspath "$JAVAMAIL_DIR/javax.mail.jar"
 	PT_MSG_RESULT([$JAVAMAIL_DIR])
     fi
 
     if test "$PTJAVAMAIL_DIR" = ""; then
-        AC_MSG_WARN([Failed to find mail.jar
+        AC_MSG_WARN([Failed to find javax.mail.jar
     in $JAVAMAIL_DIR
     perhaps the JavaMail interface is not installed?
     You need not download the JavaMail interface unless you
     plan on using the Ptolemy actors that send email.
     The JavaMail interface can be downloaded from
-    http://www.oracle.com/technetwork/java/index-138643.html
-    an untar'd into $PTII/vendors/oracle.  Note that configure looks
-    for $PTII/vendors/oracle/javamail, so either move the JavaMail distribution
-    or create a symbolic link and then rerun configure.] )
+    https://java.net/projects/javamail/pages/Home
+    an untar'd into $PTII/vendors/misc. ])
 	# Note that we don't substitute in the ${PTII} here
-	JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+	JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
     fi
 fi
 
@@ -5946,7 +5944,7 @@ AC_SUBST(PTJAVA32_DIR)
 AC_SUBST(PTJAVA3D_DIR)
 
 # Set to mail and used in
-# $PTII/ptolemy/actor/lib/makefile if JavaMail's mail.jar was found.
+# $PTII/ptolemy/actor/lib/makefile if JavaMail's javax.mail.jar was found.
 AC_SUBST(PTJAVAMAIL_DIR)
 
 # Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.

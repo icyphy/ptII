@@ -618,7 +618,7 @@ PTJAVACV_DIR =	@PTJAVACV_DIR@
 PTJAVACV_PACKAGES =	@PTJAVACV_PACKAGES@ 
 
 # Set to mail and used in
-# $PTII/ptolemy/actor/lib/makefile if JavaMail's mail.jar was found.
+# $PTII/ptolemy/actor/lib/makefile if JavaMail's javax.mail.jar was found.
 PTJAVAMAIL_DIR =	@PTJAVAMAIL_DIR@
 
 # Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
