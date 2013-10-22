@@ -80,7 +80,6 @@ public class ApplicationResources extends ResourceBundle {
             _delegate = ResourceBundle.getBundle(baseName, Locale.getDefault());
         } catch (MissingResourceException e) {
             System.err.println(baseName + ".properties not found");
-            System.exit(1);
         }
 
         _class = getClass();

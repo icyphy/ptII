@@ -2,13 +2,14 @@ package lbnl.lib.xml.src;
 
 import java.io.File;
 import java.io.IOException;
-import javax.xml.parsers.DocumentBuilderFactory;
+
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
+
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.ErrorHandler;
 
 /** Class to validate xml files.
  *
@@ -61,7 +62,6 @@ public class DTDValidator {
 	 */
 	public void warning(SAXParseException e) throws SAXException {
 	    printInfo("Warning: ", e);
-	    System.exit(1);
 	}
 
 	/** Writes error messages to <code>System.err</code>
@@ -71,7 +71,6 @@ public class DTDValidator {
 	 */
 	public void error(SAXParseException e) throws SAXException {
 	    printInfo("Error: ", e);
-	    System.exit(1);
 	}
 
 	/** Writes error messages to <code>System.err</code>
