@@ -173,6 +173,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptolemy/vergil/basic/export/html/test/Butterfly.gif} {
 ?       ptserver/test/PtolemyServer.log} {
 ?       reports} {
+?       vendors/misc/javamail/javax.mail.jar} {
 M       lib/diva.jar}}
         if { $result == $result2 } {
 	    puts "Result was:\n$result\nWhich is ok"
