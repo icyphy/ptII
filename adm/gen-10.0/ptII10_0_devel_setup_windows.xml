@@ -349,8 +349,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../../jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/demo"/>
-            <file src="../../jar_dist/vendors/oracle/javamail/mail.jar"
-                  targetdir="$INSTALL_PATH/vendors/oracle/javamail"/>
+            <file src="../../jar_dist/vendors/misc/javamail/javax.mail.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/javamail/javax.mail.jar"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/gt/gt.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/gt"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/gt/demo/demo.jar"
