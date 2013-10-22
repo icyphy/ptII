@@ -28,6 +28,7 @@
  * redistribute the Software for such purposes.
  */
 package ptolemy.gui;
+import java.util.Locale;
 
 import java.io.File;
 import java.util.Enumeration;
@@ -207,7 +208,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
 
         String extension = "";
         if (i > 0 && i < name.length() - 1) {
-            extension = name.substring(i + 1).toLowerCase();
+            extension = name.substring(i + 1).toLowerCase(Locale.getDefault());
         }
 
         if (extension != null && _filters.get(extension) != null) {
@@ -238,7 +239,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
             _filters = new Hashtable(5);
         }
 
-        _filters.put(extension.toLowerCase(), this);
+        _filters.put(extension.toLowerCase(Locale.getDefault()), this);
         _fullDescription = null;
     }
 
@@ -333,7 +334,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
             int i = filename.lastIndexOf('.');
 
             if (i > 0 && i < filename.length() - 1) {
-                return filename.substring(i + 1).toLowerCase();
+                return filename.substring(i + 1).toLowerCase(Locale.getDefault());
             }
         }
         return null;

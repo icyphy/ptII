@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel;
+import java.util.Locale;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -675,7 +676,7 @@ public class SDFDirector
 
                 if (getCodeGenerator().isPrimitive(elementType)) {
                     String cgType = getCodeGenerator().codeGenType(elementType)
-                            .toLowerCase();
+                            .toLowerCase(Locale.getDefault());
                     if (cgType.equals("integer")) {
                         cgType = "int";
                     }

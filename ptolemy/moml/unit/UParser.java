@@ -27,6 +27,7 @@
 */
 
 package ptolemy.moml.unit;
+import java.util.Locale;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -347,7 +348,7 @@ public class UParser implements UParserConstants {
             jj_consume_token(DOUBLE);
             Double value;
             try {
-                x = token.image.toLowerCase();
+                x = token.image.toLowerCase(Locale.getDefault());
                 len = x.length();
                 if (x.endsWith("d") || x.endsWith("f")) {
                     // all floating point numbers are double
@@ -372,7 +373,7 @@ public class UParser implements UParserConstants {
         case INTEGER:
             jj_consume_token(INTEGER);
             try {
-                x = token.image.toLowerCase();
+                x = token.image.toLowerCase(Locale.getDefault());
                 len = x.length();
 
                 int radix;

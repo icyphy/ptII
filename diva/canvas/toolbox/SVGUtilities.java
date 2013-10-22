@@ -25,10 +25,12 @@
  *
  */
 package diva.canvas.toolbox;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -81,7 +83,7 @@ public class SVGUtilities {
      */
     public static Color getColor(String name) {
         Color color = null;
-        name = name.toLowerCase();
+        name = name.toLowerCase(Locale.getDefault());
 
         char first = name.charAt(0);
 

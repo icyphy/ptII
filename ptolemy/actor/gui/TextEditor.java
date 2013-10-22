@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.gui;
+import java.util.Locale;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,14 +41,12 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
 import java.util.LinkedList;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -539,7 +538,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
          */
         public ExportImageAction(String formatName) {
             super("Export " + formatName);
-            _formatName = formatName.toLowerCase();
+            _formatName = formatName.toLowerCase(Locale.getDefault());
             putValue("tooltip", "Export " + formatName + " image to a file.");
             // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
         }
@@ -582,7 +581,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
                 // Here, we differ from PlotTableauFrame:
                 int returnVal = fileDialog.showDialog(TextEditor.this,
-                        "Export " + _formatName.toUpperCase());
+                        "Export " + _formatName.toUpperCase(Locale.getDefault()));
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = fileDialog.getCurrentDirectory();
@@ -617,7 +616,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                             + file.getName());
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Export to " + _formatName.toUpperCase()
+                MessageHandler.error("Export to " + _formatName.toUpperCase(Locale.getDefault())
                         + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);

@@ -26,15 +26,16 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
+import java.util.Locale;
 
 import java.util.LinkedList;
 
-import ptolemy.data.Token;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.data.IntToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -77,7 +78,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
         args.add(Integer.toString(inputWidth));
         Parameter initialValue = ((ptolemy.domains.de.lib.MostRecent) getComponent()).initialValue;
         String type = initialValue.getType().toString();
-        type = type.substring(0, 1).toUpperCase() + type.substring(1);
+        type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
         args.add(type);
         
         Token initialValueToken = initialValue.getToken();

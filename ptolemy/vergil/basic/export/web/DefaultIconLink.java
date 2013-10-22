@@ -27,6 +27,7 @@
  */
 
 package ptolemy.vergil.basic.export.web;
+import java.util.Locale;
 
 import java.util.List;
 
@@ -105,7 +106,7 @@ public class DefaultIconLink extends IconLink {
             throws IllegalActionException {
 
         boolean entities = false, attributes = false;
-        String includeValue = include.stringValue().toLowerCase();
+        String includeValue = include.stringValue().toLowerCase(Locale.getDefault());
         if (includeValue.equals("all")) {
             entities = true;
             attributes = true;

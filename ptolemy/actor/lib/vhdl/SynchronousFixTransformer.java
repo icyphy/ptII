@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+import java.util.Locale;
 
 import java.util.Iterator;
 
@@ -124,11 +125,11 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
 
             Overflow overflow = Overflow
                     .getName(((Parameter) getAttribute("outputOverflow"))
-                            .getExpression().toLowerCase());
+                            .getExpression().toLowerCase(Locale.getDefault()));
 
             Rounding rounding = Rounding
                     .getName(((Parameter) getAttribute("outputRounding"))
-                            .getExpression().toLowerCase());
+                            .getExpression().toLowerCase(Locale.getDefault()));
 
             FixPoint result = new FixPoint(
                     ((ScalarToken) initialValue.getToken()).doubleValue(),
@@ -142,11 +143,11 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
 
             Overflow overflow = Overflow
                     .getName(((Parameter) getAttribute("outputOverflow"))
-                            .getExpression().toLowerCase());
+                            .getExpression().toLowerCase(Locale.getDefault()));
 
             Rounding rounding = Rounding
                     .getName(((Parameter) getAttribute("outputRounding"))
-                            .getExpression().toLowerCase());
+                            .getExpression().toLowerCase(Locale.getDefault()));
 
             FixPoint result = new FixPoint(
                     ((ScalarToken) initialValue.getToken()).doubleValue(),
@@ -165,11 +166,11 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
 
         Overflow overflow = Overflow
                 .getName(((Parameter) getAttribute("outputOverflow"))
-                        .getExpression().toLowerCase());
+                        .getExpression().toLowerCase(Locale.getDefault()));
 
         Rounding rounding = Rounding
                 .getName(((Parameter) getAttribute("outputRounding"))
-                        .getExpression().toLowerCase());
+                        .getExpression().toLowerCase(Locale.getDefault()));
 
         FixPoint result = new FixPoint(
                 ((ScalarToken) initialValue.getToken()).doubleValue(),

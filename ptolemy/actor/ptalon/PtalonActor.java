@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.ptalon;
+import java.util.Locale;
 
 import java.io.File;
 import java.io.IOException;
@@ -449,7 +450,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             }
 
             // Strip postfix.
-            if (!filename.toLowerCase().endsWith(".ptln")) {
+            if (!filename.toLowerCase(Locale.getDefault()).endsWith(".ptln")) {
                 throw new IOException("Ptalon file does not end with "
                         + "postfix .ptln.");
             }
@@ -468,7 +469,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 prefix = prefix.substring(5);
             }
             String displayName;
-            if (filename.toLowerCase().startsWith(prefix.toLowerCase())) {
+            if (filename.toLowerCase(Locale.getDefault()).startsWith(prefix.toLowerCase(Locale.getDefault()))) {
                 int i = 0;
                 while (filename.startsWith("/")) {
                     filename = filename.substring(1);

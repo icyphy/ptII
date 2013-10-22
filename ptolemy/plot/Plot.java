@@ -26,6 +26,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
+import java.util.Locale;
 
 // TO DO:
 //   - steps between points rather than connected lines.
@@ -1547,7 +1548,7 @@ public class Plot extends PlotBox implements PlotInterface {
         } else {
             // We convert the line to lower case so that the command
             // names are case insensitive
-            String lcLine = line.toLowerCase();
+            String lcLine = line.toLowerCase(Locale.getDefault());
 
             if (lcLine.startsWith("linestyle:")) {
                 String style = line.substring(10).trim();

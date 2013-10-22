@@ -77,6 +77,7 @@ derivative works thereof, in binary and source code form.
 */
 
 package lbnl.util;
+import java.util.Locale;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -89,6 +90,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -256,7 +258,7 @@ public class ClientProcess extends Thread {
         // compared to the top left corner.
 
         // Move window up on Mac and Windows so that it does not overlap with taskbar
-        final String osName = System.getProperty("os.name").toLowerCase();
+        final String osName = System.getProperty("os.name").toLowerCase(Locale.getDefault());
         int dLocY = 0;
         if (osName.indexOf("windows") > -1) {
             dLocY = 20;
@@ -316,7 +318,7 @@ public class ClientProcess extends Thread {
                     // does not overlap
                     // Move window up on Windows so that it does not overlap with taskbar
                     final String osName = System.getProperty("os.name")
-                            .toLowerCase();
+                        .toLowerCase(Locale.getDefault());
                     if (osName.indexOf("linux") > -1) {
                         locY -= dY + 22;
                     } else if (osName.indexOf("mac") > -1) {

@@ -26,6 +26,9 @@
 
  */
 package ptolemy.actor.lib.logic;
+import java.util.Locale;
+
+import java.util.Locale;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
@@ -129,7 +132,7 @@ public class LogicFunction extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String functionName = function.getExpression().trim().toLowerCase();
+            String functionName = function.getExpression().trim().toLowerCase(Locale.getDefault());
 
             if (functionName.equals("and")) {
                 _function = _AND;

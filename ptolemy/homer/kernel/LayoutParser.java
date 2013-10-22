@@ -27,6 +27,7 @@
  */
 
 package ptolemy.homer.kernel;
+import java.util.Locale;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,7 +91,7 @@ public class LayoutParser {
         try {
             screenOrientation = Enum.valueOf(ScreenOrientation.class,
                     ((Settable) orientation).getExpression().trim()
-                            .toUpperCase());
+                            .toUpperCase(Locale.getDefault()));
         } catch (IllegalArgumentException e) {
             return DEFAULT_SCREEN_ORIENTATION;
         }
@@ -272,7 +273,7 @@ public class LayoutParser {
          *  @return The value in lowercase.
          */
         public String toString() {
-            return name().toLowerCase();
+            return name().toLowerCase(Locale.getDefault());
         }
     }
 

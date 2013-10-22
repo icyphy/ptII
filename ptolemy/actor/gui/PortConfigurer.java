@@ -26,9 +26,11 @@
 
  */
 package ptolemy.actor.gui;
+import java.util.Locale;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -111,7 +113,7 @@ public class PortConfigurer extends Query implements QueryListener {
                 String cardinalValue = "SOUTH";
 
                 if (cardinal != null) {
-                    cardinalValue = cardinal.getExpression().toUpperCase();
+                    cardinalValue = cardinal.getExpression().toUpperCase(Locale.getDefault());
                 } else if (port.isInput() && !port.isOutput()) {
                     cardinalValue = "WEST";
                 } else if (port.isOutput() && !port.isInput()) {

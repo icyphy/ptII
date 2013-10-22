@@ -26,6 +26,7 @@
 
 */
 package ptolemy.cg.kernel.generic.program.procedural.java;
+import java.util.Locale;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -3410,14 +3411,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         } else if (type instanceof ObjectType) {
             return "BaseType.OBJECT";
         }
-        return "BaseType." + type.toString().toUpperCase();
+        return "BaseType." + type.toString().toUpperCase(Locale.getDefault());
     }
 
     /** Return the name of the xxxValue() method, such as doubleValue().
      *  @return the name of the xxxValue() method
      */
     private String _valueMethodName(Type type) {
-        String typeName = type.toString().toLowerCase();
+        String typeName = type.toString().toLowerCase(Locale.getDefault());
         if (typeName.equals("object(null)")) {
             typeName = "get";
         }

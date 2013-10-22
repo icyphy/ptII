@@ -27,6 +27,9 @@
 
  */
 package ptolemy.actor.lib.string;
+import java.util.Locale;
+
+import java.util.Locale;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -197,8 +200,8 @@ public class StringCompare extends TypedAtomicActor {
         String input2 = ((StringToken) secondString.getToken()).stringValue();
 
         if (((BooleanToken) ignoreCase.getToken()).booleanValue()) {
-            input1 = input1.toLowerCase();
-            input2 = input2.toLowerCase();
+            input1 = input1.toLowerCase(Locale.getDefault());
+            input2 = input2.toLowerCase(Locale.getDefault());
         }
 
         output.send(0, new BooleanToken(_doFunction(input1, input2)));

@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.lib.string;
+import java.util.Locale;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.StringToken;
@@ -167,10 +168,10 @@ public class StringFunction extends Transformer {
             return inputString.trim();
 
         case _TOUPPERCASE:
-            return inputString.toUpperCase();
+            return inputString.toUpperCase(Locale.getDefault());
 
         case _TOLOWERCASE:
-            return inputString.toLowerCase();
+            return inputString.toLowerCase(Locale.getDefault());
 
         default:
             throw new InternalErrorException(

@@ -25,6 +25,7 @@
  *
  */
 package diva.canvas.toolbox;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -38,6 +39,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -369,7 +371,7 @@ public class SVGParser {
     /** Given a string, return a color.
      */
     private static Color lookupColor(String color) throws NumberFormatException {
-        String s = color.toLowerCase();
+        String s = color.toLowerCase(Locale.getDefault());
 
         if (s.equals("black")) {
             return Color.black;

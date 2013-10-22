@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+import java.util.Locale;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
@@ -169,11 +170,11 @@ public class FixSequence extends FixTransformer {
 
                 Overflow overflow = Overflow
                         .getName(((Parameter) getAttribute("outputOverflow"))
-                                .getExpression().toLowerCase());
+                                .getExpression().toLowerCase(Locale.getDefault()));
 
                 Rounding rounding = Rounding
                         .getName(((Parameter) getAttribute("outputRounding"))
-                                .getExpression().toLowerCase());
+                                .getExpression().toLowerCase(Locale.getDefault()));
 
                 FixPoint result = new FixPoint(
                         ((ScalarToken) valuesArray.getElement(_currentIndex))

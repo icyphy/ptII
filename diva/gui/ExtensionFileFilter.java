@@ -28,6 +28,7 @@
  * redistribute the Software for such purposes.
  */
 package diva.gui;
+import java.util.Locale;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -35,6 +36,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -206,7 +208,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
 
         String extension = "";
         if (i > 0 && i < name.length() - 1) {
-            extension = name.substring(i + 1).toLowerCase();
+            extension = name.substring(i + 1).toLowerCase(Locale.getDefault());
         }
 
         if (extension != null && filters.get(extension) != null) {
@@ -238,7 +240,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
             int i = filename.lastIndexOf('.');
 
             if (i > 0 && i < filename.length() - 1) {
-                return filename.substring(i + 1).toLowerCase();
+                return filename.substring(i + 1).toLowerCase(Locale.getDefault());
             }
         }
         return null;
@@ -265,7 +267,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
             filters = new Hashtable(5);
         }
 
-        filters.put(extension.toLowerCase(), this);
+        filters.put(extension.toLowerCase(Locale.getDefault()), this);
         fullDescription = null;
     }
 

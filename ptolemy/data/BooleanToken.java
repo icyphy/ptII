@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.data;
+import java.util.Locale;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -77,7 +78,7 @@ public class BooleanToken extends ScalarToken {
             throw new IllegalActionException(notSupportedNullNilStringMessage(
                     "BooleanToken", init));
         }
-        _value = init.toLowerCase().equals("true");
+        _value = init.toLowerCase(Locale.getDefault()).equals("true");
     }
 
     ///////////////////////////////////////////////////////////////////

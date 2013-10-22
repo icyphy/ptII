@@ -28,6 +28,7 @@
  */
 
 package ptolemy.cg.kernel.generic.program.procedural.c;
+import java.util.Locale;
 
 /**
 A utility class used to simplify creating c templates in EmbeddedCActors.
@@ -87,7 +88,7 @@ public class CCodegenUtilities {
     public static String jniGetArrayElements(String type, String arrayName,
             boolean targetCpp) {
         if (targetCpp) {
-            return "env->Get" + type + "ArrayElements((j" + type.toLowerCase()
+            return "env->Get" + type + "ArrayElements((j" + type.toLowerCase(Locale.getDefault())
                     + "Array)" + arrayName + ", NULL)";
         } else {
             return "(*env)->Get" + type + "ArrayElements(env, " + arrayName
@@ -197,7 +198,7 @@ public class CCodegenUtilities {
             String elementsPointer, boolean targetCpp) {
         if (targetCpp) {
             return "env->Release" + type + "ArrayElements((j"
-                    + type.toLowerCase() + "Array)" + arrayName + ", "
+                    + type.toLowerCase(Locale.getDefault()) + "Array)" + arrayName + ", "
                     + elementsPointer + ", 0)";
         } else {
             return "(*env)->Release" + type + "ArrayElements(env, " + arrayName

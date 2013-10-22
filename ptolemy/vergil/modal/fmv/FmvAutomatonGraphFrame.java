@@ -26,6 +26,7 @@
 
  */
 package ptolemy.vergil.modal.fmv;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -449,7 +450,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
          */
         public boolean accept(File file) {
             return file.isDirectory()
-                    || file.getName().toLowerCase().endsWith(".smv");
+                    || file.getName().toLowerCase(Locale.getDefault()).endsWith(".smv");
         }
 
         /**

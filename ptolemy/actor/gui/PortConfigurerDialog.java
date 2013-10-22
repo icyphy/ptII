@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -48,6 +49,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -616,7 +618,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                             .getAttribute("_cardinal");
 
                     if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase();
+                        _direction = _cardinal.getExpression().toUpperCase(Locale.getDefault());
                     }
 
                     if (_direction == null && !direction.equals("DEFAULT")
@@ -892,7 +894,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                             .getAttribute("_cardinal");
 
                     if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase();
+                        _direction = _cardinal.getExpression().toUpperCase(Locale.getDefault());
                     } else {
                         _direction = "DEFAULT";
                     }

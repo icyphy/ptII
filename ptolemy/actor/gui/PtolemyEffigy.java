@@ -25,12 +25,14 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
+import java.util.Locale;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
@@ -375,7 +377,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 effigy.setModel(newModel);
                 return effigy;
             } else {
-                String extension = getExtension(input).toLowerCase();
+                String extension = getExtension(input).toLowerCase(Locale.getDefault());
 
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;

@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 
 package ptolemy.cg.kernel.generic.program.procedural.c;
+import java.util.Locale;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
@@ -226,7 +226,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
             if (cgType.equals("Integer")) {
                 return "int";
             }
-            return cgType.toLowerCase();
+            return cgType.toLowerCase(Locale.getDefault());
         } else if (macro.equals("ModelName")) {
             return ((CCodeGenerator)super._codeGenerator).getModelName();
         } else if (macro.equals("DirectorName")) {

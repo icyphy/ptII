@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic.export.html;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -1161,7 +1162,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                     .equals(eventType)
                                     && (script.include.stringValue().equals(
                                             include) || script.include
-                                            .stringValue().toLowerCase()
+                                            .stringValue().toLowerCase(Locale.getDefault())
                                             .equals("all"))
                                     && script.instancesOf.stringValue().equals(
                                             instancesOf)) {
@@ -1183,7 +1184,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 .attributeList(DefaultIconLink.class);
                         for (DefaultIconLink script : defaults) {
                             if ((script.include.stringValue().equals(include) || script.include
-                                    .stringValue().toLowerCase().equals("all"))
+                                    .stringValue().toLowerCase(Locale.getDefault()).equals("all"))
                                     && script.instancesOf.stringValue().equals(
                                             instancesOf)) {
                                 // Skip this default from the configuration.

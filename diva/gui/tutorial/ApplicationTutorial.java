@@ -29,10 +29,12 @@
 
  */
 package diva.gui.tutorial;
+import java.util.Locale;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.io.File;
+import java.util.Locale;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -185,7 +187,7 @@ public class ApplicationTutorial extends AbstractApplication {
 
             FileFilter ff = new FileFilter() {
                 public boolean accept(File file) {
-                    return GUIUtilities.getFileExtension(file).toLowerCase()
+                    return GUIUtilities.getFileExtension(file).toLowerCase(Locale.getDefault())
                             .equals("txt");
                 }
 

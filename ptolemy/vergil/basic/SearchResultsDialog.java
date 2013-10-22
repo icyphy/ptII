@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic;
+import java.util.Locale;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -316,7 +317,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
             boolean includeValues, boolean includeNames, boolean recursive,
             boolean caseSensitive, Pattern pattern) {
         if (!caseSensitive) {
-            text = text.toLowerCase();
+            text = text.toLowerCase(Locale.getDefault());
         }
         SortedSet<NamedObj> result = new TreeSet<NamedObj>(
                 new NamedObjComparator());
@@ -326,7 +327,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
             if (includeNames) {
                 String name = object.getName();
                 if (!caseSensitive) {
-                    name = name.toLowerCase();
+                    name = name.toLowerCase(Locale.getDefault());
                 }
                 if (pattern != null) {
                     Matcher matcher = pattern.matcher(name);
@@ -346,7 +347,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
                         && !visible.equals(Settable.EXPERT)) {
                     String value = ((Settable) object).getExpression();
                     if (!caseSensitive) {
-                        value = value.toLowerCase();
+                        value = value.toLowerCase(Locale.getDefault());
                     }
                     if (pattern != null) {
                         Matcher matcher = pattern.matcher(value);

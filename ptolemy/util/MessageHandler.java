@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.util;
+import java.util.Locale;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -329,7 +330,7 @@ public class MessageHandler {
 
             if (reply == null) {
                 return false;
-            } else if (reply.trim().toLowerCase().equals("yes")) {
+            } else if (reply.trim().toLowerCase(Locale.getDefault()).equals("yes")) {
                 return true;
             }
         } catch (IOException ex) {
@@ -364,10 +365,10 @@ public class MessageHandler {
             if (reply == null) {
                 return false;
             } else {
-                if (reply.trim().toLowerCase().equals(trueOption.toLowerCase())) {
+                if (reply.trim().toLowerCase(Locale.getDefault()).equals(trueOption.toLowerCase(Locale.getDefault()))) {
                     return true;
-                } else if (reply.trim().toLowerCase()
-                        .equals(exceptionOption.toLowerCase())) {
+                } else if (reply.trim().toLowerCase(Locale.getDefault())
+                        .equals(exceptionOption.toLowerCase(Locale.getDefault()))) {
                     throw new ptolemy.util.CancelException("Cancelled: "
                             + question);
                 }

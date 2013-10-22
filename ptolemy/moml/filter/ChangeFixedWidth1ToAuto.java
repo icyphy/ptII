@@ -27,6 +27,7 @@
 
  */
 package ptolemy.moml.filter;
+import java.util.Locale;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -159,11 +160,11 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
                 String filename = file.getName();
                 int length = filename.length();
                 if (length > 3
-                        && filename.substring(length - 4, length).toLowerCase()
+                        && filename.substring(length - 4, length).toLowerCase(Locale.getDefault())
                                 .equals(".xml")) {
                     try {
                         if (filter == null
-                                || file.toURI().toString().toLowerCase()
+                                || file.toURI().toString().toLowerCase(Locale.getDefault())
                                         .contains("/" + filter + "/")) {
                             _updateFile(file.toString());
                         }

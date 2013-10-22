@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel;
+import java.util.Locale;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -198,7 +199,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 String guard = transition.getGuardExpression();
 
                 if (transition.isDefault()
-                        || guard.toLowerCase().equals("true")) {
+                        || guard.toLowerCase(Locale.getDefault()).equals("true")) {
 
                     // We don't need to generate if-predicate for this,
                     // and we can skip the rest of the transitions.

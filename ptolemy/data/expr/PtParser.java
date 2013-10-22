@@ -28,23 +28,31 @@ Created : May 1998
 */
 
 package ptolemy.data.expr;
+import java.util.Locale;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.math.Complex;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 import java.util.StringTokenizer;
 
-import java.io.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.FloatToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.PetiteToken;
+import ptolemy.data.ShortToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.UnsignedByteToken;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////
 //// PTParser.jjt
@@ -55,6 +63,7 @@ JavaCC parser generator. It can handle all the basic arithmetic operators
 operators(&&, ||, !), bitwise operators (&, |, #, ~)  and, using 
 reflection, all of the functionality available in the java.lang.Math 
 package. 
+import java.util.Locale;
 <p>
 By editing the ASTFunctionNode file it is also relatively 
 easy to allow references to other functions. This provides an easy mechanism 
@@ -1683,7 +1692,7 @@ String x;
           jjtree.closeNodeScope(jjtn001, true);
           jjtc001 = false;
             try {
-                x = token.image.toLowerCase();
+                x = token.image.toLowerCase(Locale.getDefault());
                 if (neg) x = "-" + x;
                 len = x.length();
 
@@ -1771,7 +1780,7 @@ String x;
           jjtc001 = false;
             try
             {
-                x = token.image.toLowerCase();
+                x = token.image.toLowerCase(Locale.getDefault());
                 len = x.length();
                 Double imag = new Double(x.substring(0, len-1 ));
                 Complex value = new Complex(0, imag.doubleValue());
@@ -1798,7 +1807,7 @@ String x;
           jjtc002 = false;
             try
             {
-                x = token.image.toLowerCase();
+                x = token.image.toLowerCase(Locale.getDefault());
                 len = x.length();
                 if (x.endsWith("f")) {
                     Float value = new Float(x.substring(0, len - 1));

@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.kernel.generic;
+import java.util.Locale;
 
 import java.io.File;
 import java.io.Writer;
@@ -1422,7 +1423,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             throws IllegalActionException {
         String language = generatorPackageValue.substring(generatorPackageValue
                 .lastIndexOf("."));
-        String capitalizedLanguage = language.substring(1, 2).toUpperCase()
+        String capitalizedLanguage = language.substring(1, 2).toUpperCase(Locale.getDefault())
                 + language.substring(2);
         String codeGeneratorClassName = generatorPackageValue + "."
                 + capitalizedLanguage + "CodeGenerator";
@@ -1432,7 +1433,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             result = Class.forName(codeGeneratorClassName);
         } catch (Throwable throwable) {
             // If we have html, try HTMLCodeGenerator
-            capitalizedLanguage = language.toUpperCase();
+            capitalizedLanguage = language.toUpperCase(Locale.getDefault());
             String oldCodeGeneratorClassName = codeGeneratorClassName;
             codeGeneratorClassName = generatorPackageValue
                     + capitalizedLanguage + "CodeGenerator";

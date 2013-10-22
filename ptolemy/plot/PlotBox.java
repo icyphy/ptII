@@ -26,6 +26,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -2951,7 +2952,7 @@ out.println("\\begin{document}");
         // If you modify this method, you should also modify write()
         // We convert the line to lower case so that the command
         // names are case insensitive.
-        String lcLine = line.toLowerCase();
+        String lcLine = line.toLowerCase(Locale.getDefault());
 
         if (lcLine.startsWith("#")) {
             // comment character

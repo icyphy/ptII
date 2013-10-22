@@ -27,6 +27,7 @@
 
  */
 package ptolemy.backtrack.eclipse.plugin.util;
+import java.util.Locale;
 
 import java.io.File;
 
@@ -178,7 +179,7 @@ public class Environment {
         File oldFile = new File(source);
         String simpleName = oldFile.getName();
 
-        if (simpleName.toLowerCase().endsWith(".java")) {
+        if (simpleName.toLowerCase(Locale.getDefault()).endsWith(".java")) {
             simpleName = simpleName.substring(0, simpleName.length() - 5);
         }
 

@@ -27,6 +27,7 @@
  */
 
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel;
+import java.util.Locale;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -92,7 +93,7 @@ public class SDFReceiver extends ptolemy.cg.adapter.generic.program.procedural.a
 //                _forComposite, false, containingActorAdapter);
         String actorName = CodeGeneratorAdapter.generateName(port.getContainer());
         String type = getCodeGenerator().codeGenType(port.getType());
-        //type = type.substring(0, 1).toUpperCase() + type.substring(1);
+        //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
         String result;
         if (port.getType() instanceof StructuredType)
             result = "ReceiverGet(" + actorName + ".ports[enum_" + actorName + "_" + port.getName() + "].receivers + " + channel + ")";
@@ -169,7 +170,7 @@ public class SDFReceiver extends ptolemy.cg.adapter.generic.program.procedural.a
             String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" + 
                     actorSourceName + "_" + sourcePort.getName() + "_" + actorDestName + "_" + port.getName() + "_" + channel + "]";
             String type = getCodeGenerator().codeGenType(port.getType());
-            //type = type.substring(0, 1).toUpperCase() + type.substring(1);
+            //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
             
             if (port.getType() instanceof StructuredType)
                 result = _eol + "ReceiverPut(" + nameInput 

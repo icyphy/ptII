@@ -27,6 +27,7 @@
 */
 
 package ptolemy.util.test.junit;
+import java.util.Locale;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -89,7 +90,7 @@ public class ModelTests {
                  * @return true if the file name ends with .xml or .moml
                  */
                 public boolean accept(File directory, String name) {
-                    String fileName = name.toLowerCase();
+                    String fileName = name.toLowerCase(Locale.getDefault());
                     return fileName.endsWith(".xml")
                             || fileName.endsWith(".moml");
                 }

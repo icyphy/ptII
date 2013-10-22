@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+import java.util.Locale;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -102,11 +103,11 @@ public class Concat extends FixTransformer {
 
         Overflow overflow = Overflow
                 .getName(((Parameter) getAttribute("outputOverflow"))
-                        .getExpression().toLowerCase());
+                        .getExpression().toLowerCase(Locale.getDefault()));
 
         Rounding rounding = Rounding
                 .getName(((Parameter) getAttribute("outputRounding"))
-                        .getExpression().toLowerCase());
+                        .getExpression().toLowerCase(Locale.getDefault()));
 
         StringBuffer bits = new StringBuffer();
 

@@ -26,6 +26,7 @@
 
  */
 package ptolemy.domains.giotto.kernel;
+import java.util.Locale;
 
 import java.io.File;
 import java.util.Iterator;
@@ -645,7 +646,7 @@ public class GiottoCodeGeneratorUtilities {
         StringBuffer code = new StringBuffer("\n/** " + taskName + "\n"
                 + " */\n" + "task " + taskName + " (");
 
-        String stateParas = ""; //taskName.toUpperCase() +
+        String stateParas = ""; //taskName.toUpperCase(Locale.getDefault()) +
 
         //  "_PARAM param := init_" + taskName + "_param";
         // Write the input port specification of the task

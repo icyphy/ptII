@@ -27,6 +27,7 @@
  */
 
 package ptolemy.vergil.basic.export;
+import java.util.Locale;
 
 import java.awt.Color;
 import java.io.File;
@@ -232,7 +233,7 @@ public class ExportModel {
 
         // Use the model name as the basis for the directory containing
         // the html or as the basis for the image file.
-        final boolean isHTM = formatName.toLowerCase().startsWith("htm");
+        final boolean isHTM = formatName.toLowerCase(Locale.getDefault()).startsWith("htm");
         if (isHTM) {
             if (outputFileOrDirectory != null) {
                 temporaryHTMLDirectory = new File(outputFileOrDirectory);
@@ -245,13 +246,13 @@ public class ExportModel {
 
             }
         } else {
-            String suffix = "." + formatName.toLowerCase();
+            String suffix = "." + formatName.toLowerCase(Locale.getDefault());
             if (outputFileOrDirectory != null) {
                 // If the filename does not end in the formatName,
                 // append the format name.
-                if (outputFileOrDirectory.endsWith(formatName.toLowerCase())
+                if (outputFileOrDirectory.endsWith(formatName.toLowerCase(Locale.getDefault()))
                         || outputFileOrDirectory.endsWith(formatName
-                                .toUpperCase())) {
+                                .toUpperCase(Locale.getDefault()))) {
                     suffix = "";
                 }
                 temporaryImageFile = new File(outputFileOrDirectory + suffix);
@@ -539,7 +540,7 @@ public class ExportModel {
                     OutputStream out = null;
 
                     try {
-                        if (formatName.toLowerCase().startsWith("htm")) {
+                        if (formatName.toLowerCase(Locale.getDefault()).startsWith("htm")) {
                             if (!htmlDirectory.isDirectory()) {
                                 if (!htmlDirectory.mkdirs()) {
                                     throw new Exception("Failed to create \""
@@ -851,16 +852,16 @@ public class ExportModel {
                                         + ex);
                     }
                     i++;
-                } else if (args[i].toUpperCase().equals("GIF")
-                        || args[i].toUpperCase().startsWith("HTM")
-                        || args[i].toUpperCase().equals("PNG")) {
+                } else if (args[i].toUpperCase(Locale.getDefault()).equals("GIF")
+                        || args[i].toUpperCase(Locale.getDefault()).startsWith("HTM")
+                        || args[i].toUpperCase(Locale.getDefault()).equals("PNG")) {
                     // The default is GIF.
                     if (web) {
                         throw new IllegalArgumentException("Only one of "
                                 + args[i] + " and -web "
                                 + "should be specified.");
                     }
-                    formatName = args[i].toUpperCase();
+                    formatName = args[i].toUpperCase(Locale.getDefault());
                 } else if (args[i].equals("-web")) {
                     web = true;
                     copyJavaScriptFiles = true;

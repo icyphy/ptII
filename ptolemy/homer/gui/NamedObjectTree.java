@@ -26,6 +26,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.homer.gui;
+import java.util.Locale;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -129,8 +130,8 @@ public class NamedObjectTree extends JPanel {
 
                 // If filter is applied & no children exist.
                 if (_search.getText() != null && _search.getText().length() > 0) {
-                    if (!((Nameable) value).getFullName().toLowerCase()
-                            .contains(_search.getText().toLowerCase())) {
+                    if (!((Nameable) value).getFullName().toLowerCase(Locale.getDefault())
+                            .contains(_search.getText().toLowerCase(Locale.getDefault()))) {
                         setEnabled(false);
                     }
                 }

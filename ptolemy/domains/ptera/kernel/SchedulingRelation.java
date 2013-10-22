@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 
 package ptolemy.domains.ptera.kernel;
+import java.util.Locale;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -418,7 +419,7 @@ public class SchedulingRelation extends Transition {
      *  @return True if the expression is statically equal to 0.0.
      */
     private boolean _isZero(String expression) {
-        String trimmedExpression = expression.trim().toLowerCase();
+        String trimmedExpression = expression.trim().toLowerCase(Locale.getDefault());
         for (String zeroConst : _ZERO_CONSTS) {
             if (trimmedExpression.equals(zeroConst)) {
                 return true;

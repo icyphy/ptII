@@ -29,10 +29,12 @@
 
  */
 package diva.gui.tutorial;
+import java.util.Locale;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.File;
+import java.util.Locale;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -136,7 +138,7 @@ public class MDIApplicationTutorial extends MDIApplication {
 
             FileFilter ff = new FileFilter() {
                 public boolean accept(File file) {
-                    return GUIUtilities.getFileExtension(file).toLowerCase()
+                    return GUIUtilities.getFileExtension(file).toLowerCase(Locale.getDefault())
                             .equals("txt");
                 }
 

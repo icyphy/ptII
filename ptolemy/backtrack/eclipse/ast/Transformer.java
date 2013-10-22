@@ -26,6 +26,7 @@
 
  */
 package ptolemy.backtrack.eclipse.ast;
+import java.util.Locale;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -382,7 +383,7 @@ public class Transformer {
             File file = new File(fileName);
             String simpleName = file.getName();
 
-            if (simpleName.toUpperCase().endsWith(".JAVA")) {
+            if (simpleName.toUpperCase(Locale.getDefault()).endsWith(".JAVA")) {
                 String baseName = simpleName.substring(0,
                         simpleName.length() - 5);
                 CompilationUnit root = (CompilationUnit) transform._ast

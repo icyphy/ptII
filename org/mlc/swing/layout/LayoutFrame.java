@@ -28,6 +28,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
+import java.util.Locale;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -422,7 +423,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
             boolean isXml = false;
 
             if (i > 0 && i < s.length() - 1) {
-                ext = s.substring(i + 1).toLowerCase();
+                ext = s.substring(i + 1).toLowerCase(Locale.getDefault());
                 isXml = ext.equals("xml");
             }
 

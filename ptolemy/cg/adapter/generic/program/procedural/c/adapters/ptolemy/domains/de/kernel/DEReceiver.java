@@ -27,6 +27,7 @@
  */
 
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel;
+import java.util.Locale;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -187,7 +188,7 @@ public class DEReceiver extends Receiver  {
 //                String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" + 
 //                        actorSourceName + "_" + sourcePort.getName() + "_" + actorDestName + "_" + port.getName() + "_" + channel + "]";
                 String type = getCodeGenerator().codeGenType(port.getType());
-                //type = type.substring(0, 1).toUpperCase() + type.substring(1);
+                //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
                 result = "(*(" + port.getName() + "->send))((struct IOPort*) " + port.getName() + ", " + channel + ", ";
                 
         	result += "$new(" + type + "(" + token + ")));" + _eol;

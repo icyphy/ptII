@@ -26,6 +26,7 @@
  2
  */
 package ptolemy.vergil.basic;
+import java.util.Locale;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -3660,7 +3661,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          */
         public ExportImageAction(String formatName) {
             super("Export " + formatName);
-            _formatName = formatName.toLowerCase();
+            _formatName = formatName.toLowerCase(Locale.getDefault());
             putValue("tooltip", "Export " + formatName + " image to a file.");
             // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
         }
@@ -3698,7 +3699,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 ptFileChooser.setCurrentDirectory(_directory);
 
                 int returnVal = ptFileChooser.showDialog(BasicGraphFrame.this,
-                        "Export " + _formatName.toUpperCase());
+                        "Export " + _formatName.toUpperCase(Locale.getDefault()));
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = ptFileChooser.getCurrentDirectory();
@@ -3747,7 +3748,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Export to " + _formatName.toUpperCase()
+                MessageHandler.error("Export to " + _formatName.toUpperCase(Locale.getDefault())
                         + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
@@ -3817,7 +3818,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          */
         public void actionPerformed(ActionEvent e) {
             _library.clearSelection();
-            String text = _findInLibraryEntryBox.getText().trim().toLowerCase();
+            String text = _findInLibraryEntryBox.getText().trim().toLowerCase(Locale.getDefault());
             if (text.equals("")) {
                 // Nothing to search for. Ignore.
                 _previousText = null;
@@ -3908,7 +3909,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 NamedObj candidate = (NamedObj) _libraryModel.getChild(library,
                         i);
                 String name = candidate.getName();
-                if (name.toLowerCase().contains(text)) {
+                if (name.toLowerCase(Locale.getDefault()).contains(text)) {
                     // Found a match to the name.
                     _stack.push(candidate);
                     Object[] path = _stack.toArray();

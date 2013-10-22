@@ -1,4 +1,5 @@
 package org.json;
+import java.util.Locale;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -74,7 +75,7 @@ public class HTTP {
         String t;
 
         t = x.nextToken();
-        if (t.toUpperCase().startsWith("HTTP")) {
+        if (t.toUpperCase(Locale.getDefault()).startsWith("HTTP")) {
 
             // Response
 

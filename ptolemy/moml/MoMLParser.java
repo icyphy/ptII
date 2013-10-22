@@ -26,6 +26,7 @@
 
  */
 package ptolemy.moml;
+import java.util.Locale;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -1234,7 +1235,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             String protocol = result.getProtocol();
 
             if (protocol != null
-                    && protocol.trim().toLowerCase().equals("http")) {
+                    && protocol.trim().toLowerCase(Locale.getDefault()).equals("http")) {
                 SecurityManager security = System.getSecurityManager();
                 boolean withinUntrustedApplet = false;
 
@@ -5458,7 +5459,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null && value.trim().toLowerCase().equals("false")) {
+            if (value != null && value.trim().toLowerCase(Locale.getDefault()).equals("false")) {
                 newValue = false;
             }
 
@@ -5519,7 +5520,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null && value.trim().toLowerCase().equals("false")) {
+            if (value != null && value.trim().toLowerCase(Locale.getDefault()).equals("false")) {
                 newValue = false;
             }
 
@@ -5581,7 +5582,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null && value.trim().toLowerCase().equals("false")) {
+            if (value != null && value.trim().toLowerCase(Locale.getDefault()).equals("false")) {
                 newValue = false;
             }
 

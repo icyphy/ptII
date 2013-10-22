@@ -27,12 +27,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 package ptdb.kernel.bl.migration;
+import java.util.Locale;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Locale;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.save.SaveModelManager;
@@ -280,8 +282,9 @@ public class MigrateModelsManager {
             String lastTag = fileContent.substring(fileContent
                     .lastIndexOf("</"));
 
-            if (lastTag.toLowerCase().contains("entity")
-                    || lastTag.toLowerCase().contains("class")) {
+            String lowerCaseLastTag = lastTag.toLowerCase(Locale.getDefault());
+            if (lowerCaseLastTag.contains("entity")
+                    || lowerCaseLastTag.contains("class")) {
                 isPtolemyModel = true;
             }
         }

@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 
 package ptolemy.cg.kernel.generic.program.procedural.java;
+import java.util.Locale;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
@@ -242,7 +243,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
             if (cgType.equals("Integer")) {
                 return "int";
             }
-            return cgType.toLowerCase();
+            return cgType.toLowerCase(Locale.getDefault());
         }
 
         // We will assume that it is a call to a polymorphic

@@ -25,10 +25,12 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.lib.python;
+import java.util.Locale;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.python.core.PyClass;
@@ -704,7 +706,7 @@ public class PythonScript extends TypedAtomicActor {
                     System.setProperty("python.home",
                             StringUtilities.getProperty("user.home"));
                 } else {
-                    jythonIndex = classpath.toLowerCase().indexOf("jython.jar");
+                    jythonIndex = classpath.toLowerCase(Locale.getDefault()).indexOf("jython.jar");
                 }
 
                 if (jythonIndex == -1) {

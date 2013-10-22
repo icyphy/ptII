@@ -28,6 +28,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
+import java.util.Locale;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -298,7 +299,7 @@ public class LayoutConstraintsManager {
 
                             String methodName = "set"
                                     + propertyName.substring(0, 1)
-                                            .toUpperCase()
+                                            .toUpperCase(Locale.getDefault())
                                     + (propertyName.length() > 1 ? propertyName
                                             .substring(1) : "");
                             xmlEncoder.writeStatement(new Statement(xmlEncoder,

@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.lib.string;
+import java.util.Locale;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -161,8 +162,8 @@ public class StringIndexOf extends TypedAtomicActor {
                 .booleanValue();
 
         if (((BooleanToken) ignoreCase.getToken()).booleanValue()) {
-            searchForString = searchForString.toLowerCase();
-            inTextString = inTextString.toLowerCase();
+            searchForString = searchForString.toLowerCase(Locale.getDefault());
+            inTextString = inTextString.toLowerCase(Locale.getDefault());
         }
 
         int returnValue;

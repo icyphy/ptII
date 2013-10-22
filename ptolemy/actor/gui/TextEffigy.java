@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
+import java.util.Locale;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Locale;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -140,7 +142,7 @@ public class TextEffigy extends Effigy {
         // TODO: find a better way to check for binary files.
         //
         if (in != null) {
-            String extension = EffigyFactory.getExtension(in).toLowerCase();
+            String extension = EffigyFactory.getExtension(in).toLowerCase(Locale.getDefault());
             if (extension.equals("jar") || extension.equals("kar")
                     || extension.equals("gz") || extension.equals("tar")
                     || extension.equals("zip")) {
