@@ -1656,7 +1656,7 @@ Optional Packages:
   --with-smackx=JAR       use smackx.jar from JAR,
                           defaults to \$PTII/lib/smackx.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
-                          defaults to \$PTII/vendors/oracle/javamail
+                          defaults to \$PTII/vendors/misc/javamail
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -5200,17 +5200,15 @@ if test -z "$PTDOCLETS_DIR"; then
 else
    addToolsJarToEclipse=yes
 
-   case "`uname -s`" in
-	Darwin)
-	    case "$TOOLS_JAR" in
-		*/Classes/classes.jar)
-		    addToolsJarToEclipse=no
-  	            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Not including $TOOLS_JAR
-   to the Eclipse classpath under Darwin because it is already present." >&5
-$as_echo "$as_me: WARNING: Not including $TOOLS_JAR
-   to the Eclipse classpath under Darwin because it is already present." >&2;};;
-            esac;;
-   esac
+#   case "`uname -s`" in
+#	Darwin)
+#	    case "$TOOLS_JAR" in
+#		*/Classes/classes.jar)
+#		    addToolsJarToEclipse=no
+#  	            AC_MSG_WARN([Not including $TOOLS_JAR
+#   to the Eclipse classpath under Darwin because it is already present.]);;
+#            esac;;
+#   esac
 
     if test "$addToolsJarToEclipse" = "yes" ; then
        updateClasspath "$TOOLS_JAR"
@@ -8131,7 +8129,7 @@ fi
 
 #--------------------------------------------------------------------
 #       JavaMail is a Java interface that sends email
-#	http://www.oracle.com/technetwork/java/index-138643.html
+#	https://java.net/projects/javamail/pages/Home
 #--------------------------------------------------------------------
 
 # PTJAVAMAIL_DIR is set to mail
@@ -8139,8 +8137,8 @@ fi
 PTJAVAMAIL_DIR=
 
 # JavaMail Directory.  JavaMail is available from
-# http://www.oracle.com/technetwork/java/index-138643.html
-JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+# https://java.net/projects/javamail/pages/Home
+JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
 
 # Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
 PTJAVAMAIL_JARS=
@@ -8160,47 +8158,49 @@ $as_echo_n "checking for JavaMail directory... " >&6; }
 if test "${with_javamail+set}" = set; then :
   withval=$with_javamail; JAVAMAIL_DIR=$withval
 else
-  JAVAMAIL_DIR=$PTII/vendors/oracle/javamail
+  JAVAMAIL_DIR=$PTII/vendors/misc/javamail
 fi
 
 
-    if test -f "$JAVAMAIL_DIR/mail.jar"; then
+    if test -f "$JAVAMAIL_DIR/javax.mail.jar"; then
 	# Set to mail and used in
-	# $PTII/ptolemy/actor/libmakefile if mail.jar was found.
+	# $PTII/ptolemy/actor/lib/makefile if javax.mail.jar was found.
 	PTJAVAMAIL_DIR=mail
         # PTJAVAMAIL_PACKAGES is used in ptII/doc/makefile
 	PTJAVAMAIL_PACKAGES="ptolemy.actor.lib.mail"
 
-	PTJAVAMAIL_JARS="${JAVAMAIL_DIR}/mail.jar"
-        updateClasspath "$JAVAMAIL_DIR/mail.jar"
+	PTJAVAMAIL_JARS="${JAVAMAIL_DIR}/javax.mail.jar"
+        updateClasspath "$JAVAMAIL_DIR/javax.mail.jar"
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JAVAMAIL_DIR" >&5
 $as_echo "$JAVAMAIL_DIR" >&6; }; fi
     fi
 
     if test "$PTJAVAMAIL_DIR" = ""; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find mail.jar
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find javax.mail.jar
     in $JAVAMAIL_DIR
     perhaps the JavaMail interface is not installed?
     You need not download the JavaMail interface unless you
     plan on using the Ptolemy actors that send email.
     The JavaMail interface can be downloaded from
-    http://www.oracle.com/technetwork/java/index-138643.html
-    an untar'd into $PTII/vendors/oracle.  Note that configure looks
-    for $PTII/vendors/oracle/javamail, so either move the JavaMail distribution
-    or create a symbolic link and then rerun configure. " >&5
-$as_echo "$as_me: WARNING: Failed to find mail.jar
+    https://java.net/projects/javamail/pages/Home with
+      cd $PTII/vendors/misc/javamail
+      wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
+      cd $PTII
+      ./configure" >&5
+$as_echo "$as_me: WARNING: Failed to find javax.mail.jar
     in $JAVAMAIL_DIR
     perhaps the JavaMail interface is not installed?
     You need not download the JavaMail interface unless you
     plan on using the Ptolemy actors that send email.
     The JavaMail interface can be downloaded from
-    http://www.oracle.com/technetwork/java/index-138643.html
-    an untar'd into $PTII/vendors/oracle.  Note that configure looks
-    for $PTII/vendors/oracle/javamail, so either move the JavaMail distribution
-    or create a symbolic link and then rerun configure. " >&2;}
+    https://java.net/projects/javamail/pages/Home with
+      cd $PTII/vendors/misc/javamail
+      wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
+      cd $PTII
+      ./configure" >&2;}
 	# Note that we don't substitute in the ${PTII} here
-	JAVAMAIL_DIR='${PTII}/vendors/oracle/javamail'
+	JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
     fi
 fi
 
@@ -12976,7 +12976,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Set to mail and used in
-# $PTII/ptolemy/actor/lib/makefile if JavaMail's mail.jar was found.
+# $PTII/ptolemy/actor/lib/makefile if JavaMail's javax.mail.jar was found.
 
 
 # Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
