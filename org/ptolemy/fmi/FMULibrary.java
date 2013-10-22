@@ -136,8 +136,9 @@ public interface FMULibrary extends FMILibrary {
 
         /** Keep references to memory that has been allocated and
          *  avoid problems with the memory being garbage collected.
+         *  FindBugs suggests that this be final.
          */
-        public static Map<Pointer,Memory> pointers = new HashMap<Pointer,Memory>();
+        public static final Map<Pointer,Memory> pointers = new HashMap<Pointer,Memory>();
     }
 
     /** A class providing a callback method that frees memory.
