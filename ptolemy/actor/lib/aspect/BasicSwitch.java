@@ -465,6 +465,9 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @param portIn The id of the switch port. 
      */
     public void setPortIn(Port port, int portIn) {
+    	if (_ioPortToSwitchInPort == null) {
+    		_ioPortToSwitchInPort = new HashMap<Port, Integer>();
+    	}
         _ioPortToSwitchInPort.put((IOPort)port, portIn);  
     } 
     
@@ -473,6 +476,9 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      * @param portOut The id of the switch port. 
      */
     public void setPortOut(Port port, int portOut) { 
+    	if (_ioPortToSwitchOutPort == null) {
+    		_ioPortToSwitchOutPort = new HashMap<Port, Integer>();
+    	}
         _ioPortToSwitchOutPort.put((IOPort)port, portOut);
     } 
     
