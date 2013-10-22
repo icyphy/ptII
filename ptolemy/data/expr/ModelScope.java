@@ -102,12 +102,12 @@ public abstract class ModelScope implements ParserScope {
      * @param exclude  The variable to exclude from the scope.
      * @param container The container of this scope.
      */
-    public static Set getAllScopedVariableNames(Variable exclude,
+    public static Set<String> getAllScopedVariableNames(Variable exclude,
             NamedObj container) {
         List variableList = container.attributeList(Variable.class);
         variableList.remove(exclude);
 
-        Set nameSet = new HashSet();
+        Set<String> nameSet = new HashSet<String>();
 
         for (Iterator variables = variableList.iterator(); variables.hasNext();) {
             Variable variable = (Variable) variables.next();
