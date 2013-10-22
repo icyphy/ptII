@@ -41,6 +41,7 @@
  */
 
 package ptolemy.domains.openmodelica.lib.omc;
+import java.util.Locale;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -356,7 +357,7 @@ public class OMCProxy implements IOMCProxy {
             return false;
         }
         // See if there are parse error. An empty list {} also denotes error.
-        return retval.toLowerCase().contains("error");
+        return retval.toLowerCase(Locale.getDefault()).contains("error");
     }
 
     /** load the Modelica file and library.  
@@ -1106,33 +1107,44 @@ public class OMCProxy implements IOMCProxy {
         File file = new File(_getPathToObject());
 
         String stringifiedObjectReference = null;
-        BufferedReader bufferReader = null;
+        BufferedReader bufferedReader = null;
         FileReader fileReader = null;
 
         try {
-            fileReader = new FileReader(file);
-            String loggerInfo = "OpenModelica object reference found at "
+            try {
+                fileReader = new FileReader(file);
+                String loggerInfo = "OpenModelica object reference found at "
                     + _temp;
-            _omcLogger.getInfo(loggerInfo);
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException(
-                    "Unable to find OpenModelica object reference located at "
+                _omcLogger.getInfo(loggerInfo);
+            } catch (FileNotFoundException e) {
+                throw new FileNotFoundException(
+                        "Unable to find OpenModelica object reference located at "
+                        + _temp + " !");
+            }
+
+            try {
+                bufferedReader = new BufferedReader(fileReader);
+
+                try {
+                    stringifiedObjectReference = bufferedReader.readLine();
+                    String loggerInfo = "OpenModelica Object reference at " + _temp
+                        + " is read successfuly!";
+                    _omcLogger.getInfo(loggerInfo);
+                } catch (IOException e) {
+                    throw new IOException(
+                            "Unable to read OpenModelica object reference from "
                             + _temp + " !");
-        }
-
-        bufferReader = new BufferedReader(fileReader);
-
-        try {
-            stringifiedObjectReference = bufferReader.readLine();
-            bufferReader.close();
-            String loggerInfo = "OpenModelica Object reference at " + _temp
-                    + " is read successfuly!";
-            _omcLogger.getInfo(loggerInfo);
-        } catch (IOException e) {
-            throw new IOException(
-                    "Unable to read OpenModelica object reference from "
-                            + _temp + " !");
-
+                }
+            } finally {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            }
+        } finally {
+            if (fileReader != null) {
+                // Not sure if closing this is ok, bug FindBugs is complaining.
+                fileReader.close();
+            }
         }
         return stringifiedObjectReference;
     }
