@@ -235,7 +235,7 @@ public class CanBus extends AtomicCommunicationAspect {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CanBus newObject = (CanBus) super.clone(workspace);
 
-        _ioPortToCanPriority = new HashMap<Port, Integer>();
+        newObject._ioPortToCanPriority = new HashMap<Port, Integer>();
         newObject._tokenTree = new TreeMap<Integer, LinkedList<Object[]>>();
         newObject._multiCast = new HashMap<Integer, Integer>();
         newObject._frameSize = _frameSize;
