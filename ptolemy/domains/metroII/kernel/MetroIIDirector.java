@@ -116,7 +116,8 @@ import ptolemy.kernel.util.Workspace;
  * 
  * <p>
  * In ResumableFire, the 'start', 'block', and 'resume' are realized using
- * YieldAdapter {@link http://jimblackler.net/blog/?p=61}. The underlying
+ * YieldAdapter, see <a href="http://jimblackler.net/blog/?p=61">http://jimblackler.net/blog/?p=61</a>.
+ * The underlying
  * mechanism is to create, suspend, and resume a java thread. And proposed
  * MetroII events are returned by the parameters of startOrResume(). 
  * </p>

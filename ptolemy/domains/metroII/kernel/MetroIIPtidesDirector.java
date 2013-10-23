@@ -87,7 +87,8 @@ import ptolemy.kernel.util.Workspace;
  * constraint resolution and architectural models. In other words, the order of
  * firing may be affected by the architectural model. But causality should not
  * be violated because the actors ready to fire simultaneously are obtained by
- * causality analysis {@see #isCausallyAffected(Collection<PtidesEvent>)}
+ * causality analysis, see isCausallyAffected(Collection<PtidesEvent> eventArray,
+ * PtidesEvent event).
  * 
  * <p>
  * Most methods are identical to PtidesDirector except directors are mapped to

@@ -30,8 +30,6 @@ package ptolemy.domains.metroII.kernel.test.junit;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import static org.junit.Assert.assertEquals;
-
 import ptolemy.domains.metroII.kernel.MappingConstraintSolver;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;

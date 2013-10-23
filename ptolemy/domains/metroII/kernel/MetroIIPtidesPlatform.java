@@ -62,7 +62,6 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
-import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
