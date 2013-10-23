@@ -269,6 +269,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     
     /** Check whether the execution of an actor is handled by
      *  this aspect actor. 
+     *  @param actor The actor.
      *  @return True, if the actor execution is handled by this 
      *  aspect actor. 
      */
