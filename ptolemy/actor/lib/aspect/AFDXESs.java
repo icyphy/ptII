@@ -481,8 +481,11 @@ public class AFDXESs extends AtomicCommunicationAspect {
         _scheduleRefire();
     }
 
-    public void setVlinkName(IOPort port, String name)
-            throws IllegalActionException {
+    /** Set name of virtual link that is parameterized on a port.
+     * @param port The port.
+     * @param name The virtual link name. 
+     */
+    public void setVlinkName(IOPort port, String name) {
         AFDXVlink vl;
 
         if (!_portToVirtualLinks.containsKey(port)) {
@@ -494,7 +497,11 @@ public class AFDXESs extends AtomicCommunicationAspect {
         }
     }
 
-    public void setBag(IOPort port, Double bag) throws IllegalActionException {
+    /** Set bag value that is parameterized on a port.
+     * @param port The port.
+     * @param bag The bag value. 
+     */
+    public void setBag(IOPort port, Double bag) {
         AFDXVlink vl;
 
         if (!_portToVirtualLinks.containsKey(port)) {
@@ -506,8 +513,11 @@ public class AFDXESs extends AtomicCommunicationAspect {
         }
     }
 
-    public void setFrameSize(IOPort port, int size)
-            throws IllegalActionException {
+    /** Set frame size that is parameterized on a port.
+     * @param port The port.
+     * @param size The frame size. 
+     */
+    public void setFrameSize(IOPort port, int size) {
         AFDXVlink vl;
 
         if (!_portToVirtualLinks.containsKey(port)) {
@@ -519,6 +529,10 @@ public class AFDXESs extends AtomicCommunicationAspect {
         }
     }
 
+    /** Set the name of the scheduler that is parameterized on a port..
+     * @param port The port.
+     * @param name The name. 
+     */
     public void setSchedulerMultiplexorName(IOPort port, String name)
             throws IllegalActionException {
         AFDXVlink vl;
@@ -582,6 +596,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
      */
     protected HashMap<String, AFDXVlink> _virtualLinkTable;
 
+    /** Routing table mapping ports to virtual link objects.
+     */
     protected HashMap<IOPort, AFDXVlink> _portToVirtualLinks;
 
     /** Last emission timestamp for a given virtual link.
@@ -651,19 +667,19 @@ public class AFDXESs extends AtomicCommunicationAspect {
         ///////////////////////////////////////////////////////////////////
         ////                         parameters                        ////
 
-        /** 
+        /** The name of the virtual link object. This defaults to an empty string.
          */
         public Parameter vlinkName;
 
-        /** 
+        /** The value of the bag. This defaults to the double value 0.0
          */
         public Parameter bag;
 
-        /** 
+        /** The frame size. This defaults to the integer 0.
          */
         public Parameter frameSize;
 
-        /**
+        /** The name of the scheduler multiplexor. This defaults to an empty string.
          */
         public Parameter schedulerMultiplexorName;
 
