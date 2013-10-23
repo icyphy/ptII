@@ -1649,6 +1649,7 @@ out.println("\\begin{document}");
     /** Set the array of colors
      *  Implements the {@link PlotBoxInterface}.
      *  @param colors The array of Colors.
+     *  @see #getColors()
      */	
     public void setColors(Object[] colors) {
          setColors((Color[]) colors);
@@ -1730,6 +1731,7 @@ out.println("\\begin{document}");
     /** Set the plot rectangle.
      *  Implements the {@link PlotBoxInterface}.
      *  @param rectangle The Rectangle.
+     *  @see #getPlotRectangle()
      */	
     public void setPlotRectangle(Object rectangle) {
 	setPlotRectangle((Rectangle) rectangle);

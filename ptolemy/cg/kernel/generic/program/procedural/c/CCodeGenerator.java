@@ -1589,6 +1589,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     /** Generate the code for a constructor.
      *  @param actor The actor for which constructor code shall be generated.
      *  @return The constructor code.
+     *  @exception IllegalActionException If there is a problem
+     *  generating the code.
      */  
     protected String _generateConstructorCode(Actor actor) throws IllegalActionException {
         StringBuffer result = new StringBuffer(_eol);
@@ -1632,6 +1634,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param actor The Composite actor for which constructor code
      *  shall be generated.
      *  @return The constructor code.
+     *  @exception IllegalActionException If there is a problem
+     *  generating the code.
      */  
     protected String _generateConstructorCode(CompositeActor actor) throws IllegalActionException {
         StringBuffer result = new StringBuffer(_eol);

@@ -53,20 +53,20 @@ import ptolemy.util.StringUtilities;
 
  <dl>
 
- <dt><code>-help</code></a></dt>
+ <dt><code>-help</code></dt>
  <dd>Print the usage, including all command-line options
  that exist for backward compatibility and then exit.
  The help menu choice will display the same information.</dd>
 
- <dt><code>-test</code></a></dt>
+ <dt><code>-test</code></dt>
  <dd>Display the plot, then exit after 2 seconds.</dd>
 
- <dt><code>-version</code></a></dt>
+ <dt><code>-version</code></dt>
  <dd>Print the program version and then exit.
  While ptplot is running,
  the version menu choice will display the same information.</dd>
 
- <dt><code>-</code></a></dt>
+ <dt><code>-</code></dt>
  <dd>Read the plot data from standard in.</dd>
 
  </dl>
@@ -82,14 +82,14 @@ import ptolemy.util.StringUtilities;
 
  <dl>
 
- <dt><code>-bigendian</code></a></dt>
+ <dt><code>-bigendian</code></dt>
  <dd>Data files are in big-endian, or network binary format.
  If you are on a little-endian machine, such as a machine
  with an Intel x86 chip, and you would like to read a binary
  format file created on a big-endian machine, such as a Sun SPARC,
  use the <code>-bigendian</code> flag.</dd>
 
- <dt><code>-littleendian</code></a></dt>
+ <dt><code>-littleendian</code></dt>
  <dd>Data files are in little-endian, or x86 binary format.
  If you are on a big-endian machine, such as a Sun Sparc,
  and you would like to read a binary

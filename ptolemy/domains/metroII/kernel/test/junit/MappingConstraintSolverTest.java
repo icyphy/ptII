@@ -54,7 +54,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 public class MappingConstraintSolverTest extends TestCase {
 
     /**
-     * Constraints: A<>B, C<>D, E<>D, D<>F, A<>C, C<>D, D<>E, D<>C
+     * Constraints: A&lt;&gt;B, C&lt;&gt;D, E&lt;&gt;D, D&lt;&gt;F, A&lt;&gt;C, C&lt;&gt;D, D&lt;&gt;E, D&lt;&gt;C
      * Events: A, B, D, E, F, G
      * Expected results: A,B,D,E,G are notified, F is waiting
      */

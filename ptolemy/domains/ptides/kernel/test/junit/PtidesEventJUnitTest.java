@@ -44,6 +44,7 @@ import ptolemy.domains.ptides.kernel.PtidesEvent;
 public class PtidesEventJUnitTest {
     /**
      * Pass nulls to the PtidesEvent constructor.
+     * @exception Exception If the Ptides event cannot be created.
      */
     @org.junit.Test
     public void constructorWithNulls() throws Exception {

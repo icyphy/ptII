@@ -557,7 +557,7 @@ public class EditablePlot extends Plot {
             }
         }
 
-	/** Handle Control being released
+	/** Handle Control being released.
 	 *  @param e The KeyEvent.
 	 */
         public void keyReleased(KeyEvent e) {

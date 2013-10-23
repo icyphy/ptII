@@ -10,7 +10,7 @@ import java.util.Vector;
 /** 
 * <p>This class implements a data structure to encapsulate Ptides events sent
 * through a HLA/CERTI Federation. The logical time of the Ptides event and the
-* value are stored in a Vector<Byte>. Only Ptides event from NetworkPort are
+* value are stored in a Vector&lt;Byte&gt;. Only Ptides event from NetworkPort are
 * supported by this implementation.
 * </p><p>
 * This implementation reuses a subset of methods implemented in the 
@@ -32,7 +32,7 @@ public class HlaPtidesEvent {
 
     /** Construct a HlaPtidesEvent. The HlaPtidesEvent structure stores
      *  the Ptides <i>logicalTime</i>, the <i>microStep</i>, the <i>sourceTime</i>
-     *  and the <i>value</i> of the event in a Vector<byte> buffer.
+     *  and the <i>value</i> of the event in a Vector&lt;byte&gt; buffer.
      *  @param logicalTime The Ptides logical time as double.
      *  @param microStep The current microstep of the event.
      *  @param sourceTime The souce timestamp of the event.
