@@ -69,13 +69,14 @@ public class ExecutionAspectHelper {
         return toDecorate;
     }
      
-    /** Schedule an actor for execution and return the next time
+    /** Schedule an actor for execution on an aspect and return the next time
      *  this aspect has to perform an action. Derived classes
      *  must implement this method to actually schedule actors, this
      *  base class implementation just creates events for aspect
      *  activity that is displayed in the plotter. This
      *  base class implementation just creates events for aspect
      *  activity that is displayed in the plotter.
+     *  @param aspect The aspect.
      *  @param actor The actor to be scheduled.
      *  @param environmentTime The current platform time.
      *  @param deadline The deadline timestamp of the event to be scheduled.

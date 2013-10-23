@@ -57,7 +57,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActuationDevice.java \
 	ActuatorSetup.java \
-	ErrorHandlingAction.java \
 	InputDevice.java \
 	OutputDevice.java \
 	PtidesPort.java \
@@ -76,7 +75,6 @@ MISC_FILES =	luminary qm test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'ErrorHandlingAction$$ErrorHandlingActionString.class' \
 	'ExecutionTimeListener$$ExecutionEventType.class' \
 	'ExecutionTimeMonitor$$SchedulePlotterEditorFactory.class' \
 	'MulticoreExecutionTimeMonitor$$1.class' \

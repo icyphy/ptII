@@ -68,7 +68,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.modal.modal.ModalModel;
-import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.domains.ptides.lib.PtidesPort; 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -1570,9 +1569,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
     }
 
-    /** Handle timing error on a PtidesPort.
-     * Some behaviors can be selected via special ErrorHandlingActions, for example
-     * drop event, throw error message, modify event to be legal, ....
+    /** Handle timing error on a PtidesPort. This method simply throws an exception.
      * @param port The port where the error occurred.
      * @param event The event that caused the error; i.e. that arrived too late or out of order.
      * @param message The error message.
@@ -1581,143 +1578,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private PtidesEvent _handleTimingError(PtidesPort port, PtidesEvent event,
             String message) throws IllegalActionException {
-        List list = ((CompositeActor) getContainer()).entityList();
-        for (int i = 0; i < list.size(); i++) {
-            Object entity = list.get(i);
-            if (entity instanceof CompositeActor
-                    && ((CompositeActor) entity).getName().equals(
-                            "ErrorHandler")) {
-                CompositeActor errorHandler = (CompositeActor) entity;
-
-                List errorHandlerEntities = errorHandler.entityList();
-                for (int j = 0; j < errorHandlerEntities.size(); j++) {
-                    Object errorHandlerEntity = errorHandlerEntities.get(j);
-                    if (errorHandlerEntity instanceof Const
-                            && ((Const) errorHandlerEntity).getName().equals(
-                                    "missed" + port.getName())) {
-
-                        int index = 1;
-                        errorHandler.getDirector().setModelTime(getModelTime());
-                        ((DEDirector) errorHandler.getDirector())
-                                .setIndex(index);
-                        ((Const) errorHandlerEntity).fire();
-
-                        errorHandler.getDirector().getModelNextIterationTime();
-
-                        errorHandler.prefire();
-                        errorHandler.fire();
-                        errorHandler.postfire();
-
-                        List attributes = errorHandler.attributeList();
-                        for (int k = 0; k < attributes.size(); k++) {
-                            Attribute attribute = (Attribute) attributes.get(k);
-                            if (attribute instanceof Parameter) {
-                                if (((Parameter) attribute).getName().equals(
-                                        ErrorHandlingAction.DropEvent)) {
-                                    if (((Parameter) attribute).getToken() != null
-                                            && ((BooleanToken) ((Parameter) attribute)
-                                                    .getToken()).booleanValue()) {
-                                        ((Parameter) attribute)
-                                                .setToken("false");
-                                        return null;
-                                    }
-                                }
-                                if (((Parameter) attribute).getName().equals(
-                                        ErrorHandlingAction.ExecuteEvent)) {
-                                    if (((Parameter) attribute).getToken() != null
-                                            && ((BooleanToken) ((Parameter) attribute)
-                                                    .getToken()).booleanValue()) {
-                                        return event;
-                                    }
-                                }
-                                if (((Parameter) attribute).getName().equals(
-                                        ErrorHandlingAction.FixTimestamp)) {
-                                    if (((Parameter) attribute).getToken() != null
-                                            && ((BooleanToken) ((Parameter) attribute)
-                                                    .getToken()).booleanValue()) {
-                                        PtidesEvent newEvent = new PtidesEvent(
-                                                event.ioPort(),
-                                                event.channel(),
-                                                getModelTime(),
-                                                event.microstep(),
-                                                event.depth(), event.token(),
-                                                event.receiver(),
-                                                event.sourceTimestamp());
-                                        return newEvent;
-                                    }
-                                }
-                                if (((Parameter) attribute).getName().equals(
-                                        ErrorHandlingAction.ClearAllEvents)) {
-                                    if (((Parameter) attribute).getToken() != null
-                                            && ((BooleanToken) ((Parameter) attribute)
-                                                    .getToken()).booleanValue()) {
-                                        _eventQueue.clear();
-                                        _outputEventDeadlines.clear();
-                                        _pureEvents.clear();
-                                        return null;
-                                    }
-                                }
-                                if (((Parameter) attribute).getName().equals(
-                                        ErrorHandlingAction.ClearEarlierEvents)) {
-                                    if (((Parameter) attribute).getToken() != null
-                                            && ((BooleanToken) ((Parameter) attribute)
-                                                    .getToken()).booleanValue()) {
-                                        int idx = 0;
-                                        while (i < _eventQueue.size()) {
-                                            PtidesEvent eventInQueue = ((PtidesListEventQueue) _eventQueue)
-                                                    .get(idx);
-                                            if (eventInQueue
-                                                    .sourceTimestamp()
-                                                    .compareTo(
-                                                            event.sourceTimestamp()) < 0) {
-                                                ((PtidesListEventQueue) _eventQueue)
-                                                        .take(i);
-                                                continue;
-                                            }
-                                            idx++;
-                                        }
-
-                                        idx = 0;
-                                        while (i < _pureEvents.size()) {
-                                            PtidesEvent eventInQueue = ((PtidesListEventQueue) _pureEvents)
-                                                    .get(idx);
-                                            if (eventInQueue
-                                                    .sourceTimestamp()
-                                                    .compareTo(
-                                                            event.sourceTimestamp()) < 0) {
-                                                ((PtidesListEventQueue) _pureEvents)
-                                                        .take(i);
-                                                continue;
-                                            }
-                                            idx++;
-                                        }
-                                    }
-                                    for (Time outputTime : _outputEventDeadlines
-                                            .keySet()) {
-                                        for (PtidesEvent outputEvent : _outputEventDeadlines
-                                                .get(outputTime)) {
-                                            if (outputEvent
-                                                    .sourceTimestamp()
-                                                    .compareTo(
-                                                            event.sourceTimestamp()) < 0) {
-                                                _outputEventDeadlines
-                                                        .remove(outputTime);
-                                            }
-                                        }
-                                    }
-                                    return null;
-                                }
-                                if (((Parameter) attribute).getName().equals(
-                                        ErrorHandlingAction.ClearCorruptEvents)) {
-                                    // TODO
-                                    return null;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         throw new IllegalActionException(port, message);
     }
 

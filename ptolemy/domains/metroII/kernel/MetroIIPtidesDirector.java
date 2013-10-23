@@ -50,7 +50,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -58,7 +57,6 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -68,7 +66,6 @@ import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.domains.ptides.kernel.PtidesReceiver;
-import ptolemy.domains.ptides.lib.ErrorHandlingAction;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -1590,7 +1587,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      */
     private PtidesEvent _handleTimingError(MetroIIPtidesPort port,
             PtidesEvent event, String message) throws IllegalActionException {
-        List list = ((CompositeActor) getContainer()).entityList();
+        /* The following code is not supported by Ptides any more.
+         
         for (int i = 0; i < list.size(); i++) {
             Object entity = list.get(i);
             if (entity instanceof CompositeActor
@@ -1727,6 +1725,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 }
             }
         }
+        */
         throw new IllegalActionException(port, message);
     }
 
