@@ -53,9 +53,9 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class AFDXVlink {
 
-    /** Constructor.
-     * @param source
-     * @throws IllegalActionException
+    /** Create a new virtual link object and initialize parameters.
+     * @param source The source receiver.
+     * @throws IllegalActionException If parameters cannot be initialized.
      */
     public AFDXVlink(Receiver source) throws IllegalActionException {
         // 'vlink' parameter and value.
@@ -102,46 +102,82 @@ public class AFDXVlink {
 
     /* The followings methods are classics getter/setter. */
 
+    /** Get the name of the virtual link object.
+     * @return The name.
+     */
     public String getName() {
         return _name;
     }
 
+    /**
+     * Set the name of the virtual link object.
+     * @param name The name.
+     */
     public void setName(String name) {
         _name = name;
     }
 
+    /** Get the value of the bag.
+     * @return The value.
+     */
     public Double getBag() {
         return _bag;
     }
 
+    /**
+     * Set the value of the bag.
+     * @param bag The value.
+     */ 
     public void setBag(Double bag) {
         _bag = bag;
     }
 
+    /** Get the frame size.
+     * @return The size.
+     */
     public int getFrameSize() {
         return _frameSize;
     }
 
+    /** Set the frame size.
+     * @param size The size.
+     */
     public void setFrameSize(int size) {
         _frameSize = size;
     }
 
+    /** Get the source actor. 
+     * @return The actor.
+     */
     public Actor getSource() {
         return _source;
     }
 
+    /** Set the source actor. 
+     * @param source The actor.
+     */
     public void setSource(Actor source) {
         _source = source;
     }
 
+    /** Get the name of the scheduler multiplexor.
+     * @return The name.
+     */
     public String getSchedulerMux() {
         return _schedulerMux;
     }
 
+    /** Set the name of the scheduler multiplexor.
+     * @param name The name.
+     */
     public void setSchedulerMux(String name) {
         _schedulerMux = name;
     }
 
+    /** Return a string representation of this object.
+     *  @return The string representation.
+     */
+    @Override
     public String toString() {
         return "Object AFDXVlink {" + "vl_name=" + _name + " bag="
                 + _bag.toString() + " frameSize=" + _frameSize
