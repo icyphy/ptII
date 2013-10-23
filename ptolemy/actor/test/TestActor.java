@@ -69,7 +69,7 @@ public class TestActor extends AtomicActor {
 
     /** Clear the record, and reset the iteration count to zero.
      */
-    public void clear() {
+    public static void clear() {
         _actions = new StringBuffer(1024);
     }
 
