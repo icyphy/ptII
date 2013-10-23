@@ -35,7 +35,6 @@ DIRS =	ActuatorPattern \
 		Controller \
 		CoSimulation \
 		DistributedPowerPlant \
-		ErrorHandling \
 		LocalSource \
 		MixedSimulator \
 		MultiPlatformTDMA \
