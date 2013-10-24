@@ -1,4 +1,4 @@
-/* This class saves the log result in the log file in the temporary folder.
+/* This class creates and stores the log file in the temporary folder.
  * 
  * Copyright (c) 2012-2013,
  * Programming Environments Laboratory (PELAB),
@@ -45,14 +45,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.logging.LogRecord;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
 /**
-   <p>This class saves the log result in the log file in the temporary folder.</p>
+   <p>This class creates and stores the log file in the temporary folder.</p>
 
    @author Mana Mirzaei
    @version $Id$
@@ -65,29 +65,18 @@ public class OMCLogger {
      *  This constructor has no parameter.
      *  It creates the log file in the temporary folder and sets the format
      *  of the log to show date and time first.
-     *  This private Constructor prevents other class from instantiating.
      * @throws IllegalActionException 
      */
     private OMCLogger() throws IllegalActionException {
-
-        // The path of the directory which contains the result files. 
+        
         String logPath = createDirectoryForResult();
-
-        String logFileName = logPath + "omcLog.txt";
+        String logFullPath = logPath + "omcLog.txt";
         try {
-            _fileHandler = new FileHandler(logFileName);
+            _fileHandler = new FileHandler(logFullPath);
         } catch (SecurityException ex) {
-            String message = "Security error related to the file handler,"
-                    + " failed to create a FileHandler for \"" + logFileName
-                    + "\"!";
-            omcLogger.severe(message);
-            throw new IllegalActionException(null, ex, message);
+            throw new IllegalActionException(ex.getMessage());
         } catch (IOException ex) {
-            String message = "Unable to create file handler!"
-                    + " failed to create a FileHandler for \"" + logFileName
-                    + "\".";
-            omcLogger.severe(message);
-            throw new IllegalActionException(null, ex, message);
+           throw new IllegalActionException(ex.getMessage());
         }
         // Set format of the log to show date and time first.
         _fileHandler.setFormatter(new Formatter() {
@@ -108,7 +97,7 @@ public class OMCLogger {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                 ////
 
-    /** Logger name of OpenModelica Compiler(OMC).*/
+    /** Logger name of OpenModelica Compiler(OMC). */
     public String loggerName = "omcLogger";
 
     /** Create the OpenModelica Compiler(OMC) logger. */
@@ -118,7 +107,7 @@ public class OMCLogger {
     ////                          public methods                  ////
 
     /** Create the directory for saving the simulation result files
-     *  and also the log file.
+     *  and also the log.
      *  @return logPath The path of the directory which contains the result files.
      */
     public String createDirectoryForResult() {
@@ -128,7 +117,8 @@ public class OMCLogger {
         String temp = System.getProperty("java.io.tmpdir");
 
         if (username == null) {
-            System.err.println("Could not get user.name property?  Using 'nobody'.");
+            System.err
+            .println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";
@@ -152,42 +142,39 @@ public class OMCLogger {
         return logPath;
     }
 
-    /** Get the Info LogLevel and info message will be written in the log file. 
+    /** Deallocate OMCLogger object.
+     */
+    public void destroy() {
+        _omcLoggerInstance = null;
+    }
+
+    /** Fetch the Info LogLevel and write them in the log. 
      *  @param infoMessage The info message. 
      */
     public void getInfo(String infoMessage) {
         omcLogger.info(infoMessage);
     }
 
-
     /** Create an instance of OMCLogger object in order to provide a global point of access to the instance.
      *  It provides a unique source of OMCLogger instance.
      *  @return An OMCLogger object representing the instance value.
      */
     public static OMCLogger getInstance() {
-    
         if (_omcLoggerInstance == null) {
             try {
                 _omcLoggerInstance = new OMCLogger();
             } catch (IllegalActionException e) {
-                new Exception("Unable to get instance of OMCLogger.").printStackTrace();
+              new IllegalActionException("Unable to get instance of OMCLogger!" + e.getMessage());
             }
         }
         return _omcLoggerInstance;
     }
 
-    /** Get the Sever LogLevel and sever message will be written in the log file.
-     *  @param severMessage The sever message.
-     */
-    public void getSever(String severMessage) {
-        omcLogger.severe(severMessage);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The handler for writing to OpenModelica Compiler(OMC) log file.
+    // The handler for writing to OpenModelica Compiler(OMC) log.
     private FileHandler _fileHandler = null;
-
+    
     // OMCLogger Object for accessing a unique source of instance.
     private static OMCLogger _omcLoggerInstance = null;
 }

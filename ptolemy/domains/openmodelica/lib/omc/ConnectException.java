@@ -1,4 +1,4 @@
-/* Thrown when there is an error while connecting to the compiler.
+/* Thrown when an error occurred while connecting to the server.
  *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
