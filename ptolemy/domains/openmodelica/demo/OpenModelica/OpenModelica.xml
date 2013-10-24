@@ -4,13 +4,13 @@
 <entity name="OpenModelica" class="ptolemy.actor.TypedCompositeActor">
     <property name="size" class="ptolemy.data.expr.Parameter" value="25">
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{430.0, 301.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{82.90491520100505, 214.1558574120603}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 628]">
     </property>
@@ -27,19 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Mana Mirzaei">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 500.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the integration of OPENMODELICA with Ptolemy II.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 30.0]">
-        </property>
-    </property>
-    <property name="OpenModelica Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-365.0, 400.0]">
         </property>
     </property>
     <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -51,71 +39,133 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that OpenModelica be installed (see http://www.openmodelica.org).&#10;In addition,  the OPENMODELICAHOME environment variable must be set and the&#10;PATH must be set to include the OPENMODELICAHOME/bin directory.&#10;&#10;Under Mac OS X:&#10;export OPENMODELICAHOME=/opt/openmodelica&#10;export PATH=${OPENMODELICAHOME}/bin:${PATH}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 315.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Processing mode should be set to the batch&#10;and the selected output format should be set to csv.&#10;OpenModelica actor input port reads the output of Ramp- &#10;the init value. The value of all variables of the &#10;Modelica model is modified by this value. &#10;The values of variables in the &#10;simulation result file which is generated &#10;in $TMPDIR/$USERNAME/OpenModelica/modelName_res.csv&#10;are sent to the Display actor. &#10;&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-410.0, -30.0]">
         </property>
     </property>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="9">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="CompositeOpenModelica is composed of the Ramp, &#10;OpenModelica and one output port. The &#10;result of performing action in OpenModelica&#10;sends to the output port. Then the output port&#10;in CompositeOpenModelica sends the simulation result&#10;to the Display.">
         </property>
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-430.0, 105.0]">
         </property>
-    </entity>
+    </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1366, 685]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 75.0]">
         </property>
     </entity>
-    <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
-        <property name="modelicaScript" class="ptolemy.data.expr.StringParameter" value="Modelica">
-            <display name="Write OpenModelica Command"/>
+    <entity name="OpenModelica" class="ptolemy.actor.TypedCompositeActor">
+        <display name="CompositeOpenModelica"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-395.0, 75.0]">
         </property>
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
-            <display name="File name"/>
-        </property>
-        <property name="processingType" class="ptolemy.data.expr.StringParameter" value="batch">
-            <display name="Select interactive or batch processing"/>
-        </property>
-        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
-            <display name="Model name"/>
-        </property>
-        <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="csv">
-            <display name="Output format"/>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="OpenModelica Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 60.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 155.0]">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
         </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 628]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.125735489760899">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.1122565670288, 263.4208092730978}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that OpenModelica be installed (see http://www.openmodelica.org).&#10;In addition,  the OPENMODELICAHOME environment variable must be set and the&#10;PATH must be set to include the OPENMODELICAHOME/bin directory.&#10;&#10;Under Mac OS X:&#10;export OPENMODELICAHOME=/opt/openmodelica&#10;export PATH=${OPENMODELICAHOME}/bin:${PATH}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 360.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author : Mana Mirzaei">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 440.0]">
+            </property>
+        </property>
+        <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OpenModelica actor gets input from Ramp and set new value for parameter(s)/variable(s)&#10;prior to running the model in an interactive processing mode. In the final step, the &#10;result of the simulation which is set according to the OpenModelica filters is sent to&#10;the output port.&#10;&#10;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 45.0]">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 165.0]">
+            </property>
+        </port>
+        <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
+            <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
+                <display name="File name"/>
+            </property>
+            <property name="dependecies" class="ptolemy.data.expr.FileParameter" value="">
+                <display name="Dependency(ies)"/>
+            </property>
+            <property name="processingType" class="ptolemy.data.expr.StringParameter" value="interactive">
+                <display name="Select the processing mode "/>
+            </property>
+            <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
+                <display name="Model name"/>
+            </property>
+            <property name="childModel" class="ptolemy.data.expr.StringParameter" value="">
+                <display name="Inherits from "/>
+            </property>
+            <property name="simulationStopTime" class="ptolemy.data.expr.Parameter" value="0.1">
+                <display name="Simulation stop time"/>
+            </property>
+            <property name="numberOfIntervals" class="ptolemy.data.expr.Parameter" value="250">
+                <display name="Number of intervals"/>
+            </property>
+            <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="csv">
+                <display name="Output format"/>
+            </property>
+            <property name="modelParameter" class="ptolemy.data.expr.StringParameter" value="RESISTOR1">
+                <display name="Initialized model parameter(s)"/>
+            </property>
+            <property name="initialValue" class="ptolemy.data.expr.StringParameter" value="4.0">
+                <display name="Initial value(s)"/>
+            </property>
+            <property name="variableFilter" class="ptolemy.data.expr.StringParameter" value="LOAD.PHI">
+                <display name="Filter for displaying simulation result"/>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 235.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 175.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="OpenModelica.input" relation="relation2"/>
+        <link port="OpenModelica.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation2"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[215.0, 155.0]">
-        </vertex>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <link port="Ramp.output" relation="relation2"/>
     <link port="Display.input" relation="relation"/>
-    <link port="OpenModelica.input" relation="relation2"/>
-    <link port="OpenModelica.output" relation="relation"/>
+    <link port="OpenModelica.port" relation="relation"/>
 </entity>
