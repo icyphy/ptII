@@ -4,13 +4,13 @@
 <entity name="OpenModelicaPltPlot" class="ptolemy.actor.TypedCompositeActor">
     <property name="size" class="ptolemy.data.expr.Parameter" value="25">
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 744}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{430.0, 301.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.4941896984924, 287.1669283919598}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 628]">
     </property>
@@ -27,19 +27,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Mana Mirzaei">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 325.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model verifies plotting when the output format is set to the plt.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple model generates the simulation result file in plt format as &#10;a result of running the Modelica model in a non-interactive mode &#10;and plot the result afterwards by PxgraphApplication.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 60.0]">
         </property>
     </property>
     <property name="OpenModelica Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 120.0]">
         </property>
     </property>
     <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -51,19 +51,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that OpenModelica be installed (see http://www.openmodelica.org).&#10;In addition,  the OPENMODELICAHOME environment variable must be set and the&#10;PATH must be set to include the OPENMODELICAHOME/bin directory.&#10;&#10;Under Mac OS X:&#10;export OPENMODELICAHOME=/opt/openmodelica&#10;export PATH=${OPENMODELICAHOME}/bin:${PATH}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 405.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="northwest">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The output format should be set to the plt.&#10;The processing mode should be set to the batch.&#10;After running the model, the simulation result file &#10;is generated in $TMPDIR/$USERNAME/OpenModelica/modelName_res.plt.&#10;Finally, the result is plotted by PxgraphApplication.&#10;&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 230.0]">
         </property>
     </property>
     <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
@@ -82,7 +70,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 180.0]">
         </property>
     </entity>
 </entity>
