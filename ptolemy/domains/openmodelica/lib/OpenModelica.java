@@ -1,4 +1,4 @@
-/* An actor that executes a Modelica script.
+/* An actor runs the Modelica model.
 
  Below is the copyright agreement for the Ptolemy II system.
 
@@ -32,31 +32,44 @@
 package ptolemy.domains.openmodelica.lib;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.openmodelica.lib.omc.ConnectException;
-import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
+import ptolemy.domains.openmodelica.lib.omc.OMCCommand;
+import ptolemy.domains.openmodelica.lib.omc.OMCLogger;
+import ptolemy.domains.openmodelica.lib.omc.OMIThread;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
-    An actor that executes a Modelica script. it translates and
-    simulates the model.  There is one actor provided in the Vergil,
-    <i>MoreLibraries</i> Under <i>OpenModelica</i>.  It is called
-    <i>OpenModelica</i>; To view or edit its Modelica script, look
-    inside the actor.
-
-    <p>The OpenModelica actor works for the model which is composed of only one class.</p>
+/**  
+    <p>One actor provided in the Vergil, <i>MoreLibraries</i> Under <i>OpenModelica</i>.  
+    It is called <i>OpenModelica</i>; To view or edit its Modelica script, look inside the actor. </p>
+    <p>OpenModelica actor starts the OpenModelica Compiler(OMC) server listening on the CORBA interface
+    in initialize(). In fire(), upon modifying the value of variable(s) and parameter(s) by input port or actor's
+    parameter, the Modelica model is built in <i>non-interactive</i> or <i>interactive</i> mode.
+    <p>Upon building the model in an interactive mode, client and servers are created, IP and ports of the servers
+    are set and streams for transferring information between client and servers are set up. Afterwards, 
+    the simulation result is sent from the Transfer Server to the Ptolemy II. The simulation result
+    is displayed step by step according to the parameters of the OpenModelica actor.
+    The formula for calculating the step time is step time = (stop time - start time) / number of intervals. 
+    There is one issue, the simulation does not stop automatically at the stop time that is selected as one of the 
+    OpenModelica actors' parameters. So during fetching the result back from Transfer server, stop time should be 
+    checked, this checking is occurred in OMIThread. The simulation result is sent in the string format to 
+    the output port of the OpenModelica actor to be displayed by Display actor.</p>
+    <p>In case of building the model in a non-interactive mode, it's not possible to have the result step by step, the 
+    whole simulation result is displayed according to the start and stop time of simulation that are set as 
+    OpenModelica actors' parameters.</p>   
+    <p>In the final phase, wrapup(), the OMC server is stopped.</p>
 
    @author Mana Mirzaei
    @version $Id$
@@ -83,22 +96,23 @@ public class OpenModelica extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
 
-        modelicaScript = new StringParameter(this, "modelicaScript");
-        modelicaScript.setDisplayName("Write OpenModelica Command");
-        modelicaScript.setExpression("Modelica");
-
         fileName = new FileParameter(this, "fileName");
         fileName.setDisplayName("File name");
 
-        processingType = new StringParameter(this, "processingType");
-        processingType.setDisplayName("Select interactive or batch processing");
-        processingType.setExpression("batch");
-        processingType.addChoice("batch");
-        processingType.addChoice("interactive");
+        dependecies = new FileParameter(this, "dependecies");
+        dependecies.setDisplayName("Dependency(ies)");
 
-        modelName = new StringParameter(this, "modelName");
-        modelName.setTypeEquals(BaseType.STRING);
-        modelName.setDisplayName("Model name");
+        processingMode = new StringParameter(this, "processingType");
+        processingMode.setDisplayName("Select the processing mode ");
+        processingMode.setExpression("non-interactive");
+        processingMode.addChoice("non-interactive");
+        processingMode.addChoice("interactive");
+
+        subModel = new StringParameter(this, "subModel");
+        subModel.setDisplayName("Model name");
+
+        baseModel = new StringParameter(this, "baseModel");
+        baseModel.setDisplayName("Inherits from ");
 
         simulationStartTime = new Parameter(this, "simulationStartTime",
                 new DoubleToken(0.0));
@@ -115,116 +129,91 @@ public class OpenModelica extends TypedAtomicActor {
         numberOfIntervals.setTypeEquals(BaseType.INT);
         numberOfIntervals.setDisplayName("Number of intervals");
 
-        tolerance = new Parameter(this, "tolerance", new DoubleToken(0.0001));
-        tolerance.setTypeEquals(BaseType.DOUBLE);
-        tolerance.setDisplayName("Tolerance");
-
-        method = new StringParameter(this, "method");
-        method.setTypeEquals(BaseType.STRING);
-        method.setDisplayName("Method");
-        method.setExpression("dassl");
-
-        fileNamePrefix = new StringParameter(this, "fileNamePrefix");
-        fileNamePrefix.setTypeEquals(BaseType.STRING);
-        fileNamePrefix.setDisplayName("File name prefix");
-
         outputFormat = new StringParameter(this, "outputFormat");
         outputFormat.setDisplayName("Output format");
-        outputFormat.setExpression("mat");
-        outputFormat.addChoice("mat");
+        outputFormat.setExpression("csv");
         outputFormat.addChoice("csv");
         outputFormat.addChoice("plt");
-        outputFormat.addChoice("empty");
+
+        parameter = new StringParameter(this, "parameter");
+        parameter
+        .setDisplayName("Initialized model parameter(s), seperate by '#'");
+
+        initialValue = new StringParameter(this, "initialValue");
+        initialValue.setDisplayName("Initial value(s), seperate by ','");
 
         variableFilter = new StringParameter(this, "variableFilter");
-        variableFilter.setTypeEquals(BaseType.STRING);
-        variableFilter.setDisplayName("Variable filter");
-        variableFilter.setExpression(".*");
-
-        cflags = new StringParameter(this, "cflags");
-        cflags.setTypeEquals(BaseType.STRING);
-
-        simflags = new StringParameter(this, "simflags");
-        simflags.setTypeEquals(BaseType.STRING);
-        simflags.setDisplayName("Simulation flag");
+        variableFilter
+        .setDisplayName("Filter for displaying simulation result, seperate by '#'");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                    public ports and parameters           ////
 
-    /** Any standard C language flags.
-     *  The default value of this parameter is "".
+    /** The base-model that should be built. 
+     *  The default value of this parameter is null.
      */
-    public StringParameter cflags;
+    public static StringParameter baseModel;
 
-    /** File which the model should be loaded from.  
-     *  There is no default value, file should be selected.
+    /** The file that the base-model should be loaded from.  
+     *  The default value of this parameter is null.
+     */
+    public FileParameter dependecies;
+
+    /** The file that the (child-)model should be loaded from.  
+     *  The default value is "dcmotor.mo".
      */
     public FileParameter fileName;
 
-    /** User preferable name for the result file.
+    /** New value for changing the current value of variable(s) and parameter(s) prior to running the model.
      *  The default value of this parameter is null.
      */
-    public StringParameter fileNamePrefix;
+    public StringParameter initialValue;
 
-    /** Input port, which receives an integer number from Ramp. */
+    /** Input port of the OpenModelica actor, that gets input from Ramp. */
     public TypedIOPort input;
-
-    /** Integration method used for simulation.  
-     *  The default value of this parameter is the string "dassl".
-     */
-    public StringParameter method;
-
-    /** The Modelica command.  
-     *  The default value of this parameter is the string "Modelica".
-     */
-    public StringParameter modelicaScript;
-
-    /** Name of the model which should be built. 
-     *  The default value of this parameter is the string "dcmotor".
-     */
-    public StringParameter modelName;
 
     /** Number of intervals in the result file.  
      *  The default value of this parameter is the integer 500.
      */
     public Parameter numberOfIntervals;
 
-    /** Format of the result file.  
-     *  The default value of this parameter is the string "mat".
+    /** Output port sends the simulation result from Ptolemy II
+     *  to other actors. */
+    public TypedIOPort output;
+
+    /** Format of the generated result file.
+     *  The default value of this parameter is string "csv".
      */
     public static StringParameter outputFormat;
 
-    /** Output port, which sends simulation result to the Display actor. */
-    public TypedIOPort output;
+    /** Parameter(s) and variable(s) of the Modelica model.
+     *  The default value of this parameter is null.
+     */
+    public StringParameter parameter;
 
     /** Type of processing for running the executable result file of building the Modelica model.
-     *  The default value of this parameter is the string "batch".
+     *  The default value of this parameter is "non-interactive".
      */
-    public StringParameter processingType;
+    public StringParameter processingMode;
 
-    /** Simulation flags.  
-     *  The default value of this parameter is the string "".
-     */
-    public StringParameter simflags;
-
-    /** The start time of simulation.    
-     *  The default value of this parameter is the double 0.0.
+    /** The start time of the simulation.    
+     *  The default value of this parameter is double 0.0.
      */
     public Parameter simulationStartTime;
 
-    /** The stop time of simulation.  
-     *  The default value of this parameter is the double 0.1.
+    /** The stop time of the simulation.  
+     *  The default value of this parameter is double 0.1.
      */
     public Parameter simulationStopTime;
 
-    /** Tolerance used by the integration method.  
-     *  The default value of this parameter is the double 0.0001.
+    /** The (sub-)model that should be built. 
+     *  The default value is "dcmotor".
      */
-    public Parameter tolerance;
+    public static StringParameter subModel;
 
-    /** Filter for variables that should be stored in the result file.  
-     *  The default value of this parameter is the string ".*".
+    /** Filter for displaying result of simulation.
+     *  The default value of this parameter is null.
      */
     public StringParameter variableFilter;
 
@@ -241,7 +230,8 @@ public class OpenModelica extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OpenModelica newObject = (OpenModelica) super.clone(workspace);
         try {
-            newObject._omcProxy = OMCProxy.getInstance();
+            newObject._omcLogger = OMCLogger.getInstance();
+            newObject._omcCommand = OMCCommand.getInstance();
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Could not clone "
                     + getFullName() + ": " + throwable);
@@ -249,7 +239,13 @@ public class OpenModelica extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Evaluate the expression and send its result to the output.
+    /** Invoke the fire() of the super class. Then, Modelica library and model(s) are loaded. 
+     *  Upon modifying the value of variable(s) and parameter(s) by input port or actors' parameters, 
+     *  the Modelica model is built in <i>non-interactive</i> or <i>interactive</i> mode. 
+     *  <p>After building the model in an interactive mode, the simulation result
+     *  is calculated step by step according to the parameters of the OpenModelica actor. 
+     *  The result is sent in the string format to the output port of the OpenModelica actor to be 
+     *  displayed by Display actor.</p> 
      *  @throws IllegalActionException If the evaluation of the expression
      *  triggers it, or the evaluation yields a null result, or the evaluation
      *  yields an incompatible type, or if there is no director.
@@ -257,123 +253,174 @@ public class OpenModelica extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        // Create a unique instance of OMCProxy.
-        _omcProxy = OMCProxy.getInstance();
-
-        // The width of the input port is more than 0.
-        if (input.getWidth() > 0) {
-
-            // Load Modelica library and file.
-            try {
-                _omcProxy.loadFile(fileName.getExpression(),
-                        modelName.getExpression());
-            } catch (ConnectException e) {
-                throw new IllegalActionException(
-                        "Unable to load Modelica file/library!"
-                                + e.getMessage());
-            }
-
-            // Read the value of input port -init value of the Ramp.
-            IntToken inputPortValue = (IntToken) input.get(0);
-
-            // Display components of Modelica model.
-            try {
-                _omcProxy.displayComponents(inputPortValue,
-                        modelName.getExpression());
-            } catch (ConnectException e) {
-                throw new IllegalActionException(
-                        "Unable to display components of "
-                                + modelName.getExpression() + " !"
-                                + e.getMessage());
-            }
-        }
-
-        // Load the Modelica library and file.
+        // Load Modelica library and model(s).
         try {
-            _omcProxy.loadFile(fileName.getExpression(),
-                    modelName.getExpression());
+            _omcCommand.loadFile(fileName.getExpression(),
+                    subModel.getExpression());
+            // If the model is inherited from a base model, 
+            // that base model should be loaded in advance to the child model. 
+            // Otherwise, the child one could not be built.
+            if (!(dependecies.getExpression().isEmpty() && baseModel
+                    .getExpression().isEmpty()))
+                _omcCommand.loadFile(dependecies.getExpression(),
+                        baseModel.getExpression());
         } catch (ConnectException e) {
             throw new IllegalActionException(
                     "Unable to load Modelica file/library!" + e.getMessage());
         }
 
-        // Build the Modelica model and run the executable result file in both interactive
-        // and non-interactive processing mode.
+        // There is a value to be passed to the OpenModelica actor's port.
+        if (input.getWidth() > 0) {
+            // Get the token from input port of OpenModelica actor.
+            IntToken inputPort = (IntToken) input.get(0);
+            try {
+                // Modify components of the Modelica model prior to running the model.
+                if (!(parameter.getExpression().isEmpty() && initialValue
+                        .getExpression().isEmpty())) {
+                    if (!(baseModel.getExpression().isEmpty()))
+                        _omcCommand.modifyComponents(inputPort.toString(),
+                                baseModel.getExpression(),
+                                parameter.getExpression());
+                    else
+                        _omcCommand.modifyComponents(inputPort.toString(),
+                                subModel.getExpression(),
+                                parameter.getExpression());
+                } else
+                    _omcLogger
+                    .getInfo("There is no component to modify prior to running the model!");
+            } catch (ConnectException e) {
+                throw new IllegalActionException(
+                        "Unable to modify components' values!" + e.getMessage());
+            }
+            // There is no value to be passed to the OpenModelica actor's port and the new value is set by 
+            // actors' parameters.
+        } else if (!(input.getWidth() > 0)) {
+            if (!(parameter.getExpression().isEmpty() && initialValue
+                    .getExpression().isEmpty())) {
+                try {
+                    if (baseModel.getExpression().isEmpty())
+                        _omcCommand.modifyComponents(
+                                initialValue.getExpression(),
+                                subModel.getExpression(),
+                                parameter.getExpression());
+                    else
+                        _omcCommand.modifyComponents(
+                                initialValue.getExpression(),
+                                baseModel.getExpression(),
+                                parameter.getExpression());
+                } catch (ConnectException e) {
+                    throw new IllegalActionException(
+                            "Unable to modify components' values of "
+                                    + baseModel.getExpression() + " !"
+                                    + e.getMessage());
+                }
+            } else
+                _omcLogger
+                .getInfo("There is no components to modify prior to running the model!");
+        }
+
+        // Build the Modelica model and run the executable result file.
+        // Plot the result file of the simulation that is generated in plt format.
         try {
-            _omcProxy.simulateModel(fileName.getExpression(),
-                    modelName.getExpression(), fileNamePrefix.getExpression(),
-                    simulationStartTime.getExpression(),
-                    simulationStopTime.getExpression(),
-                    Integer.parseInt(numberOfIntervals.getExpression()),
-                    tolerance.getExpression(), method.getExpression(),
-                    outputFormat.getExpression(),
-                    variableFilter.getExpression(), cflags.getExpression(),
-                    simflags.getExpression(), processingType.getExpression());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (ConnectException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(
-                    "Unable to send command to OMC/create connection!"
-                            + e.getMessage());
+            if (!(dependecies.getExpression().isEmpty() && baseModel
+                    .getExpression().isEmpty())) {
+                _omcCommand.runModel(dependecies.getExpression(),
+                        baseModel.getExpression(),
+                        simulationStartTime.getExpression(),
+                        simulationStopTime.getExpression(),
+                        Integer.parseInt(numberOfIntervals.getExpression()),
+                        outputFormat.getExpression(),
+                        processingMode.getExpression());
+
+                if (outputFormat.getExpression().equalsIgnoreCase("plt")
+                        && processingMode.getExpression().equalsIgnoreCase(
+                                "non-interactive"))
+                    _omcCommand.plotPltFile(baseModel.getExpression());
+            } else {
+                _omcCommand.runModel(fileName.getExpression(),
+                        subModel.getExpression(),
+                        simulationStartTime.getExpression(),
+                        simulationStopTime.getExpression(),
+                        Integer.parseInt(numberOfIntervals.getExpression()),
+                        outputFormat.getExpression(),
+                        processingMode.getExpression());
+
+                if (outputFormat.getExpression().equalsIgnoreCase("plt")
+                        && processingMode.getExpression().equalsIgnoreCase(
+                                "non-interactive"))
+                    _omcCommand.plotPltFile(subModel.getExpression());
+            }
+
+            // In case of building the model in an interactive mode, client and servers are created, 
+            // IP and ports of the servers are set and streams for transferring information between 
+            // client and servers are set up all in the constructor of the thread.
+            // Through starting the thread, the simulation result is sent from the server to the 
+            // Ptolemy II in the string format. 
+            if (processingMode.getExpression().equalsIgnoreCase("interactive")
+                    && !(variableFilter.getExpression().isEmpty())) {
+                _omiThread = new OMIThread(
+                        variableFilter.getExpression(),
+                        simulationStopTime.getExpression(), output);
+                _omiThread.run();
+            }
+        } catch (UnknownHostException e) {
+           throw new IllegalActionException(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalActionException(e.getMessage());
+        } catch (ConnectException e) {
             throw new IllegalActionException(
-                    "I/O error in simulating/building the model!"
+                    "ServerError: Commands couldn't be sent to the (OpenModelica Compiler)OMC!"
                             + e.getMessage());
         }
+    }
 
-        if ((processingType.getExpression().compareTo("batch") == 0)
-                && (outputFormat.getExpression().compareTo("csv") == 0)) {
+    /** Invoke the initialize() of the super class. It Starts OpenModelica Compiler(OMC)
+     *  as a server listening on the CORBA interface by setting +d=interactiveCorba flag.
+     *  @throws IllegalActionException If OMC server is unable to start.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        try {
+            // Create a unique instance of OMCProxy.
+            _omcCommand = OMCCommand.getInstance();
+            _omcCommand.initServer();
 
-            String simulationResult = null;
-
-            // Load Modelica library and file.
-            try {
-                _omcProxy.loadFile(fileName.getExpression(),
-                        modelName.getExpression());
-            } catch (ConnectException e) {
-                throw new IllegalActionException(
-                        "Unable to load Modelica file/library!"
-                                + e.getMessage());
-            }
-
-            // Display the value of variables/parameters of Modelica file.
-            try {
-                System.out
-                .println("------Display variables/parameters values-------");
-                simulationResult = _omcProxy.displaySimulationResult(
-                        fileName.getExpression(), modelName.getExpression());
-            } catch (ConnectException e) {
-                throw new IllegalActionException(
-                        "Unable to display variables/parameters of "
-                                + modelName.getExpression() + " !"
-                                + e.getMessage());
-            }
-
-            // Send the value of variables/parameters to the output port of the OpenModelica actor.
-            // OpenModelicaDirector extends the Continuous director and displaying the simulation result 
-            // is not possible yet with the Continuous director and It only works with SDF director.
-            // The value of variables/parameters are only displayed in the console.
-            output.send(0, new StringToken(simulationResult));
+            // Create a unique instance of OMCLogger.
+            _omcLogger = OMCLogger.getInstance();
+            String loggerInfo = "OpenModelica Server started!";
+            _omcLogger.getInfo(loggerInfo);
+        } catch (ConnectException e) {
+            throw new IllegalActionException(
+                    "ServerError : OMC is unable to start!" + e.getMessage());
         }
+    }
 
-        // Plot the plt format file.
-        if (outputFormat.getExpression().compareTo("plt") == 0) {
-            try {
-                _omcProxy.plotPltFile(fileNamePrefix.getExpression(),
-                        modelName.getExpression());
-            } catch (ConnectException e) {
-                throw new IllegalActionException(
-                        "Unable to plot the plt format of "
-                                + modelName.getExpression() + " !"
-                                + e.getMessage());
-            }
+    /** Invoke the wrapup() of the super class. Then, quit OpenModelica environment.
+     *  @throws IllegalActionException If OMC server is unable to stop.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        try {
+            _omcCommand.stopServer();
+            String loggerInfo = "OpenModelica Server stopped";
+            _omcLogger.getInfo(loggerInfo);
+            _omcLogger.destroy();
+        } catch (ConnectException e) {
+            // FIXME org.omg.CORBA.COMM_FAILURE: 
+            // vmcid: SUN  minor code: 211  completed: No : Unable to send quit()
+            new IllegalActionException(
+            "ServerError : OMC is unable to start!" + e.getMessage()).printStackTrace();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // OMCProxy Object for accessing a unique source of instance.
-    private OMCProxy _omcProxy;
+    // OMCCommand Object for accessing a unique source of instance.
+    private OMCCommand _omcCommand = null;
+    
+    // OMCLogger Object for accessing a unique source of instance.
+    private OMCLogger _omcLogger = null;
+
+    // OMIThread Object. 
+    private OMIThread _omiThread = null;
 }
