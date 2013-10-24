@@ -76,7 +76,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.125735489760899">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.1122565670288, 263.4208092730978}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.11225656702857, 263.4208092730978}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -107,39 +107,35 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 165.0]">
             </property>
         </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 175.0]">
+            </property>
+        </entity>
         <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
-            <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
+            <property name="fileName" class="ptolemy.data.expr.FileParameter" value="childModel.mo">
                 <display name="File name"/>
             </property>
-            <property name="dependecies" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="dependecies" class="ptolemy.data.expr.FileParameter" value="baseModel.mo">
                 <display name="Dependency(ies)"/>
             </property>
             <property name="processingType" class="ptolemy.data.expr.StringParameter" value="interactive">
                 <display name="Select the processing mode "/>
             </property>
-            <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
+            <property name="subModel" class="ptolemy.data.expr.StringParameter" value="childModel">
                 <display name="Model name"/>
             </property>
-            <property name="childModel" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="baseModel" class="ptolemy.data.expr.StringParameter" value="baseModel">
                 <display name="Inherits from "/>
             </property>
-            <property name="simulationStopTime" class="ptolemy.data.expr.Parameter" value="0.1">
-                <display name="Simulation stop time"/>
+            <property name="parameter" class="ptolemy.data.expr.StringParameter" value="a">
+                <display name="Initialized model parameter(s), seperate by '#'"/>
             </property>
-            <property name="numberOfIntervals" class="ptolemy.data.expr.Parameter" value="250">
-                <display name="Number of intervals"/>
+            <property name="initialValue" class="ptolemy.data.expr.StringParameter" value="1">
+                <display name="Initial value(s), seperate by ','"/>
             </property>
-            <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="csv">
-                <display name="Output format"/>
-            </property>
-            <property name="modelParameter" class="ptolemy.data.expr.StringParameter" value="RESISTOR1">
-                <display name="Initialized model parameter(s)"/>
-            </property>
-            <property name="initialValue" class="ptolemy.data.expr.StringParameter" value="4.0">
-                <display name="Initial value(s)"/>
-            </property>
-            <property name="variableFilter" class="ptolemy.data.expr.StringParameter" value="LOAD.PHI">
-                <display name="Filter for displaying simulation result"/>
+            <property name="variableFilter" class="ptolemy.data.expr.StringParameter" value="a">
+                <display name="Filter for displaying simulation result, seperate by '#'"/>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -147,22 +143,17 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 235.0]">
-            </property>
-        </entity>
-        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 205}">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port" relation="relation"/>
-        <link port="OpenModelica.input" relation="relation2"/>
-        <link port="OpenModelica.output" relation="relation"/>
-        <link port="Ramp.output" relation="relation2"/>
+        <link port="port" relation="relation2"/>
+        <link port="Ramp.output" relation="relation"/>
+        <link port="OpenModelica.input" relation="relation"/>
+        <link port="OpenModelica.output" relation="relation2"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
