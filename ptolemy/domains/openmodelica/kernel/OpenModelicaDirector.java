@@ -27,19 +27,12 @@ package ptolemy.domains.openmodelica.kernel;
 
 import ptolemy.actor.util.Time;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
-import ptolemy.domains.openmodelica.lib.omc.ConnectException;
-import ptolemy.domains.openmodelica.lib.omc.OMCProxy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 /** 
-   This director executes OpenModelica actor in its own threads.
-   Creating and starting the threads are at the same time with
-   starting the OpenModelica Compiler(OMC) which occurred in the
-   initialize() method.  This threads finish in the wrapup()
-   method, at the same time with quiting the OMC.
+   This director only extends Continuous director. 
 
    @author Mana Mirzaei, Based on ContinuousDirector by Edward A. Lee
    @version $Id$
@@ -68,48 +61,9 @@ public class OpenModelicaDirector extends ContinuousDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                ////
 
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        OpenModelicaDirector newObject = (OpenModelicaDirector) super
-                .clone(workspace);
-        try {
-            newObject._omcProxy = OMCProxy.getInstance();
-        } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone "
-                    + getFullName() + ": " + throwable);
-        }
-        return newObject;
-    }
-
-    /** Invoke the preinitialize() of the super class.  Preinitialize
-     *  the OpenModelica actor and initialize the OpenModelica
-     *  Compiler(OMC).
-     *  @throws IllegalActionException If the preinitialize() of
-     *  one of the associated actors throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        try {
-
-            // Create a unique instance of OMCLogger and OMCProxy.
-            _omcProxy = OMCProxy.getInstance();
-            _omcProxy.initServer();
-        } catch (ConnectException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(
-                    "ServerError : OMC is unable to start!" + e.getMessage());
-        }
-    }
-
-    /** Return false if a stop has been requested or
-     *  if the system has finished executing.
-     *  @return Check if the director has detected a stop has been requested return false.
+    /** The actor returns false in postfire() to request that the actor should not be fired again
+     *  which means that the model calls fire() once and then stops.
+     *  @return Check If the stop time is infinite, If yes, it returns false.
      *  @throws IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
@@ -120,34 +74,11 @@ public class OpenModelicaDirector extends ContinuousDirector {
             _debug("OpenModelicaDirector: Called postfire().");
         }
 
-        // If the stop time is infinite, then stop execution.
         if (stopTime == Time.POSITIVE_INFINITY) {
             stop();
             return false;
         } else {
             return true;
         }
-
     }
-
-    /** Invoke the wrapup() of the super class. 
-     *  Leave and quit OpenModelica environment.
-     *  @throws IllegalActionException If the wrapup() of
-     *  OpenModelica actor throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        try {
-            _omcProxy.quitServer();
-        } catch (ConnectException e) {
-            new IllegalActionException("ServerError : OMC is unable to stop.")
-            .printStackTrace();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variable                  ////
-    // OMCProxy object for accessing a unique source of instance.
-    private OMCProxy _omcProxy;
-
 }
