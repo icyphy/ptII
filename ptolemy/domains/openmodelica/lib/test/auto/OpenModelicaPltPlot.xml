@@ -58,7 +58,7 @@
         <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
             <display name="File name"/>
         </property>
-        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
+        <property name="subModel" class="ptolemy.data.expr.StringParameter" value="dcmotor">
             <display name="Model name"/>
         </property>
         <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="plt">
@@ -70,7 +70,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15, 190}">
         </property>
     </entity>
 </entity>
