@@ -125,8 +125,8 @@
 <title>XYPlotter</title>
 <xLabel>time</xLabel>
 <yLabel>inductor1.i</yLabel>
-<xRange min="0.0" max="0.04479999999999984"/>
-<yRange min="10.0" max="10.0"/>
+<xRange min="0.0" max="0.1"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -147,28 +147,6 @@
         <link port="XYPlotter.inputX" relation="relation2"/>
         <link port="XYPlotter.inputY" relation="relation3"/>
     </entity>
-    <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
-            <display name="File name"/>
-        </property>
-        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="dcmotor">
-            <display name="Model name"/>
-        </property>
-        <property name="modelParameter" class="ptolemy.data.expr.StringParameter" value="resistor1">
-            <display name="Initialized model parameter(s)"/>
-        </property>
-        <property name="initialValue" class="ptolemy.data.expr.StringParameter" value="3.0">
-            <display name="Initial value(s)"/>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 235.0]">
-        </property>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
@@ -176,8 +154,36 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 150.0]">
         </property>
     </entity>
+    <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
+            <display name="File name"/>
+        </property>
+        <property name="processingType" class="ptolemy.data.expr.StringParameter" value="non-interactive">
+            <display name="Select the processing mode "/>
+        </property>
+        <property name="subModel" class="ptolemy.data.expr.StringParameter" value="dcmotor">
+            <display name="Model name"/>
+        </property>
+        <property name="parameter" class="ptolemy.data.expr.StringParameter" value="resistor1">
+            <display name="Initialized model parameter(s), seperate by '#'"/>
+        </property>
+        <property name="initialValue" class="ptolemy.data.expr.StringParameter" value="1">
+            <display name="Initial value(s), seperate by ','"/>
+        </property>
+        <property name="variableFilter" class="ptolemy.data.expr.StringParameter" value="load.w">
+            <display name="Filter for displaying simulation result, seperate by '#'"/>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10, 235}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="OpenModelica.input" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>
+    <link port="OpenModelica.input" relation="relation"/>
 </entity>
