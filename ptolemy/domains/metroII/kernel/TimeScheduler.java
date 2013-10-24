@@ -123,6 +123,9 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
                     if (event.hasTime()) {
                         if (event.getTime().getValue() > time) {
                             event.setStatus(Status.WAITING);
+//                            Event.Time.Builder builder = Event.Time.newBuilder();
+//                            builder.setValue(time);
+//                            event.setTime(builder); 
                         }
                     }
                 }

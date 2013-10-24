@@ -192,8 +192,8 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
                     //                        assert false; 
                     //                    }
 
-                    System.out.println("Notifying " + e1.getName() + " "
-                            + e2.getName());
+//                    System.out.println("Notifying " + e1.getName() + " "
+//                            + e2.getName());
 
                     Iterable<Integer> edges1 = _mapping.getEdges(eventId1);
                     Iterable<Integer> edges2 = _mapping.getEdges(eventId2);

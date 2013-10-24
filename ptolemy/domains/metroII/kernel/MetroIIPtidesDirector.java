@@ -84,8 +84,7 @@ import ptolemy.kernel.util.Workspace;
  * constraint resolution and architectural models. In other words, the order of
  * firing may be affected by the architectural model. But causality should not
  * be violated because the actors ready to fire simultaneously are obtained by
- * causality analysis, see isCausallyAffected(Collection<PtidesEvent> eventArray,
- * PtidesEvent event).
+ * causality analysis, see {@link #isCausallyAffected(Collection, PtidesEvent)}.
  * 
  * <p>
  * Most methods are identical to PtidesDirector except directors are mapped to
@@ -591,10 +590,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         _currentLogicalIndex = event.microstep();
                         event.receiver().put(event.token());
 
-                        System.out
-                                .println("input: " + event.token().getClass());
-                        System.out.println(this.getFullName());
-                        System.out.println(event.receiver());
+//                        System.out
+//                                .println("input: " + event.token().getClass());
+//                        System.out.println(this.getFullName());
+//                        System.out.println(event.receiver());
 
                         _currentLogicalTime = null;
                         if (_debugging) {
@@ -659,9 +658,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         _currentLogicalIndex = event.microstep();
                         event.ioPort().send(0, event.token());
 
-                        System.out.println("output:");
-                        System.out.println(this.getFullName());
-                        System.out.println(event.receiver());
+                        // System.out.println("output:");
+                        // System.out.println(this.getFullName());
+                        // System.out.println(event.receiver());
 
                         _currentLogicalTime = null;
                         ptidesOutputPortList.poll();

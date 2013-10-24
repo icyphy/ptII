@@ -29,6 +29,7 @@ package ptolemy.domains.metroII.kernel;
 
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 ///////////////////////////////////////////////////////////////////
 ////MetroEventBuilder
@@ -74,9 +75,17 @@ public class MetroIIEventBuilder {
 
         double scaler = fromResolution / toResolution;
 
-        assert scaler > 0 && Math.abs(scaler - (int) scaler) < 0.00001;
-
-        timeValue = timeValue * ((int) scaler);
+        assert scaler > 0;
+        
+        if (scaler > 1) {
+            assert Math.abs(scaler - (int) scaler) < 0.00001;
+            timeValue = timeValue * ((int) scaler);
+        }
+        else {
+            double iScaler = 1/scaler; 
+            assert Math.abs(iScaler - (int) iScaler) < 0.00001;
+            timeValue = timeValue / ((int) iScaler);
+        }
 
         return timeValue;
     }
@@ -144,5 +153,22 @@ public class MetroIIEventBuilder {
         int pos = name.indexOf(".", 1);
         return name.substring(pos);
     }
+    
+    /**
+     * Check if at least one event is notified in the event vector.
+     * 
+     * @param events
+     *            event vector to be checked.
+     * @return true if there is at least one event notified.
+     */
+    static public boolean atLeastOneNotified(Iterable<Event.Builder> events) {
+        for (Builder event : events) {
+            if (event.getStatus() == Status.NOTIFIED) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 
 }

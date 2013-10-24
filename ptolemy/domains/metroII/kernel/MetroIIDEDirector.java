@@ -42,6 +42,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -469,6 +470,70 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
+     * Process the mappable actors. The assumption is that a mappable actor has
+     * a delay strictly greater than zero.
+     * 
+     * @throws IllegalActionException
+     * @throws CollectionAbortedException
+     */
+    void processMappableActorEvents(
+            ResultHandler<Iterable<Event.Builder>> resultHandler)
+            throws IllegalActionException, CollectionAbortedException {
+        do {
+            _events.clear();
+
+            ArrayList<Actor> firingActorList = new ArrayList<Actor>();
+            for (Actor actor : actorList) {
+                FireMachine firing = _actorDictionary.get(actor.getFullName());
+                LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
+                firing.startOrResume(metroIIEventList);
+
+                // Check if the actor has reached the end of postfire()
+                if (firing.getState() == FireMachine.State.FINAL) {
+                    // The actor has reached the end of postfire()
+                    //FIXME: the debugging info is late 
+                    if (_debugging) {
+                        _debug(new FiringEvent(this, actor,
+                                FiringEvent.AFTER_FIRE));
+                    }
+                    if (_debugging) {
+                        _debug(new FiringEvent(this, actor,
+                                FiringEvent.BEFORE_POSTFIRE));
+                    }
+
+                    firing.actor().postfire();
+                    firing.reset();
+
+                    if (_debugging) {
+                        _debug(new FiringEvent(this, actor,
+                                FiringEvent.AFTER_POSTFIRE));
+                    }
+
+                    Iterator<?> inputPorts = firing.actor().inputPortList()
+                            .iterator();
+
+                    if (_pendingIteration.get(actor.getFullName()) > 0) {
+                        assert actor.prefire();
+                        firing.startOrResume(metroIIEventList);
+                        firingActorList.add(actor);
+                        _events.addAll(metroIIEventList);
+                        _pendingIteration.put(actor.getFullName(),
+                                _pendingIteration.get(actor.getFullName()) - 1);
+                    }
+
+                } else {
+                    firingActorList.add(actor);
+                    _events.addAll(metroIIEventList);
+                }
+            }
+            resultHandler.handleResult(_events);
+
+            actorList = firingActorList;
+        } while (MetroIIEventBuilder.atLeastOneNotified(_events));
+
+    }
+
+    /**
      * Fire actors according to events in the event queue. Whether the actual
      * firing of an actor can be done also depend on the MetroII events
      * associated with the actor if the actor is a MetroII actor. Only when the
@@ -503,6 +568,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                     getFullName() + ".Idle", Long.MAX_VALUE,
                     getTimeResolution());
             do {
+
+                processMappableActorEvents(resultHandler);
 
                 // NOTE: This fire method does not call super.fire()
                 // because this method is very different from that of the super class.
@@ -679,9 +746,9 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                         FireMachine firing = _actorDictionary.get(actor
                                 .getFullName());
                         if (firing.getState() != FireMachine.State.START) {
-                            _pendingIteration
-                                    .put(actor.getFullName(), _pendingIteration
-                                            .get(actor.getFullName()) + 1);
+                            //                            _pendingIteration
+                            //                                    .put(actor.getFullName(), _pendingIteration
+                            //                                            .get(actor.getFullName()) + 1);
                         } else {
                             actorList.add(actorAndState.getFirst());
 
@@ -710,72 +777,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
                 }
 
-                _events.clear();
-
-                ArrayList<Actor> firingActorList = new ArrayList<Actor>();
-                for (Actor actor : actorList) {
-                    FireMachine firing = _actorDictionary.get(actor
-                            .getFullName());
-                    LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
-                    firing.startOrResume(metroIIEventList);
-
-                    // Check if the actor has reached the end of postfire()
-                    if (firing.getState() == FireMachine.State.FINAL) {
-                        // The actor has reached the end of postfire()
-                        //FIXME: the debugging info is late 
-                        if (_debugging) {
-                            _debug(new FiringEvent(this, actor,
-                                    FiringEvent.AFTER_FIRE));
-                        }
-                        if (_debugging) {
-                            _debug(new FiringEvent(this, actor,
-                                    FiringEvent.BEFORE_POSTFIRE));
-                        }
-
-                        firing.actor().postfire();
-                        firing.reset();
-
-                        if (_debugging) {
-                            _debug(new FiringEvent(this, actor,
-                                    FiringEvent.AFTER_POSTFIRE));
-                        }
-
-                        Iterator<?> inputPorts = firing.actor().inputPortList()
-                                .iterator();
-
-                        //                        boolean refire = false;
-                        //                        while (inputPorts.hasNext() && !refire) {
-                        //                            IOPort port = (IOPort) inputPorts.next();
-                        //
-                        //                            // iterate all the channels of the current input port.
-                        //                            for (int i = 0; i < port.getWidth(); i++) {
-                        //                                if (port.hasToken(i) && firing.actor().prefire()) {
-                        //                                    refire = true;
-                        //                                    _pendingIteration.put(actor.getFullName(),
-                        //                                            _pendingIteration.get(actor
-
-                        //                                                    .getFullName()) + 1);
-                        //                                    break;
-                        //                                }
-                        //                            }
-                        //                        }
-
-                        if (_pendingIteration.get(actor.getFullName()) > 0) {
-                            assert actor.prefire();
-                            firing.startOrResume(metroIIEventList);
-                            firingActorList.add(actor);
-                            _events.addAll(metroIIEventList);
-                            _pendingIteration
-                                    .put(actor.getFullName(), _pendingIteration
-                                            .get(actor.getFullName()) - 1);
-                        }
-
-                    } else {
-                        firingActorList.add(actor);
-                        _events.addAll(metroIIEventList);
-                    }
-                }
-                actorList = firingActorList;
+                processMappableActorEvents(resultHandler);
 
                 long idleEventTimeStamp = Long.MAX_VALUE;
 
@@ -788,8 +790,6 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                 idleEvent = MetroIIEventBuilder.newProposedEvent(getFullName()
                         + ".Idle", idleEventTimeStamp, getTimeResolution());
 
-                // System.out.print("idle event time: "+idleEvent.getTime()); 
-
                 _events.add(idleEvent);
 
                 resultHandler.handleResult(_events);
@@ -799,23 +799,29 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                             && event.hasTime()) {
                         if (event.getTime().getValue() > idleEvent.getTime()
                                 .getValue()) {
-                            System.out
-                                    .println("Error: notified events go beyond the current time stamp!");
                         }
                     }
                 }
 
             } while (idleEvent.getStatus() != Event.Status.NOTIFIED);
 
-            // System.out.println(idleEvent.getTime()); 
-
+            //            long timeValue = MetroIIEventBuilder.convert(idleEvent.getTime()
+            //                    .getValue(), idleEvent.getTime().getResolution(), this
+            //                    .getTimeResolution());
+            //            Time tmpTime = new Time(this, timeValue);
+            //            if (_eventQueue.isEmpty()
+            //                    || tmpTime.compareTo((Object) (_eventQueue.get()
+            //                            .timeStamp())) < 0) {
+            //                this.setModelTime(tmpTime);
+            //                this.setIndex(0);
+            //            } else {
             if (!_eventQueue.isEmpty()) {
+                //                    if (_eventQueue.get().timeStamp().getDoubleValue() > 37) {
+                //                        System.out.println(_eventQueue.get().timeStamp().getDoubleValue());
+                //                    }
                 this.setModelTime(_eventQueue.get().timeStamp());
                 this.setIndex(_eventQueue.get().microstep());
             }
-            // System.out.println(this.getModelTime()); 
-            // Since we are now actually stopping the firing, we can set this false.
-            // _stopFireRequested = false;
 
             if (_debugging) {
                 _debug("MetroIIDE director fired!");

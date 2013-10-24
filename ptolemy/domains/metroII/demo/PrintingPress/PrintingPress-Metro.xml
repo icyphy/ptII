@@ -4,7 +4,7 @@
 <entity name="PrintingPress-Metro" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1615, 1026}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1535, 876}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1401, 935]">
     </property>
@@ -50,7 +50,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 40.0]">
             </property>
         </property>
         <property name="startupInterval" class="ptolemy.data.expr.Parameter" value="120.0">
@@ -69,7 +69,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -10.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 60.0]">
             </property>
         </property>
         <property name="systemSamplingInterval" class="ptolemy.data.expr.Parameter" value="0.40">
@@ -88,7 +88,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 10.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 80.0]">
             </property>
         </property>
         <property name="systemStart" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -107,7 +107,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 100.0]">
             </property>
         </property>
         <property name="paperThickness" class="ptolemy.data.expr.Parameter" value="0.000075">
@@ -126,7 +126,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -46.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 24.0]">
             </property>
         </property>
         <property name="fullRollRadius" class="ptolemy.data.expr.Parameter" value="0.7">
@@ -145,21 +145,21 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -66.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 4.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 57, 1605, 1016}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1535, 876}, maximized=true}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1391, 925]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1321, 785]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9134226672959718">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7970816526588137">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{594.9479578540618, 227.56654385334292}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{669.3749697580646, 212.85156250000006}">
         </property>
         <property name="MetroIIDEDirector" class="ptolemy.domains.metroII.kernel.MetroIIDEDirector">
             <property name="printTrace" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, -225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, -205.0]">
             </property>
         </property>
         <property name="coreRadius" class="ptolemy.data.expr.Parameter" value="0.07">
@@ -178,7 +178,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, -85.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, -15.0]">
             </property>
         </property>
         <entity name="driveRoller" class="ptolemy.actor.TypedCompositeActor">
@@ -747,8 +747,8 @@
             <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
             </property>
         </entity>
-        <entity name="reserveFeedPaperRadius" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={660, 368, 609, 212}, maximized=false}">
+        <entity name="DriveRollPaperVelocity" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={663, 452, 609, 212}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 189]">
             </property>
@@ -764,11 +764,11 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Paper Radius on Reserve Feed Roller</title>
+<title>Expected Drive Paper Velocity (Blue), Actual Velocity (Green), Error (Red)</title>
 <xLabel>Time in seconds</xLabel>
-<yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="695.2"/>
-<yRange min="-0.03453830285167214" max="53.45462167495576"/>
+<yLabel>Drive Paper Velocity</yLabel>
+<xRange min="0.0" max="769.6"/>
+<yRange min="-0.03453814060350169" max="53.45462313309639"/>
 </plot>?>
             </configure>
         </entity>
@@ -3363,7 +3363,7 @@
         </entity>
         <entity name="feedPaperVelocity" class="ptolemy.actor.lib.gui.TimedPlotter">
             <display name="feedPaperVelocity, error"/>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={659, 145, 608, 193}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={662, 229, 608, 193}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 170]">
             </property>
@@ -3384,8 +3384,8 @@
 <title>Feed Velocity (red), Target Velocity (green) and Tracking Error</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="695.2"/>
-<yRange min="-9.952301067090145" max="35.0"/>
+<xRange min="0.0" max="769.6"/>
+<yRange min="-9.95230111771925" max="35.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -3405,7 +3405,7 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={281, 321, 914, 607}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 321, 914, 607}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
             </property>
@@ -3784,7 +3784,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, -155.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={408, 313, 914, 615}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={409, 313, 914, 615}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                     </property>
@@ -4014,7 +4014,7 @@
             <link port="MetroIIPtidesPlatform.port4" relation="relation7"/>
         </entity>
         <entity name="driveToFeedError" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={661, 610, 611, 181}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={661, 666, 611, 181}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[611, 158]">
             </property>
@@ -4033,21 +4033,21 @@
 <title>Drive Paper Velocity - Feed Surface (paper) Velocity</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="695.2"/>
-<yRange min="0.0" max="40.44007438615358"/>
+<xRange min="0.0" max="769.6"/>
+<yRange min="0.0" max="40.44007451563665"/>
 </plot>?>
             </configure>
         </entity>
         <entity name="feedPaperRadius" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 145, 579, 195}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 229, 579, 195}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[579, 172]">
             </property>
             <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 45.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 45.0]">
             </property>
             <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="180">
             </property>
@@ -4066,7 +4066,7 @@
 <title>Paper Radius on Feed Roller, start (0.15), contact (0.2), cut (0.3)</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="695.2"/>
+<xRange min="0.0" max="769.6"/>
 <yRange min="0.07" max="0.7"/>
 </plot>?>
             </configure>
@@ -6538,9 +6538,9 @@
             <link port="PtidesPlatform.port3" relation="relation6"/>
         </entity>
         <entity name="reserveFeedRoller" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, -240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, -240.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={259, 158, 968, 607}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1615, 1026}, maximized=true}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[754, 489]">
             </property>
@@ -6963,7 +6963,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, -110.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 38, 969, 677}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 66, 1251, 797}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 567]">
                 </property>
@@ -7283,7 +7283,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 465.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 151, 976, 518}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 179, 975, 607}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[761, 400]">
                 </property>
@@ -7691,7 +7691,7 @@
             </property>
             <property name="cutLength" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 321, 914, 607}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 321, 914, 607}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
             </property>
@@ -7699,24 +7699,6 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 248.0}">
             </property>
-            <port name="port" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <display name="drivePaperVelocitySEN"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 300.0]">
-                </property>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
-            <port name="port2" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <display name="reserveAngularVelocitySEN"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 150.0]">
-                </property>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
-                </property>
-            </port>
             <port name="port3" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <display name="armContactNET"/>
@@ -7963,13 +7945,13 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 75.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 313, 914, 615}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 231, 914, 615}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8837309262841178">
                     </property>
-                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.3903210116733, 255.18749999999997}">
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.3903210116734, 255.18749999999997}">
                     </property>
                     <property name="contactAngle" class="ptolemy.data.expr.Parameter" value="3*pi/2">
                     </property>
@@ -8058,6 +8040,8 @@
                         </property>
                     </port>
                     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+                        <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
                         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="(2*pi*fullRollRadius)/maxPaperVelocity">
                         </property>
                         <doc>Create periodic timed events.</doc>
@@ -8093,7 +8077,7 @@
                         </property>
                         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="fullRollRadius*contactAngle/maxPaperVelocity">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 250.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 245.0]">
                         </property>
                         <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0942477796077">
                         </property>
@@ -8132,7 +8116,7 @@
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 190.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 190.0]">
                         </property>
                         <port name="trigger" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -8174,7 +8158,7 @@
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 375.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 375.0]">
                         </property>
                         <port name="trigger" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -8259,106 +8243,6 @@
                     <link port="TimeDelay3.output" relation="relation7"/>
                 </entity>
             </entity>
-            <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-                <display name="ADC"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 300.0]">
-                </property>
-                <port name="port" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 265.0]">
-                    </property>
-                </port>
-                <port name="port2" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 265.0]">
-                    </property>
-                </port>
-                <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 265.0]">
-                    </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                        </property>
-                    </port>
-                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                        </property>
-                    </port>
-                </entity>
-                <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-                    <property name="period" class="ptolemy.actor.parameters.PortParameter" value="SamplingPeriod">
-                    </property>
-                    <doc>Create periodic timed events.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 360.0]">
-                    </property>
-                </entity>
-                <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <link port="port" relation="relation2"/>
-                <link port="port2" relation="relation3"/>
-                <link port="Sampler.input" relation="relation2"/>
-                <link port="Sampler.output" relation="relation3"/>
-                <link port="Sampler.trigger" relation="relation"/>
-                <link port="DiscreteClock.output" relation="relation"/>
-            </entity>
-            <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-                <display name="ADC"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 150.0]">
-                </property>
-                <port name="port" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 265.0]">
-                    </property>
-                </port>
-                <port name="port2" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 265.0]">
-                    </property>
-                </port>
-                <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 265.0]">
-                    </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                        </property>
-                    </port>
-                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="multiport"/>
-                        <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                        </property>
-                    </port>
-                </entity>
-                <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-                    <property name="period" class="ptolemy.actor.parameters.PortParameter" value="SamplingPeriod">
-                    </property>
-                    <doc>Create periodic timed events.</doc>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 360.0]">
-                    </property>
-                </entity>
-                <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                </relation>
-                <link port="port" relation="relation2"/>
-                <link port="port2" relation="relation3"/>
-                <link port="Sampler.input" relation="relation2"/>
-                <link port="Sampler.output" relation="relation3"/>
-                <link port="Sampler.trigger" relation="relation"/>
-                <link port="DiscreteClock.output" relation="relation"/>
-            </entity>
             <entity name="CompositeActor3" class="ptolemy.actor.TypedCompositeActor">
                 <display name="NIC-PHY"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 225.0]">
@@ -8435,10 +8319,6 @@
                 <link port="port" relation="relation"/>
                 <link port="port2" relation="relation"/>
             </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -8455,8 +8335,6 @@
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="port" relation="relation"/>
-            <link port="port2" relation="relation2"/>
             <link port="port3" relation="relation3"/>
             <link port="port4" relation="relation5"/>
             <link port="port5" relation="relation6"/>
@@ -8465,8 +8343,6 @@
             <link port="MetroIIPtidesPlatform.port2" relation="relation7"/>
             <link port="MetroIIPtidesPlatform.port3" relation="relation8"/>
             <link port="MetroIIPtidesPlatform.port4" relation="relation9"/>
-            <link port="CompositeActor.port" relation="relation"/>
-            <link port="CompositeActor2.port" relation="relation2"/>
             <link port="CompositeActor3.port" relation="relation3"/>
             <link port="CompositeActor3.port2" relation="relation10"/>
             <link port="CompositeActor4.port" relation="relation9"/>
@@ -8484,7 +8360,7 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 321, 914, 607}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={222, 321, 914, 607}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
             </property>
@@ -8821,9 +8697,9 @@
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1401, 935]">
                     </property>
-                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9907207567511173">
                     </property>
-                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{448.28906250000017, 327.7723816049605}">
                     </property>
                     <property name="startReserveTime" class="ptolemy.data.expr.Parameter" value="250">
                     </property>
@@ -8882,7 +8758,7 @@
                         </property>
                         <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 295.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 290.0]">
                         </property>
                         <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
@@ -8938,7 +8814,7 @@
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 270.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 270.0}">
                         </property>
                         <port name="trigger" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -8959,7 +8835,7 @@
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 345.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 355.0]">
                         </property>
                         <port name="trigger" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -9121,7 +8997,7 @@
                         </port>
                     </entity>
                     <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 300.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 290.0]">
                         </property>
                         <port name="input" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -9135,7 +9011,7 @@
                     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
                         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 295.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 290.0]">
                         </property>
                         <port name="enable" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -9160,7 +9036,7 @@
                     <entity name="Sequence2" class="ptolemy.actor.lib.Sequence">
                         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 390.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 390.0]">
                         </property>
                         <port name="enable" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -9197,7 +9073,7 @@
                     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
                         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                         </property>
-                        <vertex name="vertex1" value="[65.0, 295.0]">
+                        <vertex name="vertex1" value="[55.0, 295.0]">
                         </vertex>
                     </relation>
                     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -9209,7 +9085,7 @@
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                         </property>
-                        <vertex name="vertex1" value="{515.0, 300.0}">
+                        <vertex name="vertex1" value="[515.0, 305.0]">
                         </vertex>
                     </relation>
                     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -9293,7 +9169,7 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={166, 156, 914, 607}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 212, 914, 607}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
             </property>
@@ -9702,13 +9578,13 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 50.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={505, 287, 914, 615}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 313, 914, 615}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9974476543265647">
                     </property>
-                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.8828125, 222.0326313405798}">
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.8828125, 222.03263134057985}">
                     </property>
                     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="0 (start false)">
@@ -9772,7 +9648,7 @@
                         </property>
                         <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 325.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 325.0]">
                         </property>
                     </port>
                     <port name="port4" class="ptolemy.domains.metroII.kernel.MetroIIPtidesPort">
@@ -9907,7 +9783,7 @@
                         </port>
                     </entity>
                     <entity name="Select" class="ptolemy.actor.lib.Select">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 200.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 205.0]">
                         </property>
                         <port name="input" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
@@ -10018,7 +9894,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 45.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 321, 914, 607}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 321, 914, 607}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
             </property>
@@ -10440,7 +10316,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 253, 1061, 675}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={80, 253, 1061, 675}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[847, 584]">
                     </property>
@@ -10588,7 +10464,7 @@
                             <property name="input"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                     </entity>
@@ -10624,7 +10500,7 @@
                             <property name="multiport"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -10632,7 +10508,7 @@
                             <property name="multiport"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                     </entity>
@@ -10646,7 +10522,7 @@
                             <property name="multiport"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                         <port name="minus" class="ptolemy.actor.TypedIOPort">
@@ -10654,7 +10530,7 @@
                             <property name="multiport"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                     </entity>
@@ -10675,7 +10551,7 @@
                             <property name="multiport"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                     </entity>
@@ -10696,7 +10572,7 @@
                             <property name="multiport"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                     </entity>
@@ -10735,7 +10611,7 @@
                             <property name="input"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                     </entity>
@@ -10747,14 +10623,14 @@
                             <property name="multiport"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                         <port name="control" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
                             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.01">
+                            <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                             </property>
                         </port>
                     </entity>
@@ -10900,7 +10776,7 @@
             </property>
         </entity>
         <entity name="reserveFeedPaperRadius2" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 371, 580, 211}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 427, 580, 211}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 188]">
             </property>
@@ -10915,13 +10791,13 @@
 <title>Paper Radius on Reserve Feed Roller</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
-<xRange min="0.0" max="695.2"/>
-<yRange min="0.6727991201489223" max="0.7"/>
+<xRange min="0.0" max="769.6"/>
+<yRange min="0.6254910294507475" max="0.7"/>
 </plot>?>
             </configure>
         </entity>
         <entity name="feedPaperRadius2" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 824, 585, 188}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 740, 585, 188}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[585, 165]">
             </property>
@@ -10954,7 +10830,7 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 136, 814, 658}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 192, 1034, 567}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 567]">
             </property>
@@ -11057,7 +10933,7 @@
             </entity>
             <entity name="reserveFeedPaperVelocity" class="ptolemy.actor.lib.gui.TimedPlotter">
                 <display name="reserveFeedPaperVelocity, error"/>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 612, 582, 183}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 696, 582, 183}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 160]">
                 </property>
@@ -11078,8 +10954,8 @@
 <title>Reserve  Velocity (red), Target Velocity (green) and Tracking Error</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="695.2"/>
-<yRange min="-12.977145312535495" max="35.0"/>
+<xRange min="0.0" max="769.6"/>
+<yRange min="-12.974697059035542" max="35.0"/>
 </plot>?>
                 </configure>
             </entity>
@@ -12430,7 +12306,7 @@
             <link port="PtidesPlatform.port2" relation="relation3"/>
         </entity>
         <entity name="driveToReserveError" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={663, 820, 604, 192}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={662, 736, 604, 192}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 169]">
             </property>
@@ -12449,8 +12325,8 @@
 <title>Drive Paper Velocity - Reserve Feed Paper Velocity</title>
 <xLabel>Time in seconds</xLabel>
 <yLabel>Velocity m/s</yLabel>
-<xRange min="0.0" max="694.8000000000001"/>
-<yRange min="0.0" max="26.029096679474893"/>
+<xRange min="0.0" max="769.6"/>
+<yRange min="0.0" max="26.027689989007655"/>
 </plot>?>
             </configure>
         </entity>
@@ -12668,7 +12544,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={337, 313, 914, 615}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={342, 313, 914, 615}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                 </property>
@@ -12703,7 +12579,7 @@
                     </property>
                     <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
@@ -12745,7 +12621,7 @@
                     </property>
                     <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
@@ -12787,7 +12663,7 @@
                     </property>
                     <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
@@ -12873,6 +12749,81 @@
                 <link port="Scale.output" relation="relation6"/>
             </entity>
         </entity>
+        <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 655.0]">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={395, 321, 914, 607}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 248.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 250.0}">
+                </property>
+            </port>
+            <port name="port3" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 320.0]">
+                </property>
+            </port>
+            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 445, 522, 205}, maximized=false}">
+                </property>
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 182]">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 270.0]">
+                </property>
+            </entity>
+            <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 270.0]">
+                </property>
+            </entity>
+            <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 270}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="port3" relation="relation2"/>
+            <link port="Display.input" relation="relation4"/>
+            <link port="TimeGap.input" relation="relation3"/>
+            <link port="TimeGap.output" relation="relation4"/>
+            <link port="Merge.input" relation="relation"/>
+            <link port="Merge.input" relation="relation2"/>
+            <link port="Merge.output" relation="relation3"/>
+        </entity>
+        <entity name="reserveFeedPaperRadius3" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 567, 577, 209}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 186]">
+            </property>
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1170.0, -75.0]">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Paper Radius on Reserve Feed Roller</title>
+<xLabel>Time in seconds</xLabel>
+<yLabel>Paper Radius  (meters)</yLabel>
+<xRange min="0.0" max="769.6"/>
+<yRange min="0.0" max="55.215676879668834"/>
+</plot>?>
+            </configure>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
@@ -12943,8 +12894,6 @@
             <vertex name="vertex1" value="[555.0, -15.0]">
             </vertex>
         </relation>
-        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation22" class="ptolemy.actor.TypedIORelation">
@@ -12986,8 +12935,6 @@
             </property>
             <vertex name="vertex1" value="[860.0, 15.0]">
             </vertex>
-        </relation>
-        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation28" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -13105,14 +13052,22 @@
             <vertex name="vertex1" value="[90.0, 520.0]">
             </vertex>
         </relation>
+        <relation name="relation56" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[1085.0, 690.0]">
+            </vertex>
+        </relation>
+        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="driveRoller.paperVelocity" relation="relation42"/>
         <link port="driveRoller.voltage" relation="relation15"/>
         <link port="Scale.input" relation="relation34"/>
         <link port="Scale.output" relation="relation6"/>
         <link port="SingleEvent.output" relation="relation5"/>
-        <link port="reserveFeedPaperRadius.input" relation="relation6"/>
-        <link port="reserveFeedPaperRadius.input" relation="relation3"/>
-        <link port="reserveFeedPaperRadius.input" relation="relation55"/>
+        <link port="DriveRollPaperVelocity.input" relation="relation6"/>
+        <link port="DriveRollPaperVelocity.input" relation="relation3"/>
+        <link port="DriveRollPaperVelocity.input" relation="relation55"/>
         <link port="DriveController(MetroII).measuredPaperVelocity" relation="relation"/>
         <link port="DriveController(MetroII).paperVelocityProfile" relation="relation48"/>
         <link port="DriveController(MetroII).motorDriveVoltage" relation="relation15"/>
@@ -13144,11 +13099,9 @@
         <link port="FeedTargetProfile.port2" relation="relation18"/>
         <link port="reserveFeedRoller.paperVelocity" relation="relation38"/>
         <link port="reserveFeedRoller.voltage" relation="relation36"/>
-        <link port="reserveFeedRoller.angularVelocity" relation="relation14"/>
+        <link port="reserveFeedRoller.angularVelocity" relation="relation17"/>
         <link port="reserveFeedRoller.paperRadius" relation="relation19"/>
         <link port="reserveFeedRoller.port" relation="relation16"/>
-        <link port="ContactController.port" relation="relation33"/>
-        <link port="ContactController.port2" relation="relation14"/>
         <link port="ContactController.port3" relation="relation31"/>
         <link port="ContactController.port5" relation="relation16"/>
         <link port="ContactController.port6" relation="relation30"/>
@@ -13169,7 +13122,7 @@
         <link port="Scale2.input" relation="relation20"/>
         <link port="Scale2.output" relation="relation23"/>
         <link port="reserveFeedPaperRadius2.input" relation="relation19"/>
-        <link port="feedPaperRadius2.input" relation="relation17"/>
+        <link port="feedPaperRadius2.input" relation="relation56"/>
         <link port="feedPaperRadius2.input" relation="relation28"/>
         <link port="feedPaperRadius2.input" relation="relation29"/>
         <link port="reserveFeedMonitor.port" relation="relation25"/>
@@ -13183,7 +13136,10 @@
         <link port="PtidesPlatform2.port3" relation="relation31"/>
         <link port="PtidesPlatform2.port4" relation="relation28"/>
         <link port="PtidesPlatform2.port5" relation="relation43"/>
-        <link port="PtidesPlatform2.port6" relation="relation17"/>
+        <link port="PtidesPlatform2.port6" relation="relation56"/>
+        <link port="CompositeActor.port" relation="relation31"/>
+        <link port="CompositeActor.port3" relation="relation56"/>
+        <link port="reserveFeedPaperRadius3.input" relation="relation17"/>
         <link relation1="relation" relation2="relation40"/>
         <link relation1="relation" relation2="relation47"/>
         <link relation1="relation3" relation2="relation48"/>

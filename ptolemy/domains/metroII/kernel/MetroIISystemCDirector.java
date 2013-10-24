@@ -138,11 +138,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("Pushing events: ");
-        for (Builder etb : events) {
-            System.out
-                    .println(etb.getName() + " " + etb.getStatus().toString());
-        }
+//        System.out.println("Pushing events: ");
+//        for (Builder etb : events) {
+//            System.out
+//                    .println(etb.getName() + " " + etb.getStatus().toString());
+//        }
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
@@ -185,11 +185,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         for (Event e : ev.getEventList()) {
             events.add(e.toBuilder());
         }
-        System.out.println("Sync events: ");
-        for (Builder etb : events) {
-            System.out
-                    .println(etb.getName() + " " + etb.getStatus().toString());
-        }
+//        System.out.println("Sync events: ");
+//        for (Builder etb : events) {
+//            System.out
+//                    .println(etb.getName() + " " + etb.getStatus().toString());
+//        }
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
@@ -197,21 +197,6 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         }
     }
 
-    /**
-     * Check if at least one event is notified in the event vector.
-     * 
-     * @param events
-     *            event vector to be checked.
-     * @return true if there is at least one event notified.
-     */
-    public boolean atLeastOneNotified(Iterable<Event.Builder> events) {
-        for (Builder event : events) {
-            if (event.getStatus() == Status.NOTIFIED) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Fire the wrapped Metro-SystemC model.
@@ -267,7 +252,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
         do {
             resultHandler.handleResult(events);
-        } while (!atLeastOneNotified(events));
+        } while (!MetroIIEventBuilder.atLeastOneNotified(events));
 
         pushEvents(events);
     }
