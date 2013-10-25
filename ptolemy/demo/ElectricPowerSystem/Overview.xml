@@ -45,13 +45,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 480.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1175, 831}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 64, 1205, 921}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[941, 721]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 811]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9148773883049239">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0306846526473195">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{277.81135106254385, 135.57666015624994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{235.19496930106877, 135.57666015625}">
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, 375.0]">
@@ -458,7 +458,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 315.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorContactorLoad.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -758,7 +758,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-52.499999999999986, -127.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-55.0, -125.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/Specification.txt">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
