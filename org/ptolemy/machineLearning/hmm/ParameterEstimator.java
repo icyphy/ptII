@@ -31,15 +31,12 @@ package org.ptolemy.machineLearning.hmm;
 
  
 import java.util.HashMap;
-import java.util.List;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.aspect.CompositeCommunicationAspect;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;

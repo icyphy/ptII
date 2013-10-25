@@ -28,8 +28,8 @@
 
 package org.ptolemy.fmi;
 
-import com.sun.jna.Pointer;
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 
 /**
  * A Functional Mock-up Interface (FMI) log method implementation.

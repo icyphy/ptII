@@ -30,8 +30,8 @@ package ptolemy.actor.lib;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;

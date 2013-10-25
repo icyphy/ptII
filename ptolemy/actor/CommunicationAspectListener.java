@@ -30,8 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CommunicationAspect;
 
 /** This interface defines a listener for communication aspects.
  *

@@ -43,7 +43,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.DiscreteClock;
-import ptolemy.actor.lib.TimeDelay; 
+import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.lib.aspect.EDFScheduler;
 import ptolemy.actor.lib.aspect.ExecutionTimeAttributes;
 import ptolemy.data.DoubleToken;

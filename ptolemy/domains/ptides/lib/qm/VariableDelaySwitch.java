@@ -30,12 +30,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.qm;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.Director;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.aspect.BasicSwitch; 
+import ptolemy.actor.lib.aspect.BasicSwitch;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;

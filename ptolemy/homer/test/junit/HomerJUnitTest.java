@@ -36,7 +36,6 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.homer.HomerApplication;
-import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;

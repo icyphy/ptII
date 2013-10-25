@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.icon;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Point2D;

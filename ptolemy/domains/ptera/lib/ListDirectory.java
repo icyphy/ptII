@@ -28,13 +28,6 @@
 package ptolemy.domains.ptera.lib;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.regex.Pattern;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;

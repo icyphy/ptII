@@ -29,7 +29,6 @@
 package org.ptolemy.fmi.driver;
 
 import org.ptolemy.fmi.FMILibrary;
-import org.ptolemy.fmi.FMULibrary.FMUAllocateMemory;
 
 import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;

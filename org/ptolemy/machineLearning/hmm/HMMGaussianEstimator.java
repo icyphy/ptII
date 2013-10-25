@@ -30,7 +30,6 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.Arrays;
-import java.util.HashMap; 
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
@@ -45,7 +44,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization

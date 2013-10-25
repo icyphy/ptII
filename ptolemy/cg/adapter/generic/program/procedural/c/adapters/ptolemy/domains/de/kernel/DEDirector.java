@@ -45,6 +45,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.Time;
+import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -63,8 +64,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
-
-import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 
 ///////////////////////////////////////////////////////////////////
 ////DEDirector

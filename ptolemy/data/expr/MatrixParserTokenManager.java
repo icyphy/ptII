@@ -26,10 +26,6 @@
                                         COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
-import ptolemy.kernel.util.IllegalActionException;
-import java.util.Vector;
-import java.io.ByteArrayInputStream;
-import java.io.FileReader;
 
 public class MatrixParserTokenManager implements MatrixParserConstants
 {

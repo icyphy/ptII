@@ -36,15 +36,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.injection.PortablePlaceable;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////

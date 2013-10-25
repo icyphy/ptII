@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.parameters.ParameterPort;

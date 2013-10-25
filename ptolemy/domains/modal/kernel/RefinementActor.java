@@ -28,8 +28,8 @@
 */
 package ptolemy.domains.modal.kernel;
 
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.InstanceOpener;
+import ptolemy.actor.TypedActor;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 

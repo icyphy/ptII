@@ -27,13 +27,10 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.modal.kernel.State;
-import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.domains.modal.modal.RefinementPort;

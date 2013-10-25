@@ -27,10 +27,9 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;

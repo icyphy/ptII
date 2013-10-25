@@ -31,7 +31,6 @@ package ptolemy.util.test.junit;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

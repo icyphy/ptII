@@ -28,19 +28,15 @@
 
 package ptolemy.actor.parameters.test.junit;
 
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Set;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.parameters.SharedParameter;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////

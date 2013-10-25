@@ -60,7 +60,7 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute; 
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

@@ -29,8 +29,6 @@ COPYRIGHTENDKEY
 */
 package org.ptolemy.machineLearning.hmm;
 
-import java.util.HashMap;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;

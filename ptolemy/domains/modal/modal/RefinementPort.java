@@ -31,8 +31,6 @@ import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
-import ptolemy.actor.Librariable;
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;

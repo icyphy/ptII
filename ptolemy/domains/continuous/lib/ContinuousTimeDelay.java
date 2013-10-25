@@ -27,9 +27,6 @@
  */
 package ptolemy.domains.continuous.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
@@ -40,7 +37,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

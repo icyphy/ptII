@@ -27,14 +27,9 @@
  */
 package ptolemy.domains.modal.modal;
 
-import java.util.Iterator;
-
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

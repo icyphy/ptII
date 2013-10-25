@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor;
 
-import ptolemy.actor.CommunicationAspectListener;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 

@@ -38,13 +38,13 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 
-import ptolemy.actor.IOPort; 
+import ptolemy.actor.CommunicationAspect;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.SubscriberPort;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.gui.PtolemyPreferences; 
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;

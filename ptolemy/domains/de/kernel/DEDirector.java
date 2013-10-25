@@ -35,13 +35,13 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.ActorExecutionAspect;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ActorExecutionAspect;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;

@@ -736,6 +736,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                                 .equals(BooleanToken.TRUE);
                     } catch (Exception ex) {
                         // Ignore.
+                        showRate = false;
                     }
 
                     if (showRate) {

@@ -28,11 +28,6 @@
  */
 package util.testsuite;
 
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// WatchDog

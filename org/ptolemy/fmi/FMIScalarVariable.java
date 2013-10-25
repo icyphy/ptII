@@ -43,7 +43,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.sun.jna.Function;
-import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 

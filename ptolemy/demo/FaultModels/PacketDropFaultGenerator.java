@@ -33,11 +33,11 @@ package ptolemy.demo.FaultModels;
 import java.util.HashMap;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.CommunicationAspect;
-import ptolemy.actor.Receiver;  
+import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.aspect.AtomicCommunicationAspect;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;

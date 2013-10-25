@@ -36,10 +36,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CommunicationAspectListener; 
+import ptolemy.actor.CommunicationAspect;
+import ptolemy.actor.CommunicationAspectListener;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.CommunicationAspect; 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
