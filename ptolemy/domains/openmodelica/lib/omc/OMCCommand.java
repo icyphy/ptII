@@ -165,13 +165,13 @@ public class OMCCommand implements IOMCCommand {
                     Collection<String> variableList = new ArrayList<String>();
                     String x = "OPENMODELICAHOME="
                             + omcBinary.getParentFile().getParentFile()
-                            .getAbsolutePath();
+                                    .getAbsolutePath();
                     variableList.add(x);
 
                     if (System.getenv("OPENMODELICALIBRARY") == null) {
                         String libraryPath = "OPENMODELICALIBRARY="
                                 + omcBinary.getParentFile().getParentFile()
-                                .getAbsolutePath() + "/lib/omlibrary";
+                                        .getAbsolutePath() + "/lib/omlibrary";
                         variableList.add(libraryPath);
                     }
 
@@ -209,8 +209,8 @@ public class OMCCommand implements IOMCCommand {
                                 + e.getMessage()
                                 + (_omcProcess == null ? " process was null, perhaps it was not initialized."
                                         : " process exited with code "
-                                        + _omcProcess.exitValue()))
-                .printStackTrace();
+                                                + _omcProcess.exitValue()))
+                        .printStackTrace();
                 return;
             }
         }
@@ -249,7 +249,7 @@ public class OMCCommand implements IOMCCommand {
         }
         if (getInheritanceCountResult.getError().isEmpty())
             inheritanceCount = getInheritanceCountResult.getFirstResult()
-            .toString();
+                    .toString();
 
         if (!(inheritanceCount.compareTo("0\n") == 0))
             return true;
@@ -485,8 +485,8 @@ public class OMCCommand implements IOMCCommand {
                                 if (getNthInheritanceClassResult.getError()
                                         .isEmpty()
                                         && !getNthInheritanceClassResult
-                                        .getFirstResult().trim()
-                                        .toString().contains("Error")) {
+                                                .getFirstResult().trim()
+                                                .toString().contains("Error")) {
                                     baseIndividualComponent = getModelComponent(getNthInheritanceClassResult
                                             .getFirstResult().toString());
 
@@ -504,9 +504,9 @@ public class OMCCommand implements IOMCCommand {
                                                         + childModel
                                                         + ","
                                                         + getNthInheritanceClassResult
-                                                        .getFirstResult()
-                                                        .trim()
-                                                        .toString()
+                                                                .getFirstResult()
+                                                                .trim()
+                                                                .toString()
                                                         + ","
                                                         + key
                                                         + ",$Code(="
@@ -515,29 +515,29 @@ public class OMCCommand implements IOMCCommand {
                                                 if (extendModifierValueResult
                                                         .getError().isEmpty()
                                                         && !extendModifierValueResult
-                                                        .getFirstResult()
-                                                        .trim()
-                                                        .toString()
-                                                        .contains(
-                                                                "Error")) {
+                                                                .getFirstResult()
+                                                                .trim()
+                                                                .toString()
+                                                                .contains(
+                                                                        "Error")) {
 
                                                     loggerInfo = "Extended: Component "
                                                             + key
                                                             + " of model "
                                                             + getNthInheritanceClassResult
-                                                            .getFirstResult()
-                                                            .trim()
-                                                            .toString()
+                                                                    .getFirstResult()
+                                                                    .trim()
+                                                                    .toString()
                                                             + " is set to "
                                                             + values[i] + ".";
                                                     _omcLogger
-                                                    .getInfo(loggerInfo);
+                                                            .getInfo(loggerInfo);
                                                 } else {
                                                     loggerInfo = "Extended: Error in setting new value for component's of inherited class!"
                                                             + extendModifierValueResult
-                                                            .getError();
+                                                                    .getError();
                                                     _omcLogger
-                                                    .getInfo(loggerInfo);
+                                                            .getInfo(loggerInfo);
                                                     throw new ConnectException(
                                                             loggerInfo);
                                                 }
@@ -570,10 +570,10 @@ public class OMCCommand implements IOMCCommand {
                                     if (!getComponentModifierNames.getError()
                                             .toString().isEmpty()) {
                                         _omcLogger
-                                        .getInfo("Unspecified : Error "
-                                                + getComponentModifierNames
-                                                .getError()
-                                                .toString());
+                                                .getInfo("Unspecified : Error "
+                                                        + getComponentModifierNames
+                                                                .getError()
+                                                                .toString());
                                     }
 
                                     // The variable does not have any parameters.
@@ -587,30 +587,30 @@ public class OMCCommand implements IOMCCommand {
                                                 + childKey
                                                 + ", $Code(="
                                                 + values[i]
-                                                        + "))");
+                                                + "))");
 
                                         if (unspecifiedModifier.getError()
                                                 .toString().isEmpty()) {
                                             _omcLogger
-                                            .getInfo("Unspecified : Component "
-                                                    + childKey
-                                                    + " of "
-                                                    + modelName
-                                                    + " is set to "
-                                                    + values[i] + ".");
+                                                    .getInfo("Unspecified : Component "
+                                                            + childKey
+                                                            + " of "
+                                                            + modelName
+                                                            + " is set to "
+                                                            + values[i] + ".");
                                         }
                                     } else {
                                         StringBuffer componentsBuffer = new StringBuffer(
                                                 getComponentModifierNames
-                                                .getFirstResult()
-                                                .trim().toString());
+                                                        .getFirstResult()
+                                                        .trim().toString());
                                         // Delete the first and last "{".
                                         componentsBuffer.deleteCharAt(0);
                                         parameterNames = componentsBuffer
                                                 .deleteCharAt(
                                                         componentsBuffer
-                                                        .length() - 1)
-                                                        .toString();
+                                                                .length() - 1)
+                                                .toString();
 
                                         // Split the result by "," in order to have access to each simulation parameter's value.
                                         variableList = parameterNames
@@ -625,7 +625,7 @@ public class OMCCommand implements IOMCCommand {
                                                     + tempParameter
                                                     + ", $Code(="
                                                     + values[i]
-                                                            + "))");
+                                                    + "))");
 
                                             if (setComponentModifierValueResult
                                                     .getError().toString()
@@ -642,7 +642,7 @@ public class OMCCommand implements IOMCCommand {
                                             } else {
                                                 loggerInfo = "Unspecified : Error in setting new value for component's class!"
                                                         + setComponentModifierValueResult
-                                                        .getError();
+                                                                .getError();
                                                 _omcLogger.getInfo(loggerInfo);
                                             }
                                         }
@@ -665,37 +665,33 @@ public class OMCCommand implements IOMCCommand {
                                         loggerInfo = "Parameter : Component "
                                                 + childKey + " of " + modelName
                                                 + " is set to " + values[i]
-                                                        + ".";
+                                                + ".";
                                         _omcLogger.getInfo(loggerInfo);
                                     } else {
                                         loggerInfo = "Parameter : Error in setting new value for component's class!"
                                                 + getNthInheritanceClassResult
-                                                .getError();
+                                                        .getError();
                                         _omcLogger.getInfo(loggerInfo);
                                     }
-                                }
+                                } else if (childIndividualComponent.get(
+                                        childKey).compareTo("als") == 0)
+                                    // A discrete-time variable is a piecewise constant 
+                                    // signal which changes its values only at event instants during simulation.
+                                    _omcLogger
+                                            .getInfo("It's not possible to change the value of "
+                                                    + components
+                                                    + " in the "
+                                                    + modelName
+                                                    + ", because of its variablity prefix[discrete].");
                             }
                         }
                     }
                     if (!found)
                         _omcLogger.getInfo(components
                                 + " does not found in the " + modelName + ".");
-                    else if (found
-                            && !(childIndividualComponent.get(childKey)
-                                    .compareTo("parameter") == 0)
-                                    && !(childIndividualComponent.get(childKey)
-                                            .compareTo("unspecified") == 0))
-                        // A discrete-time variable is a piecewise constant 
-                        // signal which changes its values only at event instants during simulation.
-                        _omcLogger
-                        .getInfo("It's not possible to change the value of "
-                                + components
-                                + " in the "
-                                + modelName
-                                + ", because of its variablity prefix[discrete/constant].");
                 } else
                     _omcLogger
-                    .getInfo("There is no compatibility between number of parameter(s)/variable(s) and values.");
+                            .getInfo("There is no compatibility between number of parameter(s)/variable(s) and values.");
             }
         } catch (Exception e) {
             throw new IllegalActionException(e.getMessage());
@@ -782,7 +778,7 @@ public class OMCCommand implements IOMCCommand {
             switch (getOs()) {
             case WINDOWS:
                 commands = _temp + _username + "/OpenModelica/" + modelName
-                + ".exe";
+                        + ".exe";
                 break;
             case UNIX:
                 commands = _temp + "/" + _username + "/OpenModelica/"
@@ -801,7 +797,7 @@ public class OMCCommand implements IOMCCommand {
                             _environmentalVariables, _workDir);
                 } catch (IOException e) {
                     System.err
-                    .println("Failed to run the command: " + commands);
+                            .println("Failed to run the command: " + commands);
                     StringUtilities.exit(1);
                 }
 
@@ -812,20 +808,20 @@ public class OMCCommand implements IOMCCommand {
                 switch (getOs()) {
                 case WINDOWS:
                     loggerInfo = modelName + "_res." + outputFormat
-                    + " is generated in " + _temp + _username
-                    + "/OpenModelica/";
+                            + " is generated in " + _temp + _username
+                            + "/OpenModelica/";
                     _omcLogger.getInfo(loggerInfo);
                     break;
                 case UNIX:
                     loggerInfo = modelName + "_res." + outputFormat
-                    + " is generated in " + _temp + "/" + _username
-                    + "/OpenModelica/";
+                            + " is generated in " + _temp + "/" + _username
+                            + "/OpenModelica/";
                     _omcLogger.getInfo(loggerInfo);
                     break;
                 case MAC:
                     loggerInfo = modelName + "_res." + outputFormat
-                    + " is generated in " + _temp + _username
-                    + "/OpenModelica/";
+                            + " is generated in " + _temp + _username
+                            + "/OpenModelica/";
                     _omcLogger.getInfo(loggerInfo);
                     break;
                 }
@@ -887,7 +883,7 @@ public class OMCCommand implements IOMCCommand {
 
             if (!modelicaCommand.equalsIgnoreCase("quit()"))
                 errorMessage = omcCommunication
-                .sendExpression("getErrorString()");
+                        .sendExpression("getErrorString()");
             else
                 hasInitialized = false;
 
@@ -1049,7 +1045,7 @@ public class OMCCommand implements IOMCCommand {
         case WINDOWS:
             if (_username == null) {
                 System.err
-                .println("Could not get user.name property?  Using 'nobody'.");
+                        .println("Could not get user.name property?  Using 'nobody'.");
                 omcWorkingDirectory = new File(_temp + "nobody/OpenModelica/");
             } else
                 omcWorkingDirectory = new File(_temp + _username
@@ -1058,7 +1054,7 @@ public class OMCCommand implements IOMCCommand {
         case UNIX:
             if (_username == null) {
                 System.err
-                .println("Could not get user.name property?  Using 'nobody'.");
+                        .println("Could not get user.name property?  Using 'nobody'.");
                 omcWorkingDirectory = new File(_temp + "/nobody/OpenModelica/");
             } else
                 omcWorkingDirectory = new File(_temp + "/" + _username
@@ -1067,7 +1063,7 @@ public class OMCCommand implements IOMCCommand {
         case MAC:
             if (_username == null) {
                 System.err
-                .println("Could not get user.name property?  Using 'nobody'.");
+                        .println("Could not get user.name property?  Using 'nobody'.");
                 omcWorkingDirectory = new File(_temp + "nobody/OpenModelica/");
             } else
                 omcWorkingDirectory = new File(_temp + _username
@@ -1090,7 +1086,7 @@ public class OMCCommand implements IOMCCommand {
         case UNIX:
             if (_username == null) {
                 System.err
-                .println("Could not get user.name property?  Using 'nobody'.");
+                        .println("Could not get user.name property?  Using 'nobody'.");
                 _username = "nobody";
             }
             if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
@@ -1110,7 +1106,7 @@ public class OMCCommand implements IOMCCommand {
         case MAC:
             if (_username == null) {
                 System.err
-                .println("Could not get user.name property?  Using 'nobody'.");
+                        .println("Could not get user.name property?  Using 'nobody'.");
                 _username = "nobody";
             }
             if (_corbaSession == null || _corbaSession.equalsIgnoreCase("")) {
@@ -1130,7 +1126,7 @@ public class OMCCommand implements IOMCCommand {
      *  @throws ConnectException If there is an error in reading OM object reference.
      */
     private String _readObjectFromFile() throws FileNotFoundException,
-    IOException {
+            IOException {
 
         File file = new File(_getPathToObject());
 
@@ -1228,7 +1224,7 @@ public class OMCCommand implements IOMCCommand {
 
     // Initialize _corbaSession.
     private String _corbaSession = new SimpleDateFormat("HHmmss")
-    .format(new Date());
+            .format(new Date());
 
     // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start. 
     private boolean _couldNotStartOMC = false;
