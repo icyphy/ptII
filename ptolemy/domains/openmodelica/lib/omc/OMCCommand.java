@@ -117,7 +117,7 @@ public class OMCCommand implements IOMCCommand {
             File temp[] = null;
             try {
                 temp = _getOmcBinaryPaths();
-            } catch (ConnectException e) {              
+            } catch (ConnectException e) {
                 new ConnectException(e.getMessage()).printStackTrace();
                 return;
             }
@@ -151,9 +151,9 @@ public class OMCCommand implements IOMCCommand {
             String loggerInfo = "Command " + fullCommand
                     + " running for starting OMC ...";
             _omcLogger.getInfo(loggerInfo);
-            
+
             loggerInfo = "Working directory is set to: "
-                    + workingDirectory.getAbsolutePath();
+                    + workingDirectory.getAbsolutePath() + ".";
             _omcLogger.getInfo(loggerInfo);
 
             try {
@@ -236,10 +236,10 @@ public class OMCCommand implements IOMCCommand {
      *  @return Check Return true, if the number of inherited classes is more than zero.  
      */
     public boolean getInheritanceCount(String modelName) {
-        
+
         CompilerResult getInheritanceCountResult = null;
         String inheritanceCount = null;
-    
+
         try {
             // Return the number (as a string) of inherited classes of the (base-)model.
             getInheritanceCountResult = sendCommand("getInheritanceCount("
@@ -250,7 +250,7 @@ public class OMCCommand implements IOMCCommand {
         if (getInheritanceCountResult.getError().isEmpty())
             inheritanceCount = getInheritanceCountResult.getFirstResult()
             .toString();
-    
+
         if (!(inheritanceCount.compareTo("0\n") == 0))
             return true;
         else
@@ -272,25 +272,25 @@ public class OMCCommand implements IOMCCommand {
      *  @return HashMap The list of component declarations within (base-)model.
      */
     public HashMap getModelComponent(String modelName) {
-    
+
         String componentNames = null;
         String[] individualComponent = null;
         CompilerResult getComponentsResult = null;
         HashMap<String, String> componentList = null;
-    
+
         // List all components of the model 
         // e.g. variable, parameter, constant, etc.
-    
+
         try {
             getComponentsResult = sendCommand("getComponents(" + modelName
                     + ")");
         } catch (ConnectException e) {
             new ConnectException(e.getMessage()).printStackTrace();
         }
-        
+
         if (getComponentsResult.getError().isEmpty()) {
             componentNames = getComponentsResult.getFirstResult();
-    
+
             // Delete the first "{".
             StringBuffer componentsBuffer = new StringBuffer(componentNames);
             componentsBuffer.delete(0, 1);
@@ -299,31 +299,31 @@ public class OMCCommand implements IOMCCommand {
             String componentType = null;
             String[] components = null;
             componentList = new HashMap<String, String>();
-    
+
             // Split the getComponents result by "}," in order to access each component.
             components = componentNames.split("},");
-    
+
             for (String component : components) {
-    
+
                 componentsBuffer = new StringBuffer(component);
                 componentNames = componentsBuffer.deleteCharAt(0).toString();
-    
+
                 // Split the component by "," in order to access each property of the component.
                 individualComponent = componentNames.split(",");
-    
+
                 // The second element is the name of the component.
                 componentName = individualComponent[1];
-    
+
                 //The 9th element can have four possible values constant, parameter, discrete or unspecified.
                 componentType = individualComponent[8];
-    
+
                 // Delete the first space and quotation.
                 // Delete the last quotation.
                 componentsBuffer = new StringBuffer(componentType);
                 componentType = componentsBuffer.delete(0, 2).toString();
                 componentType = componentsBuffer.deleteCharAt(
                         componentsBuffer.length() - 1).toString();
-    
+
                 componentList.put(componentName, componentType);
             }
         } else {
@@ -365,9 +365,9 @@ public class OMCCommand implements IOMCCommand {
         try {
             stringifiedObjectReference = _readObjectFromFile();
         } catch (FileNotFoundException e) {
-           throw new ConnectException(e.getMessage());
+            throw new ConnectException(e.getMessage());
         } catch (IOException e) {
-           throw new ConnectException(e.getMessage());
+            throw new ConnectException(e.getMessage());
         }
 
         _setupOmcc(stringifiedObjectReference);
@@ -450,10 +450,10 @@ public class OMCCommand implements IOMCCommand {
      *  @throws IllegalActionException 
      */
     public void modifyComponents(String parameterValues, String modelName,
-            String components) throws IllegalActionException,
-            ConnectException {
+            String components) throws IllegalActionException, ConnectException {
 
         String childModel = modelName;
+        String childKey = null;
         HashMap<String, String> baseIndividualComponent = null;
         HashMap<String, String> childIndividualComponent = null;
         CompilerResult getNthInheritanceClassResult = null;
@@ -471,17 +471,17 @@ public class OMCCommand implements IOMCCommand {
         try {
             // Return the list of component declarations within (base-)model.
             childIndividualComponent = getModelComponent(childModel);
-            
+
             if (childIndividualComponent != null) {
                 if (parameters.length == values.length) {
                     for (int i = 0; i < parameters.length; i++) {
                         if (getInheritanceCount(childModel)) {
                             for (int j = 1; j <= 2; j++) {
-                                
+
                                 // Return the name of the jth inherited class of the (base-)model.
                                 getNthInheritanceClassResult = sendCommand("getNthInheritedClass("
                                         + childModel + "," + j + ")");
-                                
+
                                 if (getNthInheritanceClassResult.getError()
                                         .isEmpty()
                                         && !getNthInheritanceClassResult
@@ -489,7 +489,7 @@ public class OMCCommand implements IOMCCommand {
                                         .toString().contains("Error")) {
                                     baseIndividualComponent = getModelComponent(getNthInheritanceClassResult
                                             .getFirstResult().toString());
-                                    
+
                                     if (baseIndividualComponent != null) {
                                         Iterator baseIterator = baseIndividualComponent
                                                 .keySet().iterator();
@@ -499,7 +499,7 @@ public class OMCCommand implements IOMCCommand {
                                             if (parameters[i]
                                                     .equalsIgnoreCase(key)) {
                                                 found = true;
-                                                
+
                                                 CompilerResult extendModifierValueResult = sendCommand("setExtendsModifierValue("
                                                         + childModel
                                                         + ","
@@ -529,7 +529,7 @@ public class OMCCommand implements IOMCCommand {
                                                             .trim()
                                                             .toString()
                                                             + " is set to "
-                                                            + values[i] + "!";
+                                                            + values[i] + ".";
                                                     _omcLogger
                                                     .getInfo(loggerInfo);
                                                 } else {
@@ -548,19 +548,19 @@ public class OMCCommand implements IOMCCommand {
                             }
                         }
 
-                        // The model does not inherit from other classes.i.e. the inheritance count is 0.
+                        // In Modelica, component declaration has variability prefixes discrete, 
+                        // parameter and constant,that defines in which situation the variable 
+                        // values of a component are initialized and when they are changed in transient analysis.
                         Iterator childIterator = childIndividualComponent
                                 .keySet().iterator();
+
                         while (childIterator.hasNext()) {
-                            String childKey = childIterator.next().toString();
-                            // In Modelica variables store results of computations performed when solving the equations
-                            // of a class together with equations from other classes. During solution of timedependent problems,
-                            // the variables store results of the solution process at the current time instance.
+                            childKey = childIterator.next().toString();
                             if (childKey.equalsIgnoreCase(parameters[i])) {
 
                                 found = true;
 
-                                // "unspecified" means no variability is set for the variable.
+                                // "unspecified" means no variability prefix is set for the variable.
                                 if (childIndividualComponent.get(childKey)
                                         .compareTo("unspecified") == 0) {
 
@@ -569,9 +569,11 @@ public class OMCCommand implements IOMCCommand {
                                             + modelName + "," + childKey + ")");
                                     if (!getComponentModifierNames.getError()
                                             .toString().isEmpty()) {
-                                        _omcLogger.getInfo("Unspecified : Error "
+                                        _omcLogger
+                                        .getInfo("Unspecified : Error "
                                                 + getComponentModifierNames
-                                                .getError().toString());
+                                                .getError()
+                                                .toString());
                                     }
 
                                     // The variable does not have any parameters.
@@ -589,9 +591,12 @@ public class OMCCommand implements IOMCCommand {
 
                                         if (unspecifiedModifier.getError()
                                                 .toString().isEmpty()) {
-                                            _omcLogger.getInfo("Unspecified : Component "
-                                                    + childKey + " of model "
-                                                    + modelName + " is set to "
+                                            _omcLogger
+                                            .getInfo("Unspecified : Component "
+                                                    + childKey
+                                                    + " of "
+                                                    + modelName
+                                                    + " is set to "
                                                     + values[i] + ".");
                                         }
                                     } else {
@@ -626,12 +631,13 @@ public class OMCCommand implements IOMCCommand {
                                                     .getError().toString()
                                                     .isEmpty()) {
                                                 loggerInfo = "Unspecified : Component "
-                                                        + childKey + "."
+                                                        + childKey
+                                                        + "."
                                                         + variables
-                                                        + " of model "
+                                                        + " of "
                                                         + modelName
                                                         + " is set to "
-                                                        + values[i];
+                                                        + values[i] + ".";
                                                 _omcLogger.getInfo(loggerInfo);
                                             } else {
                                                 loggerInfo = "Unspecified : Error in setting new value for component's class!"
@@ -642,16 +648,10 @@ public class OMCCommand implements IOMCCommand {
                                         }
                                     }
                                 }
-                                //  The keyword parameter specifies that the variable is constant during a simulation run,
+                                //  The "parameter" prefix specifies that the variable is constant during a simulation run,
                                 //  but can have its value initialized before a run, or between runs. 
-                                //  This means that parameter is a special kind of constant,
-                                //  which is implemented as a static variable that is initialized once and 
-                                //  never changes its value during a specific execution. A parameter is a constant variable that makes 
-                                //  it simple for a user to modify the behavior of a model.
                                 if (childIndividualComponent.get(childKey)
-                                        .compareTo("parameter") == 0
-                                        && childKey
-                                        .equalsIgnoreCase(parameters[i])) {
+                                        .compareTo("parameter") == 0) {
                                     // Set the modifier value of a component.
                                     CompilerResult parameterChange = sendCommand("setParameterValue("
                                             + modelName
@@ -662,9 +662,10 @@ public class OMCCommand implements IOMCCommand {
 
                                     if (parameterChange.getError().toString()
                                             .isEmpty()) {
-                                        loggerInfo = "Parameter : Component " + childKey
-                                                + " of model " + modelName
-                                                + " is set to " + values[i];
+                                        loggerInfo = "Parameter : Component "
+                                                + childKey + " of " + modelName
+                                                + " is set to " + values[i]
+                                                        + ".";
                                         _omcLogger.getInfo(loggerInfo);
                                     } else {
                                         loggerInfo = "Parameter : Error in setting new value for component's class!"
@@ -676,11 +677,26 @@ public class OMCCommand implements IOMCCommand {
                             }
                         }
                     }
+                    if (!found)
+                        _omcLogger.getInfo(components
+                                + " does not found in the " + modelName + ".");
+                    else if (found
+                            && !(childIndividualComponent.get(childKey)
+                                    .compareTo("parameter") == 0)
+                                    && !(childIndividualComponent.get(childKey)
+                                            .compareTo("unspecified") == 0))
+                        // A discrete-time variable is a piecewise constant 
+                        // signal which changes its values only at event instants during simulation.
+                        _omcLogger
+                        .getInfo("It's not possible to change the value of "
+                                + components
+                                + " in the "
+                                + modelName
+                                + ", because of its variablity prefix[discrete/constant].");
                 } else
-                    _omcLogger.getInfo("There is no compatibility between number of parameter(s)/variable(s) and values");
+                    _omcLogger
+                    .getInfo("There is no compatibility between number of parameter(s)/variable(s) and values.");
             }
-            if (!found)
-                _omcLogger.getInfo(components + " does not found in the " + modelName);
         } catch (Exception e) {
             throw new IllegalActionException(e.getMessage());
         }
@@ -784,7 +800,8 @@ public class OMCCommand implements IOMCCommand {
                     Runtime.getRuntime().exec(commands,
                             _environmentalVariables, _workDir);
                 } catch (IOException e) {
-                    System.err.println("Failed to run the command: " + commands);
+                    System.err
+                    .println("Failed to run the command: " + commands);
                     StringUtilities.exit(1);
                 }
 
@@ -1172,7 +1189,7 @@ public class OMCCommand implements IOMCCommand {
             // Convert object to OmcCommunication object. 
             omcCommunication = OmcCommunicationHelper.narrow(obj);
         } catch (Throwable throwable) {
-           throw new RuntimeException("Failed to convert string \""
+            throw new RuntimeException("Failed to convert string \""
                     + stringifiedObjectReference + "\" to an object.",
                     throwable);
         }
@@ -1200,7 +1217,7 @@ public class OMCCommand implements IOMCCommand {
                 try {
                     _fOMCThread.wait(5000);
                 } catch (InterruptedException e) {
-                   throw new ConnectException(e.getMessage());
+                    throw new ConnectException(e.getMessage());
                 }
             }
         }
