@@ -109,12 +109,19 @@ public class ActorNameIcon extends BoxedValueIcon {
                     SingletonParameter hideName = new SingletonParameter(
                             this.getContainer(), "_hideName");
                     hideName.setExpression("true");
-                } catch (Exception e) {
-                    // Do nothing.
+                } catch (Exception ex) {
+                    if (!_printedMessage) {
+                        _printedMessage = true;
+                        System.out.println("Failed to create the background figure. " + ex);
+                    }
                 }
             }
         }
 
         return new BasicRectangle(0, 0, width, height, Color.white, 1);
     }
-}
+
+    /** True if we have printed a message about failing to create
+     *  background figures. 
+     */
+    private boolean _printedMessage; }

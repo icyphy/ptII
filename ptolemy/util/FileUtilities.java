@@ -538,6 +538,7 @@ public class FileUtilities {
                 url = new URL(fixedURLAsString);
             } catch (Exception e) {
                 // Ignore
+                url = new URL(name);
             }
             return url;
         }
