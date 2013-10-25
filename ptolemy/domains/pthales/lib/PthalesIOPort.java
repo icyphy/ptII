@@ -253,8 +253,8 @@ public class PthalesIOPort {
                     .getInternalRepetitions((AtomicActor) actor);
         }
 
-        Set dims = pattern.keySet();
-        Set tilingSet = tiling.keySet();
+        Set<String> dims = pattern.keySet();
+        Set<String> tilingSet = tiling.keySet();
         int i = 0;
 
         for (Object dim : dims.toArray()) {
@@ -279,8 +279,8 @@ public class PthalesIOPort {
 
         if (rep != null) {
             i = 0;
-            for (Object til : tilingSet) {
-                if (i < rep.length && !((String) til).startsWith("empty")
+            for (String til : tilingSet) {
+                if (i < rep.length && !til.startsWith("empty")
                         && !dims.contains(til)) {
                     myList.add(rep[i] * tiling.get(til)[0]);
                 }
