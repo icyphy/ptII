@@ -21,7 +21,7 @@
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 330.0}">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
         </property>
@@ -54,15 +54,15 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 22, 1007, 803}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1175, 760}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[794, 693]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[941, 650]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3057142857143">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2114285714285715">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.0481400437637, 329.8719912472649}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{546.2570754716982, 328.6509433962264}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_relationSize" class="ptolemy.data.expr.Parameter" value="4">
@@ -77,11 +77,11 @@
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
             <display name="Background Color"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1115.0, 590.0]">
         </property>
     </property>
     <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 550.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
@@ -105,7 +105,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 180.0]">
         </property>
     </property>
     <property name="circuitsColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.56078434,0.0,1.0}">
@@ -124,7 +124,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 200.0]">
         </property>
     </property>
     <property name="systemsColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.4,0.0,1.0}">
@@ -143,7 +143,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 220.0]">
         </property>
     </property>
     <property name="csColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,1.0,1.0}">
@@ -162,7 +162,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 160.0]">
         </property>
     </property>
     <property name="eecsColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.2,1.0}">
@@ -181,7 +181,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 140.0]">
         </property>
     </property>
     <property name="computingColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.1,0.8,1.0}">
@@ -200,7 +200,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 240.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -267,7 +267,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 260.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -328,7 +328,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 280.0]">
         </property>
     </property>
     <property name="mathLinkColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8235294,0.0,0.0,1.0}">
@@ -347,7 +347,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 300.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -376,7 +376,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 320.0]">
         </property>
     </property>
     <property name="physicsLinkColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
@@ -395,7 +395,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 340.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -423,7 +423,7 @@
     <property name="title" class="ptolemy.vergil.basic.export.web.DefaultTitle" value="EECS Undergraduate Curriculum, UC Berkeley">
         <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Title for the web page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 355.0]">
         </property>
     </property>
     <property name="DefaultIconScript2" class="ptolemy.vergil.basic.export.web.DefaultIconScript" value="writeText('Mouse over the courses to replace this text with the course title.')">
@@ -433,13 +433,15 @@
         </property>
         <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;Mouse over the courses to replace this text with the course title.&lt;/p&gt;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1055.0, 375.0}">
         </property>
     </property>
     <property name="HTMLText" class="ptolemy.vergil.basic.export.web.HTMLText" value="&lt;h2&gt;EECS/COE requirements:&lt;/h2&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt; 120 units total &lt;/li&gt;&#10;&lt;li&gt; 30 units math &amp; science, including: &#10;    &lt;ul&gt;&#10;    &lt;li&gt; 11 units science w/ Physics 7A/B &lt;/li&gt;&#10;    &lt;li&gt; Math 1A/B, 53, 54 &lt;/li&gt;&#10;    &lt;li&gt; Physics 7C or Chem 1A, 1B,    3AB, 4AB, 5, Bio 1A, 1B, Astro 7A, MCB 32 or ... &lt;/li&gt;&#10;    &lt;/ul&gt;&#10;&lt;li&gt; EECS 20, 40, 61A, 61B, 61C &lt;/li&gt;&#10;&lt;/ul&gt;">
+        <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Content below figure">
+        </property>
         <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 435.0]">
         </property>
     </property>
     <property name="HighlightEntities" class="ptolemy.domains.curriculum.HighlightEntities">
@@ -447,7 +449,7 @@
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="clear highlights">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 590.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 465.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -463,7 +465,7 @@
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Outside Lower Division">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 710.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 355.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -472,30 +474,14 @@
             </property>
         </property>
     </property>
-    <property name="HighlightEntities3" class="ptolemy.domains.curriculum.HighlightEntities">
-        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;CS 3&quot;, &quot;70&quot;}">
-        </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
-        </property>
-        <property name="label" class="ptolemy.data.expr.StringParameter" value="Other Lower Division">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 675.0]">
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{415, 655}">
-            </property>
-        </property>
-    </property>
     <property name="HighlightEntities4" class="ptolemy.domains.curriculum.HighlightEntities">
-        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;20&quot;, &quot;40&quot;, &quot;61A&quot;, &quot;61B&quot;, &quot;61C&quot;}">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;20&quot;, &quot;40&quot;, &quot;61A&quot;, &quot;61B&quot;, &quot;61C&quot;, &quot;70&quot;}">
         </property>
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Core Lower Division">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 640.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 320.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -505,13 +491,13 @@
         </property>
     </property>
     <property name="HighlightEntities5" class="ptolemy.domains.curriculum.HighlightEntities">
-        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;100&quot;, &quot;122&quot;, &quot;121&quot;, &quot;120&quot;, &quot;126&quot;, &quot;129&quot;,  &quot;123&quot;, &quot;125&quot;, &quot;117&quot;, &quot;128&quot;, &quot;124&quot;, &quot;145B&quot;, &quot;145M&quot;,   &quot;133&quot;, &quot;131&quot;, &quot;130&quot;, &quot;142&quot;, &quot;145A&quot;,                &quot;118&quot;, &quot;140&quot;, &quot;105&quot;, &quot;141&quot;, &quot;145L&quot;,                &quot;143&quot;, &quot;113&quot;, &quot;192&quot;, &quot;119&quot;, &quot;150&quot;, &quot;152&quot;, &quot;160&quot;, &quot;164&quot;, &quot;169&quot;, &quot;170&quot;,  &quot;162&quot;, &quot;172&quot;, &quot;182&quot;, &quot;184&quot;, &quot;186&quot;, &quot;188&quot;}">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;100&quot;, &quot;122&quot;, &quot;121&quot;, &quot;120&quot;, &quot;126&quot;, &quot;129&quot;,  &quot;123&quot;, &quot;125&quot;, &quot;117&quot;, &quot;128&quot;, &quot;124&quot;, &quot;145B&quot;, &quot;145M&quot;,   &quot;133&quot;, &quot;131&quot;, &quot;130&quot;, &quot;134&quot;, &quot;142&quot;, &quot;145A&quot;, &quot;147&quot;, &quot;149&quot;, &quot;137A&quot;, &quot;137B&quot;, &quot;127A&quot;, &quot;118&quot;, &quot;140&quot;, &quot;105&quot;, &quot;141&quot;, &quot;145L&quot;,                &quot;143&quot;, &quot;113&quot;, &quot;192&quot;, &quot;119&quot;, &quot;150&quot;, &quot;152&quot;, &quot;160&quot;, &quot;164&quot;, &quot;169&quot;, &quot;170&quot;,  &quot;162&quot;, &quot;172&quot;, &quot;182&quot;, &quot;184&quot;, &quot;186&quot;, &quot;188&quot;}">
         </property>
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Upper Division">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 745.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 390.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/Classification/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -523,9 +509,9 @@
     <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sample program (systems):">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sample program&#10;(systems):">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 598.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 65.0]">
         </property>
     </property>
     <property name="HighlightEntities7" class="ptolemy.domains.curriculum.HighlightEntities">
@@ -535,7 +521,7 @@
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Freshman year">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 640.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 120.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -551,7 +537,7 @@
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Sophmore year">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 675.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 155.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -561,13 +547,13 @@
         </property>
     </property>
     <property name="HighlightEntities9" class="ptolemy.domains.curriculum.HighlightEntities">
-        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;120&quot;, &quot;122&quot;, &quot;117&quot;, &quot;162&quot;}">
+        <property name="entityNames" class="ptolemy.data.expr.Parameter" value="{&quot;120&quot;, &quot;122&quot;, &quot;117&quot;, &quot;149&quot;}">
         </property>
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,1.0,1.0}">
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Junior year">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 710.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 190.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -583,7 +569,7 @@
         </property>
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Senior year">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 745.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 225.0]">
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.org/~eal/curriculum/SampleProgramSystems/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
@@ -595,7 +581,7 @@
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Everything below this comment&#10;is not meant to be seen.&#10;It configures export to web options.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 70.0]">
         </property>
     </property>
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -603,27 +589,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Course classification:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 600.0]">
-        </property>
-    </property>
-    <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <rect x="0" y="0" width="10" height="10" style="fill:#111111"></rect>
-        <rect x="-4" y="-4" width="10" height="10" style="fill:#FFFFFF"></rect>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 285.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -651,11 +617,13 @@
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="EECScourses">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/CVSImages/public_html/curriculum/">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -666,6 +634,51 @@
         <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="usePtWebsite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        <display name="ShadowColor"/>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="0" y="0" width="10" height="10" style="fill:#111111"></rect>
+        <rect x="-4" y="-4" width="10" height="10" style="fill:#FFFFFF"></rect>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 505.0]">
+        </property>
+    </property>
+    <property name="HTMLText2" class="ptolemy.vergil.basic.export.web.HTMLText" value="&lt;!--Script inserts current year in copyright section of footer --&gt;&#10;&lt;script type=&quot;text/javascript&quot; src=&quot;../js/getyear.js&quot;&gt;&lt;/script&gt;&#10;&lt;link href=&quot;../css/UCB.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen,print&quot; /&gt;&#10;&lt;link href=&quot;../css/UCB-flex.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen,print&quot; /&gt;&#10;&lt;link href=&quot;../css/UCB-print.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;print&quot; /&gt;&#10;&lt;!-- Conditional comment addds IE6-specific CSS deviations --&gt;&#10;&lt;!--[if lte IE 6]&gt;&#10;&lt;link href=&quot;../css/IE6.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen,print&quot; /&gt;&#10;&lt;![endif]--&gt;&#10;">
+        <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Header data">
+        </property>
+        <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="head">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 395.0]">
+        </property>
+    </property>
+    <property name="HTMLText3" class="ptolemy.vergil.basic.export.web.HTMLText" value="&lt;div id=&quot;sizer&quot;&gt;&lt;div id=&quot;expander&quot;&gt;&lt;div id=&quot;innerwrapper&quot;&gt;&#10;&lt;div id=&quot;outside&quot;&gt;&#10;  &lt;div id=&quot;banr&quot;&gt;&#10;    &lt;!-- Link to beginning of content section, for screen reader/keyboard accessibility --&gt;&#10;    &lt;div id=&quot;skip&quot;&gt;&lt;a href=&quot;#maincontent&quot; title=&quot;Skip to main content&quot;&gt;Skip to main content&lt;/a&gt;&lt;/div&gt;&#10;    &lt;!-- Link to UC Berkeley home page; do not remove --&gt;&#10;&lt;div id=&quot;ucb&quot;&gt;&lt;a href=&quot;http://www.berkeley.edu&quot;&gt;&lt;img src=&quot;../img/berkeleytext.gif&quot;&lt;/a&gt;&lt;/div&gt;&#10;    &lt;!-- OPTIONAL most-used toolset. Search is entire UC Berkeley web; can be customized to site  --&gt;&#10;&#10;    &lt;!--#include virtual=&quot;../ssi/tools.htm&quot; --&gt;&#10;&lt;!-- Website logo --&gt;&#10;&#10;    &lt;!-- OPTIONAL Customizable Quick Links dropdown --&gt;&#10;    &lt;!-- OPTIONAL horizontal top navigation --&gt;&#10;  &lt;/div&gt;&#10;  &lt;!-- /#banr --&gt;&#10;  &lt;div id=&quot;pagebody&quot;&gt;&#10;    &lt;div id=&quot;navcol&quot;&gt;&#10;      &lt;!-- Main site navigation --&gt;&#10;      &lt;!--#include virtual=&quot;../curriculum/menu.htm&quot; --&gt;&#10;&#10;    &lt;/div&gt;  &lt;!-- /#navcol --&gt;&#10;    &lt;div id=&quot;contentcol&quot;&gt;&#10;      &lt;div id=&quot;content&quot;&gt;&#10;">
+        <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Start of body data">
+        </property>
+        <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="start">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 415.0]">
+        </property>
+    </property>
+    <property name="HTMLText4" class="ptolemy.vergil.basic.export.web.HTMLText" value="      &lt;/div&gt;&#10;      &lt;!-- /#content --&gt;&#10;    &lt;/div&gt;&#10;    &lt;!-- /#contentcol --&gt;&#10;  &lt;/div&gt;&#10;  &lt;!-- /#pagebody --&gt;&#10;&lt;/div&gt;&#10;&lt;!-- /#outside --&gt;&#10;&lt;!--#include virtual=&quot;../ssi/footer.html&quot; --&gt;&#10;&lt;/div&gt;&lt;!-- /#innerwrapper --&gt;&lt;/div&gt;&lt;!-- /#expander --&gt;&lt;/div&gt;&lt;!-- /#sizer --&gt;&#10;&lt;!-- OPTIONAL Insert tracking code here --&gt;">
+        <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Footer content">
+        </property>
+        <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1055.0, 455.0}">
         </property>
     </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
@@ -1677,6 +1690,24 @@
             </property>
         </property>
     </entity>
+    <entity name="144" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eecsColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 505.0]">
+        </property>
+        <property name="IconScript" class="ptolemy.vergil.basic.export.web.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.web.AreaEventType" value="onmouseover">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.vergil.basic.export.web.Title" value="Fundamental Algorithms for Systems Modeling, Analysis, and Optimization">
+        </property>
+        <property name="icon link" class="ptolemy.vergil.basic.export.web.IconLink" value="http://general-catalog.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL%20ENG&amp;p_number=$(this.getName())">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_lightbox">
+            </property>
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[680.0, 390.0]">
         </vertex>
@@ -1900,5 +1931,7 @@
     <link port="137A.postrequisites" relation="relation6"/>
     <link port="137A.prerequisites" relation="relation28"/>
     <link port="137B.prerequisites" relation="relation6"/>
+    <link port="144.prerequisites" relation="relation19"/>
+    <link port="144.prerequisites" relation="relation9"/>
     <link relation1="relation3" relation2="relation9"/>
 </entity>
