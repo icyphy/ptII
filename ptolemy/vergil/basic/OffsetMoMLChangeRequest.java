@@ -227,7 +227,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
                     if (graphModel != null) {
                         Iterator nodes = graphModel.nodes(containerFinal);
                         while (nodes.hasNext()) {
-                            Location node = (Location) nodes.next();
+                            Locatable node = (Locatable) nodes.next();
                             NamedObj entity = (NamedObj) graphModel
                                     .getSemanticObject(node);
                             if (_topObjects.contains(entity)) {
