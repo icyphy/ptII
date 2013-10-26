@@ -937,9 +937,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // allow overriding the dependencies in the FMU xml file.
         String dependency = "";
         String showName = "    <property name=\"_showName\" class=\"ptolemy.data.expr.SingletonParameter\"" +
-        		" value=\"true\">\n" +
-        		hiddenStyle +
-        		"    </property>";
+                        " value=\"true\">\n" +
+                        hiddenStyle +
+                        "    </property>";
         if (modelVariablesLength > maximumNumberOfPortsToDisplay) {
             MessageHandler.message("Importing \"" + fmuFileName
                     + "\" resulted in an actor with " + modelVariablesLength
@@ -1219,69 +1219,69 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         _checkFmiCommon();
 
-	try {
+        try {
 
-	    ////////////////////////////////////////////
-	    //// model exchange version
-	    if (_fmiModelDescription.modelExchange){
-		try {
-		    _fmiCompletedIntegratorStepFunction = _fmiModelDescription.getFmiFunction("fmiCompletedIntegratorStep");
-		} catch (Throwable throwable) {
-		    throw new IllegalActionException(this, throwable,
-						     "Could not find the \"fmiCompletedIntegratorStep()\" function in \""
-						     + _fmuFileName + "\".  "
-						     + "This can happen if the Model Exchange FMU was compiled with "
-						     + "the MODEL_IDENTIFIER #define set to a value that does not "
-						     + "match the value in modelDescription.xml");
-		}
-		_fmiFreeModelInstanceFunction = _fmiModelDescription.getFmiFunction("fmiFreeModelInstance");
-		_fmiGetContinuousStatesFunction = _fmiModelDescription.getFmiFunction("fmiGetContinuousStates");
-		_fmiSetContinuousStates = _fmiModelDescription.getFmiFunction("fmiSetContinuousStates");
-		_fmiGetDerivativesFunction = _fmiModelDescription.getFmiFunction("fmiGetDerivatives");
-		// Optional function? The standard is not clear
-		try {
-		    _fmiGetEventIndicatorsFunction = _fmiModelDescription.getFmiFunction("fmiGetEventIndicators");
-		} catch (UnsatisfiedLinkError ex) {
-		    // The FMU has not provided the function.
-		    _fmiGetEventIndicatorsFunction = null;
-		}
-		_fmiInitializeFunction = _fmiModelDescription.getFmiFunction("fmiInitialize");
-		_fmiInstantiateModelFunction = _fmiModelDescription.getFmiFunction("fmiInstantiateModel");
-		_fmiSetTimeFunction = _fmiModelDescription.getFmiFunction("fmiSetTime");
-		_fmiTerminateFunction = _fmiModelDescription.getFmiFunction("fmiTerminate");
-		_checkFmiModelExchange();
-	    } else {
-		////////////////////////////////////////////
-		//// co-simulation version
-		_fmiDoStepFunction = _fmiModelDescription.getFmiFunction("fmiDoStep");
-		_fmiFreeSlaveInstanceFunction = _fmiModelDescription.getFmiFunction("fmiFreeSlaveInstance");
-		_fmiInitializeSlaveFunction = _fmiModelDescription.getFmiFunction("fmiInitializeSlave");
-		_fmiInstantiateSlaveFunction = _fmiModelDescription.getFmiFunction("fmiInstantiateSlave");
-		_fmiTerminateSlaveFunction = _fmiModelDescription.getFmiFunction("fmiTerminateSlave");
+            ////////////////////////////////////////////
+            //// model exchange version
+            if (_fmiModelDescription.modelExchange){
+                try {
+                    _fmiCompletedIntegratorStepFunction = _fmiModelDescription.getFmiFunction("fmiCompletedIntegratorStep");
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(this, throwable,
+                                                     "Could not find the \"fmiCompletedIntegratorStep()\" function in \""
+                                                     + _fmuFileName + "\".  "
+                                                     + "This can happen if the Model Exchange FMU was compiled with "
+                                                     + "the MODEL_IDENTIFIER #define set to a value that does not "
+                                                     + "match the value in modelDescription.xml");
+                }
+                _fmiFreeModelInstanceFunction = _fmiModelDescription.getFmiFunction("fmiFreeModelInstance");
+                _fmiGetContinuousStatesFunction = _fmiModelDescription.getFmiFunction("fmiGetContinuousStates");
+                _fmiSetContinuousStates = _fmiModelDescription.getFmiFunction("fmiSetContinuousStates");
+                _fmiGetDerivativesFunction = _fmiModelDescription.getFmiFunction("fmiGetDerivatives");
+                // Optional function? The standard is not clear
+                try {
+                    _fmiGetEventIndicatorsFunction = _fmiModelDescription.getFmiFunction("fmiGetEventIndicators");
+                } catch (UnsatisfiedLinkError ex) {
+                    // The FMU has not provided the function.
+                    _fmiGetEventIndicatorsFunction = null;
+                }
+                _fmiInitializeFunction = _fmiModelDescription.getFmiFunction("fmiInitialize");
+                _fmiInstantiateModelFunction = _fmiModelDescription.getFmiFunction("fmiInstantiateModel");
+                _fmiSetTimeFunction = _fmiModelDescription.getFmiFunction("fmiSetTime");
+                _fmiTerminateFunction = _fmiModelDescription.getFmiFunction("fmiTerminate");
+                _checkFmiModelExchange();
+            } else {
+                ////////////////////////////////////////////
+                //// co-simulation version
+                _fmiDoStepFunction = _fmiModelDescription.getFmiFunction("fmiDoStep");
+                _fmiFreeSlaveInstanceFunction = _fmiModelDescription.getFmiFunction("fmiFreeSlaveInstance");
+                _fmiInitializeSlaveFunction = _fmiModelDescription.getFmiFunction("fmiInitializeSlave");
+                _fmiInstantiateSlaveFunction = _fmiModelDescription.getFmiFunction("fmiInstantiateSlave");
+                _fmiTerminateSlaveFunction = _fmiModelDescription.getFmiFunction("fmiTerminateSlave");
 
-		// Optional function.
-		try {
-		    _fmiGetRealStatusFunction = _fmiModelDescription.getFmiFunction("fmiGetRealStatus");
-		} catch (UnsatisfiedLinkError ex) {
-		    // The FMU has not provided the function.
-		    _fmiGetRealStatusFunction = null;
-		}
-		if (_fmiModelDescription.canGetAndSetFMUstate) {
-		    // Retrieve the following FMI 2.0 functions for
-		    // getting and setting state.
-		    _fmiFreeFMUstateFunction = _fmiModelDescription.getFmiFunction("fmiFreeFMUstate");
-		    _fmiGetFMUstateFunction = _fmiModelDescription.getFmiFunction("fmiGetFMUstate");
-		    _fmiSetFMUstate = _fmiModelDescription.getFmiFunction("fmiSetFMUstate");
-		} else {
-		    _fmiFreeFMUstateFunction = null;
-		    _fmiGetFMUstateFunction = null;
-		    _fmiSetFMUstate = null;
-		}
-		_checkFmiCoSimulation();
-	    }
-	} catch (IOException ex) {
-	    throw new IllegalActionException(this, ex, "Could not open the native library.");
-	}
+                // Optional function.
+                try {
+                    _fmiGetRealStatusFunction = _fmiModelDescription.getFmiFunction("fmiGetRealStatus");
+                } catch (UnsatisfiedLinkError ex) {
+                    // The FMU has not provided the function.
+                    _fmiGetRealStatusFunction = null;
+                }
+                if (_fmiModelDescription.canGetAndSetFMUstate) {
+                    // Retrieve the following FMI 2.0 functions for
+                    // getting and setting state.
+                    _fmiFreeFMUstateFunction = _fmiModelDescription.getFmiFunction("fmiFreeFMUstate");
+                    _fmiGetFMUstateFunction = _fmiModelDescription.getFmiFunction("fmiGetFMUstate");
+                    _fmiSetFMUstate = _fmiModelDescription.getFmiFunction("fmiSetFMUstate");
+                } else {
+                    _fmiFreeFMUstateFunction = null;
+                    _fmiGetFMUstateFunction = null;
+                    _fmiSetFMUstate = null;
+                }
+                _checkFmiCoSimulation();
+            }
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex, "Could not open the native library.");
+        }
 
         // The modelName may have spaces in it.
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
@@ -2146,12 +2146,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // step size so that we can call fireAt() and ensure that the FMU is invoked
             // at the specified time.
             if (_fmiModelDescription.canProvideMaxStepSize) {
-		Function maxStepSizeFunction = null;
-		try {
-		    maxStepSizeFunction = _fmiModelDescription.getFmiFunction("fmiGetMaxStepSize");
-		} catch (IOException ex) {
-		    throw new IllegalActionException(this, ex, "Could not open the native library.");
-		}
+                Function maxStepSizeFunction = null;
+                try {
+                    maxStepSizeFunction = _fmiModelDescription.getFmiFunction("fmiGetMaxStepSize");
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex, "Could not open the native library.");
+                }
                 DoubleBuffer maxStepSize = DoubleBuffer.allocate(1);
                 int providesMaxStepSize = ((Integer) maxStepSizeFunction.invoke(
                         Integer.class,

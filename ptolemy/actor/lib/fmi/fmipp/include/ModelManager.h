@@ -17,39 +17,39 @@ class ModelManager {
 
 public:
 
-	~ModelManager();
+        ~ModelManager();
 
-	/** Get singleton instance of model manager. **/
-	static ModelManager& getModelManager();
+        /** Get singleton instance of model manager. **/
+        static ModelManager& getModelManager();
 
-	/** Get model (from standard unzipped FMU). **/
-	static FMU_functions* getModel( const std::string& fmuPath,
-					const std::string& modelName );
+        /** Get model (from standard unzipped FMU). **/
+        static FMU_functions* getModel( const std::string& fmuPath,
+                                        const std::string& modelName );
 
-	/** Get model (from non-standard 'modelName.xml' and 'modelName.dll'). **/
-	static FMU_functions* getModel( const std::string& xmlPath,
-					const std::string& dllPath,
-					const std::string& modelName );
+        /** Get model (from non-standard 'modelName.xml' and 'modelName.dll'). **/
+        static FMU_functions* getModel( const std::string& xmlPath,
+                                        const std::string& dllPath,
+                                        const std::string& modelName );
 
 private:
 
-	/** Private constructor (singleton). **/
-	ModelManager() {}
+        /** Private constructor (singleton). **/
+        ModelManager() {}
 
-	/** Helper function for loading FMU shared library **/
-	static int loadDll( std::string dllPath, FMU_functions* fmuFun );
+        /** Helper function for loading FMU shared library **/
+        static int loadDll( std::string dllPath, FMU_functions* fmuFun );
 
-	/** Helper function for loading FMU shared library **/
-	static void* getAdr( int* s, FMU_functions *fmuFun, const char* functionName );
+        /** Helper function for loading FMU shared library **/
+        static void* getAdr( int* s, FMU_functions *fmuFun, const char* functionName );
 
-	/** Pointer to singleton instance. **/
-	static ModelManager* modelManager_;
+        /** Pointer to singleton instance. **/
+        static ModelManager* modelManager_;
 
-	/** Define container for description collection. **/
-	typedef std::map<std::string, FMU_functions*> Descriptions;
+        /** Define container for description collection. **/
+        typedef std::map<std::string, FMU_functions*> Descriptions;
 
-	/** Collection of descriptions. **/
-	Descriptions modelDescriptions_;
+        /** Collection of descriptions. **/
+        Descriptions modelDescriptions_;
 };
 
 

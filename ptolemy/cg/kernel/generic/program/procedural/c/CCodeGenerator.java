@@ -166,7 +166,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CCodeGenerator newObject = (CCodeGenerator) super.clone(workspace);
 
-	newObject._definesToAdd = new LinkedList<String>();
+        newObject._definesToAdd = new LinkedList<String>();
         return newObject;
     }
 

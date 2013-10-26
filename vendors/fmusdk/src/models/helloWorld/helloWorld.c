@@ -38,8 +38,8 @@ typedef struct {
 #define MODEL_GUID "{7b2d6d2e-ac4d-4aa8-93eb-d53357dc58ec}"
 
 fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
-    	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
-    	fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
+            fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
+            fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
     ModelInstance* component;
     
     // Perform checks.
@@ -99,7 +99,7 @@ void fmiFreeSlaveInstance(fmiComponent c) {
 }
 
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
-    	fmiReal communicationStepSize, fmiBoolean newStep) {
+            fmiReal communicationStepSize, fmiBoolean newStep) {
     printf("Invoked fmiDoStep: %g, %g, newStep: %s\n", currentCommunicationPoint,
             communicationStepSize, (newStep)?"true":"false");
     return fmiOK;
@@ -117,7 +117,7 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     }
     if (nvr > 0) {
         printf("Retrieving output value %g.\n", component->r[0]);
-    	value[0] = component->r[0];
+            value[0] = component->r[0];
     }
     return fmiOK;
 }

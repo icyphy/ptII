@@ -61,7 +61,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 
 public class DEReceiver extends Receiver  {
-	/** Construct an adapter for an DE receiver.
+        /** Construct an adapter for an DE receiver.
      *  @param receiver The DEReceiver for which an adapter is constructed.
      *  @exception IllegalActionException If thrown by the superclass.
      */
@@ -108,7 +108,7 @@ public class DEReceiver extends Receiver  {
      */
     public String generateHasTokenCode(String offset)
             throws IllegalActionException {
-    	TypedIOPort port = (TypedIOPort) getComponent().getContainer();
+            TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
 //        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
 //                .getContainer().getContainer());
@@ -177,7 +177,7 @@ public class DEReceiver extends Receiver  {
             token = token.substring(0, token.length() - 2);
         }
         try {
-//        	String nameInput = _getDirectorForReceiver().getReference(port,
+//                String nameInput = _getDirectorForReceiver().getReference(port,
 //                    new String[] { Integer.toString(channel), offset },
 //                    forComposite, true, containingActorAdapter); 
 //                String actorSourceName = CodeGeneratorAdapter.generateName(sourcePort.getContainer());
@@ -191,8 +191,8 @@ public class DEReceiver extends Receiver  {
                 //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
                 result = "(*(" + port.getName() + "->send))((struct IOPort*) " + port.getName() + ", " + channel + ", ";
                 
-        	result += "$new(" + type + "(" + token + ")));" + _eol;
-//        	result += _eol + "(*(" + actorDestNameForArgs + ".container->director->fireAtFunction))(&"+ actorDestNameForArgs
+                result += "$new(" + type + "(" + token + ")));" + _eol;
+//                result += _eol + "(*(" + actorDestNameForArgs + ".container->director->fireAtFunction))(&"+ actorDestNameForArgs
 //                            +", " + actorDestNameForArgs + ".container->director->currentModelTime, " 
 //                            + actorDestNameForArgs + ".container->director->currentMicrostep);" + _eol;
         } catch (Throwable throwable) {

@@ -98,15 +98,15 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
             throws IllegalActionException {
         IOPort port = (IOPort) getContainer();
         if (attribute == enable) {
-	    // When cloning, the contanier might be an EntityLibrary.
-	    // See vergil/test/VergilConfiguration.tcl.
-	    NamedObj container = port.getContainer().getContainer();
-	    if (container instanceof CompositeActor) {
-		if (((CompositeActor) container).isOpaque()) {
-		    port.createReceivers();
-		}
-		port.invalidateCommunicationAspects();
-	    }
+            // When cloning, the contanier might be an EntityLibrary.
+            // See vergil/test/VergilConfiguration.tcl.
+            NamedObj container = port.getContainer().getContainer();
+            if (container instanceof CompositeActor) {
+                if (((CompositeActor) container).isOpaque()) {
+                    port.createReceivers();
+                }
+                port.invalidateCommunicationAspects();
+            }
         }
         super.attributeChanged(attribute);
     }

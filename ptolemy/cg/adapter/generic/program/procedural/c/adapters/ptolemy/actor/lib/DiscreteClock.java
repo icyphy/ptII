@@ -82,7 +82,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.Director director = container.getDirector();
         double modelStopTime = director.getModelStopTime().getDoubleValue();
         if (doubleStopTime > modelStopTime)
-        	doubleStopTime = modelStopTime;
+                doubleStopTime = modelStopTime;
         Parameter period = ((ptolemy.actor.lib.DiscreteClock) getComponent()).period;
         double doublePeriod = ((DoubleToken) period.getToken()).doubleValue();
         
@@ -96,24 +96,24 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         int size = 0;
         
         if (offsetToken instanceof ArrayToken) {
-        	offsets = ((ArrayToken) offsetToken).arrayValue();
+                offsets = ((ArrayToken) offsetToken).arrayValue();
             size = offsets.length;
             args.add(Integer.toString(size));
             int i = 0;
             if (size > 0) {
-            	if (offsets[0] instanceof DoubleToken) {
-            		offsetsDouble = new double[size];
-            	}
-            	else {
+                    if (offsets[0] instanceof DoubleToken) {
+                            offsetsDouble = new double[size];
+                    }
+                    else {
                     throw new IllegalActionException("Token type at DiscreteClock "
                             + "not supported yet.");
                 }
             }
             for (Token t : offsets) {
-            	if (t instanceof DoubleToken) {
-            		offsetsDouble[i++] = ((DoubleToken)t).doubleValue();
-            	}
-            	else {
+                    if (t instanceof DoubleToken) {
+                            offsetsDouble[i++] = ((DoubleToken)t).doubleValue();
+                    }
+                    else {
                     throw new IllegalActionException("Token type at DiscreteClock "
                             + "not supported yet.");
                 }
@@ -126,7 +126,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         StringBuffer offsetsString = new StringBuffer();
         int i = 0;
         for (double offset : offsetsDouble) 
-        	offsetsString.append("$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; ");
+                offsetsString.append("$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; ");
                 
         args.add(offsetsString.toString());
         
@@ -139,36 +139,36 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         size = 0;
         
         if (valuesToken instanceof ArrayToken) {
-        	values = ((ArrayToken) valuesToken).arrayValue();
+                values = ((ArrayToken) valuesToken).arrayValue();
             size = values.length;
             args.add(Integer.toString(size));
             i = 0;
             if (size > 0) {
-            	if (values[0] instanceof DoubleToken) {
-            	    valuesDouble = new double[size];
-            	}
-            	else if (values[0] instanceof IntToken) {
-            	    valuesInt = new int[size];
-            	}
-            	else if (values[0] instanceof BooleanToken) {
+                    if (values[0] instanceof DoubleToken) {
+                        valuesDouble = new double[size];
+                    }
+                    else if (values[0] instanceof IntToken) {
+                        valuesInt = new int[size];
+                    }
+                    else if (values[0] instanceof BooleanToken) {
                     valuesBool = new boolean[size];
-            	}
-            	else {
+                    }
+                    else {
                     throw new IllegalActionException("Token type at DiscreteClock "
                             + "not supported yet.");
                 }
             }
             for (Token t : values) {
-            	if (t instanceof DoubleToken) {
-            	    valuesDouble[i++] = ((DoubleToken)t).doubleValue();
-            	}
-            	else if (t instanceof IntToken) {
-            	    valuesInt[i++] = ((IntToken)t).intValue();
-            	}
-            	else if (t instanceof BooleanToken) {
-            	    valuesBool[i++] = ((BooleanToken)t).booleanValue();
-            	}
-            	else {
+                    if (t instanceof DoubleToken) {
+                        valuesDouble[i++] = ((DoubleToken)t).doubleValue();
+                    }
+                    else if (t instanceof IntToken) {
+                        valuesInt[i++] = ((IntToken)t).intValue();
+                    }
+                    else if (t instanceof BooleanToken) {
+                        valuesBool[i++] = ((BooleanToken)t).booleanValue();
+                    }
+                    else {
                     throw new IllegalActionException("Token type at DiscreteClock "
                             + "not supported yet.");
                 }
@@ -210,7 +210,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-    	CodeStream codeStream = _templateParser.getCodeStream();
+            CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
         
@@ -250,7 +250,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     public String generatePostfireCode() throws IllegalActionException {
-    	CodeStream codeStream = _templateParser.getCodeStream();
+            CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
         

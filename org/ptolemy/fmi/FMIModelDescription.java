@@ -137,17 +137,17 @@ public class FMIModelDescription {
 
     /** Unload the native library and free up any Java references
      *  to memory allocated by the allocate memory callback.
-     */	
+     */        
     public void dispose() {
-	if (_fmuAllocateMemory != null) {
-	    // Prevent a memory leak by releasing Memory and Pointer objects to the GC.
-	    // FIXME: This is wrong!  This releases all instances of Memory and Pointer that have been created!
-	    // It should only release those for this FMU.
-	    FMULibrary.FMUAllocateMemory.pointers.clear();
-	}
-	if (_nativeLibrary != null) {
-	    _nativeLibrary.dispose();
-	}
+        if (_fmuAllocateMemory != null) {
+            // Prevent a memory leak by releasing Memory and Pointer objects to the GC.
+            // FIXME: This is wrong!  This releases all instances of Memory and Pointer that have been created!
+            // It should only release those for this FMU.
+            FMULibrary.FMUAllocateMemory.pointers.clear();
+        }
+        if (_nativeLibrary != null) {
+            _nativeLibrary.dispose();
+        }
     }
 
     /** Return a class that provides a callback function
@@ -157,7 +157,7 @@ public class FMIModelDescription {
      *  allocates memory.
      */
     public FMULibrary.FMUAllocateMemory getFMUAllocateMemory() {
-	return _fmuAllocateMemory;
+        return _fmuAllocateMemory;
     }
 
 
@@ -182,8 +182,8 @@ public class FMIModelDescription {
         // Get the name of the shared library file for the current platform.
         String sharedLibrary = FMUFile.fmuSharedLibrary(this);
 
-	File sharedLibraryFile = new File(sharedLibrary);
-	if (!sharedLibraryFile.exists()) {
+        File sharedLibraryFile = new File(sharedLibrary);
+        if (!sharedLibraryFile.exists()) {
             List<String> binariesFiles = new LinkedList<String>();
             for (File file : files) {
                 if (file.toString().indexOf("binaries") != -1) {
@@ -203,27 +203,27 @@ public class FMIModelDescription {
                     System.out.println("FMU Builder messages:\n"
                             + builder.buffer);
                 } catch (Throwable throwable2) {
-		    // Java 1.5 does not support IOException(String, Throwable).
-		    // We sometimes compile this with gcj, which is Java 1.5
+                    // Java 1.5 does not support IOException(String, Throwable).
+                    // We sometimes compile this with gcj, which is Java 1.5
                     IOException exception = new IOException("Failed to build \""
                             + sharedLibraryFile + "\".\nThe build was:\n"
-			    + builder.buffer + "\n" + message);
-		    exception.initCause(throwable2);
-		    throw exception;
+                            + builder.buffer + "\n" + message);
+                    exception.initCause(throwable2);
+                    throw exception;
 
                 }
                 if (!isBuildOK) {
                     throw new IOException("It was not possible to build \""
                             + sharedLibraryFile + "\": " + builder.buffer
                             + "\n" + message);
-		}
-	    }
-	}
-	return sharedLibraryFile.getCanonicalPath();
+                }
+            }
+        }
+        return sharedLibraryFile.getCanonicalPath();
     }
 
     /** Get the native function from the native library.
-     *	
+     *        
      *  <p>A FMI 1.0 FMU will have functions like MyModel_fmiGetReal().</p>
      *
      *  <p>A FMI 2.0 FMU that is shipped with C source code or with a
@@ -244,32 +244,32 @@ public class FMIModelDescription {
      *  @exception IOException If the native library cannot be found.
      */
     public  Function getFmiFunction(String functionName) throws UnsatisfiedLinkError, IOException {
-	// A different implementation would try to guess which
-	// function is named depending on if there is C code present
-	// and whether there is a dynamic library present.  However,
-	// for Java, it is unlikely that a static library is being
-	// accessed and determining whether source is present to
-	// determine the function name is asinine (cxh, 7/16/13)
-	if (_nativeLibrary == null) {
-	    getNativeLibrary();
-	}
-	Function function = null;
-	String name1 = modelIdentifier + "_" + functionName;
-	try {
-	    function = _nativeLibrary.getFunction(name1);
-	} catch (UnsatisfiedLinkError error) {
-	    try {
-		function = _nativeLibrary
-		    .getFunction(functionName);
-	    } catch (UnsatisfiedLinkError error2) {
-		UnsatisfiedLinkError linkError = new UnsatisfiedLinkError("Could not find the function, \""
-					       + name1 + "\" or \""
-					       + function + "\" in " + _nativeLibrary);
-		linkError.initCause(error);
-		throw linkError;
-	    }
-	}
-	return function;
+        // A different implementation would try to guess which
+        // function is named depending on if there is C code present
+        // and whether there is a dynamic library present.  However,
+        // for Java, it is unlikely that a static library is being
+        // accessed and determining whether source is present to
+        // determine the function name is asinine (cxh, 7/16/13)
+        if (_nativeLibrary == null) {
+            getNativeLibrary();
+        }
+        Function function = null;
+        String name1 = modelIdentifier + "_" + functionName;
+        try {
+            function = _nativeLibrary.getFunction(name1);
+        } catch (UnsatisfiedLinkError error) {
+            try {
+                function = _nativeLibrary
+                    .getFunction(functionName);
+            } catch (UnsatisfiedLinkError error2) {
+                UnsatisfiedLinkError linkError = new UnsatisfiedLinkError("Could not find the function, \""
+                                               + name1 + "\" or \""
+                                               + function + "\" in " + _nativeLibrary);
+                linkError.initCause(error);
+                throw linkError;
+            }
+        }
+        return function;
     }
 
     /** Get the native library of C functions for the current platform.
@@ -284,22 +284,22 @@ public class FMIModelDescription {
         if (_nativeLibrary != null) {
             return _nativeLibrary;
         }
-	String sharedLibrary = getNativeLibraryPath();
-	try {
-	    _nativeLibrary = NativeLibrary
-		.getInstance(sharedLibrary);
-	} catch (Throwable throwable3) {
-	    // Java 1.5 does not support
-	    // IOException(String, Throwable).  We
-	    // sometimes compile this with gcj, which is
-	    // Java 1.5
-	    IOException exception = new IOException("Attempted to build shared "
+        String sharedLibrary = getNativeLibraryPath();
+        try {
+            _nativeLibrary = NativeLibrary
+                .getInstance(sharedLibrary);
+        } catch (Throwable throwable3) {
+            // Java 1.5 does not support
+            // IOException(String, Throwable).  We
+            // sometimes compile this with gcj, which is
+            // Java 1.5
+            IOException exception = new IOException("Attempted to build shared "
                                 + "library for the current "
                                 + "platform because " + sharedLibrary
-			        + " was not found.");
-			exception.initCause(throwable3);
-			throw exception;
-	}
+                                + " was not found.");
+                        exception.initCause(throwable3);
+                        throw exception;
+        }
         return _nativeLibrary;
     }
 

@@ -66,7 +66,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.Director director = container.getDirector();
         double modelStopTime = director.getModelStopTime().getDoubleValue();
         if (doubleStopTime > modelStopTime)
-        	doubleStopTime = modelStopTime;
+                doubleStopTime = modelStopTime;
         Parameter meanTime = ((ptolemy.actor.lib.PoissonClock) getComponent()).meanTime;
         double doubleMeanTime = ((DoubleToken) meanTime.getToken()).doubleValue();
         Parameter fireAtStart = ((ptolemy.actor.lib.PoissonClock) getComponent()).fireAtStart;
@@ -84,30 +84,30 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         int size = 0;
         
         if (valuesToken instanceof ArrayToken) {
-        	values = ((ArrayToken) valuesToken).arrayValue();
+                values = ((ArrayToken) valuesToken).arrayValue();
             size = values.length;
             args.add(Integer.toString(size));
             int i = 0;
             if (size > 0) {
-            	if (values[0] instanceof DoubleToken) {
-            		valuesDouble = new double[size];
-            	}
-            	else if (values[0] instanceof IntToken) {
-            		valuesInt = new int[size];
-            	}
-            	else {
+                    if (values[0] instanceof DoubleToken) {
+                            valuesDouble = new double[size];
+                    }
+                    else if (values[0] instanceof IntToken) {
+                            valuesInt = new int[size];
+                    }
+                    else {
                     throw new IllegalActionException("Token type at PoissonClock "
                             + "not supported yet.");
                 }
             }
             for (Token t : values) {
-            	if (t instanceof DoubleToken) {
-            		valuesDouble[i++] = ((DoubleToken)t).doubleValue();
-            	}
-            	else if (t instanceof IntToken) {
-            		valuesInt[i++] = ((IntToken)t).intValue();
-            	}
-            	else {
+                    if (t instanceof DoubleToken) {
+                            valuesDouble[i++] = ((DoubleToken)t).doubleValue();
+                    }
+                    else if (t instanceof IntToken) {
+                            valuesInt[i++] = ((IntToken)t).intValue();
+                    }
+                    else {
                     throw new IllegalActionException("Token type at PoissonClock "
                             + "not supported yet.");
                 }
@@ -120,11 +120,11 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         StringBuffer valuesString = new StringBuffer();
         int i = 0;
         if (valuesDouble != null)
-        	for (double value : valuesDouble) 
-        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ");
+                for (double value : valuesDouble) 
+                        valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ");
         else if (valuesInt != null)
-        	for (int value : valuesInt) 
-        		valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ");
+                for (int value : valuesInt) 
+                        valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ");
                 
         args.add(valuesString.toString());
         
@@ -151,8 +151,8 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-    	//return processCode(super._generateFireCode());
-    	CodeStream codeStream = _templateParser.getCodeStream();
+            //return processCode(super._generateFireCode());
+            CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
         
@@ -177,7 +177,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     public String generatePostfireCode() throws IllegalActionException {
-    	CodeStream codeStream = _templateParser.getCodeStream();
+            CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
         

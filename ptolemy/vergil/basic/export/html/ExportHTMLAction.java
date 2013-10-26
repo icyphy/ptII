@@ -856,42 +856,42 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
             boolean linkToJNLP = Boolean.valueOf(StringUtilities
                     .getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
-	    // System.out.println("ExportHTMLAction: model: " + model + " model name: " + model.getName() + " " + model.getContainer() + " name: " + model.getContainer().getName() + model.getContainer().getContainer());
+            // System.out.println("ExportHTMLAction: model: " + model + " model name: " + model.getName() + " " + model.getContainer() + " name: " + model.getContainer().getName() + model.getContainer().getContainer());
 
             if (linkToJNLP && (model.getContainer() == null
-			       || /* Ptera */ model.getContainer().getContainer() == null && model.getName().equals("_Controller"))) {
-		String linkToHelp = "<a href=\"" + ssiRoot + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\"" + ssiRoot + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a> (<i>Java Plug-in Required</i>)";
+                               || /* Ptera */ model.getContainer().getContainer() == null && model.getName().equals("_Controller"))) {
+                String linkToHelp = "<a href=\"" + ssiRoot + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\"" + ssiRoot + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a> (<i>Java Plug-in Required</i>)";
 
                 printWriter.println("<p>Below is a browsable image of the model.</p> "
-				    + "<ul>\n"
-				    + "<li>For an executable version,"
-				    + "<!-- We use the deployJava.js script so that Java "
-				    + "will be installed if necessary -->\n"
-				    + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
-				    + "<script>\n"
-				    + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
-				    + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
-				    + "  var url = parentDir + \""
-				    + _sanitizedModelName + ".jnlp\";\n"
-				    + "  deployJava.createWebStartLaunchButton(url);\n"
-				    // FIXME: Don't use <table> here, use css.
-				    + "  document.write(\"<table><tr><td>the WebStart version.</td><td>"
-				    + linkToHelp.replace("\"", "\\\"") + "</td></tr></table>\");\n"
-				    + "</script>\n"
-				    + "<noscript>\n"
-				    + "<a href=\"../" 
-				    + _sanitizedModelName + ".jnlp\">WebStart version</a>. \n"
-				    + linkToHelp
+                                    + "<ul>\n"
+                                    + "<li>For an executable version,"
+                                    + "<!-- We use the deployJava.js script so that Java "
+                                    + "will be installed if necessary -->\n"
+                                    + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
+                                    + "<script>\n"
+                                    + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
+                                    + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
+                                    + "  var url = parentDir + \""
+                                    + _sanitizedModelName + ".jnlp\";\n"
+                                    + "  deployJava.createWebStartLaunchButton(url);\n"
+                                    // FIXME: Don't use <table> here, use css.
+                                    + "  document.write(\"<table><tr><td>the WebStart version.</td><td>"
+                                    + linkToHelp.replace("\"", "\\\"") + "</td></tr></table>\");\n"
+                                    + "</script>\n"
+                                    + "<noscript>\n"
+                                    + "<a href=\"../" 
+                                    + _sanitizedModelName + ".jnlp\">WebStart version</a>. \n"
+                                    + linkToHelp
                                     + "</noscript>\n"
-				    + "</li>\n");
+                                    + "</li>\n");
                 printWriter.println("<li>To view or save the MoML file for this model, "
                         + "<a href=\"../" + _sanitizedModelName
                         + ".xml\">click here</a>.</li>");
-		if (usePtWebsite) {
-		    printWriter.println("<li>For a chapter overview, "
-				+ "<a href=\"../index.html\">click here</a>.</li>");
-		}
-		printWriter.println("</ul>");
+                if (usePtWebsite) {
+                    printWriter.println("<li>For a chapter overview, "
+                                + "<a href=\"../index.html\">click here</a>.</li>");
+                }
+                printWriter.println("</ul>");
 
             }
             // Put the image in.

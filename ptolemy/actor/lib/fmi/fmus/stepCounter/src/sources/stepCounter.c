@@ -106,7 +106,7 @@ int checkFMU(
     if (strcmp(GUID, modelGUID)) {
         // FIXME: Remove printfs. Replace with logger calls when they work.
         fprintf(stderr,"fmiInstantiateSlave: Wrong GUID %s. Expected %s.\n", GUID, modelGUID);
-	fflush(stderr);
+        fflush(stderr);
         functions->logger(NULL, instanceName, fmiError, "error",
                           "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, modelGUID);
         return 0;

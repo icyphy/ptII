@@ -230,11 +230,11 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
                     double newActorPriority = _getPriority(actor);
                     if (newActorPriority < executingPriority) {
                         if (remainingTime.getDoubleValue() == 0.0) {
-                        	notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
+                                notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.STOP);
                         } else {
-                        	notifyExecutionListeners((NamedObj) executing,
+                                notifyExecutionListeners((NamedObj) executing,
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.PREEMPTED);
                         } 
@@ -261,7 +261,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
 
         if (remainingTime.getDoubleValue() == 0.0
                 && _currentlyExecuting.peek() == actor) {
-        	notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
+                notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
             _remainingTimes.put(_currentlyExecuting.peek(), null);
@@ -269,7 +269,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             if (_currentlyExecuting.size() > 0) {
                 remainingTime = _remainingTimes.get(_currentlyExecuting.peek());
                 if (remainingTime.getDoubleValue() > 0.0) {
-                	notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
+                        notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
                             currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.START);
                 }

@@ -182,7 +182,7 @@ public class PlotApplication extends PlotFrame {
     ////                         public methods                    ////
 
     /** Create a new plot window and map it to the screen.
-     *	@param args The command line arguments.  See the class comment
+     *        @param args The command line arguments.  See the class comment
      *  for details.
      */
     public static void main(final String[] args) {
@@ -252,7 +252,7 @@ public class PlotApplication extends PlotFrame {
 
     /** Parse the command-line
      *  arguments and make calls to the Plot class accordingly.
-     *	@param args The command line arguments.  See the class comment
+     *        @param args The command line arguments.  See the class comment
      *  for details.
      *  @return The number of arguments read.
      *  @exception CmdLineArgException If a command line argument cannot

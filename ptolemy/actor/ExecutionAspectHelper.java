@@ -49,20 +49,20 @@ import ptolemy.kernel.util.NamedObj;
   @Pt.AcceptedRating Red (derler)
  */
 public class ExecutionAspectHelper {
-	
-	/** Execution aspects are decorators and this method recursively computes 
-	 *  all entities inside a given container that are decorated by execution aspects.
-	 *  @param container The container.
-	 *  @return All entities to decorate.
-	 */
-	public static List<NamedObj> getEntitiesToDecorate(CompositeEntity container) {
+        
+        /** Execution aspects are decorators and this method recursively computes 
+         *  all entities inside a given container that are decorated by execution aspects.
+         *  @param container The container.
+         *  @return All entities to decorate.
+         */
+        public static List<NamedObj> getEntitiesToDecorate(CompositeEntity container) {
         List<NamedObj> toDecorate = new ArrayList<NamedObj>();
         for (Object entity : container.entityList()) {
             if (!(entity instanceof ActorExecutionAspect)) {
                 toDecorate.add((NamedObj) entity);
                 if (entity instanceof CompositeEntity) {
                     toDecorate.addAll(ExecutionAspectHelper
-                    		.getEntitiesToDecorate((CompositeEntity) entity));
+                                    .getEntitiesToDecorate((CompositeEntity) entity));
                 }
             }
         } 
@@ -95,5 +95,5 @@ public class ExecutionAspectHelper {
         return aspect.schedule(actor, environmentTime, deadline, new Time(director,
                 executionTime));
     }
-	
+        
 }

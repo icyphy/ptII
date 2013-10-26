@@ -74,7 +74,7 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-    	return processCode(super._generateFireCode());
+            return processCode(super._generateFireCode());
     }
     
     /*public String generateFireCode() throws IllegalActionException {

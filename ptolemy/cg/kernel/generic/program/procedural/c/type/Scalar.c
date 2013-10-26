@@ -24,20 +24,20 @@ Token Scalar_add(Token thisToken, ...) {
 
 #ifdef TYPE_Int
     case TYPE_Int:
-			result = $new(Scalar(thisToken.payload.Scalar + Scalar_convert(otherToken.payload.Int)));
-			break;
+                        result = $new(Scalar(thisToken.payload.Scalar + Scalar_convert(otherToken.payload.Int)));
+                        break;
 #endif
 
 #ifdef TYPE_Double
     case TYPE_Int:
-			result = $new(Scalar(thisToken.payload.Scalar + Scalar_convert(otherToken.payload.Double)));
-			break;
+                        result = $new(Scalar(thisToken.payload.Scalar + Scalar_convert(otherToken.payload.Double)));
+                        break;
 #endif
 
 #ifdef TYPE_Long
     case TYPE_Int:
-			result = $new(Scalar(thisToken.payload.Scalar + Scalar_convert(otherToken.payload.Long)));
-			break;
+                        result = $new(Scalar(thisToken.payload.Scalar + Scalar_convert(otherToken.payload.Long)));
+                        break;
 #endif
         // FIXME: not finished
     default:
@@ -61,9 +61,9 @@ Token Scalar_convert(Token token, ...) {
     switch (token.type) {
 #ifdef TYPE_Boolean
     case TYPE_Boolean:
-    	token.type = TYPE_Scalar;
-    	token.payload.Scalar = (token.payload.Boolean == true ? 1 : 0);
-    	break;
+            token.type = TYPE_Scalar;
+            token.payload.Scalar = (token.payload.Boolean == true ? 1 : 0);
+            break;
 #endif
 
 #ifdef TYPE_String

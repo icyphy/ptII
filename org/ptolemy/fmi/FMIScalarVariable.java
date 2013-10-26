@@ -335,13 +335,13 @@ public class FMIScalarVariable {
      */
     public void setString(Pointer fmiComponent, String value) {
         PointerByReference pointerByReference = new PointerByReference();
-	// We use FMUAllocateMemory so that we can retain a reference
-	// to the allocated memory and the memory does not get gc'd.
+        // We use FMUAllocateMemory so that we can retain a reference
+        // to the allocated memory and the memory does not get gc'd.
 
         // Include the trailing null character.
-	Pointer reference = fmiModelDescription.getFMUAllocateMemory()
-	    .apply(new NativeSizeT(value.length() + 1),
-		   new NativeSizeT(1));
+        Pointer reference = fmiModelDescription.getFMUAllocateMemory()
+            .apply(new NativeSizeT(value.length() + 1),
+                   new NativeSizeT(1));
         reference.setString(0, value);
         pointerByReference.setValue(reference);
 
@@ -485,14 +485,14 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      */
     private void _getValue(Pointer fmiComponent, Object valueBuffer,
-			   Class typeClass) {
+                           Class typeClass) {
         if (_fmiGetFunction == null) {
-	    try {
-		_fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet" + _typeName);
-	    } catch (IOException ex) {
-		throw new RuntimeException("Failed to find the native library.", ex);
-	    }
-	}
+            try {
+                _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet" + _typeName);
+            } catch (IOException ex) {
+                throw new RuntimeException("Failed to find the native library.", ex);
+            }
+        }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
     }
 
@@ -505,13 +505,13 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      */
     private void _setValue(Pointer fmiComponent, Object valueBuffer,
-			   Class typeClass) {
+                           Class typeClass) {
         if (_fmiSetFunction == null) {
-	    try {
-		_fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet" + _typeName);
-	    } catch (IOException ex) {
-		throw new RuntimeException("Failed to find the native library.", ex);
-	    }
+            try {
+                _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet" + _typeName);
+            } catch (IOException ex) {
+                throw new RuntimeException("Failed to find the native library.", ex);
+            }
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
     }

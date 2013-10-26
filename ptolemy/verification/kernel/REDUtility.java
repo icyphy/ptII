@@ -1734,7 +1734,7 @@ public class REDUtility {
                                 newBean._signal.append(" !Token"
                                         + signal.trim() + "Consume");
                                 newBean._signalSet.add("?ND_"
-						       + signal.trim().trim());
+                                                       + signal.trim().trim());
                                 if (guard != null
                                         && guard.trim()
                                                 .equalsIgnoreCase("true")) {

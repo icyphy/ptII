@@ -496,12 +496,12 @@ public class CompositeEntity extends ComponentEntity {
             return newEntity;
         } finally {
             _levelCrossingLinks = null;
-	    try {
-		workspace().doneReading();
-	    } catch (Throwable ex) {
-		throw new InternalErrorException(this, ex, "Internal Error: "
-						 + "workspace().doneReading() failed?");
-	    }
+            try {
+                workspace().doneReading();
+            } catch (Throwable ex) {
+                throw new InternalErrorException(this, ex, "Internal Error: "
+                                                 + "workspace().doneReading() failed?");
+            }
         }
     }
 

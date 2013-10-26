@@ -411,9 +411,9 @@ public class Bus extends AtomicCommunicationAspect {
      *  @param messageLength The message length. 
      */
     public void setMessageLength(IOPort port, double messageLength) {
-    	if (_messageLengths == null) {
-    		_messageLengths = new Hashtable<IOPort, Double>();
-    	}
+            if (_messageLengths == null) {
+                    _messageLengths = new Hashtable<IOPort, Double>();
+            }
         _messageLengths.put(port, messageLength);
     }
 
@@ -528,7 +528,7 @@ public class Bus extends AtomicCommunicationAspect {
                     if (bus != null) {
                         Token token = messageLength.getToken();
                         if (token != null) {
-                        	_messageLength = ((ScalarToken)token).doubleValue();
+                                _messageLength = ((ScalarToken)token).doubleValue();
                             bus.setMessageLength(port, _messageLength);
                         } 
                     }

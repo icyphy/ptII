@@ -52,8 +52,8 @@ typedef struct {
 #define MODEL_GUID "{c157b371-f7d4-4133-8c29-8e78a9468674}"
 
 fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
-    	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
-    	fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
+            fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
+            fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
     ModelInstance* component;
     
     // Perform checks.
@@ -114,7 +114,7 @@ void fmiFreeSlaveInstance(fmiComponent c) {
 }
 
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
-    	fmiReal communicationStepSize, fmiBoolean newStep) {
+            fmiReal communicationStepSize, fmiBoolean newStep) {
     ModelInstance* component = (ModelInstance *) c;
     printf("%s: Invoked fmiDoStep: %g, %g, newStep: %s\n", component->instanceName,
            currentCommunicationPoint,
@@ -195,7 +195,7 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
         printf("%s: Retrieving real value with index %d and value %g.\n", component->instanceName,
                valueReference, component->r[valueReference]);
         fflush(stdout);
-    	value[i] = component->r[valueReference];
+            value[i] = component->r[valueReference];
     }
     return fmiOK;
 }
@@ -225,7 +225,7 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
         printf("%s: Setting real value with index %d and value %g.\n", component->instanceName,
                valueReference, value[i]);
         fflush(stdout);
-    	component->r[valueReference] = value[i];
+            component->r[valueReference] = value[i];
     }
     return fmiOK;
 }

@@ -302,11 +302,11 @@ public class FMUModelExchange extends Transformer {
             foo = helper.new_string_array(0);
             }
             
-            //	    _fmu.setInputs(foo, _inputVariables.length);
+            //            _fmu.setInputs(foo, _inputVariables.length);
             } else if (attribute == outputNames) {
             if (outputNames.getExpression() != "") {
             _outputVariables = outputNames.getExpression().split(",");
-            _outputVector = new double[_outputVariables.length];	    
+            _outputVector = new double[_outputVariables.length];            
 
             foo = helper.new_string_array(_outputVariables.length);
             for (int i = 0; i < _outputVariables.length; i++) {
@@ -318,7 +318,7 @@ public class FMUModelExchange extends Transformer {
             foo = helper.new_string_array(0);
             }
 
-            //	    _fmu.setOutputs(foo, _outputVariables.length);
+            //            _fmu.setOutputs(foo, _outputVariables.length);
             */
         } else {
             super.attributeChanged(attribute);
@@ -347,7 +347,7 @@ public class FMUModelExchange extends Transformer {
         newObject._outputVector = _outputVector;
         newObject._fmiModelDescription = null;
 
-        //	newObject._fmu = new IncrementalFMU(fmu);
+        //        newObject._fmu = new IncrementalFMU(fmu);
 
         /*
             newObject.workingDirectory = (FileParameter) newObject
@@ -361,18 +361,18 @@ public class FMUModelExchange extends Transformer {
         super.fire();
         getDirector();
         double currentTime = getDirector().getModelTime().getDoubleValue();
-        //	DECQEventQueue queue = (DECQEventQueue) director.getEventQueue();
+        //        DECQEventQueue queue = (DECQEventQueue) director.getEventQueue();
         SWIGTYPE_p_double foo;
 
         // remove the next event from the queue, so we don't fire in case this is an external event
-        //	if (nextevent.timeStamp().compareTo(getDirector().getModelTime()) != 0)
+        //        if (nextevent.timeStamp().compareTo(getDirector().getModelTime()) != 0)
         /*
         if (nextevent != null) {
             queue.remove(nextevent);
             nextevent = null;
         }
         */
-        //	System.out.format("-FMUModelExchange::fire: check for inputs: ");
+        //        System.out.format("-FMUModelExchange::fire: check for inputs: ");
         // if thereis the possibility of inputs -> check if a token is ready
         if (input.getWidth() != 0 && input.hasToken(0)) {
             //System.out.format("got _some%n");
@@ -388,12 +388,12 @@ public class FMUModelExchange extends Transformer {
                         inputToken.getElementAt(i, 0));
             }
             _eventTime = _fmu.sync(_lastCallTime, currentTime, foo); // if there was an input, set it
-            //	    System.out.format("-FMUModelExchange::fire: call _fmu.sync(%f, %f, (%f[, ...])) -> %f%n", _lastCallTime, currentTime, inputToken.getElementAt(0,0), _eventTime);
+            //            System.out.format("-FMUModelExchange::fire: call _fmu.sync(%f, %f, (%f[, ...])) -> %f%n", _lastCallTime, currentTime, inputToken.getElementAt(0,0), _eventTime);
         } else {
             //System.out.format("got _none%n");
             _none++;
             _eventTime = _fmu.sync(_lastCallTime, currentTime); // or sync without setting an input
-            //	    System.out.format("-FMUModelExchange::fire: call _fmu.sync(%f, %f) -> %f%n", _lastCallTime, currentTime, _eventTime);
+            //            System.out.format("-FMUModelExchange::fire: call _fmu.sync(%f, %f) -> %f%n", _lastCallTime, currentTime, _eventTime);
         }
 
         _lastCallTime = currentTime; // remember the last calltime for the next sync
@@ -405,19 +405,19 @@ public class FMUModelExchange extends Transformer {
         Time checkTime = zeroTime.add(_eventTime);
 
         if (_eventTime - checkTime.getDoubleValue() < 0) { // check if we could be outside the lookahead horizone
-            //	    _fireAt(_eventTime - getDirector().getTimeResolution()); // if yes, fire a little bit earlier
+            //            _fireAt(_eventTime - getDirector().getTimeResolution()); // if yes, fire a little bit earlier
             //nextevent = director.fireFMU((Actor) this, new Time(getDirector(), _eventTime - getDirector().getTimeResolution()), 1);
             _nextEvent = new Time(getDirector(), _eventTime
                     - getDirector().getTimeResolution());
             _fireAt(_nextEvent);
         } else {
-            //	    _fireAt(_eventTime); // fire at next event or now + lookahead
+            //            _fireAt(_eventTime); // fire at next event or now + lookahead
             //nextevent = director.fireFMU((Actor) this, new Time(getDirector(), _eventTime), 1);
             _nextEvent = new Time(getDirector(), _eventTime);
             _fireAt(_nextEvent);
         }
 
-        /*	
+        /*        
         CausalityInterfaceForComposites cifc = (CausalityInterfaceForComposites)getDirector().getCausalityInterface();
         nextevent = new DEEvent((Actor) this, new Time(getDirector(), _eventTime), 1, cifc.getDepthOfActor(this));
         */
@@ -425,7 +425,7 @@ public class FMUModelExchange extends Transformer {
         foo = _fmu.getCurrentOutputs();
 
         for (int i = 0; i < _outputVariables.length; i++) {
-            //	    _outputVector[i] = _inputVector[i];
+            //            _outputVector[i] = _inputVector[i];
             _debug("_outputVector", Double.toString(_outputVector[i]));
             _outputVector[i] = helper.double_array_getitem(foo, i);
         }
@@ -437,29 +437,29 @@ public class FMUModelExchange extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-	// We use this method to make sure that the shared library
-	// exists before invoking C++.  A side effect is that this
-	// will try to build the shared library.
-	try {
-	    // FIXME: One strange bug is that if we call getNativeLibrary()
-	    // here, then the shared library is loaded and the jvm starts
-	    // segfaulting in the tests?  So, we just get the path.
-	    // _fmiModelDescription.getNativeLibrary();
-	    _fmiModelDescription.getNativeLibraryPath();
-	} catch (Throwable throwable) {
-	    throw new IllegalActionException(this, throwable,
-					     "Failed to find or build the shared library for \""
-					     + _fmiModelDescription +"\"");
-	}
+        // We use this method to make sure that the shared library
+        // exists before invoking C++.  A side effect is that this
+        // will try to build the shared library.
+        try {
+            // FIXME: One strange bug is that if we call getNativeLibrary()
+            // here, then the shared library is loaded and the jvm starts
+            // segfaulting in the tests?  So, we just get the path.
+            // _fmiModelDescription.getNativeLibrary();
+            _fmiModelDescription.getNativeLibraryPath();
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                                             "Failed to find or build the shared library for \""
+                                             + _fmiModelDescription +"\"");
+        }
         _fmu = new IncrementalFMU(_tmpPath,
                 _fmiModelDescription.modelIdentifier);
 
         SWIGTYPE_p_std__string foo;
 
-        //	System.out.format("-FMUModelExchange::initialize: check for inputs: ");
+        //        System.out.format("-FMUModelExchange::initialize: check for inputs: ");
 
         if (!inputNames.getExpression().equals("")) {
-            //	System.out.format("got _some%n");
+            //        System.out.format("got _some%n");
             _inputVariables = inputNames.getExpression().split(",");
             _inputVector = new double[_inputVariables.length];
 
@@ -468,7 +468,7 @@ public class FMUModelExchange extends Transformer {
                 helper.string_array_setitem(foo, i, _inputVariables[i]);
             }
         } else {
-            //	System.out.format("got _none%n");
+            //        System.out.format("got _none%n");
             _inputVariables = new String[0];
             _inputVector = new double[0];
             foo = helper.new_string_array(0);
@@ -484,7 +484,7 @@ public class FMUModelExchange extends Transformer {
             foo = helper.new_string_array(_outputVariables.length);
             for (int i = 0; i < _outputVariables.length; i++) {
                 helper.string_array_setitem(foo, i, _outputVariables[i]);
-                //		System.out.format("-FMUModelExchange::initialize() - outputvariables[%d] == %s%n", i, _outputVariables[i]);
+                //                System.out.format("-FMUModelExchange::initialize() - outputvariables[%d] == %s%n", i, _outputVariables[i]);
             }
         } else {
             _outputVariables = new String[0];
@@ -495,8 +495,8 @@ public class FMUModelExchange extends Transformer {
         _fmu.defineOutputs(foo, _outputVariables.length);
         //_fmu.setOutputs(foo, _outputVariables.length);
 
-        //	_count = 0;
-        //	_sum = null;
+        //        _count = 0;
+        //        _sum = null;
 
         if (fmuFile.getExpression().equals("")) {
             throw new IllegalActionException(this, "Error: No FMU given!");
@@ -510,7 +510,7 @@ public class FMUModelExchange extends Transformer {
         //     throw new IllegalActionException("Error: No Outputs given!");
         // }
 
-        //	SWIGTYPE_p_std__string foo;
+        //        SWIGTYPE_p_std__string foo;
         SWIGTYPE_p_double bar;
         if (!startValues.getExpression().isEmpty()) {
             String[] pairs = startValues.getExpression().split(",");
@@ -539,10 +539,10 @@ public class FMUModelExchange extends Transformer {
         _fmu.init(getName(), foo, bar, _nStartValues, startTime,
                 _lookAheadHorizonValue, _lookAheadStepSizeValue,
                 _integratorStepSizeValue);
-        //	_eventTime = _fmu.sync(startTime-1, startTime);
+        //        _eventTime = _fmu.sync(startTime-1, startTime);
 
         _lastCallTime = startTime - 1;
-        //	_fireAt(startTime);
+        //        _fireAt(startTime);
         //nextevent = director.fireFMU((Actor) this, getDirector().getModelStartTime(), 1);
         _nextEvent = getDirector().getModelStartTime();
         _fireAt(_nextEvent);

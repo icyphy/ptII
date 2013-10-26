@@ -19,19 +19,19 @@ class FMUIntegratorStepper
 
 public:
 
-	virtual ~FMUIntegratorStepper();
+        virtual ~FMUIntegratorStepper();
 
-	typedef FMUIntegrator::IntegratorType IntegratorType;
+        typedef FMUIntegrator::IntegratorType IntegratorType;
 
-	/** Invokes integration method. **/
-	virtual void invokeMethod( FMUIntegrator* fmuint, FMUIntegrator::state_type& states,
-				   fmiReal time, fmiReal step_size, fmiReal dt ) = 0;
+        /** Invokes integration method. **/
+        virtual void invokeMethod( FMUIntegrator* fmuint, FMUIntegrator::state_type& states,
+                                   fmiReal time, fmiReal step_size, fmiReal dt ) = 0;
 
-	/** Returns the integrator type. **/
-	virtual IntegratorType type() const = 0;
+        /** Returns the integrator type. **/
+        virtual IntegratorType type() const = 0;
 
-	/** Factory: creates a new integrator stepper. **/
-	static FMUIntegratorStepper* createStepper( IntegratorType type );
+        /** Factory: creates a new integrator stepper. **/
+        static FMUIntegratorStepper* createStepper( IntegratorType type );
 };
 
 

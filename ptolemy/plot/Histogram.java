@@ -740,17 +740,17 @@ public class Histogram extends PlotBox {
     ////                         protected variables               ////
 
     /**  The current dataset.
-     *	 @serial
+     *         @serial
      */
     protected int _currentdataset = -1;
 
     /**  A vector of datasets.
-     *	 @serial
+     *         @serial
      */
     protected Vector _points = new Vector();
 
     /**  A vector of histogram data.
-     *	 @serial
+     *         @serial
      */
     protected Vector _histogram = new Vector();
 

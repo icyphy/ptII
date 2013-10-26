@@ -99,9 +99,9 @@ Token String_new(char* s) {
     Token result;
     result.type = TYPE_String;
     if (!s)
-    	result.payload.String = "";
+            result.payload.String = "";
     else
-    	result.payload.String = strdup(s);
+            result.payload.String = strdup(s);
     return result;
 }
 /**/

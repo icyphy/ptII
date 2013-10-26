@@ -171,11 +171,11 @@ public class FMUFile {
         try {
             files = unzip(fmuFileName);
         } catch (IOException ex) {
-	    // Java 1.5 does not support IOException(String, Throwable).
-	    // We sometimes compile this with gcj, which is Java 1.5
+            // Java 1.5 does not support IOException(String, Throwable).
+            // We sometimes compile this with gcj, which is Java 1.5
             IOException exception = new IOException("Failed to unzip \"" + fmuFileName + "\".");
-	    exception.initCause(ex);
-	    throw exception;
+            exception.initCause(ex);
+            throw exception;
         }
 
         // Find the modelDescription.xml file.
@@ -241,12 +241,12 @@ public class FMUFile {
             // Parse using builder to get DOM representation of the XML file.
             document = db.parse(modelDescriptionFile.getCanonicalPath());
         } catch (Throwable throwable) {
-	    // Java 1.5 does not support IOException(String, Throwable).
-	    // We sometimes compile this with gcj, which is Java 1.5
+            // Java 1.5 does not support IOException(String, Throwable).
+            // We sometimes compile this with gcj, which is Java 1.5
             IOException exception = new IOException("Failed to parse \"" + modelDescriptionFile
-						    + "\".");
-	    exception.initCause(throwable);
-	    throw exception;
+                                                    + "\".");
+            exception.initCause(throwable);
+            throw exception;
         }
 
         Element root = document.getDocumentElement();
@@ -444,7 +444,7 @@ public class FMUFile {
         List<File> files = new LinkedList<File>();
         FileInputStream fileInputStream = null;
         ZipInputStream zipInputStream = null;
-	File destinationFile = null;
+        File destinationFile = null;
         try {
             fileInputStream = new FileInputStream(zipFileName);
             zipInputStream = new ZipInputStream(new BufferedInputStream(
@@ -477,7 +477,7 @@ public class FMUFile {
                             // Is the flush() really necessary?
                             destination.flush();
                             destination.close();
-			    destination = null;
+                            destination = null;
                         }
                     }
                 }

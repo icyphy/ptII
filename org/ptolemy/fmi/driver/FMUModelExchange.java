@@ -172,7 +172,7 @@ public class FMUModelExchange extends FMUDriver {
 
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-	        new FMULibrary.FMULogger(fmiModelDescription), fmiModelDescription.getFMUAllocateMemory(),
+                new FMULibrary.FMULogger(fmiModelDescription), fmiModelDescription.getFMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
@@ -376,9 +376,9 @@ public class FMUModelExchange extends FMUDriver {
             if (file != null) {
                 file.close();
             }
-	    if (fmiModelDescription != null) {
-		fmiModelDescription.dispose();
-	    }
+            if (fmiModelDescription != null) {
+                fmiModelDescription.dispose();
+            }
         }
 
         System.out.println("Simulation from " + startTime + " to " + endTime
@@ -388,6 +388,6 @@ public class FMUModelExchange extends FMUDriver {
         System.out.println("  stateEvents: " + numberOfStateEvents);
         System.out.println("  stepEvents: " + numberOfStepEvents);
         System.out.println("  timeEvents: " + numberOfTimeEvents);
-	System.out.flush();
+        System.out.flush();
     }
 }

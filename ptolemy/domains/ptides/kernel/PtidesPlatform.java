@@ -608,20 +608,20 @@ public class PtidesPlatform extends MirrorComposite {
          */
         @Override
         public Time getEnvironmentTime() {
-	    NamedObj namedObjContainer = getContainer();
+            NamedObj namedObjContainer = getContainer();
             if (namedObjContainer instanceof Actor) {
                 Actor container = (Actor) namedObjContainer;
                 if (container != null && container.getContainer() != null) {
-		    // This could be an EntityLibrary, see tests in
-		    // $PTII/doc.
-		    NamedObj parentContainer = container.getContainer();
-		    if (parentContainer instanceof Actor) {
-			container = (Actor) parentContainer;
-			Director director = container.getDirector();
-			if (director != null) {
-			    return director.getModelTime();
-			}
-		    }
+                    // This could be an EntityLibrary, see tests in
+                    // $PTII/doc.
+                    NamedObj parentContainer = container.getContainer();
+                    if (parentContainer instanceof Actor) {
+                        container = (Actor) parentContainer;
+                        Director director = container.getDirector();
+                        if (director != null) {
+                            return director.getModelTime();
+                        }
+                    }
                 }
             }
             return localClock.getLocalTime();

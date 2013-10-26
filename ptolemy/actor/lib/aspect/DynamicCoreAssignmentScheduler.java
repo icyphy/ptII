@@ -117,7 +117,7 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
                 notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                	notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                        notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
                 } 
                 _remainingTimeOnCore.put(scheduler, time);
@@ -139,7 +139,7 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
                 notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                	notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                        notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
                 } 
                 _remainingTimeOnCore.put(scheduler, time);

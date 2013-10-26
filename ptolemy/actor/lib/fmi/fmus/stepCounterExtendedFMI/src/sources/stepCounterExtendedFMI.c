@@ -104,7 +104,7 @@ int checkFMU(
     if (strcmp(GUID, modelGUID)) {
         // FIXME: Remove printfs. Replace with logger calls when they work.
         fprintf(stderr,"fmiInstantiateSlave: Wrong GUID %s. Expected %s.\n", GUID, modelGUID);
-	fflush(stderr);
+        fflush(stderr);
         //functions->logger(NULL, instanceName, fmiError, "error",
         //                  "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, modelGUID);
         return 0;
@@ -387,11 +387,11 @@ fmiStatus fmiTerminateSlave(fmiComponent c) {
 
     if (component == NULL) {
         printf("fmiTerminateSlave called with a null argument?  This can happen while exiting during a failure to construct the component\n");
-	fflush(stdout);
-	return fmiError;
+        fflush(stdout);
+        return fmiError;
     } else {
         printf("%s: fmiTerminateSlave\n", component->instanceName);
-	fflush(stdout);
+        fflush(stdout);
     }
 
     return fmiOK;

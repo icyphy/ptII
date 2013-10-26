@@ -60,31 +60,31 @@ extern const char *enuNames[SIZEOF_ENU];
 
 /** Elements **/
 typedef enum {
-	elm_fmiModelDescription,elm_UnitDefinitions,elm_BaseUnit,elm_DisplayUnitDefinition,elm_TypeDefinitions,
-	elm_Type,elm_RealType,elm_IntegerType,elm_BooleanType,elm_StringType,elm_EnumerationType,elm_Item,
-	elm_DefaultExperiment,elm_VendorAnnotations,elm_Tool,elm_Annotation,elm_ModelVariables,elm_ScalarVariable,
-	elm_DirectDependency,elm_Name,elm_Real,elm_Integer,elm_Boolean,elm_String,elm_Enumeration,
-	elm_Implementation,elm_CoSimulation_StandAlone,elm_CoSimulation_Tool,elm_Model,elm_File,elm_Capabilities
+        elm_fmiModelDescription,elm_UnitDefinitions,elm_BaseUnit,elm_DisplayUnitDefinition,elm_TypeDefinitions,
+        elm_Type,elm_RealType,elm_IntegerType,elm_BooleanType,elm_StringType,elm_EnumerationType,elm_Item,
+        elm_DefaultExperiment,elm_VendorAnnotations,elm_Tool,elm_Annotation,elm_ModelVariables,elm_ScalarVariable,
+        elm_DirectDependency,elm_Name,elm_Real,elm_Integer,elm_Boolean,elm_String,elm_Enumeration,
+        elm_Implementation,elm_CoSimulation_StandAlone,elm_CoSimulation_Tool,elm_Model,elm_File,elm_Capabilities
 } Elm;
 
 
 /** Attributes **/
 typedef enum {
-	att_fmiVersion,att_displayUnit,att_gain,att_offset,att_unit,att_name,att_description,att_quantity,att_relativeQuantity,
-	att_min,att_max,att_nominal,att_declaredType,att_start,att_fixed,att_startTime,att_stopTime,att_tolerance,att_value,
-	att_valueReference,att_variability,att_causality,att_alias,att_modelName,att_modelIdentifier,att_guid,att_author,
-	att_version,att_generationTool,att_generationDateAndTime,att_variableNamingConvention,att_numberOfContinuousStates,
-	att_numberOfEventIndicators,att_input,
-	att_canHandleVariableCommunicationStepSize,att_canHandleEvents,att_canRejectSteps,att_canInterpolateInputs,
-	att_maxOutputDerivativeOrder,att_canRunAsynchronuously,att_canSignalEvents,att_canBeInstantiatedOnlyOncePerProcess,
-	att_canNotUseMemoryManagementFunctions,att_entryPoint,att_manualStart,att_type
+        att_fmiVersion,att_displayUnit,att_gain,att_offset,att_unit,att_name,att_description,att_quantity,att_relativeQuantity,
+        att_min,att_max,att_nominal,att_declaredType,att_start,att_fixed,att_startTime,att_stopTime,att_tolerance,att_value,
+        att_valueReference,att_variability,att_causality,att_alias,att_modelName,att_modelIdentifier,att_guid,att_author,
+        att_version,att_generationTool,att_generationDateAndTime,att_variableNamingConvention,att_numberOfContinuousStates,
+        att_numberOfEventIndicators,att_input,
+        att_canHandleVariableCommunicationStepSize,att_canHandleEvents,att_canRejectSteps,att_canInterpolateInputs,
+        att_maxOutputDerivativeOrder,att_canRunAsynchronuously,att_canSignalEvents,att_canBeInstantiatedOnlyOncePerProcess,
+        att_canNotUseMemoryManagementFunctions,att_entryPoint,att_manualStart,att_type
 } Att;
 
 
 /** Enumeration values **/
 typedef enum {
-	enu_flat,enu_structured,enu_constant,enu_parameter,enu_discrete,enu_continuous,
-	enu_input,enu_output,enu_internal,enu_none,enu_noAlias,enu_alias,enu_negatedAlias
+        enu_flat,enu_structured,enu_constant,enu_parameter,enu_discrete,enu_continuous,
+        enu_input,enu_output,enu_internal,enu_none,enu_noAlias,enu_alias,enu_negatedAlias
 } Enu;
 
 
@@ -92,81 +92,81 @@ typedef enum {
     DisplayUnitDefinition, RealType, IntegerType, BooleanType, StringType, DefaultExperiment,
     Item, Annotation, Name, Real, Integer, Boolean, String, Enumeration, Capabilities, File **/
 typedef struct {
-	Elm type;          // element type
-	const char** attributes; // null or n attribute value strings
-	int n;             // size of attributes, even number
+        Elm type;          // element type
+        const char** attributes; // null or n attribute value strings
+        int n;             // size of attributes, even number
 } Element;
 
 
 /** AST node for element that has a list of elements
     BaseUnit, EnumerationType, Tool, DirectDependency, Model **/
 typedef struct {
-	Elm type;          // element type
-	const char** attributes; // null or n attribute value strings
-	int n;             // size of attributes, even number
-	Element** list;    // null-terminated array of pointers to elements, not null
+        Elm type;          // element type
+        const char** attributes; // null or n attribute value strings
+        int n;             // size of attributes, even number
+        Element** list;    // null-terminated array of pointers to elements, not null
 } ListElement;
 
 
 /** AST node for element Type **/
 typedef struct {
-	Elm type;          // element type
-	const char** attributes; // null or n attribute value strings
-	int n;             // size of attributes, an even number
-	Element* typeSpec; // one of RealType, IntegerType etc.
+        Elm type;          // element type
+        const char** attributes; // null or n attribute value strings
+        int n;             // size of attributes, an even number
+        Element* typeSpec; // one of RealType, IntegerType etc.
 } Type;
 
 
 /** AST node for element ScalarVariable **/
 typedef struct {
-	Elm type;          // element type
-	const char** attributes; // null or n attribute value strings
-	int n;             // size of attributes, even number
-	Element* typeSpec; // one of Real, Integer, etc
-	Element** directDependencies; // null or null-terminated list of Name
+        Elm type;          // element type
+        const char** attributes; // null or n attribute value strings
+        int n;             // size of attributes, even number
+        Element* typeSpec; // one of Real, Integer, etc
+        Element** directDependencies; // null or null-terminated list of Name
 } ScalarVariable;
 
 
 /** AST node for element CoSimulation_StandAlone and CoSimulation_Tool **/
 typedef struct {
-	Elm type; // one of elm_CoSimulation_StandAlone and elm_CoSimulation_Tool
-	const char** attributes; // null or n attribute value strings
-	int n;                   // size of attributes, even number
-	Element* capabilities;   // a set of capability attributes
-	ListElement* model;      // non-NULL to support tool coupling, NULL for standalone
+        Elm type; // one of elm_CoSimulation_StandAlone and elm_CoSimulation_Tool
+        const char** attributes; // null or n attribute value strings
+        int n;                   // size of attributes, even number
+        Element* capabilities;   // a set of capability attributes
+        ListElement* model;      // non-NULL to support tool coupling, NULL for standalone
 } CoSimulation;
 
 
 /** AST node for element ModelDescription **/
 typedef struct {
-	Elm type;          // element type
-	const char** attributes; // null or n attribute value strings
-	int n;             // size of attributes, even number
-	ListElement** unitDefinitions;    // NULL or null-terminated list of BaseUnits
-	Type**        typeDefinitions;    // NULL or null-terminated list of Types
-	Element*      defaultExperiment;  // NULL or DefaultExperiment
-	ListElement** vendorAnnotations;  // NULL or null-terminated list of Tools
-	ScalarVariable** modelVariables;  // NULL or null-terminated list of ScalarVariable
-	CoSimulation* cosimulation;       // NULL if this ModelDescription is for model exchange only
+        Elm type;          // element type
+        const char** attributes; // null or n attribute value strings
+        int n;             // size of attributes, even number
+        ListElement** unitDefinitions;    // NULL or null-terminated list of BaseUnits
+        Type**        typeDefinitions;    // NULL or null-terminated list of Types
+        Element*      defaultExperiment;  // NULL or DefaultExperiment
+        ListElement** vendorAnnotations;  // NULL or null-terminated list of Tools
+        ScalarVariable** modelVariables;  // NULL or null-terminated list of ScalarVariable
+        CoSimulation* cosimulation;       // NULL if this ModelDescription is for model exchange only
 } ModelDescription;
 
 
 /** types of AST nodes used to represent an element **/
 typedef enum {
-	astElement,
-	astListElement,
-	astType,
-	astScalarVariable,
-	astCoSimulation,
-	astModelDescription
+        astElement,
+        astListElement,
+        astType,
+        astScalarVariable,
+        astCoSimulation,
+        astModelDescription
 } AstNodeType;
 
 
 /** Possible results when retrieving an attribute value from an element **/
 typedef enum {
-	valueMissing,
-	valueDefined,
-	valueIllegal
+        valueMissing,
+        valueDefined,
+        valueIllegal
 } ValueStatus;
 
 

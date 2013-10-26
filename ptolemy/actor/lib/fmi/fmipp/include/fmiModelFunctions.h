@@ -50,14 +50,14 @@
 
 /** Type definitions. **/
 typedef void  (*fmiCallbackLogger)        ( fmiComponent c, fmiString instanceName, fmiStatus status,
-					    fmiString category, fmiString message, ... );
+                                            fmiString category, fmiString message, ... );
 typedef void* (*fmiCallbackAllocateMemory)( size_t nobj, size_t size );
 typedef void  (*fmiCallbackFreeMemory)    ( void* obj );
 
 typedef struct {
-	fmiCallbackLogger         logger;
-	fmiCallbackAllocateMemory allocateMemory;
-	fmiCallbackFreeMemory     freeMemory;
+        fmiCallbackLogger         logger;
+        fmiCallbackAllocateMemory allocateMemory;
+        fmiCallbackFreeMemory     freeMemory;
 } fmiCallbackFunctions;
 
 

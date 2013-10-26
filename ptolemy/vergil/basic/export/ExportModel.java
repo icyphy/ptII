@@ -294,7 +294,7 @@ public class ExportModel {
                 System.out.println("Model \"" + model[0].getFullName() 
                         + "\" contains actors such cannot be run "
                         + " as part of the export process from ExportModel or "
-		        + "it has a WebExportParameters value that runBeforeExport set to false. "
+                        + "it has a WebExportParameters value that runBeforeExport set to false. "
                         + "To export run this model and export it, use vergil."); 
             } else {
             // Optionally run the model.
@@ -959,13 +959,13 @@ public class ExportModel {
      *  cannot be read.
      */
     private boolean _runnable(CompositeEntity model) throws IllegalActionException {
-	// Check for WebExportParameters.runBeforeExport being false.
-	List<WebExportParameters> webExportParameters = model.attributeList(WebExportParameters.class);
-	if (webExportParameters.size() > 0) {
-	    if (!((BooleanToken)webExportParameters.get(0).runBeforeExport.getToken()).booleanValue()) {
-		return false;
-	    }
-	}
+        // Check for WebExportParameters.runBeforeExport being false.
+        List<WebExportParameters> webExportParameters = model.attributeList(WebExportParameters.class);
+        if (webExportParameters.size() > 0) {
+            if (!((BooleanToken)webExportParameters.get(0).runBeforeExport.getToken()).booleanValue()) {
+                return false;
+            }
+        }
 
         // Check for actors that implement UsesInvokeAndWait.
         Iterator atomicEntities = model.allAtomicEntityList().iterator();

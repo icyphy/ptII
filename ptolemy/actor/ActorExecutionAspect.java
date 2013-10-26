@@ -97,13 +97,13 @@ public interface ActorExecutionAspect extends Decorator {
     public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType);
     
     /** Perform rescheduling actions when no new actor requests to be
-	 *  scheduled.
-	 * @param environmentTime The outside time.
-	 * @return Relative time when this Scheduler has to be executed
-	 *    again to perform rescheduling actions.
-	 * @exception IllegalActionException Thrown in subclasses.   
-	 */
-	public Time schedule(Time environmentTime) throws IllegalActionException;
+         *  scheduled.
+         * @param environmentTime The outside time.
+         * @return Relative time when this Scheduler has to be executed
+         *    again to perform rescheduling actions.
+         * @exception IllegalActionException Thrown in subclasses.   
+         */
+        public Time schedule(Time environmentTime) throws IllegalActionException;
     
     /** Schedule the actor. In this base class, do nothing.  Derived
      *  classes should schedule the actor.   

@@ -58,24 +58,24 @@ Token IntArray_clone(Token thisToken, ...) {
 // @param targetType The type to convert the elements of the given token to.
 Token IntArray_convert(Token token, ...) {
 
-	switch (token.type) {
+        switch (token.type) {
 #ifdef TYPE_IntArray
-		case TYPE_IntArray:
-			break;
+                case TYPE_IntArray:
+                        break;
 #endif
 #ifdef TYPE_Int
-	    case TYPE_Int:
-	        token = $convert_Int_IntArray(token.payload.Int);
-	        break;
+            case TYPE_Int:
+                token = $convert_Int_IntArray(token.payload.Int);
+                break;
 #endif
 
-	        // FIXME: not finished
-	    default:
-	        fprintf(stderr, "IntArray_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-	        exit(-1);
-	        break;
-	}
-	return token;
+                // FIXME: not finished
+            default:
+                fprintf(stderr, "IntArray_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+                exit(-1);
+                break;
+        }
+        return token;
 
 //    int i;
 //    Token result;

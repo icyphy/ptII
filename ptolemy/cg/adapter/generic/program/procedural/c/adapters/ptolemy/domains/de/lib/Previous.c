@@ -34,12 +34,12 @@ $actorSymbol(tempPrevious).type = -2;
 
 /***fireBlock***/
 if ($actorSymbol(previous).type != -2) {
-	$put(output, $actorSymbol(previous).payload.$cgType(output));
+        $put(output, $actorSymbol(previous).payload.$cgType(output));
 }
 
 if ($hasToken(input)) {
-	$actorSymbol(tempPrevious).type = TYPE_$cgType(input);
-	$actorSymbol(tempPrevious).payload.$cgType(output) = $get(input);
+        $actorSymbol(tempPrevious).type = TYPE_$cgType(input);
+        $actorSymbol(tempPrevious).payload.$cgType(output) = $get(input);
 }
 /**/
 

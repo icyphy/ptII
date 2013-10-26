@@ -207,10 +207,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-    	if (workspace().getVersion() == _decoratedObjectsVersion) {
+            if (workspace().getVersion() == _decoratedObjectsVersion) {
             return _decoratedObjects;
         }
-    	_decoratedObjectsVersion = workspace().getVersion();
+            _decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> list = new ArrayList<NamedObj>();
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object object : container.deepEntityList()) {
@@ -430,10 +430,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     ////                         private variables                 ////
     
     /** Cached list of decorated objects. */
-	private List<NamedObj> _decoratedObjects;
-	
-	/** Version for _decoratedObjects. */
-	private long _decoratedObjectsVersion = -1L;
+        private List<NamedObj> _decoratedObjects;
+        
+        /** Version for _decoratedObjects. */
+        private long _decoratedObjectsVersion = -1L;
 
     private HashMap<CommunicationRequestPort, Token> _tokens;
 

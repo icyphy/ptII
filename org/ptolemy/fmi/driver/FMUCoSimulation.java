@@ -177,32 +177,32 @@ public class FMUCoSimulation extends FMUDriver {
 
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-		new FMULibrary.FMULogger(fmiModelDescription), fmiModelDescription.getFMUAllocateMemory(),
+                new FMULibrary.FMULogger(fmiModelDescription), fmiModelDescription.getFMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
 
         Function instantiateSlave = fmiModelDescription.getFmiFunction("fmiInstantiateSlave");
-	System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
+        System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object[] { _modelIdentifier, fmiModelDescription.guid,
                         fmuLocation, mimeType, timeout, visible, interactive,
                         callbacks, loggingOn });
-	System.out.println("instantiatedSlave");
+        System.out.println("instantiatedSlave");
         if (fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException("Could not instantiate model.");
         }
 
         double startTime = 0;
 
-	System.out.println("about to initializeSlave");
+        System.out.println("about to initializeSlave");
         invoke("_fmiInitializeSlave", new Object[] { fmiComponent, startTime,
                 (byte) 1, endTime }, "Could not initialize slave: ");
 
         File outputFile = new File(outputFileName);
         PrintStream file = null;
         try {
-	    // gcj does not have this constructor
+            // gcj does not have this constructor
             //file = new PrintStream(outputFile);
             file = new PrintStream(outputFileName);
             if (enableLogging) {
@@ -233,31 +233,31 @@ public class FMUCoSimulation extends FMUDriver {
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
                         fmiComponent, time, file, csvSeparator, Boolean.FALSE);
             }
-	    invoke("_fmiTerminateSlave", new Object[] { fmiComponent },
-		   "Could not terminate slave: ");
+            invoke("_fmiTerminateSlave", new Object[] { fmiComponent },
+                   "Could not terminate slave: ");
 
-	    // Don't throw an exception while freeing a slave.  Some
-	    // fmiTerminateSlave calls free the slave for us.
-	    Function freeSlave = fmiModelDescription.getFmiFunction("fmiFreeSlaveInstance");
-	    int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
-						      new Object[] { fmiComponent })).intValue();
-	    if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-		new Exception("Warning: Could not free slave instance: " + fmiFlag)
+            // Don't throw an exception while freeing a slave.  Some
+            // fmiTerminateSlave calls free the slave for us.
+            Function freeSlave = fmiModelDescription.getFmiFunction("fmiFreeSlaveInstance");
+            int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
+                                                      new Object[] { fmiComponent })).intValue();
+            if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
+                new Exception("Warning: Could not free slave instance: " + fmiFlag)
                     .printStackTrace();
-	    }
+            }
         } finally {
             if (file != null) {
                 file.close();
             }
-	    if (fmiModelDescription != null) {
-		fmiModelDescription.dispose();
-	    }
-	}
+            if (fmiModelDescription != null) {
+                fmiModelDescription.dispose();
+            }
+        }
 
         if (enableLogging) {
             System.out.println("Results are in "
                     + outputFile.getCanonicalPath());
-	    System.out.flush();
+            System.out.flush();
         }
     }
 }

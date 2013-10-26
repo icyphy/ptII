@@ -460,39 +460,39 @@ public class EditablePlot extends Plot {
 
     /** Listen for mouse button events.  See the class comment for
      * details.
-     */	
+     */        
     public class EditMouseListener implements MouseListener {
-	/** Ignored by this listener.
-	 *  @param event Ignored.
-	 */
+        /** Ignored by this listener.
+         *  @param event Ignored.
+         */
         public void mouseClicked(MouseEvent event) {
         }
 
-	/** Ignored by this listener.
-	 *  @param event Ignored.
-	 */
+        /** Ignored by this listener.
+         *  @param event Ignored.
+         */
         public void mouseEntered(MouseEvent event) {
         }
 
-	/** Ignored by this listener.
-	 *  @param event Ignored.
-	 */
+        /** Ignored by this listener.
+         *  @param event Ignored.
+         */
         public void mouseExited(MouseEvent event) {
         }
 
-	/** If the 3rd button is pressed, then start the edit.
-	 *  @param event The event.
-	 */
+        /** If the 3rd button is pressed, then start the edit.
+         *  @param event The event.
+         */
         public void mousePressed(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._editStart(event.getX(), event.getY());
             }
         }
 
-	/** If the 3rd button is released, then modify the X and Y
-	 *  coordinates of the edit dataset.
-	 *  @param event The event.
-	 */
+        /** If the 3rd button is released, then modify the X and Y
+         *  coordinates of the edit dataset.
+         *  @param event The event.
+         */
         public void mouseReleased(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._edit(event.getX(), event.getY());
@@ -502,32 +502,32 @@ public class EditablePlot extends Plot {
 
     /** Listen for mouse motion events.  See the class comment for
      * details.
-     */	
+     */        
     public class ModifyListener implements MouseMotionListener {
-	/** If the mouse is dragged and the 3rd button is pressed,
-	 *  then make a record of a new edit point.   
-	 *  @param event The event.
-	 */
+        /** If the mouse is dragged and the 3rd button is pressed,
+         *  then make a record of a new edit point.   
+         *  @param event The event.
+         */
         public void mouseDragged(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._editPoint(event.getX(), event.getY());
             }
         }
 
-	/** Ignored by this listener.
-	 *  @param event Ignored.
-	 */
+        /** Ignored by this listener.
+         *  @param event Ignored.
+         */
         public void mouseMoved(MouseEvent event) {
         }
     }
 
     /** Control-Z is undo and Control-Y is redo.
-     */	
+     */        
     public class UndoListener implements KeyListener {
-	/** Handle Control, Z or Y being pressed with
-	 *  by calling undo() or redo().   
-	 *  @param e The KeyEvent.
-	 */
+        /** Handle Control, Z or Y being pressed with
+         *  by calling undo() or redo().   
+         *  @param e The KeyEvent.
+         */
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -557,9 +557,9 @@ public class EditablePlot extends Plot {
             }
         }
 
-	/** Handle Control being released.
-	 *  @param e The KeyEvent.
-	 */
+        /** Handle Control being released.
+         *  @param e The KeyEvent.
+         */
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -574,16 +574,16 @@ public class EditablePlot extends Plot {
         }
 
         /** Ignored by this class.
-	 *  The keyTyped method is broken in jdk 1.1.4.
+         *  The keyTyped method is broken in jdk 1.1.4.
          *  It always gets "unknown key code".
-	 * @param e Ignored by this method.
-	 */
+         * @param e Ignored by this method.
+         */
         public void keyTyped(KeyEvent e) {
         }
 
-	/** True of the Control key was pressed, but not yet
-	 * released.
-	 */
+        /** True of the Control key was pressed, but not yet
+         * released.
+         */
         private boolean _control = false;
     }
 }

@@ -77,7 +77,7 @@ extern "C" {
 #ifdef WIN32
     #include <direct.h>
     #include <io.h>
-	#include <string.h>
+        #include <string.h>
 #else
 #ifndef __CYGWIN__
     #include <sys/dir.h>

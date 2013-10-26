@@ -462,7 +462,7 @@ public class WebServer extends AbstractInitializableAttribute {
                 resourceLocations);
         } catch(URISyntaxException e) {
             throw new IllegalActionException(this, "Resource path is not a " +
-            		"valid URI.");
+                            "valid URI.");
         } catch(Exception e2) {
             throw new IllegalActionException(this, e2, "Failed to add resource info.");
         }

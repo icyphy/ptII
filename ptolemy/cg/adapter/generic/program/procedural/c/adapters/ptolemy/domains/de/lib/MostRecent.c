@@ -24,8 +24,8 @@ $actorSymbol(size_lastInputs) = $inputSize;
 
 int i;
 for (i = 0; i < $inputSize; i++) {
-	$actorSymbol(lastInputs)[i].type = TYPE_$initialValueType;
-	$actorSymbol(lastInputs)[i].payload.$initialValueType = $initialValueToken;
+        $actorSymbol(lastInputs)[i].type = TYPE_$initialValueType;
+        $actorSymbol(lastInputs)[i].payload.$initialValueType = $initialValueToken;
 }
 /**/
 
@@ -52,19 +52,19 @@ int i = 0;
 // If the <i>initialValue</i> parameter was not set, or if the
 // width of the input has changed.
 if ($actorSymbol(lastInputs) == NULL) {
-	$actorSymbol(lastInputs) = calloc(inputWidth, sizeof(Token));
-	$actorSymbol(size_lastInputs) = inputWidth;
-	for (i = 0; i < inputWidth; i++) {
-		$actorSymbol(lastInputs)[i].type = -2;
-	}
+        $actorSymbol(lastInputs) = calloc(inputWidth, sizeof(Token));
+        $actorSymbol(size_lastInputs) = inputWidth;
+        for (i = 0; i < inputWidth; i++) {
+                $actorSymbol(lastInputs)[i].type = -2;
+        }
 }
 else if ($actorSymbol(size_lastInputs) != inputWidth) {
-	free($actorSymbol(lastInputs));
-	$actorSymbol(lastInputs) = calloc(inputWidth, sizeof(Token));
-	$actorSymbol(size_lastInputs) = inputWidth;
-	for (i = 0; i < inputWidth; i++) {
-		$actorSymbol(lastInputs)[i].type = -2;
-	}
+        free($actorSymbol(lastInputs));
+        $actorSymbol(lastInputs) = calloc(inputWidth, sizeof(Token));
+        $actorSymbol(size_lastInputs) = inputWidth;
+        for (i = 0; i < inputWidth; i++) {
+                $actorSymbol(lastInputs)[i].type = -2;
+        }
 }
 
 /**/
@@ -72,8 +72,8 @@ else if ($actorSymbol(size_lastInputs) != inputWidth) {
 // Consume the inputs we save.
 /***inputChannelLoopFireBlock($channel)***/
 while ($hasToken(input#$channel)) {
-	$actorSymbol(lastInputs)[$channel].type = TYPE_$cgType(input);
-	$actorSymbol(lastInputs)[$channel].payload.$cgType(input) = $get(input#$channel);
+        $actorSymbol(lastInputs)[$channel].type = TYPE_$cgType(input);
+        $actorSymbol(lastInputs)[$channel].payload.$cgType(input) = $get(input#$channel);
 }
 
 /**/
@@ -81,15 +81,15 @@ while ($hasToken(input#$channel)) {
 // Consume the inputs we don't save.
 /***throwTokensLoopFireBlock($channel)***/
 while ($hasToken(input#$channel)) {
-	(void)$get(input#$channel);
+        (void)$get(input#$channel);
 }
 /**/
 
 /***triggerLoopFireBlock($channel)***/
 if ($hasToken(trigger#$channel)) {
-	// Consume the trigger token.
-	(void)$get(trigger#$channel);
-	triggered = true;
+        // Consume the trigger token.
+        (void)$get(trigger#$channel);
+        triggered = true;
 }
 /**/
 
@@ -97,16 +97,16 @@ if ($hasToken(trigger#$channel)) {
 if (triggered) {
 /**/
 
-	/***ifTriggeredLoopFireBlock($channel)***/
-	// Do not output anything if the <i>initialValue</i>
-	// parameter was not set and this actor has not
-	// received any inputs.
-	if ($actorSymbol(lastInputs)[$channel].type != -2) {
-		// Output the most recent token, assuming the
-		// receiver has a FIFO behavior.
-		$put(output#$channel, $actorSymbol(lastInputs)[$channel].payload.$cgType(output));
-	}
-	/**/
+        /***ifTriggeredLoopFireBlock($channel)***/
+        // Do not output anything if the <i>initialValue</i>
+        // parameter was not set and this actor has not
+        // received any inputs.
+        if ($actorSymbol(lastInputs)[$channel].type != -2) {
+                // Output the most recent token, assuming the
+                // receiver has a FIFO behavior.
+                $put(output#$channel, $actorSymbol(lastInputs)[$channel].payload.$cgType(output));
+        }
+        /**/
 
 /***endIfTriggeredFireBlock***/
 }
@@ -114,5 +114,5 @@ if (triggered) {
 
 /***wrapupBlock***/
 if ($actorSymbol(lastInputs) != NULL)
-	free($actorSymbol(lastInputs));
+        free($actorSymbol(lastInputs));
 /**/

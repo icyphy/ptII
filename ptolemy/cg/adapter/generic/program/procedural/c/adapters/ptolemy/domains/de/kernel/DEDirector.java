@@ -253,7 +253,7 @@ public class DEDirector extends Director {
                                     "Receiver not found in port : " + port.getFullName() + "in actor : " + sanitizedActorName);
                         
                         result.append(_eol + "pblListAdd(pblListGet(" + sanitizedActorName + "_" + port.getName() + "->_farReceivers, " + i + ")" +
-                        		", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
+                                        ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                     }
                 }
             }
@@ -379,7 +379,7 @@ public class DEDirector extends Director {
         code.append(_eol + "    if (result == 1) {");
         code.append(_eol + "        continue;");
         code.append(_eol + "    } else if (result == -1 || nextEvent == NULL) {");
-        code.append(_eol + "		" + _sanitizedDirectorName + ".noMoreActorToFire = true;");
+        code.append(_eol + "                " + _sanitizedDirectorName + ".noMoreActorToFire = true;");
         code.append(_eol + "        return;");
         code.append(_eol + "    } ");
         // else if 0, keep executing

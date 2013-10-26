@@ -132,7 +132,7 @@ public class WebApplicationInfo {
                 _resourceInfo.keySet().contains(servletPath)) {
             throw new Exception("Duplicate path requested by a servlet, " 
             + servletPath + " . Please check other servlet paths and resource "+
-            		"paths for matches.");
+                            "paths for matches.");
         }
        
         _servletInfo.put(servletPath, servlet);

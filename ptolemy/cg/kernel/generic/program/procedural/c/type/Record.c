@@ -18,44 +18,44 @@ Token Record_add(Token thisToken, ...) {
 //
 //    va_end(argp);
 //    return result;
-	return NULL;
+        return NULL;
 }
 /**/
 
 /***Record_convert()***/
 Token Record_convert(Token token, ...) {
-	return token;
-//	switch (token.type) {
-//	        // FIXME: not finished
-//	    default:
-//	        fprintf(stderr, "Record_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-//	        exit(-1);
-//	        break;
-//	}
-//	token.type = TYPE_Record;
-//	return token;
+        return token;
+//        switch (token.type) {
+//                // FIXME: not finished
+//            default:
+//                fprintf(stderr, "Record_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+//                exit(-1);
+//                break;
+//        }
+//        token.type = TYPE_Record;
+//        return token;
 }
 /**/
 /*** Record_new() ***/
 Token Record_new(Time time, int microstep, Token t, ...) {
-	Token result;
+        Token result;
 
-	result.type = TYPE_Record;
-	result.payload.Record = (RecordToken) malloc(sizeof(struct record));
-	result.payload.Record->timestamp = time;
-	result.payload.Record->microstep = microstep;
+        result.type = TYPE_Record;
+        result.payload.Record = (RecordToken) malloc(sizeof(struct record));
+        result.payload.Record->timestamp = time;
+        result.payload.Record->microstep = microstep;
 
-	result.payload.Record->payload = malloc(sizeof(Token));
-	*(result.payload.Record->payload) = t;
+        result.payload.Record->payload = malloc(sizeof(Token));
+        *(result.payload.Record->payload) = t;
 
-	return result;
+        return result;
 }
 /**/
 
 /*** declareBlock() ***/
 struct record {
-    Time timestamp;       	// timestamp
-    int microstep;         	// microstep
+    Time timestamp;               // timestamp
+    int microstep;                 // microstep
     Token* payload;         // the actual payload
 };
 

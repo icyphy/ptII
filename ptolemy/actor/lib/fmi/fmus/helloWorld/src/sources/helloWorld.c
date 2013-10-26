@@ -35,8 +35,8 @@ typedef struct {
 
 
 fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
-    	fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
-    	fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
+            fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
+            fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
     ModelInstance* component;
 
     // Perform checks.
@@ -69,11 +69,11 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
 }
 
 fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean StopTimeDefined, fmiReal tStop) {
-	return fmiOK;
+        return fmiOK;
 }
 
 fmiStatus fmiTerminateSlave(fmiComponent c) {
-	return fmiOK;
+        return fmiOK;
 }
 
 void fmiFreeSlaveInstance(fmiComponent c) {
@@ -83,7 +83,7 @@ void fmiFreeSlaveInstance(fmiComponent c) {
 }
 
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
-    	fmiReal communicationStepSize, fmiBoolean newStep) {
+            fmiReal communicationStepSize, fmiBoolean newStep) {
     return fmiOK;
 }
 
@@ -91,7 +91,7 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
     // FIXME:
-	printf("Invoked fmiGetReal.");
+        printf("Invoked fmiGetReal.");
 
     if (nvr > 1) {
         // cxh: The logger tends to throw segmentation faults, so comment it out
@@ -103,11 +103,11 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
         // FIXME:
         //printf("Assigning value %d.", component->r[nvr]);
         // cxh: FIXME: not sure about how to use nvr here.
-    	value[0] = component->r[0];
+            value[0] = component->r[0];
     }
     return fmiOK;
 }
 
 fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
-	return fmiOK;
+        return fmiOK;
 }

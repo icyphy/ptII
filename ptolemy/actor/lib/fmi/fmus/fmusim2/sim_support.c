@@ -506,7 +506,7 @@ void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
     va_list argp;
 
     // replace C format strings
-	  va_start(argp, message);
+          va_start(argp, message);
     vsprintf(msg, message, argp);
 
     // replace e.g. ## and #r12#  

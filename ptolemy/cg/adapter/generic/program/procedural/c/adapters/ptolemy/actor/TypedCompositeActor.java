@@ -341,7 +341,7 @@ public class TypedCompositeActor extends
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-    	CodeStream codeStream = _templateParser.getCodeStream();
+            CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList<String> args = new LinkedList();
         

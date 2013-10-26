@@ -261,11 +261,11 @@ public class ClassUtilities {
                 .getResource(necessaryResource);
 
         if (necessaryURL == null) {
-	    necessaryResource = StringUtilities.substitute(necessaryClass,
+            necessaryResource = StringUtilities.substitute(necessaryClass,
                 ".", "/") + ".xml";
-	    necessaryURL = Thread.currentThread().getContextClassLoader()
+            necessaryURL = Thread.currentThread().getContextClassLoader()
                 .getResource(necessaryResource);
-	}
+        }
         if (necessaryURL != null) {
             String resourceResults = necessaryURL.getFile();
 

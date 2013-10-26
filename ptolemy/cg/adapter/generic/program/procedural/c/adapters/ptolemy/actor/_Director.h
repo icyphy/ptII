@@ -14,37 +14,37 @@
 #define DIRECTOR 0
 
 struct Director {
-	int typeDirector;
+        int typeDirector;
 
-	struct CompositeActor* container;
+        struct CompositeActor* container;
 
-	struct LocalClock* localClock;
-	Time _startTime;
-	Time _stopTime;
+        struct LocalClock* localClock;
+        Time _startTime;
+        Time _stopTime;
 
-	void (*free)(struct Director*);
+        void (*free)(struct Director*);
 
-	void (*fire)(struct Director*);
-	Time (*fireAt)(struct Director*, struct Actor*, Time, int);
-	Time (*fireContainerAt)(struct Director*, Time, int);
-	Time (*getEnvironmentTime)(struct Director*);
-	Time (*getGlobalTime)(struct Director*);
-	Time (*getModelStartTime)(struct Director*);
-	Time (*getModelStopTime)(struct Director*);
-	Time (*getModelTime)(struct Director*);
-	void (*initialize)(struct Director*);
-	void (*initialize1)(struct Director*, struct Actor*);
-	bool (*isEmbedded)(struct Director*);
-	int (*iterate)(struct Director*, int);
-	bool (*postfire)(struct Director*);
-	bool (*prefire)(struct Director*);
-	void (*preinitialize)(struct Director*);
-	void (*preinitialize1)(struct Director*, struct Actor*);
-	bool (*transferInputs)(struct Director*, struct IOPort*);
-	bool (*transferOutputs)(struct Director*);
-	bool (*transferOutputs1)(struct Director*, struct IOPort*);
-	void (*wrapup)(struct Director*);
-	bool (*isTopLevel)(struct Director*);
+        void (*fire)(struct Director*);
+        Time (*fireAt)(struct Director*, struct Actor*, Time, int);
+        Time (*fireContainerAt)(struct Director*, Time, int);
+        Time (*getEnvironmentTime)(struct Director*);
+        Time (*getGlobalTime)(struct Director*);
+        Time (*getModelStartTime)(struct Director*);
+        Time (*getModelStopTime)(struct Director*);
+        Time (*getModelTime)(struct Director*);
+        void (*initialize)(struct Director*);
+        void (*initialize1)(struct Director*, struct Actor*);
+        bool (*isEmbedded)(struct Director*);
+        int (*iterate)(struct Director*, int);
+        bool (*postfire)(struct Director*);
+        bool (*prefire)(struct Director*);
+        void (*preinitialize)(struct Director*);
+        void (*preinitialize1)(struct Director*, struct Actor*);
+        bool (*transferInputs)(struct Director*, struct IOPort*);
+        bool (*transferOutputs)(struct Director*);
+        bool (*transferOutputs1)(struct Director*, struct IOPort*);
+        void (*wrapup)(struct Director*);
+        bool (*isTopLevel)(struct Director*);
 };
 
 struct Director* Director_New();

@@ -1650,7 +1650,7 @@ out.println("\\begin{document}");
      *  Implements the {@link PlotBoxInterface}.
      *  @param colors The array of Colors.
      *  @see #getColors()
-     */	
+     */        
     public void setColors(Object[] colors) {
          setColors((Color[]) colors);
     }
@@ -1687,9 +1687,9 @@ out.println("\\begin{document}");
     /** Set the foreground color.
      *  Implements the {@link PlotBoxInterface}.
      *  @param foreground The foreground Color.
-     */	
+     */        
     public void setForeground(Object foreground) {
-	setForeground((Color) foreground);
+        setForeground((Color) foreground);
     }
 
     /** Control whether the grid is drawn.
@@ -1732,9 +1732,9 @@ out.println("\\begin{document}");
      *  Implements the {@link PlotBoxInterface}.
      *  @param rectangle The Rectangle.
      *  @see #getPlotRectangle()
-     */	
+     */        
     public void setPlotRectangle(Object rectangle) {
-	setPlotRectangle((Rectangle) rectangle);
+        setPlotRectangle((Rectangle) rectangle);
     }
 
     /** Set the size of the plot.  This overrides the base class to make
@@ -4645,28 +4645,28 @@ out.println("\\begin{document}");
 
     /** Handle mouse pressed events to provide zoom functionality. */
     public class ZoomListener implements MouseListener {
-	/** Request the focus.
-	 *  @param event The event, ignored by this method.
-	 */
+        /** Request the focus.
+         *  @param event The event, ignored by this method.
+         */
         public void mouseClicked(MouseEvent event) {
             requestFocus();
         }
 
-	/** Ignored.
-	 *  @param event The event, ignored by this method.
-	 */
+        /** Ignored.
+         *  @param event The event, ignored by this method.
+         */
         public void mouseEntered(MouseEvent event) {
         }
 
-	/** Ignored.
-	 *  @param event The event, ignored by this method.
-	 */
+        /** Ignored.
+         *  @param event The event, ignored by this method.
+         */
         public void mouseExited(MouseEvent event) {
         }
 
-	/** Handle mouse button 1 events.  See the class comment for details.
-	 *  @param event The event.
-	 */
+        /** Handle mouse button 1 events.  See the class comment for details.
+         *  @param event The event.
+         */
         public void mousePressed(MouseEvent event) {
             // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4072703
             // BUTTON1_MASK still not set for MOUSE_PRESSED events
@@ -4698,9 +4698,9 @@ out.println("\\begin{document}");
             //                 + ")");
         }
 
-	/** Handle mouse button 1 events.  See the class comment for details.
-	 *  @param event The event.
-	 */
+        /** Handle mouse button 1 events.  See the class comment for details.
+         *  @param event The event.
+         */
         public void mouseReleased(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0
                     && (event.getModifiers() & InputEvent.BUTTON3_MASK) == 0
@@ -4713,9 +4713,9 @@ out.println("\\begin{document}");
     /** Draw the zoom box.
      */
     public class DragListener implements MouseMotionListener {
-	/** Handle mouse drag events.  See the class comment for details.
-	 *  @param event The event.
-	 */
+        /** Handle mouse drag events.  See the class comment for details.
+         *  @param event The event.
+         */
         public void mouseDragged(MouseEvent event) {
             // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
             // not work on mouse drags.  It does work on MouseListener
@@ -4727,19 +4727,19 @@ out.println("\\begin{document}");
             }
         }
 
-	/** Ignored.
-	 *  @param event The event, ignored by this method.
-	 */
+        /** Ignored.
+         *  @param event The event, ignored by this method.
+         */
         public void mouseMoved(MouseEvent event) {
         }
     }
 
     /** Handle key pressed events.
-     */	
+     */        
     class CommandListener implements KeyListener {
-	/** Handle key pressed events.  See the class comment for details.
-	 *  @param e The event.
-	 */
+        /** Handle key pressed events.  See the class comment for details.
+         *  @param e The event.
+         */
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -4838,9 +4838,9 @@ out.println("\\begin{document}");
             }
         }
 
-	/** Handle key released events.  See the class comment for details.
-	 *  @param e The event.
-	 */
+        /** Handle key released events.  See the class comment for details.
+         *  @param e The event.
+         */
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -4860,10 +4860,10 @@ out.println("\\begin{document}");
         }
 
         /** Ignored by this class.
-	 *  The keyTyped method is broken in jdk 1.1.4.
+         *  The keyTyped method is broken in jdk 1.1.4.
          *  It always gets "unknown key code".
-	 * @param e Ignored by this method.
-	 */
+         * @param e Ignored by this method.
+         */
         public void keyTyped(KeyEvent e) {
         }
 

@@ -733,7 +733,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             } else if (className.contains("ptolemy.data.ontologies")) {
                 if (_debug) {
                     System.out.println("_allAttributeJars ontologies: " + className
-				       + " " + "ptolemy/data/ontologies/ontologies.jar");
+                                       + " " + "ptolemy/data/ontologies/ontologies.jar");
                 }
                 results.put(className, "ptolemy/data/ontologies/ontologies.jar");
             } else if (className.contains("ptolemy.vergil.kernel.attributes")) {
@@ -866,13 +866,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 }
                 results.put(className, "ptolemy/vergil/basic/export/web/web.jar");
             } else if (className.contains("lib.gui.")) {
-		// Needed for ptolemy.domains.sr.lib.gui.NonStrictDisplay and any other classes in domains.*.lib.gui.
-		// We get the package of the package.
-		String packageName = object.getClass().getPackage().getName();
-		String parentPackage = packageName.substring(0, packageName.lastIndexOf("."));
+                // Needed for ptolemy.domains.sr.lib.gui.NonStrictDisplay and any other classes in domains.*.lib.gui.
+                // We get the package of the package.
+                String packageName = object.getClass().getPackage().getName();
+                String parentPackage = packageName.substring(0, packageName.lastIndexOf("."));
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars export.web: Adjust for class with lib.gui " + className
-				       + " " + _getDomainJar(parentPackage) + " " + parentPackage);
+                                       + " " + _getDomainJar(parentPackage) + " " + parentPackage);
                 }
 
                 results.put(object.getClass().getName(), _getDomainJar(parentPackage));
@@ -1633,10 +1633,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         if (jarFilesThatHaveBeenRequired
-	    .contains("ptolemy/data/ontologies/ontologies.jar")) {
+            .contains("ptolemy/data/ontologies/ontologies.jar")) {
             auxiliaryClassMap.put("ontologies requires tester", "ptolemy/domains/tester/tester.jar");
             auxiliaryClassMap.put("ontologies requires vergil/ontologies/ontologies.jar", "ptolemy/vergil/ontologies/ontologies.jar");
-	}
+        }
 
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/actor/ptalon/gt/gt.jar")
@@ -1651,12 +1651,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         if (jarFilesThatHaveBeenRequired
-	    .contains("org/ptolemy/ptango/ptango.jar")) {
-	    auxiliaryClassMap.put("ptango requires jetty", "lib/jetty-all-8.1.5-v20120716.jar");
-	    auxiliaryClassMap.put("ptango requires javax.servlet", "lib/javax.servlet-api-3.0.1.jar");
-	    auxiliaryClassMap.put("ptango requires smack", "lib/smack.jar");
-	    auxiliaryClassMap.put("ptango requires smackx", "lib/smackx.jar");
-	}
+            .contains("org/ptolemy/ptango/ptango.jar")) {
+            auxiliaryClassMap.put("ptango requires jetty", "lib/jetty-all-8.1.5-v20120716.jar");
+            auxiliaryClassMap.put("ptango requires javax.servlet", "lib/javax.servlet-api-3.0.1.jar");
+            auxiliaryClassMap.put("ptango requires smack", "lib/smack.jar");
+            auxiliaryClassMap.put("ptango requires smackx", "lib/smackx.jar");
+        }
 
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/domains/properties/properties.jar")) {
@@ -2025,20 +2025,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             if (renameJarFile) {
                 if (jarFile.exists()) { 
-		    // Windows XP has a toy file system that requires
-		    // that we *remove* the file before calling File.renameTo().
-		    // Will this madness ever end?
-		    if (!jarFile.delete()) {
-			System.out.println("Warning: could not remove \""
-					   + jarFile.getCanonicalPath() + "\"");
-		    }
-		    if (!jarFile.delete()) {
-			System.out.println("Warning: could not remove \""
-					   + jarFile.getCanonicalPath() + "\"");
-		    }
-		    System.out.println("Removed " + jarFile);
-		}
-		if (!temporaryJarFileName.renameTo(jarFile)) {
+                    // Windows XP has a toy file system that requires
+                    // that we *remove* the file before calling File.renameTo().
+                    // Will this madness ever end?
+                    if (!jarFile.delete()) {
+                        System.out.println("Warning: could not remove \""
+                                           + jarFile.getCanonicalPath() + "\"");
+                    }
+                    if (!jarFile.delete()) {
+                        System.out.println("Warning: could not remove \""
+                                           + jarFile.getCanonicalPath() + "\"");
+                    }
+                    System.out.println("Removed " + jarFile);
+                }
+                if (!temporaryJarFileName.renameTo(jarFile)) {
                     System.out.println("Attempt #1: Failed to rename \""
                             + temporaryJarFileName
                             + "\" to \""
@@ -2080,8 +2080,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + "\" after test creation.");
                     }
 
-		    temporaryJarFileName = null;
-		    temporaryJarFileName = new File(outputJarFileName);
+                    temporaryJarFileName = null;
+                    temporaryJarFileName = new File(outputJarFileName);
                     if (!temporaryJarFileName.renameTo(jarFile)) {
                         System.out.println("About to throw an exception!!! Attempt #2: Failed to rename \""
                                 + temporaryJarFileName
@@ -2100,15 +2100,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + jarFileDirectory
                                 + (jarFileDirectory.isDirectory() ? " is"
                                         : " is not") + " a directory.");
-			// GRR.  Under Linux, File.renameTo() seems to
-			// fail if the File was created with
-			// createTempFile, so we copy it.
-			if (FileUtilities.binaryCopyURLToFile(temporaryJarFileName.toURL(), jarFile)) {
-			    System.out.println("Successfully copied " + temporaryJarFileName
-					       + " to " + jarFile);
-			} else {
-			    throw new IOException("Attempt #3: Failed to copy \""
-					      + temporaryJarFileName
+                        // GRR.  Under Linux, File.renameTo() seems to
+                        // fail if the File was created with
+                        // createTempFile, so we copy it.
+                        if (FileUtilities.binaryCopyURLToFile(temporaryJarFileName.toURL(), jarFile)) {
+                            System.out.println("Successfully copied " + temporaryJarFileName
+                                               + " to " + jarFile);
+                        } else {
+                            throw new IOException("Attempt #3: Failed to copy \""
+                                              + temporaryJarFileName
                                 + "\" to \""
                                 + jarFile
                                 + "\", source file "
@@ -2124,7 +2124,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + jarFileDirectory
                                 + (jarFileDirectory.isDirectory() ? " is"
                                         : " is not") + " a directory.");
-			}
+                        }
                     }
                 }
             }

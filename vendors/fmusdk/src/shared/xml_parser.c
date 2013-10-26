@@ -440,7 +440,7 @@ static void XMLCALL startElement(void *context, const char *elm, const char **at
         case astScalarVariable:   size = sizeof(ScalarVariable); break;
         case astCoSimulation:     size = sizeof(CoSimulation); break;
         case astModelDescription: size = sizeof(ModelDescription); break;
-		default: assert(0);
+                default: assert(0);
     }
     e = newElement(el, size, attr);
     checkPointer(e); 
@@ -749,10 +749,10 @@ void freeElement(void* element){
     // free child nodes
     switch (getAstNodeType(e->type)) {
         case astElement:
-	    // Add an empty case here to avoid warnings from -Wall
-	    // The element e gets freed elsewhere, if we free it
-	    // here,  we get warnings
-	    //freeElement((void**)(Element*)e);
+            // Add an empty case here to avoid warnings from -Wall
+            // The element e gets freed elsewhere, if we free it
+            // here,  we get warnings
+            //freeElement((void**)(Element*)e);
             break;
         case astListElement:
             freeList((void*)((ListElement*)e)->list);
@@ -838,15 +838,15 @@ ModelDescription* parse(const char* xmlPath) {
     if (!checkPointer(parser)) return NULL;  // failure
     XML_SetElementHandler(parser, startElement, endElement);
     XML_SetCharacterDataHandler(parser, handleData);
-  	file = fopen(xmlPath, "rb");
-	if (file == NULL) {
+          file = fopen(xmlPath, "rb");
+        if (file == NULL) {
         printf("Cannot open file '%s'\n", xmlPath);
-     	XML_ParserFree(parser);
+             XML_ParserFree(parser);
         return NULL; // failure
     }
     while (!done) {
         int n = fread(text, sizeof(char), XMLBUFSIZE, file);
-	    if (n != XMLBUFSIZE) done = 1;
+            if (n != XMLBUFSIZE) done = 1;
         if (!XML_Parse(parser, text, n, done)){
              printf("Parse error in file %s at line %d:\n%s\n", 
                      xmlPath,

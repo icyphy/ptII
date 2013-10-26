@@ -1002,7 +1002,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
     
     /** Sets the set of modified variables.
-     *  @param modifiedVariables The set of modified variables to be saved	
+     *  @param modifiedVariables The set of modified variables to be saved        
      *  @exception IllegalActionException Not thrown in this base class.
      *  @see #getModifiedVariables()
      */

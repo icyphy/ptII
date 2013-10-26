@@ -21,9 +21,9 @@ $actorSymbol(discardEvents) = $discardEvents;
 /***prefireBlock***/
 struct Director* director = (*(actor->getDirector))(actor);
 if($actorSymbol(moreTokensOnOtherChannels)
-		&& (*(director->getModelTime))(director) == $actorSymbol(previousModelTime)
-		&& (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director) == $actorSymbol(previousMicrostep)) {
-	return false;
+                && (*(director->getModelTime))(director) == $actorSymbol(previousModelTime)
+                && (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director) == $actorSymbol(previousMicrostep)) {
+        return false;
 }
 return true;
 /**/
@@ -47,34 +47,34 @@ firstAvailableToken.type = -2;
 
 /***fireLoopBlock($channel)***/
 if ($hasToken(input#$channel)) {
-	if (firstAvailableToken.type == -2) {
-		// we see the first available tokens
-		firstAvailableToken.type = TYPE_$cgType(input);
-		firstAvailableToken.payload.$cgType(input) = $get(input#$channel);
-		$put(output#0, firstAvailableToken.payload.$cgType(input));
+        if (firstAvailableToken.type == -2) {
+                // we see the first available tokens
+                firstAvailableToken.type = TYPE_$cgType(input);
+                firstAvailableToken.payload.$cgType(input) = $get(input#$channel);
+                $put(output#0, firstAvailableToken.payload.$cgType(input));
 
-		while ($hasToken(input#$channel)) {
-			Token token;
-			token.type = TYPE_$cgType(input);
-			token.payload.$cgType(input) = $get(input#$channel);
-			$put(output#0, token.payload.$cgType(input));
-		}
-	} else {
-		if ($actorSymbol(discardEvents)) {
-			// this token is not the first available token
-			// in this firing, consume and discard all tokens
-			// from the input channel
-			while ($hasToken(input#$channel)) {
-				(void)$get(input#$channel);
-			}
-		} else {
-			// Refiring the actor to handle the other tokens
-			// that are still in channels
-			$fireAt(actor, (*(director->getModelTime))(director),
-					(*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director)+1);
-			$actorSymbol(moreTokensOnOtherChannels) = true;
-			return;
-		}
-	}
+                while ($hasToken(input#$channel)) {
+                        Token token;
+                        token.type = TYPE_$cgType(input);
+                        token.payload.$cgType(input) = $get(input#$channel);
+                        $put(output#0, token.payload.$cgType(input));
+                }
+        } else {
+                if ($actorSymbol(discardEvents)) {
+                        // this token is not the first available token
+                        // in this firing, consume and discard all tokens
+                        // from the input channel
+                        while ($hasToken(input#$channel)) {
+                                (void)$get(input#$channel);
+                        }
+                } else {
+                        // Refiring the actor to handle the other tokens
+                        // that are still in channels
+                        $fireAt(actor, (*(director->getModelTime))(director),
+                                        (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director)+1);
+                        $actorSymbol(moreTokensOnOtherChannels) = true;
+                        return;
+                }
+        }
 }
 /**/

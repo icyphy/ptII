@@ -60,11 +60,11 @@
 
 
 typedef enum {
-	fmiOK,
-	fmiWarning,
-	fmiDiscard,
-	fmiError,
-	fmiFatal
+        fmiOK,
+        fmiWarning,
+        fmiDiscard,
+        fmiError,
+        fmiFatal
 } fmiStatus;
 
 
@@ -77,12 +77,12 @@ typedef const char*  fmiString ;
 
 
 typedef struct {
-	fmiBoolean iterationConverged;
-	fmiBoolean stateValueReferencesChanged;
-	fmiBoolean stateValuesChanged;
-	fmiBoolean terminateSimulation;
-	fmiBoolean upcomingTimeEvent;
-	fmiReal    nextEventTime;
+        fmiBoolean iterationConverged;
+        fmiBoolean stateValueReferencesChanged;
+        fmiBoolean stateValuesChanged;
+        fmiBoolean terminateSimulation;
+        fmiBoolean upcomingTimeEvent;
+        fmiReal    nextEventTime;
 } fmiEventInfo;
 
 

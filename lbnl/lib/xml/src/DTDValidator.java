@@ -27,73 +27,73 @@ public class DTDValidator {
      *            that will be parsed, arg[1] must be the path to the dtd file.
      */
     public static void main(String[] args) {
-	fil = args[0];
-	// Document builder factory
-	DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
-	fac.setValidating(true);
-	try {
-	    // Document builder and error handler
-	    DocumentBuilder b = fac.newDocumentBuilder();
-	    b.setErrorHandler(new MyErrorHandler());
-	    // Parse document
-	    //	    Document d = b.parse(args[0]);
+        fil = args[0];
+        // Document builder factory
+        DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+        fac.setValidating(true);
+        try {
+            // Document builder and error handler
+            DocumentBuilder b = fac.newDocumentBuilder();
+            b.setErrorHandler(new MyErrorHandler());
+            // Parse document
+            //            Document d = b.parse(args[0]);
             // Findbugs: avoid a dead local store here.
-	    /* Document d = */ b.parse(new java.io.FileInputStream(fil), 
-				 args[1] + File.separator);
-	} 
-	catch(SAXException e) {
-	    System.err.println(e.getMessage());
-	}
-	catch(IOException e) {
-	    System.err.println(e.getMessage());
-	}
-	catch (ParserConfigurationException e) {
-	    System.err.println(e.getMessage());
-	}
+            /* Document d = */ b.parse(new java.io.FileInputStream(fil), 
+                                 args[1] + File.separator);
+        } 
+        catch(SAXException e) {
+            System.err.println(e.getMessage());
+        }
+        catch(IOException e) {
+            System.err.println(e.getMessage());
+        }
+        catch (ParserConfigurationException e) {
+            System.err.println(e.getMessage());
+        }
     }
     /** Inner class for error handling
      */
     private static class MyErrorHandler implements ErrorHandler {
 
-	/** Writes warning messages to <code>System.err</code>
-	 *
-	 *@param e The exception 
-	 *@exception SAXException If a SAXException occurs
-	 */
-	public void warning(SAXParseException e) throws SAXException {
-	    printInfo("Warning: ", e);
-	}
+        /** Writes warning messages to <code>System.err</code>
+         *
+         *@param e The exception 
+         *@exception SAXException If a SAXException occurs
+         */
+        public void warning(SAXParseException e) throws SAXException {
+            printInfo("Warning: ", e);
+        }
 
-	/** Writes error messages to <code>System.err</code>
-	 *
-	 *@param e The exception 
-	 *@exception SAXException If a SAXException occurs
-	 */
-	public void error(SAXParseException e) throws SAXException {
-	    printInfo("Error: ", e);
-	}
+        /** Writes error messages to <code>System.err</code>
+         *
+         *@param e The exception 
+         *@exception SAXException If a SAXException occurs
+         */
+        public void error(SAXParseException e) throws SAXException {
+            printInfo("Error: ", e);
+        }
 
-	/** Writes error messages to <code>System.err</code>
-	 *
-	 *@param e The exception 
-	 *@exception SAXException If a SAXException occurs
-	 */
-	public void fatalError(SAXParseException e) throws SAXException {
-	    error(e);
-	}
+        /** Writes error messages to <code>System.err</code>
+         *
+         *@param e The exception 
+         *@exception SAXException If a SAXException occurs
+         */
+        public void fatalError(SAXParseException e) throws SAXException {
+            error(e);
+        }
 
 
-	/** Prints the error message to <code>System.err</code>
-	 *@param s The string that will be added in front of the exception
-	 *         message
-	 *@param e The exception
-	 */
-	private void printInfo(String s, SAXParseException e) {
-	    System.err.println(s + 
-			       fil + ":"
-			       + e.getLineNumber() + ": " 
-			       + e.getMessage());
-	}
+        /** Prints the error message to <code>System.err</code>
+         *@param s The string that will be added in front of the exception
+         *         message
+         *@param e The exception
+         */
+        private void printInfo(String s, SAXParseException e) {
+            System.err.println(s + 
+                               fil + ":"
+                               + e.getLineNumber() + ": " 
+                               + e.getMessage());
+        }
     }
 }
 /********************************************************************

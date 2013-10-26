@@ -225,10 +225,10 @@ public class RecursiveFileFilter implements FilenameFilter {
     public static File[] listFiles(File directory, boolean recursive,
             boolean includeFiles, boolean includeDirectories,
             boolean filesOnly, boolean directoriesOnly,
-				   String fileFilter) {
+                                   String fileFilter) {
         return RecursiveFileFilter.listFiles(directory, recursive,
-					     includeFiles, includeDirectories,
-					     filesOnly, directoriesOnly, fileFilter, true);
+                                             includeFiles, includeDirectories,
+                                             filesOnly, directoriesOnly, fileFilter, true);
 
     }
     /** List all the files and directories within the given directory.
