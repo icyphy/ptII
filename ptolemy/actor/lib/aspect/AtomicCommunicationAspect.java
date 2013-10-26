@@ -37,21 +37,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspect;
+import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspectListener;
 import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
@@ -61,7 +57,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /** This abstract class implements functionality of an atomic

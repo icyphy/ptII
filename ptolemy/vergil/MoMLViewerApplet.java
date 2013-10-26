@@ -26,11 +26,10 @@
 
  */
 package ptolemy.vergil;
-import java.util.Locale;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.net.URL;
+import java.util.Locale;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;

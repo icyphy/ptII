@@ -27,12 +27,11 @@
 
  */
 package ptolemy.moml.filter;
-import java.util.Locale;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Locale;
 
 import ptolemy.actor.IORelation;
 import ptolemy.data.IntToken;

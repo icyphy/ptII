@@ -29,8 +29,6 @@
 package ptolemy.actor.lib.string;
 import java.util.Locale;
 
-import java.util.Locale;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;

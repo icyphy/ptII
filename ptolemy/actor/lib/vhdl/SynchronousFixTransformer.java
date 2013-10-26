@@ -26,9 +26,8 @@
 
  */
 package ptolemy.actor.lib.vhdl;
-import java.util.Locale;
-
 import java.util.Iterator;
+import java.util.Locale;
 
 import ptolemy.actor.IOPort;
 import ptolemy.data.FixToken;

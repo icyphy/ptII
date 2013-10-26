@@ -41,7 +41,6 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Director;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

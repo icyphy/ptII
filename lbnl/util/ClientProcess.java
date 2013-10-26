@@ -77,8 +77,6 @@ derivative works thereof, in binary and source code form.
 */
 
 package lbnl.util;
-import java.util.Locale;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.BufferedReader;

@@ -27,9 +27,8 @@
  */
 
 package ptolemy.vergil.basic.export.web;
-import java.util.Locale;
-
 import java.util.List;
+import java.util.Locale;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;

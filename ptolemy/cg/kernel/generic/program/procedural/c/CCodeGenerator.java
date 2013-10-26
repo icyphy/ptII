@@ -26,8 +26,6 @@
 
  */
 package ptolemy.cg.kernel.generic.program.procedural.c;
-import java.util.Locale;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -43,6 +41,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;

@@ -27,8 +27,6 @@
  */
 
 package ptolemy.vergil.basic.export;
-import java.util.Locale;
-
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,6 +36,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 

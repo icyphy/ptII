@@ -35,14 +35,11 @@ import java.util.List;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ExecutionAttributes;
-import ptolemy.actor.lib.aspect.CompositeCommunicationAspect.CompositeCommunicationAspectAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;

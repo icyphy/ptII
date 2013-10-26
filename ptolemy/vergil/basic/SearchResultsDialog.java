@@ -25,8 +25,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic;
-import java.util.Locale;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -38,6 +36,7 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;

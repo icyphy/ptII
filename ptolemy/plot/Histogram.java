@@ -26,8 +26,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
-import java.util.Locale;
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.BufferedWriter;
@@ -37,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Vector;
 

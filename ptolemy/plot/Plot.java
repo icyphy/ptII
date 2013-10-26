@@ -26,8 +26,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
-import java.util.Locale;
-
 // TO DO:
 //   - steps between points rather than connected lines.
 //   - cubic spline interpolation

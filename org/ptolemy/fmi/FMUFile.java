@@ -26,8 +26,6 @@
 
  */
 package org.ptolemy.fmi;
-import java.util.Locale;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;

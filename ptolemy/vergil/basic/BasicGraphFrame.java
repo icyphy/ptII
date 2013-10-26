@@ -26,8 +26,6 @@
  2
  */
 package ptolemy.vergil.basic;
-import java.util.Locale;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -75,6 +73,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Stack;
 
 import javax.swing.AbstractAction;

@@ -28,8 +28,6 @@
  * redistribute the Software for such purposes.
  */
 package diva.gui;
-import java.util.Locale;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Enumeration;

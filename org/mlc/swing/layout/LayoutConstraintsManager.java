@@ -28,8 +28,6 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
-import java.util.Locale;
-
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
@@ -44,6 +42,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 

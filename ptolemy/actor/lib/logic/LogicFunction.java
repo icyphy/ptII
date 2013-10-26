@@ -28,8 +28,6 @@
 package ptolemy.actor.lib.logic;
 import java.util.Locale;
 
-import java.util.Locale;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;

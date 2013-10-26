@@ -39,7 +39,6 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;

@@ -26,8 +26,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.homer.gui;
-import java.util.Locale;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -36,6 +34,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;

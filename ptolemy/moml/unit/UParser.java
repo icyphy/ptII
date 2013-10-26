@@ -27,10 +27,9 @@
 */
 
 package ptolemy.moml.unit;
-import java.util.Locale;
-
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Locale;
 import java.util.Vector;
 
 //////////////////////////////////////////////////////////////////////

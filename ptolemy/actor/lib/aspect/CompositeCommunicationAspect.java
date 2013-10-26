@@ -31,23 +31,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.aspect;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspect;
+import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspectListener;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.Const;
-import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -56,7 +54,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.ConstraintMonitor.ConstraintMonitorAttributes;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -68,7 +65,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /** This class implements functionality of a composite communication aspect.

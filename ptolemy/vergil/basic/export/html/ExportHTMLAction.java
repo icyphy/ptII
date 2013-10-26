@@ -25,8 +25,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic.export.html;
-import java.util.Locale;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
@@ -45,6 +43,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 

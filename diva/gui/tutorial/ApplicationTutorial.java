@@ -29,8 +29,6 @@
 
  */
 package diva.gui.tutorial;
-import java.util.Locale;
-
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.io.File;

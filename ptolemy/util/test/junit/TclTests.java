@@ -27,8 +27,6 @@
 */
 
 package ptolemy.util.test.junit;
-import java.util.Locale;
-
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -37,6 +35,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Locale;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

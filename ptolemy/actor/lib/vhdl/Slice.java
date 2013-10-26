@@ -27,11 +27,10 @@
 
  */
 package ptolemy.actor.lib.vhdl;
-import java.util.Locale;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Locale;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.FixToken;

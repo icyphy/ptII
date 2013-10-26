@@ -25,8 +25,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
-import java.util.Locale;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

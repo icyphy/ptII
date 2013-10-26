@@ -25,8 +25,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
-import java.util.Locale;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;

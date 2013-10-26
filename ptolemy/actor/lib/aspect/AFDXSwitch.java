@@ -34,10 +34,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspect;
+import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;

@@ -26,8 +26,6 @@
 
  */
 package ptolemy.cg.kernel.generic;
-import java.util.Locale;
-
 import java.io.File;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
@@ -40,6 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ptolemy.actor.Actor;

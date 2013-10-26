@@ -26,12 +26,11 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel;
-import java.util.Locale;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import ptolemy.actor.Actor;

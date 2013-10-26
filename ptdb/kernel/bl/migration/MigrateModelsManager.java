@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 package ptdb.kernel.bl.migration;
-import java.util.Locale;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

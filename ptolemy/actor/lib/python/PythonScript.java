@@ -25,8 +25,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.lib.python;
-import java.util.Locale;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;

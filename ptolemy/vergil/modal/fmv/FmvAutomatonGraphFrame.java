@@ -26,8 +26,6 @@
 
  */
 package ptolemy.vergil.modal.fmv;
-import java.util.Locale;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -36,6 +34,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;

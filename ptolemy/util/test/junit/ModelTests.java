@@ -27,14 +27,13 @@
 */
 
 package ptolemy.util.test.junit;
-import java.util.Locale;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Locale;
 
 ///////////////////////////////////////////////////////////////////
 //// ModelTests

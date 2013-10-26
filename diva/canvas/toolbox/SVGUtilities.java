@@ -25,8 +25,6 @@
  *
  */
 package diva.canvas.toolbox;
-import java.util.Locale;
-
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;

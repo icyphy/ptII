@@ -30,12 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 
 package ptolemy.domains.ptera.kernel;
-import java.util.Locale;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import ptolemy.actor.parameters.Priority;
 import ptolemy.data.ArrayToken;

@@ -44,13 +44,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CommunicationAspect;
+import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.aspect.Bus.BusAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;

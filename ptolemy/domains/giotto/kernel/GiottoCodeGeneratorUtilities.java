@@ -26,8 +26,6 @@
 
  */
 package ptolemy.domains.giotto.kernel;
-import java.util.Locale;
-
 import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedHashMap;

@@ -27,8 +27,6 @@
 
  */
 package ptolemy.actor.ptalon;
-import java.util.Locale;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +36,7 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.Token;

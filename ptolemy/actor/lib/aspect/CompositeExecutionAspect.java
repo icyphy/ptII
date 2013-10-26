@@ -37,7 +37,6 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.ActorExecutionAspect;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionAspectHelper;
 import ptolemy.actor.ExecutionAspectListener;
 import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;

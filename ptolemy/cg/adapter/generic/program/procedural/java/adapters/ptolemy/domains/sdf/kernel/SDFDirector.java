@@ -26,10 +26,9 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel;
-import java.util.Locale;
-
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;

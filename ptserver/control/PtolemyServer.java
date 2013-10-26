@@ -26,8 +26,6 @@
  */
 
 package ptserver.control;
-import java.util.Locale;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -36,6 +34,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;

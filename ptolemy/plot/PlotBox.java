@@ -26,8 +26,6 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
-import java.util.Locale;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -72,6 +70,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;

@@ -33,13 +33,7 @@ package ptolemy.actor.lib.aspect;
 import java.util.HashMap;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;

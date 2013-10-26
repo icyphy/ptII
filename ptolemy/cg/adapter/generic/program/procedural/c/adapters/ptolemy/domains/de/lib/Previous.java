@@ -26,9 +26,8 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
-import java.util.Locale;
-
 import java.util.LinkedList;
+import java.util.Locale;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;

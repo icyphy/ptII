@@ -28,8 +28,6 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
-import java.util.Locale;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -48,6 +46,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.JCheckBoxMenuItem;

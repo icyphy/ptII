@@ -32,9 +32,9 @@ package ptolemy.actor.lib.aspect;
 
 import java.util.Hashtable;
 
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
