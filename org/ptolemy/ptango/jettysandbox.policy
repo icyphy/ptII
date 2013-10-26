@@ -1,4 +1,4 @@
-// $PTII/org/ptolemy/ptango/bin/jettysandbox.policy
+// $PTII/org/ptolemy/ptango/jettysandbox.policy
 // @version: $Id$
 // 
 // This file is used by vergil -jettysandbox to run Ptolemy web services in a secure sandbox.

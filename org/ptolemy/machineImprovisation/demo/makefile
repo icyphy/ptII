@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/machineImprovisation/demo
 
-DIRS =
+DIRS =	FactorOracleExecution
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -44,15 +44,19 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =	demo
-PTCLASSJAR = 	$(PTPACKAGE).jar
+#PTCLASSJAR = 	$(PTPACKAGE).jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	FactorOracleExecution/FactorOracleExecution.jar
 
 # Keep this list alphabetized.
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	FactorOracleExecution.xml
-
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

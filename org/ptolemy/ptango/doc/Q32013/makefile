@@ -1,9 +1,9 @@
-# Makefile Ptango - Ptolemy Internet of Things docs
+# Makefile Ptango - Ptolemy Internet of Things docs Q32013
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,13 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = Q32013
+DIRS = img
 
 # Root of Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 # $(ME) is used in ptdir.mk
-ME =		org/ptolemy/ptango/doc
+ME =		org/ptolemy/ptango/doc/Q32013
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)
@@ -45,11 +45,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	doc
+PTPACKAGE = 	Q32013
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	PtangoWebExport.zargo
+	goalchart.css \
+	goalchart.html
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

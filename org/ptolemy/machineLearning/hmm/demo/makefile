@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS =
+DIRS = CommunicationAnomalyDetectionAOM CommunicationAnomalyDetectionCQM
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -43,13 +43,14 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	demo
-PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include these jars in PTAUXALLJAR
-# (Copied syntax from \ptolemy\demo )
-#PTAUXALLJARS =
-#
-#PTAUXALLJAR = $(PTPACKAGE).jar
+PTAUXALLJARS = \
+	CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetectionAOM.jar \
+	CommunicationAnomalyDetectionCQM/CommunicationAnomalyDetectionCQM.jar
+
+PTAUXALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED =
 

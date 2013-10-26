@@ -1,9 +1,9 @@
-# Makefile Ptango - Ptolemy Internet of Things docs
+# Makefile for Machine Learning Communication Anomaly Detection Aspect-Oriented Modeling demo.
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,37 +29,44 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = Q32013
+ME =		org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionCQM
+
+DIRS =	CommunicationAnomalyDetectionCQM
 
 # Root of Ptolemy II directory
-ROOT =		../../../..
-
-# $(ME) is used in ptdir.mk
-ME =		org/ptolemy/ptango/doc
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+ROOT =		../../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Variables and rules used to create source file distributions
-PTPACKAGE = 	doc
+# Used to build jar files
+PTPACKAGE = 	CommunicationAnomalyDetectionCQM
 PTCLASSJAR =	$(PTPACKAGE).jar
 
+# Include these jars in PTAUXALLJAR
+#PTAUXALLJARS =
+#PTAUXALLJAR = $(PTPACKAGE).jar
+
 OTHER_FILES_TO_BE_JARED = \
-	PtangoWebExport.zargo
+	CommunicationAnomalyDetectionCQM.xml
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-all: suball
-install: subinstall jars
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) 
 
 # Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
-MISC_FILES = $(DIRS)
+# want make checkjunk to barf on them.
+MISC_FILES = \
+	pages
 
-# Get the rest of the rules
+OPTIONAL_FILES =
+
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
+
+all: suball $(EXTRA_SRCS)
+install: subinstall jars
+
+# Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

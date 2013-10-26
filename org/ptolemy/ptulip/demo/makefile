@@ -1,9 +1,9 @@
-# Makefile Ptango - Ptolemy Internet of Things docs
+# Makefile for Ptulip, a Ptolemy Interface to Tulip, the Temporal Logic Planning (TuLiP) Toolbox demos
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,37 +29,46 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = Q32013
+DIRS = robot
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
 
 # $(ME) is used in ptdir.mk
-ME =		org/ptolemy/ptango/doc
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+ME =		org/ptolemy/ptulip/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	doc
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+#PTCLASSJAR =	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \
-	PtangoWebExport.zargo
+# Include these jars in PTAUXALLJAR
+# (Copied syntax from \ptolemy\demo )
+PTAUXALLJARS = \
+	robot/robot.jar
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+PTAUXALLJAR = $(PTPACKAGE).jar
 
-all: suball
-install: subinstall jars
+OTHER_FILES_TO_BE_JARED =
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
+# want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-# Get the rest of the rules
+OPTIONAL_FILES = \
+
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
+
+all: suball $(EXTRA_SRCS)
+install: subinstall jars
+
+# Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

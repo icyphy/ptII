@@ -46,15 +46,17 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	machineLearning
-PTCLASSJAR =
+#PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	hmm/hmm.jar
 
-OTHER_FILES_TO_BE_JARED = machineLearning.xml
+OTHER_FILES_TO_BE_JARED = \
+	machineLearning.xml
 
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 all: suball
 install: subinstall
