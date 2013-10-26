@@ -192,7 +192,7 @@ doit() {
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 201[013] "
+EGREPMATCH="Copyright \(c\) 201[012] "
 LOGMESSAGE="Changed copyright to 2013"
 
 search $@
