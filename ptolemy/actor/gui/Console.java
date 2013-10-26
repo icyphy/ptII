@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NamedObj;
 //// Console
 
 /**
- * A tableau that displays Console messgaes.. The standard output is redirected
+ * A tableau that displays Console messages. The standard output is redirected
  * to here.
  *
  * @author Liangpeng Guo

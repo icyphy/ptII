@@ -604,7 +604,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     /** Retrieve the nonpreemtive transitions. */
     private static class PreemptiveTransitions implements TransitionRetriever {
         // Findbugs wants this to be static.
-        /** Retrieve the prepemtive transitions.
+        /** Retrieve the preepmtive transitions.
          *  @param state The state
          *  @return An iterator that refers to the preemptive transitions.
          */

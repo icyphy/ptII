@@ -540,7 +540,7 @@ public class PteraDirector extends Director implements ValueListener {
         return super.getModelTime();
     }
 
-    /** Return the exception (if any) that occured when the refinement was fired.
+    /** Return the exception (if any) that occurred when the refinement was fired.
      *  @return The exception.
      */
     public IllegalActionException getModelException() {
@@ -1367,7 +1367,7 @@ public class PteraDirector extends Director implements ValueListener {
     /** The real time at which the execution started. */
     private long _realStartTime;
 
-    /** The exception (if any) that occured when the refinement was fired. */
+    /** The exception (if any) that occurred when the refinement was fired. */
     private IllegalActionException _refinementException = null;
 
 }

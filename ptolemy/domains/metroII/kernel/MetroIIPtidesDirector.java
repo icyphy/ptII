@@ -689,7 +689,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
         _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
 
-        _calculateSuperdenseDependenices();
+        _calculateSuperdenseDependencies();
         _calculateDelayOffsets();
         _calculateRelativeDeadlines();
 
@@ -1261,7 +1261,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      *                If the container is not a TypedCompositeActor. TODO:
      *                Assumes all channels have same dependency as multiport.
      */
-    private void _calculateSuperdenseDependenices()
+    private void _calculateSuperdenseDependencies()
             throws IllegalActionException {
 
         //TODO: Code assumes code generation is at atomic actor level, so if

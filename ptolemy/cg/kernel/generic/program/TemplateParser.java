@@ -584,12 +584,12 @@ public class TemplateParser {
 
     /**
      * Return the index of a specific character in the string starting
-     * from the given index. It find the first occurence of the character
+     * from the given index. It find the first occurrence of the character
      * that is not embedded inside parentheses "()".
      * @param ch The character to search for.
      * @param string The given string to search from.
      * @param fromIndex The index to start the search.
-     * @return The first occurence of the character in the string that
+     * @return The first occurrence of the character in the string that
      *  is not embedded in parentheses.
      */
     public static int indexOf(String ch, String string, int fromIndex) {
@@ -1554,7 +1554,7 @@ public class TemplateParser {
     ////                         private methods                   ////
 
     /**
-     * Return the position of the first occurence of the "$" sign in
+     * Return the position of the first occurrence of the "$" sign in
      * the given code string, starting from the given from position.
      * If the "$" sign found is escaped by "\\", it will be ignored.
      * @param code The given code string.

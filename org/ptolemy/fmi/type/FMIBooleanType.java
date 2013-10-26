@@ -48,7 +48,7 @@ import org.w3c.dom.Element;
  */
 public class FMIBooleanType extends FMIType {
 
-    /** Construct a Boolan FMU variable.
+    /** Construct a Boolean FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
      *  @param element The XML element whose attributes are used to

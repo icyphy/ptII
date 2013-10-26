@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////////
 ////SDFReceiver
 
-/** The adapter for SDF recevier.
+/** The adapter for SDF receiver.
 *  @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
 *  @version $Id$
 *  @since Ptolemy II 10.0

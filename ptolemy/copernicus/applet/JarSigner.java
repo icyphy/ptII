@@ -323,7 +323,7 @@ public class JarSigner {
         // construct the signature file and the signature block for
         // this manifest
         ManifestDigester manifestDigester = new ManifestDigester(
-                _serialiseManifest(manifest));
+                _serializeManifest(manifest));
         return new SignatureFile(new MessageDigest[] { messageDigest },
                 manifest, manifestDigester, this._alias, true);
 
@@ -406,7 +406,7 @@ public class JarSigner {
     /** A small helper function that will convert a manifest into an
      * array of bytes.
      */
-    private static byte[] _serialiseManifest(Manifest manifest)
+    private static byte[] _serializeManifest(Manifest manifest)
             throws IOException {
         ByteArrayOutputStream baos = null;
         try {
@@ -475,7 +475,7 @@ public class JarSigner {
             jarOutputStream = new JarOutputStream(outputStream);
             JarEntry manifestFile = new JarEntry(manifestFileName);
             jarOutputStream.putNextEntry(manifestFile);
-            byte manifestBytes[] = _serialiseManifest(manifest);
+            byte manifestBytes[] = _serializeManifest(manifest);
             jarOutputStream.write(manifestBytes, 0, manifestBytes.length);
             jarOutputStream.closeEntry();
 

@@ -1709,7 +1709,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // NOTE: Have to be very careful here. This needs
             // to be an incomplete commit in that it cannot
             // initialize the destination refinement nor produce
-            // outputs, because we are in preintialize().
+            // outputs, because we are in preinitialize().
             // The destination refinement hasn't been preinitialized
             // yet.  See HDF Fibonnaci demo.
             _commitLastChosenTransition(true, true);

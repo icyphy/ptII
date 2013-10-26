@@ -1853,7 +1853,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
     }
 
-    /** Return the derivatives of the continuous stateus provided by the FMU.
+    /** Return the derivatives of the continuous states provided by the FMU.
      *  @return The derivatives of the FMU.
      *  @exception IllegalActionException If the FMU does not return fmiOK.
      */

@@ -134,7 +134,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         // Real Arrays
         float[][] realIn = new float[portsIn.size()][];
 
-        // ouput ports
+        // output ports
         portsOut = outputPortList();
         // In the output case, each array is produced independantly
         Token[] tokensOut = null;

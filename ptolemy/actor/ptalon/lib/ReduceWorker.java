@@ -128,7 +128,7 @@ public class ReduceWorker extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The qualifed class name for a Java class containing a method
+    /** The qualified class name for a Java class containing a method
      *  with signature:
      *  <p>
      *  <code>public static List&lt;String[]&gt; map(String key, String value)</code>
@@ -187,7 +187,7 @@ public class ReduceWorker extends TypedAtomicActor {
     }
 
     /** Read in a token on the <i>inputKey</i> and <i>inputValue</i>
-     *  ports and output pairs of tokens on the <i>ouputKey</i>, <i>outputValue</i>
+     *  ports and output pairs of tokens on the <i>outputKey</i>, <i>outputValue</i>
      *  ports.
      *
      *  @exception IllegalActionException If there is any trouble calling

@@ -141,7 +141,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         try {
             _populateModelNameAndModelId(model);
         } catch (DBExecutionException e) {
-            System.out.println("Warning: Error occured - " + e.getMessage());
+            System.out.println("Warning: Error occurred - " + e.getMessage());
             System.out.println("Skipping model - " + model.getModelName());
             return "";
         }
@@ -165,7 +165,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
 
         } catch (DBExecutionException e) {
 
-            System.out.println("Warning: Error occured - " + e.getMessage());
+            System.out.println("Warning: Error occurred - " + e.getMessage());
             System.out.println("Skipping model - " + model.getModelName());
             return "";
         }

@@ -425,7 +425,7 @@ public class EditParametersDialog extends ComponentDialog implements
 
     /** Returns the URL of the help file to be displayed when the user
      *  clicks the Help button. The help file defaults to the expression
-     *  language documentation, but can be overriden by attaching a
+     *  language documentation, but can be overridden by attaching a
      *  parameter {@code _helpURL} to the target object.
      *  @return URL of the help file to be displayed, parsable by the
      *          Ptolemy class loader.

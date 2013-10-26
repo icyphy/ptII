@@ -94,7 +94,7 @@ public class SearchCriteria {
      * Get the MoML of the graph pattern search criteria.
      *
      * @return The MoML of the pattern.
-     * @see #setPattnerMoML(String)
+     * @see #setPatternMoML(String)
      */
     public String getPatternMoML() {
         return _patternMoML;
@@ -150,7 +150,7 @@ public class SearchCriteria {
      * criteria.
      * @see #getPatternMoML()
      */
-    public void setPattnerMoML(String patternMoML) {
+    public void setPatternMoML(String patternMoML) {
         _patternMoML = patternMoML;
     }
 

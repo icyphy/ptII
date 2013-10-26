@@ -288,10 +288,10 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     }
 
     // Create an AbstractSet with custom implementations of those methods
-    // that can be overriden easily and efficiently.
+    // that can be overridden easily and efficiently.
     // Exploit fact that nil.value == null.
     // Create an AbstractSet with custom implementations of those methods
-    // that can be overriden easily and efficiently.
+    // that can be overridden easily and efficiently.
     // Find new node's parent.
     // Key already in tree.
     // Set up new node.
@@ -719,7 +719,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         public Set entrySet() {
             if (entries == null) {
                 // Create an AbstractSet with custom implementations of those methods
-                // that can be overriden easily and efficiently.
+                // that can be overridden easily and efficiently.
                 $ASSIGN$entries(new AbstractSet() {
                     public int size() {
                         return SubMap.this.size();
@@ -857,7 +857,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         public Set keySet() {
             if (this.getKeys() == null) {
                 // Create an AbstractSet with custom implementations of those methods
-                // that can be overriden easily and efficiently.
+                // that can be overridden easily and efficiently.
                 this.setKeys(new AbstractSet() {
                     public int size() {
                         return SubMap.this.size();
@@ -1005,7 +1005,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         public Collection values() {
             if (this.getValues() == null) {
                 // Create an AbstractCollection with custom implementations of those
-                // methods that can be overriden easily and efficiently.
+                // methods that can be overridden easily and efficiently.
                 this.setValues(new AbstractCollection() {
                     public int size() {
                         return SubMap.this.size();

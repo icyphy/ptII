@@ -69,7 +69,7 @@ public class ImageWriter extends TypedAtomicActor {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.GENERAL);
-        output = new TypedIOPort(this, "ouput", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
     }
 

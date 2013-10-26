@@ -73,7 +73,7 @@ import diva.gui.BasicFrame;
  *
  * <P> The code to create the connectors and set up the interaction is
  * much the same as the previous tutorial, except that it uses
- * ArcConnectors instead of StraightConnectors. One noticable
+ * ArcConnectors instead of StraightConnectors. One noticeable
  * difference is that the connector target uses a a sub-class of the
  * off-the-shelf PerimeterTarget class provided with the Diva canvas.
  * Although this would work:

@@ -1613,7 +1613,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
          * know any better.
          * Unfortunately, it is rather difficult to determine where
          * the event originated, since it could have come from arbitrarily
-         * deep in the hiearchy. At a minimum, this would create
+         * deep in the hierarchy. At a minimum, this would create
          * a dependency on domains/modal.
          */
         if (_microstep < 1 && _enforceMicrostepSemantics) {

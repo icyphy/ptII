@@ -60,7 +60,7 @@ public class RenesasUtilities {
     /** Interrupt handler I. */
     public static final char INTERRUPT_HANDLER_LETTER_183 = 'D';
 
-    /** The interrupt handler letters map from Integers to CHaracters. */
+    /** The interrupt handler letters map from Integers to Characters. */
     public static final Map<Integer, Character> interruptHandlerLetters = new HashMap<Integer, Character>() {
         {
             put(156, RenesasUtilities.INTERRUPT_HANDLER_LETTER_156);

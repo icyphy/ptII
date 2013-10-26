@@ -5530,14 +5530,14 @@ public class Collections implements Rollbackable {
      */
     public static boolean replaceAll(List list, Object oldval, Object newval) {
         ListIterator itr = list.listIterator();
-        boolean replace_occured = false;
+        boolean replace_occurred = false;
         for (int i = list.size(); --i >= 0;) {
             if (AbstractCollection.equals(oldval, itr.next())) {
                 itr.set(newval);
-                replace_occured = true;
+                replace_occurred = true;
             }
         }
-        return replace_occured;
+        return replace_occurred;
     }
 
     /**

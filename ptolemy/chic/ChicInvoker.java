@@ -313,7 +313,7 @@ public class ChicInvoker extends Attribute {
                                 || port.getWidth() > 1) {
                             throw new IllegalActionException(
                                     "Ports with width greater than one or "
-                                            + "that are both input and ouput are not "
+                                            + "that are both input and output are not "
                                             + "supported in the current "
                                             + "implementation.");
                         }
@@ -469,7 +469,7 @@ public class ChicInvoker extends Attribute {
                                 || port.getWidthInside() > 1) {
                             throw new IllegalActionException(
                                     "Ports with width greater than one or "
-                                            + "that are both input and ouput are not "
+                                            + "that are both input and output are not "
                                             + "supported in the current "
                                             + "implementation.");
                         }

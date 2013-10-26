@@ -79,7 +79,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class ContentionAlarm extends CSPActor {
     /** Construct a ContentionAlarm actor with the specified container
-     *  and name. Set the type of the input and ouput ports to
+     *  and name. Set the type of the input and output ports to
      *  BaseType.GENERAL.
      * @param cont The container of this actor.
      * @param name The name of this actor.

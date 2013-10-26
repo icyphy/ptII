@@ -652,7 +652,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                 if (_patternMatchframe != null
                         && !_patternMatchframe.isPatternEmpty()) {
 
-                    _searchCriteria.setPattnerMoML(_patternMatchframe
+                    _searchCriteria.setPatternMoML(_patternMatchframe
                             .getPatternMoML());
                 }
 
@@ -702,7 +702,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
             if (_patternMatchframe != null
                     && !_patternMatchframe.isPatternEmpty()) {
 
-                _searchCriteria.setPattnerMoML(_patternMatchframe
+                _searchCriteria.setPatternMoML(_patternMatchframe
                         .getPatternMoML());
             }
 

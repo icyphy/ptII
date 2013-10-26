@@ -1112,7 +1112,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  scope is opened for field declarations in it.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(AnonymousClassDeclaration node) {
         Class currentClass = _state.getCurrentClass();
@@ -1174,7 +1174,7 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Visit a block and open a scope for variable declarations in it.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(Block node) {
         _state.enterBlock();
@@ -1186,7 +1186,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  declarations in it.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(EnhancedForStatement node) {
         _openScope();
@@ -1196,7 +1196,7 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Visit a field declaration.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(FieldDeclaration node) {
         if (_handlers.hasConstructorHandler()) {
@@ -1220,7 +1220,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  in it.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(ForStatement node) {
         _openScope();
@@ -1230,7 +1230,7 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Override the behavior of visiting an importation declaration.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(ImportDeclaration node) {
         return super.visit(node);
@@ -1240,7 +1240,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  declarations in it.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(MethodDeclaration node) {
         _openScope();
@@ -1258,7 +1258,7 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Override the behavior of visiting a package declaration.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(PackageDeclaration node) {
         return super.visit(node);
@@ -1268,7 +1268,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  type associated with its name.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(SimpleType node) {
         if (!(node.getParent() instanceof ClassInstanceCreation)) {
@@ -1287,7 +1287,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  scope is opened for field declarations in it.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overriden function.
+     *  @return The return value of the overridden function.
      */
     public boolean visit(TypeDeclaration node) {
         // Enter the class.

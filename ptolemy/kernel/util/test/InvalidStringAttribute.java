@@ -37,7 +37,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// InvalideAttribute
+//// InvalidStringAttribute
 
 /**
  An attribute used for testing that is never valid.

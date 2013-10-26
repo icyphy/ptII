@@ -179,7 +179,7 @@ public class WebApplicationInfo {
     }
 
     /** Get the set of servlet paths assigned to this web application and their
-     * corrseponding servlets. May be empty.
+     * corresponding servlets. May be empty.
      *
      * @return  The set of servlet paths assigned to this web application and
      * their corresponding servlets.  May be empty.

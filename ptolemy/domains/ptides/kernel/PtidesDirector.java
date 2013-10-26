@@ -712,7 +712,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
         _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
 
-        _calculateSuperdenseDependenices();
+        _calculateSuperdenseDependencies();
         _calculateDelayOffsets();
         _calculateRelativeDeadlines();
     }
@@ -1227,7 +1227,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
      * TypedCompositeActor.
      * Note: This algorithm assumes all channels have same dependency as multiport.
      */
-    private void _calculateSuperdenseDependenices()
+    private void _calculateSuperdenseDependencies()
             throws IllegalActionException {
 
         //TODO: Code assumes code generation is at atomic actor level, so if

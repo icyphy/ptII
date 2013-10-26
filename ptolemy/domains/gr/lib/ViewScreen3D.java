@@ -751,7 +751,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     /** The Java3D universe, displayed inside the canvas. */
     protected SimpleUniverse _simpleUniverse;
 
-    /** The user tranformation. */
+    /** The user transformation. */
     protected TransformGroup _userTransformation;
 
     //  protected int _counter;

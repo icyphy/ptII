@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 ////PtidesBasicReceiver
 
-/** The adapter for ptides basic recevier.
+/** The adapter for ptides basic receiver.
  *  @author Jia Zou, Man-Kit Leung, Isaac Liu
  *  @version $Id$
  *  @since Ptolemy II 10.0

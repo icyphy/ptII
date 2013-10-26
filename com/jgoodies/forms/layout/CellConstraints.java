@@ -1081,7 +1081,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * Returns an integer that has a minimum of two characters.
      *
      * @param number   the number to format
-     * @return a string representation for a number with a minum of two chars
+     * @return a string representation for a number with a minimum of two chars
      */
     private String formatInt(int number) {
         String str = Integer.toString(number);

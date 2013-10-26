@@ -167,7 +167,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *  {@link Initializable}
      *  so that preinitialize() is invoked, and as a
      *  {@link HierarchyListener}, so that we are notified of
-     *  changes in the hiearchy above.
+     *  changes in the hierarchy above.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if

@@ -2262,7 +2262,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Invalide the communication aspect list. */
+    /** Invalidate the communication aspect list. */
     public void invalidateCommunicationAspects() {
         _communicationAspectsValid = false;
     }

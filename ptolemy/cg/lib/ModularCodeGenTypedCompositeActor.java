@@ -1040,7 +1040,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         return "";
     }
 
-    /** If configure is done, populating is not occuring,
+    /** If configure is done, populating is not occurring,
      *  code is not being generated and Pub/Subs are not being
      *  created, then set the <i>recompileThisLevel</i> parameter
      *  to true.  Otherwise, do nothing.

@@ -99,8 +99,8 @@ public class OpenModelica extends TypedAtomicActor {
         fileName = new FileParameter(this, "fileName");
         fileName.setDisplayName("File name");
 
-        dependecies = new FileParameter(this, "dependecies");
-        dependecies.setDisplayName("Dependency(ies)");
+        dependencies = new FileParameter(this, "dependencies");
+        dependencies.setDisplayName("Dependency(ies)");
 
         processingMode = new StringParameter(this, "processingType");
         processingMode.setDisplayName("Select the processing mode ");
@@ -158,7 +158,7 @@ public class OpenModelica extends TypedAtomicActor {
     /** The file that the base-model should be loaded from.
      *  The default value of this parameter is null.
      */
-    public FileParameter dependecies;
+    public FileParameter dependencies;
 
     /** The file that the (child-)model should be loaded from.
      *  The default value is "dcmotor.mo".
@@ -260,9 +260,9 @@ public class OpenModelica extends TypedAtomicActor {
             // If the model is inherited from a base model,
             // that base model should be loaded in advance to the child model.
             // Otherwise, the child one could not be built.
-            if (!(dependecies.getExpression().isEmpty() && baseModel
+            if (!(dependencies.getExpression().isEmpty() && baseModel
                     .getExpression().isEmpty()))
-                _omcCommand.loadFile(dependecies.getExpression(),
+                _omcCommand.loadFile(dependencies.getExpression(),
                         baseModel.getExpression());
         } catch (ConnectException e) {
             throw new IllegalActionException(
@@ -322,9 +322,9 @@ public class OpenModelica extends TypedAtomicActor {
         // Build the Modelica model and run the executable result file.
         // Plot the result file of the simulation that is generated in plt format.
         try {
-            if (!(dependecies.getExpression().isEmpty() && baseModel
+            if (!(dependencies.getExpression().isEmpty() && baseModel
                     .getExpression().isEmpty())) {
-                _omcCommand.runModel(dependecies.getExpression(),
+                _omcCommand.runModel(dependencies.getExpression(),
                         baseModel.getExpression(),
                         simulationStartTime.getExpression(),
                         simulationStopTime.getExpression(),

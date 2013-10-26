@@ -4874,7 +4874,7 @@ out.println("\\begin{document}");
 
     /**
      * TimedRepaint is a timer thread that will schedule a
-     * redraw each _REPAINT_TIME_INTERVAL milliseonds.
+     * redraw each _REPAINT_TIME_INTERVAL milliseconds.
      */
     private static class TimedRepaint extends Timer {
         static int _REPAINT_TIME_INTERVAL = 30;

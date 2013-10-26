@@ -40,7 +40,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-/** This java obejct implements a virtual-link which belongs to the end-system
+/** This java object implements a virtual-link which belongs to the end-system
  *  of an AFDX Network.
  *  For more information please refer to:
  *      <i>AFDX network simulation using PtolemyII</i>.

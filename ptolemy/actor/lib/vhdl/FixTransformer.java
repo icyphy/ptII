@@ -272,7 +272,7 @@ public class FixTransformer extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Queued ouput to simulate pipelined add.  The output is fix
+    /** Queued output to simulate pipelined add.  The output is fix
      *  point type.
      */
     public QueuedTypedIOPort output;

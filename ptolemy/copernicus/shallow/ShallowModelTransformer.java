@@ -913,7 +913,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                 }
             } catch (Exception ex) {
                 // Don't print a newline after printing "Exception
-                // occured during parsing:" so that the nightly build
+                // occurred during parsing:" so that the nightly build
                 // can detect errors.
                 System.err.println("Exception occurred during parsing: " + ex);
                 ex.printStackTrace();

@@ -244,7 +244,7 @@ public class LocalClock extends AbstractSettableAttribute {
             throw new IllegalActionException(
                     "Cannot compute environment time for local time " + time
                             + " because "
-                            + "the last commit of the local time occured at "
+                            + "the last commit of the local time occurred at "
                             + "local time " + _lastCommitLocalTime);
         }
         Time localTimePassedSinceCommit = time.subtract(_lastCommitLocalTime);
@@ -314,7 +314,7 @@ public class LocalClock extends AbstractSettableAttribute {
             throw new IllegalActionException(
                     "Cannot compute local time for environment time " + time
                             + " because "
-                            + "the last commit of the local time occured at "
+                            + "the last commit of the local time occurred at "
                             + "local time " + _lastCommitLocalTime + " which "
                             + "corresponds to environment time "
                             + _lastCommitEnvironmentTime);

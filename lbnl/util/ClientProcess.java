@@ -276,7 +276,7 @@ public class ClientProcess extends Thread {
     /** Text area that contains the console output of the simulation. */
     protected JTextArea stdAre;
 
-    /** Scroll pane  that contains the text area for the console ouput. */
+    /** Scroll pane  that contains the text area for the console output. */
 
     protected JScrollPane stdScrPan;
 

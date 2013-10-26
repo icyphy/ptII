@@ -449,7 +449,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // we are not at the top level, then the converted name
         // is the result of calling the container's uniqueName()
         // method, passing it the specified name.
-        // The auto namespace is disabled while propogating, since
+        // The auto namespace is disabled while propagating, since
         // this would otherwise just result in chaotic names for
         // propagated changes.
         if (_namespace.equals(_AUTO_NAMESPACE)

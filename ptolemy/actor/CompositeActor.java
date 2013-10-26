@@ -1915,7 +1915,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     }
 
     /** Remove the specified object from the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object. If the specified object is not
      *  on the list, do nothing.

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 ////DEReceiver
 
-/** The adapter for DE recevier.
+/** The adapter for DE receiver.
  * This class generates the DE-specific methods for the director.
  * Those methods are : get, hasToken, put
  * It also deals with the type conversions.

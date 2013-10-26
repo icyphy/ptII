@@ -144,7 +144,7 @@ public class SearchCriteriaManager {
                     String patternMoml = criteriaString.substring(
                             startIndex + 9, endIndex);
 
-                    storedSearchCriteria.setPattnerMoML(patternMoml);
+                    storedSearchCriteria.setPatternMoML(patternMoml);
 
                 } else if (nodeName.equals("attributes")) {
 

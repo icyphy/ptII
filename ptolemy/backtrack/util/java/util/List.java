@@ -307,7 +307,7 @@ public interface List extends Collection, Rollbackable {
     Object remove(int index);
 
     /**
-     * Remove the first occurence of an object from this list (optional
+     * Remove the first occurrence of an object from this list (optional
      * operation). That is, remove the first element e such that
      * <code>o == null ? e == null : o.equals(e)</code>.
      * @param o the object to remove

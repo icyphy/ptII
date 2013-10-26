@@ -229,7 +229,7 @@ public final class FormFactory {
     // Layout Style Dependent Row Specs *************************************
 
     /**
-     * Describes a logical vertzical gap between two related components.
+     * Describes a logical vertical gap between two related components.
      * For example the <em>OK</em> and <em>Cancel</em> buttons are considered
      * related.<p>
      *

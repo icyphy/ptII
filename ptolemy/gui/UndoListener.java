@@ -148,7 +148,7 @@ public class UndoListener implements UndoableEditListener {
     }
 
     /**
-     * Peform the redo action.
+     * Perform the redo action.
      */
     protected class RedoAction extends AbstractAction {
         public RedoAction() {

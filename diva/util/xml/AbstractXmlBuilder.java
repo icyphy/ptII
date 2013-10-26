@@ -41,7 +41,7 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
      * of it. Implementors should also provide a more
      * type-specific version of this method:
      * <pre>
-     *   public Graph build (XmlELement elt, String type);
+     *   public Graph build (XmlElement elt, String type);
      * </pre>
      */
     public abstract Object build(XmlElement elt, String type) throws Exception;

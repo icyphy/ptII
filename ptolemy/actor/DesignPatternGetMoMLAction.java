@@ -114,7 +114,7 @@ public class DesignPatternGetMoMLAction {
                     attribute.exportMoML(buffer, extraIndent + 1);
                     if (attribute instanceof Parameter) {
                         String parameterName = attribute.getName();
-                        String expression = _overridenParameters
+                        String expression = _overriddenParameters
                                 .get(parameterName);
                         if (expression != null) {
                             buffer.write(StringUtilities
@@ -262,7 +262,7 @@ public class DesignPatternGetMoMLAction {
      *  @param expression The expression of the parameter.
      */
     public void overrideParameter(String name, String expression) {
-        _overridenParameters.put(name, expression);
+        _overriddenParameters.put(name, expression);
     }
 
     /** The set of attribute names that need to be ignored while generating
@@ -270,7 +270,7 @@ public class DesignPatternGetMoMLAction {
      */
     private static final HashSet<String> _IGNORED_ATTRIBUTES = new HashSet<String>();
 
-    private HashMap<String, String> _overridenParameters = new HashMap<String, String>();
+    private HashMap<String, String> _overriddenParameters = new HashMap<String, String>();
 
     static {
         _IGNORED_ATTRIBUTES.add("GroupIcon");

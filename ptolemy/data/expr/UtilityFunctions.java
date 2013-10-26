@@ -1930,7 +1930,7 @@ public class UtilityFunctions {
      *  @param sharedLibrarySuffix The suffix for the shared library, without the dot.
      *  Under Windows, this would be ".dll", under Mac OS X, "jnilib" or "dylib",
      *  under Solaris or Linux, ".o".
-     *  @param throwable The throwable that occured when System.load() or System.loadLibrary()
+     *  @param throwable The throwable that occurred when System.load() or System.loadLibrary()
      *  was called.
      */
     private static void _loadLibrary(String library,
