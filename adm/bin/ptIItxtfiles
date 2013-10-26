@@ -45,14 +45,17 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.o$' \
         | egrep -v '\.opt$' \
 	| egrep -v '\.png$' \
+	| egrep -v '\.PNG$' \
 	| egrep -v '\.pom$' \
 	| egrep -v '\.pdf$' |egrep -v '\.plt$' \
         | egrep -v '\.pnproj$' | egrep -v '\.pnps$' \
         | egrep -v '\.psd$' |egrep -v '\.ppt$' \
 	| egrep -v '\.qcf$' \
         | egrep -v '\.ser$' \
+        | egrep -v '\.skp$' \
         | egrep -v '\.so$' \
         | egrep -v '\.so\.[0-9]*$' \
+        | egrep -v '\.suo$' \
         | egrep -v '\.tif$' \
         | egrep -v '\.tiff$' \
         | egrep -v '\.vbs$' \
