@@ -93,7 +93,7 @@ public class Assert extends Expression {
     public StringParameter message;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -126,7 +126,7 @@ public class Assert extends Expression {
     /** Override the base class to check the result of the evaluation
      *  of the expression. If the result is false, throw an exception.
      *  Otherwise, copy the inputs to the corresponding outputs.
-     *  @throws IllegalActionException If the expression evaluates to false,
+     *  @exception IllegalActionException If the expression evaluates to false,
      *   or if the superclass throws it.
      */
     public void fire() throws IllegalActionException {
@@ -174,7 +174,7 @@ public class Assert extends Expression {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Override the base class to create an output port corresponding
      *  to each new input port added. The output port will have as its
@@ -247,11 +247,11 @@ public class Assert extends Expression {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Create the corresponding output port for the given input port.
      *  @param port The input port.
-     *  @throws InternalErrorException If something goes wrong.
+     *  @exception InternalErrorException If something goes wrong.
      */
     private void _createOutputPort(final TypedIOPort port) {
         // Show the name of the input port.
@@ -288,7 +288,7 @@ public class Assert extends Expression {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** Flag indicating that we are being cloned.
      *  Note that this flag will be cloned into the clone, so it needs
@@ -306,7 +306,7 @@ public class Assert extends Expression {
     private final static String _OUTPUT_PORT_PREFIX = "_correspondingOutputPort_";
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** Class for ports created by the user for this actor.
      *  These should all be input ports, in theory.

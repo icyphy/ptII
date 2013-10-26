@@ -161,27 +161,27 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == A0){
+       if (attribute == A0) {
            int nRow = ((MatrixToken) A0.getToken()).getRowCount();
            int nCol = ((MatrixToken) A0.getToken()).getColumnCount();
-           if(nRow != nCol){
+           if (nRow != nCol) {
                throw new IllegalActionException(this, "Transition Probability Matrix must be a square matrix.");
-           }else{
+           }else {
                _transitionMatrix = new double[nRow][nCol];
                _A0 = new double[nRow][nCol];
                for (int i = 0; i < nRow; i++) {
-                   for(int j = 0; j< nCol; j++){
+                   for (int j = 0; j< nCol; j++) {
                        _transitionMatrix[i][j] = ((DoubleToken)((MatrixToken) A0.getToken())
                                .getElementAsToken(i, j))
                                .doubleValue();
-                       if(_transitionMatrix[i][j] < 0.0){
+                       if (_transitionMatrix[i][j] < 0.0) {
                            throw new IllegalActionException(this, "Transition probabilities cannot be negative.");
                        }
                    }
                }
                _A0 = _transitionMatrix;
            }
-      }else if(attribute == priorDistribution){
+      }else if (attribute == priorDistribution) {
           int nS = ((ArrayToken)priorDistribution.getToken()).length();
            double[] tempPriors = new double[nS];
            double sum = 0.0;
@@ -189,45 +189,45 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            for (int i = 0; i < nS; i++) {
                tempPriors[i] = ((DoubleToken)((ArrayToken) priorDistribution.getToken()).getElement(i))
                        .doubleValue();
-               if(tempPriors[i] < 0.0){
+               if (tempPriors[i] < 0.0) {
                    throw new IllegalActionException(this, "Priors must be non-negative.");
                }
                sum += tempPriors[i];
            }
            // check if priors is a valid probability vector.
-           if( sum != 1.0)
+           if (sum != 1.0)
            {
                throw new IllegalActionException(this, "Priors sum to " + sum + " . The sum must equal 1.0.");
-           } else{
+           } else {
                _priors = tempPriors;
            }
-       }else if(attribute == maxIterations){
-           if( (int)((IntToken) maxIterations.getToken()).intValue() <= 0){
+       }else if (attribute == maxIterations) {
+           if ((int)((IntToken) maxIterations.getToken()).intValue() <= 0) {
                throw new IllegalActionException(this, "Number of iterations must be greater than zero.");
-           } else{
+           } else {
                _nIterations = (int)((IntToken) maxIterations.getToken()).intValue();
            }
-       }else if(attribute == likelihoodThreshold){
+       }else if (attribute == likelihoodThreshold) {
            double threshold = ((DoubleToken) likelihoodThreshold.getToken()).doubleValue();
-           if(threshold > 0.0){
+           if (threshold > 0.0) {
                _likelihoodThreshold = threshold;
            }
-           else{
+           else {
                throw new IllegalActionException(this, "Likelihood threshold must be positive.");
            }
-       } else if(attribute == nStates){
+       } else if (attribute == nStates) {
 
            int nS = ((IntToken)nStates.getToken()).intValue();
-           if(nS > 0){
+           if (nS > 0) {
                _nStates = nS;
-           }else{
+           }else {
                throw new IllegalActionException(this, "Number of states must be a positive integer");
            }
 
-       } else if(attribute == randomizeGuessVectors){
+       } else if (attribute == randomizeGuessVectors) {
            boolean randomize = ((BooleanToken) randomizeGuessVectors.getToken()).booleanValue();
            _randomize = randomize;
-       }else{
+       }else {
            super.attributeChanged(attribute);
        }
    }
@@ -282,7 +282,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        // observation length is inferred from the input array length.
        int _observationLength = ((ArrayToken)observationArray).length();
        _observations = new double[_observationLength];
-       if( _observationLength <= 0){
+       if (_observationLength <= 0) {
            throw new IllegalActionException(this, "Observation sequence length "
                    + _observationLength + " but must be greater than zero.");
        }
@@ -294,25 +294,25 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        }
    }
 
-   protected boolean _EMParameterEstimation(){
+   protected boolean _EMParameterEstimation() {
 
        boolean success = false;
        _initializeEMParameters();
 
-       for( int iterations = 0; iterations< _nIterations; iterations++){
+       for ( int iterations = 0; iterations< _nIterations; iterations++) {
 
            _iterateEM();
            success = _checkForConvergence(iterations);
            // randomization not allowed and convergence was not achieved
-           if( !_randomize && !success){
+           if (!_randomize && !success) {
                break;
            }
            _updateEstimates();
 
            // check convergence within likelihoodThreshold
-           if( Math.abs(likelihood - _likelihood) < _likelihoodThreshold){
+           if (Math.abs(likelihood - _likelihood) < _likelihoodThreshold) {
                break;
-           }else{
+           }else {
                _likelihood = likelihood;
            }
        }
@@ -364,34 +364,34 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
        double[] alphaNormalizers = new double[nObservations];
        double alphaSum = 0;
-       for(int t=0; t< y.length ; t++){
+       for (int t=0; t< y.length ; t++) {
            alphaSum = 0;
-           for (int i=0; i < nStates; i++){
+           for (int i=0; i < nStates; i++) {
                alphas[t][i] = 0;
-               if(t == 0){
+               if (t == 0) {
                     alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
-               }else{
-                   for(int qt = 0; qt < nStates; qt++){
+               }else {
+                   for (int qt = 0; qt < nStates; qt++) {
                        alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt];
                    }
                }
                alphaSum += alphas[t][i];
            }
            // alpha normalization
-           for (int i=0; i < nStates; i++){
+           for (int i=0; i < nStates; i++) {
                alphas[t][i] /= alphaSum;
                alphaNormalizers[t] = alphaSum;
            }
        }
-       for(int t=y.length-1; t>=0 ; t--){
-           for( int qt=0; qt < nStates; qt ++){
-               if( t == y.length -1){
+       for (int t=y.length-1; t>=0 ; t--) {
+           for ( int qt=0; qt < nStates; qt ++) {
+               if (t == y.length -1) {
                    gamma[t][qt] = alphas[t][qt];
-               }else{
+               }else {
                    gamma[t][qt]=0;
-                   for ( int qtp = 0 ; qtp < nStates ; qtp ++){
+                   for ( int qtp = 0 ; qtp < nStates ; qtp ++) {
                        double alphasum = 0;
-                       for( int j=0; j < nStates; j ++){
+                       for ( int j=0; j < nStates; j ++) {
                            alphasum += alphas[t][j]*A[j][qtp];
                        }
                        gamma[t][qt] += (alphas[t][qt]*A[qt][qtp]*gamma[t+1][qtp])/alphasum;
@@ -401,14 +401,14 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        }
 
        //next, calculate the xis ( for the transition matrix)
-       for( int next=0; next < nStates; next++){
-           for( int now = 0; now < nStates; now++){
-               for(int t = 0; t < (y.length-1); t++){
+       for ( int next=0; next < nStates; next++) {
+           for ( int now = 0; now < nStates; now++) {
+               for (int t = 0; t < (y.length-1); t++) {
                    // gamma t or t+1? alphas t or t+1?
-                   if(alphas[t+1][next] == 0){
+                   if (alphas[t+1][next] == 0) {
                        xi[t][now][next] = 0;
                    }
-                   else{
+                   else {
                        xi[t][now][next] = alphas[t][now]*emissionProbability(y[t+1], next)
                                *gamma[t+1][next]*A[now][next]/alphas[t+1][next]; // MJ Eqn (11.45)
                    }
@@ -421,24 +421,24 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        // Normalize A
        double[] rowsum = new double[nStates];
        double[] gammasum = new double[nStates];
-       for(int i = 0 ; i< nStates; i++){
+       for (int i = 0 ; i< nStates; i++) {
            rowsum[i] = 0;
-           for(int j = 0; j < nStates; j++){
+           for (int j = 0; j < nStates; j++) {
                rowsum[i] += A_hat[i][j];
            }
-           for(int j = 0; j < nStates; j++){
+           for (int j = 0; j < nStates; j++) {
                A_hat[i][j]/= rowsum[i];
            }
            gammasum[i]=0.0;
        }
-       for(int j = 0; j < nStates; j++) {
+       for (int j = 0; j < nStates; j++) {
            gammasum[j] = 0.0;
-           for ( int t = 0; t< y.length; t++){
+           for ( int t = 0; t< y.length; t++) {
                gammasum[j] += gamma[t][j];
                mu_hat[j] += gamma[t][j]*y[t];
            }
            mu_hat[j] = mu_hat[j]/gammasum[j];
-           for ( int t = 0; t< y.length; t++){
+           for ( int t = 0; t< y.length; t++) {
                s_hat[j] += (gamma[t][j]*Math.pow((y[t]-mu_hat[j]),2));
            }
            s_hat[j]  = Math.sqrt(s_hat[j]/gammasum[j]);
@@ -446,10 +446,10 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            pi_hat[j] = gamma[0][j];
        }
        // labels for the multinomial setting
-       if(multinomial){
-           for( int i = 0 ; i < nStates; i++){
-               for( int j = 0; j < nCategories; j++){
-                   for( int t = 0; t< y.length; t++){
+       if (multinomial) {
+           for ( int i = 0 ; i < nStates; i++) {
+               for ( int j = 0; j < nCategories; j++) {
+                   for ( int t = 0; t< y.length; t++) {
                        eta_hat[i][j] += gamma[t][i]*((y[t] == j) ? 1 : 0);
                    }
                    eta_hat[i][j] /= gammasum[i]; //normalize for gammas
@@ -459,10 +459,10 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        // do hidden state sequence estimation to compute the log-likelihood, given the current
        // parameter estimates
        int[] clusterAssignments = new int[y.length];
-       for( int t = 0; t < y.length; t++){
+       for ( int t = 0; t < y.length; t++) {
            int maxState = 0;
-           for( int j = 1; j < nStates; j++){
-               if ( gamma[t][j] > gamma[t][maxState]){
+           for ( int j = 1; j < nStates; j++) {
+               if ( gamma[t][j] > gamma[t][maxState]) {
                    maxState = j;
                }
            }
@@ -472,7 +472,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        // for the HMM.
 
        double logLikelihood = 0.0;
-       for( int t = 0 ; t < _observations.length-1 ; t++)
+       for ( int t = 0 ; t < _observations.length-1 ; t++)
        {
            logLikelihood += emissionProbability(y[t], clusterAssignments[t]);
            logLikelihood += A_hat[clusterAssignments[t]][clusterAssignments[t+1]];
@@ -513,50 +513,50 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
 
 
-       for(int t=0; t< y.length ; t++){
-           for (int i=0; i < nStates; i++){
+       for (int t=0; t< y.length ; t++) {
+           for (int i=0; i < nStates; i++) {
                alphas[t][i] = 0;
-               if(t == 0){
+               if (t == 0) {
                     alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
-               }else{
-                   for(int qt = 0; qt < nStates; qt++){
+               }else {
+                   for (int qt = 0; qt < nStates; qt++) {
                        alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt];
                    }
                }
            }
        }
 
-       for(int t=y.length-1; t>=0 ; t--){
+       for (int t=y.length-1; t>=0 ; t--) {
            // initialize py at time t
            Py[t] = 0;
-           for (int i=0; i < nStates; i++){
+           for (int i=0; i < nStates; i++) {
                gamma[t][i] = 0.0;
                betas[t][i] = 0.0;
-               if(t == y.length - 1){
+               if (t == y.length - 1) {
                    betas[t][i] =  1;
-               }else{
+               }else {
                    // reverse-time recursion  (do this recursively later)
-                   for(int qtp = 0; qtp < nStates; qtp++){
+                   for (int qtp = 0; qtp < nStates; qtp++) {
                        betas[t][i]+= A[i][qtp]*emissionProbability(y[t+1], qtp)*betas[t+1][qtp];
                    }
                }
                Py[t]+= alphas[t][i]*betas[t][i];
            }
-           for( int i =0; i < nStates; i++)
+           for ( int i =0; i < nStates; i++)
            {
                gamma[t][i] += alphas[t][i]*betas[t][i]/Py[t];
            }
        }
 
        //next, calculate the xis ( for the transition matrix)
-       for( int next=0; next < nStates; next++){
-           for( int now = 0; now < nStates; now++){
-               for(int t = 0; t < (y.length-1); t++){
+       for ( int next=0; next < nStates; next++) {
+           for ( int now = 0; now < nStates; now++) {
+               for (int t = 0; t < (y.length-1); t++) {
                    // gamma t or t+1? alphas t or t+1?
-                   if(alphas[t+1][next] == 0){
+                   if (alphas[t+1][next] == 0) {
                        xi[t][now][next] = 0;
                    }
-                   else{
+                   else {
                        xi[t][now][next] = alphas[t][now]*emissionProbability(y[t+1], next)
                                *gamma[t+1][next]*A[now][next]/alphas[t+1][next];
                    }
@@ -570,27 +570,27 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        // Normalize A
        double[] rowsum = new double[nStates];
        double[] gammasum = new double[nStates];
-       for(int i = 0 ; i< nStates; i++){
+       for (int i = 0 ; i< nStates; i++) {
 
            rowsum[i] = 0;
-           for(int j = 0; j < nStates; j++){
+           for (int j = 0; j < nStates; j++) {
                rowsum[i] += A_hat[i][j];
            }
-           for(int j = 0; j < nStates; j++){
+           for (int j = 0; j < nStates; j++) {
                A_hat[i][j]/= rowsum[i];
            }
            gammasum[i]=0.0;
        }
 
-       for(int j = 0; j < nStates; j++) {
+       for (int j = 0; j < nStates; j++) {
            gammasum[j] = 0.0;
-           for ( int t = 0; t< y.length; t++){
+           for ( int t = 0; t< y.length; t++) {
                gammasum[j] += gamma[t][j];
                mu_hat[j] += gamma[t][j]*y[t];
            }
            mu_hat[j] = mu_hat[j]/gammasum[j];
 
-           for ( int t = 0; t< y.length; t++){
+           for ( int t = 0; t< y.length; t++) {
                s_hat[j] += (gamma[t][j]*Math.pow((y[t]-mu_hat[j]),2));
            }
            s_hat[j]  = Math.sqrt(s_hat[j]/gammasum[j]);
@@ -598,9 +598,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            pi_hat[j] = gamma[0][j];
        }
 
-       for( int i = 0 ; i < nStates; i++){
-           for( int j = 0; j < nCategories; j++){
-               for( int t = 0; t< y.length; t++){
+       for ( int i = 0 ; i < nStates; i++) {
+           for ( int j = 0; j < nCategories; j++) {
+               for ( int t = 0; t< y.length; t++) {
                    eta_hat[i][j] += gamma[t][i]*((y[t] == j) ? 1 : 0);
                }
                eta_hat[i][j] /= gammasum[i]; //normalize for gammas
@@ -610,10 +610,10 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        // do hidden state sequence estimation to compute the log-likelihood, given the current
        // parameter estimates
        int[] clusterAssignments = new int[y.length];
-       for( int t = 0; t < y.length; t++){
+       for ( int t = 0; t < y.length; t++) {
            int maxState = 0;
-           for( int j = 1; j < nStates; j++){
-               if ( gamma[t][j] > gamma[t][maxState]){
+           for ( int j = 1; j < nStates; j++) {
+               if ( gamma[t][j] > gamma[t][maxState]) {
                    maxState = j;
                }
            }
@@ -624,7 +624,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
        double logLikelihood = 0.0;
 
-       for( int t = 0 ; t < _observations.length-1 ; t++)
+       for ( int t = 0 ; t < _observations.length-1 ; t++)
        {
            logLikelihood += emissionProbability(y[t], clusterAssignments[t]);
            logLikelihood += A_hat[clusterAssignments[t]][clusterAssignments[t+1]];

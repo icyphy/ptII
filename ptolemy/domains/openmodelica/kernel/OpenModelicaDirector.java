@@ -59,12 +59,12 @@ public class OpenModelicaDirector extends ContinuousDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                ////
+    ////                         public methods                    ////
 
     /** The actor returns false in postfire() to request that the actor should not be fired again
      *  which means that the model calls fire() once and then stops.
      *  @return Check If the stop time is infinite, If yes, it returns false.
-     *  @throws IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
 

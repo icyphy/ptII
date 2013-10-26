@@ -124,13 +124,13 @@ public class HMMExponentialClassifier extends ObservationClassifier {
                    .doubleValue();
            _lambda[i] = ((DoubleToken)((ArrayToken) lambda.getToken()).getElement(i))
                    .doubleValue();
-           for(int j = 0; j< _nStates; j++){
+           for (int j = 0; j< _nStates; j++) {
                _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
                        .getElementAsToken(i, j))
                        .doubleValue();
            }
        }
-           if( (_nStates != _lambda.length) ||(_nStates != _transitionMatrixEstimate.length))
+           if ((_nStates != _lambda.length) ||(_nStates != _transitionMatrixEstimate.length))
            {
                throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
            }
@@ -147,7 +147,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
            output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
    }
 
-   protected double emissionProbability(double y, int hiddenState){
+   protected double emissionProbability(double y, int hiddenState) {
        double m = _lambda[hiddenState];
        return m*Math.exp(-m*y);
    }

@@ -61,8 +61,8 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
     /**
      * Construct a MetroFSMDirector.
      *
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public MetroIIFSMDirector() throws IllegalActionException,
             NameDuplicationException {

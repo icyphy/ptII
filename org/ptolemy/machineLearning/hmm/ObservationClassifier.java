@@ -151,7 +151,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
    public void fire() throws IllegalActionException {
        super.fire();
 
-       if( input.hasToken(0)){
+       if (input.hasToken(0)) {
            // Read input ports
 
            Token observationArray= input.get(0);
@@ -164,7 +164,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                _observations[i] = ((DoubleToken) ((ArrayToken)observationArray).getElement(i))
                        .doubleValue();
            }
-       }else{
+       }else {
            _observations = null;
        }
 
@@ -180,34 +180,34 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
        double[] alphaNormalizers = new double[y.length];
        double alphaSum = 0;
-       for(int t=0; t< y.length ; t++){
+       for (int t=0; t< y.length ; t++) {
            alphaSum = 0;
-           for (int i=0; i < nStates; i++){
+           for (int i=0; i < nStates; i++) {
                alphas[t][i] = 0;
-               if(t == 0){
+               if (t == 0) {
                     alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
-               }else{
-                   for(int qt = 0; qt < nStates; qt++){
+               }else {
+                   for (int qt = 0; qt < nStates; qt++) {
                        alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt];
                    }
                }
                alphaSum += alphas[t][i];
            }
            // alpha normalization
-           for (int i=0; i < nStates; i++){
+           for (int i=0; i < nStates; i++) {
                alphas[t][i] /= alphaSum;
                alphaNormalizers[t] = alphaSum;
            }
        }
-       for(int t=y.length-1; t>=0 ; t--){
-           for( int qt=0; qt < nStates; qt ++){
-               if( t == y.length -1){
+       for (int t=y.length-1; t>=0 ; t--) {
+           for ( int qt=0; qt < nStates; qt ++) {
+               if (t == y.length -1) {
                    gamma[t][qt] = alphas[t][qt];
-               }else{
+               }else {
                    gamma[t][qt]=0;
-                   for ( int qtp = 0 ; qtp < nStates ; qtp ++){
+                   for ( int qtp = 0 ; qtp < nStates ; qtp ++) {
                        double alphasum = 0;
-                       for( int j=0; j < nStates; j ++){
+                       for ( int j=0; j < nStates; j ++) {
                            alphasum += alphas[t][j]*A[j][qtp];
                        }
                        gamma[t][qt] += (alphas[t][qt]*A[qt][qtp]*gamma[t+1][qtp])/alphasum;
@@ -218,10 +218,10 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
        //  Classification to clusters
        int[] clusterAssignments = new int[y.length];
-       for( int t = 0; t < y.length; t++){
+       for ( int t = 0; t < y.length; t++) {
            int maxState = 0;
-           for( int j = 1; j < nStates; j++){
-               if ( gamma[t][j] > gamma[t][maxState]){
+           for ( int j = 1; j < nStates; j++) {
+               if ( gamma[t][j] > gamma[t][maxState]) {
                    maxState = j;
                }
            }
@@ -238,10 +238,10 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
        // the classified states of observations
        int[] clusterAssignments = new int[y.length];
 
-       for(int t=0; t< y.length ; t++){
-           for (int i=0; i < nStates; i++){
+       for (int t=0; t< y.length ; t++) {
+           for (int i=0; i < nStates; i++) {
                tau[t][i] = prior[i]*gaussian(y[t], mu[i],sigma[i]);
-               if(tau[t][i] > tau[t][clusterAssignments[t]]){
+               if (tau[t][i] > tau[t][clusterAssignments[t]]) {
                    clusterAssignments[t] = i;
                }
            }
@@ -250,7 +250,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
        return clusterAssignments;
    }
 
-   private static final double gaussian(double x, double mu, double sigma){
+   private static final double gaussian(double x, double mu, double sigma) {
 
        return 1.0/(Math.sqrt(2*Math.PI)*sigma)*Math.exp(-0.5*Math.pow((x-mu)/sigma, 2));
    }

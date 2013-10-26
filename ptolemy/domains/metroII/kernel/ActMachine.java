@@ -179,7 +179,7 @@ public abstract class ActMachine implements StartOrResumable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Get the wrapped actor.

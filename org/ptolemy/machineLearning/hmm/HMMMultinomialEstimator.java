@@ -112,28 +112,28 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
 
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == observationProbabilities){
+       if (attribute == observationProbabilities) {
 
            int nCat = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
            _B0 = new double[_nStates][nCat];
            for (int i = 0; i < _nStates; i++) {
-               for(int j = 0; j< nCat; j++){
+               for (int j = 0; j< nCat; j++) {
                    _B0[i][j] = ((DoubleToken)((MatrixToken) observationProbabilities.getToken())
                            .getElementAsToken(i, j))
                            .doubleValue();
                }
            }
 
-       } else if( attribute == nCategories)
+       } else if (attribute == nCategories)
        {
            int cat = ((IntToken) nCategories.getToken()).intValue();
-           if(cat <= 0){
+           if (cat <= 0) {
                throw new IllegalActionException(this, "Number of categories must be positive");
-           } else{
+           } else {
                _nCategories = cat;
            }
        }
-       else{
+       else {
            super.attributeChanged(attribute);
        }
    }
@@ -161,7 +161,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
    public void fire() throws IllegalActionException {
        super.fire();
 
-       if( (_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nCategories != _B0[0].length))
+       if ((_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nCategories != _B0[0].length))
        {
            throw new IllegalActionException(this, "Parameter guess vectors cannot have different lengths.");
        }
@@ -169,7 +169,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
        boolean converged = _EMParameterEstimation();
 
        Token[] pTokens = new Token[_nStates];
-       for ( int i = 0; i< _nStates; i++){
+       for ( int i = 0; i< _nStates; i++) {
            pTokens[i] = new DoubleToken(prior_new[i]);
        }
        transitionMatrix.send(0, new DoubleMatrixToken(A_new));
@@ -181,10 +181,10 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
        _likelihood = 0.0;
        return true;
    }
-   protected boolean _checkForConvergence(int iterations){
+   protected boolean _checkForConvergence(int iterations) {
        return true;
    }
-   protected void _initializeEMParameters(){
+   protected void _initializeEMParameters() {
        _transitionMatrix = _A0;
        _B = _B0;
        _priorIn = _priors;
@@ -192,19 +192,19 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         B_new = new double[_nStates][_nCategories];
         prior_new = new double[_nStates];
    }
-   protected void _iterateEM(){
+   protected void _iterateEM() {
        newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn, _nCategories);
        B_new = (double[][]) newEstimates.get("eta_hat");
        A_new = (double[][]) newEstimates.get("A_hat");
        prior_new = (double[]) newEstimates.get("pi_hat");
        likelihood = (Double) (newEstimates.get("likelihood"));
    }
-   protected void _updateEstimates(){
+   protected void _updateEstimates() {
        _transitionMatrix  = A_new;
        _B = B_new;
        _priorIn = prior_new;
    }
-   protected double emissionProbability(double y, int hiddenState){
+   protected double emissionProbability(double y, int hiddenState) {
        return _B[hiddenState][(int)y];
    }
 

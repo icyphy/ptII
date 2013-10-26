@@ -53,8 +53,8 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
      *  @param decorator The decorator.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public CommunicationAspectAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
@@ -65,8 +65,8 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
     /** Constructor to use when parsing a MoML file.
      *  @param target The object being decorated.
      *  @param name The name of this attribute.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public CommunicationAspectAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -86,7 +86,7 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
+    ////                         public methods                    ////
 
     /** If attribute is <i>messageLength</i> report the new value
      *  to the communication aspect.

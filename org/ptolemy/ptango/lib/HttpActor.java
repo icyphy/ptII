@@ -726,7 +726,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *   HttpServletRequest can be of any type - i.e. both GET and POST
          *   requests are allowed to have Cookies.
          *  @return A record of cookies.
-         *  @throws IllegalActionException If construction of the record token fails.
+         *  @exception IllegalActionException If construction of the record token fails.
          */
         private RecordToken _readCookies(HttpServletRequest request)
                 throws IllegalActionException {
@@ -763,7 +763,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *   HttpServletRequest can be of any type - i.e. both GET and POST
          *   requests are allowed to have parameters.
          *  @return A record of parameters.
-         *  @throws IllegalActionException If construction of the record token fails.
+         *  @exception IllegalActionException If construction of the record token fails.
          */
         private RecordToken _readParameters(HttpServletRequest request)
                 throws IllegalActionException {

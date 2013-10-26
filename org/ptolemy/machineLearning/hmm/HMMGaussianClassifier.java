@@ -142,17 +142,17 @@ public class HMMGaussianClassifier extends ObservationClassifier {
                    .doubleValue();
            _mu[i] = ((DoubleToken)((ArrayToken) mean.getToken()).getElement(i))
                    .doubleValue();
-           for(int j = 0; j< _nStates; j++){
+           for (int j = 0; j< _nStates; j++) {
                _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
                        .getElementAsToken(i, j))
                        .doubleValue();
            }
        }
-           if( (_nStates != _sigma.length) ||(_nStates != _transitionMatrixEstimate.length))
+           if ((_nStates != _sigma.length) ||(_nStates != _transitionMatrixEstimate.length))
            {
                throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
            }
-           if(_observations != null){
+           if (_observations != null) {
                int[] classifyStates = new int[_observations.length];
 
                classifyStates = classifyHMM(_observations , _priors, _transitionMatrixEstimate);
@@ -166,7 +166,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
            }
    }
 
-   protected double emissionProbability(double y, int hiddenState){
+   protected double emissionProbability(double y, int hiddenState) {
        double s = _sigma[hiddenState];
        double m = _mu[hiddenState];
        return 1.0/(Math.sqrt(2*Math.PI)*s)*Math.exp(-0.5*Math.pow((y-m)/s, 2));

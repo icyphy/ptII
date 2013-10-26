@@ -57,7 +57,7 @@ public interface ActorExecutionAspect extends Decorator {
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this resource scheduler.
      *  @param listener The listener to be added.
-     *  @throws IllegalActionException If an error occurs in the initialization
+     *  @exception IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
     public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException;
@@ -72,7 +72,7 @@ public interface ActorExecutionAspect extends Decorator {
      *  specifying the execution time, return the minimum execution time.
      * @param actor The actor.
      * @return The execution time.
-     * @throws IllegalActionException Thrown in attribute or token cannot be read.
+     * @exception IllegalActionException Thrown in attribute or token cannot be read.
      */
     public double getExecutionTime(Actor actor) throws IllegalActionException;
 

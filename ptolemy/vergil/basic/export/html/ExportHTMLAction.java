@@ -738,7 +738,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             if (writer == null) {
                 indexFile = new File(parameters.directoryToExportTo,
                         "index.html");
-                if (parameters.deleteFilesOnExit){
+                if (parameters.deleteFilesOnExit) {
                     indexFile.deleteOnExit();
                 }
                 Writer indexWriter = new FileWriter(indexFile);

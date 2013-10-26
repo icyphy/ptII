@@ -261,7 +261,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
     ////                      protected fields                     ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Send token to receiver.
      *  @param receiver The receiver.
@@ -285,7 +285,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
     protected int _tokenCount;
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
         /** Cached list of decorated objects. */
         private List<NamedObj> _decoratedObjects;

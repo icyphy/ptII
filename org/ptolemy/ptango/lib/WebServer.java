@@ -328,7 +328,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
         super.initialize();
 
-        if(_debugging) {
+        if (_debugging) {
             _debug("Initializing web server.");
         }
 
@@ -350,7 +350,7 @@ public class WebServer extends AbstractInitializableAttribute {
         try {
             _appInfo = new WebApplicationInfo(modelName, applicationPathString,
                 temporaryFileLocation);
-        }catch(Exception e) {
+        } catch (Exception e) {
             throw new IllegalActionException(this, e, "Failed to create WebApplicationInfo");
         }
 
@@ -372,7 +372,7 @@ public class WebServer extends AbstractInitializableAttribute {
                 // as resourcePath.
                 service.setWebServer(this);
 
-                if(_debugging) {
+                if (_debugging) {
                     _debug("Found web service: " + entity.getFullName());
                 }
 
@@ -380,7 +380,7 @@ public class WebServer extends AbstractInitializableAttribute {
                 URI path = service.getRelativePath();
                 try {
                     _appInfo.addServletInfo(path, service.getServlet());
-                } catch(Exception e) {
+                } catch (Exception e) {
                     throw new IllegalActionException(this, "Actor " +
                     entity.getName() + " requested the web service URL "
                     + path + " , but this URL has already been claimed "
@@ -460,16 +460,16 @@ public class WebServer extends AbstractInitializableAttribute {
         try {
             _appInfo.addResourceInfo(new URI(resourcePath.stringValue()),
                 resourceLocations);
-        } catch(URISyntaxException e) {
+        } catch (URISyntaxException e) {
             throw new IllegalActionException(this, "Resource path is not a " +
                             "valid URI.");
-        } catch(Exception e2) {
+        } catch (Exception e2) {
             throw new IllegalActionException(this, e2, "Failed to add resource info.");
         }
 
         try {
             _serverManager.register(_appInfo, _portNumber);
-        } catch(Exception e){
+        } catch (Exception e) {
             throw new IllegalActionException(this, e, "Failed to register web server.");
         }
     }
@@ -481,7 +481,7 @@ public class WebServer extends AbstractInitializableAttribute {
      * the application */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_debugging) {
+        if (_debugging) {
             _debug("Unregistering web server.");
         }
         try {

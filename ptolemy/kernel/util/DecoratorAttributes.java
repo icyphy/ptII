@@ -190,7 +190,7 @@ public class DecoratorAttributes extends Attribute {
 
     /** Return the decorator that is responsible for this DecoratorAttributes instance.
      *  @return The decorator, or null if there is none.
-     *  @throws IllegalActionException If the decorator cannot be determined
+     *  @exception IllegalActionException If the decorator cannot be determined
      *   (e.g., a parameter cannot be evaluated).
      */
     public Decorator getDecorator() throws IllegalActionException {
@@ -238,7 +238,7 @@ public class DecoratorAttributes extends Attribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The decorator.*/
     protected Decorator _decorator = null;

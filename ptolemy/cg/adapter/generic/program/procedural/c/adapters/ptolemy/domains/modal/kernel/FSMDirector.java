@@ -73,7 +73,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
      * parameters and fields as well as with the depths of the actors
      *
      * @return The generated constructor code
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateConstructorCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();

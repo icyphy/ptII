@@ -61,7 +61,7 @@ public interface IOMCCommand {
     /**  Build the Modelica model by sending buildModel(className) to the OMC.
      *   @param modelName The Name of the model which should be built.
      *   @return CompilerResult The result of sending buildModel(className) command to the OMC.
-     *   @throws ConnectException If buildModel command couldn't
+     *   @exception ConnectException If buildModel command couldn't
      *   be sent to the OMC.
      */
     public CompilerResult buildModel(String modelName) throws ConnectException;
@@ -79,7 +79,7 @@ public interface IOMCCommand {
     public HashMap getModelComponent(String modelName);
 
     /** Initialize the communication with the (OpenModelica compiler)OMC.
-     *  @throws ConnectException If we're unable to start communicating with
+     *  @exception ConnectException If we're unable to start communicating with
      *  the server.
      */
     public void initServer() throws ConnectException;
@@ -95,7 +95,7 @@ public interface IOMCCommand {
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
      *  @return Checks If Modelica library and model are loaded.
-     *  @throws ConnectException If commands couldn't
+     *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelic Compiler)OMC.
      */
     public void loadFile(String fileName, String modelName)
@@ -105,16 +105,16 @@ public interface IOMCCommand {
      *  @param parameterValues New values to change the components' values.
      *  @param modelName The (base-)model that should be built.
      *  @param components The models' components to change.
-     *  @throws ConnectException If commands couldn't
+     *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public void modifyComponents(String parameterValues, String modelName,
             String components) throws IllegalActionException, ConnectException;
 
     /** Plot the plt file by calling PxgraphApplication.main(modelName).
      *  @param modelName Name of the model which should be built.
-     *  @throws ConnectException If commands could not be sent to the OMC.
+     *  @exception ConnectException If commands could not be sent to the OMC.
      */
     public void plotPltFile(String modelName) throws ConnectException;
 
@@ -128,11 +128,11 @@ public interface IOMCCommand {
      *  @param numberOfIntervals Number of intervals in the result file.
      *  @param outputFormat Format of the result file.
      *  @param processingMode The mode of processing for running the executable result file of building the Modelica model.
-     *  @throws ConnectException If commands couldn't
+     *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelic Compiler)OMC.
-     *  @throws IOException If the executable result file of buildModel()
+     *  @exception IOException If the executable result file of buildModel()
      *   couldn't be executed.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public void runModel(String fileName, String modelName, String startTime,
             String stopTime, int numberOfIntervals, String outputFormat,
@@ -140,7 +140,7 @@ public interface IOMCCommand {
             IllegalActionException;
 
     /** Leave and quit OpenModelica environment.
-     *  @throws ConnectException If quit command couldn't
+     *  @exception ConnectException If quit command couldn't
      *  be sent to the OMC.
      */
     public void stopServer() throws ConnectException;

@@ -749,7 +749,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
 
     /** Model time is only used for correct execution of actors and the
      * scheduler will determine whether another event can be fired in

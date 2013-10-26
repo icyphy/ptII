@@ -180,7 +180,7 @@ public class Bus extends AtomicCommunicationAspect {
     /** Create an intermediate receiver that wraps a given receiver.
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
-     * @throws IllegalActionException Thrown if Bus is used in container different from the container of the bus.
+     * @exception IllegalActionException Thrown if Bus is used in container different from the container of the bus.
      */
     public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
@@ -483,8 +483,8 @@ public class Bus extends AtomicCommunicationAspect {
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
          *  @param decorator The decorator.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public BusAttributes(NamedObj target, AtomicCommunicationAspect decorator)
                 throws IllegalActionException, NameDuplicationException {
@@ -495,8 +495,8 @@ public class Bus extends AtomicCommunicationAspect {
         /** Constructor to use when parsing a MoML file.
          *  @param target The object being decorated.
          *  @param name The name of this attribute.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public BusAttributes(NamedObj target, String name)
                 throws IllegalActionException, NameDuplicationException {

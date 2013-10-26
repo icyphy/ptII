@@ -154,7 +154,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  the container of this object is an Attribute, then the associated
      *  attribute is that container. Otherwise, throw an exception.
      *  @return The associated attribute.
-     *  @throws IllegalActionException If no Settable associated attribute
+     *  @exception IllegalActionException If no Settable associated attribute
      *   can be found.
      */
     protected Settable _associatedAttribute() throws IllegalActionException {

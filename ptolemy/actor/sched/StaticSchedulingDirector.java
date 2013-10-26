@@ -292,7 +292,7 @@ public class StaticSchedulingDirector extends Director {
     /** Resume the execution of an actor that was previously blocked because
      *  it didn't have all the resources it needed for execution.
      *  @param actor The actor that resumes execution.
-     *  @throws IllegalActionException Not thrown here but in derived classes.
+     *  @exception IllegalActionException Not thrown here but in derived classes.
      */
     @Override
     public void resumeActor(Actor actor) throws IllegalActionException {

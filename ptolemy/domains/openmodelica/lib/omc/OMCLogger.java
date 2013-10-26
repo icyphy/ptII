@@ -65,7 +65,7 @@ public class OMCLogger {
      *  This constructor has no parameter.
      *  It creates the log file in the temporary folder and sets the format
      *  of the log to show date and time first.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private OMCLogger() throws IllegalActionException {
 
@@ -95,7 +95,7 @@ public class OMCLogger {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
+    ////                         public variables                  ////
 
     /** Logger name of OpenModelica Compiler(OMC). */
     public String loggerName = "omcLogger";
@@ -104,7 +104,7 @@ public class OMCLogger {
     public Logger omcLogger = Logger.getLogger("omcLogger");
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public methods                  ////
+    ////                         public methods                    ////
 
     /** Create the directory for saving the simulation result files
      *  and also the log.

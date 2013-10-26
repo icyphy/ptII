@@ -123,18 +123,18 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
        for (int i = 0; i < _nStates; i++) {
            _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
                    .doubleValue();
-           for (int j = 0; j < _nCategories; j++){
+           for (int j = 0; j < _nCategories; j++) {
                _B[i][j] = ((DoubleToken)((MatrixToken) observationProbabilities.getToken())
                        .getElementAsToken(i,j))
                        .doubleValue();
            }
-           for(int j = 0; j< _nStates; j++){
+           for (int j = 0; j< _nStates; j++) {
                _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
                        .getElementAsToken(i, j))
                        .doubleValue();
            }
        }
-           if( (_nStates != _transitionMatrixEstimate[0].length) ||(_nStates != _transitionMatrixEstimate.length))
+           if ((_nStates != _transitionMatrixEstimate[0].length) ||(_nStates != _transitionMatrixEstimate.length))
            {
                throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
            }
@@ -151,7 +151,7 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
            output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
    }
 
-   protected double emissionProbability(double y, int hiddenState){
+   protected double emissionProbability(double y, int hiddenState) {
        return _B[hiddenState][(int)y];
    }
    ///////////////////////////////////////////////////////////////////

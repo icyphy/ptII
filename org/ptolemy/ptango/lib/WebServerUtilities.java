@@ -161,10 +161,10 @@ public class WebServerUtilities {
      * @return true if the web server is hosting the given model; false
      * otherwise
      */
-    public boolean isHostingModel(String fullModelName){
+    public boolean isHostingModel(String fullModelName) {
         for (WebApplicationInfo app : _applications) {
             if (fullModelName != null &&
-                    app.getModelName().equalsIgnoreCase(fullModelName)){
+                    app.getModelName().equalsIgnoreCase(fullModelName)) {
                 return true;
             }
         }
@@ -174,7 +174,7 @@ public class WebServerUtilities {
     /** Return true if the web server is running; false otherwise.
      *
      * @return true if the web server is running; false otherwise */
-    public boolean isRunning(){
+    public boolean isRunning() {
         if (_server != null) {
             return _server.isRunning();
         } else {
@@ -188,7 +188,7 @@ public class WebServerUtilities {
      * requesting the same URL mapping.
      *
      * @param appInfo  The application to add to this server
-     * @throws Exception   If the new application conflicts with existing
+     * @exception Exception   If the new application conflicts with existing
      * applications, for example, by requesting the same URL mapping.
      */
     public void register(WebApplicationInfo appInfo) throws Exception {
@@ -256,7 +256,7 @@ public class WebServerUtilities {
                 while (!_startAttempted) {
                      try {
                          _lock.wait();
-                     } catch(InterruptedException e) {
+                     } catch (InterruptedException e) {
                          // FIXME: Do anything special if thread is interrupted?
                          break;
                      }
@@ -270,7 +270,7 @@ public class WebServerUtilities {
             // Future.get(), which blocks the calling thread
             // Since in normal operation the server thread runs indefinitely,
             // Future.get() would block Ptolemy model execution indefinitely
-            if (_exception != null){
+            if (_exception != null) {
                 if (_exception instanceof BindException) {
                     throw new Exception("The web server attempted to start on" +
                             " port " + _portNumber + ", but this port is " +
@@ -359,7 +359,7 @@ public class WebServerUtilities {
                if (handler instanceof ServletContextHandler &&
                    ((ServletContextHandler) handler).getContextPath()
                    .equalsIgnoreCase(appInfo.getApplicationPath().toString())) {
-               for (URI servletPath : appInfo.getServletInfo().keySet()){
+               for (URI servletPath : appInfo.getServletInfo().keySet()) {
                    ServletHandler servletHandler =
                           ((ServletContextHandler) handler).getServletHandler();
                    for (ServletMapping mapping :
@@ -504,7 +504,7 @@ public class WebServerUtilities {
                                  (ResourceCollection) handler.getBaseResource();
 
                                 for (FileResource resource:
-                                    appInfo.getResourceInfo().get(path)){
+                                    appInfo.getResourceInfo().get(path)) {
                                     if (!resource.isContainedIn(resources)) {
                                         // Jetty doesn't seem to offer a method
                                         // to add a resource to a
@@ -533,7 +533,7 @@ public class WebServerUtilities {
                                             new FileResource(appInfo
                                                     .getTemporaryFileLocation()
                                                     .asURL());
-                                    if (!tempResource.isContainedIn(resources)){
+                                    if (!tempResource.isContainedIn(resources)) {
                                         ArrayList<Resource> newResources =
                                                 new ArrayList<Resource>(Arrays
                                              .asList(resources.getResources()));
@@ -586,11 +586,11 @@ public class WebServerUtilities {
                         try {
                             resources.add(new FileResource(appInfo
                                     .getTemporaryFileLocation().asURL()));
-                        } catch(MalformedURLException e){
+                        } catch (MalformedURLException e) {
                             throw new Exception("Temporary file location " +
                            appInfo.getTemporaryFileLocation() +
                            " cannot be accessed.");
-                        } catch(URISyntaxException e2){
+                        } catch (URISyntaxException e2) {
                             throw new Exception("Temporary file location " +
                            appInfo.getTemporaryFileLocation() +
                            " cannot be accessed.");

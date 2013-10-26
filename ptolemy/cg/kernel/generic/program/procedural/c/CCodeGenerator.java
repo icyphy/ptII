@@ -1610,7 +1610,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         result.append(sanitizedActorName + "->wrapup = " + sanitizedActorName + "_wrapup;" + _eol);
 
         Iterator<?> inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()){
+        while (inputPorts.hasNext()) {
             TypedIOPort iPort = (TypedIOPort) inputPorts.next();
             ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(iPort);
@@ -1618,7 +1618,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         Iterator<?> outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()){
+        while (outputPorts.hasNext()) {
             TypedIOPort oPort = (TypedIOPort) outputPorts.next();
             ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(oPort);
@@ -1679,7 +1679,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         result.append(_eol + comment("Creation of the ports of the container") + _eol);
         Iterator<?> inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()){
+        while (inputPorts.hasNext()) {
             TypedIOPort iPort = (TypedIOPort) inputPorts.next();
             ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(iPort);
@@ -1687,7 +1687,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         Iterator<?> outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()){
+        while (outputPorts.hasNext()) {
             TypedIOPort oPort = (TypedIOPort) outputPorts.next();
             ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(oPort);

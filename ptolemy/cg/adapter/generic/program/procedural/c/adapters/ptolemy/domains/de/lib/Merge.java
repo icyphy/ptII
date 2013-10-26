@@ -65,7 +65,7 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
      * A function which returns the generated code from the C template
      * initialization method.
      * @return A string representing the Initialize C code for this actor
-     * @throws IllegalActionException If illegal macro names are found.
+     * @exception IllegalActionException If illegal macro names are found.
      */
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();

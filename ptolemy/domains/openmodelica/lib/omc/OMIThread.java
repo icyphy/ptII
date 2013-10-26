@@ -83,7 +83,7 @@ public class OMIThread extends Thread {
      *  @param parameterFilter Filter for showing the result of the simulation..
      *  @param stopTime Stop time of the simulation.
      *  @param outputPort The output port that the result of simulation should be sent to.
-     *  @throws IOException If I/O error occurs while creating sockets and streams.
+     *  @exception IOException If I/O error occurs while creating sockets and streams.
      */
     public OMIThread(String parameterFilter, String stopTime,
             TypedIOPort outputPort) throws IOException {
@@ -358,7 +358,7 @@ public class OMIThread extends Thread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                    ////
+    ////                         private variables                 ////
     // Control client socket.
     private Socket _controlClient = null;
 

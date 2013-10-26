@@ -1275,7 +1275,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  puts an event into the queue for the current time.
      *
      *  @param actor The actor that resumes execution.
-     *  @throws IllegalActionException Not thrown here but in derived classes.
+     *  @exception IllegalActionException Not thrown here but in derived classes.
      */
     public void resumeActor(Actor actor) throws IllegalActionException {
         List<DEEvent> events = _actorsInExecution.get(actor);
@@ -1593,7 +1593,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  Only resource schedulers can enqueue trigger events with future timestamps.
      *  @param ioPort The destination IO port.
      *  @param time The timestamp of the new event.
-     *  @throws IllegalActionException If the time argument is not the
+     *  @exception IllegalActionException If the time argument is not the
      *  current time, or the depth of the given IO port has not be calculated,
      *  or the new event can not be enqueued.
      */

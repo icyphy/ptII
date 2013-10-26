@@ -61,7 +61,7 @@ public class EventDictionary implements Cloneable {
     /**
      * Clone an EventDictionary.
      *
-     * @throws CloneNotSupportedException
+     * @exception CloneNotSupportedException
      *             the object's class does not implement the Cloneable
      *             interface.
      */

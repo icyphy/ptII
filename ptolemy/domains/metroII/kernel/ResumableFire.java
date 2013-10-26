@@ -109,7 +109,7 @@ public class ResumableFire extends FireMachine {
      *
      * @param metroIIEventList
      *            A list of MetroII events.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             if the associated action (e.g. firing) is not permitted.
      */
     @Override

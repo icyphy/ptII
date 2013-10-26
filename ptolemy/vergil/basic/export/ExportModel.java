@@ -944,7 +944,7 @@ public class ExportModel {
     private static Timer _failSafeTimer = null;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     /** Return true if the model is runnable from this context.
      *  Models that invoke SwingUtilities.invokeAndWait()
@@ -971,7 +971,7 @@ public class ExportModel {
         Iterator atomicEntities = model.allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Entity entity = (Entity)atomicEntities.next();
-            if (entity instanceof UsesInvokeAndWait){
+            if (entity instanceof UsesInvokeAndWait) {
                 System.out.println(entity.getFullName()
                         + " invoked SwingUtilities.invokeAndWait()");
                 return false;

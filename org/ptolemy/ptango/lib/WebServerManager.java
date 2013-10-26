@@ -58,7 +58,7 @@ public final class WebServerManager {
     ////                         public methods                    ////
 
     public static WebServerManager getInstance() {
-       if(_instance == null) {
+       if (_instance == null) {
           _instance = new WebServerManager();
        }
        return _instance;
@@ -91,7 +91,7 @@ public final class WebServerManager {
 
         if (server != null) {
             // FIXME:  Use just model name, or whole application info object?
-            if (server.isHostingModel(fullModelName)){
+            if (server.isHostingModel(fullModelName)) {
                 return true;
             }
         }
@@ -126,7 +126,7 @@ public final class WebServerManager {
         if (server != null) {
             // FIXME:  Use just model name, or whole application info object?
             if (server.isHostingModel(fullModelName)
-                    && server.isRunning()){
+                    && server.isRunning()) {
                 return true;
             }
         }

@@ -246,7 +246,7 @@ public class OpenModelica extends TypedAtomicActor {
      *  is calculated step by step according to the parameters of the OpenModelica actor.
      *  The result is sent in the string format to the output port of the OpenModelica actor to be
      *  displayed by Display actor.</p>
-     *  @throws IllegalActionException If the evaluation of the expression
+     *  @exception IllegalActionException If the evaluation of the expression
      *  triggers it, or the evaluation yields a null result, or the evaluation
      *  yields an incompatible type, or if there is no director.
      */
@@ -376,7 +376,7 @@ public class OpenModelica extends TypedAtomicActor {
 
     /** Invoke the initialize() of the super class. It Starts OpenModelica Compiler(OMC)
      *  as a server listening on the CORBA interface by setting +d=interactiveCorba flag.
-     *  @throws IllegalActionException If OMC server is unable to start.
+     *  @exception IllegalActionException If OMC server is unable to start.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -396,7 +396,7 @@ public class OpenModelica extends TypedAtomicActor {
     }
 
     /** Invoke the wrapup() of the super class. Then, quit OpenModelica environment.
-     *  @throws IllegalActionException If OMC server is unable to stop.
+     *  @exception IllegalActionException If OMC server is unable to stop.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();

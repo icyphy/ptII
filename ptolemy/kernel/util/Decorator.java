@@ -96,7 +96,7 @@ public interface Decorator extends Nameable {
      *  @param target The NamedObj that will be decorated.
      *  @return The decorated attributes for the target NamedObj, or null if the
      *   specified NamedObj is not decorated by this decorator.
-     *  @throws IllegalActionException If the target cannot be determined to
+     *  @exception IllegalActionException If the target cannot be determined to
      *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target)
@@ -111,7 +111,7 @@ public interface Decorator extends Nameable {
      *  Implementers of this method are required to maintain consistency
      *  with {@link #createDecoratorAttributes(NamedObj)}.
      *  @return A list of the objects decorated by this decorator.
-     *  @throws IllegalActionException If some object cannot be determined to
+     *  @exception IllegalActionException If some object cannot be determined to
      *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
     public List<NamedObj> decoratedObjects() throws IllegalActionException;
@@ -120,7 +120,7 @@ public interface Decorator extends Nameable {
      *  opaque hierarchy boundaries. That is, return true to make this
      *  decorator visible to objects even within opaque composites.
      *  @return True if decorator is global.
-     *  @throws IllegalActionException If it cannot be determined whether
+     *  @exception IllegalActionException If it cannot be determined whether
      *   this is global or not (e.g., a parameter cannot be evaluated).
      */
     public boolean isGlobalDecorator() throws IllegalActionException;

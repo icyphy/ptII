@@ -96,7 +96,7 @@ public class SDFDirector
      * parameters and fields as well as with the depths of the actors
      *
      * @return The generated constructor code
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateConstructorCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
@@ -515,7 +515,7 @@ public class SDFDirector
     /** Generate the code representing the schedule statically inferred from the
      *  Ptolemy model.
      *  @return the code representing the schedule.
-     *  @throws IllegalActionException if something happens while writing the code
+     *  @exception IllegalActionException if something happens while writing the code
      */
     public String generateSchedule() throws IllegalActionException {
         StringBuffer code = new StringBuffer();

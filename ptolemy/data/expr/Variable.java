@@ -637,7 +637,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         String tokenString;
         if (value == null) {
             tokenString = "null";
-        } else if (isStringMode()){
+        } else if (isStringMode()) {
             tokenString = ((StringToken)value).stringValue();
         } else {
             tokenString = value.toString();
@@ -1965,7 +1965,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (_declaredType instanceof StructuredType && !_declaredType.isConstant()) {
                   ((StructuredType) _varType)
                         .updateType((StructuredType) newToken.getType());
-            } else if(_declaredType.equals(BaseType.UNKNOWN)) {
+            } else if (_declaredType.equals(BaseType.UNKNOWN)) {
                 // this could be either a structured or basic type
                 _varType = newToken.getType();
             } else {

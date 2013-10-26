@@ -121,7 +121,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this resource scheduler.
      *  @param listener The listener to be added.
-     *  @throws IllegalActionException If an error occurs in the initialization
+     *  @exception IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
     public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException {
@@ -193,7 +193,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
      *  specifying the execution time, return the minimum execution time.
      * @param actor The actor.
      * @return The execution time.
-     * @throws IllegalActionException Thrown in attribute or token cannot be read.
+     * @exception IllegalActionException Thrown in attribute or token cannot be read.
      */
         @Override
     public double getExecutionTime(Actor actor)
@@ -414,7 +414,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         }
 
         ///////////////////////////////////////////////////////////////////
-    ////                    protected variables                    ////
+    ////                         protected variables               ////
 
         /** Actors decorated by this aspect. */
     protected List<NamedObj> _actors;

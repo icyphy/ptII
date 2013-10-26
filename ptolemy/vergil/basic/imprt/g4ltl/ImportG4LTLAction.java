@@ -108,7 +108,7 @@ public class ImportG4LTLAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private methods                        ////
+    ////                         private methods                   ////
 
     /** Import the design by invoking LTL synthesis via G4LTL.
      */
@@ -208,8 +208,8 @@ public class ImportG4LTLAction extends AbstractAction {
                                 icon);
                         return;
                     } else {
-                        if(!Version.BSD_VERSION){
-                            if(!result.getMessage2().equals("")){
+                        if (!Version.BSD_VERSION) {
+                            if (!result.getMessage2().equals("")) {
                                 // Generate the multiplexer
                                 G4LTL.updateModel(result.getMessage2(), basicGraphFrame.getModel());
                             }

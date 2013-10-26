@@ -59,8 +59,8 @@ public class ExecutionAttributes extends DecoratorAttributes {
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
      *  @param decorator The decorator.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public ExecutionAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
@@ -71,8 +71,8 @@ public class ExecutionAttributes extends DecoratorAttributes {
     /** Constructor to use when parsing a MoML file.
      *  @param target The object being decorated.
      *  @param name The name of this attribute.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public ExecutionAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -93,7 +93,7 @@ public class ExecutionAttributes extends DecoratorAttributes {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
+    ////                         public methods                    ////
 
     /** React to a change in an attribute.  If the attribute is
      *  <i>enable</i>, remember the value.
@@ -118,7 +118,7 @@ public class ExecutionAttributes extends DecoratorAttributes {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Create the parameters.
      */

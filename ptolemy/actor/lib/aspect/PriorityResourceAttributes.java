@@ -55,8 +55,8 @@ public class PriorityResourceAttributes extends ExecutionTimeAttributes {
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
      *  @param decorator The decorator.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public PriorityResourceAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
@@ -67,8 +67,8 @@ public class PriorityResourceAttributes extends ExecutionTimeAttributes {
     /** Constructor to use when parsing a MoML file.
      *  @param target The object being decorated.
      *  @param name The name of this attribute.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public PriorityResourceAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -86,7 +86,7 @@ public class PriorityResourceAttributes extends ExecutionTimeAttributes {
     public Parameter priority;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                         private methods                   ////
 
     /** Create the parameters.
      */

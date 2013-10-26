@@ -456,7 +456,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * @param e2
      *            The second Ptides event.
      * @return True if e1 could causally affect e2; false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if causality interface cannot be computed.
      */
     public boolean causallyAffect(PtidesEvent e1, PtidesEvent e2)
@@ -515,7 +515,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      *            An event
      * @return True if any event in eventArray could causally affect event;
      *         false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if causality interface cannot be computed.
      */
     public boolean isCausallyAffected(Collection<PtidesEvent> eventArray,
@@ -536,7 +536,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      *            An event
      * @return True if any event currently being processed could causally affect
      *         event; false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if causality interface cannot be computed.
      */
     public boolean isFiringEventCausallyAffect(PtidesEvent event)
@@ -551,7 +551,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      *            A Ptides event
      * @return True if any pending Ptides event could causally affect event;
      *         false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if causality interface cannot be computed.
      */
     public boolean isPendingEventCausallyAffect(PtidesEvent event)
@@ -1019,7 +1019,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * fired. Since _checkForNextEvent() always returns true, this method will
      * keep being called until it returns null.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected PtidesEvent _getNextEventToFire() throws IllegalActionException {
         PtidesEvent event = _getNextEventFrom(_pureEvents);

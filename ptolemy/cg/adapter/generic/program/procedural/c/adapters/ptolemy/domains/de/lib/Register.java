@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Register
 
 /**
@@ -60,7 +60,7 @@ public class Register extends MostRecent {
      * A function which returns the generated code from the C template
      * preFire method.
      * @return A string representing the preFire C code for this actor
-     * @throws IllegalActionException If illegal macro names are found.
+     * @exception IllegalActionException If illegal macro names are found.
      */
     public String generatePrefireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();

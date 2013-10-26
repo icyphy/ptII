@@ -71,7 +71,7 @@ public class NonBlockingFire extends FireMachine {
      *
      * @param metroIIEventList
      *            the list of MetroII events that trigger startOrResume().
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             if the associated action (e.g. firing) is not permitted.
      */
     @Override

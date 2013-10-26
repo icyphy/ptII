@@ -143,7 +143,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     /** React to the change of the <i>justMonitor</i> attribute by
      *  updating internal variables.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If token in attribute cannot
+     *  @exception IllegalActionException If token in attribute cannot
      *    be accessed.
      */
     @Override
@@ -399,7 +399,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** List of parameters per port.
      */
@@ -459,8 +459,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
          *  @param decorator The decorator.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public CompositeCommunicationAspectAttributes(NamedObj target, CompositeCommunicationAspect decorator)
                 throws IllegalActionException, NameDuplicationException {
@@ -471,8 +471,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         /** Constructor to use when parsing a MoML file.
          *  @param target The object being decorated.
          *  @param name The name of this attribute.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public CompositeCommunicationAspectAttributes(NamedObj target, String name)
                 throws IllegalActionException, NameDuplicationException {

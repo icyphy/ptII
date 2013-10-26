@@ -594,7 +594,7 @@ public class Director extends Attribute implements Executable {
      * @param actor The actor.
      * @param timestamp The timestamp of the event that triggered the firing.
      * @return The deadline.
-     * @throws IllegalActionException Thrown in subclasses.
+     * @exception IllegalActionException Thrown in subclasses.
      */
     public Time getDeadline(Actor actor, Time timestamp) throws IllegalActionException {
         return Time.POSITIVE_INFINITY;
@@ -946,7 +946,7 @@ public class Director extends Attribute implements Executable {
      *  In this base class, the implementation is empty. Derived directors
      *  should override this method to handle resuming of actor execution.
      *  @param actor The actor that resumes execution.
-     *  @throws IllegalActionException Not thrown here but in derived classes.
+     *  @exception IllegalActionException Not thrown here but in derived classes.
      */
     public void resumeActor(Actor actor) throws IllegalActionException {
     }
@@ -1795,7 +1795,7 @@ public class Director extends Attribute implements Executable {
      *
      *  @param actor The actor to be scheduled.
      *  @return The aspect.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected ActorExecutionAspect _getExecutionAspect(Actor actor) throws IllegalActionException {
         if (_aspectForActor == null) {

@@ -78,7 +78,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     /**
      * Clone MappingConstraintSolver.
      *
-     * @throws CloneNotSupportedException
+     * @exception CloneNotSupportedException
      *             the object's class does not implement the Cloneable
      *             interface.
      */

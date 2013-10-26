@@ -161,7 +161,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      * @return If the container is an instance of the PtidesPlatform,
      * then return constructor code.  Otherwise return the empty
      * string.
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateConstructorCode() throws IllegalActionException {
         // FIXME : This should be in a proper adapter but since the PtidesPlatformDirector class

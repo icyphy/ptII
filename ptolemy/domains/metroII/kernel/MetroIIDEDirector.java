@@ -121,10 +121,10 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      *            Container of the director.
      * @param name
      *            Name of this director.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If the director is not compatible with the specified
      *             container. May be thrown in a derived class.
-     * @throws NameDuplicationException
+     * @exception NameDuplicationException
      *             If the container is not a CompositeActor and the name
      *             collides with an entity in the container.
      */
@@ -243,7 +243,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      *         should be checked for processing; -1 if there's no actor to fire,
      *         and we should not keep firing; 1 if there's no actor to fire, but
      *         the next event should be checked for processing.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If the firing actor throws it, or event queue is not ready,
      *             or an event is missed, or time is set backwards.
      */
@@ -473,8 +473,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * Process the mappable actors. The assumption is that a mappable actor has
      * a delay strictly greater than zero.
      *
-     * @throws IllegalActionException
-     * @throws CollectionAbortedException
+     * @exception IllegalActionException
+     * @exception CollectionAbortedException
      */
     void processMappableActorEvents(
             ResultHandler<Iterable<Event.Builder>> resultHandler)

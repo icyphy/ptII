@@ -113,21 +113,21 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == meanVectorGuess){
+       if (attribute == meanVectorGuess) {
            int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
            _mu0 = new double[nS];
            for ( int i = 0; i < nS; i++) {
                _mu0[i] = ((DoubleToken)((ArrayToken) meanVectorGuess.getToken()).getElement(i))
                        .doubleValue();
            }
-       } else if(attribute == standardDeviationGuess){
+       } else if (attribute == standardDeviationGuess) {
            int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
            _sigma0 = new double[nS];
            for ( int i = 0; i < nS; i++) {
                _sigma0[i] = ((DoubleToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(i))
                        .doubleValue();
            }
-       } else{
+       } else {
            super.attributeChanged(attribute);
        }
    }
@@ -157,7 +157,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
        public void fire() throws IllegalActionException {
        super.fire();
 
-       if( (_nStates != _sigma0.length) ||(_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nStates != _mu0.length))
+       if ((_nStates != _sigma0.length) ||(_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nStates != _mu0.length))
        {
            throw new IllegalActionException(this, "Parameter guess vectors must have equal lengths.");
        }
@@ -169,7 +169,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
        Token[] pTokens = new Token[_nStates];
 
 
-           for ( int i = 0; i< _nStates; i++){
+           for ( int i = 0; i< _nStates; i++) {
                mTokens[i] = new DoubleToken(m_new[i]);
                sTokens[i] = new DoubleToken(s_new[i]);
                pTokens[i] = new DoubleToken(prior_new[i]);
@@ -184,7 +184,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 
 
    }
-   protected double emissionProbability(double y, int hiddenState){
+   protected double emissionProbability(double y, int hiddenState) {
 
        double s = _sigma[hiddenState];
        double m = _mu[hiddenState];
@@ -192,12 +192,12 @@ public class HMMGaussianEstimator extends ParameterEstimator {
        return 1.0/(Math.sqrt(2*Math.PI)*s)*Math.exp(-0.5*Math.pow((y-m)/s, 2));
    }
 
-protected boolean _checkForConvergence(int iterations){
+protected boolean _checkForConvergence(int iterations) {
 
 
-       if((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0]) || (prior_new[0]!=prior_new[0])){
+       if ((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0]) || (prior_new[0]!=prior_new[0])) {
            // if no convergence in 10 iterations, issue warning message.
-           if ( (iterations >= _nIterations-1)){
+           if ( (iterations >= _nIterations-1)) {
                // return the guess parameters
                m_new = _mu0;
                s_new = _sigma0;
@@ -205,24 +205,24 @@ protected boolean _checkForConvergence(int iterations){
                prior_new = _priors;
                System.out.println("Expectation Maximization failed to converge");
                return false;
-           }else if(_randomize){
+           }else if (_randomize) {
                // randomize means
                double minO = _observations[0];
                double maxO = _observations[0];
-               for(int t=0; t<_observations.length; t++){
-                   if( _observations[t] < minO){
+               for (int t=0; t<_observations.length; t++) {
+                   if (_observations[t] < minO) {
                        minO = _observations[t];
                    }
-                   if( _observations[t] > maxO){
+                   if (_observations[t] > maxO) {
                        maxO = _observations[t];
                    }
                }
                double L = maxO - minO;
                // make new random guess
-               for( int i = 0; i< _nStates; i++){
+               for ( int i = 0; i< _nStates; i++) {
                    m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO;
                    s_new[i] = Math.abs((maxO - minO)*Math.random())/_nStates;
-                   for ( int j = 0 ; j < _nStates; j++){
+                   for ( int j = 0 ; j < _nStates; j++) {
                        //A_new[i][j] = 1.0/nStates;
                    }
                }
@@ -235,7 +235,7 @@ protected boolean _checkForConvergence(int iterations){
        return true;
    }
 
-   protected void _initializeEMParameters(){
+   protected void _initializeEMParameters() {
 
     // set the initial values of parameters
        _sigma = _sigma0;
@@ -249,7 +249,7 @@ protected boolean _checkForConvergence(int iterations){
        prior_new = new double[_nStates];
    }
 
-   protected void _iterateEM(){
+   protected void _iterateEM() {
 
        newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn,0);
        m_new = (double[])   newEstimates.get("mu_hat");
@@ -259,7 +259,7 @@ protected boolean _checkForConvergence(int iterations){
        likelihood = (Double) (newEstimates.get("likelihood"));
    }
 
-   protected void _updateEstimates(){
+   protected void _updateEstimates() {
        _transitionMatrix    = A_new;
        _sigma = s_new;
        _mu    = m_new;

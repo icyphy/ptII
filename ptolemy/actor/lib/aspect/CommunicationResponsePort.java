@@ -106,7 +106,7 @@ public class CommunicationResponsePort extends TypedAtomicActor {
 
     /** Get the token from parameter but do not remove it.
      *  @return The token.
-     *  @throws IllegalActionException If token cannot be accessed.
+     *  @exception IllegalActionException If token cannot be accessed.
      */
     public Token getToken() throws IllegalActionException {
         return _token;

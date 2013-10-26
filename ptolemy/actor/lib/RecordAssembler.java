@@ -288,7 +288,7 @@ public class RecordAssembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** Keeps track of which name or alias is associated with which port. */
     protected Map<String, TypedIOPort> _portMap;

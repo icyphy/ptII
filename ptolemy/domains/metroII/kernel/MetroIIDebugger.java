@@ -59,7 +59,7 @@ public class MetroIIDebugger implements Cloneable {
     /**
      * Clone a MetroDebugger.
      *
-     * @throws CloneNotSupportedException
+     * @exception CloneNotSupportedException
      *             the object's class does not implement the Cloneable
      *             interface.
      */

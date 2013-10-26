@@ -556,7 +556,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             double currentTimeValue = currentTime.getDoubleValue();
 
             double states[] = _states.array();
-            if (_newStates == null || _newStates.length != states.length){
+            if (_newStates == null || _newStates.length != states.length) {
                 _newStates = new double[states.length];
             }
             // Make sure the states of the FMU match the last commit.
@@ -1223,7 +1223,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             ////////////////////////////////////////////
             //// model exchange version
-            if (_fmiModelDescription.modelExchange){
+            if (_fmiModelDescription.modelExchange) {
                 try {
                     _fmiCompletedIntegratorStepFunction = _fmiModelDescription.getFmiFunction("fmiCompletedIntegratorStep");
                 } catch (Throwable throwable) {
@@ -1307,7 +1307,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
-            if (_fmiModelDescription.modelExchange){
+            if (_fmiModelDescription.modelExchange) {
                 if (_debugging) {
                     _debugToStdOut("FMU for model exchange: about to call " + modelIdentifier
                             + "_fmiInstantiateModel");
@@ -1343,7 +1343,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // assume that the FMU will not. This means that we need to allocate
             // memory here, and deallocate it in wrapup().
 
-            if (_fmiModelDescription.modelExchange){
+            if (_fmiModelDescription.modelExchange) {
                 if (_debugging) {
                     _debugToStdOut("FMU for model exchange: about to call " + modelIdentifier
                             + "_fmiInstantiateModel");
@@ -1551,7 +1551,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  indicates that fmiEventUpdate() should be called, call it.
      *  @param eventOccurred True if a time event or state event has occurred and
      *   fmiEventUpdate should be called.
-     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     protected void _fmiCompletedIntegratorStep(boolean eventOccurred) throws IllegalActionException {
         ByteBuffer callEventUpdate = ByteBuffer.allocate(1);
@@ -1828,7 +1828,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /** Free the instance of the FMU.
-     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     protected void _fmiFreeInstance() throws IllegalActionException {
         if (_debugging) {
@@ -1853,7 +1853,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Return the derivatives of the continuous stateus provided by the FMU.
      *  @return The derivatives of the FMU.
-     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     protected double[] _fmiGetDerivatives() throws IllegalActionException {
         int numberOfStates = _fmiModelDescription.numberOfContinuousStates;
@@ -1879,7 +1879,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  next event time and calls fireAt() on the director if a next event time
      *  is returned. In the case of co-simulation, if the FMU provides a maximum
      *  step size, get that from the FMU and call fireAt() as well.
-     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     @SuppressWarnings("deprecation")
     protected void _fmiInitialize() throws IllegalActionException {
@@ -1946,7 +1946,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** For model exchange, set the continuous states of the FMU to the specified array.
      *  @param values The values to assign to the states.
-     *  @throws IllegalActionException If the length of the array does not match
+     *  @exception IllegalActionException If the length of the array does not match
      *   the number of continuous states, or if the FMU does not return fmiOK.
      */
     protected void _fmiSetContinuousStates(double values[]) throws IllegalActionException {
@@ -1974,7 +1974,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Set the time of the FMU to the specified time.
      *  @param time The time.
-     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     protected void _fmiSetTime(Time time) throws IllegalActionException {
         if (_debugging) {
@@ -2012,7 +2012,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /** Terminate the FMU.
-     *  @throws IllegalActionException If the FMU does not return fmiOK.
+     *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     protected void _fmiTerminate() throws IllegalActionException {
         if (_debugging) {
@@ -2035,7 +2035,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Free the memory recording FMU state, if the canGetAndSetFMUstate capability flag
      *  for the FMU is true. Otherwise, do nothing.
-     *  @throws IllegalActionException If freeing the memory the state fails.
+     *  @exception IllegalActionException If freeing the memory the state fails.
      */
     protected void _freeFMUState() throws IllegalActionException {
         if (_fmiFreeFMUstateFunction != null && _recordedState != null) {
@@ -2082,7 +2082,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  For co-simulation, if the canGetAndSetFMUstate capability flag
      *  for the FMU is true, then it record the state by invoking
      *  fmiGetFMUstate(). If the capability flag is false, do nothing.
-     *  @throws IllegalActionException If recording the state fails.
+     *  @exception IllegalActionException If recording the state fails.
      */
     protected void _recordFMUState() throws IllegalActionException {
         if (_fmiModelDescription.modelExchange) {
@@ -2125,7 +2125,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** If the FMU can provide a maximum step size, query for that maximum
      *  step size and call fireAt() to ensure that the FMU is invoked
      *  at the specified time.
-     *  @throws IllegalActionException If the call to fireAt() throws it.
+     *  @exception IllegalActionException If the call to fireAt() throws it.
      */
     protected void _requestRefiringIfNecessary() throws IllegalActionException {
         Director director = getDirector();
@@ -2156,7 +2156,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 int providesMaxStepSize = ((Integer) maxStepSizeFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent, maxStepSize })).intValue();
-                if (providesMaxStepSize == FMILibrary.FMIStatus.fmiOK){
+                if (providesMaxStepSize == FMILibrary.FMIStatus.fmiOK) {
                     // FMU provides an initial maximum step size.
                     double stepSize = maxStepSize.get(0);
                     Time fireAtTime = currentTime.add(stepSize);
@@ -2174,7 +2174,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** Restore the current FMU state to match that most recently
      *  recorded, if the canGetAndSetFMUstate capability flag
      *  for the FMU is true. Otherwise, do nothing.
-     *  @throws IllegalActionException If there is no recorded state,
+     *  @exception IllegalActionException If there is no recorded state,
      *   or if restoring the state fails.
      */
     protected void _restoreFMUState() throws IllegalActionException {

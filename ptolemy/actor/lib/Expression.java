@@ -310,7 +310,7 @@ public class Expression extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** Variable storing the result of the expression evaluation so that
      *  subclasses can access it in an overridden fire() method.

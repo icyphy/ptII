@@ -230,7 +230,7 @@ public class UnionDisassembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
 
     /** Map port names or aliases to port objects. If the mapping
      *  has changed, then invalidate the resolved types, which
@@ -266,7 +266,7 @@ public class UnionDisassembler extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /** Keeps track of which name or alias is associated with which port. */
     private Map<String, TypedIOPort> _portMap;

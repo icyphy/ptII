@@ -208,7 +208,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private methods                        ////
+    ////                         private methods                   ////
 
     /**
      * Update the expression with 'MetroIIFSMDirector' instead of 'FSMDirector'

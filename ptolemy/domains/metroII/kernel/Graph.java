@@ -59,7 +59,7 @@ public class Graph implements Cloneable {
     /**
      * Clone the linked list.
      *
-     * @throws CloneNotSupportedException the object's class does not implement the Cloneable interface.
+     * @exception CloneNotSupportedException the object's class does not implement the Cloneable interface.
      */
     @Override
     public Graph clone() throws CloneNotSupportedException {

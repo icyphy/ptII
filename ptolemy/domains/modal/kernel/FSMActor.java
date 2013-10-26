@@ -3145,7 +3145,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // state refinement.
             if (!chosenTransition.isPreemptive()
                     && chosenTransition.isImmediate()) {
-                if(chosenTransition.destinationState() != _currentState){
+                if (chosenTransition.destinationState() != _currentState) {
                     // reset probability threshold and generate new random
                     // in case there is an immediate transition.
                     _oldThreshold = 0.0;
@@ -3366,7 +3366,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         boolean stateChanged = _currentState != currentTransition
                 .destinationState();
         _currentState = nextState;
-        if(stateChanged){
+        if (stateChanged) {
             // reset threshold for probabilistic transitions
             _oldThreshold = 0.0;
         }
@@ -4296,33 +4296,33 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         public Token apply(Token[] arguments)
                 throws IllegalActionException {
 
-            if (arguments[0] instanceof DoubleToken || arguments[0] instanceof IntToken){
-                if ( arguments[0] instanceof IntToken){
+            if (arguments[0] instanceof DoubleToken || arguments[0] instanceof IntToken) {
+                if ( arguments[0] instanceof IntToken) {
                     // to allow expresions 0 and 1 (instead of 0.0 and 1.0)
                     _guardProbability = (double)((IntToken)arguments[0]).intValue();
                 }
-                else{
+                else {
                     _guardProbability = ((DoubleToken)arguments[0]).doubleValue();
                 }
 
-                if(_transitionBeingTested == null){
+                if (_transitionBeingTested == null) {
                     return BooleanToken.FALSE;
                 }
 
                  // First, check if the transition has already been evaluated. If so, return the result. If not,
                  // change threshold and evaluate.
 
-                 if(_transitionEvaluatedTo.get(_transitionBeingTested) != null){
+                 if (_transitionEvaluatedTo.get(_transitionBeingTested) != null) {
                      // means we have already evaluated this transition,
                      return (BooleanToken)_transitionEvaluatedTo.get(_transitionBeingTested);
                  }
                  else
                  {
                      // no record has been found; evaluate.
-                     if(_guardProbability + _oldThreshold > 1.0 || (_guardProbability > 1.0)){
+                     if (_guardProbability + _oldThreshold > 1.0 || (_guardProbability > 1.0)) {
                          throw new IllegalActionException("Probability range exceeds [0.0,1.0]");
                      }
-                     else if((_oldThreshold <= _randomValue) && _randomValue <= (_oldThreshold + _guardProbability))
+                     else if ((_oldThreshold <= _randomValue) && _randomValue <= (_oldThreshold + _guardProbability))
                      {
                          _oldThreshold += _guardProbability;
                          _transitionEvaluatedTo.put(_transitionBeingTested, BooleanToken.TRUE);

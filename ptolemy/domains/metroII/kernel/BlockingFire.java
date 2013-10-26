@@ -141,7 +141,7 @@ public class BlockingFire extends FireMachine {
      * @param metroIIEventList
      *            a list of MetroII events that are proposed. It is set by
      *            startOrResume() not the caller.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If firing is not permitted.
      */
     @Override

@@ -55,7 +55,7 @@ public class AFDXVlink {
 
     /** Create a new virtual link object and initialize parameters.
      * @param source The source receiver.
-     * @throws IllegalActionException If parameters cannot be initialized.
+     * @exception IllegalActionException If parameters cannot be initialized.
      */
     public AFDXVlink(Receiver source) throws IllegalActionException {
         // 'vlink' parameter and value.

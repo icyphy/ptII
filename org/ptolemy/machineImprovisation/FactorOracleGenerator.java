@@ -107,9 +107,9 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == repetitionProbability){
+       if (attribute == repetitionProbability) {
            double token = ((DoubleToken)repetitionProbability.getToken()).doubleValue();
-           if( token > 1.0 || token < 0.0){
+           if (token > 1.0 || token < 0.0) {
                throw new IllegalActionException(this, "Repetition factor must be in range [0.0,1.0].");
            }
            _repetitionFactor = token;
@@ -141,23 +141,23 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
        super.fire();
 
-       if( durationSequence.hasToken(0)){
+       if (durationSequence.hasToken(0)) {
             int incomingDuration = ((IntToken)durationSequence.get(0)).intValue();
             _durationSequence.add(incomingDuration);
        }
 
        // pitch sequence triggers the generation, if any
-       if ( pitchSequence.hasToken(0)){
+       if ( pitchSequence.hasToken(0)) {
 
            int incomingNote =((IntToken)pitchSequence.get(0)).intValue();
 
-           //if(_pitchSequence != null && _pitchSequence.size() > 0){
+           //if (_pitchSequence != null && _pitchSequence.size() > 0) {
            int m = _pitchSequence.size();
            int n = _durationSequence.size();
            boolean isPitch = ((BooleanToken)(isPitchOracle.getToken())).booleanValue();
 
-           if(incomingNote <= 36 && m >0 && n > 0){
-               try{
+           if (incomingNote <= 36 && m >0 && n > 0) {
+               try {
                        // pitch oracle
                        String appendPitch = "P" ;
                        String fullName = "FO_" + appendPitch +_FOindex;
@@ -168,23 +168,23 @@ public class FactorOracleGenerator extends TypedAtomicActor {
                        fullName = "FO_" + appendPitch +_FOindex;
                        _constructNewFactorOracle(fullName, false);
 
-               }catch(NameDuplicationException e){
+               } catch (NameDuplicationException e) {
                    System.err.println("NameDuplicationException at FactorOracleGenerator");
                }
-           } else if(incomingNote >= 5000){
+           } else if (incomingNote >= 5000) {
                // long notes and a duration of 5s trigger FO generation
-               try{
-                   if( m > 1){
+               try {
+                   if (m > 1) {
 
                        String appendPitch = "D" ;
                        String fullName = "FO_" + appendPitch +_FOindex;
                        _constructNewFactorOracle(fullName, false);
                    }
-               }catch(NameDuplicationException e){
+               } catch (NameDuplicationException e) {
                    System.err.println("NameDuplicationException at FactorOracleGenerator");
                }
 
-           }else{
+           }else {
 
                    _pitchSequence.add(incomingNote); //.toString();
 
@@ -199,11 +199,11 @@ public class FactorOracleGenerator extends TypedAtomicActor {
        // TODO: need a naming convention
        FactorOracle fo;
        Double horizontal;
-       if(isPitch){
+       if (isPitch) {
             fo =new FactorOracle((CompositeEntity)this.getContainer(),
                fullName, _pitchSequence.toArray(), _repetitionFactor, isPitch);
             horizontal = 200.0;
-       }else{
+       }else {
             fo =new FactorOracle((CompositeEntity)this.getContainer(),
                    fullName, _durationSequence.toArray(), _repetitionFactor, isPitch);
             horizontal = 250.0;
@@ -229,16 +229,16 @@ public class FactorOracleGenerator extends TypedAtomicActor {
        //d.getPort("input").link(r);
 
        // empty the factor oracle
-       if(isPitch){
+       if (isPitch) {
            _pitchSequence.clear();
-       }else{
+       }else {
            _durationSequence.clear();
            _FOindex ++;
        }
 
 }
 
-protected List<Integer> _getTransitionsFrom( Integer node){
+protected List<Integer> _getTransitionsFrom( Integer node) {
        List<Integer> _transitions = (List<Integer>)_adjacencyList.get(node);
        return _transitions;
    }
@@ -252,14 +252,14 @@ protected List<Integer> _getTransitionsFrom( Integer node){
    /* Method that computes the shortest path ( minimum number of hops) between two nodes in the factor oracle
     * graph (Djkstra).
     * */
-   private String minimalLengthString(int start, int end){
+   private String minimalLengthString(int start, int end) {
 
        // function implementation based on ptII/doc/tutorial/graph/ShortestPathFinder.java
        boolean [] visited = new boolean[_adjacencyList.size()+1];
        // initial distances
        int[] distance = new int[_adjacencyList.size()+1];
 
-       for(int i = 0; i < _adjacencyList.size(); i++){
+       for (int i = 0; i < _adjacencyList.size(); i++) {
            distance[i] = Integer.MAX_VALUE;
            visited[i] = false;
        }
@@ -274,18 +274,18 @@ protected List<Integer> _getTransitionsFrom( Integer node){
        int current = start;
        q.add(start);
 
-       while(!q.isEmpty()){
+       while (!q.isEmpty()) {
            current = q.remove();
-           if(current == end){
+           if (current == end) {
                break;
            }
-           else{
+           else {
                List neighbors = (List<Integer>) _getTransitionsFrom(current);
-               if ( neighbors != null){
+               if ( neighbors != null) {
                    Iterator j = neighbors.iterator();
-                   while(j.hasNext()){
+                   while (j.hasNext()) {
                        Integer thisNeighbor = (Integer)j.next();
-                       if(visited[thisNeighbor] == false){
+                       if (visited[thisNeighbor] == false) {
                            q.add(thisNeighbor);
                            visited[thisNeighbor] = true;
                            prevHop.put(thisNeighbor, current);
@@ -294,14 +294,14 @@ protected List<Integer> _getTransitionsFrom( Integer node){
                }
            }
        }
-       if(current != end){
+       if (current != end) {
            return "";
        }
 
        Integer j = end;
        Integer i = prevHop.get(j);
 
-       while ( i != null){
+       while ( i != null) {
            int index = ((List)_getTransitionsFrom(i)).indexOf(j);
            // get the symbol produced by the transition i -> j
            Character produced = (Character)((List)_adjacencyListSymbols.get(i)).get(index);

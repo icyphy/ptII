@@ -643,8 +643,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.
          *  @param decorator The decorator.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public AFDXESsAttributes(NamedObj container, Decorator decorator)
                 throws IllegalActionException, NameDuplicationException {
@@ -655,8 +655,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
         /** Constructor to use when parsing a MoML file.
          *  @param container The object being decorated.
          *  @param name The name of this attribute.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public AFDXESsAttributes(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {

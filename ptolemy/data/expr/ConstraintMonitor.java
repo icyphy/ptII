@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
-/////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ConstraintMonitor
 
 /**
@@ -182,7 +182,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  transparent composite entities.
      *  @param target The NamedObj that will be decorated.
      *  @return The decorated attributes for the target NamedObj.
-     *  @throws IllegalActionException If some object cannot be determined to
+     *  @exception IllegalActionException If some object cannot be determined to
      *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target)
@@ -215,7 +215,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  transparent or opaque, including those inside opaque entities.
      *  It does not include entities that are class definitions.
      *  @return A list of the objects decorated by this decorator.
-     *  @throws IllegalActionException If some object cannot be determined to
+     *  @exception IllegalActionException If some object cannot be determined to
      *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
     public List<NamedObj> decoratedObjects() throws IllegalActionException {
@@ -243,7 +243,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
 
     /** Return the value of {@link #includeOpaqueContents}.
      *  decorate objects across opaque hierarchy boundaries.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public boolean isGlobalDecorator() throws IllegalActionException {
         boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
@@ -332,7 +332,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Add to the specified list all contained entities of the specified container
      *  that are not class definitions. This includes all the entities

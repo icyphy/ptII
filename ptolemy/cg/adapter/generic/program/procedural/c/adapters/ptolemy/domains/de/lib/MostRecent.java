@@ -39,7 +39,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// MostRecent
 
 /**
@@ -67,7 +67,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
      * A function which returns the generated code from the C template
      * initialization method.
      * @return A string representing the Initialize C code for this actor
-     * @throws IllegalActionException If illegal macro names are found.
+     * @exception IllegalActionException If illegal macro names are found.
      */
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
@@ -115,7 +115,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
      * A function which returns the generated code from the C template
      * preFire method.
      * @return A string representing the preFire C code for this actor
-     * @throws IllegalActionException If illegal macro names are found.
+     * @exception IllegalActionException If illegal macro names are found.
      */
     public String generatePrefireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
@@ -143,7 +143,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
      * A function which returns the generated code from the C template
      * wrapup method.
      * @return A string representing the wrapup C code for this actor
-     * @throws IllegalActionException If illegal macro names are found.
+     * @exception IllegalActionException If illegal macro names are found.
      */
     public String generateWrapupCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();

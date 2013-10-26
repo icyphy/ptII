@@ -167,7 +167,7 @@ public abstract class FireMachine implements StartOrResumable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Return the wrapped actor.

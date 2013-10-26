@@ -168,7 +168,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
 
     /** Invoke the solver directly, and display any concepts resolved by this
      *  solver.
-     *  @throws IllegalActionException If there is no ontology.
+     *  @exception IllegalActionException If there is no ontology.
      */
     public void invokeSolver() throws IllegalActionException {
         invokeSolver(true);
@@ -180,7 +180,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      *  @param displayProperties  True if the solver should display its
      *          properties; false otherwise (for example, if it is called
      *          from another solver)
-     *  @throws IllegalActionException If there is no ontology.
+     *  @exception IllegalActionException If there is no ontology.
      */
     public void invokeSolver(boolean displayProperties) throws IllegalActionException {
         Ontology ontology = getOntology();

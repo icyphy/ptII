@@ -127,7 +127,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this ExecutionAspect.
      *  @param listener The listener to be added.
-     *  @throws IllegalActionException If an error occurs in the initialization
+     *  @exception IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this ExecutionAspect.
      */
     @Override
@@ -142,7 +142,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     /** React to the change of the <i>justMonitor</i> attribute by
      *  updating internal variables.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If token in attribute cannot
+     *  @exception IllegalActionException If token in attribute cannot
      *    be accessed.
      */
     @Override
@@ -206,7 +206,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  specifying the execution time, return the minimum execution time.
      * @param actor The actor.
      * @return The execution time.
-     * @throws IllegalActionException Thrown in attribute or token cannot be read.
+     * @exception IllegalActionException Thrown in attribute or token cannot be read.
      */
     @Override
     public double getExecutionTime(Actor actor)
@@ -305,7 +305,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     /** Iterate through resource mapping output ports and if they contain
      *  tokens, inform the director of the actors in the tokens that these
      *  actors can resume execution.
-     *  @throws illegalActionException Not explicitly thrown here.
+     *  @exception illegalActionException Not explicitly thrown here.
      */
     @Override
     public boolean postfire() throws IllegalActionException {
@@ -544,8 +544,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
          *  @param decorator The decorator.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public CompositeExecutionAspectAttributes(NamedObj target,
                 Decorator decorator)
@@ -557,8 +557,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         /** Constructor to use when parsing a MoML file.
          *  @param target The object being decorated.
          *  @param name The name of this attribute.
-         *  @throws IllegalActionException If the superclass throws it.
-         *  @throws NameDuplicationException If the superclass throws it.
+         *  @exception IllegalActionException If the superclass throws it.
+         *  @exception NameDuplicationException If the superclass throws it.
          */
         public CompositeExecutionAspectAttributes(NamedObj target, String name)
                 throws IllegalActionException, NameDuplicationException {

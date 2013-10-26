@@ -78,7 +78,7 @@ public class FactorOracle extends FSMActor {
        output = new TypedIOPort(this, "output", false, true);
        output.setTypeEquals(BaseType.STRING);
 
-       if(repetitionFactor > 1.0 || repetitionFactor < 0.0){
+       if (repetitionFactor > 1.0 || repetitionFactor < 0.0) {
            throw new IllegalActionException(this, "Repetition factor must be in range [0.0,1.0].");
        }
        _repetitionFactor = repetitionFactor;
@@ -133,7 +133,7 @@ public class FactorOracle extends FSMActor {
        String exitAngle = "0.0";
 
        HashMap _stateList = new HashMap();
-       for(int i=0; i<=_adjacencyList.size();i++){
+       for (int i=0; i<=_adjacencyList.size();i++) {
 
            State s = new State(this,"S"+i);
            Double horizontal = i*150.0;
@@ -153,7 +153,7 @@ public class FactorOracle extends FSMActor {
        ((State)_stateList.get(_sequenceLength)).isFinalState.setToken("true");
        ((State)_stateList.get(_sequenceLength)).isFinalState.setPersistent(true);
 
-       for(int i=0; i<_adjacencyList.size();i++){
+       for (int i=0; i<_adjacencyList.size();i++) {
 
            List destinations = (List)_adjacencyList.get(i);
            int _nTrans = destinations.size();
@@ -163,18 +163,18 @@ public class FactorOracle extends FSMActor {
            int hasSuffix = (Integer)_suffixLinks.get(i);
            int suffixCount = hasSuffix >= 0 ? 1 : 0;
 
-           for( int k = 0 ; k < _nTrans; k++){
+           for ( int k = 0 ; k < _nTrans; k++) {
                // the destination node for this transition
                int j = (Integer)destinations.get(k);
 
                DoubleToken _probability;
-               if(i == j-1){
+               if (i == j-1) {
                    // for the original string, probability will be repetitionfactor - enabledVariations*_improvisationFactor
 
                    _probability = new DoubleToken(_repetitionFactor);
                    exitAngle = "0.0";
 
-               }else{
+               }else {
                    // divide the improvisation probability amongst the other transitions
                    int numberOfBranches = _nTrans - (1-suffixCount);
                    _probability = new DoubleToken((1-_repetitionFactor)/numberOfBranches*1.0);
@@ -191,15 +191,15 @@ public class FactorOracle extends FSMActor {
 
                String outputChar = " ";
             // get the symbol to be produced, when this transition is taken
-               if( _interpretAsNotes == true){
+               if (_interpretAsNotes == true) {
                     outputChar = _translateKeyToLetterNote((Integer)((List)(_adjacencyListSymbols.get(i))).get(k));
-               } else{
+               } else {
                    outputChar = ((List)(_adjacencyListSymbols.get(i))).get(k).toString();
                }
                    // set the output expression for this transition
-               if(outputChar != null){
+               if (outputChar != null) {
                    outputExpression = "output = \"" + outputChar +"\"";
-               }else{
+               }else {
                    outputExpression = "";
                }
 
@@ -213,10 +213,10 @@ public class FactorOracle extends FSMActor {
            }
        }
        exitAngle = "-0.6";
-       for(int i=0; i<_suffixLinks.size();i++){
+       for (int i=0; i<_suffixLinks.size();i++) {
             int destination = (Integer)_suffixLinks.get(i);
             String relationName = "relation"+i+destination;
-            if(destination >= 0){
+            if (destination >= 0) {
 
                 Transition t = new Transition(this, relationName);
                 (t.exitAngle).setExpression(exitAngle);
@@ -230,14 +230,14 @@ public class FactorOracle extends FSMActor {
    /*
     * The function that builds the factor oracle data structure
     */
-private String _translateKeyToLetterNote(int keyIndex){
-    if( keyIndex < 21|| keyIndex > 108){
+private String _translateKeyToLetterNote(int keyIndex) {
+    if (keyIndex < 21|| keyIndex > 108) {
         return null;
     }
-    else{
+    else {
         int note = keyIndex % 12;
         String noteName = "";
-        switch(note){
+        switch(note) {
             case 0 : noteName = "C";  break;
             case 1 : noteName = "C#"; break;
             case 2 : noteName = "D";  break;
@@ -269,9 +269,9 @@ private String _translateKeyToLetterNote(int keyIndex){
         return noteName;
     }
 }
-private void _learnFactorOracle(){
+private void _learnFactorOracle() {
 
-       for( int i = 0; i< _sequenceLength; i++){
+       for ( int i = 0; i< _sequenceLength; i++) {
            Object p = _inputSequence[i];
            _alphabet.add(p);
 
@@ -288,13 +288,13 @@ private void _learnFactorOracle(){
        // by definition, the suffix link from state zero is the bottom element (represented as -1)
        _suffixLinks.put(0, -1);
 
-       for( int i = 1 ; i <= _sequenceLength ; i++){
+       for ( int i = 1 ; i <= _sequenceLength ; i++) {
 
            // already created the original links
            int l = (Integer)_suffixLinks.get(i-1);
            // while previous node DOES exist and there is no w[i]-son of state l...
            Object wiSon = _inputSequence[i-1];
-           while( l!=-1 && ((List)_adjacencyListSymbols.get(l)).contains(wiSon) == false){
+           while ( l!=-1 && ((List)_adjacencyListSymbols.get(l)).contains(wiSon) == false) {
                List prevList = (List<Integer>)_getTransitionsFrom(l);
                prevList.add(i);
                List prevSymbols = (List<Character>)_adjacencyListSymbols.get(l);
@@ -304,9 +304,9 @@ private void _learnFactorOracle(){
                _adjacencyListSymbols.put(l, prevSymbols);
                l = (Integer)_suffixLinks.get(l);
            }
-           if(l == -1){
+           if (l == -1) {
                _suffixLinks.put(i, 0);
-           }else{
+           }else {
                Integer wiSonIndex =((List)_adjacencyListSymbols.get(l)).indexOf(wiSon);
                Integer wiSonValue = _getTransitionsFrom(l).get(wiSonIndex);
                _suffixLinks.put(i, wiSonValue );
@@ -322,7 +322,7 @@ private void _learnFactorOracle(){
 
        return super.postfire();
    }
-   protected List<Integer> _getTransitionsFrom( Integer node){
+   protected List<Integer> _getTransitionsFrom( Integer node) {
        List<Integer> _transitions = (List<Integer>)_adjacencyList.get(node);
        return _transitions;
    }
@@ -336,14 +336,14 @@ private void _learnFactorOracle(){
    /* Method that computes the shortest path ( minimum number of hops) between two nodes in the factor oracle
     * graph (Djkstra).
     * */
-   private String minimalLengthString(int start, int end){
+   private String minimalLengthString(int start, int end) {
 
        // function implementation based on ptII/doc/tutorial/graph/ShortestPathFinder.java
        boolean [] visited = new boolean[_adjacencyList.size()+1];
        // initial distances
        int[] distance = new int[_adjacencyList.size()+1];
 
-       for(int i = 0; i < _adjacencyList.size(); i++){
+       for (int i = 0; i < _adjacencyList.size(); i++) {
            distance[i] = Integer.MAX_VALUE;
            visited[i] = false;
        }
@@ -358,18 +358,18 @@ private void _learnFactorOracle(){
        int current = start;
        q.add(start);
 
-       while(!q.isEmpty()){
+       while (!q.isEmpty()) {
            current = q.remove();
-           if(current == end){
+           if (current == end) {
                break;
            }
-           else{
+           else {
                List neighbors = (List<Integer>) _getTransitionsFrom(current);
-               if ( neighbors != null){
+               if ( neighbors != null) {
                    Iterator j = neighbors.iterator();
-                   while(j.hasNext()){
+                   while (j.hasNext()) {
                        Integer thisNeighbor = (Integer)j.next();
-                       if(visited[thisNeighbor] == false){
+                       if (visited[thisNeighbor] == false) {
                            q.add(thisNeighbor);
                            visited[thisNeighbor] = true;
                            prevHop.put(thisNeighbor, current);
@@ -378,14 +378,14 @@ private void _learnFactorOracle(){
                }
            }
        }
-       if(current != end){
+       if (current != end) {
            return "";
        }
 
        Integer j = end;
        Integer i = prevHop.get(j);
 
-       while ( i != null){
+       while ( i != null) {
            int index = ((List)_getTransitionsFrom(i)).indexOf(j);
            // get the symbol produced by the transition i -> j
            Character produced = (Character)((List)_adjacencyListSymbols.get(i)).get(index);

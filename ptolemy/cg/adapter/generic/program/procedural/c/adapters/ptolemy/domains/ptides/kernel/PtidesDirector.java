@@ -74,7 +74,7 @@ public class PtidesDirector extends DEDirector {
      * _ptidesOutputPortEventQueue ...
      *
      * @return The generated constructor code
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     @Override
     public String generateConstructorCode() throws IllegalActionException {

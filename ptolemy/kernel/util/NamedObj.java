@@ -596,7 +596,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Decorator
      *  @return The decorators that decorate this object (which may
      *   be an empty set).
-     * @throws IllegalActionException If a decorator referenced
+     * @exception IllegalActionException If a decorator referenced
      *  by a DecoratorAttributes cannot be found.
      */
     public Set<Decorator> decorators() throws IllegalActionException {
@@ -1096,7 +1096,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return The attribute with the given name for the decorator, or null
      *   if the specified decorator does not provide an attribute with the specified
      *   name.
-     *  @throws IllegalActionException If a decorator referenced
+     *  @exception IllegalActionException If a decorator referenced
      *   by a DecoratorAttributes cannot be found.
      */
     public Attribute getDecoratorAttribute(Decorator decorator, String name)
@@ -1118,7 +1118,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param decorator The decorator.
      *  @return The decorated attributes, or null if the specified decorator does not
      *   decorate this object.
-     *  @throws IllegalActionException If a decorator referenced
+     *  @exception IllegalActionException If a decorator referenced
      *   by a DecoratorAttributes cannot be found.
      */
     public DecoratorAttributes getDecoratorAttributes(Decorator decorator)
@@ -3346,7 +3346,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  This method finds all decorators in scope (above this object in the hierarchy),
      *  and for each decorator that can decorate this object, creates an entry in
      *  _decoratorAttributes.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *  @see ptolemy.kernel.util.Decorator#createDecoratorAttributes(NamedObj)
      *  @see #getDecoratorAttributes(Decorator)
      */
