@@ -4,7 +4,7 @@
 # Author:  Christopher Hylands
 # Version: $Id$
 #
-# Copyright (c) 2001-2006 The Regents of the University of California.
+# Copyright (c) 2001-2013 The Regents of the University of California.
 # 	All Rights Reserved.
 #
 # Permission is hereby granted, without written agreement and without
