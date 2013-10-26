@@ -6,25 +6,30 @@
 # a list of files and then run this script on that over and over
 # again until all the bogus copyrights have been found
 
+# 0. Check that ~/.subversion/configs has
+#    use-commit-times = yes
+#
 # 1. Check out a fresh tree in a separate directory 
-#    PtII:  cd ~/tmp; svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
+#    PtII:  cd ~/tmp; svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
 #    Metro: cd ~/tmp; cvs -d  :ext:ic:/projects/hwsw/hwsw/common/src co metro)
 #
 # 2. Remove ptII/vendors
 #    PtII: cd ptII; export PTII=`pwd`; ./configure; make cleanDerivedJavaFiles clean_shipping
 #
 #    Remove files with copyrights by others
-#    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java org/mlc org/json
+#    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java org/mlc org/json doc/books/systems/export/WebServerDE.xml ./org/ptolemy/ptango/test/TestRunner.xml ./org/ptolemy/ptango/test/auto/WebServerDEInterleaved.xml ./org/ptolemy/ptango/test/auto/WebServerDE.xml
+
+
 #
 # 3. Generate a list of text files
 #    Ptolemy: cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
-#    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
+#    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f
 #
 # 4. Find files modified since the start of the year
 #    NOTE: this requires that ~/.subversion/config has
 #    use-commit-times = yes
 #
-#    find . -name .svn -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | sort > /tmp/new
+#    find . -name .svn -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | egrep -v "\.xml$" | sort > /tmp/new
 #    
 #    Note that if you wanted files since the start of last year, use run
 #    "date +%j" and add that number to the number of days in the last year.
@@ -32,7 +37,7 @@
 #    -mtime -392 in the find command
 #    
 #    Then, create a list of text files that are new:
-#    sort /tmp/f > /tmp/f.sort
+#    sort /tmp/f | egrep -v "\.xml$" > /tmp/f.sort
 #    comm -12 /tmp/new /tmp/f.sort > /tmp/f.new
 #
 # 5. Update the script
@@ -49,8 +54,11 @@
 #    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
 #
 # 8. Do a clean checkout somewhere and rebuild and test
-#    cd ~/tmp_2; cvs -d :ext:gigasource:/home/cvs co ptII
-#    make fast
+#    PtII: mkdir ~/tmp2; cd ~/tmp_2; svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
+#    PtII: cd ptII; export PTII=`pwd`; ./configure; ant
+#
+# 9. Go back and check the changes in
+#    PtII: cd ~/tmp/ptII; svn commit -m "Updated copyrights"
 
 printonly=no
 
