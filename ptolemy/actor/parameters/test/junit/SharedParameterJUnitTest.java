@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
  * (cd $PTII/ptolemy/actor/parameters/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.actor.parameters.test.junit.SharedParameterJUnitTest)
  * </pre>
  * @author Christopher Brooks
- * @version $Id: JUnitTclTest.java 64753 2012-10-02 02:05:53Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)

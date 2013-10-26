@@ -1,7 +1,7 @@
 # Makefile the Building Controls Virtual Test Bed xml/src directory
 #
 # @Author: Christopher Hylands (makefile only)
-# @Version: $Id: makefile 65950 2013-03-23 23:00:59Z hudson $
+# @Version: $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.

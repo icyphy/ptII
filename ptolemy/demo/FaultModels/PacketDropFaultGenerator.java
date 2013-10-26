@@ -58,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
  *  FIXME: This receiver behaves differently for Continuous and DE. Allowing
  *  the use of this actor across hierarchies might therefore be problematic.
  *  @author Ilge Akkaya, Patricia Derler, Edward A. Lee
- *  @version $Id: PacketDropFaultGenerator.java 67150 2013-08-16 19:32:50Z ilgea $
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)

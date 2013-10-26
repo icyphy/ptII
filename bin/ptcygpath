@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: ptcygpath 55267 2009-07-24 20:13:43Z cxh $
+# $Id$
 # Script used by mk/jnlp.mk to handle pathnames
 #
 if [ $# -eq 0 ]; then

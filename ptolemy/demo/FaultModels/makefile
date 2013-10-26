@@ -1,6 +1,6 @@
 # Makefile for FaultModels package
 #
-# @Version: $Id: makefile 67150 2013-08-16 19:32:50Z ilgea $
+# @Version: $Id$
 # @Author: Ilge Akkaya
 #
 # @Copyright (c) 2007-2009 The Regents of the University of California.

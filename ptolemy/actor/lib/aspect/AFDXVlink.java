@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
  *      <i>AFDX network simulation using PtolemyII</i>.
  *
  *  @author G. Lasnier
- *  @version $Id: AFDXVlink.java 67572 2013-09-25 18:33:32Z pd $
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Yellow (glasnier)

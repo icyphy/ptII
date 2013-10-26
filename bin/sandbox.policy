@@ -1,5 +1,5 @@
 // $PTII/bin/sandbox.policy 
-// @version: $Id: sandbox.policy 33748 2004-06-07 21:20:55Z cxh $
+// @version: $Id$
 //
 // This file is used by vergil -sandbox to run in a secure sandbox.
 //

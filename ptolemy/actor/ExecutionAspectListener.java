@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
  *  resource schedulers.
  *
  * @author Patricia Derler
-   @version $Id: ExecutionAspectListener.java 67249 2013-08-27 04:26:30Z derler $
+   @version $Id$
    @since Ptolemy II 0.2
 
    @Pt.ProposedRating Red (derler)

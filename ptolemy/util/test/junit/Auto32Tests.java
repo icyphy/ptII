@@ -61,7 +61,7 @@ import ptolemy.util.StringUtilities;
  * </p>
  *
  * @author Christopher Brooks
- * @version $Id: AutoTests.java 66441 2013-05-30 21:51:37Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

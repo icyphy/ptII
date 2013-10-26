@@ -1,6 +1,6 @@
 # Makefile org.ptolemy machine learning sources.
 #
-# @Version: $Id: makefile 66133 2013-04-25 21:59:22Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2013 The Regents of the University of California.

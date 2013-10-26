@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
   This is a helper class for execution aspects used in AtomicExecutionAspect and
   CompositeExecutionAspect.
   @author Patricia Derler
-  @version $Id: AtomicExecutionAspect.java 67658 2013-10-10 00:47:20Z pd $
+  @version $Id$
   @since Ptolemy II 9.0
   @Pt.ProposedRating Red (derler)
   @Pt.AcceptedRating Red (derler)

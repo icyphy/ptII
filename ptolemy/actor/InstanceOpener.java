@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
  need not depend on Configuration.
 
  @author Christopher Brooks
- @version $Id: Configuration.java 65768 2013-03-07 03:33:00Z cxh $
+ @version $Id$
  @since Ptolemy II 9.1
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)

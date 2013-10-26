@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
  * MetroFSMDirector extends FSMDirector to support MetroII semantics.
  *
  * @author Liangpeng Guo
- * @version $Id: MetroFSMDirector.java 66808 2013-07-03 00:20:58Z glp $
+ * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)

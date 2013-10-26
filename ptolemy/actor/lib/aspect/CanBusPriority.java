@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
  * For more information see: <i>CAN bus simulator using Quantity Manager</i>.
  *
  *  @author D. Marciano, P. Derler
- *  @version $Id: CanBusPriority.java 65768 2013-03-07 03:33:00Z cxh $
+ *  @version $Id$
    @since Ptolemy II 0.2
 
    @Pt.ProposedRating Red (derler)

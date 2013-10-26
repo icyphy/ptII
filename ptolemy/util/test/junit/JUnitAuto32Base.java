@@ -67,7 +67,7 @@ import org.junit.runners.Suite;
  * </p>
  *
  * @author Christopher Brooks
- * @version $Id: JUnitTclTestBase.java 64753 2012-10-02 02:05:53Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

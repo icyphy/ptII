@@ -1,6 +1,6 @@
 # Makefile for Machine Learning Hidden Markov Model Demos.
 #
-# @Version: $Id: makefile 66180 2013-04-30 18:50:54Z ltrnc $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2013 The Regents of the University of California.

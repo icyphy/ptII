@@ -1,4 +1,4 @@
 #!/bin/sh
-# $Id: hyvisual 38728 2005-07-05 20:14:57Z cxh $
+# $Id$
 # Invoke vergil -hyvisual
 $PTII/bin/vergil -hyvisual $@

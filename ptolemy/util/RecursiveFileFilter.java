@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
    with a new filter in this class.
 
    @author Thomas Huining Feng, Christopher Brooks
-   @version $Id: ListDirectory.java 65763 2013-03-07 01:54:37Z cxh $
+   @version $Id$
    @since Ptolemy II 8.0
    @Pt.ProposedRating Yellow (tfeng)
    @Pt.AcceptedRating Red (tfeng)
@@ -312,7 +312,7 @@ public class RecursiveFileFilter implements FilenameFilter {
        A comparator to sort file names.
 
        @author Thomas Huining Feng
-       @version $Id: ListDirectory.java 65763 2013-03-07 01:54:37Z cxh $
+       @version $Id$
        @since Ptolemy II 8.0
        @Pt.ProposedRating Yellow (tfeng)
        @Pt.AcceptedRating Red (tfeng)

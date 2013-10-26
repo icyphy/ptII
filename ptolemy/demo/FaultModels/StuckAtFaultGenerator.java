@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
 /** This actor is an {@link CommunicationAspect} that, when its
  *  ...
  *  @author Ilge Akkaya, Patricia Derler, Edward A. Lee
- *  @version $Id: StuckAtFaultGenerator.java 67150 2013-08-16 19:32:50Z ilgea $
+ *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)

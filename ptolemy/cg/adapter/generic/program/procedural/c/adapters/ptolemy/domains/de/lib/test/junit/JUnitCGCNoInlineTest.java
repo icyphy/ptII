@@ -42,7 +42,7 @@ import ptolemy.util.test.junit.JUnitCGCNoInlineTestBase;
  * so that it is easy for developers to run tests.</p>
 
  * @author Christopher Brooks
- * @version $Id: JUnitCGCTest.java 64753 2012-10-02 02:05:53Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)

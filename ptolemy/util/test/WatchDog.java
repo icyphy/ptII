@@ -41,7 +41,7 @@ import ptolemy.util.StringUtilities;
  a certain amount of time.
 
  @author Christopher Hylands
- @version $Id: WatchDog.java 65768 2013-03-07 03:33:00Z cxh $
+ @version $Id$
  @since Ptolemy II 2.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

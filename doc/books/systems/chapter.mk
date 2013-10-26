@@ -1,6 +1,6 @@
 # Makefile fragment for the Ptolemy II SystemDMS book to be included by each chapter.
 #
-# Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
+# Version: $Id$
 # Makefile Author: Christopher Brooks
 #
 # Copyright (c) 2013 The Regents of the University of California.

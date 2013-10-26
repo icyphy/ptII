@@ -38,7 +38,7 @@ package ptolemy.actor.lib.gui;
  * see if the actors in the model implements this interface.</p>
  *
  * @author Christopher Brooks
- * @version $Id: InteractiveShell.java 65768 2013-03-07 03:33:00Z cxh $
+ * @version $Id$
  * @since Ptolemy II 1.0
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)

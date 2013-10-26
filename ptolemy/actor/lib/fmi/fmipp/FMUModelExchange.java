@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  This is a FMU actor. Does only act like a FMU if you use one.
 
  @author Wolfgang M&uuml;ller
- @version $Id: FMUImport.java 66188 2013-05-01 19:10:29Z eal $
+ @version $Id$
  @since Ptolemy II 9.0 devel
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

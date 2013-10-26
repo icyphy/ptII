@@ -60,7 +60,7 @@ package org.ptolemy.fmi;
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
  *
  * @author Christopher Brooks, based on shared/sim_support.c
- * @version $Id: FMUCoSimulation.java 66026 2013-04-07 16:41:23Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
