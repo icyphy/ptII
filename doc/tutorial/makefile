@@ -75,7 +75,8 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'Precocious$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

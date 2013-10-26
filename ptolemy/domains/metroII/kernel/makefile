@@ -103,13 +103,14 @@ OPTIONAL_FILES = \
 	'FireMachine$$1.class' \
 	'FireMachine$$State.class' \
 	'MappingConstraintSolver$$ConstraintCounter.class' \
-	'MetroFSMDirector$$1.class' \
+	'MetroIIFSMDirector$$1.class' \
 	'MetroIICompositeActor$$1.class' \
 	'MetroIIDEDirectorForPtides$$Pair.class' \
 	'MetroIIMirrorComposite$$1.class' \
 	'MetroIIMirrorComposite$$2.class' \
 	'MetroIIMirrorComposite$$MetroIIMirrorCompositeContents$$1.class' \
 	'MetroIIMirrorComposite$$MetroIIMirrorCompositeContents.class' \
+	'MetroIIModalModel$$1.class' \
 	'MetroIIPNDirector$$1.class' \
 	'MetroIIPtidesPlatform$$PtidesMirrorPort.class' \
 	'MetroIIPtidesPlatform$$PtidesNetworkType.class' \
@@ -117,6 +118,7 @@ OPTIONAL_FILES = \
 	'MetroIIPtidesPlatform$$PtidesPlatformDirector.class' \
 	'MetroIIPtidesReceiver$$Event.class' \
 	'MetroIIPtidesReceiver$$TagComparator.class' \
+	'MetroIISequentialSDFDirector$$1.class' \
 	'MetroIISRDirector$$1.class' \
 	'MetroIISystemCDirector$$1.class' \
 	'MetroModalModel$$1.class' \

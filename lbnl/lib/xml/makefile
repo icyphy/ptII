@@ -50,12 +50,13 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	build/build.jar
 
-EXTRA_SRCS =
-
 OTHER_FILES_TO_BE_JARED = \
 	variables.dtd
 
-MISC_FILES =
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
+
+MISC_FILES = build \
+	src
 
 OPTIONAL_FILES =
 

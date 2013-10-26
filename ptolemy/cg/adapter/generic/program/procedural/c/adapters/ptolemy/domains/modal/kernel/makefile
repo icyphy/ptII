@@ -62,6 +62,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	FSMActor.c \
+	_FSMActor.c \
+	_FSMActor.h \
 	_FSMDirector.c \
 	_FSMDirector.h \
 	_FSMReceiver.c \

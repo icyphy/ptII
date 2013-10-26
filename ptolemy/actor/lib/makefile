@@ -390,6 +390,8 @@ OPTIONAL_FILES = \
 	'AbsoluteValue$$FunctionTerm.class' \
 	'AbsoluteValue$$TypeOfAbsoluteValue.class' \
 	'ArrayElement$$ArrayTypeFunction.class' \
+	'Assert$$1.class' \
+	'Assert$$AssertPort.class' \
 	'Commutator$$WidthDependentParameter.class' \
 	'Distributor$$WidthDependentParameter.class' \
 	'Exec$$_StreamReaderThread.class' \

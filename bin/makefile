@@ -92,6 +92,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	mkl4j \
 	mkosgi \
 	ptjunit \
+	updateFmu \
 	viptos
 
 EXTRA_SRCS = \
@@ -111,7 +112,9 @@ MAC_APPS = \
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = \
+	IncrementalFMU_wrap.dll \
+	libfmipp.dll
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES

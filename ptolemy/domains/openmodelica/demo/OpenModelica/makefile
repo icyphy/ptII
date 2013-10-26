@@ -51,6 +51,9 @@ OTHER_FILES_TO_BE_JARED = \
 	OpenModelicaComposite.xml \
 	OpenModelicaCSVReaderXYPlotter.xml \
 	OpenModelica.xml \
+	OpenModelicaXYPlotter.xml \
+	baseModel.mo \
+	childModel.mo \
 	dcmotor.mo
 
 EXTRA_SRCS = \

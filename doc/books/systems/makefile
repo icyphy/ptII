@@ -66,7 +66,11 @@ PTCLASSALLJARS = \
 	vergil/vergil.jar
 
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	chapter.mk \
+	index.html.in \
+	toc.htm \
+	updateModels
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 

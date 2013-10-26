@@ -58,6 +58,14 @@ EXAMPLE_MODELS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
+	CostConstraint.txt \
+	GeneratorContactorLoad.mo \
+	generator-contactor-load.png \
+	GeneratorTest.mo \
+	InformalDiagram.pdf \
+	Overview.xml \
+	Specification.txt \
+	TimingConstraint.txt \
 	onOffSupervisor.fmu \
 	Contactor.xml \
 	ContactorIcon.xml \

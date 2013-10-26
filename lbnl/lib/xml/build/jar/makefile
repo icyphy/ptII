@@ -48,10 +48,10 @@ PTCLASSALLJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =
 
-EXTRA_SRCS =
-
 OTHER_FILES_TO_BE_JARED = \
 	DTDValidator.jar	
+
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 MISC_FILES =
 

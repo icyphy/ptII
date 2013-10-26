@@ -77,6 +77,7 @@ OPTIONAL_FILES = \
 	'ExportModel$$2$1.class' \
 	'ExportModel$$2.class' \
 	'ExportModel$$2$$1.class' \
+	'ExportModel$$2$$2.class' \
 	'ExportModel$$3.class' \
 	'ExportModel$$4.class' \
 	'ExportModel$$5.class' \

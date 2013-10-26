@@ -103,6 +103,7 @@ JSRCS = \
 	EditParametersDialog.java \
 	Effigy.java \
 	EffigyFactory.java \
+	ExecutionAspectPlotterEditorFactory.java \
 	ExpressionShellEffigy.java \
 	ExpressionShellFrame.java \
 	ExpressionShellTableau.java \
@@ -205,6 +206,7 @@ OPTIONAL_FILES = \
 	'Configurer$$2$$1.class' \
 	'Configurer$$2.class' \
 	'Configurer$$3.class' \
+	'CommunicationAspectMonitor$$CommunicationAspectMonitorEditorFactory.class' \
 	'Console$$ConsoleFrame.class' \
 	'Console$$ConsoleFrame$$MyByteArrayOutputStream.class' \
 	'Console$$Factory.class' \
@@ -315,6 +317,7 @@ OPTIONAL_FILES = \
 	'TableauFrame$$ExtensionFileFilter.class' \
 	'TableauFrame$$ViewMenuListener.class' \
 	'TextEditorTableau$$Factory.class' \
+	'TextEditor$$ExportImageAction.class' \
 	'TextEffigy$$Factory.class' \
 	'TokenEffigy$$Factory.class' \
 	'TokenTableau$$Factory.class' \

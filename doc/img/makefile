@@ -123,6 +123,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ptIIplanetIcon.gif \
 	PtolemyII.jpg \
 	PtolemyIISmall.gif \
+	question.png \
 	vol1Figure3-1.png \
 	vol1Figure3-2.png \
 	vol1Figure3-3.png \

@@ -56,9 +56,10 @@ JSRCS = \
 	CompilerResult.java \
 	ConnectException.java \
 	ICompilerResult.java \
-	IOMCProxy.java \
+	IOMCCommand.java \
+	OMCCommand.java \
 	OMCLogger.java \
-	OMCProxy.java
+	OMIThread.java
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
@@ -68,6 +69,9 @@ MISC_FILES =  corba
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'OMCCommand$$1.class' \
+	'OMCCommand$$OMCThread.class' \
+	'OMCCommand$$_osType.class' \
 	'OMCProxy$$_osType.class' \
 	'OMCLogger$$1.class' \
 	'OMCLogger$$2.class' \

@@ -87,6 +87,8 @@ JSRCS = \
 	DoNothingDirector.java \
 	Executable.java \
 	ExecutionAspectHelper.java \
+	ExecutionAspectListener.java \
+	ExecutionAttributes.java \
 	ExecutionListener.java \
 	FiringEvent.java \
 	FiringsRecordable.java \
@@ -149,6 +151,8 @@ MISC_FILES =	util continuous sched process gt gui injection lib parameters desig
 OPTIONAL_FILES = \
 	corba \
 	doc \
+	'CommunicationAspectListener$$EventType.class' \
+	'ExecutionAspectListener$$ExecutionEventType.class' \
 	'FiringEvent$$1.class' \
 	'FiringEvent$$FiringEventType.class' \
 	'LazyTypedCompositeActor$$ContainedObjectsIterator.class' \

@@ -56,7 +56,8 @@ MISC_FILES = \
 	defines.h \
 	labview \
 	matlab \
-	util
+	util \
+	xml
 
 all: suball
 install: subinstall

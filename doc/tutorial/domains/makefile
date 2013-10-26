@@ -81,6 +81,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'AmorphousDirector$$DelegatingReceiver.class' \
+	'LatestTokenPNDirector$$LatestTokenReceiver.class' \
 	'LeftRightDirector$$LeftRightScheduler.class' \
 	'LeftRightDirector$$LeftRightScheduler$$LeftRightComparator.class' \
 	'NondogmaticPNDirector$$FlexibleReceiver.class' \

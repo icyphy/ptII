@@ -160,6 +160,7 @@ OPTIONAL_FILES = \
 	'DependencyResultsDialog$$DependencyResultsNamedObjRenderer.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$DTListener.class' \
+	'ExportModel$2$$2.class' \
 	'ExtendedGraphFrame$$FullScreenAction.class' \
 	'IconController$$IconRenderer$$1.class' \
 	'IconController$$IconRenderer.class' \
