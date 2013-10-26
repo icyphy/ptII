@@ -421,10 +421,12 @@ public class MirrorComposite extends TypedCompositeActor implements
 
                             if (insidePort == null) {
                                 // FindBugs was reporting that insidePort could still be null.
-                                throw new InternalErrorException(MirrorComposite.this, null,
-                                                                 "insidePort is null? castPort "
-                                        + castPort
-                                        + " is neither a MirrorPort nor a ParameterMirrorPort?");
+                                throw new InternalErrorException(
+                                        MirrorComposite.this,
+                                        null,
+                                        "insidePort is null? castPort "
+                                                + castPort
+                                                + " is neither a MirrorPort nor a ParameterMirrorPort?");
                             }
 
                             if (insidePort instanceof MirrorPort) {

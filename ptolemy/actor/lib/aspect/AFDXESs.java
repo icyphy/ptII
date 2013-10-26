@@ -209,7 +209,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
                         if (((AFDXVlink) output[2]).getSource().equals(
                                 ((AFDXVlink) last[2]).getSource())
-                                && ((Time) output[3]).compareTo((Time) last[3]) == 0) {
+                                && ((Time) output[3]).compareTo(last[3]) == 0) {
                             multicast = true;
                         }
 

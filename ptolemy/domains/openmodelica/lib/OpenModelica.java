@@ -137,14 +137,14 @@ public class OpenModelica extends TypedAtomicActor {
 
         parameter = new StringParameter(this, "parameter");
         parameter
-        .setDisplayName("Initialized model parameter(s), seperate by '#'");
+                .setDisplayName("Initialized model parameter(s), seperate by '#'");
 
         initialValue = new StringParameter(this, "initialValue");
         initialValue.setDisplayName("Initial value(s), seperate by ','");
 
         variableFilter = new StringParameter(this, "variableFilter");
         variableFilter
-        .setDisplayName("Filter for displaying simulation result, seperate by '#'");
+                .setDisplayName("Filter for displaying simulation result, seperate by '#'");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -261,9 +261,10 @@ public class OpenModelica extends TypedAtomicActor {
             // that base model should be loaded in advance to the child model.
             // Otherwise, the child one could not be built.
             if (!(dependencies.getExpression().isEmpty() && baseModel
-                    .getExpression().isEmpty()))
+                    .getExpression().isEmpty())) {
                 _omcCommand.loadFile(dependencies.getExpression(),
                         baseModel.getExpression());
+            }
         } catch (ConnectException e) {
             throw new IllegalActionException(
                     "Unable to load Modelica file/library!" + e.getMessage());
@@ -277,17 +278,19 @@ public class OpenModelica extends TypedAtomicActor {
                 // Modify components of the Modelica model prior to running the model.
                 if (!(parameter.getExpression().isEmpty() && initialValue
                         .getExpression().isEmpty())) {
-                    if (!(baseModel.getExpression().isEmpty()))
+                    if (!(baseModel.getExpression().isEmpty())) {
                         _omcCommand.modifyComponents(inputPort.toString(),
                                 baseModel.getExpression(),
                                 parameter.getExpression());
-                    else
+                    } else {
                         _omcCommand.modifyComponents(inputPort.toString(),
                                 subModel.getExpression(),
                                 parameter.getExpression());
-                } else
+                    }
+                } else {
                     _omcLogger
-                    .getInfo("There is no component to modify prior to running the model!");
+                            .getInfo("There is no component to modify prior to running the model!");
+                }
             } catch (ConnectException e) {
                 throw new IllegalActionException(
                         "Unable to modify components' values!" + e.getMessage());
@@ -298,25 +301,27 @@ public class OpenModelica extends TypedAtomicActor {
             if (!(parameter.getExpression().isEmpty() && initialValue
                     .getExpression().isEmpty())) {
                 try {
-                    if (baseModel.getExpression().isEmpty())
+                    if (baseModel.getExpression().isEmpty()) {
                         _omcCommand.modifyComponents(
                                 initialValue.getExpression(),
                                 subModel.getExpression(),
                                 parameter.getExpression());
-                    else
+                    } else {
                         _omcCommand.modifyComponents(
                                 initialValue.getExpression(),
                                 baseModel.getExpression(),
                                 parameter.getExpression());
+                    }
                 } catch (ConnectException e) {
                     throw new IllegalActionException(
                             "Unable to modify components' values of "
                                     + baseModel.getExpression() + " !"
                                     + e.getMessage());
                 }
-            } else
+            } else {
                 _omcLogger
-                .getInfo("There is no components to modify prior to running the model!");
+                        .getInfo("There is no components to modify prior to running the model!");
+            }
         }
 
         // Build the Modelica model and run the executable result file.
@@ -334,8 +339,9 @@ public class OpenModelica extends TypedAtomicActor {
 
                 if (outputFormat.getExpression().equalsIgnoreCase("plt")
                         && processingMode.getExpression().equalsIgnoreCase(
-                                "non-interactive"))
+                                "non-interactive")) {
                     _omcCommand.plotPltFile(baseModel.getExpression());
+                }
             } else {
                 _omcCommand.runModel(fileName.getExpression(),
                         subModel.getExpression(),
@@ -347,8 +353,9 @@ public class OpenModelica extends TypedAtomicActor {
 
                 if (outputFormat.getExpression().equalsIgnoreCase("plt")
                         && processingMode.getExpression().equalsIgnoreCase(
-                                "non-interactive"))
+                                "non-interactive")) {
                     _omcCommand.plotPltFile(subModel.getExpression());
+                }
             }
 
             // In case of building the model in an interactive mode, client and servers are created,
@@ -358,13 +365,12 @@ public class OpenModelica extends TypedAtomicActor {
             // Ptolemy II in the string format.
             if (processingMode.getExpression().equalsIgnoreCase("interactive")
                     && !(variableFilter.getExpression().isEmpty())) {
-                _omiThread = new OMIThread(
-                        variableFilter.getExpression(),
+                _omiThread = new OMIThread(variableFilter.getExpression(),
                         simulationStopTime.getExpression(), output);
                 _omiThread.run();
             }
         } catch (UnknownHostException e) {
-           throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(e.getMessage());
         } catch (IOException e) {
             throw new IllegalActionException(e.getMessage());
         } catch (ConnectException e) {
@@ -408,8 +414,8 @@ public class OpenModelica extends TypedAtomicActor {
         } catch (ConnectException e) {
             // FIXME org.omg.CORBA.COMM_FAILURE:
             // vmcid: SUN  minor code: 211  completed: No : Unable to send quit()
-            new IllegalActionException(
-            "ServerError : OMC is unable to start!" + e.getMessage()).printStackTrace();
+            new IllegalActionException("ServerError : OMC is unable to start!"
+                    + e.getMessage()).printStackTrace();
         }
     }
 

@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;

@@ -714,13 +714,12 @@ public class ExternalIOPortController extends AttributeController {
             figure.add(label);
 
             String initialTokens = ((PubSubPort) port).initialTokens
-                .getExpression();
+                    .getExpression();
             if (!initialTokens.trim().equals("")) {
                 initialTokens = "Initial tokens: " + initialTokens;
                 label = new LabelFigure(initialTokens, _labelFont, 0.0,
                         SwingConstants.SOUTH_EAST, _pubSubLabelColor);
-                label.translate(-8.0, bounds.getMaxY() + 2 * labelHeight
-                        + 8);
+                label.translate(-8.0, bounds.getMaxY() + 2 * labelHeight + 8);
                 figure.add(label);
             }
         } catch (Exception e) {

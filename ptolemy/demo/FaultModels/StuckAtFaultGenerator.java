@@ -357,8 +357,8 @@ public class StuckAtFaultGenerator extends AtomicCommunicationAspect {
             } else {
                 _tokens.put(new Object[] { receiver, token });
                 _tokenCount++;
-                sendCommunicationEvent((Actor) source.getContainer().getContainer(),
-                        0, _tokenCount, EventType.RECEIVED);
+                sendCommunicationEvent((Actor) source.getContainer()
+                        .getContainer(), 0, _tokenCount, EventType.RECEIVED);
                 if (_tokens.size() == 1) { // no refiring has been scheduled
                     _scheduleRefire();
                 }

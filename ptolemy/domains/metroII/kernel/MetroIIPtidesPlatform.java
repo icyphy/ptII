@@ -879,7 +879,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                         if (_isAssociatedWithNetworkTransmitter(port)) {
 
-                            MetroIIPtidesDirector director = (MetroIIPtidesDirector) ((MetroIICompositeActor) ((MirrorPort) port)
+                            ((MetroIICompositeActor) ((MirrorPort) port)
                                     .getAssociatedPort().getContainer())
                                     .getDirector();
 

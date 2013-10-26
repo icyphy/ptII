@@ -165,7 +165,7 @@ public class RecordType extends AssociativeType implements Cloneable {
             for (int i = 0; i < labels.length; i++) {
                 labels[i] = (String) labelsObj[i];
 
-                FieldType fieldType = (FieldType) _fields.get(labels[i]);
+                FieldType fieldType = _fields.get(labels[i]);
                 types[i] = fieldType._declaredType;
             }
 
@@ -314,7 +314,7 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  @return a Type.
      */
     public Type get(String label) {
-        FieldType fieldType = (FieldType) _fields.get(label);
+        FieldType fieldType = _fields.get(label);
 
         if (fieldType == null) {
             return null;
@@ -337,7 +337,7 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  @see ptolemy.graph.InequalityTerm
      */
     public InequalityTerm getTypeTerm(String label) {
-        return (InequalityTerm) _fields.get(label);
+        return _fields.get(label);
     }
 
     /** Return a hash code value for this object.
@@ -510,7 +510,7 @@ public class RecordType extends AssociativeType implements Cloneable {
         while (fieldNames.hasNext()) {
             String label = fieldNames.next();
 
-            FieldType fieldType = (FieldType) _fields.get(label);
+            FieldType fieldType = _fields.get(label);
             Type myDeclaredType = fieldType._declaredType;
             Type argType = recordType.get(label);
 
@@ -608,7 +608,7 @@ public class RecordType extends AssociativeType implements Cloneable {
 
         while (fieldNames.hasNext()) {
             String label = fieldNames.next();
-            FieldType fieldType = (FieldType) _fields.get(label);
+            FieldType fieldType = _fields.get(label);
 
             if (fieldType.isSettable()) {
                 Type newFieldType = ((RecordType) newType).get(label);

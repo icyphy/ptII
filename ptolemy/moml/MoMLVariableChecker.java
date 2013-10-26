@@ -417,8 +417,7 @@ public class MoMLVariableChecker {
                 _previousNode = node;
 
                 try {
-                    String moml = node.exportMoML().replaceFirst(
-                            "<property",
+                    String moml = node.exportMoML().replaceFirst("<property",
                             "<property createIfNecessary=\"true\"");
 
                     if (hideVariables) {

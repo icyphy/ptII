@@ -183,9 +183,9 @@ public class Transform extends GTEvent implements ConfigurableEntity,
                 parser.setContext(_configurer);
                 parser.parse(base, source, new StringReader(text));
                 _transformation = (TransformationRule) _configurer.entityList()
-                    .get(0);
-                TransformationMode helper = new TransformationMode(_transformation,
-                        "_helper");
+                        .get(0);
+                TransformationMode helper = new TransformationMode(
+                        _transformation, "_helper");
                 helper.setPersistent(false);
                 _clearURI(_transformation);
             }

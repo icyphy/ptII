@@ -1323,7 +1323,8 @@ public class TemplateParser {
 
             TypedIOPort port = getPort(parameter);
             if (port != null) {
-                if (_getCodeGenerator().codeGenType(port.getType()).contains(",")) {
+                if (_getCodeGenerator().codeGenType(port.getType()).contains(
+                        ",")) {
                     return "Record";
                 }
                 return type + _getCodeGenerator().codeGenType(port.getType());
@@ -1382,7 +1383,7 @@ public class TemplateParser {
         } else if (macro.equals("fireAt")) {
             return _replaceFireAtMacro(parameter);
         } else if (macro.equals("structure")) {
-            _codeGenerator._newTypesUsed.add(parameter+"Structure");
+            _codeGenerator._newTypesUsed.add(parameter + "Structure");
         } else {
             // Try calling a method defined in the adapter first.
             try {
@@ -1634,17 +1635,15 @@ public class TemplateParser {
     }
 
     private String _replaceFireAtMacro(String parameter)
-                    throws IllegalActionException {
-            // e.g. $fireAt(actorName, timestamp, microstep);
+            throws IllegalActionException {
+        // e.g. $fireAt(actorName, timestamp, microstep);
         List<String> parameters = parseList(parameter);
 
         if (parameters.size() != 3) {
-            CGException
-                    .throwException("\""
-                            + parameter
-                            + "\" is not acceptable by $fireAt(). "
-                            + "$fireAt could be used in the following way: "
-                            + "$fireAt(&director, actorName, timestamp, microstep); ");
+            CGException.throwException("\"" + parameter
+                    + "\" is not acceptable by $fireAt(). "
+                    + "$fireAt could be used in the following way: "
+                    + "$fireAt(&director, actorName, timestamp, microstep); ");
         }
 
         if (!(_component instanceof Actor)) {
@@ -1653,7 +1652,8 @@ public class TemplateParser {
                             + "actors, but this component is not one.");
         }
         String result = "struct Director* director = (*(actor->getDirector))(actor);";
-        result += "(*(director->fireAt))(director, (struct Actor*)" + parameter + ");";
+        result += "(*(director->fireAt))(director, (struct Actor*)" + parameter
+                + ");";
         return result;
     }
 
@@ -1826,7 +1826,6 @@ public class TemplateParser {
         return processCode(portAdapter.generatePutCode(channel, offset,
                 dataToken));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

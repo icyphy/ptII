@@ -25,6 +25,7 @@
 
  */
 package ptolemy.domains.sr.lib;
+
 import java.util.Locale;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -291,7 +292,8 @@ public class Combine extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String functionName = function.getExpression().trim().toLowerCase(Locale.getDefault());
+            String functionName = function.getExpression().trim()
+                    .toLowerCase(Locale.getDefault());
 
             if (functionName.equals("add")) {
                 _function = _ADD;

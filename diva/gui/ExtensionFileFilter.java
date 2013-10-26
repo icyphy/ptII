@@ -28,6 +28,7 @@
  * redistribute the Software for such purposes.
  */
 package diva.gui;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Enumeration;
@@ -238,7 +239,8 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
             int i = filename.lastIndexOf('.');
 
             if (i > 0 && i < filename.length() - 1) {
-                return filename.substring(i + 1).toLowerCase(Locale.getDefault());
+                return filename.substring(i + 1).toLowerCase(
+                        Locale.getDefault());
             }
         }
         return null;

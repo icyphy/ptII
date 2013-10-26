@@ -176,12 +176,13 @@ public class PtIndexer {
                     numberOfFiles++;
                     try {
                         fileInput = new BufferedReader(new InputStreamReader(
-                                        new FileInputStream(fileName)));
+                                new FileInputStream(fileName)));
                         // Remove .xml
-                        fileName = fileName.substring(0, fileName.lastIndexOf("."));
+                        fileName = fileName.substring(0,
+                                fileName.lastIndexOf("."));
                         // Replace "./" with "" and then "/" with "."
-                        String className = fileName.replace("./", "").replace("/",
-                                ".");
+                        String className = fileName.replace("./", "").replace(
+                                "/", ".");
                         while ((line = fileInput.readLine()) != null) {
                             numberOfLines++;
                             ptIndexer.append(className, line);

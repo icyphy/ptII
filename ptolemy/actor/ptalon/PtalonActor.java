@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.ptalon;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -468,7 +469,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 prefix = prefix.substring(5);
             }
             String displayName;
-            if (filename.toLowerCase(Locale.getDefault()).startsWith(prefix.toLowerCase(Locale.getDefault()))) {
+            if (filename.toLowerCase(Locale.getDefault()).startsWith(
+                    prefix.toLowerCase(Locale.getDefault()))) {
                 int i = 0;
                 while (filename.startsWith("/")) {
                     filename = filename.substring(1);

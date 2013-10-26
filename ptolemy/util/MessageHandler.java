@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.util;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -124,10 +125,10 @@ public class MessageHandler {
      */
     public static boolean isRunningNightlyBuild() {
         if ((StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                        .length() > 0
-                        || StringUtilities.getProperty("ptolemy.ptII.batchMode")
-                        .length() > 0)
-                && StringUtilities.getProperty("ptolemy.ptII.testingMessageHandler").length() == 0) {
+                .length() > 0 || StringUtilities.getProperty(
+                "ptolemy.ptII.batchMode").length() > 0)
+                && StringUtilities.getProperty(
+                        "ptolemy.ptII.testingMessageHandler").length() == 0) {
             return true;
         }
 
@@ -329,7 +330,8 @@ public class MessageHandler {
 
             if (reply == null) {
                 return false;
-            } else if (reply.trim().toLowerCase(Locale.getDefault()).equals("yes")) {
+            } else if (reply.trim().toLowerCase(Locale.getDefault())
+                    .equals("yes")) {
                 return true;
             }
         } catch (IOException ex) {
@@ -364,9 +366,12 @@ public class MessageHandler {
             if (reply == null) {
                 return false;
             } else {
-                if (reply.trim().toLowerCase(Locale.getDefault()).equals(trueOption.toLowerCase(Locale.getDefault()))) {
+                if (reply.trim().toLowerCase(Locale.getDefault())
+                        .equals(trueOption.toLowerCase(Locale.getDefault()))) {
                     return true;
-                } else if (reply.trim().toLowerCase(Locale.getDefault())
+                } else if (reply
+                        .trim()
+                        .toLowerCase(Locale.getDefault())
                         .equals(exceptionOption.toLowerCase(Locale.getDefault()))) {
                     throw new ptolemy.util.CancelException("Cancelled: "
                             + question);

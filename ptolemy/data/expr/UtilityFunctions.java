@@ -1407,7 +1407,7 @@ public class UtilityFunctions {
             }
 
             //MatrixParser.ReInit(fin);
-            _matrixParser.ReInit(fin);
+            MatrixParser.ReInit(fin);
             k = _matrixParser.readMatrix();
 
             if (column == -1) {

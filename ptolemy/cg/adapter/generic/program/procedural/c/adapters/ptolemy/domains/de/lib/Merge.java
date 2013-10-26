@@ -96,11 +96,13 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.domains.de.lib.Merge actor = (ptolemy.domains.de.lib.Merge) getComponent();
 
-        code.append(getTemplateParser().generateBlockCode("fireBeginBlock", args));
+        code.append(getTemplateParser().generateBlockCode("fireBeginBlock",
+                args));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.clear();
             args.add(Integer.toString(i));
-            code.append(getTemplateParser().generateBlockCode("fireLoopBlock", args));
+            code.append(getTemplateParser().generateBlockCode("fireLoopBlock",
+                    args));
         }
 
         return code.toString();

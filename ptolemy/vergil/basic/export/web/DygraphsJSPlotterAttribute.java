@@ -116,7 +116,7 @@ public class DygraphsJSPlotterAttribute extends JSPlotterAttribute {
 
         // Write the parameters to the JavaScript function in the header.
         insertHeaderContent(true, true, "var mainChart;\n");
-//        insertHeaderContent(true, true, "$(function () {\n");
+        //        insertHeaderContent(true, true, "$(function () {\n");
         insertHeaderContent(true, true,
                 "\tvar data = " + config.get("dataJSON") + ";\n");
         insertHeaderContent(true, true,
@@ -159,7 +159,7 @@ public class DygraphsJSPlotterAttribute extends JSPlotterAttribute {
 
         // Insert custom content, if any
         if (customContent != null && customContent.getExpression() != null
-                    && !customContent.getExpression().equals("")) {
+                && !customContent.getExpression().equals("")) {
             insertHeaderContent(true, false, customContent.getExpression());
         }
 
@@ -231,12 +231,10 @@ public class DygraphsJSPlotterAttribute extends JSPlotterAttribute {
             "\t\t\t\t$(document).ready(function() {",
             "\t\t\t\t\t// parse data and create main chart",
             "\t\t\t\t\tparseJSON();", "\t\t\t\t\tcreateMainChart();",
-            "\t\t\t\t});",
-            "\t\t\t\t\tfunction createMainChart() {",
+            "\t\t\t\t});", "\t\t\t\t\tfunction createMainChart() {",
             "\t\t\t\t\t\tmainChart = new Dygraph(",
             "\t\t\t\t\t\t\tdocument.getElementById(\"mainChart-container\"),",
-            "\t\t\t\t\t\t\tdataTable,",
-            "\t\t\t\t\t\t\t{"};
+            "\t\t\t\t\t\t\tdataTable,", "\t\t\t\t\t\t\t{" };
 
     /** JavaScript code to plot the figure using the Dygraphs library.
      *  Separated into start and end so custom content can be inserted.  */
@@ -347,35 +345,24 @@ public class DygraphsJSPlotterAttribute extends JSPlotterAttribute {
             "\t\t\t\t\t\tvar text = '';",
             "\t\t\t\t\t\tjQuery.each(events, function(i, eventTrace){",
             "\t\t\t\t\t\t\tvar tempArray = jQuery.grep(eventTrace.value, function(item, j){",
-            "\t\t\t\t\t\t\t\treturn (item.x == xPoint);",
-            "\t\t\t\t\t\t\t});",
-            "\t\t\t\t\t\t\t",
-            "\t\t\t\t\t\t\tif (tempArray.length > 0){",
+            "\t\t\t\t\t\t\t\treturn (item.x == xPoint);", "\t\t\t\t\t\t\t});",
+            "\t\t\t\t\t\t\t", "\t\t\t\t\t\t\tif (tempArray.length > 0){",
             "\t\t\t\t\t\t\t\ttext += '<b>' + eventTrace.name + '</b>: ';",
             "\t\t\t\t\t\t\t\tjQuery.each(tempArray, function(j, item){",
             "\t\t\t\t\t\t\t\t\tif (j > 0)",
             "\t\t\t\t\t\t\t\t\t\ttext += ', ';",
-            "\t\t\t\t\t\t\t\t\ttext += item.text;",
-            "\t\t\t\t\t\t\t\t});",
-            "\t\t\t            \t\ttext += '<br>';",
-            "\t\t\t\t\t\t\t}",
-            "\t\t\t\t\t\t});",
-            "\t\t\t\t\t\treturn text||'None';",
-            "\t\t\t\t\t}",
-            "",
-            "\t\t\t\t\t// Parse Datetime",
+            "\t\t\t\t\t\t\t\t\ttext += item.text;", "\t\t\t\t\t\t\t\t});",
+            "\t\t\t            \t\ttext += '<br>';", "\t\t\t\t\t\t\t}",
+            "\t\t\t\t\t\t});", "\t\t\t\t\t\treturn text||'None';",
+            "\t\t\t\t\t}", "", "\t\t\t\t\t// Parse Datetime",
             "\t\t\t\t\tfunction parseDatetime(value){",
             "\t\t\t\t\t\tif (config.xAxisMode == 'datetime')",
             "\t\t\t\t\t\t\treturn new Date(value).toUTCString();",
-            "\t\t\t\t\t\telse ",
-            "\t\t\t\t\t\t\treturn value;",
-            "\t\t\t\t\t}\n",
-            "\t\t\t\t\tfunction isEventTrace(name){",
+            "\t\t\t\t\t\telse ", "\t\t\t\t\t\t\treturn value;",
+            "\t\t\t\t\t}\n", "\t\t\t\t\tfunction isEventTrace(name){",
             "\t\t\t\t\t\tvar count = 0;",
             "\t\t\t\t\t\tjQuery.each(events, function(i, eventTrace){",
             "\t\t\t\t\t\t\tif (eventTrace.name == name)",
-            "\t\t\t\t\t\t\t\tcount++;",
-            "\t\t\t\t\t\t});",
-            "\t\t\t\t\t\treturn (count > 0);",
-            "\t\t\t\t\t}" };
+            "\t\t\t\t\t\t\t\tcount++;", "\t\t\t\t\t\t});",
+            "\t\t\t\t\t\treturn (count > 0);", "\t\t\t\t\t}" };
 }

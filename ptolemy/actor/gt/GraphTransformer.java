@@ -1270,7 +1270,8 @@ public class GraphTransformer extends ChangeRequest {
                     Object replacementLinkedObject = null;
                     // FindBugs: GC: Suspicious calls to generic collection methods.
                     if (linkedObject instanceof NamedObj) {
-                        replacementLinkedObject = _patternToReplacement.get((NamedObj)linkedObject);
+                        replacementLinkedObject = _patternToReplacement
+                                .get(linkedObject);
                     }
                     if (replacementLinkedObject == null) {
                         continue;

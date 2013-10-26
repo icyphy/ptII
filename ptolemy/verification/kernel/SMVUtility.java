@@ -2104,7 +2104,11 @@ public class SMVUtility {
                                             try {
                                                 Integer.parseInt(offset);
                                             } catch (Exception exInner) {
-                                                throw new RuntimeException(" Th return the format \"" + offset + "\" is notsupported by the system.", exInner);
+                                                throw new RuntimeException(
+                                                        " Th return the format \""
+                                                                + offset
+                                                                + "\" is notsupported by the system.",
+                                                        exInner);
                                             }
 
                                         }

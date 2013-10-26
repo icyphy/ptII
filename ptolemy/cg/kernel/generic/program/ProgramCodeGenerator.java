@@ -313,7 +313,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 //result = ptType.getClass().getSimpleName().replace("Type", "");
                 result = "Matrix";
             } else if (ptType instanceof RecordType) {
-                RecordType rType = (RecordType)ptType;
+                RecordType rType = (RecordType) ptType;
                 StringBuffer arrayResult = new StringBuffer();
                 for (String label : rType.labelSet()) {
                     Type t = null;
@@ -323,7 +323,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                     }
                     arrayResult.append(codeGenType(t) + ",");
                 }
-                result = arrayResult.toString().substring(0, arrayResult.length() - 1);
+                result = arrayResult.toString().substring(0,
+                        arrayResult.length() - 1);
             }
         }
         if (result == null || result.length() == 0) {

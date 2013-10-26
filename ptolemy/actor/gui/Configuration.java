@@ -140,7 +140,7 @@ import ptolemy.util.StringUtilities;
  @see TextEditorTableau
  */
 public class Configuration extends CompositeEntity implements
-   ApplicationConfigurer, InstanceOpener {
+        ApplicationConfigurer, InstanceOpener {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -537,8 +537,7 @@ public class Configuration extends CompositeEntity implements
                             // FIXME: what about non-NamedObjs?
                             NamedObj greaterNamedObj = (NamedObj) greaterAssociatedObject;
                             NamedObj lesserNamedObj = (NamedObj) lesserAssociatedObject;
-                            String className = greaterNamedObj.getContainer()
-                                    .getClass().getName();
+                            greaterNamedObj.getContainer().getClass().getName();
                             if (greaterNamedObj != null
                                     && lesserNamedObj != null
                                     && greaterNamedObj.getContainer() != lesserNamedObj
@@ -961,7 +960,6 @@ public class Configuration extends CompositeEntity implements
         // Note that we ignore the return value here.
         openInstance(entity);
     }
-
 
     /** Open the specified instance. If the instance already has
      *  open tableaux, then put those in the foreground and

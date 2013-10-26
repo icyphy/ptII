@@ -103,15 +103,15 @@ public class FCFSScheduler extends AtomicExecutionAspect {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime,
-            Time deadline, Time executionTime) throws IllegalActionException {
+    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
+            Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
             notifyExecutionListeners((NamedObj) currentlyExecuting,
-                        currentPlatformTime.getDoubleValue(),
-                        ExecutionEventType.START);
+                    currentPlatformTime.getDoubleValue(),
+                    ExecutionEventType.START);
         }
 
         Time remainingTime = null;
@@ -129,9 +129,9 @@ public class FCFSScheduler extends AtomicExecutionAspect {
         _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
 
         if (remainingTime.getDoubleValue() == 0.0) {
-                notifyExecutionListeners((NamedObj) currentlyExecuting,
-                        currentPlatformTime.getDoubleValue(),
-                        ExecutionEventType.STOP);
+            notifyExecutionListeners((NamedObj) currentlyExecuting,
+                    currentPlatformTime.getDoubleValue(),
+                    ExecutionEventType.STOP);
 
             _remainingTimes.put(currentlyExecuting, null);
             currentlyExecuting = null;

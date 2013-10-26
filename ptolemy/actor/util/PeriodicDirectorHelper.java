@@ -262,11 +262,13 @@ public class PeriodicDirectorHelper {
             } else if (comparison > 0) {
                 // If the enclosing director is a Ptides director, firing out of timestamp
                 // order is possible, thus return true here.
-                CompositeActor container = (CompositeActor) _director.getContainer();
+                CompositeActor container = (CompositeActor) _director
+                        .getContainer();
                 while (container.getContainer() != null) {
                     container = (CompositeActor) container.getContainer();
-                    if (container.getDirector().getName().startsWith("Ptides"))
+                    if (container.getDirector().getName().startsWith("Ptides")) {
                         return true;
+                    }
                 }
 
                 // Enclosing time has not yet reached our expected firing time.

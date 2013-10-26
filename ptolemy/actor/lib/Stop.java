@@ -170,22 +170,22 @@ public class Stop extends Sink {
             // stopFire() to request that all actors conclude ongoing firings.
             getDirector().stopFire();
 
-//             Nameable container = getContainer();
+            //             Nameable container = getContainer();
 
-//             if (container instanceof CompositeActor) {
-//                 Manager manager = ((CompositeActor) container).getManager();
+            //             if (container instanceof CompositeActor) {
+            //                 Manager manager = ((CompositeActor) container).getManager();
 
-//                 if (manager != null) {
-//                     manager.finish();
-//                 } else {
-//                     throw new IllegalActionException(this,
-//                             "Cannot stop without a Manager.");
-//                 }
-//             } else {
-//                 throw new IllegalActionException(this,
-//                         "Cannot stop without a container that is a "
-//                                 + "CompositeActor.");
-//             }
+            //                 if (manager != null) {
+            //                     manager.finish();
+            //                 } else {
+            //                     throw new IllegalActionException(this,
+            //                             "Cannot stop without a Manager.");
+            //                 }
+            //             } else {
+            //                 throw new IllegalActionException(this,
+            //                         "Cannot stop without a container that is a "
+            //                                 + "CompositeActor.");
+            //             }
 
         }
 

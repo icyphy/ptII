@@ -42,7 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
-
 /** This actor implements an input port in a composite communication aspect
  *  (@link CompositeCommunicationAspect).
 *
@@ -82,11 +81,9 @@ public class CommunicationRequestPort extends Const {
         firingCountLimit.setVisibility(Settable.NONE);
 
         value.setTypeEquals(new RecordType(
-                new String[]{"receiver", "token"},
-                new Type[]{BaseType.OBJECT, BaseType.GENERAL}));
+                new String[] { "receiver", "token" }, new Type[] {
+                        BaseType.OBJECT, BaseType.GENERAL }));
     }
-
-
 
     /** Do not set a value before initialization.
      *  @param attribute The attribute that changed.

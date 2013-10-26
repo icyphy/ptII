@@ -39,10 +39,8 @@ import org.eclipse.jetty.util.resource.FileResource;
 
 import ptolemy.data.expr.FileParameter;
 
-
 ///////////////////////////////////////////////////////////////////
 ////WebApplicationInfo
-
 
 /** Information for a web application running on a web server.  Used by
  * {@link org.ptolemy.ptango.lib.WebServerUtilities}
@@ -65,7 +63,7 @@ public class WebApplicationInfo {
      * stored
      */
     public WebApplicationInfo(String modelName, String applicationPath,
-            FileParameter temporaryFileLocation) throws Exception{
+            FileParameter temporaryFileLocation) throws Exception {
 
         // Throw an exception if the model does not have a name (for example,
         // if a new unnamed model is not saved yet).
@@ -73,9 +71,9 @@ public class WebApplicationInfo {
         // IllegalActionException here.  The caller can catch this exception
         // and wrap it in an IllegalActionException
         if (modelName == null || modelName.isEmpty()) {
-            throw new Exception("A model must have a name to create a web " +
-                    "application.  Perhaps this is a new, unnamed model?  " +
-                    "Please save the model with a name.");
+            throw new Exception("A model must have a name to create a web "
+                    + "application.  Perhaps this is a new, unnamed model?  "
+                    + "Please save the model with a name.");
         }
 
         _modelName = modelName;
@@ -112,7 +110,7 @@ public class WebApplicationInfo {
      * @exception If the path has already been requested by another servlet
      */
     public void addServletInfo(URI servletPath, Servlet servlet)
-            throws Exception{
+            throws Exception {
         if (_servletInfo == null) {
             _servletInfo = new HashMap<URI, Servlet>();
         }
@@ -127,12 +125,13 @@ public class WebApplicationInfo {
         // intended a less-specific path to handle all requests - in this
         // scenario, the new controller with the more-specific path will
         // erroneously handle some of the requests.
-        if (servletPath == null || servletPath.toString().isEmpty() ||
-                _servletInfo.containsKey(servletPath) ||
-                _resourceInfo.keySet().contains(servletPath)) {
+        if (servletPath == null || servletPath.toString().isEmpty()
+                || _servletInfo.containsKey(servletPath)
+                || _resourceInfo.keySet().contains(servletPath)) {
             throw new Exception("Duplicate path requested by a servlet, "
-            + servletPath + " . Please check other servlet paths and resource "+
-                            "paths for matches.");
+                    + servletPath
+                    + " . Please check other servlet paths and resource "
+                    + "paths for matches.");
         }
 
         _servletInfo.put(servletPath, servlet);
@@ -154,12 +153,12 @@ public class WebApplicationInfo {
      * a servlet
      */
     public void addResourceInfo(URI resourcePath,
-            Set<FileResource> resourceLocations)
-            throws Exception{
+            Set<FileResource> resourceLocations) throws Exception {
         if (resourcePath == null || _servletInfo.containsKey(resourcePath)
                 || resourceLocations == null || resourceLocations.isEmpty()) {
             throw new Exception("Duplicate path requested by a resource, "
-                + resourcePath + " . Please check servlet paths for matches.");
+                    + resourcePath
+                    + " . Please check servlet paths for matches.");
         }
 
         if (_resourceInfo.containsKey(resourcePath)) {
@@ -168,7 +167,6 @@ public class WebApplicationInfo {
             _resourceInfo.put(resourcePath, new HashSet(resourceLocations));
         }
     }
-
 
     /** Get the base path of this web application
      *
@@ -188,7 +186,6 @@ public class WebApplicationInfo {
         return _servletInfo;
     }
 
-
     /** Get the full model name of the model that is running the web application
      *
      * @return  The full model name of the model that is running the web
@@ -205,7 +202,6 @@ public class WebApplicationInfo {
     public HashMap<URI, HashSet<FileResource>> getResourceInfo() {
         return _resourceInfo;
     }
-
 
     /** Get the location where temporary files should be stored.  May be empty
      * or null if the web application does not use temporary files
@@ -248,16 +244,16 @@ public class WebApplicationInfo {
 
         // Check for a matching handler path
         for (URI servletPath : _servletInfo.keySet()) {
-            if (servletPath != null && path
-                    .equalsIgnoreCase(appPath + servletPath.toString())) {
+            if (servletPath != null
+                    && path.equalsIgnoreCase(appPath + servletPath.toString())) {
                 return true;
             }
         }
 
         // Check for a matching resource path
         for (URI resourcePath : _resourceInfo.keySet()) {
-            if (resourcePath != null && path
-                    .equalsIgnoreCase(appPath + resourcePath.toString())) {
+            if (resourcePath != null
+                    && path.equalsIgnoreCase(appPath + resourcePath.toString())) {
                 return true;
             }
         }
@@ -294,8 +290,8 @@ public class WebApplicationInfo {
 
         // Check for a matching resource path
         for (URI resourcePath : _resourceInfo.keySet()) {
-            if (resourcePath != null && path
-                    .equalsIgnoreCase(appPath + resourcePath.toString())) {
+            if (resourcePath != null
+                    && path.equalsIgnoreCase(appPath + resourcePath.toString())) {
                 return true;
             }
         }
@@ -331,7 +327,6 @@ public class WebApplicationInfo {
     public void setTemporaryFileLocation(FileParameter temporaryFileLocation) {
         _temporaryFileLocation = temporaryFileLocation;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -383,7 +378,7 @@ public class WebApplicationInfo {
      *
      * See also comments in {@link org.ptolemy.ptango.lib.WebServer}
      */
-    private HashMap<URI,HashSet<FileResource>> _resourceInfo;
+    private HashMap<URI, HashSet<FileResource>> _resourceInfo;
 
     /** A map associating servlet paths with servlets.
      *
@@ -420,4 +415,3 @@ public class WebApplicationInfo {
      */
     private FileParameter _temporaryFileLocation;
 }
-

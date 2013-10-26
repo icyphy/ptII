@@ -313,17 +313,16 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (valueType.equals(elementType)) {
                 result.append(", " + childCode[i]);
             } else {
-                result.append(", $convert_" + _codeGenType(valueType)
-                        + "_" + _codeGenType(elementType) + "("
-                        + childCode[i] + ")");
+                result.append(", $convert_" + _codeGenType(valueType) + "_"
+                        + _codeGenType(elementType) + "(" + childCode[i] + ")");
             }
         }
 
         if (elementType instanceof ArrayType) {
             _childCode = "$new(" + "Array(" + result + "))";
         } else {
-            _childCode = "$new(" + _codeGenType(elementType)
-                    + "Array(" + result + "))";
+            _childCode = "$new(" + _codeGenType(elementType) + "Array("
+                    + result + "))";
 
         }
 
@@ -774,10 +773,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         if (value != null) {
             if (isPresentMark) {
                 String label2 = value.toString();
-                if (label2.startsWith("object("))
-                    label2 = label2.substring(7, label2.length() - 1) + "_isPresent";
-                else
+                if (label2.startsWith("object(")) {
+                    label2 = label2.substring(7, label2.length() - 1)
+                            + "_isPresent";
+                } else {
                     label2 += "_isPresent";
+                }
                 value = new ObjectToken(label2);
             }
             _evaluatedChildToken = value;
@@ -795,8 +796,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             return;
         }
-
-
 
         throw new IllegalActionException("The ID " + node.getName()
                 + " is undefined.");
@@ -925,8 +924,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     Type valueType = tokens[index].getType();
 
                     if (_generator.isPrimitive(valueType)) {
-                        result.append("$new("
-                                + _codeGenType(valueType) + "("
+                        result.append("$new(" + _codeGenType(valueType) + "("
                                 + _childCode + "))");
                     }
 
@@ -1169,8 +1167,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 if (type != null) {
                     result = new StringBuffer("$multiply_"
                             + _codeGenType(resultType) + "_"
-                            + _codeGenType(type) + "("
-                            + result.toString() + ", " + _childCode + ")");
+                            + _codeGenType(type) + "(" + result.toString()
+                            + ", " + _childCode + ")");
 
                     resultType = resultType.multiply(type);
 
@@ -1181,8 +1179,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 if (type != null) {
                     result = new StringBuffer("$divide_"
                             + _codeGenType(resultType) + "_"
-                            + _codeGenType(type) + "(" + result
-                            + ", " + _childCode + ")");
+                            + _codeGenType(type) + "(" + result + ", "
+                            + _childCode + ")");
 
                     resultType = resultType.divide(type);
 
@@ -1466,8 +1464,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
 
-        String childType = _codeGenType(((ASTPtRootNode) node
-                .jjtGetChild(0)).getType());
+        String childType = _codeGenType(((ASTPtRootNode) node.jjtGetChild(0))
+                .getType());
 
         String nodeType = _codeGenType(node.getType());
 
@@ -1475,8 +1473,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 + _childCode + ")");
 
         for (int i = 1; i < numChildren; i++) {
-            childType = _codeGenType(((ASTPtRootNode) node
-                    .jjtGetChild(i)).getType());
+            childType = _codeGenType(((ASTPtRootNode) node.jjtGetChild(i))
+                    .getType());
 
             Token operator = (Token) lexicalTokenList.get(i - 1);
 
@@ -1626,8 +1624,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         Type elementType = ((ArrayType) type).getElementType();
 
         //_fireCode.append("Array_get(");
-        StringBuffer result = new StringBuffer(
-                _codeGenType(elementType) + "Array_get(");
+        StringBuffer result = new StringBuffer(_codeGenType(elementType)
+                + "Array_get(");
 
         String name = value.toString();
         if (name.startsWith("object(")) {

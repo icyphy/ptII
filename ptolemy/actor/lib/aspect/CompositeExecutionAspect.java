@@ -79,7 +79,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class CompositeExecutionAspect extends TypedCompositeActor implements ActorExecutionAspect {
+public class CompositeExecutionAspect extends TypedCompositeActor implements
+        ActorExecutionAspect {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -96,7 +97,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     public CompositeExecutionAspect(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        ColorAttribute attribute = new ColorAttribute(this, "decoratorHighlightColor");
+        ColorAttribute attribute = new ColorAttribute(this,
+                "decoratorHighlightColor");
         attribute.setExpression("{0.0,0.8,0.0,1.0}");
         _previousY = new HashMap<NamedObj, Double>();
 
@@ -109,8 +111,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
         _executionAspectListeners = new ArrayList<ExecutionAspectListener>();
     }
 
-        ///////////////////////////////////////////////////////////////////
-        //                           public variables                    //
+    ///////////////////////////////////////////////////////////////////
+    //                           public variables                    //
 
     /** This parameter indicates whether the tokens received via the
      *  ImmediateReceivers are immediately forwarded to the wrapped
@@ -130,7 +132,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  of actors scheduled by this ExecutionAspect.
      */
     @Override
-    public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException {
+    public void addExecutingListener(ExecutionAspectListener listener)
+            throws IllegalActionException {
         _executionAspectListeners.add(listener);
         if (_actors == null) {
             initializeDecoratedActors();
@@ -208,13 +211,12 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      * @exception IllegalActionException Thrown in attribute or token cannot be read.
      */
     @Override
-    public double getExecutionTime(Actor actor)
-            throws IllegalActionException {
+    public double getExecutionTime(Actor actor) throws IllegalActionException {
         double executionTime = 0.0;
         for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
                 .attributeList(ExecutionTimeAttributes.class)) {
-            if (resourceAttributes.getDecorator() != null &&
-                    resourceAttributes.getDecorator().equals(this)) {
+            if (resourceAttributes.getDecorator() != null
+                    && resourceAttributes.getDecorator().equals(this)) {
                 Token token = resourceAttributes.executionTime.getToken();
                 if (token != null) {
                     executionTime = ((DoubleToken) token).doubleValue();
@@ -246,21 +248,21 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     }
 
     ///////////////////////////////////////////////////////////////////
-        //                          protected methods                    //
+    //                          protected methods                    //
 
-        /** Iterate through all entities deeply contained by the container,
-         *  record for each that it is not executing.
-         *  @exception IllegalActionException If the decorator parameters cannot be read.
-         */
-        public void initializeDecoratedActors() throws IllegalActionException {
-            List<NamedObj> entities = ((CompositeEntity) getContainer())
-                    .deepEntityList();
-            _initializeManagedEntities(entities);
-        }
-
-        /** Return true to indicate that this decorator should
-     *  decorate objects across opaque hierarchy boundaries.
+    /** Iterate through all entities deeply contained by the container,
+     *  record for each that it is not executing.
+     *  @exception IllegalActionException If the decorator parameters cannot be read.
      */
+    public void initializeDecoratedActors() throws IllegalActionException {
+        List<NamedObj> entities = ((CompositeEntity) getContainer())
+                .deepEntityList();
+        _initializeManagedEntities(entities);
+    }
+
+    /** Return true to indicate that this decorator should
+    *  decorate objects across opaque hierarchy boundaries.
+    */
     @Override
     public boolean isGlobalDecorator() {
         return true;
@@ -293,7 +295,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      * @param eventType Type of event.
      */
     @Override
-    public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType) {
+    public void notifyExecutionListeners(NamedObj entity, Double time,
+            ExecutionEventType eventType) {
         if (_executionAspectListeners != null) {
             for (ExecutionAspectListener listener : _executionAspectListeners) {
                 listener.event(entity, time, eventType);
@@ -312,13 +315,20 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
 
         for (Object entity : entityList()) {
             if (entity instanceof ExecutionResponsePort) {
-                ExecutionResponsePort outputPort = ((ExecutionResponsePort)entity);
-                if (outputPort.hasToken() && outputPort.getToken() instanceof RecordToken) {
-                    RecordToken recordToken = (RecordToken) outputPort.getToken();
-                    if (recordToken.get("actor") != null &&
-                            ((ObjectToken)recordToken.get("actor")).getValue() != null) {
-                        Actor actor = (Actor) ((ObjectToken)recordToken.get("actor")).getValue();
-                        notifyExecutionListeners((NamedObj) actor, getExecutiveDirector().getModelTime().getDoubleValue(), ExecutionEventType.STOP);
+                ExecutionResponsePort outputPort = ((ExecutionResponsePort) entity);
+                if (outputPort.hasToken()
+                        && outputPort.getToken() instanceof RecordToken) {
+                    RecordToken recordToken = (RecordToken) outputPort
+                            .getToken();
+                    if (recordToken.get("actor") != null
+                            && ((ObjectToken) recordToken.get("actor"))
+                                    .getValue() != null) {
+                        Actor actor = (Actor) ((ObjectToken) recordToken
+                                .get("actor")).getValue();
+                        notifyExecutionListeners((NamedObj) actor,
+                                getExecutiveDirector().getModelTime()
+                                        .getDoubleValue(),
+                                ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
                         actor.getExecutiveDirector().resumeActor(actor);
@@ -330,8 +340,6 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
 
         return postfire;
     }
-
-
 
     /** Perform rescheduling actions when no new actor requests to be
      *  scheduled.
@@ -346,95 +354,102 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     }
 
     ///////////////////////////////////////////////////////////////////
-        //                          protected methods                    //
+    //                          protected methods                    //
 
-        /** Schedule a new actor for execution. Find the const
-         *  actor in the _model that is mapped to this actor and
-         *  trigger a firing of that one, if the actor is not
-         *  already in execution. If the actor finished execution,
-         *  return zero time, otherwise return the next time the
-         *  model has something to do.
-         *  @param actor The actor to be scheduled.
-         *  @param currentPlatformTime The current platform time.
-         *  @param deadline The deadline of the event.
-         *  @param executionTime The execution time of the actor.
-         *  @return Relative time when this aspect has to be executed
-         *    again.
-         *  @exception IllegalActionException Thrown if actor parameters such
-         *    as execution time or priority cannot be read.
-         */
-        public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
-                Time executionTime) throws IllegalActionException {
-            _lastActorFinished = false;
-            // make sure that director has the correct time.
-            getDirector().setModelTime(getExecutiveDirector().localClock.getLocalTime());
+    /** Schedule a new actor for execution. Find the const
+     *  actor in the _model that is mapped to this actor and
+     *  trigger a firing of that one, if the actor is not
+     *  already in execution. If the actor finished execution,
+     *  return zero time, otherwise return the next time the
+     *  model has something to do.
+     *  @param actor The actor to be scheduled.
+     *  @param currentPlatformTime The current platform time.
+     *  @param deadline The deadline of the event.
+     *  @param executionTime The execution time of the actor.
+     *  @return Relative time when this aspect has to be executed
+     *    again.
+     *  @exception IllegalActionException Thrown if actor parameters such
+     *    as execution time or priority cannot be read.
+     */
+    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
+            Time executionTime) throws IllegalActionException {
+        _lastActorFinished = false;
+        // make sure that director has the correct time.
+        getDirector().setModelTime(
+                getExecutiveDirector().localClock.getLocalTime());
 
-            // create token for scheduling requests and put them into ports.
-            Time time = _lastTimeScheduled.get(actor);
-            if ((_justMonitor && (time == null || !time.equals(currentPlatformTime)))
-                    || !_currentlyExecuting.contains(actor)) {
-                _lastTimeScheduled.put(actor, currentPlatformTime);
-                notifyExecutionListeners((NamedObj) actor, getExecutiveDirector().localClock.getLocalTime().getDoubleValue(), ExecutionEventType.START);
-                if (_requestPorts == null || _requestPorts.get(actor) == null) {
-                        CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes)
-                            ((NamedObj)actor).getDecoratorAttributes(this);
-                        String portName = ((StringParameter)decoratorAttributes.getAttribute("requestPort")).getValueAsString();
-                        if (portName == null || portName.equals("")) {
-                                throw new IllegalActionException(this, "Actor " + actor + " does not have a" +
-                                        " registered requestPort");
-                        }
-                        setRequestPort(actor, portName);
+        // create token for scheduling requests and put them into ports.
+        Time time = _lastTimeScheduled.get(actor);
+        if ((_justMonitor && (time == null || !time.equals(currentPlatformTime)))
+                || !_currentlyExecuting.contains(actor)) {
+            _lastTimeScheduled.put(actor, currentPlatformTime);
+            notifyExecutionListeners((NamedObj) actor,
+                    getExecutiveDirector().localClock.getLocalTime()
+                            .getDoubleValue(), ExecutionEventType.START);
+            if (_requestPorts == null || _requestPorts.get(actor) == null) {
+                CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes) ((NamedObj) actor)
+                        .getDecoratorAttributes(this);
+                String portName = ((StringParameter) decoratorAttributes
+                        .getAttribute("requestPort")).getValueAsString();
+                if (portName == null || portName.equals("")) {
+                    throw new IllegalActionException(this, "Actor " + actor
+                            + " does not have a" + " registered requestPort");
                 }
-                ExecutionRequestPort requestPort = (ExecutionRequestPort) getEntity(_requestPorts.get(actor));
-                if (requestPort != null) {
-                    RecordToken recordToken = new RecordToken(
-                            new String[]{"actor", "executionTime"},
-                            new Token[]{new ObjectToken(actor),
-                                    new DoubleToken(executionTime.getDoubleValue())});
-                    requestPort.value.setToken(recordToken);
-                    getDirector().fireAtCurrentTime(requestPort);
-                    getExecutiveDirector().fireAt(this, getDirector().getModelTime());
-                    _currentlyExecuting.add(actor);
-                } else {
-                    throw new IllegalActionException(this, "No request port with name "
-                          + _requestPorts.get(actor));
-                }
+                setRequestPort(actor, portName);
             }
-            if (_justMonitor) {
-                _lastActorFinished = true;
-                return new Time(getDirector(), 0.0);
+            ExecutionRequestPort requestPort = (ExecutionRequestPort) getEntity(_requestPorts
+                    .get(actor));
+            if (requestPort != null) {
+                RecordToken recordToken = new RecordToken(new String[] {
+                        "actor", "executionTime" }, new Token[] {
+                        new ObjectToken(actor),
+                        new DoubleToken(executionTime.getDoubleValue()) });
+                requestPort.value.setToken(recordToken);
+                getDirector().fireAtCurrentTime(requestPort);
+                getExecutiveDirector().fireAt(this,
+                        getDirector().getModelTime());
+                _currentlyExecuting.add(actor);
             } else {
-                // at this point we don't know how long it will take till the actor
-                // finishes execution.
-                return Time.POSITIVE_INFINITY;
+                throw new IllegalActionException(this,
+                        "No request port with name " + _requestPorts.get(actor));
             }
         }
+        if (_justMonitor) {
+            _lastActorFinished = true;
+            return new Time(getDirector(), 0.0);
+        } else {
+            // at this point we don't know how long it will take till the actor
+            // finishes execution.
+            return Time.POSITIVE_INFINITY;
+        }
+    }
 
-        /** Override the base class to first set the container, then establish
-     *  a connection with any decorated objects it finds in scope in the new
-     *  container.
-     *  @param container The container to attach this attribute to..
-     *  @exception IllegalActionException If this attribute is not of the
-     *   expected class for the container, or it has no name,
-     *   or the attribute and container are not in the same workspace, or
-     *   the proposed container would result in recursive containment.
-     *  @exception NameDuplicationException If the container already has
-     *   an attribute with the name of this attribute.
-     *  @see #getContainer()
-     */
+    /** Override the base class to first set the container, then establish
+    *  a connection with any decorated objects it finds in scope in the new
+    *  container.
+    *  @param container The container to attach this attribute to..
+    *  @exception IllegalActionException If this attribute is not of the
+    *   expected class for the container, or it has no name,
+    *   or the attribute and container are not in the same workspace, or
+    *   the proposed container would result in recursive containment.
+    *  @exception NameDuplicationException If the container already has
+    *   an attribute with the name of this attribute.
+    *  @see #getContainer()
+    */
     @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        super.setContainer((CompositeEntity) container);
+        super.setContainer(container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
-                CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes)
-                        decoratedObject.getDecoratorAttributes(this);
+                CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes) decoratedObject
+                        .getDecoratorAttributes(this);
                 if (decoratedObject instanceof Actor) {
-                        setRequestPort((Actor) decoratedObject, decoratorAttributes._requestPortName);
+                    setRequestPort((Actor) decoratedObject,
+                            decoratorAttributes._requestPortName);
                 }
             }
         }
@@ -446,26 +461,26 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
      *  @param portName The request port.
      */
     public void setRequestPort(Actor actor, String portName) {
-            if (portName != null) {
-                    if (_requestPorts == null) {
-                        _requestPorts = new HashMap<Actor, String>();
-                }
-                    _requestPorts.put(actor, portName);
+        if (portName != null) {
+            if (_requestPorts == null) {
+                _requestPorts = new HashMap<Actor, String>();
             }
+            _requestPorts.put(actor, portName);
+        }
     }
 
-        /** Remove schedule listener.
-         * @param listener The listener to be removed.
-         */
-        @Override
-        public void removeExecutionListener(ExecutionAspectListener listener) {
-            _executionAspectListeners.remove(listener);
-        }
+    /** Remove schedule listener.
+     * @param listener The listener to be removed.
+     */
+    @Override
+    public void removeExecutionListener(ExecutionAspectListener listener) {
+        _executionAspectListeners.remove(listener);
+    }
 
     ///////////////////////////////////////////////////////////////////
-        //                          protected variables                  //
+    //                          protected variables                  //
 
-        /** Actors decorated by this aspect. */
+    /** Actors decorated by this aspect. */
     protected List<NamedObj> _actors;
 
     /** True if in the last request to schedule an actor, this actor
@@ -484,45 +499,45 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
     //                          private methods                      //
 
     private void _initializeManagedEntities(List<NamedObj> entities)
-                throws IllegalActionException {
-            for (NamedObj entity : entities) {
-                ExecutionAttributes decoratorAttributes = (ExecutionAttributes) entity
-                        .getDecoratorAttributes(this);
-                if (decoratorAttributes != null) {
-                    if (((BooleanToken) decoratorAttributes.enable.getToken())
-                            .booleanValue()) {
-                        // The entity uses this ExecutionAspect.
-                        if (_actors == null) {
-                            _actors = new ArrayList<NamedObj>();
-                        }
-                        _actors.add(entity);
-                        notifyExecutionListeners(entity, 0.0, null);
-                    } else if (entity instanceof CompositeActor) {
-                        _initializeManagedEntities(((CompositeActor) entity)
-                                .deepEntityList());
+            throws IllegalActionException {
+        for (NamedObj entity : entities) {
+            ExecutionAttributes decoratorAttributes = (ExecutionAttributes) entity
+                    .getDecoratorAttributes(this);
+            if (decoratorAttributes != null) {
+                if (((BooleanToken) decoratorAttributes.enable.getToken())
+                        .booleanValue()) {
+                    // The entity uses this ExecutionAspect.
+                    if (_actors == null) {
+                        _actors = new ArrayList<NamedObj>();
                     }
+                    _actors.add(entity);
+                    notifyExecutionListeners(entity, 0.0, null);
+                } else if (entity instanceof CompositeActor) {
+                    _initializeManagedEntities(((CompositeActor) entity)
+                            .deepEntityList());
                 }
             }
         }
+    }
 
-        private boolean _isPartOfExecutionAspect(NamedObj actor) {
-            if (actor instanceof ActorExecutionAspect) {
+    private boolean _isPartOfExecutionAspect(NamedObj actor) {
+        if (actor instanceof ActorExecutionAspect) {
+            return true;
+        }
+        CompositeEntity container = (CompositeEntity) actor.getContainer();
+        while (container != null) {
+            if (container instanceof ActorExecutionAspect) {
                 return true;
             }
-            CompositeEntity container = (CompositeEntity) actor.getContainer();
-            while (container != null) {
-                if (container instanceof ActorExecutionAspect) {
-                    return true;
-                }
-                container = (CompositeEntity) container.getContainer();
-            }
-            return false;
+            container = (CompositeEntity) container.getContainer();
         }
+        return false;
+    }
 
-        ///////////////////////////////////////////////////////////////////
-        //                          private variables                    //
+    ///////////////////////////////////////////////////////////////////
+    //                          private variables                    //
 
-        /** Previous positions of the actor data set. */
+    /** Previous positions of the actor data set. */
     private HashMap<NamedObj, Double> _previousY;
 
     private HashMap<Actor, Time> _lastTimeScheduled;
@@ -547,8 +562,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
          *  @exception NameDuplicationException If the superclass throws it.
          */
         public CompositeExecutionAspectAttributes(NamedObj target,
-                Decorator decorator)
-                throws IllegalActionException, NameDuplicationException {
+                Decorator decorator) throws IllegalActionException,
+                NameDuplicationException {
             super(target, decorator);
             _init();
         }
@@ -584,9 +599,10 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
             if (attribute == requestPort) {
                 Actor actor = (Actor) getContainer();
                 CompositeExecutionAspect aspect = (CompositeExecutionAspect) getDecorator();
-                String portName = ((StringToken) ((Parameter) attribute).getToken()).stringValue();
+                String portName = ((StringToken) ((Parameter) attribute)
+                        .getToken()).stringValue();
                 if (aspect != null && !portName.equals("") && enabled()) {
-                        _requestPortName = portName;
+                    _requestPortName = portName;
                     aspect.setRequestPort(actor, _requestPortName);
                 }
             } else {
@@ -606,9 +622,11 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
                 if (getDecorator() != null) {
                     requestPort.removeAllChoices();
 
-                    List<ExecutionRequestPort> communicationRequestPorts = ((CompositeExecutionAspect)getDecorator()).entityList(ExecutionRequestPort.class);
+                    List<ExecutionRequestPort> communicationRequestPorts = ((CompositeExecutionAspect) getDecorator())
+                            .entityList(ExecutionRequestPort.class);
                     for (Object communicationRequestPort : communicationRequestPorts) {
-                        String name = ((ExecutionRequestPort)communicationRequestPort).getName();
+                        String name = ((ExecutionRequestPort) communicationRequestPort)
+                                .getName();
                         requestPort.addChoice(name);
                     }
                 }
@@ -631,8 +649,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements Act
             }
         }
 
-                ///////////////////////////////////////////////////////////////////
-                ////                        private variables                  ////
+        ///////////////////////////////////////////////////////////////////
+        ////                        private variables                  ////
 
         private String _requestPortName;
     }

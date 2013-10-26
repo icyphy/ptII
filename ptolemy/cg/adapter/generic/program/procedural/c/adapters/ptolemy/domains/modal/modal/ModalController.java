@@ -105,8 +105,7 @@ public class ModalController
         code.append(_eol);
 
         // Check to see if a preemptive transition is taken.
-        code.append("if ("
-                + modalName + "__transitionFlag == 0) {" + _eol);
+        code.append("if (" + modalName + "__transitionFlag == 0) {" + _eol);
 
         // Generate code for refinements.
         _generateRefinementCode(code);
@@ -134,35 +133,33 @@ public class ModalController
     */
     @Override
     public String generatePostfireCode() throws IllegalActionException {
-       StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer();
 
-       String name = _myController.getFullName().substring(1);
-       name = name.replace('.', '_');
+        String name = _myController.getFullName().substring(1);
+        name = name.replace('.', '_');
 
-       code.append(_eol + "switch (" + name + "__currentState) {");
-       Iterator states = _myController.entityList().iterator();
-       while (states.hasNext()) {
-           State state = (State) states.next();
-           String stateName = CodeGeneratorAdapter.generateName(state);
-           code.append(_eol + "case " + stateName + " : {");
-           Actor[] actors = state.getRefinement();
+        code.append(_eol + "switch (" + name + "__currentState) {");
+        Iterator states = _myController.entityList().iterator();
+        while (states.hasNext()) {
+            State state = (State) states.next();
+            String stateName = CodeGeneratorAdapter.generateName(state);
+            code.append(_eol + "case " + stateName + " : {");
+            Actor[] actors = state.getRefinement();
 
-           if (actors != null) {
-               for (Actor actor : actors) {
-                   NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                           .getAdapter(actor);
-                   code.append(_eol + actorHelper.generatePostfireCode());
-               }
-           }
+            if (actors != null) {
+                for (Actor actor : actors) {
+                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                            .getAdapter(actor);
+                    code.append(_eol + actorHelper.generatePostfireCode());
+                }
+            }
 
-           code.append(_eol + "}" + _eol + "break;");
-       }
-       code.append(_eol + "}" + _eol + "return true;");
+            code.append(_eol + "}" + _eol + "break;");
+        }
+        code.append(_eol + "}" + _eol + "return true;");
 
-       return code.toString();
+        return code.toString();
     }
-
-
 
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -174,72 +171,75 @@ public class ModalController
         name = name.replace('.', '_');
         modalName = modalName.replace('.', '_');
         TypedIOPort inputPort, outputPort;
-        code.append(_eol + getCodeGenerator().comment(
-                "Beginning of create controller variables."));
+        code.append(_eol
+                + getCodeGenerator().comment(
+                        "Beginning of create controller variables."));
         for (int i = 0; i < inputPorts.size(); i++) {
 
             inputPort = inputPorts.get(i);
             if (!outputPorts.contains(inputPort)) {
                 int width = inputPort.getWidth();
 
-                code.append(inputPort.getType() + " " + name
-                        + "_" + inputPort.getName());
+                code.append(inputPort.getType() + " " + name + "_"
+                        + inputPort.getName());
                 if (width > 1) {
                     code.append("[" + width + "]");
                 }
                 code.append(";" + _eol);
-                code.append("bool " + name
-                        + "_" + inputPort.getName() + "_isPresent;" + _eol);
+                code.append("bool " + name + "_" + inputPort.getName()
+                        + "_isPresent;" + _eol);
             }
         }
         for (int i = 0; i < outputPorts.size(); i++) {
 
             outputPort = outputPorts.get(i);
             int width = outputPort.getWidth();
-            code.append(outputPort.getType() + " " + name
-                    + "_" + outputPort.getName());
+            code.append(outputPort.getType() + " " + name + "_"
+                    + outputPort.getName());
             if (width > 1) {
                 code.append("[" + width + "]");
             }
             code.append(";" + _eol);
         }
 
-
         //code.append("int " + name + "__currentState;" + _eol);
         code.append("int " + modalName + "__transitionFlag;" + _eol);
-        StringBuffer enumStates = new StringBuffer(_eol + "enum " + name + "__currentState {");
+        StringBuffer enumStates = new StringBuffer(_eol + "enum " + name
+                + "__currentState {");
 
         Iterator states = _myController.entityList().iterator();
         boolean first = true;
         while (states.hasNext()) {
-            if (first)
+            if (first) {
                 first = false;
-            else
+            } else {
                 enumStates.append(", ");
+            }
             State state = (State) states.next();
             String stateName = CodeGeneratorAdapter.generateName(state);
             enumStates.append(stateName);
         }
         enumStates.append("};");
         code.append(enumStates);
-        code.append(_eol + "enum " + name + "__currentState " + name + "__currentState;");
+        code.append(_eol + "enum " + name + "__currentState " + name
+                + "__currentState;");
 
         List<?> list = _myController.getModifiedVariables();
         List<Parameter> done = new ArrayList();
         for (Object o : list) {
-            if (o instanceof Parameter && !done.contains((Parameter)o)) {
-                Parameter parameter = (Parameter)o;
+            if (o instanceof Parameter && !done.contains(o)) {
+                Parameter parameter = (Parameter) o;
                 getCodeGenerator().addModifiedVariables(parameter);
                 done.add(parameter);
                 code.append(_eol + parameter.getType() + " "
                         + getCodeGenerator().generateVariableName(parameter)
-                        + " = "
-                        + parameter.getValueAsString() + ";" + _eol);
+                        + " = " + parameter.getValueAsString() + ";" + _eol);
             }
         }
 
-        code.append(_eol + getCodeGenerator().comment(
-                "End of create controller variables"));
+        code.append(_eol
+                + getCodeGenerator().comment(
+                        "End of create controller variables"));
         return code.toString();
     }
 
@@ -271,17 +271,19 @@ public class ModalController
             depth++;
 
             State state = (State) states.next();
-            code.append("case " + CodeGeneratorAdapter.generateName(state) + ":" + _eol);
+            code.append("case " + CodeGeneratorAdapter.generateName(state)
+                    + ":" + _eol);
 
             Actor[] actors = state.getRefinement();
 
             if (actors != null) {
                 for (Actor actor : actors) {
-//                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-//                            .getAdapter(actor);
+                    //                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                    //                            .getAdapter(actor);
                     // fire the actor
-                    String actorName = generateName((NamedObj)actor);
-                    code.append(_eol + actorName + "->iterate(" + actorName + ", 1);" + _eol);
+                    String actorName = generateName((NamedObj) actor);
+                    code.append(_eol + actorName + "->iterate(" + actorName
+                            + ", 1);" + _eol);
                 }
             }
 

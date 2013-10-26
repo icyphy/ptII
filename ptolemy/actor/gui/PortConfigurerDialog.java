@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -438,11 +439,13 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             NamedObj composite = container.getContainer();
 
             if (composite != null) {
-                moml.append("<deletePort name=\"" + StringUtilities.escapeForXML(actualPort.getName())
+                moml.append("<deletePort name=\""
+                        + StringUtilities.escapeForXML(actualPort.getName())
                         + "\" entity=\"" + container.getName() + "\" />");
             } else {
                 moml.append("<deletePort name=\""
-                        + StringUtilities.escapeForXML(actualPort.getName(container)) + "\" />");
+                        + StringUtilities.escapeForXML(actualPort
+                                .getName(container)) + "\" />");
             }
 
             // NOTE: the context is the composite entity containing
@@ -502,9 +505,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                                             new InternalErrorException(
                                                     null,
                                                     null,
-                                                    "Instead, alias the port by setting display name. " +
-                                                    "Right-click on the port,\nchoose Rename, then enter " +
-                                                    "the desired alias into the field Display Name."));
+                                                    "Instead, alias the port by setting display name. "
+                                                            + "Right-click on the port,\nchoose Rename, then enter "
+                                                            + "the desired alias into the field Display Name."));
                             _applyChangeRequestFailed = true;
                         } else {
                             havePortUpdate = true;
@@ -616,7 +619,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                             .getAttribute("_cardinal");
 
                     if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase(Locale.getDefault());
+                        _direction = _cardinal.getExpression().toUpperCase(
+                                Locale.getDefault());
                     }
 
                     if (_direction == null && !direction.equals("DEFAULT")
@@ -892,7 +896,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                             .getAttribute("_cardinal");
 
                     if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase(Locale.getDefault());
+                        _direction = _cardinal.getExpression().toUpperCase(
+                                Locale.getDefault());
                     } else {
                         _direction = "DEFAULT";
                     }
@@ -1631,7 +1636,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             Boolean updateValue = (Boolean) updates.get(ColumnNames.COL_NAME);
 
             if (updateValue.booleanValue()) {
-                momlUpdate.append("<rename name=\"" + StringUtilities.escapeForXML(newPortName) + "\"/>");
+                momlUpdate.append("<rename name=\""
+                        + StringUtilities.escapeForXML(newPortName) + "\"/>");
             }
         }
 

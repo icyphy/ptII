@@ -381,7 +381,8 @@ public class Configurer extends JPanel implements CloseListener {
                     DecoratorAttributes decoratorAttributes = object
                             .getDecoratorAttributes(decorator);
                     if (decoratorAttributes != null) {
-                        for (Object attribute : decoratorAttributes.attributeList()) {
+                        for (Object attribute : decoratorAttributes
+                                .attributeList()) {
                             if (attribute instanceof Settable) {
                                 Settable settable = (Settable) attribute;
                                 if (isVisible(object, settable)) {

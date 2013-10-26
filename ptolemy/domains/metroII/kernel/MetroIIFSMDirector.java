@@ -119,7 +119,8 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      * @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIFSMDirector newObject = (MetroIIFSMDirector) super.clone(workspace);
+        MetroIIFSMDirector newObject = (MetroIIFSMDirector) super
+                .clone(workspace);
         newObject.events = new ArrayList<Event.Builder>();
         return newObject;
     }

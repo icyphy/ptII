@@ -133,7 +133,8 @@ public class RecordDisassembler extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RecordDisassembler newObject = (RecordDisassembler) super.clone(workspace);
+        RecordDisassembler newObject = (RecordDisassembler) super
+                .clone(workspace);
         newObject._portMap = new HashMap<String, TypedIOPort>();
         return newObject;
     }
@@ -217,8 +218,8 @@ public class RecordDisassembler extends TypedAtomicActor {
         // constrain the fields in the input record to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
-        result.add(new Inequality(new ConstructAssociativeType(
-                _portMap.values(), RecordType.class), input.getTypeTerm()));
+        result.add(new Inequality(new ConstructAssociativeType(_portMap
+                .values(), RecordType.class), input.getTypeTerm()));
 
         for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
             String outputName = entry.getKey();
@@ -235,8 +236,8 @@ public class RecordDisassembler extends TypedAtomicActor {
         // constrain the input record to have the required fields:
         // input <= {x = GENERAL, y = GENERAL}
         result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
-                                new RecordType(labels.toArray(new String[labels.size()]), types
-                                        .toArray(new Type[types.size()])))));
+                new RecordType(labels.toArray(new String[labels.size()]), types
+                        .toArray(new Type[types.size()])))));
 
         // NOTE: refrain from using port.setTypeAtMost() or
         // port.setTypeAtLeast(), because after removing an output port, the

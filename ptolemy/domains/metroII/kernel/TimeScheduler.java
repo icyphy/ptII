@@ -60,7 +60,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     @Override
     public TimeScheduler clone() throws CloneNotSupportedException {
         TimeScheduler newObject = (TimeScheduler) super.clone();
-        newObject._debugger = (MetroIIDebugger) _debugger.clone();
+        newObject._debugger = _debugger.clone();
         return newObject;
     }
 
@@ -123,9 +123,9 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
                     if (event.hasTime()) {
                         if (event.getTime().getValue() > time) {
                             event.setStatus(Status.WAITING);
-//                            Event.Time.Builder builder = Event.Time.newBuilder();
-//                            builder.setValue(time);
-//                            event.setTime(builder);
+                            //                            Event.Time.Builder builder = Event.Time.newBuilder();
+                            //                            builder.setValue(time);
+                            //                            event.setTime(builder);
                         }
                     }
                 }

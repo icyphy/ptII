@@ -596,7 +596,8 @@ public class Director extends Attribute implements Executable {
      * @return The deadline.
      * @exception IllegalActionException Thrown in subclasses.
      */
-    public Time getDeadline(Actor actor, Time timestamp) throws IllegalActionException {
+    public Time getDeadline(Actor actor, Time timestamp)
+            throws IllegalActionException {
         return Time.POSITIVE_INFINITY;
     }
 
@@ -882,7 +883,7 @@ public class Director extends Attribute implements Executable {
                 ActorExecutionAspect.class)) {
             ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
             _executionAspects.add(aspect);
-            ((Actor)aspect).initialize();
+            ((Actor) aspect).initialize();
         }
         if (_nextScheduleTime != null) {
             _nextScheduleTime.clear();
@@ -1132,8 +1133,8 @@ public class Director extends Attribute implements Executable {
             _debug("Director: Called prefire().");
         }
 
-        Time modifiedTime = _consultTimeRegulators(
-                localClock.getLocalTimeForCurrentEnvironmentTime());
+        Time modifiedTime = _consultTimeRegulators(localClock
+                .getLocalTimeForCurrentEnvironmentTime());
 
         setModelTime(modifiedTime);
 
@@ -1696,9 +1697,11 @@ public class Director extends Attribute implements Executable {
      *   proposedTime if none.
      *  @exception IllegalActionException If a time regulator throws it.
      */
-    protected Time _consultTimeRegulators(Time proposedTime) throws IllegalActionException {
+    protected Time _consultTimeRegulators(Time proposedTime)
+            throws IllegalActionException {
         Time returnValue = proposedTime;
-        List<TimeRegulator> regulators = getContainer().attributeList(TimeRegulator.class);
+        List<TimeRegulator> regulators = getContainer().attributeList(
+                TimeRegulator.class);
         for (TimeRegulator regulator : regulators) {
             Time modifiedTime = regulator.proposeTime(returnValue);
             if (modifiedTime.compareTo(returnValue) < 0) {
@@ -1797,7 +1800,8 @@ public class Director extends Attribute implements Executable {
      *  @return The aspect.
      * @exception IllegalActionException
      */
-    protected ActorExecutionAspect _getExecutionAspect(Actor actor) throws IllegalActionException {
+    protected ActorExecutionAspect _getExecutionAspect(Actor actor)
+            throws IllegalActionException {
         if (_aspectForActor == null) {
             _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
         }
@@ -1805,8 +1809,10 @@ public class Director extends Attribute implements Executable {
         if (result == null) {
             for (ExecutionAttributes executionAttributes : ((NamedObj) actor)
                     .attributeList(ExecutionAttributes.class)) {
-                if (((BooleanToken)executionAttributes.enable.getToken()).booleanValue()) {
-                    result = (ActorExecutionAspect) executionAttributes.getDecorator();
+                if (((BooleanToken) executionAttributes.enable.getToken())
+                        .booleanValue()) {
+                    result = (ActorExecutionAspect) executionAttributes
+                            .getDecorator();
                     _aspectForActor.put(actor, result);
                     break;
                 }
@@ -1937,23 +1943,22 @@ public class Director extends Attribute implements Executable {
             timestamp = getModelTime();
         }
         if (aspect != null) {
-            Time environmentTime = ((CompositeActor)  aspect
-                    .getContainer()).getDirector().getEnvironmentTime();
-            time = ExecutionAspectHelper.schedule(aspect, actor, environmentTime,
-                    getDeadline(actor, timestamp));
+            Time environmentTime = ((CompositeActor) aspect.getContainer())
+                    .getDirector().getEnvironmentTime();
+            time = ExecutionAspectHelper.schedule(aspect, actor,
+                    environmentTime, getDeadline(actor, timestamp));
             if (_nextScheduleTime == null) {
                 _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
             }
             _nextScheduleTime.put(aspect, time);
             finished = _actorFinished(actor);
             if (time != null && time.getDoubleValue() > 0.0) {
-                CompositeActor container = (CompositeActor)  aspect
+                CompositeActor container = (CompositeActor) aspect
                         .getContainer();
                 Time fireAtTime = environmentTime;
                 if (!time.equals(Time.POSITIVE_INFINITY)) {
                     fireAtTime = fireAtTime.add(time);
-                    container.getDirector().fireContainerAt(
-                            fireAtTime);
+                    container.getDirector().fireContainerAt(fireAtTime);
                 }
             }
         }

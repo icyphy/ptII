@@ -183,8 +183,8 @@ public class FMICallbackFunctions extends Structure {
      *  @return a list of strings that name the fields in order.
      */
     protected List getFieldOrder() {
-        return Arrays.asList(new String[] { "logger", "allocateMemory", "freeMemory",
-                "stepFinished" });
+        return Arrays.asList(new String[] { "logger", "allocateMemory",
+                "freeMemory", "stepFinished" });
     }
 
     /** Set the initialization order of the fields so that the order

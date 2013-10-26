@@ -60,7 +60,8 @@ public interface ActorExecutionAspect extends Decorator {
      *  @exception IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
-    public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException;
+    public void addExecutingListener(ExecutionAspectListener listener)
+            throws IllegalActionException;
 
     /** Iterate through all entities deeply contained by the container,
      *  record for each that it is not executing.
@@ -94,7 +95,8 @@ public interface ActorExecutionAspect extends Decorator {
      * @param time Time when entity is being scheduled.
      * @param eventType Type of event.
      */
-    public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType);
+    public void notifyExecutionListeners(NamedObj entity, Double time,
+            ExecutionEventType eventType);
 
     /** Perform rescheduling actions when no new actor requests to be
          *  scheduled.
@@ -103,7 +105,7 @@ public interface ActorExecutionAspect extends Decorator {
          *    again to perform rescheduling actions.
          * @exception IllegalActionException Thrown in subclasses.
          */
-        public Time schedule(Time environmentTime) throws IllegalActionException;
+    public Time schedule(Time environmentTime) throws IllegalActionException;
 
     /** Schedule the actor. In this base class, do nothing.  Derived
      *  classes should schedule the actor.

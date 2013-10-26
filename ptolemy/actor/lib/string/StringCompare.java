@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.lib.string;
+
 import java.util.Locale;
 
 import ptolemy.actor.TypedAtomicActor;

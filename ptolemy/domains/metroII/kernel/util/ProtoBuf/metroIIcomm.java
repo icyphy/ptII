@@ -13,1880 +13,2005 @@ package ptolemy.domains.metroII.kernel.util.ProtoBuf;
  * @Pt.AcceptedRating Red (cxh)
  */
 public final class metroIIcomm {
-  private metroIIcomm() {}
-  public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
-  }
-  public interface EventOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // required string name = 1;
-    boolean hasName();
-    String getName();
-
-    // required .Event.Type type = 4;
-    boolean hasType();
-    metroIIcomm.Event.Type getType();
-
-    // required .Event.Status status = 5;
-    boolean hasStatus();
-    metroIIcomm.Event.Status getStatus();
-
-    // optional .Event.Time time = 6;
-    boolean hasTime();
-    metroIIcomm.Event.Time getTime();
-    metroIIcomm.Event.TimeOrBuilder getTimeOrBuilder();
-  }
-  public static final class Event extends
-      com.google.protobuf.GeneratedMessage
-      implements EventOrBuilder {
-    // Use Event.newBuilder() to construct.
-    private Event(Builder builder) {
-      super(builder);
-    }
-    private Event(boolean noInit) {}
-
-    private static final Event defaultInstance;
-    public static Event getDefaultInstance() {
-      return defaultInstance;
+    private metroIIcomm() {
     }
 
-    public Event getDefaultInstanceForType() {
-      return defaultInstance;
+    public static void registerAllExtensions(
+            com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return metroIIcomm.internal_static_Event_descriptor;
+    public interface EventOrBuilder extends
+            com.google.protobuf.MessageOrBuilder {
+
+        // required string name = 1;
+        boolean hasName();
+
+        String getName();
+
+        // required .Event.Type type = 4;
+        boolean hasType();
+
+        metroIIcomm.Event.Type getType();
+
+        // required .Event.Status status = 5;
+        boolean hasStatus();
+
+        metroIIcomm.Event.Status getStatus();
+
+        // optional .Event.Time time = 6;
+        boolean hasTime();
+
+        metroIIcomm.Event.Time getTime();
+
+        metroIIcomm.Event.TimeOrBuilder getTimeOrBuilder();
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return metroIIcomm.internal_static_Event_fieldAccessorTable;
-    }
-
-    public enum Type
-        implements com.google.protobuf.ProtocolMessageEnum {
-      DEFAULT_NOTIFIED(0, 0),
-      DEFAULT_WAITING(1, 1),
-      ;
-
-      public static final int DEFAULT_NOTIFIED_VALUE = 0;
-      public static final int DEFAULT_WAITING_VALUE = 1;
-
-
-      public final int getNumber() { return value; }
-
-      public static Type valueOf(int value) {
-        switch (value) {
-          case 0: return DEFAULT_NOTIFIED;
-          case 1: return DEFAULT_WAITING;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<Type>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<Type>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
-              public Type findValueByNumber(int number) {
-                return Type.valueOf(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return metroIIcomm.Event.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final Type[] VALUES = {
-        DEFAULT_NOTIFIED, DEFAULT_WAITING,
-      };
-
-      public static Type valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int index;
-      private final int value;
-
-      private Type(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:Event.Type)
-    }
-
-    public enum Status
-        implements com.google.protobuf.ProtocolMessageEnum {
-      INACTIVE(0, 0),
-      PROPOSED(1, 1),
-      WAITING(2, 2),
-      NOTIFIED(3, 3),
-      DISABLED(4, 4),
-      ;
-
-      public static final int INACTIVE_VALUE = 0;
-      public static final int PROPOSED_VALUE = 1;
-      public static final int WAITING_VALUE = 2;
-      public static final int NOTIFIED_VALUE = 3;
-      public static final int DISABLED_VALUE = 4;
-
-
-      public final int getNumber() { return value; }
-
-      public static Status valueOf(int value) {
-        switch (value) {
-          case 0: return INACTIVE;
-          case 1: return PROPOSED;
-          case 2: return WAITING;
-          case 3: return NOTIFIED;
-          case 4: return DISABLED;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<Status>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<Status>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<Status>() {
-              public Status findValueByNumber(int number) {
-                return Status.valueOf(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return metroIIcomm.Event.getDescriptor().getEnumTypes().get(1);
-      }
-
-      private static final Status[] VALUES = {
-        INACTIVE, PROPOSED, WAITING, NOTIFIED, DISABLED,
-      };
-
-      public static Status valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int index;
-      private final int value;
-
-      private Status(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:Event.Status)
-    }
-
-    public interface TimeOrBuilder
-        extends com.google.protobuf.MessageOrBuilder {
-
-      // required int64 value = 1;
-      boolean hasValue();
-      long getValue();
-
-      // optional double resolution = 2 [default = 1e-12];
-      boolean hasResolution();
-      double getResolution();
-    }
-    public static final class Time extends
-        com.google.protobuf.GeneratedMessage
-        implements TimeOrBuilder {
-      // Use Time.newBuilder() to construct.
-      private Time(Builder builder) {
-        super(builder);
-      }
-      private Time(boolean noInit) {}
-
-      private static final Time defaultInstance;
-      public static Time getDefaultInstance() {
-        return defaultInstance;
-      }
-
-      public Time getDefaultInstanceForType() {
-        return defaultInstance;
-      }
-
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return metroIIcomm.internal_static_Event_Time_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return metroIIcomm.internal_static_Event_Time_fieldAccessorTable;
-      }
-
-      private int bitField0_;
-      // required int64 value = 1;
-      public static final int VALUE_FIELD_NUMBER = 1;
-      private long value_;
-      public boolean hasValue() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public long getValue() {
-        return value_;
-      }
-
-      // optional double resolution = 2 [default = 1e-12];
-      public static final int RESOLUTION_FIELD_NUMBER = 2;
-      private double resolution_;
-      public boolean hasResolution() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public double getResolution() {
-        return resolution_;
-      }
-
-      private void initFields() {
-        value_ = 0L;
-        resolution_ = 1e-12D;
-      }
-      private byte memoizedIsInitialized = -1;
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized != -1) return isInitialized == 1;
-
-        if (!hasValue()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        getSerializedSize();
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeInt64(1, value_);
-        }
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeDouble(2, resolution_);
-        }
-        getUnknownFields().writeTo(output);
-      }
-
-      private int memoizedSerializedSize = -1;
-      public int getSerializedSize() {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt64Size(1, value_);
-        }
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(2, resolution_);
-        }
-        size += getUnknownFields().getSerializedSize();
-        memoizedSerializedSize = size;
-        return size;
-      }
-
-      private static final long serialVersionUID = 0L;
-      @java.lang.Override
-      protected java.lang.Object writeReplace()
-          throws java.io.ObjectStreamException {
-        return super.writeReplace();
-      }
-
-      public static metroIIcomm.Event.Time parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static metroIIcomm.Event.Time parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static metroIIcomm.Event.Time parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data).buildParsed();
-      }
-      public static metroIIcomm.Event.Time parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return newBuilder().mergeFrom(data, extensionRegistry)
-                 .buildParsed();
-      }
-      public static metroIIcomm.Event.Time parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static metroIIcomm.Event.Time parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-      public static metroIIcomm.Event.Time parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static metroIIcomm.Event.Time parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Builder builder = newBuilder();
-        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-          return builder.buildParsed();
-        } else {
-          return null;
-        }
-      }
-      public static metroIIcomm.Event.Time parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input).buildParsed();
-      }
-      public static metroIIcomm.Event.Time parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return newBuilder().mergeFrom(input, extensionRegistry)
-                 .buildParsed();
-      }
-
-      public static Builder newBuilder() { return Builder.create(); }
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(metroIIcomm.Event.Time prototype) {
-        return newBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() { return newBuilder(this); }
-
-      @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessage.Builder<Builder>
-         implements metroIIcomm.Event.TimeOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return metroIIcomm.internal_static_Event_Time_descriptor;
+    public static final class Event extends
+            com.google.protobuf.GeneratedMessage implements EventOrBuilder {
+        // Use Event.newBuilder() to construct.
+        private Event(Builder builder) {
+            super(builder);
         }
 
-        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return metroIIcomm.internal_static_Event_Time_fieldAccessorTable;
+        private Event(boolean noInit) {
         }
 
-        // Construct using metroIIcomm.Event.Time.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
+        private static final Event defaultInstance;
+
+        public static Event getDefaultInstance() {
+            return defaultInstance;
         }
 
-        private Builder(BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          }
-        }
-        private static Builder create() {
-          return new Builder();
+        public Event getDefaultInstanceForType() {
+            return defaultInstance;
         }
 
-        public Builder clear() {
-          super.clear();
-          value_ = 0L;
-          bitField0_ = (bitField0_ & ~0x00000001);
-          resolution_ = 1e-12D;
-          bitField0_ = (bitField0_ & ~0x00000002);
-          return this;
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return metroIIcomm.internal_static_Event_descriptor;
         }
 
-        public Builder clone() {
-          return create().mergeFrom(buildPartial());
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return metroIIcomm.internal_static_Event_fieldAccessorTable;
         }
 
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return metroIIcomm.Event.Time.getDescriptor();
-        }
+        public enum Type implements com.google.protobuf.ProtocolMessageEnum {
+            DEFAULT_NOTIFIED(0, 0), DEFAULT_WAITING(1, 1), ;
 
-        public metroIIcomm.Event.Time getDefaultInstanceForType() {
-          return metroIIcomm.Event.Time.getDefaultInstance();
-        }
+            public static final int DEFAULT_NOTIFIED_VALUE = 0;
+            public static final int DEFAULT_WAITING_VALUE = 1;
 
-        public metroIIcomm.Event.Time build() {
-          metroIIcomm.Event.Time result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        private metroIIcomm.Event.Time buildParsed()
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          metroIIcomm.Event.Time result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(
-              result).asInvalidProtocolBufferException();
-          }
-          return result;
-        }
-
-        public metroIIcomm.Event.Time buildPartial() {
-          metroIIcomm.Event.Time result = new metroIIcomm.Event.Time(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.value_ = value_;
-          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-            to_bitField0_ |= 0x00000002;
-          }
-          result.resolution_ = resolution_;
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
-        }
-
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof metroIIcomm.Event.Time) {
-            return mergeFrom((metroIIcomm.Event.Time)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(metroIIcomm.Event.Time other) {
-          if (other == metroIIcomm.Event.Time.getDefaultInstance()) return this;
-          if (other.hasValue()) {
-            setValue(other.getValue());
-          }
-          if (other.hasResolution()) {
-            setResolution(other.getResolution());
-          }
-          this.mergeUnknownFields(other.getUnknownFields());
-          return this;
-        }
-
-        public final boolean isInitialized() {
-          if (!hasValue()) {
-
-            return false;
-          }
-          return true;
-        }
-
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder(
-              this.getUnknownFields());
-          while (true) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              default: {
-                if (!parseUnknownField(input, unknownFields,
-                                       extensionRegistry, tag)) {
-                  this.setUnknownFields(unknownFields.build());
-                  onChanged();
-                  return this;
-                }
-                break;
-              }
-              case 8: {
-                bitField0_ |= 0x00000001;
-                value_ = input.readInt64();
-                break;
-              }
-              case 17: {
-                bitField0_ |= 0x00000002;
-                resolution_ = input.readDouble();
-                break;
-              }
+            public final int getNumber() {
+                return value;
             }
-          }
+
+            public static Type valueOf(int value) {
+                switch (value) {
+                case 0:
+                    return DEFAULT_NOTIFIED;
+                case 1:
+                    return DEFAULT_WAITING;
+                default:
+                    return null;
+                }
+            }
+
+            public static com.google.protobuf.Internal.EnumLiteMap<Type> internalGetValueMap() {
+                return internalValueMap;
+            }
+
+            private static com.google.protobuf.Internal.EnumLiteMap<Type> internalValueMap = new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+                public Type findValueByNumber(int number) {
+                    return Type.valueOf(number);
+                }
+            };
+
+            public final com.google.protobuf.Descriptors.EnumValueDescriptor getValueDescriptor() {
+                return getDescriptor().getValues().get(index);
+            }
+
+            public final com.google.protobuf.Descriptors.EnumDescriptor getDescriptorForType() {
+                return getDescriptor();
+            }
+
+            public static final com.google.protobuf.Descriptors.EnumDescriptor getDescriptor() {
+                return metroIIcomm.Event.getDescriptor().getEnumTypes().get(0);
+            }
+
+            private static final Type[] VALUES = { DEFAULT_NOTIFIED,
+                    DEFAULT_WAITING, };
+
+            public static Type valueOf(
+                    com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+                if (desc.getType() != getDescriptor()) {
+                    throw new java.lang.IllegalArgumentException(
+                            "EnumValueDescriptor is not for this type.");
+                }
+                return VALUES[desc.getIndex()];
+            }
+
+            private final int index;
+            private final int value;
+
+            private Type(int index, int value) {
+                this.index = index;
+                this.value = value;
+            }
+
+            // @@protoc_insertion_point(enum_scope:Event.Type)
+        }
+
+        public enum Status implements com.google.protobuf.ProtocolMessageEnum {
+            INACTIVE(0, 0), PROPOSED(1, 1), WAITING(2, 2), NOTIFIED(3, 3), DISABLED(
+                    4, 4), ;
+
+            public static final int INACTIVE_VALUE = 0;
+            public static final int PROPOSED_VALUE = 1;
+            public static final int WAITING_VALUE = 2;
+            public static final int NOTIFIED_VALUE = 3;
+            public static final int DISABLED_VALUE = 4;
+
+            public final int getNumber() {
+                return value;
+            }
+
+            public static Status valueOf(int value) {
+                switch (value) {
+                case 0:
+                    return INACTIVE;
+                case 1:
+                    return PROPOSED;
+                case 2:
+                    return WAITING;
+                case 3:
+                    return NOTIFIED;
+                case 4:
+                    return DISABLED;
+                default:
+                    return null;
+                }
+            }
+
+            public static com.google.protobuf.Internal.EnumLiteMap<Status> internalGetValueMap() {
+                return internalValueMap;
+            }
+
+            private static com.google.protobuf.Internal.EnumLiteMap<Status> internalValueMap = new com.google.protobuf.Internal.EnumLiteMap<Status>() {
+                public Status findValueByNumber(int number) {
+                    return Status.valueOf(number);
+                }
+            };
+
+            public final com.google.protobuf.Descriptors.EnumValueDescriptor getValueDescriptor() {
+                return getDescriptor().getValues().get(index);
+            }
+
+            public final com.google.protobuf.Descriptors.EnumDescriptor getDescriptorForType() {
+                return getDescriptor();
+            }
+
+            public static final com.google.protobuf.Descriptors.EnumDescriptor getDescriptor() {
+                return metroIIcomm.Event.getDescriptor().getEnumTypes().get(1);
+            }
+
+            private static final Status[] VALUES = { INACTIVE, PROPOSED,
+                    WAITING, NOTIFIED, DISABLED, };
+
+            public static Status valueOf(
+                    com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+                if (desc.getType() != getDescriptor()) {
+                    throw new java.lang.IllegalArgumentException(
+                            "EnumValueDescriptor is not for this type.");
+                }
+                return VALUES[desc.getIndex()];
+            }
+
+            private final int index;
+            private final int value;
+
+            private Status(int index, int value) {
+                this.index = index;
+                this.value = value;
+            }
+
+            // @@protoc_insertion_point(enum_scope:Event.Status)
+        }
+
+        public interface TimeOrBuilder extends
+                com.google.protobuf.MessageOrBuilder {
+
+            // required int64 value = 1;
+            boolean hasValue();
+
+            long getValue();
+
+            // optional double resolution = 2 [default = 1e-12];
+            boolean hasResolution();
+
+            double getResolution();
+        }
+
+        public static final class Time extends
+                com.google.protobuf.GeneratedMessage implements TimeOrBuilder {
+            // Use Time.newBuilder() to construct.
+            private Time(Builder builder) {
+                super(builder);
+            }
+
+            private Time(boolean noInit) {
+            }
+
+            private static final Time defaultInstance;
+
+            public static Time getDefaultInstance() {
+                return defaultInstance;
+            }
+
+            public Time getDefaultInstanceForType() {
+                return defaultInstance;
+            }
+
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return metroIIcomm.internal_static_Event_Time_descriptor;
+            }
+
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return metroIIcomm.internal_static_Event_Time_fieldAccessorTable;
+            }
+
+            private int bitField0_;
+            // required int64 value = 1;
+            public static final int VALUE_FIELD_NUMBER = 1;
+            private long value_;
+
+            public boolean hasValue() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            public long getValue() {
+                return value_;
+            }
+
+            // optional double resolution = 2 [default = 1e-12];
+            public static final int RESOLUTION_FIELD_NUMBER = 2;
+            private double resolution_;
+
+            public boolean hasResolution() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            public double getResolution() {
+                return resolution_;
+            }
+
+            private void initFields() {
+                value_ = 0L;
+                resolution_ = 1e-12D;
+            }
+
+            private byte memoizedIsInitialized = -1;
+
+            public final boolean isInitialized() {
+                byte isInitialized = memoizedIsInitialized;
+                if (isInitialized != -1) {
+                    return isInitialized == 1;
+                }
+
+                if (!hasValue()) {
+                    memoizedIsInitialized = 0;
+                    return false;
+                }
+                memoizedIsInitialized = 1;
+                return true;
+            }
+
+            public void writeTo(com.google.protobuf.CodedOutputStream output)
+                    throws java.io.IOException {
+                getSerializedSize();
+                if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                    output.writeInt64(1, value_);
+                }
+                if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                    output.writeDouble(2, resolution_);
+                }
+                getUnknownFields().writeTo(output);
+            }
+
+            private int memoizedSerializedSize = -1;
+
+            public int getSerializedSize() {
+                int size = memoizedSerializedSize;
+                if (size != -1) {
+                    return size;
+                }
+
+                size = 0;
+                if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                    size += com.google.protobuf.CodedOutputStream
+                            .computeInt64Size(1, value_);
+                }
+                if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                    size += com.google.protobuf.CodedOutputStream
+                            .computeDoubleSize(2, resolution_);
+                }
+                size += getUnknownFields().getSerializedSize();
+                memoizedSerializedSize = size;
+                return size;
+            }
+
+            private static final long serialVersionUID = 0L;
+
+            @java.lang.Override
+            protected java.lang.Object writeReplace()
+                    throws java.io.ObjectStreamException {
+                return super.writeReplace();
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(
+                    com.google.protobuf.ByteString data)
+                    throws com.google.protobuf.InvalidProtocolBufferException {
+                return newBuilder().mergeFrom(data).buildParsed();
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(
+                    com.google.protobuf.ByteString data,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws com.google.protobuf.InvalidProtocolBufferException {
+                return newBuilder().mergeFrom(data, extensionRegistry)
+                        .buildParsed();
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(byte[] data)
+                    throws com.google.protobuf.InvalidProtocolBufferException {
+                return newBuilder().mergeFrom(data).buildParsed();
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(byte[] data,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws com.google.protobuf.InvalidProtocolBufferException {
+                return newBuilder().mergeFrom(data, extensionRegistry)
+                        .buildParsed();
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(
+                    java.io.InputStream input) throws java.io.IOException {
+                return newBuilder().mergeFrom(input).buildParsed();
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(
+                    java.io.InputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                return newBuilder().mergeFrom(input, extensionRegistry)
+                        .buildParsed();
+            }
+
+            public static metroIIcomm.Event.Time parseDelimitedFrom(
+                    java.io.InputStream input) throws java.io.IOException {
+                Builder builder = newBuilder();
+                if (builder.mergeDelimitedFrom(input)) {
+                    return builder.buildParsed();
+                } else {
+                    return null;
+                }
+            }
+
+            public static metroIIcomm.Event.Time parseDelimitedFrom(
+                    java.io.InputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                Builder builder = newBuilder();
+                if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+                    return builder.buildParsed();
+                } else {
+                    return null;
+                }
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(
+                    com.google.protobuf.CodedInputStream input)
+                    throws java.io.IOException {
+                return newBuilder().mergeFrom(input).buildParsed();
+            }
+
+            public static metroIIcomm.Event.Time parseFrom(
+                    com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                return newBuilder().mergeFrom(input, extensionRegistry)
+                        .buildParsed();
+            }
+
+            public static Builder newBuilder() {
+                return Builder.create();
+            }
+
+            public Builder newBuilderForType() {
+                return newBuilder();
+            }
+
+            public static Builder newBuilder(metroIIcomm.Event.Time prototype) {
+                return newBuilder().mergeFrom(prototype);
+            }
+
+            public Builder toBuilder() {
+                return newBuilder(this);
+            }
+
+            @java.lang.Override
+            protected Builder newBuilderForType(
+                    com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                Builder builder = new Builder(parent);
+                return builder;
+            }
+
+            public static final class Builder extends
+                    com.google.protobuf.GeneratedMessage.Builder<Builder>
+                    implements metroIIcomm.Event.TimeOrBuilder {
+                public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                    return metroIIcomm.internal_static_Event_Time_descriptor;
+                }
+
+                protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                    return metroIIcomm.internal_static_Event_Time_fieldAccessorTable;
+                }
+
+                // Construct using metroIIcomm.Event.Time.newBuilder()
+                private Builder() {
+                    maybeForceBuilderInitialization();
+                }
+
+                private Builder(BuilderParent parent) {
+                    super(parent);
+                    maybeForceBuilderInitialization();
+                }
+
+                private void maybeForceBuilderInitialization() {
+                    if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    }
+                }
+
+                private static Builder create() {
+                    return new Builder();
+                }
+
+                public Builder clear() {
+                    super.clear();
+                    value_ = 0L;
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                    resolution_ = 1e-12D;
+                    bitField0_ = (bitField0_ & ~0x00000002);
+                    return this;
+                }
+
+                public Builder clone() {
+                    return create().mergeFrom(buildPartial());
+                }
+
+                public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                    return metroIIcomm.Event.Time.getDescriptor();
+                }
+
+                public metroIIcomm.Event.Time getDefaultInstanceForType() {
+                    return metroIIcomm.Event.Time.getDefaultInstance();
+                }
+
+                public metroIIcomm.Event.Time build() {
+                    metroIIcomm.Event.Time result = buildPartial();
+                    if (!result.isInitialized()) {
+                        throw newUninitializedMessageException(result);
+                    }
+                    return result;
+                }
+
+                private metroIIcomm.Event.Time buildParsed()
+                        throws com.google.protobuf.InvalidProtocolBufferException {
+                    metroIIcomm.Event.Time result = buildPartial();
+                    if (!result.isInitialized()) {
+                        throw newUninitializedMessageException(result)
+                                .asInvalidProtocolBufferException();
+                    }
+                    return result;
+                }
+
+                public metroIIcomm.Event.Time buildPartial() {
+                    metroIIcomm.Event.Time result = new metroIIcomm.Event.Time(
+                            this);
+                    int from_bitField0_ = bitField0_;
+                    int to_bitField0_ = 0;
+                    if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                        to_bitField0_ |= 0x00000001;
+                    }
+                    result.value_ = value_;
+                    if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                        to_bitField0_ |= 0x00000002;
+                    }
+                    result.resolution_ = resolution_;
+                    result.bitField0_ = to_bitField0_;
+                    onBuilt();
+                    return result;
+                }
+
+                public Builder mergeFrom(com.google.protobuf.Message other) {
+                    if (other instanceof metroIIcomm.Event.Time) {
+                        return mergeFrom((metroIIcomm.Event.Time) other);
+                    } else {
+                        super.mergeFrom(other);
+                        return this;
+                    }
+                }
+
+                public Builder mergeFrom(metroIIcomm.Event.Time other) {
+                    if (other == metroIIcomm.Event.Time.getDefaultInstance()) {
+                        return this;
+                    }
+                    if (other.hasValue()) {
+                        setValue(other.getValue());
+                    }
+                    if (other.hasResolution()) {
+                        setResolution(other.getResolution());
+                    }
+                    this.mergeUnknownFields(other.getUnknownFields());
+                    return this;
+                }
+
+                public final boolean isInitialized() {
+                    if (!hasValue()) {
+
+                        return false;
+                    }
+                    return true;
+                }
+
+                public Builder mergeFrom(
+                        com.google.protobuf.CodedInputStream input,
+                        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                        throws java.io.IOException {
+                    com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet
+                            .newBuilder(this.getUnknownFields());
+                    while (true) {
+                        int tag = input.readTag();
+                        switch (tag) {
+                        case 0:
+                            this.setUnknownFields(unknownFields.build());
+                            onChanged();
+                            return this;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields,
+                                    extensionRegistry, tag)) {
+                                this.setUnknownFields(unknownFields.build());
+                                onChanged();
+                                return this;
+                            }
+                            break;
+                        }
+                        case 8: {
+                            bitField0_ |= 0x00000001;
+                            value_ = input.readInt64();
+                            break;
+                        }
+                        case 17: {
+                            bitField0_ |= 0x00000002;
+                            resolution_ = input.readDouble();
+                            break;
+                        }
+                        }
+                    }
+                }
+
+                private int bitField0_;
+
+                // required int64 value = 1;
+                private long value_;
+
+                public boolean hasValue() {
+                    return ((bitField0_ & 0x00000001) == 0x00000001);
+                }
+
+                public long getValue() {
+                    return value_;
+                }
+
+                public Builder setValue(long value) {
+                    bitField0_ |= 0x00000001;
+                    value_ = value;
+                    onChanged();
+                    return this;
+                }
+
+                public Builder clearValue() {
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                    value_ = 0L;
+                    onChanged();
+                    return this;
+                }
+
+                // optional double resolution = 2 [default = 1e-12];
+                private double resolution_ = 1e-12D;
+
+                public boolean hasResolution() {
+                    return ((bitField0_ & 0x00000002) == 0x00000002);
+                }
+
+                public double getResolution() {
+                    return resolution_;
+                }
+
+                public Builder setResolution(double value) {
+                    bitField0_ |= 0x00000002;
+                    resolution_ = value;
+                    onChanged();
+                    return this;
+                }
+
+                public Builder clearResolution() {
+                    bitField0_ = (bitField0_ & ~0x00000002);
+                    resolution_ = 1e-12D;
+                    onChanged();
+                    return this;
+                }
+
+                // @@protoc_insertion_point(builder_scope:Event.Time)
+            }
+
+            static {
+                defaultInstance = new Time(true);
+                defaultInstance.initFields();
+            }
+
+            // @@protoc_insertion_point(class_scope:Event.Time)
         }
 
         private int bitField0_;
+        // required string name = 1;
+        public static final int NAME_FIELD_NUMBER = 1;
+        private java.lang.Object name_;
 
-        // required int64 value = 1;
-        private long value_ ;
-        public boolean hasValue() {
-          return ((bitField0_ & 0x00000001) == 0x00000001);
-        }
-        public long getValue() {
-          return value_;
-        }
-        public Builder setValue(long value) {
-          bitField0_ |= 0x00000001;
-          value_ = value;
-          onChanged();
-          return this;
-        }
-        public Builder clearValue() {
-          bitField0_ = (bitField0_ & ~0x00000001);
-          value_ = 0L;
-          onChanged();
-          return this;
+        public boolean hasName() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
-        // optional double resolution = 2 [default = 1e-12];
-        private double resolution_ = 1e-12D;
-        public boolean hasResolution() {
-          return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-        public double getResolution() {
-          return resolution_;
-        }
-        public Builder setResolution(double value) {
-          bitField0_ |= 0x00000002;
-          resolution_ = value;
-          onChanged();
-          return this;
-        }
-        public Builder clearResolution() {
-          bitField0_ = (bitField0_ & ~0x00000002);
-          resolution_ = 1e-12D;
-          onChanged();
-          return this;
+        public String getName() {
+            java.lang.Object ref = name_;
+            if (ref instanceof String) {
+                return (String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                String s = bs.toStringUtf8();
+                if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+                    name_ = s;
+                }
+                return s;
+            }
         }
 
-        // @@protoc_insertion_point(builder_scope:Event.Time)
-      }
-
-      static {
-        defaultInstance = new Time(true);
-        defaultInstance.initFields();
-      }
-
-      // @@protoc_insertion_point(class_scope:Event.Time)
-    }
-
-    private int bitField0_;
-    // required string name = 1;
-    public static final int NAME_FIELD_NUMBER = 1;
-    private java.lang.Object name_;
-    public boolean hasName() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public String getName() {
-      java.lang.Object ref = name_;
-      if (ref instanceof String) {
-        return (String) ref;
-      } else {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
-        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          name_ = s;
+        private com.google.protobuf.ByteString getNameBytes() {
+            java.lang.Object ref = name_;
+            if (ref instanceof String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString
+                        .copyFromUtf8((String) ref);
+                name_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
         }
-        return s;
-      }
-    }
-    private com.google.protobuf.ByteString getNameBytes() {
-      java.lang.Object ref = name_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b =
-            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        name_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    // required .Event.Type type = 4;
-    public static final int TYPE_FIELD_NUMBER = 4;
-    private metroIIcomm.Event.Type type_;
-    public boolean hasType() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public metroIIcomm.Event.Type getType() {
-      return type_;
-    }
+        // required .Event.Type type = 4;
+        public static final int TYPE_FIELD_NUMBER = 4;
+        private metroIIcomm.Event.Type type_;
 
-    // required .Event.Status status = 5;
-    public static final int STATUS_FIELD_NUMBER = 5;
-    private metroIIcomm.Event.Status status_;
-    public boolean hasStatus() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    public metroIIcomm.Event.Status getStatus() {
-      return status_;
-    }
-
-    // optional .Event.Time time = 6;
-    public static final int TIME_FIELD_NUMBER = 6;
-    private metroIIcomm.Event.Time time_;
-    public boolean hasTime() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    public metroIIcomm.Event.Time getTime() {
-      return time_;
-    }
-    public metroIIcomm.Event.TimeOrBuilder getTimeOrBuilder() {
-      return time_;
-    }
-
-    private void initFields() {
-      name_ = "";
-      type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
-      status_ = metroIIcomm.Event.Status.INACTIVE;
-      time_ = metroIIcomm.Event.Time.getDefaultInstance();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      if (!hasName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasStatus()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (hasTime()) {
-        if (!getTime().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
+        public boolean hasType() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
         }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
 
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getNameBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeEnum(4, type_.getNumber());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(5, status_.getNumber());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeMessage(6, time_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getNameBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(4, type_.getNumber());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(5, status_.getNumber());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, time_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static metroIIcomm.Event parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static metroIIcomm.Event parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static metroIIcomm.Event parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static metroIIcomm.Event parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static metroIIcomm.Event parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static metroIIcomm.Event parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static metroIIcomm.Event parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static metroIIcomm.Event parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static metroIIcomm.Event parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static metroIIcomm.Event parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(metroIIcomm.Event prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements metroIIcomm.EventOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return metroIIcomm.internal_static_Event_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return metroIIcomm.internal_static_Event_fieldAccessorTable;
-      }
-
-      // Construct using metroIIcomm.Event.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getTimeFieldBuilder();
+        public metroIIcomm.Event.Type getType() {
+            return type_;
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        name_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        status_ = metroIIcomm.Event.Status.INACTIVE;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        if (timeBuilder_ == null) {
-          time_ = metroIIcomm.Event.Time.getDefaultInstance();
-        } else {
-          timeBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000008);
-        return this;
-      }
+        // required .Event.Status status = 5;
+        public static final int STATUS_FIELD_NUMBER = 5;
+        private metroIIcomm.Event.Status status_;
 
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
+        public boolean hasStatus() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return metroIIcomm.Event.getDescriptor();
-      }
+        public metroIIcomm.Event.Status getStatus() {
+            return status_;
+        }
 
-      public metroIIcomm.Event getDefaultInstanceForType() {
-        return metroIIcomm.Event.getDefaultInstance();
-      }
+        // optional .Event.Time time = 6;
+        public static final int TIME_FIELD_NUMBER = 6;
+        private metroIIcomm.Event.Time time_;
 
-      public metroIIcomm.Event build() {
-        metroIIcomm.Event result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        public boolean hasTime() {
+            return ((bitField0_ & 0x00000008) == 0x00000008);
         }
-        return result;
-      }
 
-      private metroIIcomm.Event buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        metroIIcomm.Event result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
+        public metroIIcomm.Event.Time getTime() {
+            return time_;
         }
-        return result;
-      }
 
-      public metroIIcomm.Event buildPartial() {
-        metroIIcomm.Event result = new metroIIcomm.Event(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        public metroIIcomm.Event.TimeOrBuilder getTimeOrBuilder() {
+            return time_;
         }
-        result.name_ = name_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.type_ = type_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.status_ = status_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        if (timeBuilder_ == null) {
-          result.time_ = time_;
-        } else {
-          result.time_ = timeBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof metroIIcomm.Event) {
-          return mergeFrom((metroIIcomm.Event)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
+        private void initFields() {
+            name_ = "";
+            type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
+            status_ = metroIIcomm.Event.Status.INACTIVE;
+            time_ = metroIIcomm.Event.Time.getDefaultInstance();
         }
-      }
 
-      public Builder mergeFrom(metroIIcomm.Event other) {
-        if (other == metroIIcomm.Event.getDefaultInstance()) return this;
-        if (other.hasName()) {
-          setName(other.getName());
-        }
-        if (other.hasType()) {
-          setType(other.getType());
-        }
-        if (other.hasStatus()) {
-          setStatus(other.getStatus());
-        }
-        if (other.hasTime()) {
-          mergeTime(other.getTime());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
+        private byte memoizedIsInitialized = -1;
 
-      public final boolean isInitialized() {
-        if (!hasName()) {
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized != -1) {
+                return isInitialized == 1;
+            }
 
-          return false;
+            if (!hasName()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasType()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasStatus()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (hasTime()) {
+                if (!getTime().isInitialized()) {
+                    memoizedIsInitialized = 0;
+                    return false;
+                }
+            }
+            memoizedIsInitialized = 1;
+            return true;
         }
-        if (!hasType()) {
 
-          return false;
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeBytes(1, getNameBytes());
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeEnum(4, type_.getNumber());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeEnum(5, status_.getNumber());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                output.writeMessage(6, time_);
+            }
+            getUnknownFields().writeTo(output);
         }
-        if (!hasStatus()) {
 
-          return false;
+        private int memoizedSerializedSize = -1;
+
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1) {
+                return size;
+            }
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(
+                        1, getNameBytes());
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeEnumSize(
+                        4, type_.getNumber());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeEnumSize(
+                        5, status_.getNumber());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                size += com.google.protobuf.CodedOutputStream
+                        .computeMessageSize(6, time_);
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
         }
-        if (hasTime()) {
-          if (!getTime().isInitialized()) {
 
-            return false;
-          }
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace()
+                throws java.io.ObjectStreamException {
+            return super.writeReplace();
         }
-        return true;
-      }
 
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
+        public static metroIIcomm.Event parseFrom(
+                com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data).buildParsed();
+        }
+
+        public static metroIIcomm.Event parseFrom(
+                com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static metroIIcomm.Event parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data).buildParsed();
+        }
+
+        public static metroIIcomm.Event parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static metroIIcomm.Event parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return newBuilder().mergeFrom(input).buildParsed();
+        }
+
+        public static metroIIcomm.Event parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            return newBuilder().mergeFrom(input, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static metroIIcomm.Event parseDelimitedFrom(
+                java.io.InputStream input) throws java.io.IOException {
+            Builder builder = newBuilder();
+            if (builder.mergeDelimitedFrom(input)) {
+                return builder.buildParsed();
+            } else {
+                return null;
+            }
+        }
+
+        public static metroIIcomm.Event parseDelimitedFrom(
+                java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            Builder builder = newBuilder();
+            if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+                return builder.buildParsed();
+            } else {
+                return null;
+            }
+        }
+
+        public static metroIIcomm.Event parseFrom(
+                com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return newBuilder().mergeFrom(input).buildParsed();
+        }
+
+        public static metroIIcomm.Event parseFrom(
+                com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            return newBuilder().mergeFrom(input, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(metroIIcomm.Event prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+                com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        public static final class Builder extends
+                com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                metroIIcomm.EventOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return metroIIcomm.internal_static_Event_descriptor;
+            }
+
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return metroIIcomm.internal_static_Event_fieldAccessorTable;
+            }
+
+            // Construct using metroIIcomm.Event.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getTimeFieldBuilder();
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            public Builder clear() {
+                super.clear();
+                name_ = "";
+                bitField0_ = (bitField0_ & ~0x00000001);
+                type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
+                bitField0_ = (bitField0_ & ~0x00000002);
+                status_ = metroIIcomm.Event.Status.INACTIVE;
+                bitField0_ = (bitField0_ & ~0x00000004);
+                if (timeBuilder_ == null) {
+                    time_ = metroIIcomm.Event.Time.getDefaultInstance();
+                } else {
+                    timeBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000008);
+                return this;
+            }
+
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return metroIIcomm.Event.getDescriptor();
+            }
+
+            public metroIIcomm.Event getDefaultInstanceForType() {
+                return metroIIcomm.Event.getDefaultInstance();
+            }
+
+            public metroIIcomm.Event build() {
+                metroIIcomm.Event result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            private metroIIcomm.Event buildParsed()
+                    throws com.google.protobuf.InvalidProtocolBufferException {
+                metroIIcomm.Event result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result)
+                            .asInvalidProtocolBufferException();
+                }
+                return result;
+            }
+
+            public metroIIcomm.Event buildPartial() {
+                metroIIcomm.Event result = new metroIIcomm.Event(this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.name_ = name_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.type_ = type_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                result.status_ = status_;
+                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+                    to_bitField0_ |= 0x00000008;
+                }
+                if (timeBuilder_ == null) {
+                    result.time_ = time_;
+                } else {
+                    result.time_ = timeBuilder_.build();
+                }
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof metroIIcomm.Event) {
+                    return mergeFrom((metroIIcomm.Event) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(metroIIcomm.Event other) {
+                if (other == metroIIcomm.Event.getDefaultInstance()) {
+                    return this;
+                }
+                if (other.hasName()) {
+                    setName(other.getName());
+                }
+                if (other.hasType()) {
+                    setType(other.getType());
+                }
+                if (other.hasStatus()) {
+                    setStatus(other.getStatus());
+                }
+                if (other.hasTime()) {
+                    mergeTime(other.getTime());
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            public final boolean isInitialized() {
+                if (!hasName()) {
+
+                    return false;
+                }
+                if (!hasType()) {
+
+                    return false;
+                }
+                if (!hasStatus()) {
+
+                    return false;
+                }
+                if (hasTime()) {
+                    if (!getTime().isInitialized()) {
+
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            public Builder mergeFrom(
+                    com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet
+                        .newBuilder(this.getUnknownFields());
+                while (true) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                    case 0:
+                        this.setUnknownFields(unknownFields.build());
+                        onChanged();
+                        return this;
+                    default: {
+                        if (!parseUnknownField(input, unknownFields,
+                                extensionRegistry, tag)) {
+                            this.setUnknownFields(unknownFields.build());
+                            onChanged();
+                            return this;
+                        }
+                        break;
+                    }
+                    case 10: {
+                        bitField0_ |= 0x00000001;
+                        name_ = input.readBytes();
+                        break;
+                    }
+                    case 32: {
+                        int rawValue = input.readEnum();
+                        metroIIcomm.Event.Type value = metroIIcomm.Event.Type
+                                .valueOf(rawValue);
+                        if (value == null) {
+                            unknownFields.mergeVarintField(4, rawValue);
+                        } else {
+                            bitField0_ |= 0x00000002;
+                            type_ = value;
+                        }
+                        break;
+                    }
+                    case 40: {
+                        int rawValue = input.readEnum();
+                        metroIIcomm.Event.Status value = metroIIcomm.Event.Status
+                                .valueOf(rawValue);
+                        if (value == null) {
+                            unknownFields.mergeVarintField(5, rawValue);
+                        } else {
+                            bitField0_ |= 0x00000004;
+                            status_ = value;
+                        }
+                        break;
+                    }
+                    case 50: {
+                        metroIIcomm.Event.Time.Builder subBuilder = metroIIcomm.Event.Time
+                                .newBuilder();
+                        if (hasTime()) {
+                            subBuilder.mergeFrom(getTime());
+                        }
+                        input.readMessage(subBuilder, extensionRegistry);
+                        setTime(subBuilder.buildPartial());
+                        break;
+                    }
+                    }
+                }
+            }
+
+            private int bitField0_;
+
+            // required string name = 1;
+            private java.lang.Object name_ = "";
+
+            public boolean hasName() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            public String getName() {
+                java.lang.Object ref = name_;
+                if (!(ref instanceof String)) {
+                    String s = ((com.google.protobuf.ByteString) ref)
+                            .toStringUtf8();
+                    name_ = s;
+                    return s;
+                } else {
+                    return (String) ref;
+                }
+            }
+
+            public Builder setName(String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000001;
+                name_ = value;
                 onChanged();
                 return this;
-              }
-              break;
             }
-            case 10: {
-              bitField0_ |= 0x00000001;
-              name_ = input.readBytes();
-              break;
+
+            public Builder clearName() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                name_ = getDefaultInstance().getName();
+                onChanged();
+                return this;
             }
-            case 32: {
-              int rawValue = input.readEnum();
-              metroIIcomm.Event.Type value = metroIIcomm.Event.Type.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(4, rawValue);
-              } else {
+
+            void setName(com.google.protobuf.ByteString value) {
+                bitField0_ |= 0x00000001;
+                name_ = value;
+                onChanged();
+            }
+
+            // required .Event.Type type = 4;
+            private metroIIcomm.Event.Type type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
+
+            public boolean hasType() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            public metroIIcomm.Event.Type getType() {
+                return type_;
+            }
+
+            public Builder setType(metroIIcomm.Event.Type value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
                 bitField0_ |= 0x00000002;
                 type_ = value;
-              }
-              break;
-            }
-            case 40: {
-              int rawValue = input.readEnum();
-              metroIIcomm.Event.Status value = metroIIcomm.Event.Status.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(5, rawValue);
-              } else {
-                bitField0_ |= 0x00000004;
-                status_ = value;
-              }
-              break;
-            }
-            case 50: {
-              metroIIcomm.Event.Time.Builder subBuilder = metroIIcomm.Event.Time.newBuilder();
-              if (hasTime()) {
-                subBuilder.mergeFrom(getTime());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setTime(subBuilder.buildPartial());
-              break;
-            }
-          }
-        }
-      }
-
-      private int bitField0_;
-
-      // required string name = 1;
-      private java.lang.Object name_ = "";
-      public boolean hasName() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          name_ = s;
-          return s;
-        } else {
-          return (String) ref;
-        }
-      }
-      public Builder setName(String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        name_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        name_ = getDefaultInstance().getName();
-        onChanged();
-        return this;
-      }
-      void setName(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000001;
-        name_ = value;
-        onChanged();
-      }
-
-      // required .Event.Type type = 4;
-      private metroIIcomm.Event.Type type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
-      public boolean hasType() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public metroIIcomm.Event.Type getType() {
-        return type_;
-      }
-      public Builder setType(metroIIcomm.Event.Type value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000002;
-        type_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearType() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
-        onChanged();
-        return this;
-      }
-
-      // required .Event.Status status = 5;
-      private metroIIcomm.Event.Status status_ = metroIIcomm.Event.Status.INACTIVE;
-      public boolean hasStatus() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      public metroIIcomm.Event.Status getStatus() {
-        return status_;
-      }
-      public Builder setStatus(metroIIcomm.Event.Status value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000004;
-        status_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearStatus() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        status_ = metroIIcomm.Event.Status.INACTIVE;
-        onChanged();
-        return this;
-      }
-
-      // optional .Event.Time time = 6;
-      private metroIIcomm.Event.Time time_ = metroIIcomm.Event.Time.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          metroIIcomm.Event.Time, metroIIcomm.Event.Time.Builder, metroIIcomm.Event.TimeOrBuilder> timeBuilder_;
-      public boolean hasTime() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      public metroIIcomm.Event.Time getTime() {
-        if (timeBuilder_ == null) {
-          return time_;
-        } else {
-          return timeBuilder_.getMessage();
-        }
-      }
-      public Builder setTime(metroIIcomm.Event.Time value) {
-        if (timeBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          time_ = value;
-          onChanged();
-        } else {
-          timeBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000008;
-        return this;
-      }
-      public Builder setTime(
-          metroIIcomm.Event.Time.Builder builderForValue) {
-        if (timeBuilder_ == null) {
-          time_ = builderForValue.build();
-          onChanged();
-        } else {
-          timeBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000008;
-        return this;
-      }
-      public Builder mergeTime(metroIIcomm.Event.Time value) {
-        if (timeBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008) &&
-              time_ != metroIIcomm.Event.Time.getDefaultInstance()) {
-            time_ =
-              metroIIcomm.Event.Time.newBuilder(time_).mergeFrom(value).buildPartial();
-          } else {
-            time_ = value;
-          }
-          onChanged();
-        } else {
-          timeBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000008;
-        return this;
-      }
-      public Builder clearTime() {
-        if (timeBuilder_ == null) {
-          time_ = metroIIcomm.Event.Time.getDefaultInstance();
-          onChanged();
-        } else {
-          timeBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000008);
-        return this;
-      }
-      public metroIIcomm.Event.Time.Builder getTimeBuilder() {
-        bitField0_ |= 0x00000008;
-        onChanged();
-        return getTimeFieldBuilder().getBuilder();
-      }
-      public metroIIcomm.Event.TimeOrBuilder getTimeOrBuilder() {
-        if (timeBuilder_ != null) {
-          return timeBuilder_.getMessageOrBuilder();
-        } else {
-          return time_;
-        }
-      }
-      private com.google.protobuf.SingleFieldBuilder<
-          metroIIcomm.Event.Time, metroIIcomm.Event.Time.Builder, metroIIcomm.Event.TimeOrBuilder>
-          getTimeFieldBuilder() {
-        if (timeBuilder_ == null) {
-          timeBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              metroIIcomm.Event.Time, metroIIcomm.Event.Time.Builder, metroIIcomm.Event.TimeOrBuilder>(
-                  time_,
-                  getParentForChildren(),
-                  isClean());
-          time_ = null;
-        }
-        return timeBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:Event)
-    }
-
-    static {
-      defaultInstance = new Event(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:Event)
-  }
-
-  public interface EventVectorOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // repeated .Event event = 1;
-    java.util.List<metroIIcomm.Event>
-        getEventList();
-    metroIIcomm.Event getEvent(int index);
-    int getEventCount();
-    java.util.List<? extends metroIIcomm.EventOrBuilder>
-        getEventOrBuilderList();
-    metroIIcomm.EventOrBuilder getEventOrBuilder(
-        int index);
-  }
-  public static final class EventVector extends
-      com.google.protobuf.GeneratedMessage
-      implements EventVectorOrBuilder {
-    // Use EventVector.newBuilder() to construct.
-    private EventVector(Builder builder) {
-      super(builder);
-    }
-    private EventVector(boolean noInit) {}
-
-    private static final EventVector defaultInstance;
-    public static EventVector getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public EventVector getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return metroIIcomm.internal_static_EventVector_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return metroIIcomm.internal_static_EventVector_fieldAccessorTable;
-    }
-
-    // repeated .Event event = 1;
-    public static final int EVENT_FIELD_NUMBER = 1;
-    private java.util.List<metroIIcomm.Event> event_;
-    public java.util.List<metroIIcomm.Event> getEventList() {
-      return event_;
-    }
-    public java.util.List<? extends metroIIcomm.EventOrBuilder>
-        getEventOrBuilderList() {
-      return event_;
-    }
-    public int getEventCount() {
-      return event_.size();
-    }
-    public metroIIcomm.Event getEvent(int index) {
-      return event_.get(index);
-    }
-    public metroIIcomm.EventOrBuilder getEventOrBuilder(
-        int index) {
-      return event_.get(index);
-    }
-
-    private void initFields() {
-      event_ = java.util.Collections.emptyList();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      for (int i = 0; i < getEventCount(); i++) {
-        if (!getEvent(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      for (int i = 0; i < event_.size(); i++) {
-        output.writeMessage(1, event_.get(i));
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < event_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, event_.get(i));
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static metroIIcomm.EventVector parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static metroIIcomm.EventVector parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static metroIIcomm.EventVector parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static metroIIcomm.EventVector parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static metroIIcomm.EventVector parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static metroIIcomm.EventVector parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static metroIIcomm.EventVector parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static metroIIcomm.EventVector parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static metroIIcomm.EventVector parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static metroIIcomm.EventVector parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(metroIIcomm.EventVector prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements metroIIcomm.EventVectorOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return metroIIcomm.internal_static_EventVector_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return metroIIcomm.internal_static_EventVector_fieldAccessorTable;
-      }
-
-      // Construct using metroIIcomm.EventVector.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getEventFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (eventBuilder_ == null) {
-          event_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          eventBuilder_.clear();
-        }
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return metroIIcomm.EventVector.getDescriptor();
-      }
-
-      public metroIIcomm.EventVector getDefaultInstanceForType() {
-        return metroIIcomm.EventVector.getDefaultInstance();
-      }
-
-      public metroIIcomm.EventVector build() {
-        metroIIcomm.EventVector result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      private metroIIcomm.EventVector buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        metroIIcomm.EventVector result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-
-      public metroIIcomm.EventVector buildPartial() {
-        metroIIcomm.EventVector result = new metroIIcomm.EventVector(this);
-        int from_bitField0_ = bitField0_;
-        if (eventBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            event_ = java.util.Collections.unmodifiableList(event_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.event_ = event_;
-        } else {
-          result.event_ = eventBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof metroIIcomm.EventVector) {
-          return mergeFrom((metroIIcomm.EventVector)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(metroIIcomm.EventVector other) {
-        if (other == metroIIcomm.EventVector.getDefaultInstance()) return this;
-        if (eventBuilder_ == null) {
-          if (!other.event_.isEmpty()) {
-            if (event_.isEmpty()) {
-              event_ = other.event_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureEventIsMutable();
-              event_.addAll(other.event_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.event_.isEmpty()) {
-            if (eventBuilder_.isEmpty()) {
-              eventBuilder_.dispose();
-              eventBuilder_ = null;
-              event_ = other.event_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              eventBuilder_ =
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getEventFieldBuilder() : null;
-            } else {
-              eventBuilder_.addAllMessages(other.event_);
-            }
-          }
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        for (int i = 0; i < getEventCount(); i++) {
-          if (!getEvent(i).isInitialized()) {
-
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
                 onChanged();
                 return this;
-              }
-              break;
             }
-            case 10: {
-              metroIIcomm.Event.Builder subBuilder = metroIIcomm.Event.newBuilder();
-              input.readMessage(subBuilder, extensionRegistry);
-              addEvent(subBuilder.buildPartial());
-              break;
+
+            public Builder clearType() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                type_ = metroIIcomm.Event.Type.DEFAULT_NOTIFIED;
+                onChanged();
+                return this;
             }
-          }
-        }
-      }
 
-      private int bitField0_;
+            // required .Event.Status status = 5;
+            private metroIIcomm.Event.Status status_ = metroIIcomm.Event.Status.INACTIVE;
 
-      // repeated .Event event = 1;
-      private java.util.List<metroIIcomm.Event> event_ =
-        java.util.Collections.emptyList();
-      private void ensureEventIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          event_ = new java.util.ArrayList<metroIIcomm.Event>(event_);
-          bitField0_ |= 0x00000001;
-         }
-      }
+            public boolean hasStatus() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
 
-      private com.google.protobuf.RepeatedFieldBuilder<
-          metroIIcomm.Event, metroIIcomm.Event.Builder, metroIIcomm.EventOrBuilder> eventBuilder_;
+            public metroIIcomm.Event.Status getStatus() {
+                return status_;
+            }
 
-      public java.util.List<metroIIcomm.Event> getEventList() {
-        if (eventBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(event_);
-        } else {
-          return eventBuilder_.getMessageList();
-        }
-      }
-      public int getEventCount() {
-        if (eventBuilder_ == null) {
-          return event_.size();
-        } else {
-          return eventBuilder_.getCount();
-        }
-      }
-      public metroIIcomm.Event getEvent(int index) {
-        if (eventBuilder_ == null) {
-          return event_.get(index);
-        } else {
-          return eventBuilder_.getMessage(index);
-        }
-      }
-      public Builder setEvent(
-          int index, metroIIcomm.Event value) {
-        if (eventBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureEventIsMutable();
-          event_.set(index, value);
-          onChanged();
-        } else {
-          eventBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      public Builder setEvent(
-          int index, metroIIcomm.Event.Builder builderForValue) {
-        if (eventBuilder_ == null) {
-          ensureEventIsMutable();
-          event_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          eventBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      public Builder addEvent(metroIIcomm.Event value) {
-        if (eventBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureEventIsMutable();
-          event_.add(value);
-          onChanged();
-        } else {
-          eventBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      public Builder addEvent(
-          int index, metroIIcomm.Event value) {
-        if (eventBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureEventIsMutable();
-          event_.add(index, value);
-          onChanged();
-        } else {
-          eventBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      public Builder addEvent(
-          metroIIcomm.Event.Builder builderForValue) {
-        if (eventBuilder_ == null) {
-          ensureEventIsMutable();
-          event_.add(builderForValue.build());
-          onChanged();
-        } else {
-          eventBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      public Builder addEvent(
-          int index, metroIIcomm.Event.Builder builderForValue) {
-        if (eventBuilder_ == null) {
-          ensureEventIsMutable();
-          event_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          eventBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      public Builder addAllEvent(
-          java.lang.Iterable<? extends metroIIcomm.Event> values) {
-        if (eventBuilder_ == null) {
-          ensureEventIsMutable();
-          super.addAll(values, event_);
-          onChanged();
-        } else {
-          eventBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      public Builder clearEvent() {
-        if (eventBuilder_ == null) {
-          event_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          eventBuilder_.clear();
-        }
-        return this;
-      }
-      public Builder removeEvent(int index) {
-        if (eventBuilder_ == null) {
-          ensureEventIsMutable();
-          event_.remove(index);
-          onChanged();
-        } else {
-          eventBuilder_.remove(index);
-        }
-        return this;
-      }
-      public metroIIcomm.Event.Builder getEventBuilder(
-          int index) {
-        return getEventFieldBuilder().getBuilder(index);
-      }
-      public metroIIcomm.EventOrBuilder getEventOrBuilder(
-          int index) {
-        if (eventBuilder_ == null) {
-          return event_.get(index);  } else {
-          return eventBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      public java.util.List<? extends metroIIcomm.EventOrBuilder>
-           getEventOrBuilderList() {
-        if (eventBuilder_ != null) {
-          return eventBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(event_);
-        }
-      }
-      public metroIIcomm.Event.Builder addEventBuilder() {
-        return getEventFieldBuilder().addBuilder(
-            metroIIcomm.Event.getDefaultInstance());
-      }
-      public metroIIcomm.Event.Builder addEventBuilder(
-          int index) {
-        return getEventFieldBuilder().addBuilder(
-            index, metroIIcomm.Event.getDefaultInstance());
-      }
-      public java.util.List<metroIIcomm.Event.Builder>
-           getEventBuilderList() {
-        return getEventFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          metroIIcomm.Event, metroIIcomm.Event.Builder, metroIIcomm.EventOrBuilder>
-          getEventFieldBuilder() {
-        if (eventBuilder_ == null) {
-          eventBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              metroIIcomm.Event, metroIIcomm.Event.Builder, metroIIcomm.EventOrBuilder>(
-                  event_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          event_ = null;
-        }
-        return eventBuilder_;
-      }
+            public Builder setStatus(metroIIcomm.Event.Status value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                status_ = value;
+                onChanged();
+                return this;
+            }
 
-      // @@protoc_insertion_point(builder_scope:EventVector)
+            public Builder clearStatus() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                status_ = metroIIcomm.Event.Status.INACTIVE;
+                onChanged();
+                return this;
+            }
+
+            // optional .Event.Time time = 6;
+            private metroIIcomm.Event.Time time_ = metroIIcomm.Event.Time
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<metroIIcomm.Event.Time, metroIIcomm.Event.Time.Builder, metroIIcomm.Event.TimeOrBuilder> timeBuilder_;
+
+            public boolean hasTime() {
+                return ((bitField0_ & 0x00000008) == 0x00000008);
+            }
+
+            public metroIIcomm.Event.Time getTime() {
+                if (timeBuilder_ == null) {
+                    return time_;
+                } else {
+                    return timeBuilder_.getMessage();
+                }
+            }
+
+            public Builder setTime(metroIIcomm.Event.Time value) {
+                if (timeBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    time_ = value;
+                    onChanged();
+                } else {
+                    timeBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000008;
+                return this;
+            }
+
+            public Builder setTime(
+                    metroIIcomm.Event.Time.Builder builderForValue) {
+                if (timeBuilder_ == null) {
+                    time_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    timeBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000008;
+                return this;
+            }
+
+            public Builder mergeTime(metroIIcomm.Event.Time value) {
+                if (timeBuilder_ == null) {
+                    if (((bitField0_ & 0x00000008) == 0x00000008)
+                            && time_ != metroIIcomm.Event.Time
+                                    .getDefaultInstance()) {
+                        time_ = metroIIcomm.Event.Time.newBuilder(time_)
+                                .mergeFrom(value).buildPartial();
+                    } else {
+                        time_ = value;
+                    }
+                    onChanged();
+                } else {
+                    timeBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000008;
+                return this;
+            }
+
+            public Builder clearTime() {
+                if (timeBuilder_ == null) {
+                    time_ = metroIIcomm.Event.Time.getDefaultInstance();
+                    onChanged();
+                } else {
+                    timeBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000008);
+                return this;
+            }
+
+            public metroIIcomm.Event.Time.Builder getTimeBuilder() {
+                bitField0_ |= 0x00000008;
+                onChanged();
+                return getTimeFieldBuilder().getBuilder();
+            }
+
+            public metroIIcomm.Event.TimeOrBuilder getTimeOrBuilder() {
+                if (timeBuilder_ != null) {
+                    return timeBuilder_.getMessageOrBuilder();
+                } else {
+                    return time_;
+                }
+            }
+
+            private com.google.protobuf.SingleFieldBuilder<metroIIcomm.Event.Time, metroIIcomm.Event.Time.Builder, metroIIcomm.Event.TimeOrBuilder> getTimeFieldBuilder() {
+                if (timeBuilder_ == null) {
+                    timeBuilder_ = new com.google.protobuf.SingleFieldBuilder<metroIIcomm.Event.Time, metroIIcomm.Event.Time.Builder, metroIIcomm.Event.TimeOrBuilder>(
+                            time_, getParentForChildren(), isClean());
+                    time_ = null;
+                }
+                return timeBuilder_;
+            }
+
+            // @@protoc_insertion_point(builder_scope:Event)
+        }
+
+        static {
+            defaultInstance = new Event(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:Event)
     }
 
+    public interface EventVectorOrBuilder extends
+            com.google.protobuf.MessageOrBuilder {
+
+        // repeated .Event event = 1;
+        java.util.List<metroIIcomm.Event> getEventList();
+
+        metroIIcomm.Event getEvent(int index);
+
+        int getEventCount();
+
+        java.util.List<? extends metroIIcomm.EventOrBuilder> getEventOrBuilderList();
+
+        metroIIcomm.EventOrBuilder getEventOrBuilder(int index);
+    }
+
+    public static final class EventVector extends
+            com.google.protobuf.GeneratedMessage implements
+            EventVectorOrBuilder {
+        // Use EventVector.newBuilder() to construct.
+        private EventVector(Builder builder) {
+            super(builder);
+        }
+
+        private EventVector(boolean noInit) {
+        }
+
+        private static final EventVector defaultInstance;
+
+        public static EventVector getDefaultInstance() {
+            return defaultInstance;
+        }
+
+        public EventVector getDefaultInstanceForType() {
+            return defaultInstance;
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return metroIIcomm.internal_static_EventVector_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return metroIIcomm.internal_static_EventVector_fieldAccessorTable;
+        }
+
+        // repeated .Event event = 1;
+        public static final int EVENT_FIELD_NUMBER = 1;
+        private java.util.List<metroIIcomm.Event> event_;
+
+        public java.util.List<metroIIcomm.Event> getEventList() {
+            return event_;
+        }
+
+        public java.util.List<? extends metroIIcomm.EventOrBuilder> getEventOrBuilderList() {
+            return event_;
+        }
+
+        public int getEventCount() {
+            return event_.size();
+        }
+
+        public metroIIcomm.Event getEvent(int index) {
+            return event_.get(index);
+        }
+
+        public metroIIcomm.EventOrBuilder getEventOrBuilder(int index) {
+            return event_.get(index);
+        }
+
+        private void initFields() {
+            event_ = java.util.Collections.emptyList();
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized != -1) {
+                return isInitialized == 1;
+            }
+
+            for (int i = 0; i < getEventCount(); i++) {
+                if (!getEvent(i).isInitialized()) {
+                    memoizedIsInitialized = 0;
+                    return false;
+                }
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                throws java.io.IOException {
+            getSerializedSize();
+            for (int i = 0; i < event_.size(); i++) {
+                output.writeMessage(1, event_.get(i));
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1) {
+                return size;
+            }
+
+            size = 0;
+            for (int i = 0; i < event_.size(); i++) {
+                size += com.google.protobuf.CodedOutputStream
+                        .computeMessageSize(1, event_.get(i));
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace()
+                throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static metroIIcomm.EventVector parseFrom(
+                com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data).buildParsed();
+        }
+
+        public static metroIIcomm.EventVector parseFrom(
+                com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static metroIIcomm.EventVector parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data).buildParsed();
+        }
+
+        public static metroIIcomm.EventVector parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return newBuilder().mergeFrom(data, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static metroIIcomm.EventVector parseFrom(
+                java.io.InputStream input) throws java.io.IOException {
+            return newBuilder().mergeFrom(input).buildParsed();
+        }
+
+        public static metroIIcomm.EventVector parseFrom(
+                java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            return newBuilder().mergeFrom(input, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static metroIIcomm.EventVector parseDelimitedFrom(
+                java.io.InputStream input) throws java.io.IOException {
+            Builder builder = newBuilder();
+            if (builder.mergeDelimitedFrom(input)) {
+                return builder.buildParsed();
+            } else {
+                return null;
+            }
+        }
+
+        public static metroIIcomm.EventVector parseDelimitedFrom(
+                java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            Builder builder = newBuilder();
+            if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+                return builder.buildParsed();
+            } else {
+                return null;
+            }
+        }
+
+        public static metroIIcomm.EventVector parseFrom(
+                com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return newBuilder().mergeFrom(input).buildParsed();
+        }
+
+        public static metroIIcomm.EventVector parseFrom(
+                com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            return newBuilder().mergeFrom(input, extensionRegistry)
+                    .buildParsed();
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(metroIIcomm.EventVector prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+                com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        public static final class Builder extends
+                com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                metroIIcomm.EventVectorOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return metroIIcomm.internal_static_EventVector_descriptor;
+            }
+
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return metroIIcomm.internal_static_EventVector_fieldAccessorTable;
+            }
+
+            // Construct using metroIIcomm.EventVector.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getEventFieldBuilder();
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            public Builder clear() {
+                super.clear();
+                if (eventBuilder_ == null) {
+                    event_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                } else {
+                    eventBuilder_.clear();
+                }
+                return this;
+            }
+
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return metroIIcomm.EventVector.getDescriptor();
+            }
+
+            public metroIIcomm.EventVector getDefaultInstanceForType() {
+                return metroIIcomm.EventVector.getDefaultInstance();
+            }
+
+            public metroIIcomm.EventVector build() {
+                metroIIcomm.EventVector result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            private metroIIcomm.EventVector buildParsed()
+                    throws com.google.protobuf.InvalidProtocolBufferException {
+                metroIIcomm.EventVector result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result)
+                            .asInvalidProtocolBufferException();
+                }
+                return result;
+            }
+
+            public metroIIcomm.EventVector buildPartial() {
+                metroIIcomm.EventVector result = new metroIIcomm.EventVector(
+                        this);
+                if (eventBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                        event_ = java.util.Collections.unmodifiableList(event_);
+                        bitField0_ = (bitField0_ & ~0x00000001);
+                    }
+                    result.event_ = event_;
+                } else {
+                    result.event_ = eventBuilder_.build();
+                }
+                onBuilt();
+                return result;
+            }
+
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof metroIIcomm.EventVector) {
+                    return mergeFrom((metroIIcomm.EventVector) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(metroIIcomm.EventVector other) {
+                if (other == metroIIcomm.EventVector.getDefaultInstance()) {
+                    return this;
+                }
+                if (eventBuilder_ == null) {
+                    if (!other.event_.isEmpty()) {
+                        if (event_.isEmpty()) {
+                            event_ = other.event_;
+                            bitField0_ = (bitField0_ & ~0x00000001);
+                        } else {
+                            ensureEventIsMutable();
+                            event_.addAll(other.event_);
+                        }
+                        onChanged();
+                    }
+                } else {
+                    if (!other.event_.isEmpty()) {
+                        if (eventBuilder_.isEmpty()) {
+                            eventBuilder_.dispose();
+                            eventBuilder_ = null;
+                            event_ = other.event_;
+                            bitField0_ = (bitField0_ & ~0x00000001);
+                            eventBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getEventFieldBuilder()
+                                    : null;
+                        } else {
+                            eventBuilder_.addAllMessages(other.event_);
+                        }
+                    }
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            public final boolean isInitialized() {
+                for (int i = 0; i < getEventCount(); i++) {
+                    if (!getEvent(i).isInitialized()) {
+
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            public Builder mergeFrom(
+                    com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet
+                        .newBuilder(this.getUnknownFields());
+                while (true) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                    case 0:
+                        this.setUnknownFields(unknownFields.build());
+                        onChanged();
+                        return this;
+                    default: {
+                        if (!parseUnknownField(input, unknownFields,
+                                extensionRegistry, tag)) {
+                            this.setUnknownFields(unknownFields.build());
+                            onChanged();
+                            return this;
+                        }
+                        break;
+                    }
+                    case 10: {
+                        metroIIcomm.Event.Builder subBuilder = metroIIcomm.Event
+                                .newBuilder();
+                        input.readMessage(subBuilder, extensionRegistry);
+                        addEvent(subBuilder.buildPartial());
+                        break;
+                    }
+                    }
+                }
+            }
+
+            private int bitField0_;
+
+            // repeated .Event event = 1;
+            private java.util.List<metroIIcomm.Event> event_ = java.util.Collections
+                    .emptyList();
+
+            private void ensureEventIsMutable() {
+                if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+                    event_ = new java.util.ArrayList<metroIIcomm.Event>(event_);
+                    bitField0_ |= 0x00000001;
+                }
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<metroIIcomm.Event, metroIIcomm.Event.Builder, metroIIcomm.EventOrBuilder> eventBuilder_;
+
+            public java.util.List<metroIIcomm.Event> getEventList() {
+                if (eventBuilder_ == null) {
+                    return java.util.Collections.unmodifiableList(event_);
+                } else {
+                    return eventBuilder_.getMessageList();
+                }
+            }
+
+            public int getEventCount() {
+                if (eventBuilder_ == null) {
+                    return event_.size();
+                } else {
+                    return eventBuilder_.getCount();
+                }
+            }
+
+            public metroIIcomm.Event getEvent(int index) {
+                if (eventBuilder_ == null) {
+                    return event_.get(index);
+                } else {
+                    return eventBuilder_.getMessage(index);
+                }
+            }
+
+            public Builder setEvent(int index, metroIIcomm.Event value) {
+                if (eventBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureEventIsMutable();
+                    event_.set(index, value);
+                    onChanged();
+                } else {
+                    eventBuilder_.setMessage(index, value);
+                }
+                return this;
+            }
+
+            public Builder setEvent(int index,
+                    metroIIcomm.Event.Builder builderForValue) {
+                if (eventBuilder_ == null) {
+                    ensureEventIsMutable();
+                    event_.set(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    eventBuilder_.setMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            public Builder addEvent(metroIIcomm.Event value) {
+                if (eventBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureEventIsMutable();
+                    event_.add(value);
+                    onChanged();
+                } else {
+                    eventBuilder_.addMessage(value);
+                }
+                return this;
+            }
+
+            public Builder addEvent(int index, metroIIcomm.Event value) {
+                if (eventBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureEventIsMutable();
+                    event_.add(index, value);
+                    onChanged();
+                } else {
+                    eventBuilder_.addMessage(index, value);
+                }
+                return this;
+            }
+
+            public Builder addEvent(metroIIcomm.Event.Builder builderForValue) {
+                if (eventBuilder_ == null) {
+                    ensureEventIsMutable();
+                    event_.add(builderForValue.build());
+                    onChanged();
+                } else {
+                    eventBuilder_.addMessage(builderForValue.build());
+                }
+                return this;
+            }
+
+            public Builder addEvent(int index,
+                    metroIIcomm.Event.Builder builderForValue) {
+                if (eventBuilder_ == null) {
+                    ensureEventIsMutable();
+                    event_.add(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    eventBuilder_.addMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            public Builder addAllEvent(
+                    java.lang.Iterable<? extends metroIIcomm.Event> values) {
+                if (eventBuilder_ == null) {
+                    ensureEventIsMutable();
+                    super.addAll(values, event_);
+                    onChanged();
+                } else {
+                    eventBuilder_.addAllMessages(values);
+                }
+                return this;
+            }
+
+            public Builder clearEvent() {
+                if (eventBuilder_ == null) {
+                    event_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00000001);
+                    onChanged();
+                } else {
+                    eventBuilder_.clear();
+                }
+                return this;
+            }
+
+            public Builder removeEvent(int index) {
+                if (eventBuilder_ == null) {
+                    ensureEventIsMutable();
+                    event_.remove(index);
+                    onChanged();
+                } else {
+                    eventBuilder_.remove(index);
+                }
+                return this;
+            }
+
+            public metroIIcomm.Event.Builder getEventBuilder(int index) {
+                return getEventFieldBuilder().getBuilder(index);
+            }
+
+            public metroIIcomm.EventOrBuilder getEventOrBuilder(int index) {
+                if (eventBuilder_ == null) {
+                    return event_.get(index);
+                } else {
+                    return eventBuilder_.getMessageOrBuilder(index);
+                }
+            }
+
+            public java.util.List<? extends metroIIcomm.EventOrBuilder> getEventOrBuilderList() {
+                if (eventBuilder_ != null) {
+                    return eventBuilder_.getMessageOrBuilderList();
+                } else {
+                    return java.util.Collections.unmodifiableList(event_);
+                }
+            }
+
+            public metroIIcomm.Event.Builder addEventBuilder() {
+                return getEventFieldBuilder().addBuilder(
+                        metroIIcomm.Event.getDefaultInstance());
+            }
+
+            public metroIIcomm.Event.Builder addEventBuilder(int index) {
+                return getEventFieldBuilder().addBuilder(index,
+                        metroIIcomm.Event.getDefaultInstance());
+            }
+
+            public java.util.List<metroIIcomm.Event.Builder> getEventBuilderList() {
+                return getEventFieldBuilder().getBuilderList();
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<metroIIcomm.Event, metroIIcomm.Event.Builder, metroIIcomm.EventOrBuilder> getEventFieldBuilder() {
+                if (eventBuilder_ == null) {
+                    eventBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<metroIIcomm.Event, metroIIcomm.Event.Builder, metroIIcomm.EventOrBuilder>(
+                            event_, ((bitField0_ & 0x00000001) == 0x00000001),
+                            getParentForChildren(), isClean());
+                    event_ = null;
+                }
+                return eventBuilder_;
+            }
+
+            // @@protoc_insertion_point(builder_scope:EventVector)
+        }
+
+        static {
+            defaultInstance = new EventVector(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:EventVector)
+    }
+
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_Event_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_Event_fieldAccessorTable;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_Event_Time_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_Event_Time_fieldAccessorTable;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_EventVector_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_EventVector_fieldAccessorTable;
+
+    public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
+        return descriptor;
+    }
+
+    private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
     static {
-      defaultInstance = new EventVector(true);
-      defaultInstance.initFields();
+        java.lang.String[] descriptorData = { "\n\013event.proto\"\236\002\n\005Event\022\014\n\004name\030\001 \002(\t\022\031\n"
+                + "\004type\030\004 \002(\0162\013.Event.Type\022\035\n\006status\030\005 \002(\016"
+                + "2\r.Event.Status\022\031\n\004time\030\006 \001(\0132\013.Event.Ti"
+                + "me\0320\n\004Time\022\r\n\005value\030\001 \002(\003\022\031\n\nresolution\030"
+                + "\002 \001(\001:\0051e-12\"1\n\004Type\022\024\n\020DEFAULT_NOTIFIED"
+                + "\020\000\022\023\n\017DEFAULT_WAITING\020\001\"M\n\006Status\022\014\n\010INA"
+                + "CTIVE\020\000\022\014\n\010PROPOSED\020\001\022\013\n\007WAITING\020\002\022\014\n\010NO"
+                + "TIFIED\020\003\022\014\n\010DISABLED\020\004\"$\n\013EventVector\022\025\n"
+                + "\005event\030\001 \003(\0132\006.EventB\rB\013metroIIcomm" };
+        com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+            public com.google.protobuf.ExtensionRegistry assignDescriptors(
+                    com.google.protobuf.Descriptors.FileDescriptor root) {
+                descriptor = root;
+                internal_static_Event_descriptor = getDescriptor()
+                        .getMessageTypes().get(0);
+                internal_static_Event_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_Event_descriptor,
+                        new java.lang.String[] { "Name", "Type", "Status",
+                                "Time", }, metroIIcomm.Event.class,
+                        metroIIcomm.Event.Builder.class);
+                internal_static_Event_Time_descriptor = internal_static_Event_descriptor
+                        .getNestedTypes().get(0);
+                internal_static_Event_Time_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_Event_Time_descriptor,
+                        new java.lang.String[] { "Value", "Resolution", },
+                        metroIIcomm.Event.Time.class,
+                        metroIIcomm.Event.Time.Builder.class);
+                internal_static_EventVector_descriptor = getDescriptor()
+                        .getMessageTypes().get(1);
+                internal_static_EventVector_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_EventVector_descriptor,
+                        new java.lang.String[] { "Event", },
+                        metroIIcomm.EventVector.class,
+                        metroIIcomm.EventVector.Builder.class);
+                return null;
+            }
+        };
+        com.google.protobuf.Descriptors.FileDescriptor
+                .internalBuildGeneratedFileFrom(
+                        descriptorData,
+                        new com.google.protobuf.Descriptors.FileDescriptor[] {},
+                        assigner);
     }
 
-    // @@protoc_insertion_point(class_scope:EventVector)
-  }
-
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_Event_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_Event_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_Event_Time_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_Event_Time_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_EventVector_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_EventVector_fieldAccessorTable;
-
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
-  }
-  private static com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
-  static {
-    java.lang.String[] descriptorData = {
-      "\n\013event.proto\"\236\002\n\005Event\022\014\n\004name\030\001 \002(\t\022\031\n" +
-      "\004type\030\004 \002(\0162\013.Event.Type\022\035\n\006status\030\005 \002(\016" +
-      "2\r.Event.Status\022\031\n\004time\030\006 \001(\0132\013.Event.Ti" +
-      "me\0320\n\004Time\022\r\n\005value\030\001 \002(\003\022\031\n\nresolution\030" +
-      "\002 \001(\001:\0051e-12\"1\n\004Type\022\024\n\020DEFAULT_NOTIFIED" +
-      "\020\000\022\023\n\017DEFAULT_WAITING\020\001\"M\n\006Status\022\014\n\010INA" +
-      "CTIVE\020\000\022\014\n\010PROPOSED\020\001\022\013\n\007WAITING\020\002\022\014\n\010NO" +
-      "TIFIED\020\003\022\014\n\010DISABLED\020\004\"$\n\013EventVector\022\025\n" +
-      "\005event\030\001 \003(\0132\006.EventB\rB\013metroIIcomm"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_Event_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_Event_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Event_descriptor,
-              new java.lang.String[] { "Name", "Type", "Status", "Time", },
-              metroIIcomm.Event.class,
-              metroIIcomm.Event.Builder.class);
-          internal_static_Event_Time_descriptor =
-            internal_static_Event_descriptor.getNestedTypes().get(0);
-          internal_static_Event_Time_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Event_Time_descriptor,
-              new java.lang.String[] { "Value", "Resolution", },
-              metroIIcomm.Event.Time.class,
-              metroIIcomm.Event.Time.Builder.class);
-          internal_static_EventVector_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_EventVector_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_EventVector_descriptor,
-              new java.lang.String[] { "Event", },
-              metroIIcomm.EventVector.class,
-              metroIIcomm.EventVector.Builder.class);
-          return null;
-        }
-      };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
-  }
-
-  // @@protoc_insertion_point(outer_class_scope)
+    // @@protoc_insertion_point(outer_class_scope)
 }

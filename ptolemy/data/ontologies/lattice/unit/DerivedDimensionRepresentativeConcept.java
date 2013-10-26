@@ -94,9 +94,10 @@ public class DerivedDimensionRepresentativeConcept extends
             IllegalActionException {
         super(ontology, name);
         dimensionArray = new Parameter(this, "dimensionArray");
-        String[] labels = {_dimensionLabel, _exponentLabel};
-        Type[] types = {BaseType.STRING, BaseType.INT};
-        dimensionArray.setTypeEquals(new ArrayType(new RecordType(labels, types)));
+        String[] labels = { _dimensionLabel, _exponentLabel };
+        Type[] types = { BaseType.STRING, BaseType.INT };
+        dimensionArray.setTypeEquals(new ArrayType(
+                new RecordType(labels, types)));
 
         _componentDimensions = new HashMap<DimensionRepresentativeConcept, Integer>();
         _componentBaseDimensions = null;

@@ -27,6 +27,7 @@
  */
 
 package ptolemy.vergil.basic.export.web;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -115,7 +116,8 @@ public class DefaultIconScript extends IconScript {
         WebAttribute webAttribute;
 
         boolean entities = false, attributes = false;
-        String includeValue = include.stringValue().toLowerCase(Locale.getDefault());
+        String includeValue = include.stringValue().toLowerCase(
+                Locale.getDefault());
         if (includeValue.equals("all")) {
             entities = true;
             attributes = true;

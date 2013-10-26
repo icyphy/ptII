@@ -220,7 +220,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     public Parameter autoThrottling;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -242,7 +241,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
                             "sourcePlatformDelayBound");
             if (localClock.getLocalTime().subtract(event.timeStamp())
                     .getDoubleValue() > sourcePlatformDelayBound
-                    + networkDelayBound + _clockSynchronizationErrorBound.getDoubleValue()) {
+                    + networkDelayBound
+                    + _clockSynchronizationErrorBound.getDoubleValue()) {
                 event = _handleTimingError(
                         sourcePort,
                         event,
@@ -277,11 +277,12 @@ public class PtidesDirector extends DEDirector implements Decorator {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == clockSynchronizationErrorBound) {
-            _clockSynchronizationErrorBound = new Time(this, ((DoubleToken) clockSynchronizationErrorBound
-                    .getToken()).doubleValue());
+            _clockSynchronizationErrorBound = new Time(this,
+                    ((DoubleToken) clockSynchronizationErrorBound.getToken())
+                            .doubleValue());
         } else if (attribute == autoThrottling) {
-            _autoThrottling = ((BooleanToken) autoThrottling
-                    .getToken()).booleanValue();
+            _autoThrottling = ((BooleanToken) autoThrottling.getToken())
+                    .booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -450,8 +451,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         int newIndex = index;
         if (_currentLogicalTime != null) {
             //newIndex = _currentLogicalIndex;
-            if (_currentLogicalTime.compareTo(time) == 0
-                && index <= getIndex()) {
+            if (_currentLogicalTime.compareTo(time) == 0 && index <= getIndex()) {
                 if (!(actor instanceof CompositeActor)
                         || ((CompositeActor) actor).getDirector()
                                 .scheduleContainedActors()) {
@@ -469,8 +469,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
             depth = _getDepthOfActor(actor);
         }
 
-        _pureEvents.put(new PtidesEvent(actor, null, time, newIndex,
-                depth, _zeroTime, _currentSourceTimestamp));
+        _pureEvents.put(new PtidesEvent(actor, null, time, newIndex, depth,
+                _zeroTime, _currentSourceTimestamp));
         _currentSourceTimestamp = null;
 
         Time environmentTime = super.getEnvironmentTime();
@@ -517,8 +517,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
         return timestamp.add(relativeDeadline);
     }
-
-
 
     /** Return a superdense time index for the current time,
      *  where the index is equal to the microstep.
@@ -612,7 +610,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before
             // we declare that we are done.
-            if (_eventQueue.size() == 0 || !_eventQueue.get().timeStamp().equals(getModelStopTime())) {
+            if (_eventQueue.size() == 0
+                    || !_eventQueue.get().timeStamp()
+                            .equals(getModelStopTime())) {
                 result = false;
             }
         }
@@ -625,13 +625,14 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 if (event.ioPort() instanceof PtidesPort
                         && ((PtidesPort) event.ioPort()).isActuatorPort()
                         && getEnvironmentTime().compareTo(event.timeStamp()) > 0) {
-                    handleModelError(event.ioPort(),
+                    handleModelError(
+                            event.ioPort(),
                             new IllegalActionException(event.ioPort(),
-                                    "Missed Deadline at platform time " +
-                                    localClock.getLocalTime() +
-                                    " with logical time " + event.timeStamp() +
-                                    " at port " + event.ioPort()
-                                            + "!"));
+                                    "Missed Deadline at platform time "
+                                            + localClock.getLocalTime()
+                                            + " with logical time "
+                                            + event.timeStamp() + " at port "
+                                            + event.ioPort() + "!"));
                 }
             }
             _setNextFireTime(set.first());
@@ -685,7 +686,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
      * @exception IllegalActionException
      */
     public boolean prefire() throws IllegalActionException {
-        Time currentTime = _consultTimeRegulators(localClock.getLocalTimeForCurrentEnvironmentTime());
+        Time currentTime = _consultTimeRegulators(localClock
+                .getLocalTimeForCurrentEnvironmentTime());
         setModelTime(currentTime);
         if (_debugging) {
             _debug("...prefire @ " + currentTime);
@@ -799,8 +801,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         // Register this trigger event.
         PtidesEvent newEvent = new PtidesEvent(ioPort,
-                ioPort.getChannelForReceiver(receiver), getModelTime(), _currentLogicalIndex,
-                depth, token, receiver, _currentSourceTimestamp);
+                ioPort.getChannelForReceiver(receiver), getModelTime(),
+                _currentLogicalIndex, depth, token, receiver,
+                _currentSourceTimestamp);
 
         if (ioPort.isOutput()) {
 
@@ -843,7 +846,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
             }
 
             if (newEvent != null) {
-                List<PtidesEvent> list = _outputEventDeadlines.get(deliveryTime);
+                List<PtidesEvent> list = _outputEventDeadlines
+                        .get(deliveryTime);
                 if (list == null) {
                     list = new ArrayList<PtidesEvent>();
                 }
@@ -1053,8 +1057,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 Double delayOffsetAtSource = null;
                 ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) localSource)
                         .getDecoratorAttributes(this);
-                if (attributes != null && ((BooleanToken) attributes.useMaximumLookaheadTime
-                        .getToken()).booleanValue()) {
+                if (attributes != null
+                        && ((BooleanToken) attributes.useMaximumLookaheadTime
+                                .getToken()).booleanValue()) {
                     delayOffsetAtSource = ((DoubleToken) attributes.maximumLookaheadTime
                             .getToken()).doubleValue();
                 }
@@ -1091,7 +1096,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
             _setDelayOffset(
                     port,
-                    delayOffset - _clockSynchronizationErrorBound.getDoubleValue());
+                    delayOffset
+                            - _clockSynchronizationErrorBound.getDoubleValue());
         }
 
         // Calculate delayOffset to each actor
@@ -1112,27 +1118,30 @@ public class PtidesDirector extends DEDirector implements Decorator {
         }
     }
 
-
-    private double _calculateSRDelay(CompositeActor composite) throws IllegalActionException {
+    private double _calculateSRDelay(CompositeActor composite)
+            throws IllegalActionException {
         double minDelay = Double.POSITIVE_INFINITY;
         double delay = 0.0;
         for (Object inputPort : composite.inputPortList()) {
-            for (Object insidePort : ((IOPort)inputPort).deepInsidePortList()) {
-                if (((IOPort)insidePort).isOutput()) {
+            for (Object insidePort : ((IOPort) inputPort).deepInsidePortList()) {
+                if (((IOPort) insidePort).isOutput()) {
                     if (delay < minDelay) {
                         minDelay = delay;
                     }
                 } else {
-                    Actor actor = ((Actor)((IOPort)insidePort).getContainer());
+                    Actor actor = ((Actor) ((IOPort) insidePort).getContainer());
                     List<Actor> visited = new ArrayList();
-                    delay = _getDelay(composite, actor, (IOPort) insidePort, minDelay, visited);
+                    delay = _getDelay(composite, actor, (IOPort) insidePort,
+                            minDelay, visited);
                 }
             }
         }
         return delay;
     }
 
-    private double _getDelay(CompositeActor composite, Actor actor, IOPort port, double minDelay, List<Actor> visited) throws IllegalActionException {
+    private double _getDelay(CompositeActor composite, Actor actor,
+            IOPort port, double minDelay, List<Actor> visited)
+            throws IllegalActionException {
         if (visited.contains(actor)) {
             // found loop
             return 0.0;
@@ -1141,16 +1150,20 @@ public class PtidesDirector extends DEDirector implements Decorator {
         double delay = 0.0;
         CausalityInterface causalityInterface = actor.getCausalityInterface();
         for (Object outputPort : actor.outputPortList()) {
-            SuperdenseDependency dependency = (SuperdenseDependency) causalityInterface.getDependency((IOPort) port, (IOPort) outputPort);
+            SuperdenseDependency dependency = (SuperdenseDependency) causalityInterface
+                    .getDependency(port, (IOPort) outputPort);
             delay += dependency.timeValue();
-            for (Object connectedPort : ((IOPort)outputPort).connectedPortList()) {
+            for (Object connectedPort : ((IOPort) outputPort)
+                    .connectedPortList()) {
                 if (composite.outputPortList().contains(connectedPort)) {
                     if (delay < minDelay) {
                         minDelay = delay;
                     }
                 } else {
-                    Actor downstreamActor = (Actor) ((IOPort)connectedPort).getContainer();
-                    delay += _getDelay(composite, downstreamActor, (IOPort) connectedPort, minDelay, visited);
+                    Actor downstreamActor = (Actor) ((IOPort) connectedPort)
+                            .getContainer();
+                    delay += _getDelay(composite, downstreamActor,
+                            (IOPort) connectedPort, minDelay, visited);
                     if (delay < minDelay) {
                         minDelay = delay;
                     }
@@ -1382,9 +1395,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 _debug(buf.toString());
             }
 
-            for (Object actor : ((CompositeActor)getContainer()).entityList()) {
+            for (Object actor : ((CompositeActor) getContainer()).entityList()) {
                 if (actor instanceof Actor) {
-                    _debug(((Actor)actor).getName() + "\t" + _getDepthOfActor((Actor) actor));
+                    _debug(((Actor) actor).getName() + "\t"
+                            + _getDepthOfActor((Actor) actor));
                 }
             }
         }
@@ -1465,28 +1479,27 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         }
                     }
                 }
-                if (prefire && (
+                if (prefire
+                        && (
                         // There are no resource schedulers that need to be asked.
                         !_resourceScheduling ||
                         // There are resource schedulers that need to be asked. however,
                         // because the timeDelay actor is fired twice, we only schedule
                         // one firing on the resource scheduler: the second firing due to
                         // the pure event.
-                        (
-                                (actor instanceof TimeDelay && !ptidesEvent.isPureEvent()) ||
-                                // Actor was previously scheduled and just finished.
+                        ((actor instanceof TimeDelay && !ptidesEvent
+                                .isPureEvent()) ||
+                        // Actor was previously scheduled and just finished.
                                 _actorsFinished.contains(actor) ||
-                                // The actor is scheduled and is instantaneously granted all
-                                // resources.
-                                _schedule(actor, timestamp)
-                            ) && (
+                        // The actor is scheduled and is instantaneously granted all
+                        // resources.
+                                _schedule(actor, timestamp))
+                                && (
                                 // If actor is a composite actor we check whether the
                                 // contained actors can be scheduled.
-                                !(actor instanceof CompositeActor)
-                                || ((CompositeActor) actor)
-                                        .getDirector().scheduleContainedActors()
-                             )
-                        )) {
+                                !(actor instanceof CompositeActor) || ((CompositeActor) actor)
+                                        .getDirector()
+                                        .scheduleContainedActors()))) {
                     _currentLogicalTime = timestamp;
                     _currentLogicalIndex = ptidesEvent.microstep();
                     _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
@@ -1496,8 +1509,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     _removeEventsFromQueue(_pureEvents, ptidesEvent);
                     _actorsFinished.remove(actor);
                     if (_debugging) {
-                        _debug(">>> next actor: " + actor
-                                + " @ " + timestamp);
+                        _debug(">>> next actor: " + actor + " @ " + timestamp);
                     }
                     return actor;
                 }
@@ -1523,7 +1535,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     if (_numberOfTokensPerPort == null) {
                         _numberOfTokensPerPort = new HashMap<IOPort, Integer>();
                     }
-                    Integer numberOfTokens = _numberOfTokensPerPort.get(sinkPort);
+                    Integer numberOfTokens = _numberOfTokensPerPort
+                            .get(sinkPort);
                     if (numberOfTokens == null) {
                         numberOfTokens = 0;
                     }
@@ -1581,21 +1594,22 @@ public class PtidesDirector extends DEDirector implements Decorator {
     }
 
     private boolean _isLocalSource(Object target) {
-        if (target instanceof DiscreteClock ||
-            target instanceof PoissonClock) {
+        if (target instanceof DiscreteClock || target instanceof PoissonClock) {
             return true;
         }
         if (target instanceof ModalModel) {
             return true;
         }
-        if (target instanceof CompositeActor && ((CompositeActor) target).isOpaque()) {
+        if (target instanceof CompositeActor
+                && ((CompositeActor) target).isOpaque()) {
             if (((CompositeActor) target).inputPortList().size() == 0
                     || ((CompositeActor) target).getDirector() instanceof PeriodicDirector) {
                 return true;
             }
-            for (Object entity : ((CompositeActor) target).allAtomicEntityList()) {
-                if (entity instanceof DiscreteClock ||
-                        entity instanceof PoissonClock) {
+            for (Object entity : ((CompositeActor) target)
+                    .allAtomicEntityList()) {
+                if (entity instanceof DiscreteClock
+                        || entity instanceof PoissonClock) {
                     return true;
                 }
             }
@@ -1624,7 +1638,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
             }
         }
 
-
         // Check if there are any events upstream that have to be
         // processed before this one.
         Object[] eventArray = _eventQueue.toArray();
@@ -1640,7 +1653,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                         (TypedIOPort) event.ioPort());
                 if (event.timeStamp().getDoubleValue()
                         - ptidesEvent.timeStamp().getDoubleValue() >= minDelay
-                        .timeValue()) {
+                            .timeValue()) {
                     if (_debugging) {
                         _debug("*** upstream !safe" + event);
                     }
@@ -1648,8 +1661,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
             }
         }
-
-
 
         // Throttling actors with maximum future events parameter.
         ThrottleAttributes attributes = (ThrottleAttributes) ((NamedObj) event
@@ -1663,7 +1674,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
             if (maxFutureEvents != null) {
                 int futureEvents = _getNumberOfFutureEventsFrom(event.actor());
                 if (_debugging) {
-                    _debug("*** safe?" + (futureEvents <= maxFutureEvents) + " " + event);
+                    _debug("*** safe?" + (futureEvents <= maxFutureEvents)
+                            + " " + event);
                 }
                 return (futureEvents <= maxFutureEvents);
             }
@@ -1677,14 +1689,16 @@ public class PtidesDirector extends DEDirector implements Decorator {
             Actor actor = (Actor) port.getContainer();
             for (int i = 0; i < actor.inputPortList().size(); i++) {
                 Object ioPort = actor.inputPortList().get(i);
-                Parameter parameter = (Parameter) ((NamedObj) ioPort).getAttribute("delayOffset");
+                Parameter parameter = (Parameter) ((NamedObj) ioPort)
+                        .getAttribute("delayOffset");
                 Double ioPortDelayOffset = null;
                 if (parameter != null) {
                     Token token = parameter.getToken();
                     if (token instanceof DoubleToken) {
-                        ioPortDelayOffset = ((DoubleToken)token).doubleValue();
+                        ioPortDelayOffset = ((DoubleToken) token).doubleValue();
                     } else if (token instanceof ArrayToken) {
-                        ioPortDelayOffset = ((DoubleToken)((ArrayToken)token).getElement(0)).doubleValue();
+                        ioPortDelayOffset = ((DoubleToken) ((ArrayToken) token)
+                                .getElement(0)).doubleValue();
                     }
                 }
                 if (ioPortDelayOffset != null
@@ -1697,21 +1711,24 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     .getDecoratorAttributes(this);
             if (attributes != null) {
                 if (((BooleanToken) attributes.useMaximumLookaheadTime
-                    .getToken()).booleanValue()) {
+                        .getToken()).booleanValue()) {
                     delayOffset = Double
                             .valueOf(((DoubleToken) attributes.maximumLookaheadTime
                                     .getToken()).doubleValue());
                 }
             }
             if (((NamedObj) event.actor()).getAttribute("delayOffset") != null) {
-                delayOffset = ((DoubleToken)((Parameter) ((NamedObj) event.actor()).getAttribute("delayOffset")).getToken()).doubleValue();
+                delayOffset = ((DoubleToken) ((Parameter) ((NamedObj) event
+                        .actor()).getAttribute("delayOffset")).getToken())
+                        .doubleValue();
             }
 
         }
         if (delayOffset == null
-                || localClock.getLocalTime().compareTo(
-                        eventTimestamp.subtract(delayOffset)/*.subtract(
-                                _clockSynchronizationErrorBound)*/) >= 0) {
+                || localClock
+                        .getLocalTime()
+                        .compareTo(eventTimestamp.subtract(delayOffset)/*.subtract(
+                                                                       _clockSynchronizationErrorBound)*/) >= 0) {
 
             // Default throttling actors.
             if (_autoThrottling) {
@@ -1769,7 +1786,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 eventList.add(eventInQueue);
                 IOPort port = eventInQueue.ioPort();
                 if (port != null) {
-                    _numberOfTokensPerPort.put(port, _numberOfTokensPerPort.get(port) - 1);
+                    _numberOfTokensPerPort.put(port,
+                            _numberOfTokensPerPort.get(port) - 1);
                 }
                 ((PtidesListEventQueue) queue).take(i);
                 continue;
@@ -1827,7 +1845,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         if (parameter == null) {
             try {
                 // Findbugs: avoid a dead local store here.
-                /* parameter = */ new Parameter(port, "relativeDeadline", token);
+                /* parameter = */new Parameter(port, "relativeDeadline", token);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(port,
                         "relativeDeadline parameter already exists at "

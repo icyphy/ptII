@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -375,7 +376,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 effigy.setModel(newModel);
                 return effigy;
             } else {
-                String extension = getExtension(input).toLowerCase(Locale.getDefault());
+                String extension = getExtension(input).toLowerCase(
+                        Locale.getDefault());
 
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;

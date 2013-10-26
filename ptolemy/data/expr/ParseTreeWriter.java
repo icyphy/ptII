@@ -180,7 +180,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         if (node.isConstant() && node.isEvaluated()) {
             ptolemy.data.Token token = node.getToken();
             if (_isStringMode && (token instanceof StringToken)) {
-                _writer.print(((StringToken)token).stringValue());
+                _writer.print(((StringToken) token).stringValue());
             } else {
                 _writer.print(token.toString());
             }

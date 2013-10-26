@@ -63,4 +63,3 @@ public interface Task extends Actor {
     public Time nextFireTime() throws IllegalActionException;
 
 }
-

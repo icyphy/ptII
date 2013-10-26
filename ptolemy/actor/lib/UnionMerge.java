@@ -192,7 +192,7 @@ public class UnionMerge extends TypedAtomicActor {
         Set<Inequality> result = new HashSet<Inequality>();
 
         // make sure the ports are mapped
-            _mapPorts();
+        _mapPorts();
 
         // constrain the fields in the output union to be greater than or
         // equal to the declared or resolved types of the input ports:

@@ -2902,10 +2902,10 @@ public class OracleXMLDBConnection implements DBConnection {
         ArrayList<DBModel> _parentsList;
 
         /* *//**
-                * Match the given DBModel to the current model
-                * @param model Model to be compared.
-                * @return True if the names are same, false otherwise.
-                */
+                 * Match the given DBModel to the current model
+                 * @param model Model to be compared.
+                 * @return True if the names are same, false otherwise.
+                 */
         /*
         public boolean equals(DBModel model) {
          if (model instanceof DBModel) {

@@ -625,7 +625,6 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-
     /** The associated modal controller component. */
     protected ptolemy.domains.modal.modal.ModalController _myController;
 

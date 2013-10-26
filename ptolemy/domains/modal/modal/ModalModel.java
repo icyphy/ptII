@@ -508,7 +508,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         // are the only outputs produced by initialize.
         Director director = getDirector();
         if (director instanceof FSMDirector) {
-            ((FSMDirector)director).resetOutputReceivers();
+            ((FSMDirector) director).resetOutputReceivers();
         }
         super.initialize();
     }

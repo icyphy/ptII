@@ -80,8 +80,6 @@ public class ExecutionAttributes extends DecoratorAttributes {
         _init();
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -90,7 +88,6 @@ public class ExecutionAttributes extends DecoratorAttributes {
      *  This is a boolean that defaults to false.
      */
     public Parameter enable;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -104,7 +101,7 @@ public class ExecutionAttributes extends DecoratorAttributes {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == enable) {
-            _enabled = ((BooleanToken)enable.getToken()).booleanValue();
+            _enabled = ((BooleanToken) enable.getToken()).booleanValue();
         }
         super.attributeChanged(attribute);
     }

@@ -27,6 +27,7 @@
  */
 
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -58,11 +59,11 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (wlc)
 */
 
-public class DEReceiver extends Receiver  {
-        /** Construct an adapter for an DE receiver.
-     *  @param receiver The DEReceiver for which an adapter is constructed.
-     *  @exception IllegalActionException If thrown by the superclass.
-     */
+public class DEReceiver extends Receiver {
+    /** Construct an adapter for an DE receiver.
+    *  @param receiver The DEReceiver for which an adapter is constructed.
+    *  @exception IllegalActionException If thrown by the superclass.
+    */
     public DEReceiver(ptolemy.domains.de.kernel.DEReceiver receiver)
             throws IllegalActionException {
         super(receiver);
@@ -85,15 +86,16 @@ public class DEReceiver extends Receiver  {
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-//        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-//                .getContainer().getContainer());
+        //        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+        //                .getContainer().getContainer());
 
-//        String result = _getDirectorForReceiver().getReference(port,
-//                new String[] { Integer.toString(channel), offset },
-//                _forComposite, false, containingActorAdapter);
-//        String actorName = CodeGeneratorAdapter.generateName(port.getContainer());
+        //        String result = _getDirectorForReceiver().getReference(port,
+        //                new String[] { Integer.toString(channel), offset },
+        //                _forComposite, false, containingActorAdapter);
+        //        String actorName = CodeGeneratorAdapter.generateName(port.getContainer());
         String type = getCodeGenerator().codeGenType(port.getType());
-        String result = "(*(" + port.getName() + "->get))((struct IOPort*) " + port.getName() + ", " + channel + ").payload." + type;
+        String result = "(*(" + port.getName() + "->get))((struct IOPort*) "
+                + port.getName() + ", " + channel + ").payload." + type;
         //result = "DEReceiverGet(&(" + result + "))";
         return result;
     }
@@ -106,17 +108,19 @@ public class DEReceiver extends Receiver  {
      */
     public String generateHasTokenCode(String offset)
             throws IllegalActionException {
-            TypedIOPort port = (TypedIOPort) getComponent().getContainer();
+        TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-//        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-//                .getContainer().getContainer());
-//
-//        String result = _getDirectorForReceiver().getReference(port,
-//                new String[] { Integer.toString(channel), offset },
-//                _forComposite, false, containingActorAdapter);
-//        String actorName = CodeGeneratorAdapter.generateName(port.getContainer());
-        String result = "(*(" + port.getName() + "->hasToken))((struct IOPort*) " + port.getName() + ", " + channel + ")";
-//        String result = "ReceiverHasToken(" + actorName + ".ports[enum_" + actorName + "_" + port.getName() + "].receivers + " + channel + ")";
+        //        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+        //                .getContainer().getContainer());
+        //
+        //        String result = _getDirectorForReceiver().getReference(port,
+        //                new String[] { Integer.toString(channel), offset },
+        //                _forComposite, false, containingActorAdapter);
+        //        String actorName = CodeGeneratorAdapter.generateName(port.getContainer());
+        String result = "(*(" + port.getName()
+                + "->hasToken))((struct IOPort*) " + port.getName() + ", "
+                + channel + ")";
+        //        String result = "ReceiverHasToken(" + actorName + ".ports[enum_" + actorName + "_" + port.getName() + "].receivers + " + channel + ")";
         return result;
     }
 
@@ -175,24 +179,25 @@ public class DEReceiver extends Receiver  {
             token = token.substring(0, token.length() - 2);
         }
         try {
-//                String nameInput = _getDirectorForReceiver().getReference(port,
-//                    new String[] { Integer.toString(channel), offset },
-//                    forComposite, true, containingActorAdapter);
-//                String actorSourceName = CodeGeneratorAdapter.generateName(sourcePort.getContainer());
-//                String actorDestName = CodeGeneratorAdapter.generateName(port.getContainer());
-//                String actorDestNameForArgs = actorDestName;
-//                if (port.getContainer() instanceof CompositeActor)
-//                    actorDestNameForArgs = "(" + actorDestName + ".actor)";
-//                String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" +
-//                        actorSourceName + "_" + sourcePort.getName() + "_" + actorDestName + "_" + port.getName() + "_" + channel + "]";
-                String type = getCodeGenerator().codeGenType(port.getType());
-                //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
-                result = "(*(" + port.getName() + "->send))((struct IOPort*) " + port.getName() + ", " + channel + ", ";
+            //                String nameInput = _getDirectorForReceiver().getReference(port,
+            //                    new String[] { Integer.toString(channel), offset },
+            //                    forComposite, true, containingActorAdapter);
+            //                String actorSourceName = CodeGeneratorAdapter.generateName(sourcePort.getContainer());
+            //                String actorDestName = CodeGeneratorAdapter.generateName(port.getContainer());
+            //                String actorDestNameForArgs = actorDestName;
+            //                if (port.getContainer() instanceof CompositeActor)
+            //                    actorDestNameForArgs = "(" + actorDestName + ".actor)";
+            //                String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" +
+            //                        actorSourceName + "_" + sourcePort.getName() + "_" + actorDestName + "_" + port.getName() + "_" + channel + "]";
+            String type = getCodeGenerator().codeGenType(port.getType());
+            //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
+            result = "(*(" + port.getName() + "->send))((struct IOPort*) "
+                    + port.getName() + ", " + channel + ", ";
 
-                result += "$new(" + type + "(" + token + ")));" + _eol;
-//                result += _eol + "(*(" + actorDestNameForArgs + ".container->director->fireAtFunction))(&"+ actorDestNameForArgs
-//                            +", " + actorDestNameForArgs + ".container->director->currentModelTime, "
-//                            + actorDestNameForArgs + ".container->director->currentMicrostep);" + _eol;
+            result += "$new(" + type + "(" + token + ")));" + _eol;
+            //                result += _eol + "(*(" + actorDestNameForArgs + ".container->director->fireAtFunction))(&"+ actorDestNameForArgs
+            //                            +", " + actorDestNameForArgs + ".container->director->currentModelTime, "
+            //                            + actorDestNameForArgs + ".container->director->currentMicrostep);" + _eol;
         } catch (Throwable throwable) {
             result = _getExecutiveDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
@@ -240,8 +245,8 @@ public class DEReceiver extends Receiver  {
      */
     protected DEDirector _getExecutiveDirectorForReceiver()
             throws IllegalActionException {
-        return (DEDirector) getAdapter(((Actor) getComponent()
-                .getContainer().getContainer()).getExecutiveDirector());
+        return (DEDirector) getAdapter(((Actor) getComponent().getContainer()
+                .getContainer()).getExecutiveDirector());
     }
 
     //$send(port#channel) ==> port_channel[writeOffset]

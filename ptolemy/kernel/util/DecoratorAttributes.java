@@ -34,7 +34,6 @@ import java.util.List;
 
 import ptolemy.kernel.CompositeEntity;
 
-
 ///////////////////////////////////////////////////////////////////
 //// DecoratorAttributes
 
@@ -80,7 +79,8 @@ public class DecoratorAttributes extends Attribute {
      */
     public DecoratorAttributes(NamedObj container, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
-        super(container, container.uniqueName("DecoratorAttributesFor_" + decorator.getName()));
+        super(container, container.uniqueName("DecoratorAttributesFor_"
+                + decorator.getName()));
         _decorator = decorator;
 
         decoratorName = new StringAttribute(this, "decoratorName");
@@ -128,7 +128,8 @@ public class DecoratorAttributes extends Attribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == decoratorName) {
             // The decorator name is being set.
             // Attempt to set the _decorator now, because its name
@@ -147,7 +148,8 @@ public class DecoratorAttributes extends Attribute {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DecoratorAttributes newObject = (DecoratorAttributes) super.clone(workspace);
+        DecoratorAttributes newObject = (DecoratorAttributes) super
+                .clone(workspace);
         newObject._decorator = null;
         return newObject;
     }
@@ -202,7 +204,8 @@ public class DecoratorAttributes extends Attribute {
             // if you delete a decorator, then undo, the undo will actually create a
             // new decorator instance. This code re-establishes the connection.
             NamedObj decoratorContainer = _decorator.getContainer();
-            if (decoratorContainer == null || !decoratorContainer.deepContains(this)) {
+            if (decoratorContainer == null
+                    || !decoratorContainer.deepContains(this)) {
                 // Decorator is no longer in scope.  Fall into code below to try to find it by name.
                 _decorator = null;
             }
@@ -215,9 +218,11 @@ public class DecoratorAttributes extends Attribute {
                 NamedObj container = getContainer().getContainer();
                 boolean crossedOpaqueBoundary = false;
                 while (container != null) {
-                    List<Decorator> localDecorators = container._containedDecorators();
+                    List<Decorator> localDecorators = container
+                            ._containedDecorators();
                     for (Decorator decorator : localDecorators) {
-                        if (!crossedOpaqueBoundary || decorator.isGlobalDecorator()) {
+                        if (!crossedOpaqueBoundary
+                                || decorator.isGlobalDecorator()) {
                             if (decorator.getName(toplevel()).equals(name)) {
                                 // We have a match.
                                 _decorator = decorator;
@@ -227,7 +232,7 @@ public class DecoratorAttributes extends Attribute {
                     }
                     // FIXME: kernel.util should not have a dependence on kernel classes.
                     if (container instanceof CompositeEntity
-                            && ((CompositeEntity)container).isOpaque()) {
+                            && ((CompositeEntity) container).isOpaque()) {
                         crossedOpaqueBoundary = true;
                     }
                     container = container.getContainer();

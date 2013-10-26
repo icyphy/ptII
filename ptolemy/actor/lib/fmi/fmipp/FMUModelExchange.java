@@ -173,7 +173,8 @@ public class FMUModelExchange extends Transformer {
             try {
                 _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to unzip \"" + fmuFileName + "\".");
+                throw new IllegalActionException(this, ex, "Failed to unzip \""
+                        + fmuFileName + "\".");
             }
 
             // Set _tmpPath to the directory that contains modelDescription.xml
@@ -182,89 +183,94 @@ public class FMUModelExchange extends Transformer {
             for (File file : _fmiModelDescription.files) {
                 String fileName = file.toString();
                 if (fileName.endsWith(sentinelFileName)) {
-                    _tmpPath = fileName.substring(0, fileName.length() - sentinelFileName.length());
+                    _tmpPath = fileName.substring(0, fileName.length()
+                            - sentinelFileName.length());
                     break;
                 }
             }
             System.out.println("FMUModelExchange: _tmpPath: " + _tmpPath);
             if (_tmpPath == null) {
-                throw new IllegalActionException(this, "Did not find sentinel file "
-                        + sentinelFileName + "."
-                        + (_fmiModelDescription.files.size() <= 0
-                                ? "No files were unzipped from the FMU file "
-                                + fmuFileName + "."
-                                : "The first file in the fmuFile " + fmuFileName
-                                + " was " + _fmiModelDescription.files.get(0) + "."));
+                throw new IllegalActionException(
+                        this,
+                        "Did not find sentinel file "
+                                + sentinelFileName
+                                + "."
+                                + (_fmiModelDescription.files.size() <= 0 ? "No files were unzipped from the FMU file "
+                                        + fmuFileName + "."
+                                        : "The first file in the fmuFile "
+                                                + fmuFileName
+                                                + " was "
+                                                + _fmiModelDescription.files
+                                                        .get(0) + "."));
             }
 
+            //             try { // make the error handling better, because if the file is not valid, its not possible to cancel the error message, one has to use ok instead ;)
+            //                 if (fmuFile.getExpression() != "") {
+            //                     int BUFFER = 2048;
+            //                     // Call asFile() so that $CLASSPATH is expanded.
+            //                     ZipFile file = new ZipFile(fmuFile.asFile());
+            //                     // change this, because it's error-prone
+            //                     if (fmuFile.getExpression().lastIndexOf("/") != -1) {
+            //                         _fmuName = fmuFile.getExpression().substring(
+            //                                 fmuFile.getExpression().lastIndexOf("/"),
+            //                                 fmuFile.getExpression().length() - 4);
+            //                     } else {
+            //                         _fmuName = fmuFile.getExpression().substring(0,
+            //                                 fmuFile.getExpression().length() - 4);
+            //                     }
 
-//             try { // make the error handling better, because if the file is not valid, its not possible to cancel the error message, one has to use ok instead ;)
-//                 if (fmuFile.getExpression() != "") {
-//                     int BUFFER = 2048;
-//                     // Call asFile() so that $CLASSPATH is expanded.
-//                     ZipFile file = new ZipFile(fmuFile.asFile());
-//                     // change this, because it's error-prone
-//                     if (fmuFile.getExpression().lastIndexOf("/") != -1) {
-//                         _fmuName = fmuFile.getExpression().substring(
-//                                 fmuFile.getExpression().lastIndexOf("/"),
-//                                 fmuFile.getExpression().length() - 4);
-//                     } else {
-//                         _fmuName = fmuFile.getExpression().substring(0,
-//                                 fmuFile.getExpression().length() - 4);
-//                     }
+            //                     _tmpPath = System.getProperty("java.io.tmpdir")
+            //                             + "/fmus.tmp/" + _fmuName;
 
-//                     _tmpPath = System.getProperty("java.io.tmpdir")
-//                             + "/fmus.tmp/" + _fmuName;
+            //                     File tmpFile = new File(_tmpPath);
+            //                     if (!tmpFile.delete()) {
+            //                         throw new IOException("Could not delete temporary file "
+            //                                 + tmpFile);
+            //                     }
+            //                     if (!tmpFile.exists()) {
+            //                         if (!tmpFile.mkdir()) {
+            //                             throw new IOException("Could not create directory "
+            //                                     + tmpFile);
+            //                         }
+            //                         Enumeration entries = file.entries();
 
-//                     File tmpFile = new File(_tmpPath);
-//                     if (!tmpFile.delete()) {
-//                         throw new IOException("Could not delete temporary file "
-//                                 + tmpFile);
-//                     }
-//                     if (!tmpFile.exists()) {
-//                         if (!tmpFile.mkdir()) {
-//                             throw new IOException("Could not create directory "
-//                                     + tmpFile);
-//                         }
-//                         Enumeration entries = file.entries();
+            //                         while (entries.hasMoreElements()) {
+            //                             ZipEntry entry = (ZipEntry) entries.nextElement();
+            //                             String currentEntry = entry.getName();
+            //                             File destFile = new File(_tmpPath, currentEntry);
+            //                             File destinationParent = destFile.getParentFile();
 
-//                         while (entries.hasMoreElements()) {
-//                             ZipEntry entry = (ZipEntry) entries.nextElement();
-//                             String currentEntry = entry.getName();
-//                             File destFile = new File(_tmpPath, currentEntry);
-//                             File destinationParent = destFile.getParentFile();
+            //                             // Create the parent directory structure if needed.
+            //                             destinationParent.mkdirs();
 
-//                             // Create the parent directory structure if needed.
-//                             destinationParent.mkdirs();
+            //                             if (!entry.isDirectory()) {
+            //                                 BufferedInputStream is = new BufferedInputStream(
+            //                                         file.getInputStream(entry));
+            //                                 int currentByte;
+            //                                 // establish buffer for writing file
+            //                                 byte data[] = new byte[BUFFER];
 
-//                             if (!entry.isDirectory()) {
-//                                 BufferedInputStream is = new BufferedInputStream(
-//                                         file.getInputStream(entry));
-//                                 int currentByte;
-//                                 // establish buffer for writing file
-//                                 byte data[] = new byte[BUFFER];
+            //                                 // write the current file to disk
+            //                                 FileOutputStream fos = new FileOutputStream(
+            //                                         destFile);
+            //                                 BufferedOutputStream dest = new BufferedOutputStream(
+            //                                         fos, BUFFER);
 
-//                                 // write the current file to disk
-//                                 FileOutputStream fos = new FileOutputStream(
-//                                         destFile);
-//                                 BufferedOutputStream dest = new BufferedOutputStream(
-//                                         fos, BUFFER);
-
-//                                 // read and write until last byte is encountered
-//                                 while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
-//                                     dest.write(data, 0, currentByte);
-//                                 }
-//                                 dest.flush();
-//                                 dest.close();
-//                                 is.close();
-//                             }
-//                         }
-//                     }
-//                 }
-//             } catch (IOException ioe) {
-//                 throw new IllegalActionException(this, ioe,
-//                         "Failed to open \"" + fmuFile + "\".");
-//             }
+            //                                 // read and write until last byte is encountered
+            //                                 while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
+            //                                     dest.write(data, 0, currentByte);
+            //                                 }
+            //                                 dest.flush();
+            //                                 dest.close();
+            //                                 is.close();
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             } catch (IOException ioe) {
+            //                 throw new IllegalActionException(this, ioe,
+            //                         "Failed to open \"" + fmuFile + "\".");
+            //             }
         } else if (attribute == lookAheadHorizon) {
             if (!lookAheadHorizon.getExpression().isEmpty()) {
                 _lookAheadHorizonValue = Double.valueOf(lookAheadHorizon
@@ -448,8 +454,8 @@ public class FMUModelExchange extends Transformer {
             _fmiModelDescription.getNativeLibraryPath();
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                                             "Failed to find or build the shared library for \""
-                                             + _fmiModelDescription +"\"");
+                    "Failed to find or build the shared library for \""
+                            + _fmiModelDescription + "\"");
         }
         _fmu = new IncrementalFMU(_tmpPath,
                 _fmiModelDescription.modelIdentifier);

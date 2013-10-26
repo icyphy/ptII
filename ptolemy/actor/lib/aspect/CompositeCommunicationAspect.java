@@ -203,10 +203,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-            if (workspace().getVersion() == _decoratedObjectsVersion) {
+        if (workspace().getVersion() == _decoratedObjectsVersion) {
             return _decoratedObjects;
         }
-            _decoratedObjectsVersion = workspace().getVersion();
+        _decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> list = new ArrayList<NamedObj>();
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object object : container.deepEntityList()) {
@@ -335,9 +335,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
-                CompositeCommunicationAspectAttributes decoratorAttributes = (CompositeCommunicationAspectAttributes)
-                        decoratedObject.getDecoratorAttributes(this);
-                setInputPortName((Port) decoratedObject, decoratorAttributes._inputPort);
+                CompositeCommunicationAspectAttributes decoratorAttributes = (CompositeCommunicationAspectAttributes) decoratedObject
+                        .getDecoratorAttributes(this);
+                setInputPortName((Port) decoratedObject,
+                        decoratorAttributes._inputPort);
             }
         }
     }
@@ -364,12 +365,14 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        String name = _communicationRequestPortNames.get(receiver.getContainer());
+        String name = _communicationRequestPortNames.get(receiver
+                .getContainer());
         CommunicationRequestPort port = (CommunicationRequestPort) getEntity(name);
         if (port == null) {
-            throw new IllegalActionException(this, "CommunicationRequestPort with name "
-                    + name + " specified by " + receiver.getContainer()
-                    + " missing");
+            throw new IllegalActionException(this,
+                    "CommunicationRequestPort with name " + name
+                            + " specified by " + receiver.getContainer()
+                            + " missing");
         }
         if (_tokens == null) {
             _tokens = new HashMap<CommunicationRequestPort, Token>();
@@ -426,10 +429,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     ////                         private variables                 ////
 
     /** Cached list of decorated objects. */
-        private List<NamedObj> _decoratedObjects;
+    private List<NamedObj> _decoratedObjects;
 
-        /** Version for _decoratedObjects. */
-        private long _decoratedObjectsVersion = -1L;
+    /** Version for _decoratedObjects. */
+    private long _decoratedObjectsVersion = -1L;
 
     private HashMap<CommunicationRequestPort, Token> _tokens;
 
@@ -450,7 +453,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *
      *  @author Patricia Derler
      */
-    public static class CompositeCommunicationAspectAttributes extends CommunicationAspectAttributes {
+    public static class CompositeCommunicationAspectAttributes extends
+            CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -458,7 +462,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
          *  @exception IllegalActionException If the superclass throws it.
          *  @exception NameDuplicationException If the superclass throws it.
          */
-        public CompositeCommunicationAspectAttributes(NamedObj target, CompositeCommunicationAspect decorator)
+        public CompositeCommunicationAspectAttributes(NamedObj target,
+                CompositeCommunicationAspect decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
@@ -470,8 +475,9 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
          *  @exception IllegalActionException If the superclass throws it.
          *  @exception NameDuplicationException If the superclass throws it.
          */
-        public CompositeCommunicationAspectAttributes(NamedObj target, String name)
-                throws IllegalActionException, NameDuplicationException {
+        public CompositeCommunicationAspectAttributes(NamedObj target,
+                String name) throws IllegalActionException,
+                NameDuplicationException {
             super(target, name);
             _init();
         }
@@ -519,7 +525,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
                     List communicationRequestPorts = ((CompositeCommunicationAspect) getDecorator())
                             .entityList(CommunicationRequestPort.class);
                     for (Object communicationRequestPort : communicationRequestPorts) {
-                        String name = ((CommunicationRequestPort) communicationRequestPort).getName();
+                        String name = ((CommunicationRequestPort) communicationRequestPort)
+                                .getName();
                         inputPort.addChoice(name);
                     }
                 }

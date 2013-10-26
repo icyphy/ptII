@@ -93,9 +93,10 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
             if (_applicationConstructor == null) {
                 // Delay instantiating MoMLSimpleApplication so that we
                 // can run the kernel tests without requiring moml
-                _applicationClass = Class.forName("ptolemy.moml.MoMLSimpleApplication");
+                _applicationClass = Class
+                        .forName("ptolemy.moml.MoMLSimpleApplication");
                 _applicationConstructor = _applicationClass
-                    .getConstructor(String.class);
+                        .getConstructor(String.class);
 
             }
             _applicationConstructor.newInstance(fullPath);

@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.kernel.generic;
+
 import java.io.File;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
@@ -322,7 +323,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
         return container.deepEntityList();
     }
 
@@ -860,7 +861,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
             return _adapterStore.get(object);
         }
 
-        List<String> packageList = _generatorPackageListParser.generatorPackages();
+        List<String> packageList = _generatorPackageListParser
+                .generatorPackages();
         ArrayList<String> packages = new ArrayList<String>(packageList);
         if (packages.isEmpty()) {
             throw new IllegalActionException(
@@ -925,7 +927,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 String packageName = packages.get(i);
 
                 String adapterClassName = "ptolemy.cg.adapter." + packageName
-                    + ".adapters." + className;
+                        + ".adapters." + className;
                 try {
                     adapterObject = _instantiateAdapter(object, componentClass,
                             adapterClassName);
@@ -1277,10 +1279,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
         boolean ignoreInline = false;
         if (model instanceof CompositeActor) {
             ptolemy.actor.Director director = ((CompositeActor) model)
-                .getDirector();
+                    .getDirector();
             try {
                 // Avoid compile-time dependency on DEDirector.
-                Class deDirectorClass = Class.forName("ptolemy.domains.de.kernel.DEDirector");
+                Class deDirectorClass = Class
+                        .forName("ptolemy.domains.de.kernel.DEDirector");
                 // FIXME: this only works if the top level director is a DEDirector.
                 if (deDirectorClass.isInstance(director)) {
                     ignoreInline = true;
@@ -1295,7 +1298,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
             String value = values.next();
 
             if (name.equals("inline") && value.equals("true") && ignoreInline) {
-                System.out.println("Warning: '-inline true' is not relevant for a DE model, forcing the value to false.");
+                System.out
+                        .println("Warning: '-inline true' is not relevant for a DE model, forcing the value to false.");
                 value = "false";
             }
 
@@ -1422,7 +1426,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
             throws IllegalActionException {
         String language = generatorPackageValue.substring(generatorPackageValue
                 .lastIndexOf("."));
-        String capitalizedLanguage = language.substring(1, 2).toUpperCase(Locale.getDefault())
+        String capitalizedLanguage = language.substring(1, 2).toUpperCase(
+                Locale.getDefault())
                 + language.substring(2);
         String codeGeneratorClassName = generatorPackageValue + "."
                 + capitalizedLanguage + "CodeGenerator";

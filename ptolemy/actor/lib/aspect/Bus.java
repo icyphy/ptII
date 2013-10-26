@@ -119,7 +119,8 @@ public class Bus extends AtomicCommunicationAspect {
         _tempReceiverQueue = new FIFOQueue();
         _messageLengths = new Hashtable<IOPort, Double>();
 
-        serviceTimeMultiplicationFactor = new Parameter(this, "serviceTimeMultiplicationFactor");
+        serviceTimeMultiplicationFactor = new Parameter(this,
+                "serviceTimeMultiplicationFactor");
         serviceTimeMultiplicationFactor.setExpression("0.1");
         serviceTimeMultiplicationFactor.setTypeEquals(BaseType.DOUBLE);
     }
@@ -162,7 +163,7 @@ public class Bus extends AtomicCommunicationAspect {
      *   null if the specified target is not an Actor.
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof IOPort && ((IOPort)target).isInput()) {
+        if (target instanceof IOPort && ((IOPort) target).isInput()) {
             try {
                 return new BusAttributes(target, this);
             } catch (KernelException ex) {
@@ -273,8 +274,7 @@ public class Bus extends AtomicCommunicationAspect {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
             _tokenCount--;
-            sendCommunicationEvent(null,
-                    0, _tokenCount, EventType.SENT);
+            sendCommunicationEvent(null, 0, _tokenCount, EventType.SENT);
         }
         // If sendToken() was called in the current iteration,
         // then append the token to the queue. If this is the
@@ -289,8 +289,8 @@ public class Bus extends AtomicCommunicationAspect {
                 if (token != null) {
                     _tokens.put(new Object[] { receiver, token });
                     _tokenCount++;
-                    sendCommunicationEvent((Actor) receiver.getContainer().getContainer(),
-                            0, _tokenCount, EventType.RECEIVED);
+                    sendCommunicationEvent((Actor) receiver.getContainer()
+                            .getContainer(), 0, _tokenCount, EventType.RECEIVED);
                 }
             }
         }
@@ -358,8 +358,8 @@ public class Bus extends AtomicCommunicationAspect {
                 if (!(getDirector() instanceof FixedPointDirector)) {
                     _tokens.put(new Object[] { receiver, token });
                     _tokenCount++;
-                    sendCommunicationEvent((Actor) source.getContainer().getContainer(),
-                            0, _tokenCount, EventType.RECEIVED);
+                    sendCommunicationEvent((Actor) source.getContainer()
+                            .getContainer(), 0, _tokenCount, EventType.RECEIVED);
                     if (_tokens.size() == 1) { // no refiring has been scheduled
                         _scheduleRefire();
                     }
@@ -395,22 +395,22 @@ public class Bus extends AtomicCommunicationAspect {
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
-                BusAttributes decoratorAttributes = (BusAttributes)
-                        decoratedObject.getDecoratorAttributes(this);
-                setMessageLength((IOPort) decoratedObject, decoratorAttributes._messageLength);
+                BusAttributes decoratorAttributes = (BusAttributes) decoratedObject
+                        .getDecoratorAttributes(this);
+                setMessageLength((IOPort) decoratedObject,
+                        decoratorAttributes._messageLength);
             }
         }
     }
-
 
     /** Set the message length for tokens sent to this actor port.
      *  @param port The actor port.
      *  @param messageLength The message length.
      */
     public void setMessageLength(IOPort port, double messageLength) {
-            if (_messageLengths == null) {
-                    _messageLengths = new Hashtable<IOPort, Double>();
-            }
+        if (_messageLengths == null) {
+            _messageLengths = new Hashtable<IOPort, Double>();
+        }
         _messageLengths.put(port, messageLength);
     }
 
@@ -483,7 +483,8 @@ public class Bus extends AtomicCommunicationAspect {
          *  @exception IllegalActionException If the superclass throws it.
          *  @exception NameDuplicationException If the superclass throws it.
          */
-        public BusAttributes(NamedObj target, AtomicCommunicationAspect decorator)
+        public BusAttributes(NamedObj target,
+                AtomicCommunicationAspect decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
@@ -519,13 +520,14 @@ public class Bus extends AtomicCommunicationAspect {
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             if (attribute == messageLength) {
-                if (((BooleanToken)enable.getToken()).booleanValue()) {
+                if (((BooleanToken) enable.getToken()).booleanValue()) {
                     IOPort port = (IOPort) getContainer();
                     Bus bus = (Bus) getDecorator();
                     if (bus != null) {
                         Token token = messageLength.getToken();
                         if (token != null) {
-                                _messageLength = ((ScalarToken)token).doubleValue();
+                            _messageLength = ((ScalarToken) token)
+                                    .doubleValue();
                             bus.setMessageLength(port, _messageLength);
                         }
                     }
@@ -554,7 +556,4 @@ public class Bus extends AtomicCommunicationAspect {
         private double _messageLength;
     }
 
-
 }
-
-

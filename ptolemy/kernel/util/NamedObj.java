@@ -2304,7 +2304,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return A list of contained decorators.
      */
     protected List<Decorator> _containedDecorators() {
-        return (List<Decorator>)attributeList(Decorator.class);
+        return attributeList(Decorator.class);
     }
 
     /** Return a copy of the current list of change requests, or return
@@ -3359,14 +3359,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 NamedObj container = getContainer();
                 boolean crossedOpaqueBoundary = false;
                 while (container != null) {
-                    List<Decorator> localDecorators = container._containedDecorators();
+                    List<Decorator> localDecorators = container
+                            ._containedDecorators();
                     for (Decorator decorator : localDecorators) {
-                        if (!crossedOpaqueBoundary || decorator.isGlobalDecorator()) {
+                        if (!crossedOpaqueBoundary
+                                || decorator.isGlobalDecorator()) {
                             decorators.add(decorator);
                         }
                     }
                     if (container instanceof CompositeEntity
-                            && ((CompositeEntity)container).isOpaque()) {
+                            && ((CompositeEntity) container).isOpaque()) {
                         crossedOpaqueBoundary = true;
                     }
                     container = container.getContainer();
@@ -3389,14 +3391,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         // however, until the model is saved.
                         if (removed) {
                             // The decorator was found. Put in cache.
-                            _decoratorAttributes.put(decorator, decoratorAttribute);
+                            _decoratorAttributes.put(decorator,
+                                    decoratorAttribute);
                         }
                     }
                 }
 
                 // For each remaining decorator, if it decorates this NamedObj, create an entry.
                 for (Decorator decorator : decorators) {
-                    DecoratorAttributes attribute = decorator.createDecoratorAttributes(this);
+                    DecoratorAttributes attribute = decorator
+                            .createDecoratorAttributes(this);
                     _decoratorAttributes.put(decorator, attribute);
                 }
 

@@ -830,7 +830,6 @@ public class SysMLSequentialDirector extends Director implements
             return result;
         }
 
-
         /** Return true if the argument is an instance of RefireRequest
          *  and compares as the same value.
          *  @param object An instance of Object.

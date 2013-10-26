@@ -66,17 +66,22 @@ public class Channel {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Channel other = (Channel) obj;
-        if (!_port.equals(other._port))
+        if (!_port.equals(other._port)) {
             return false;
-        if (!_relation.equals(other._relation))
+        }
+        if (!_relation.equals(other._relation)) {
             return false;
+        }
         return true;
     }
 

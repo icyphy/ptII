@@ -27,6 +27,7 @@
  */
 
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -51,7 +52,9 @@ import ptolemy.kernel.util.IllegalActionException;
 *  @Pt.ProposedRating Red (jiazou)
 *  @Pt.AcceptedRating Red (jiazou)
 */
-public class SDFReceiver extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
+public class SDFReceiver
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
     /** Construct an adapter for an SDF receiver.
      *  @param receiver The SDFReceiver for which an adapter is constructed.
      *  @exception IllegalActionException If thrown by the superclass.
@@ -73,30 +76,35 @@ public class SDFReceiver extends ptolemy.cg.adapter.generic.program.procedural.a
      *  getting the adapter, getting the director or getting the port reference.
      */
     public String generateGetCode(String offset) throws IllegalActionException {
-//        TypedIOPort port = (TypedIOPort) getComponent().getContainer();
-//        int channel = port.getChannelForReceiver(getComponent());
-//        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-//                .getContainer().getContainer());
-//
-//        return _getDirectorForReceiver().getReference(port,
-//                new String[] { Integer.toString(channel), offset },
-//                _forComposite, false, containingActorAdapter);
+        //        TypedIOPort port = (TypedIOPort) getComponent().getContainer();
+        //        int channel = port.getChannelForReceiver(getComponent());
+        //        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+        //                .getContainer().getContainer());
+        //
+        //        return _getDirectorForReceiver().getReference(port,
+        //                new String[] { Integer.toString(channel), offset },
+        //                _forComposite, false, containingActorAdapter);
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-//        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-//                .getContainer().getContainer());
+        //        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+        //                .getContainer().getContainer());
 
-//        String result = _getDirectorForReceiver().getReference(port,
-//                new String[] { Integer.toString(channel), offset },
-//                _forComposite, false, containingActorAdapter);
-        String actorName = CodeGeneratorAdapter.generateName(port.getContainer());
+        //        String result = _getDirectorForReceiver().getReference(port,
+        //                new String[] { Integer.toString(channel), offset },
+        //                _forComposite, false, containingActorAdapter);
+        String actorName = CodeGeneratorAdapter.generateName(port
+                .getContainer());
         String type = getCodeGenerator().codeGenType(port.getType());
         //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
         String result;
-        if (port.getType() instanceof StructuredType)
-            result = "ReceiverGet(" + actorName + ".ports[enum_" + actorName + "_" + port.getName() + "].receivers + " + channel + ")";
-        else
-            result = "ReceiverGet(" + actorName + ".ports[enum_" + actorName + "_" + port.getName() + "].receivers + " + channel + ").payload." + type;
+        if (port.getType() instanceof StructuredType) {
+            result = "ReceiverGet(" + actorName + ".ports[enum_" + actorName
+                    + "_" + port.getName() + "].receivers + " + channel + ")";
+        } else {
+            result = "ReceiverGet(" + actorName + ".ports[enum_" + actorName
+                    + "_" + port.getName() + "].receivers + " + channel
+                    + ").payload." + type;
+        }
         //result = "DEReceiverGet(&(" + result + "))";
         return result;
     }
@@ -163,25 +171,30 @@ public class SDFReceiver extends ptolemy.cg.adapter.generic.program.procedural.a
             token = token.substring(0, token.length() - 1);
         }
         try {
-            String actorSourceName = CodeGeneratorAdapter.generateName(sourcePort.getContainer());
-            String actorDestName = CodeGeneratorAdapter.generateName(port.getContainer());
-            String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" +
-                    actorSourceName + "_" + sourcePort.getName() + "_" + actorDestName + "_" + port.getName() + "_" + channel + "]";
+            String actorSourceName = CodeGeneratorAdapter
+                    .generateName(sourcePort.getContainer());
+            String actorDestName = CodeGeneratorAdapter.generateName(port
+                    .getContainer());
+            String nameInput = actorSourceName + ".ports[enum_"
+                    + actorSourceName + "_" + sourcePort.getName()
+                    + "].farReceivers[" + actorSourceName + "_"
+                    + sourcePort.getName() + "_" + actorDestName + "_"
+                    + port.getName() + "_" + channel + "]";
             String type = getCodeGenerator().codeGenType(port.getType());
             //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
 
-            if (port.getType() instanceof StructuredType)
-                result = _eol + "ReceiverPut(" + nameInput
-                        + ", " + token + ");" + _eol;
-            else
-                result = _eol + "ReceiverPut(" + nameInput
-                        + ", $new(" + type + "("
-                        + token + ")));" + _eol;
+            if (port.getType() instanceof StructuredType) {
+                result = _eol + "ReceiverPut(" + nameInput + ", " + token
+                        + ");" + _eol;
+            } else {
+                result = _eol + "ReceiverPut(" + nameInput + ", $new(" + type
+                        + "(" + token + ")));" + _eol;
+            }
 
-//            result = _getDirectorForReceiver().getReference(port,
-//                    new String[] { Integer.toString(channel), offset },
-//                    forComposite, true, containingActorAdapter)
-//                    + " = " + token + ";" + _eol;
+            //            result = _getDirectorForReceiver().getReference(port,
+            //                    new String[] { Integer.toString(channel), offset },
+            //                    forComposite, true, containingActorAdapter)
+            //                    + " = " + token + ";" + _eol;
         } catch (Throwable throwable) {
             result = _getExecutiveDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
@@ -266,7 +279,7 @@ public class SDFReceiver extends ptolemy.cg.adapter.generic.program.procedural.a
      */
     protected StaticSchedulingDirector _getDirectorForReceiver()
             throws IllegalActionException {
-        return (StaticSchedulingDirector) super._getDirectorForReceiver();
+        return super._getDirectorForReceiver();
     }
 
     /** Each receiver is associated with a component of some executive director.

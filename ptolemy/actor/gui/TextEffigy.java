@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -140,7 +141,8 @@ public class TextEffigy extends Effigy {
         // TODO: find a better way to check for binary files.
         //
         if (in != null) {
-            String extension = EffigyFactory.getExtension(in).toLowerCase(Locale.getDefault());
+            String extension = EffigyFactory.getExtension(in).toLowerCase(
+                    Locale.getDefault());
             if (extension.equals("jar") || extension.equals("kar")
                     || extension.equals("gz") || extension.equals("tar")
                     || extension.equals("zip")) {

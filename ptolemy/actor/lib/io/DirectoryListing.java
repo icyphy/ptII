@@ -207,8 +207,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         if (_recursiveFileFilter == null) {
             _recursiveFileFilter = new RecursiveFileFilter(_recursive,
                     true /*includeFiles*/, true /*includeDirectories*/,
-                    _listOnlyFiles, _listOnlyDirectories,
-                    _pattern, false /*escape*/);
+                    _listOnlyFiles, _listOnlyDirectories, _pattern, false /*escape*/);
         }
         return _recursiveFileFilter.accept(directory, name);
     }
@@ -225,13 +224,12 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             _pattern = pattern.stringValue();
         } else if (attribute == listOnlyDirectories) {
             _listOnlyDirectories = ((BooleanToken) listOnlyDirectories
-                .getToken()).booleanValue();
+                    .getToken()).booleanValue();
         } else if (attribute == listOnlyFiles) {
-            _listOnlyFiles = ((BooleanToken) listOnlyFiles
-                .getToken()).booleanValue();
+            _listOnlyFiles = ((BooleanToken) listOnlyFiles.getToken())
+                    .booleanValue();
         } else if (attribute == recursive) {
-            _recursive = ((BooleanToken) recursive
-                .getToken()).booleanValue();
+            _recursive = ((BooleanToken) recursive.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -270,14 +268,12 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 }
 
                 File[] listedFiles = RecursiveFileFilter.listFiles(sourceFile,
-                        _recursive,
-                        true /*includeFiles*/,
-                        true /*includeDirectories*/,
-                        _listOnlyFiles, _listOnlyDirectories,
-                        _pattern, false /*escape*/);
+                        _recursive, true /*includeFiles*/,
+                        true /*includeDirectories*/, _listOnlyFiles,
+                        _listOnlyDirectories, _pattern, false /*escape*/);
 
                 ArrayList result = new ArrayList();
-                for (File file: listedFiles) {
+                for (File file : listedFiles) {
 
                     //String path = files[i].getAbsolutePath();
 
@@ -486,4 +482,3 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     /** RecursiveFileFilter used by the accept() method of this class. */
     private RecursiveFileFilter _recursiveFileFilter;
 }
-

@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package org.ptolemy.machineLearning.hmm;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -82,197 +83,196 @@ governing the Markovian process representing the hidden state evolution. The <i>
  @Pt.AcceptedRating
  */
 public abstract class ObservationClassifier extends TypedAtomicActor {
-   /** Construct an actor with the given container and name.
-    *  @param container The container.
-    *  @param name The name of this actor
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public ObservationClassifier(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public ObservationClassifier(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       prior = new PortParameter(this, "priorDistribution");
-       prior.setExpression("{0.5,0.5}");
-       prior.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-       StringAttribute cardinality = new StringAttribute(
-               prior.getPort(), "_cardinal");
-       cardinality.setExpression("SOUTH");
+        prior = new PortParameter(this, "priorDistribution");
+        prior.setExpression("{0.5,0.5}");
+        prior.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        StringAttribute cardinality = new StringAttribute(prior.getPort(),
+                "_cardinal");
+        cardinality.setExpression("SOUTH");
 
-       transitionMatrix = new PortParameter(this, "transitionMatrix");
-       transitionMatrix.setExpression("[0.5,0.5;0.5,0.5]");
-       transitionMatrix.setTypeEquals(BaseType.DOUBLE_MATRIX);
-       cardinality = new StringAttribute(
-               transitionMatrix.getPort(), "_cardinal");
-       cardinality.setExpression("SOUTH");
+        transitionMatrix = new PortParameter(this, "transitionMatrix");
+        transitionMatrix.setExpression("[0.5,0.5;0.5,0.5]");
+        transitionMatrix.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        cardinality = new StringAttribute(transitionMatrix.getPort(),
+                "_cardinal");
+        cardinality.setExpression("SOUTH");
 
-       input = new TypedIOPort(this, "input", true, false);
-       input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        input = new TypedIOPort(this, "input", true, false);
+        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-       output = new TypedIOPort(this, "output", false, true);
-       output.setTypeEquals(new ArrayType(BaseType.INT));
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(new ArrayType(BaseType.INT));
 
-       //_nStates = ((ArrayToken) meanToken).length();
-       _nStates = ((ArrayToken)prior.getToken()).length();
-       _transitionMatrixEstimate = new double[_nStates][_nStates];
-       _priors = new double[_nStates];
+        //_nStates = ((ArrayToken) meanToken).length();
+        _nStates = ((ArrayToken) prior.getToken()).length();
+        _transitionMatrixEstimate = new double[_nStates][_nStates];
+        _priors = new double[_nStates];
 
+    }
 
-   }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  ////
+    public PortParameter prior;
 
+    public PortParameter transitionMatrix;
 
-   public PortParameter prior;
+    public TypedIOPort output;
 
-   public PortParameter transitionMatrix;
+    public TypedIOPort input;
 
-   public TypedIOPort output;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   public TypedIOPort input;
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ObservationClassifier newObject = (ObservationClassifier) super
+                .clone(workspace);
+        newObject._priors = new double[_nStates];
+        newObject._transitionMatrixEstimate = new double[_nStates][_nStates];
+        return newObject;
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    /** Consume the inputs and produce the outputs of the FFT filter.
+     *  @exception IllegalActionException If a runtime type error occurs.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
 
-   public Object clone(Workspace workspace) throws CloneNotSupportedException {
-       ObservationClassifier newObject = (ObservationClassifier) super
-               .clone(workspace);
-       newObject._priors = new double[_nStates];
-       newObject._transitionMatrixEstimate = new double[_nStates][_nStates];
-       return newObject;
-   }
+        if (input.hasToken(0)) {
+            // Read input ports
 
-   /** Consume the inputs and produce the outputs of the FFT filter.
-    *  @exception IllegalActionException If a runtime type error occurs.
-    */
-   public void fire() throws IllegalActionException {
-       super.fire();
+            Token observationArray = input.get(0);
+            _classificationLength = ((ArrayToken) observationArray).length();
+            _observations = new double[_classificationLength];
 
-       if (input.hasToken(0)) {
-           // Read input ports
+            // Get Observation Values as doubles
+            //FIXME: should the observations  allowed to be vectors of doubles, too?
+            for (int i = 0; i < _classificationLength; i++) {
+                _observations[i] = ((DoubleToken) ((ArrayToken) observationArray)
+                        .getElement(i)).doubleValue();
+            }
+        } else {
+            _observations = null;
+        }
 
-           Token observationArray= input.get(0);
-           _classificationLength = ((ArrayToken) observationArray).length();
-           _observations = new double[_classificationLength];
+    }
 
-           // Get Observation Values as doubles
-           //FIXME: should the observations  allowed to be vectors of doubles, too?
-           for (int i = 0; i < _classificationLength; i++) {
-               _observations[i] = ((DoubleToken) ((ArrayToken)observationArray).getElement(i))
-                       .doubleValue();
-           }
-       }else {
-           _observations = null;
-       }
+    protected final int[] classifyHMM(double[] y, double[] prior, double[][] A) {
+        int nStates = prior.length;
+        double[][] alphas = new double[y.length][nStates];
+        double[][] gamma = new double[y.length][nStates];
+        // do this with org.apache.commons.math3.distribution
+        //later NormalDistribution gaussian = ...
 
-   }
+        double[] alphaNormalizers = new double[y.length];
+        double alphaSum = 0;
+        for (int t = 0; t < y.length; t++) {
+            alphaSum = 0;
+            for (int i = 0; i < nStates; i++) {
+                alphas[t][i] = 0;
+                if (t == 0) {
+                    alphas[t][i] = prior[i] * emissionProbability(y[t], i);
+                } else {
+                    for (int qt = 0; qt < nStates; qt++) {
+                        alphas[t][i] += A[qt][i] * emissionProbability(y[t], i)
+                                * alphas[t - 1][qt];
+                    }
+                }
+                alphaSum += alphas[t][i];
+            }
+            // alpha normalization
+            for (int i = 0; i < nStates; i++) {
+                alphas[t][i] /= alphaSum;
+                alphaNormalizers[t] = alphaSum;
+            }
+        }
+        for (int t = y.length - 1; t >= 0; t--) {
+            for (int qt = 0; qt < nStates; qt++) {
+                if (t == y.length - 1) {
+                    gamma[t][qt] = alphas[t][qt];
+                } else {
+                    gamma[t][qt] = 0;
+                    for (int qtp = 0; qtp < nStates; qtp++) {
+                        double alphasum = 0;
+                        for (int j = 0; j < nStates; j++) {
+                            alphasum += alphas[t][j] * A[j][qtp];
+                        }
+                        gamma[t][qt] += (alphas[t][qt] * A[qt][qtp] * gamma[t + 1][qtp])
+                                / alphasum;
+                    }
+                }
+            }
+        }
 
-   protected final int[] classifyHMM(double[] y, double[] prior,double[][] A)
-   {
-       int nStates = prior.length;
-       double[][] alphas = new double[y.length][nStates];
-       double[][] gamma = new double[y.length][nStates];
-       // do this with org.apache.commons.math3.distribution
-       //later NormalDistribution gaussian = ...
+        //  Classification to clusters
+        int[] clusterAssignments = new int[y.length];
+        for (int t = 0; t < y.length; t++) {
+            int maxState = 0;
+            for (int j = 1; j < nStates; j++) {
+                if (gamma[t][j] > gamma[t][maxState]) {
+                    maxState = j;
+                }
+            }
+            clusterAssignments[t] = maxState;
+        }
+        return clusterAssignments;
+    }
 
-       double[] alphaNormalizers = new double[y.length];
-       double alphaSum = 0;
-       for (int t=0; t< y.length ; t++) {
-           alphaSum = 0;
-           for (int i=0; i < nStates; i++) {
-               alphas[t][i] = 0;
-               if (t == 0) {
-                    alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
-               }else {
-                   for (int qt = 0; qt < nStates; qt++) {
-                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt];
-                   }
-               }
-               alphaSum += alphas[t][i];
-           }
-           // alpha normalization
-           for (int i=0; i < nStates; i++) {
-               alphas[t][i] /= alphaSum;
-               alphaNormalizers[t] = alphaSum;
-           }
-       }
-       for (int t=y.length-1; t>=0 ; t--) {
-           for ( int qt=0; qt < nStates; qt ++) {
-               if (t == y.length -1) {
-                   gamma[t][qt] = alphas[t][qt];
-               }else {
-                   gamma[t][qt]=0;
-                   for ( int qtp = 0 ; qtp < nStates ; qtp ++) {
-                       double alphasum = 0;
-                       for ( int j=0; j < nStates; j ++) {
-                           alphasum += alphas[t][j]*A[j][qtp];
-                       }
-                       gamma[t][qt] += (alphas[t][qt]*A[qt][qtp]*gamma[t+1][qtp])/alphasum;
-                   }
-               }
-           }
-       }
+    public static final int[] gaussianClassifyMM(int startAt, double[] y,
+            double[] mu, double[] sigma, double[] prior) {
+        int nStates = mu.length;
+        // the soft assignments for the observations  given the parameter estimates
+        double[][] tau = new double[y.length][nStates];
+        // the classified states of observations
+        int[] clusterAssignments = new int[y.length];
 
-       //  Classification to clusters
-       int[] clusterAssignments = new int[y.length];
-       for ( int t = 0; t < y.length; t++) {
-           int maxState = 0;
-           for ( int j = 1; j < nStates; j++) {
-               if ( gamma[t][j] > gamma[t][maxState]) {
-                   maxState = j;
-               }
-           }
-           clusterAssignments[t] = maxState;
-       }
-       return clusterAssignments;
-   }
+        for (int t = 0; t < y.length; t++) {
+            for (int i = 0; i < nStates; i++) {
+                tau[t][i] = prior[i] * gaussian(y[t], mu[i], sigma[i]);
+                if (tau[t][i] > tau[t][clusterAssignments[t]]) {
+                    clusterAssignments[t] = i;
+                }
+            }
+        }
 
-   public static final int[] gaussianClassifyMM(int startAt, double[] y, double[] mu, double[] sigma, double[] prior)
-   {
-       int nStates = mu.length;
-       // the soft assignments for the observations  given the parameter estimates
-       double[][] tau = new double[y.length][nStates];
-       // the classified states of observations
-       int[] clusterAssignments = new int[y.length];
+        return clusterAssignments;
+    }
 
-       for (int t=0; t< y.length ; t++) {
-           for (int i=0; i < nStates; i++) {
-               tau[t][i] = prior[i]*gaussian(y[t], mu[i],sigma[i]);
-               if (tau[t][i] > tau[t][clusterAssignments[t]]) {
-                   clusterAssignments[t] = i;
-               }
-           }
-       }
+    private static final double gaussian(double x, double mu, double sigma) {
 
-       return clusterAssignments;
-   }
+        return 1.0 / (Math.sqrt(2 * Math.PI) * sigma)
+                * Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));
+    }
 
-   private static final double gaussian(double x, double mu, double sigma) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                 ////
+    protected abstract double emissionProbability(double y, int hiddenState);
 
-       return 1.0/(Math.sqrt(2*Math.PI)*sigma)*Math.exp(-0.5*Math.pow((x-mu)/sigma, 2));
-   }
+    /* length of the observation array to be classified */
+    protected int _classificationLength;
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         protected variables                 ////
-   protected abstract double emissionProbability(double y, int hiddenState);
+    /* observation array */
+    protected double[] _observations;
 
-   /* length of the observation array to be classified */
-   protected int _classificationLength;
+    /* number of hidden states */
+    protected int _nStates;
 
-   /* observation array */
-   protected double[] _observations;
+    /* transition matrix estimate for the markov chain model */
+    protected double[][] _transitionMatrixEstimate;
 
-   /* number of hidden states */
-   protected int _nStates;
-
-   /* transition matrix estimate for the markov chain model */
-   protected double[][] _transitionMatrixEstimate;
-
-   /* prior hidden state distribution */
-   protected double[] _priors;
-
+    /* prior hidden state distribution */
+    protected double[] _priors;
 
 }

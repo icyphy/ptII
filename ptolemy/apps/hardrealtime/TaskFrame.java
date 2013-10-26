@@ -144,38 +144,48 @@ public class TaskFrame extends Transformer {
         // Get parent multi-frame task
         NamedObj multiFrameTask = getContainer();
         if (!(multiFrameTask instanceof MultiFrameTask)) {
-            throw new IllegalActionException(this, "Can only be inside a MultiFrame task composite");
+            throw new IllegalActionException(this,
+                    "Can only be inside a MultiFrame task composite");
         }
         _multiFrameTask = (MultiFrameTask) multiFrameTask;
 
         if (outputPortList().size() != 1 || inputPortList().size() != 1) {
-            throw new IllegalActionException(this, "A task frame must have exactly one input and one output port.");
+            throw new IllegalActionException(this,
+                    "A task frame must have exactly one input and one output port.");
         }
         if (output.linkedRelationList().size() != 1) {
-            throw new IllegalActionException(this, "A task frame must be connected to exactly one other task frame");
+            throw new IllegalActionException(this,
+                    "A task frame must be connected to exactly one other task frame");
         }
 
         // Get separation time from the output relation
         Relation relation = (Relation) output.linkedRelationList().get(0);
         Attribute separationAttribute = relation.getAttribute("separation");
-        if (separationAttribute == null || ((Parameter) separationAttribute).getToken() == null) {
-            throw new IllegalActionException(relation, "The connection between two task frames has to include a separation time");
+        if (separationAttribute == null
+                || ((Parameter) separationAttribute).getToken() == null) {
+            throw new IllegalActionException(relation,
+                    "The connection between two task frames has to include a separation time");
         }
         Token separationToken = ((Parameter) separationAttribute).getToken();
         if (separationToken.getType() != BaseType.INT) {
-            throw new IllegalActionException(relation, "Separation time can only be an integer value.");
+            throw new IllegalActionException(relation,
+                    "Separation time can only be an integer value.");
         }
-        _separationUntilNextFrame = ((IntToken) ((Parameter) separationAttribute).getToken()).intValue();
+        _separationUntilNextFrame = ((IntToken) ((Parameter) separationAttribute)
+                .getToken()).intValue();
 
         // Get downstream task frame
         if (relation.linkedPortList(output).size() != 1) {
-            throw new IllegalActionException(this, "A task frame must be connected to exactly one other task frame, "
-                    + "instead connected to " + relation.linkedPortList(output));
+            throw new IllegalActionException(this,
+                    "A task frame must be connected to exactly one other task frame, "
+                            + "instead connected to "
+                            + relation.linkedPortList(output));
         }
         IOPort downstreamPort = (IOPort) relation.linkedPortList(output).get(0);
         Object container = downstreamPort.getContainer();
         if (!(container instanceof TaskFrame)) {
-            throw new IllegalActionException((Nameable) container, "Task frames can only be connected to other task frames.");
+            throw new IllegalActionException((Nameable) container,
+                    "Task frames can only be connected to other task frames.");
         }
         _nextFrame = (TaskFrame) container;
         _multiFrameTask._addTaskFrame(this);
@@ -196,7 +206,6 @@ public class TaskFrame extends Transformer {
     /** The separation time between a job released by this frame and a job released by the next frame. */
     private int _separationUntilNextFrame;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
 
@@ -208,10 +217,11 @@ public class TaskFrame extends Transformer {
         if (_initial) {
             iconText += "<circle cx=\"50\" cy=\"50\" r=\"27\"  style=\"fill:white\"/>";
         }
-        iconText += String.format(textFormat, 35, yPosition, "C: " + _executionTime);
+        iconText += String.format(textFormat, 35, yPosition, "C: "
+                + _executionTime);
         yPosition += yJump;
         iconText += String.format(textFormat, 35, yPosition, "D: " + _deadline);
-        iconText +="</svg>";
+        iconText += "</svg>";
         _attachText("_iconDescription", iconText);
     }
 

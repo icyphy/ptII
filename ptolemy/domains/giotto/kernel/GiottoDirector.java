@@ -85,7 +85,8 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoScheduler
  @see GiottoReceiver
  */
-public class GiottoDirector extends StaticSchedulingDirector implements Decorator {
+public class GiottoDirector extends StaticSchedulingDirector implements
+        Decorator {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -199,7 +200,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements Decorato
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
         return container.deepEntityList();
     }
 
@@ -738,7 +739,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements Decorato
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
                         .getPeriod();
-                int frequencyValue = getActorFrequency(compositeActor, (GiottoDirector)executiveDirector);
+                int frequencyValue = getActorFrequency(compositeActor,
+                        (GiottoDirector) executiveDirector);
 
                 _periodValue = periodValue / frequencyValue;
                 period.setExpression(Double.toString(_periodValue));

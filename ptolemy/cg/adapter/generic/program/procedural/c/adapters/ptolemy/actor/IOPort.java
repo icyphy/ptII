@@ -64,7 +64,9 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating Red (wlc)
  */
 
-public class IOPort extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
+public class IOPort
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
     /**
      * Construct the code generator adapter for the given IOPort.
@@ -99,13 +101,17 @@ public class IOPort extends ptolemy.cg.adapter.generic.program.procedural.adapte
         TypedIOPort port = (TypedIOPort) getComponent();
         Type type = port.getType();
         String typeString = getCodeGenerator().codeGenType(type);
-        if (!((ptolemy.actor.IOPort)getComponent()).isOutsideConnected())
-            return processCode("$new(" + typeString + "(0)).payload." + typeString);
-        String result = "(*(" + port.getName() + "->get))((struct IOPort*) " + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
-        if (type instanceof BaseType)
+        if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
+            return processCode("$new(" + typeString + "(0)).payload."
+                    + typeString);
+        }
+        String result = "(*(" + port.getName() + "->get))((struct IOPort*) "
+                + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
+        if (type instanceof BaseType) {
             result += ".payload." + typeString;
-        else if (type instanceof RecordType)
+        } else if (type instanceof RecordType) {
             result += ".payload.Record";
+        }
 
         return result;
     }
@@ -140,65 +146,102 @@ public class IOPort extends ptolemy.cg.adapter.generic.program.procedural.adapte
 
         // FIXME : in first approximation, a parameter port can be seen as a
         // regular TypedIOPort
-        if (port instanceof ParameterPort || port instanceof PubSubPort || port instanceof ModalBasePort)
+        if (port instanceof ParameterPort || port instanceof PubSubPort
+                || port instanceof ModalBasePort) {
             typePort = "TypedIOPort";
+        }
 
         NamedObj actor = port.getContainer();
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
 
-        if (!port.isInsideConnected() && !port.isOutsideConnected())
+        if (!port.isInsideConnected() && !port.isOutsideConnected()) {
             // No need to deal with a disconnected port
             return "";
+        }
 
         // Common part to all types of ports
-        result.append(portName + " = (struct TypedIOPort*)" + typePort + "_New();" + _eol);
-        result.append(portName + "->container = (struct Actor*)" + sanitizedActorName + ";" + _eol);
-        result.append(portName + "->_isInsideConnected = " + port.isInsideConnected() + ";" + _eol);
-        result.append(portName + "->_isOutsideConnected = " + port.isOutsideConnected() + ";" + _eol);
+        result.append(portName + " = (struct TypedIOPort*)" + typePort
+                + "_New();" + _eol);
+        result.append(portName + "->container = (struct Actor*)"
+                + sanitizedActorName + ";" + _eol);
+        result.append(portName + "->_isInsideConnected = "
+                + port.isInsideConnected() + ";" + _eol);
+        result.append(portName + "->_isOutsideConnected = "
+                + port.isOutsideConnected() + ";" + _eol);
         result.append(portName + "->_isInput = " + port.isInput() + ";" + _eol);
-        result.append(portName + "->_isOutput = " + port.isOutput() + ";" + _eol);
-        result.append(portName + "->_isMultiport = " + port.isMultiport() + ";" + _eol);
+        result.append(portName + "->_isOutput = " + port.isOutput() + ";"
+                + _eol);
+        result.append(portName + "->_isMultiport = " + port.isMultiport() + ";"
+                + _eol);
         result.append(portName + "->_width = " + port.getWidth() + ";" + _eol);
-        result.append(portName + "->_insideWidth = " + port.getWidthInside() + ";" + _eol);
-        result.append(portName + "->_numberOfSinks = " + port.numberOfSinks() + ";" + _eol);
-        result.append(portName + "->_numberOfSources = " + port.numberOfSources() + ";" + _eol);
+        result.append(portName + "->_insideWidth = " + port.getWidthInside()
+                + ";" + _eol);
+        result.append(portName + "->_numberOfSinks = " + port.numberOfSinks()
+                + ";" + _eol);
+        result.append(portName + "->_numberOfSources = "
+                + port.numberOfSources() + ";" + _eol);
 
-        Parameter parameter = (Parameter) ((NamedObj) port).getAttribute("delayOffset");
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("delayOffset");
         Double ioPortDelayOffset = null;
         if (parameter != null) {
             Token token = parameter.getToken();
             if (token instanceof DoubleToken) {
-                ioPortDelayOffset = ((DoubleToken)token).doubleValue();
+                ioPortDelayOffset = ((DoubleToken) token).doubleValue();
             } else if (token instanceof ArrayToken) {
-                ioPortDelayOffset = ((DoubleToken)((ArrayToken)token).getElement(0)).doubleValue();
+                ioPortDelayOffset = ((DoubleToken) ((ArrayToken) token)
+                        .getElement(0)).doubleValue();
             }
         }
-        if (ioPortDelayOffset != null)
-            result.append(portName + "->delayOffset = " + ioPortDelayOffset.doubleValue() + ";" + _eol);
-
+        if (ioPortDelayOffset != null) {
+            result.append(portName + "->delayOffset = "
+                    + ioPortDelayOffset.doubleValue() + ";" + _eol);
+        }
 
         if (port instanceof MirrorPort) {
             MirrorPort mport = (MirrorPort) port;
             MirrorPort associatedPort = mport.getAssociatedPort();
-            String accessorAssociatedPort = CodeGeneratorAdapter.generateName(associatedPort.getContainer())
-                    + "_get_" + associatedPort.getName() + "()";
+            String accessorAssociatedPort = CodeGeneratorAdapter
+                    .generateName(associatedPort.getContainer())
+                    + "_get_"
+                    + associatedPort.getName() + "()";
             result.append("((struct PtidesPort*)" + portName
-                    + ")->_associatedPort = (struct PtidesPort*)" + accessorAssociatedPort + ";" + _eol);
+                    + ")->_associatedPort = (struct PtidesPort*)"
+                    + accessorAssociatedPort + ";" + _eol);
             if (mport instanceof PtidesPort) {
-                PtidesPort ptidesPort = (PtidesPort)mport;
-                result.append("((struct PtidesPort*)" + portName + ")->actuateAtEventTimestamp = "
-                        + ((BooleanToken)ptidesPort.actuateAtEventTimestamp.getToken()).booleanValue() + ";" + _eol);
-                result.append("((struct PtidesPort*)" + portName + ")->deviceDelay = "
-                        + ((DoubleToken)ptidesPort.deviceDelay.getToken()).doubleValue() + ";" + _eol);
-                result.append("((struct PtidesPort*)" + portName + ")->deviceDelayBound = "
-                        + ((DoubleToken)ptidesPort.deviceDelayBound.getToken()).doubleValue() + ";" + _eol);
-                result.append("((struct PtidesPort*)" + portName + ")->isNetworkPort = "
-                        + ((BooleanToken)ptidesPort.isNetworkPort.getToken()).booleanValue() + ";" + _eol);
-                if (ptidesPort.isNetworkReceiverPort() || ptidesPort.isNetworkTransmitterPort()) {
-                    result.append("((struct PtidesPort*)" + portName + ")->networkDelayBound = "
-                            + ((DoubleToken)ptidesPort.networkDelayBound.getToken()).doubleValue() + ";" + _eol);
-                    result.append("((struct PtidesPort*)" + portName + ")->sourcePlatformDelayBound = "
-                            + ((DoubleToken)ptidesPort.sourcePlatformDelayBound.getToken()).doubleValue() + ";" + _eol);
+                PtidesPort ptidesPort = (PtidesPort) mport;
+                result.append("((struct PtidesPort*)"
+                        + portName
+                        + ")->actuateAtEventTimestamp = "
+                        + ((BooleanToken) ptidesPort.actuateAtEventTimestamp
+                                .getToken()).booleanValue() + ";" + _eol);
+                result.append("((struct PtidesPort*)"
+                        + portName
+                        + ")->deviceDelay = "
+                        + ((DoubleToken) ptidesPort.deviceDelay.getToken())
+                                .doubleValue() + ";" + _eol);
+                result.append("((struct PtidesPort*)"
+                        + portName
+                        + ")->deviceDelayBound = "
+                        + ((DoubleToken) ptidesPort.deviceDelayBound.getToken())
+                                .doubleValue() + ";" + _eol);
+                result.append("((struct PtidesPort*)"
+                        + portName
+                        + ")->isNetworkPort = "
+                        + ((BooleanToken) ptidesPort.isNetworkPort.getToken())
+                                .booleanValue() + ";" + _eol);
+                if (ptidesPort.isNetworkReceiverPort()
+                        || ptidesPort.isNetworkTransmitterPort()) {
+                    result.append("((struct PtidesPort*)"
+                            + portName
+                            + ")->networkDelayBound = "
+                            + ((DoubleToken) ptidesPort.networkDelayBound
+                                    .getToken()).doubleValue() + ";" + _eol);
+                    result.append("((struct PtidesPort*)"
+                            + portName
+                            + ")->sourcePlatformDelayBound = "
+                            + ((DoubleToken) ptidesPort.sourcePlatformDelayBound
+                                    .getToken()).doubleValue() + ";" + _eol);
                 }
             }
         }
@@ -215,71 +258,95 @@ public class IOPort extends ptolemy.cg.adapter.generic.program.procedural.adapte
                 for (String typ : type.split(",")) {
                     tParser.addNewTypesUsed(typ);
                 }
-            }
-            else {
+            } else {
                 result.append(portName + "->_type = TYPE_" + type + ";" + _eol);
                 tParser.addNewTypesUsed(type);
             }
         }
 
         int foo = 0;
-        if (port.isInput())
-            result.append("pblListAdd(" + sanitizedActorName + "->_inputPorts, " + portName + ");" + _eol);
-        if (port.isOutput())
-            result.append("pblListAdd(" + sanitizedActorName + "->_outputPorts, " + portName + ");" + _eol);
+        if (port.isInput()) {
+            result.append("pblListAdd(" + sanitizedActorName
+                    + "->_inputPorts, " + portName + ");" + _eol);
+        }
+        if (port.isOutput()) {
+            result.append("pblListAdd(" + sanitizedActorName
+                    + "->_outputPorts, " + portName + ");" + _eol);
+        }
 
         Receiver[][] receiverss;
-        if (port.isInput())
+        if (port.isInput()) {
             receiverss = port.getReceivers();
-        else if (port.isOutput() && actor instanceof CompositeActor)
+        } else if (port.isOutput() && actor instanceof CompositeActor) {
             receiverss = port.getInsideReceivers();
-        else
+        } else {
             receiverss = new Receiver[0][];
+        }
 
-        String directorCall = (actor instanceof CompositeActor ? "getExecutiveDirector" : "getDirector");
-        if (port instanceof PtidesPort)
+        String directorCall = (actor instanceof CompositeActor ? "getExecutiveDirector"
+                : "getDirector");
+        if (port instanceof PtidesPort) {
             directorCall = (!port.isInput() && actor instanceof CompositeActor
-                            && ((CompositeActor) actor).isOpaque() ? "getDirector" : "getExecutiveDirector");
-        String localReceiver = (port.isInput() ? "_localReceivers" : "_localInsideReceivers");
+                    && ((CompositeActor) actor).isOpaque() ? "getDirector"
+                    : "getExecutiveDirector");
+        }
+        String localReceiver = (port.isInput() ? "_localReceivers"
+                : "_localInsideReceivers");
 
         for (Receiver[] receivers : receiverss) {
-            result.append("PblList* " + portName + "_" + foo + " = pblListNewArrayList();" + _eol);
+            result.append("PblList* " + portName + "_" + foo
+                    + " = pblListNewArrayList();" + _eol);
             int bar = 0;
             for (Receiver receiver : receivers) {
                 String typeReceiver = receiver.getClass().getSimpleName();
                 // Quick fix : a QueueReceiver is a simple FIFO, we can replace it by a DEReceiver
-                if (typeReceiver.compareTo("QueueReceiver") == 0)
+                if (typeReceiver.compareTo("QueueReceiver") == 0) {
                     typeReceiver = "DEReceiver";
+                }
                 String receiverName = portName + "_" + foo + "_" + bar;
-                result.append("struct " + typeReceiver + "* " + receiverName + " = "
-                        + typeReceiver + "_New();" + _eol);
-                result.append(receiverName + "->container = (struct IOPort*)"+ portName + ";" + _eol);
+                result.append("struct " + typeReceiver + "* " + receiverName
+                        + " = " + typeReceiver + "_New();" + _eol);
+                result.append(receiverName + "->container = (struct IOPort*)"
+                        + portName + ";" + _eol);
                 // FIXME : not a good way to do this
                 if (receiver instanceof PtidesReceiver) {
-                    result.append(receiverName + "->_director = (struct PtidesDirector*)(*("
-                            + sanitizedActorName + "->" + directorCall + "))(" + sanitizedActorName + ");" + _eol);
+                    result.append(receiverName
+                            + "->_director = (struct PtidesDirector*)(*("
+                            + sanitizedActorName + "->" + directorCall + "))("
+                            + sanitizedActorName + ");" + _eol);
                 } else if (receiver instanceof DEReceiver) {
-                    result.append(receiverName + "->_director = (struct DEDirector*)(*("
-                            + sanitizedActorName + "->" + directorCall + "))(" + sanitizedActorName + ");" + _eol);
+                    result.append(receiverName
+                            + "->_director = (struct DEDirector*)(*("
+                            + sanitizedActorName + "->" + directorCall + "))("
+                            + sanitizedActorName + ");" + _eol);
                 }
-                result.append("pblListAdd(" + portName + "_" + foo + ", " + receiverName + ");" + _eol);
+                result.append("pblListAdd(" + portName + "_" + foo + ", "
+                        + receiverName + ");" + _eol);
                 bar++;
             }
-            result.append("pblListAdd(" + portName + "->" + localReceiver + " , " + portName + "_" + foo + ");" + _eol);
+            result.append("pblListAdd(" + portName + "->" + localReceiver
+                    + " , " + portName + "_" + foo + ");" + _eol);
             foo++;
         }
 
         // In case of a composite actor the port has two sides
-        if (port.isInput() && actor instanceof CompositeActor)
-            for (foo = 0 ; foo < port.getWidthInside() ; foo++) {
-                result.append("PblList* " + portName + "__" + foo + " = pblListNewArrayList();" + _eol);
-                result.append("pblListAdd(" + portName + "->_insideReceivers , " + portName + "__" + foo + ");" + _eol);
+        if (port.isInput() && actor instanceof CompositeActor) {
+            for (foo = 0; foo < port.getWidthInside(); foo++) {
+                result.append("PblList* " + portName + "__" + foo
+                        + " = pblListNewArrayList();" + _eol);
+                result.append("pblListAdd(" + portName
+                        + "->_insideReceivers , " + portName + "__" + foo
+                        + ");" + _eol);
             }
-        if (port.isOutput())
-            for (foo = 0 ; foo < port.getWidth() ; foo++) {
-                result.append("PblList* " + portName + "__"+ foo + " = pblListNewArrayList();" + _eol);
-                result.append("pblListAdd(" + portName + "->_farReceivers, " + portName + "__"+ foo + ");" + _eol);
+        }
+        if (port.isOutput()) {
+            for (foo = 0; foo < port.getWidth(); foo++) {
+                result.append("PblList* " + portName + "__" + foo
+                        + " = pblListNewArrayList();" + _eol);
+                result.append("pblListAdd(" + portName + "->_farReceivers, "
+                        + portName + "__" + foo + ");" + _eol);
             }
+        }
 
         return result.toString();
     }
@@ -299,12 +366,15 @@ public class IOPort extends ptolemy.cg.adapter.generic.program.procedural.adapte
      */
     public String generateHasTokenCode(String channel, String offset)
             throws IllegalActionException {
-        if (!((ptolemy.actor.IOPort)getComponent()).isOutsideConnected())
+        if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
             return "false";
+        }
         int channelNumber = 0;
         channelNumber = Integer.parseInt(channel);
         TypedIOPort port = (TypedIOPort) getComponent();
-        String result = "(*(" + port.getName() + "->hasToken))((struct IOPort*) " + port.getName() + ", " + channelNumber + ")";
+        String result = "(*(" + port.getName()
+                + "->hasToken))((struct IOPort*) " + port.getName() + ", "
+                + channelNumber + ")";
 
         return result;
     }
@@ -326,20 +396,23 @@ public class IOPort extends ptolemy.cg.adapter.generic.program.procedural.adapte
     public String generatePutCode(String channel, String offset,
             String dataToken) throws IllegalActionException {
 
-        if (!((ptolemy.actor.IOPort)getComponent()).isOutsideConnected())
+        if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
             return "";
+        }
         int channelIndex = Integer.parseInt(channel);
         TypedIOPort port = (TypedIOPort) getComponent();
         Type type = port.getType();
         String typeString = getCodeGenerator().codeGenType(type);
         String tokenCode;
-        if (type instanceof BaseType)
+        if (type instanceof BaseType) {
             tokenCode = "$new(" + typeString + "(" + dataToken + "))";
-        else if (type instanceof RecordType)
+        } else if (type instanceof RecordType) {
             tokenCode = "$new(Record(" + dataToken + "->timestamp, "
-                    + dataToken + "->microstep, *(" + dataToken + "->payload)))";
-        else
+                    + dataToken + "->microstep, *(" + dataToken
+                    + "->payload)))";
+        } else {
             tokenCode = dataToken;
+        }
         String result = "(*(" + port.getName() + "->send))((struct IOPort*) "
                 + port.getName() + ", " + channelIndex + ", " + tokenCode + ")";
 

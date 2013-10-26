@@ -225,7 +225,7 @@ public class RelationWidthInference {
                 long afterinit = 0L;
                 // FindBugs: avoid dead local store.
                 if (logTimings) {
-                   afterinit = new Date().getTime();
+                    afterinit = new Date().getTime();
                 }
 
                 boolean continueInference = true;

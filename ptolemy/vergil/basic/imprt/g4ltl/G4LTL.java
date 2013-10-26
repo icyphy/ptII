@@ -75,13 +75,13 @@ public class G4LTL {
      * @return The moml of a state machine that represents the LTL file.
      * @exception Exception If thrown while synthesizing.
      */
-    public static ResultLTLSynthesis synthesizeFromFile(SolverUtility solver, File ltlFile,
-            int optionTechnique, int unrollSteps, boolean findStrategy)
-            throws Exception {
+    public static ResultLTLSynthesis synthesizeFromFile(SolverUtility solver,
+            File ltlFile, int optionTechnique, int unrollSteps,
+            boolean findStrategy) throws Exception {
         //System.out.println("G4LTL.synthesizeFromFile(): " + ltlFile + " " + optionTechnique + " " + unrollSteps + " " + findStrategy);
-        ResultLTLSynthesis result = solver.synthesizeFromFile(ltlFile, optionTechnique,
-                unrollSteps, SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,
-                findStrategy);
+        ResultLTLSynthesis result = solver.synthesizeFromFile(ltlFile,
+                optionTechnique, unrollSteps,
+                SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY, findStrategy);
         return result;
     }
 
@@ -106,8 +106,8 @@ public class G4LTL {
             int unrollSteps, boolean findStrategy, NamedObj context)
             throws Exception {
         SolverUtility solver = new SolverUtility();
-        ResultLTLSynthesis result = G4LTL.synthesizeFromFile(solver, ltlFile, optionTechnique,
-                unrollSteps, /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
+        ResultLTLSynthesis result = G4LTL.synthesizeFromFile(solver, ltlFile,
+                optionTechnique, unrollSteps, /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
                 findStrategy);
         if (findStrategy && result.getMessage1().startsWith("<") == false) {
             result = solver.synthesizeFromFile(ltlFile, optionTechnique,

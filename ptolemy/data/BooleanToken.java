@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.data;
+
 import java.util.Locale;
 
 import ptolemy.data.type.BaseType;

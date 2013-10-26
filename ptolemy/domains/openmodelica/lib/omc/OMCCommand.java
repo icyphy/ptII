@@ -247,14 +247,16 @@ public class OMCCommand implements IOMCCommand {
         } catch (ConnectException e) {
             new ConnectException(e.getMessage()).printStackTrace();
         }
-        if (getInheritanceCountResult.getError().isEmpty())
+        if (getInheritanceCountResult.getError().isEmpty()) {
             inheritanceCount = getInheritanceCountResult.getFirstResult()
                     .toString();
+        }
 
-        if (!(inheritanceCount.compareTo("0\n") == 0))
+        if (!(inheritanceCount.compareTo("0\n") == 0)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /** Create an instance of OMCCommand object in order to provide a global point of access to the instance.
@@ -262,8 +264,9 @@ public class OMCCommand implements IOMCCommand {
      *  @return An OMCCommand object representing the instance value.
      */
     public static synchronized OMCCommand getInstance() {
-        if (_omcCommandInstance == null)
+        if (_omcCommandInstance == null) {
             _omcCommandInstance = new OMCCommand();
+        }
         return _omcCommandInstance;
     }
 
@@ -437,8 +440,9 @@ public class OMCCommand implements IOMCCommand {
                 _omcLogger.getInfo(loggerInfo);
                 throw new ConnectException(loggerInfo);
             }
-        } else
+        } else {
             throw new ConnectException("No file found at: " + _filePath);
+        }
     }
 
     /** Modify parameter(s) and variable(s) of the Modelica model before building the Modelica model.
@@ -674,7 +678,7 @@ public class OMCCommand implements IOMCCommand {
                                         _omcLogger.getInfo(loggerInfo);
                                     }
                                 } else if (childIndividualComponent.get(
-                                        childKey).compareTo("als") == 0)
+                                        childKey).compareTo("als") == 0) {
                                     // A discrete-time variable is a piecewise constant
                                     // signal which changes its values only at event instants during simulation.
                                     _omcLogger
@@ -683,15 +687,18 @@ public class OMCCommand implements IOMCCommand {
                                                     + " in the "
                                                     + modelName
                                                     + ", because of its variablity prefix[discrete].");
+                                }
                             }
                         }
                     }
-                    if (!found)
+                    if (!found) {
                         _omcLogger.getInfo(components
                                 + " does not found in the " + modelName + ".");
-                } else
+                    }
+                } else {
                     _omcLogger
                             .getInfo("There is no compatibility between number of parameter(s)/variable(s) and values.");
+                }
             }
         } catch (Exception e) {
             throw new IllegalActionException(e.getMessage());
@@ -860,17 +867,20 @@ public class OMCCommand implements IOMCCommand {
         String errorMessage = null;
         String[] returnValue = { "" };
 
-        if (_couldNotStartOMC)
+        if (_couldNotStartOMC) {
             return CompilerResult.makeResult(returnValue, errorMessage);
+        }
 
-        if (_numberOfErrors > _showMaxErrors)
+        if (_numberOfErrors > _showMaxErrors) {
             return CompilerResult.makeResult(returnValue, errorMessage);
+        }
 
         // Trim the start and end spaces.
         modelicaCommand = modelicaCommand.trim();
 
-        if (hasInitialized == false)
+        if (hasInitialized == false) {
             initServer();
+        }
 
         try {
             // Fetch the error string from OpenModelica Compiler(OMC).
@@ -881,19 +891,21 @@ public class OMCCommand implements IOMCCommand {
 
             // Process of starting OMC is terminated normally after creating OpenModelica object reference on disk.
 
-            if (!modelicaCommand.equalsIgnoreCase("quit()"))
+            if (!modelicaCommand.equalsIgnoreCase("quit()")) {
                 errorMessage = omcCommunication
                         .sendExpression("getErrorString()");
-            else
+            } else {
                 hasInitialized = false;
+            }
 
             // Make sure the error string is not empty.
             if (errorMessage != null && errorMessage.length() > 2) {
                 errorMessage = errorMessage.trim();
                 errorMessage = errorMessage.substring(1,
                         errorMessage.length() - 1);
-            } else
+            } else {
                 errorMessage = null;
+            }
 
             return CompilerResult.makeResult(returnValue, errorMessage);
 
@@ -927,8 +939,9 @@ public class OMCCommand implements IOMCCommand {
 
             _omcCommandInstance = null;
 
-            if (_omcProcess != null)
+            if (_omcProcess != null) {
                 _omcProcess.destroy();
+            }
         }
     }
 
@@ -1047,27 +1060,30 @@ public class OMCCommand implements IOMCCommand {
                 System.err
                         .println("Could not get user.name property?  Using 'nobody'.");
                 omcWorkingDirectory = new File(_temp + "nobody/OpenModelica/");
-            } else
+            } else {
                 omcWorkingDirectory = new File(_temp + _username
                         + "/OpenModelica/");
+            }
             break;
         case UNIX:
             if (_username == null) {
                 System.err
                         .println("Could not get user.name property?  Using 'nobody'.");
                 omcWorkingDirectory = new File(_temp + "/nobody/OpenModelica/");
-            } else
+            } else {
                 omcWorkingDirectory = new File(_temp + "/" + _username
                         + "/OpenModelica/");
+            }
             break;
         case MAC:
             if (_username == null) {
                 System.err
                         .println("Could not get user.name property?  Using 'nobody'.");
                 omcWorkingDirectory = new File(_temp + "nobody/OpenModelica/");
-            } else
+            } else {
                 omcWorkingDirectory = new File(_temp + _username
                         + "/OpenModelica/");
+            }
             break;
         }
         return new File[] { omcBinary, omcWorkingDirectory };

@@ -107,13 +107,14 @@ public class Assert extends Expression {
         _cloning = true;
         try {
             newObject = (Assert) super.clone(workspace);
-            newObject._outputPortMap = new HashMap<String,TypedIOPort>();
+            newObject._outputPortMap = new HashMap<String, TypedIOPort>();
             // Reconstruct the output port map.
             List<TypedIOPort> inputs = newObject.inputPortList();
             for (TypedIOPort input : inputs) {
                 String name = input.getName();
                 String outputPortName = _OUTPUT_PORT_PREFIX + name;
-                TypedIOPort output = (TypedIOPort)newObject.getPort(outputPortName);
+                TypedIOPort output = (TypedIOPort) newObject
+                        .getPort(outputPortName);
                 newObject._outputPortMap.put(name, output);
             }
         } finally {
@@ -132,7 +133,7 @@ public class Assert extends Expression {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (!((BooleanToken)_result).booleanValue()) {
+        if (!((BooleanToken) _result).booleanValue()) {
             StringBuffer info = new StringBuffer();
             info.append(message.stringValue());
             info.append("\nAssertion: ");
@@ -266,13 +267,16 @@ public class Assert extends Expression {
 
             // If there is already a port with the correct name, use that.
             String outputPortName = _OUTPUT_PORT_PREFIX + name;
-            TypedIOPort outputPort = (TypedIOPort)Assert.this.getPort(outputPortName);
+            TypedIOPort outputPort = (TypedIOPort) Assert.this
+                    .getPort(outputPortName);
             if (outputPort == null) {
-                outputPort = new TypedIOPort(Assert.this, outputPortName, false, true) {
+                outputPort = new TypedIOPort(Assert.this, outputPortName,
+                        false, true) {
                     // Make sure that this output port _never_ appears in MoML.
                     // If it is allowed to appear, subtle bugs will arise, for example
                     // when copying and pasting in actor-oriented classes.
-                    public void exportMoML(Writer output, int depth, String name) {}
+                    public void exportMoML(Writer output, int depth, String name) {
+                    }
                 };
                 // Display name should match the input port name.
                 outputPort.setDisplayName(name);
@@ -300,7 +304,7 @@ public class Assert extends Expression {
     private boolean _creatingOutputPort;
 
     /** Map from input port name to the corresponding output port. */
-    private HashMap<String,TypedIOPort> _outputPortMap = new HashMap<String,TypedIOPort>();
+    private HashMap<String, TypedIOPort> _outputPortMap = new HashMap<String, TypedIOPort>();
 
     /** Prefix given to output port names. */
     private final static String _OUTPUT_PORT_PREFIX = "_correspondingOutputPort_";
@@ -327,10 +331,11 @@ public class Assert extends Expression {
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
+
         // Override setName() to also change the name of the corresponding
         // output port.
-        public void setName(final String name)
-                throws IllegalActionException, NameDuplicationException {
+        public void setName(final String name) throws IllegalActionException,
+                NameDuplicationException {
             final String oldName = getName();
             super.setName(name);
             // No need to do anything for the first name setting
@@ -338,7 +343,7 @@ public class Assert extends Expression {
             if (oldName != null && !oldName.equals(name)) {
                 // FIXME: The port dialog complains about this!
                 // But the operation succeeds.
-                Assert container = (Assert)getContainer();
+                Assert container = (Assert) getContainer();
                 TypedIOPort outputPort = container._outputPortMap.get(oldName);
                 if (outputPort != null) {
                     outputPort.setName(_OUTPUT_PORT_PREFIX + name);

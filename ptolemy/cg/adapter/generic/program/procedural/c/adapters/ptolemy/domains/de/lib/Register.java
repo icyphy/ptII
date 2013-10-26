@@ -91,7 +91,6 @@ public class Register extends MostRecent {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /**
      * Generate fire code.
      * The method generates code that is executed when the <i>input</i> has a Token

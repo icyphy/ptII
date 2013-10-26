@@ -463,7 +463,7 @@ public class PtidesPlatform extends MirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-                BaseType.UNKNOWN};
+                BaseType.UNKNOWN };
 
         /** The labels of the RecordType fields. */
         public static String[] LABELS = new String[] { "timestamp",
@@ -798,7 +798,7 @@ public class PtidesPlatform extends MirrorComposite {
 
                         if (_isAssociatedWithNetworkTransmitter(port)) {
 
-                            PtidesDirector director = (PtidesDirector) ((CompositeActor) ((MirrorPort) port)
+                            ((CompositeActor) ((MirrorPort) port)
                                     .getAssociatedPort().getContainer())
                                     .getDirector();
 
@@ -814,8 +814,7 @@ public class PtidesPlatform extends MirrorComposite {
 
                             Token[] values = new Token[] {
                                     new DoubleToken(timestamp.getDoubleValue()),
-                                    new IntToken(microstep),
-                                    t };
+                                    new IntToken(microstep), t };
                             RecordToken record = new RecordToken(
                                     PtidesNetworkType.LABELS, values);
                             try {

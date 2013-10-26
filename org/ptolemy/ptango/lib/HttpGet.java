@@ -81,8 +81,10 @@ public class HttpGet extends LimitedFiringSource {
         url = new PortParameter(this, "url");
         url.setStringMode(true);
         url.setExpression("http://localhost");
-        new SingletonParameter(url.getPort(), "_showName").setToken(BooleanToken.TRUE);
-        StringAttribute cardinal = new StringAttribute(url.getPort(), "_cardinal");
+        new SingletonParameter(url.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+        StringAttribute cardinal = new StringAttribute(url.getPort(),
+                "_cardinal");
         cardinal.setExpression("SOUTH");
 
         timeout = new Parameter(this, "timeout");
@@ -135,7 +137,7 @@ public class HttpGet extends LimitedFiringSource {
     public void fire() throws IllegalActionException {
         super.fire();
         url.update();
-        String spec = ((StringToken)url.getToken()).stringValue();
+        String spec = ((StringToken) url.getToken()).stringValue();
         if (spec == null || spec.isEmpty()) {
             throw new IllegalActionException("No URL provided.");
         }
@@ -149,7 +151,7 @@ public class HttpGet extends LimitedFiringSource {
             _connection = theURL.openConnection();
 
             // If a timeout has been specified, set it.
-            int timeoutValue = ((IntToken)timeout.getToken()).intValue();
+            int timeoutValue = ((IntToken) timeout.getToken()).intValue();
             if (timeoutValue >= 0) {
                 _connection.setConnectTimeout(timeoutValue);
                 _connection.setReadTimeout(timeoutValue);
@@ -157,14 +159,16 @@ public class HttpGet extends LimitedFiringSource {
 
             while (inputStreamReader == null) {
                 try {
-                    inputStreamReader = new InputStreamReader(_connection.getInputStream());
+                    inputStreamReader = new InputStreamReader(
+                            _connection.getInputStream());
                 } catch (SocketTimeoutException ex) {
                     if (_debugging) {
                         _debug("*** Timeout occurred.");
                     }
                     String response = timeoutResponse.stringValue();
                     if (response.trim().equals("")) {
-                        throw new IllegalActionException(this, "HTTP Get timed out.");
+                        throw new IllegalActionException(this,
+                                "HTTP Get timed out.");
                     }
                     output.send(0, new StringToken(response));
                     return;
@@ -199,7 +203,8 @@ public class HttpGet extends LimitedFiringSource {
             }
             output.send(0, new StringToken(lineBuffer.toString()));
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "HTTP Get failed with an exception.");
+            throw new IllegalActionException(this, ex,
+                    "HTTP Get failed with an exception.");
         } finally {
             if (reader != null) {
                 try {
@@ -219,7 +224,7 @@ public class HttpGet extends LimitedFiringSource {
     public void wrapup() {
         if (_connection instanceof HttpURLConnection) {
             // FIXME: Does nothing!!!!!!!!!!!!!!
-            ((HttpURLConnection)_connection).disconnect();
+            ((HttpURLConnection) _connection).disconnect();
         }
     }
 

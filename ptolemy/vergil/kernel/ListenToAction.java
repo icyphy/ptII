@@ -118,10 +118,10 @@ public class ListenToAction extends FigureAction {
             // If the actor is an ExecutionAspect, open Plot as well.
             if (object instanceof ActorExecutionAspect) {
                 //Effigy plotEffigy = new
-                ExecutionAspectPlotterEditorFactory factory = new ExecutionAspectPlotterEditorFactory(object,
-                            object.uniqueName("_editorFactory"));
+                ExecutionAspectPlotterEditorFactory factory = new ExecutionAspectPlotterEditorFactory(
+                        object, object.uniqueName("_editorFactory"));
 
-                ((ActorExecutionAspect)object).addExecutingListener(factory);
+                ((ActorExecutionAspect) object).addExecutingListener(factory);
                 factory.createEditor(object, this.getFrame());
             }
         } catch (KernelException ex) {

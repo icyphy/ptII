@@ -258,7 +258,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
         return container.deepEntityList();
     }
 
@@ -686,7 +686,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
                         .getPeriod();
-                frequencyValue = GiottoDirector.getActorFrequency(container, (GiottoDirector) executiveDirector);
+                frequencyValue = GiottoDirector.getActorFrequency(container,
+                        (GiottoDirector) executiveDirector);
                 thePeriod = periodValue / frequencyValue;
             }
         }
@@ -772,7 +773,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
         /** Worst case execution time. */
         public Parameter WCET;
 
-        public ExecutionAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException {
+        public ExecutionAttributes(NamedObj target)
+                throws IllegalActionException, NameDuplicationException {
             // Create an attribute in the target to store the decorator parameters.
             // Use uniqueName() in case there are multiple decorators in scope with the same name.
             // FIXME: Should we instead throw an exception?

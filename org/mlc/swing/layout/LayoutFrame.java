@@ -28,6 +28,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;

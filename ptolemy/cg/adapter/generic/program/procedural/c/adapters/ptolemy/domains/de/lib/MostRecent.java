@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
+
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -73,11 +74,13 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
 
         LinkedList args = new LinkedList();
-        int inputWidth = ((ptolemy.domains.de.lib.MostRecent) getComponent()).input.getWidth();
+        int inputWidth = ((ptolemy.domains.de.lib.MostRecent) getComponent()).input
+                .getWidth();
         args.add(Integer.toString(inputWidth));
         Parameter initialValue = ((ptolemy.domains.de.lib.MostRecent) getComponent()).initialValue;
         String type = initialValue.getType().toString();
-        type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
+        type = type.substring(0, 1).toUpperCase(Locale.getDefault())
+                + type.substring(1);
         args.add(type);
 
         Token initialValueToken = initialValue.getToken();
@@ -85,26 +88,22 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
             double tokenDouble;
             tokenDouble = ((DoubleToken) initialValueToken).doubleValue();
             args.add(Double.toString(tokenDouble));
-        }
-        else if (initialValueToken instanceof IntToken) {
+        } else if (initialValueToken instanceof IntToken) {
             int tokenInt;
             tokenInt = ((IntToken) initialValueToken).intValue();
             args.add(Integer.toString(tokenInt));
-        }
-        else if (initialValueToken instanceof BooleanToken) {
+        } else if (initialValueToken instanceof BooleanToken) {
             boolean tokenBool;
             tokenBool = ((BooleanToken) initialValueToken).booleanValue();
             args.add(Boolean.toString(tokenBool));
-        }
-        else if (type.compareTo("Unknown") == 0) {
+        } else if (type.compareTo("Unknown") == 0) {
             args.clear();
             codeStream.appendCodeBlock("absentInitBlock", args);
             return processCode(codeStream.toString());
-        }
-        else
+        } else {
             throw new IllegalActionException("Token type at MostRecent : "
                     + type + " not supported yet.");
-
+        }
 
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
@@ -153,7 +152,6 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /**
      * Generate fire code.

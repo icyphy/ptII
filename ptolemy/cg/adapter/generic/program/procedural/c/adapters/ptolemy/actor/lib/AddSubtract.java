@@ -97,7 +97,9 @@ public class AddSubtract
         } else {
             Type type = actor.output.getType();
             if (!getCodeGenerator().isPrimitive(type)) {
-                initArgs.add("$tokenFunc($new(" + getCodeGenerator().codeGenType(type) + "(1,1,0))::zero())");
+                initArgs.add("$tokenFunc($new("
+                        + getCodeGenerator().codeGenType(type)
+                        + "(1,1,0))::zero())");
             } else {
                 // FIXME: this seems wrong, why doesn't zero work here?
                 //$PTII/bin/ptcg -language java ./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/AddSubtract.xml
@@ -109,8 +111,7 @@ public class AddSubtract
                     initArgs.add("0");
                 }
             }
-            getTemplateParser().generateBlockCode("initSum",
-                    initArgs);
+            getTemplateParser().generateBlockCode("initSum", initArgs);
         }
         args.add("");
         args.add(outputType);

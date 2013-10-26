@@ -473,7 +473,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
         ArrayList<IOPort> ports2 = new ArrayList<IOPort>();
         if (e2.isPureEvent()) {
-            ports2.addAll((List<IOPort>) e2.actor().inputPortList());
+            ports2.addAll(e2.actor().inputPortList());
         } else {
             Actor actor = e2.actor();
             CausalityInterface causality = actor.getCausalityInterface();
@@ -590,10 +590,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         _currentLogicalIndex = event.microstep();
                         event.receiver().put(event.token());
 
-//                        System.out
-//                                .println("input: " + event.token().getClass());
-//                        System.out.println(this.getFullName());
-//                        System.out.println(event.receiver());
+                        //                        System.out
+                        //                                .println("input: " + event.token().getClass());
+                        //                        System.out.println(this.getFullName());
+                        //                        System.out.println(event.receiver());
 
                         _currentLogicalTime = null;
                         if (_debugging) {

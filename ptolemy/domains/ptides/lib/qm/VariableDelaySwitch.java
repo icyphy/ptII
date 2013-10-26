@@ -33,7 +33,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.Director;
-import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.aspect.BasicSwitch;
 import ptolemy.actor.util.Time;
@@ -157,8 +156,6 @@ public class VariableDelaySwitch extends BasicSwitch {
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         // FIXME add Continuous support.
-
-        IntermediateReceiver ir = (IntermediateReceiver) source;
 
         int inputPortID = _getPortID(receiver, true);
 

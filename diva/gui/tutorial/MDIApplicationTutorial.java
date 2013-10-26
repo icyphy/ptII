@@ -29,6 +29,7 @@
 
  */
 package diva.gui.tutorial;
+
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.File;
@@ -136,8 +137,8 @@ public class MDIApplicationTutorial extends MDIApplication {
 
             FileFilter ff = new FileFilter() {
                 public boolean accept(File file) {
-                    return GUIUtilities.getFileExtension(file).toLowerCase(Locale.getDefault())
-                            .equals("txt");
+                    return GUIUtilities.getFileExtension(file)
+                            .toLowerCase(Locale.getDefault()).equals("txt");
                 }
 
                 public String getDescription() {

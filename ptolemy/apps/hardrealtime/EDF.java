@@ -49,7 +49,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// EDF
 
@@ -87,7 +86,8 @@ public class EDF extends Director {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _jobs = new ArrayList<Job>();
-        _taskPlotEditorFactory = new TaskPlotEditorFactory(this, this.uniqueName("_editorFactory"));
+        _taskPlotEditorFactory = new TaskPlotEditorFactory(this,
+                this.uniqueName("_editorFactory"));
         _schedulableTasks = new ArrayList<Task>();
         createPlot = new Parameter(this, "Create Plot");
         createPlot.setTypeEquals(BaseType.BOOLEAN);
@@ -133,20 +133,25 @@ public class EDF extends Director {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        for (Iterator iterator = ((TypedCompositeActor) getContainer()).entityList().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = ((TypedCompositeActor) getContainer())
+                .entityList().iterator(); iterator.hasNext();) {
             Object entity = iterator.next();
-            if (!(entity instanceof PeriodicTask) && !(entity instanceof MultiFrameTask)) {
-                throw new IllegalActionException(this, "Can only handle Periodic tasks and multiframe tasks");
+            if (!(entity instanceof PeriodicTask)
+                    && !(entity instanceof MultiFrameTask)) {
+                throw new IllegalActionException(this,
+                        "Can only handle Periodic tasks and multiframe tasks");
             }
         }
 
         if (((BooleanToken) createPlot.getToken()).booleanValue()) {
             Effigy effigy = Configuration.findEffigy(toplevel());
             if (effigy != null && effigy.numberOfOpenTableaux() > 0) {
-                JFrame jframe = effigy.entityList(Tableau.class).get(0).getFrame();
+                JFrame jframe = effigy.entityList(Tableau.class).get(0)
+                        .getFrame();
                 _taskPlotEditorFactory.createEditor(this, jframe);
             } else {
-                throw new IllegalActionException(this, "Can't find top level effigy or any open tableaux");
+                throw new IllegalActionException(this,
+                        "Can't find top level effigy or any open tableaux");
             }
         }
 
@@ -184,16 +189,20 @@ public class EDF extends Director {
             _debug("EDF: released jobs: " + _jobs);
         }
 
-        if (_currentJob != null &&
-                (currentTime.compareTo(_currentJob.getAbsoluteDeadline()) > 0 ||
-                        currentTime.compareTo(_currentJob.getAbsoluteDeadline()) == 0 && !_currentJob.getRemainingTime().isZero())) {
+        if (_currentJob != null
+                && (currentTime.compareTo(_currentJob.getAbsoluteDeadline()) > 0 || currentTime
+                        .compareTo(_currentJob.getAbsoluteDeadline()) == 0
+                        && !_currentJob.getRemainingTime().isZero())) {
             if (_debugging) {
                 _debug("EDF: current job missed its deadline!");
             }
             // Deadline miss
             if (_taskPlotEditorFactory.getTaskPlot() != null) {
-                _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
-                _taskPlotEditorFactory.getTaskPlot().addDeadlineMiss(currentTime.getDoubleValue(), _currentJob.getTask());
+                _taskPlotEditorFactory.getTaskPlot().addExecution(
+                        _timeCurrentJobStarted.getDoubleValue(),
+                        currentTime.getDoubleValue(), _currentJob.getTask());
+                _taskPlotEditorFactory.getTaskPlot().addDeadlineMiss(
+                        currentTime.getDoubleValue(), _currentJob.getTask());
             }
             return false;
         }
@@ -202,7 +211,9 @@ public class EDF extends Director {
         if (_currentJob != null && _currentJob.getRemainingTime().isZero()) {
             _jobs.remove(_currentJob);
             if (_taskPlotEditorFactory.getTaskPlot() != null) {
-                _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
+                _taskPlotEditorFactory.getTaskPlot().addExecution(
+                        _timeCurrentJobStarted.getDoubleValue(),
+                        currentTime.getDoubleValue(), _currentJob.getTask());
             }
             _currentJob = null;
         }
@@ -215,7 +226,11 @@ public class EDF extends Director {
                 _timeCurrentJobStarted = currentTime;
             } else if (_currentJob != minimumDeadlineJob) {
                 if (_taskPlotEditorFactory.getTaskPlot() != null) {
-                    _taskPlotEditorFactory.getTaskPlot().addExecution(_timeCurrentJobStarted.getDoubleValue(), currentTime.getDoubleValue(), _currentJob.getTask());
+                    _taskPlotEditorFactory.getTaskPlot()
+                            .addExecution(
+                                    _timeCurrentJobStarted.getDoubleValue(),
+                                    currentTime.getDoubleValue(),
+                                    _currentJob.getTask());
                 }
                 _currentJob = minimumDeadlineJob;
                 _timeCurrentJobStarted = currentTime;
@@ -226,7 +241,8 @@ public class EDF extends Director {
         // Check when currently executing job finishes
         if (_currentJob != null) {
             minNextTime = new Time(this, Math.min(minNextTime.getDoubleValue(),
-                    currentTime.getDoubleValue() + _currentJob.getRemainingTime().getDoubleValue()));
+                    currentTime.getDoubleValue()
+                            + _currentJob.getRemainingTime().getDoubleValue()));
         }
 
         if (currentTime.getDoubleValue() > _simulationEndTime) {
@@ -234,7 +250,8 @@ public class EDF extends Director {
         }
 
         if (_currentJob != null) {
-            _currentJob.executeFor(new Time(this, minNextTime.getLongValue() - currentTime.getLongValue()));
+            _currentJob.executeFor(new Time(this, minNextTime.getLongValue()
+                    - currentTime.getLongValue()));
         }
 
         // Advance time
@@ -291,7 +308,8 @@ public class EDF extends Director {
         }
         Job minDeadlineJob = _jobs.get(0);
         for (Job job : _jobs) {
-            if (minDeadlineJob.getAbsoluteDeadline().compareTo(job.getAbsoluteDeadline()) > 0) {
+            if (minDeadlineJob.getAbsoluteDeadline().compareTo(
+                    job.getAbsoluteDeadline()) > 0) {
                 minDeadlineJob = job;
             }
         }

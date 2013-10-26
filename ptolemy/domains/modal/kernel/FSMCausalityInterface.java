@@ -261,9 +261,9 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                             // The following causes test failures in models such as
                             // ptolemy/domains/modal/test/auto/ABPTest.xml
                             // The error is caught in the FSM Director
-//                            if (!((CompositeActor)refinement).isOpaque()) {
-//                                throw new IllegalActionException(refinement, "Refinement is missing a director!");
-//                            }
+                            //                            if (!((CompositeActor)refinement).isOpaque()) {
+                            //                                throw new IllegalActionException(refinement, "Refinement is missing a director!");
+                            //                            }
                             CausalityInterface causality = refinement
                                     .getCausalityInterface();
                             // For each output port, find the input ports that affect it.

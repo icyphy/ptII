@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
+
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -76,7 +77,8 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
 
         Parameter initialValue = ((ptolemy.domains.de.lib.Previous) getComponent()).initialValue;
         String type = initialValue.getType().toString();
-        type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
+        type = type.substring(0, 1).toUpperCase(Locale.getDefault())
+                + type.substring(1);
 
         Token initialValueToken = initialValue.getToken();
         if (initialValueToken instanceof DoubleToken) {
@@ -84,27 +86,23 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
             tokenDouble = ((DoubleToken) initialValueToken).doubleValue();
             args.add(type);
             args.add(Double.toString(tokenDouble));
-        }
-        else if (initialValueToken instanceof IntToken) {
+        } else if (initialValueToken instanceof IntToken) {
             int tokenInt;
             tokenInt = ((IntToken) initialValueToken).intValue();
             args.add(type);
             args.add(Integer.toString(tokenInt));
-        }
-        else if (initialValueToken instanceof BooleanToken) {
+        } else if (initialValueToken instanceof BooleanToken) {
             boolean tokenBool;
             tokenBool = ((BooleanToken) initialValueToken).booleanValue();
             args.add(type);
             args.add(Boolean.toString(tokenBool));
-        }
-        else if (type.compareTo("Unknown") == 0) {
+        } else if (type.compareTo("Unknown") == 0) {
             codeStream.appendCodeBlock("absentInitBlock", args);
             return processCode(codeStream.toString());
+        } else {
+            throw new IllegalActionException("Token type at previous : " + type
+                    + " not supported yet.");
         }
-        else
-            throw new IllegalActionException("Token type at previous : "
-                    + type + " not supported yet.");
-
 
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
@@ -125,7 +123,6 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /**
      * Generate fire code.

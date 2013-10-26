@@ -111,13 +111,16 @@ public class StaticSchedulingDirector extends Director {
         if (getCodeGenerator() == null) {
             return false;
         }
-        Parameter allowDynamicMultiportReference = (Parameter) component.getDecoratorAttribute(getCodeGenerator(), "allowDynamicMultiportReference");
+        Parameter allowDynamicMultiportReference = (Parameter) component
+                .getDecoratorAttribute(getCodeGenerator(),
+                        "allowDynamicMultiportReference");
         if (allowDynamicMultiportReference == null) {
             // $PTII/bin/vergil ptolemy/cg/lib/test/auto/ScaleC.xml was failing
             // here with a NPE because the there were no decorators.
             return false;
         }
-        return ((BooleanToken)allowDynamicMultiportReference.getToken()).booleanValue();
+        return ((BooleanToken) allowDynamicMultiportReference.getToken())
+                .booleanValue();
     }
 
     /** Create and return the decorated attributes for the
@@ -131,7 +134,8 @@ public class StaticSchedulingDirector extends Director {
             GenericCodeGenerator genericCodeGenerator) {
         // FIXME: Which types of targets should get decorated?
         try {
-            return new StaticSchedulingDirectorAttributes(target, genericCodeGenerator);
+            return new StaticSchedulingDirectorAttributes(target,
+                    genericCodeGenerator);
         } catch (KernelException ex) {
             throw new InternalErrorException(ex);
         }
@@ -173,11 +177,14 @@ public class StaticSchedulingDirector extends Director {
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
                     // Generate fire code for the actor.
-                    if (codeGenerator instanceof CCodeGenerator)
-                        getCodeGenerator().setModifiedVariables(adapter.getModifiedVariables());
+                    if (codeGenerator instanceof CCodeGenerator) {
+                        getCodeGenerator().setModifiedVariables(
+                                adapter.getModifiedVariables());
+                    }
                     code.append(adapter.generateFireCode());
-                    if (!(codeGenerator instanceof CCodeGenerator))
+                    if (!(codeGenerator instanceof CCodeGenerator)) {
                         _generateUpdatePortOffsetCode(code, actor);
+                    }
                 }
             } else {
                 //variableDeclarations.add(codeGenerator.generateFireFunctionVariableDeclaration((NamedObj)actor));
@@ -193,8 +200,9 @@ public class StaticSchedulingDirector extends Director {
                         .generateFireFunctionMethodInvocation((NamedObj) actor)
                         + "();" + _eol);
 
-                if (!(codeGenerator instanceof CCodeGenerator))
+                if (!(codeGenerator instanceof CCodeGenerator)) {
                     _generateUpdatePortOffsetCode(code, actor);
+                }
 
                 if (count > 1) {
                     code.append("}" + _eol + "}" + _eol);
@@ -675,14 +683,16 @@ public class StaticSchedulingDirector extends Director {
      *   and there are variables that depend on this one.
      */
     final public Boolean padBuffers() throws IllegalActionException {
-        DecoratorAttributes decorators = getComponent().getDecoratorAttributes(getCodeGenerator());
+        DecoratorAttributes decorators = getComponent().getDecoratorAttributes(
+                getCodeGenerator());
         if (!(decorators instanceof StaticSchedulingDirectorAttributes)) {
             // $PTII/bin/vergil ptolemy/cg/lib/test/auto/ScaleC.xml was failing here
             // it is okd to not have a decorator and just default to false.
             // throw new IllegalActionException(getComponent(), "Has no StaticSchedulingDirectorAttributes decorators!");
             return false;
         }
-        return ((BooleanToken) ((StaticSchedulingDirectorAttributes) decorators).padBuffers.getToken()).booleanValue();
+        return ((BooleanToken) ((StaticSchedulingDirectorAttributes) decorators).padBuffers
+                .getToken()).booleanValue();
     }
 
     /** The declaration for the _currentTime variable. */

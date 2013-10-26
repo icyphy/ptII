@@ -758,7 +758,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (_eventQueue.size() == 0) {
             return null;
         }
-        return ((DEEvent) _eventQueue.get()).timeStamp();
+        return _eventQueue.get().timeStamp();
     }
 
     /** Return the system time at which the model begins executing.
@@ -1279,7 +1279,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void resumeActor(Actor actor) throws IllegalActionException {
         List<DEEvent> events = _actorsInExecution.get(actor);
-        Time time = ((CompositeActor)_getExecutionAspect(actor).getContainer()).getDirector().getModelTime();
+        Time time = ((CompositeActor) _getExecutionAspect(actor).getContainer())
+                .getDirector().getModelTime();
         if (events == null || events.size() == 0) {
             events = null;
         }
@@ -1639,8 +1640,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         if (_resourceScheduling) {
             if (_aspectForActor.get(actor) != null
-                    && _aspectForActor.get(actor)
-                            .isWaitingForResource(actor)) {
+                    && _aspectForActor.get(actor).isWaitingForResource(actor)) {
                 Object[] eventArray = _eventQueue.toArray();
                 for (Object object : eventArray) {
                     DEEvent event = (DEEvent) object;
@@ -2325,12 +2325,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 if (_actorsFinished.contains(actorToFire)) {
                     _actorsFinished.remove(actorToFire);
                 } else if (!_schedule(actorToFire, getModelTime())) {
-                    // scheduling of actor returns that actor hasn't been granted all
-                    // the requested resources, create a new event with a future
-                    // timestamp.
-                    Time nextScheduleTime = _nextScheduleTime.get(
-                            _aspectForActor.get(actorToFire)).add(
-                            getModelTime());
+                    _nextScheduleTime.get(_aspectForActor.get(actorToFire))
+                            .add(getModelTime());
                     if (_actorsInExecution == null) {
                         _actorsInExecution = new HashMap();
                     }

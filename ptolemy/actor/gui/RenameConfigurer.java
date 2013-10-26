@@ -106,7 +106,8 @@ public class RenameConfigurer extends Query implements ChangeListener,
      */
     public void apply() {
         if (_changed) {
-            String newName = StringUtilities.escapeForXML(getStringValue(_NAME_LABEL));
+            String newName = StringUtilities
+                    .escapeForXML(getStringValue(_NAME_LABEL));
             String displayName = StringUtilities
                     .escapeForXML(getStringValue(_DISPLAY_NAME_LABEL));
 

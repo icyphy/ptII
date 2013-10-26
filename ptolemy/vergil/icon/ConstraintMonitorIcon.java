@@ -112,14 +112,18 @@ public class ConstraintMonitorIcon extends BoxedValueIcon {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-        ConstraintMonitor container = (ConstraintMonitor)getContainer();
+        ConstraintMonitor container = (ConstraintMonitor) getContainer();
         try {
-            double aggregateValue = ((DoubleToken)container.getToken()).doubleValue();
-            double threshold = ((DoubleToken)container.threshold.getToken()).doubleValue();
-            double close = ((DoubleToken)closeFraction.getToken()).doubleValue();
+            double aggregateValue = ((DoubleToken) container.getToken())
+                    .doubleValue();
+            double threshold = ((DoubleToken) container.threshold.getToken())
+                    .doubleValue();
+            double close = ((DoubleToken) closeFraction.getToken())
+                    .doubleValue();
             if (aggregateValue >= threshold) {
                 boxColor.setToken(highColor.getToken());
-            } else if ((threshold != Double.POSITIVE_INFINITY) && (threshold - aggregateValue) <= close * threshold) {
+            } else if ((threshold != Double.POSITIVE_INFINITY)
+                    && (threshold - aggregateValue) <= close * threshold) {
                 boxColor.setToken(closeColor.getToken());
             } else {
                 boxColor.setToken(okColor.getToken());

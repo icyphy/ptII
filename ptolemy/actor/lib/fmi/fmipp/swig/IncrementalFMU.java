@@ -18,79 +18,94 @@ package ptolemy.actor.lib.fmi.fmipp.swig;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class IncrementalFMU {
-  private long swigCPtr;
-  protected boolean swigCMemOwn;
+    private long swigCPtr;
+    protected boolean swigCMemOwn;
 
-  protected IncrementalFMU(long cPtr, boolean cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
-  }
-
-  protected static long getCPtr(IncrementalFMU obj) {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  protected void finalize() {
-    delete();
-  }
-
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
-        helperJNI.delete_IncrementalFMU(swigCPtr);
-      }
-      swigCPtr = 0;
+    protected IncrementalFMU(long cPtr, boolean cMemoryOwn) {
+        swigCMemOwn = cMemoryOwn;
+        swigCPtr = cPtr;
     }
-  }
 
-  public IncrementalFMU(String modelName) {
-    this(helperJNI.new_IncrementalFMU__SWIG_0(modelName), true);
-  }
+    protected static long getCPtr(IncrementalFMU obj) {
+        return (obj == null) ? 0 : obj.swigCPtr;
+    }
 
-  public IncrementalFMU(String fmuPath, String modelName) {
-    this(helperJNI.new_IncrementalFMU__SWIG_1(fmuPath, modelName), true);
-  }
+    protected void finalize() {
+        delete();
+    }
 
-  public IncrementalFMU(String xmlPath, String dllPath, String modelName) {
-    this(helperJNI.new_IncrementalFMU__SWIG_2(xmlPath, dllPath, modelName), true);
-  }
+    public synchronized void delete() {
+        if (swigCPtr != 0) {
+            if (swigCMemOwn) {
+                swigCMemOwn = false;
+                helperJNI.delete_IncrementalFMU(swigCPtr);
+            }
+            swigCPtr = 0;
+        }
+    }
 
-  public IncrementalFMU(String name, SWIGTYPE_p_std__string inputs, long nInputs, SWIGTYPE_p_std__string outputs, long nOutputs) {
-    this(helperJNI.new_IncrementalFMU__SWIG_3(name, SWIGTYPE_p_std__string.getCPtr(inputs), nInputs, SWIGTYPE_p_std__string.getCPtr(outputs), nOutputs), true);
-  }
+    public IncrementalFMU(String modelName) {
+        this(helperJNI.new_IncrementalFMU__SWIG_0(modelName), true);
+    }
 
-  public IncrementalFMU(String name, long nInputs, long nOutputs) {
-    this(helperJNI.new_IncrementalFMU__SWIG_4(name, nInputs, nOutputs), true);
-  }
+    public IncrementalFMU(String fmuPath, String modelName) {
+        this(helperJNI.new_IncrementalFMU__SWIG_1(fmuPath, modelName), true);
+    }
 
-  public IncrementalFMU(IncrementalFMU aIncrementalFMU) {
-    this(helperJNI.new_IncrementalFMU__SWIG_5(IncrementalFMU.getCPtr(aIncrementalFMU), aIncrementalFMU), true);
-  }
+    public IncrementalFMU(String xmlPath, String dllPath, String modelName) {
+        this(helperJNI.new_IncrementalFMU__SWIG_2(xmlPath, dllPath, modelName),
+                true);
+    }
 
-  public int init(String instanceName, SWIGTYPE_p_std__string variableNames, SWIGTYPE_p_double values, long nvars, double startTime, double looakaheadhorizon, double lookaheadstepsize, double integratorstepsize) {
-    return helperJNI.IncrementalFMU_init(swigCPtr, this, instanceName, SWIGTYPE_p_std__string.getCPtr(variableNames), SWIGTYPE_p_double.getCPtr(values), nvars, startTime, looakaheadhorizon, lookaheadstepsize, integratorstepsize);
-  }
+    public IncrementalFMU(String name, SWIGTYPE_p_std__string inputs,
+            long nInputs, SWIGTYPE_p_std__string outputs, long nOutputs) {
+        this(helperJNI.new_IncrementalFMU__SWIG_3(name,
+                SWIGTYPE_p_std__string.getCPtr(inputs), nInputs,
+                SWIGTYPE_p_std__string.getCPtr(outputs), nOutputs), true);
+    }
 
-  public void defineInputs(SWIGTYPE_p_std__string inputs, long nInputs) {
-    helperJNI.IncrementalFMU_defineInputs(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(inputs), nInputs);
-  }
+    public IncrementalFMU(String name, long nInputs, long nOutputs) {
+        this(helperJNI.new_IncrementalFMU__SWIG_4(name, nInputs, nOutputs),
+                true);
+    }
 
-  public void defineOutputs(SWIGTYPE_p_std__string outputs, long nOutputs) {
-    helperJNI.IncrementalFMU_defineOutputs(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(outputs), nOutputs);
-  }
+    public IncrementalFMU(IncrementalFMU aIncrementalFMU) {
+        this(helperJNI.new_IncrementalFMU__SWIG_5(
+                IncrementalFMU.getCPtr(aIncrementalFMU), aIncrementalFMU), true);
+    }
 
-  public SWIGTYPE_p_double getCurrentOutputs() {
-    long cPtr = helperJNI.IncrementalFMU_getCurrentOutputs(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_double(cPtr, false);
-  }
+    public int init(String instanceName, SWIGTYPE_p_std__string variableNames,
+            SWIGTYPE_p_double values, long nvars, double startTime,
+            double looakaheadhorizon, double lookaheadstepsize,
+            double integratorstepsize) {
+        return helperJNI.IncrementalFMU_init(swigCPtr, this, instanceName,
+                SWIGTYPE_p_std__string.getCPtr(variableNames),
+                SWIGTYPE_p_double.getCPtr(values), nvars, startTime,
+                looakaheadhorizon, lookaheadstepsize, integratorstepsize);
+    }
 
-  public double sync(double t0, double t1) {
-    return helperJNI.IncrementalFMU_sync__SWIG_0(swigCPtr, this, t0, t1);
-  }
+    public void defineInputs(SWIGTYPE_p_std__string inputs, long nInputs) {
+        helperJNI.IncrementalFMU_defineInputs(swigCPtr, this,
+                SWIGTYPE_p_std__string.getCPtr(inputs), nInputs);
+    }
 
-  public double sync(double t0, double t1, SWIGTYPE_p_double inputs) {
-    return helperJNI.IncrementalFMU_sync__SWIG_1(swigCPtr, this, t0, t1, SWIGTYPE_p_double.getCPtr(inputs));
-  }
+    public void defineOutputs(SWIGTYPE_p_std__string outputs, long nOutputs) {
+        helperJNI.IncrementalFMU_defineOutputs(swigCPtr, this,
+                SWIGTYPE_p_std__string.getCPtr(outputs), nOutputs);
+    }
+
+    public SWIGTYPE_p_double getCurrentOutputs() {
+        long cPtr = helperJNI.IncrementalFMU_getCurrentOutputs(swigCPtr, this);
+        return (cPtr == 0) ? null : new SWIGTYPE_p_double(cPtr, false);
+    }
+
+    public double sync(double t0, double t1) {
+        return helperJNI.IncrementalFMU_sync__SWIG_0(swigCPtr, this, t0, t1);
+    }
+
+    public double sync(double t0, double t1, SWIGTYPE_p_double inputs) {
+        return helperJNI.IncrementalFMU_sync__SWIG_1(swigCPtr, this, t0, t1,
+                SWIGTYPE_p_double.getCPtr(inputs));
+    }
 
 }

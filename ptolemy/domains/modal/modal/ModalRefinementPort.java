@@ -174,7 +174,7 @@ public class ModalRefinementPort extends RefinementPort {
                     && container != oldContainer) {
                 // The port is being removed from the current container.
                 // Remove it from the mirrored ports.
-                _removePort((CompositeEntity)oldContainer);
+                _removePort((CompositeEntity) oldContainer);
             }
         } else {
             // Not mirroring changes from above.

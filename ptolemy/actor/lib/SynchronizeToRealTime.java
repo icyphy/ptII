@@ -68,7 +68,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
     /** Initialize by recording the real start time.
      *  @exception IllegalActionException If the superclass throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         _realStartTime = System.currentTimeMillis();
     }
@@ -82,10 +82,11 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
-            throw new IllegalActionException(this, "SynchronizeToRealTime has to be contained by an Actor");
+            throw new IllegalActionException(this,
+                    "SynchronizeToRealTime has to be contained by an Actor");
         }
 
-        Director director = ((Actor)container).getDirector();
+        Director director = ((Actor) container).getDirector();
         Object mutexLockObject = director.mutexLockObject();
 
         int depth = 0;
@@ -101,7 +102,8 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
                     // time of Double.MAX_VALUE milliseconds.
                     double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
-                    double currentTime = director.getModelTime().getDoubleValue();
+                    double currentTime = director.getModelTime()
+                            .getDoubleValue();
 
                     if (currentTime <= elapsedTimeInSeconds) {
                         break;
@@ -110,8 +112,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
                     long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
 
                     if (_debugging) {
-                        _debug("Waiting for real time to pass: "
-                                + timeToWait);
+                        _debug("Waiting for real time to pass: " + timeToWait);
                     }
 
                     try {

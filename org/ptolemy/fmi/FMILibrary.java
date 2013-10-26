@@ -128,7 +128,7 @@ public interface FMILibrary extends Library {
          *  @param message The printf style format string
          */
         void apply(Pointer fmiComponent, String instanceName, int status,
-                   String category, String message);
+                String category, String message);
     };
 
     /** A callback for the fmiCallbackAllocateMemory() function.

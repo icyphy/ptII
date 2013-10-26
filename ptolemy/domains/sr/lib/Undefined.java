@@ -26,6 +26,7 @@
 
  */
 package ptolemy.domains.sr.lib;
+
 import java.util.Locale;
 
 import ptolemy.actor.lib.Source;
@@ -91,7 +92,8 @@ public class Undefined extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == outputType) {
-            String typeName = outputType.getExpression().trim().toLowerCase(Locale.getDefault());
+            String typeName = outputType.getExpression().trim()
+                    .toLowerCase(Locale.getDefault());
             Type newType = BaseType.forName(typeName);
 
             if (newType == null) {

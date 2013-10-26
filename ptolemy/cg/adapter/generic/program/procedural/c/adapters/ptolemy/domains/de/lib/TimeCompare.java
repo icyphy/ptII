@@ -53,11 +53,7 @@ public class TimeCompare extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
 
 }

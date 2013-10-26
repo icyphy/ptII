@@ -257,8 +257,8 @@ public class OrderedRecordToken extends RecordToken {
         Iterator<String> argIterator = argLabelSet.iterator();
 
         while (iterator.hasNext()) {
-            String label = (String) iterator.next();
-            String argLabel = (String) argIterator.next();
+            String label = iterator.next();
+            String argLabel = argIterator.next();
 
             // labels match
             if (!label.equals(argLabel)) {

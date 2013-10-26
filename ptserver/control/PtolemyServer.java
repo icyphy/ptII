@@ -26,6 +26,7 @@
  */
 
 package ptserver.control;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -397,15 +398,20 @@ public final class PtolemyServer implements IServerManager {
             // Set all provided configuration parameters.
             for (int i = 0; i < args.length; i++) {
                 if (args[i].startsWith("-") && i + 1 < args.length) {
-                    if (args[i].toLowerCase(Locale.getDefault()).equals("-servlet_port")) {
+                    if (args[i].toLowerCase(Locale.getDefault()).equals(
+                            "-servlet_port")) {
                         servletPort = Integer.parseInt(args[i + 1]);
-                    } else if (args[i].toLowerCase(Locale.getDefault()).equals("-broker_path")) {
+                    } else if (args[i].toLowerCase(Locale.getDefault()).equals(
+                            "-broker_path")) {
                         brokerPath = args[i + 1];
-                    } else if (args[i].toLowerCase(Locale.getDefault()).equals("-broker_address")) {
+                    } else if (args[i].toLowerCase(Locale.getDefault()).equals(
+                            "-broker_address")) {
                         brokerAddress = args[i + 1];
-                    } else if (args[i].toLowerCase(Locale.getDefault()).equals("-broker_port")) {
+                    } else if (args[i].toLowerCase(Locale.getDefault()).equals(
+                            "-broker_port")) {
                         brokerPort = Integer.parseInt(args[i + 1]);
-                    } else if (args[i].toLowerCase(Locale.getDefault()).equals("-model_dir")) {
+                    } else if (args[i].toLowerCase(Locale.getDefault()).equals(
+                            "-model_dir")) {
                         modelDirectory = args[i + 1];
                     }
                 }

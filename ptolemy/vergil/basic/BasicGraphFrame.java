@@ -26,6 +26,7 @@
  2
  */
 package ptolemy.vergil.basic;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -714,7 +715,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Generate the MoML to carry out the deletion.
 
             moml.append(_deleteMoML(graphModel,
-                            selection.toArray(new Object[selection.size()]), model));
+                    selection.toArray(new Object[selection.size()]), model));
 
             moml.append("<entity name=\"" + compositeActorName
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
@@ -2156,17 +2157,22 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // names a class to that is an import action.
             // See also _classesToRemove in Configuration.java
             try {
-                Parameter importActionClassNames = (Parameter) configuration.getAttribute("_importActionClassNames", Parameter.class);
-                ArrayToken importActionClassNamesToken = (ArrayToken) importActionClassNames.getToken();
+                Parameter importActionClassNames = (Parameter) configuration
+                        .getAttribute("_importActionClassNames",
+                                Parameter.class);
+                ArrayToken importActionClassNamesToken = (ArrayToken) importActionClassNames
+                        .getToken();
                 for (int i = 0; i < importActionClassNamesToken.length(); i++) {
                     String importActionClassName = ((StringToken) importActionClassNamesToken
                             .getElement(i)).stringValue();
                     try {
                         // Get the class, instantiate it and add it to the menu.
-                        Class importActionClass = Class.forName(importActionClassName);
-                        Constructor constructor = importActionClass.getDeclaredConstructor(
-                                new Class[] { Top.class });
-                        AbstractAction importAction = (AbstractAction)constructor.newInstance(new Object[] { this });
+                        Class importActionClass = Class
+                                .forName(importActionClassName);
+                        Constructor constructor = importActionClass
+                                .getDeclaredConstructor(new Class[] { Top.class });
+                        AbstractAction importAction = (AbstractAction) constructor
+                                .newInstance(new Object[] { this });
                         JMenuItem importItem = new JMenuItem(importAction);
                         importMenu.add(importItem);
                     } catch (Throwable throwable) {
@@ -2174,13 +2180,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         // case is that we will have no Import FMU in the menu.
                         // That is better than preventing the user from opening a model.
                         System.err
-                            .println("Warning: Tried to create the an import menu item, but failed: "
-                                    + throwable);
+                                .println("Warning: Tried to create the an import menu item, but failed: "
+                                        + throwable);
                     }
                 }
             } catch (Throwable throwable) {
-                System.err.println("Problem reading the _importActionClassNames parameter from "
-                        + "the confinguration: " + throwable);
+                System.err
+                        .println("Problem reading the _importActionClassNames parameter from "
+                                + "the confinguration: " + throwable);
             }
 
             // PDF Action.
@@ -3697,8 +3704,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                 extensions));
                 ptFileChooser.setCurrentDirectory(_directory);
 
-                int returnVal = ptFileChooser.showDialog(BasicGraphFrame.this,
-                        "Export " + _formatName.toUpperCase(Locale.getDefault()));
+                int returnVal = ptFileChooser.showDialog(
+                        BasicGraphFrame.this,
+                        "Export "
+                                + _formatName.toUpperCase(Locale.getDefault()));
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = ptFileChooser.getCurrentDirectory();
@@ -3747,8 +3756,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Export to " + _formatName.toUpperCase(Locale.getDefault())
-                        + " failed", ex);
+                MessageHandler.error(
+                        "Export to "
+                                + _formatName.toUpperCase(Locale.getDefault())
+                                + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }
@@ -3817,7 +3828,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          */
         public void actionPerformed(ActionEvent e) {
             _library.clearSelection();
-            String text = _findInLibraryEntryBox.getText().trim().toLowerCase(Locale.getDefault());
+            String text = _findInLibraryEntryBox.getText().trim()
+                    .toLowerCase(Locale.getDefault());
             if (text.equals("")) {
                 // Nothing to search for. Ignore.
                 _previousText = null;

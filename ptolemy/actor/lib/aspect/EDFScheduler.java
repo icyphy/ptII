@@ -124,7 +124,6 @@ public class EDFScheduler extends FixedPriorityScheduler {
         return time;
     }
 
-
     /** Perform rescheduling actions when no new actor requests to be
      *  scheduled.
      * @param environmentTime The outside time.

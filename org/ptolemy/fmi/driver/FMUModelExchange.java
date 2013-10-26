@@ -174,7 +174,8 @@ public class FMUModelExchange extends FMUDriver {
 
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.FMULogger(fmiModelDescription), fmiModelDescription.getFMUAllocateMemory(),
+                new FMULibrary.FMULogger(fmiModelDescription),
+                fmiModelDescription.getFMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
@@ -182,7 +183,8 @@ public class FMUModelExchange extends FMUDriver {
         // Instantiate the model.
         Function instantiateModelFunction;
         try {
-            instantiateModelFunction = fmiModelDescription.getFmiFunction("fmiInstantiateModel");
+            instantiateModelFunction = fmiModelDescription
+                    .getFmiFunction("fmiInstantiateModel");
         } catch (UnsatisfiedLinkError ex) {
             UnsatisfiedLinkError error = new UnsatisfiedLinkError(
                     "Could not load " + _modelIdentifier
@@ -246,12 +248,18 @@ public class FMUModelExchange extends FMUDriver {
 
             // Functions used within the while loop, organized
             // alphabetically.
-            Function completedIntegratorStep = fmiModelDescription.getFmiFunction("fmiCompletedIntegratorStep");
-            Function eventUpdate = fmiModelDescription.getFmiFunction("fmiEventUpdate");
-            Function getContinuousStates = fmiModelDescription.getFmiFunction("fmiGetContinuousStates");
-            Function getDerivatives = fmiModelDescription.getFmiFunction("fmiGetDerivatives");
-            Function getEventIndicators = fmiModelDescription.getFmiFunction("fmiGetEventIndicators");
-            Function setContinuousStates = fmiModelDescription.getFmiFunction("fmiSetContinuousStates");
+            Function completedIntegratorStep = fmiModelDescription
+                    .getFmiFunction("fmiCompletedIntegratorStep");
+            Function eventUpdate = fmiModelDescription
+                    .getFmiFunction("fmiEventUpdate");
+            Function getContinuousStates = fmiModelDescription
+                    .getFmiFunction("fmiGetContinuousStates");
+            Function getDerivatives = fmiModelDescription
+                    .getFmiFunction("fmiGetDerivatives");
+            Function getEventIndicators = fmiModelDescription
+                    .getFmiFunction("fmiGetEventIndicators");
+            Function setContinuousStates = fmiModelDescription
+                    .getFmiFunction("fmiSetContinuousStates");
 
             boolean stateEvent = false;
 

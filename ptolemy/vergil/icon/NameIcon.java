@@ -191,8 +191,9 @@ public class NameIcon extends EditorIcon {
                 return new BasicRectangle(0, 0, width, height, _getFill(),
                         _getLineWidth());
             } else {
-                RoundedRectangle result = new RoundedRectangle(0, 0, width, height, _getFill(),
-                        _getLineWidth(), _roundingValue, _roundingValue);
+                RoundedRectangle result = new RoundedRectangle(0, 0, width,
+                        height, _getFill(), _getLineWidth(), _roundingValue,
+                        _roundingValue);
                 // FIXME: For book.
                 // result.setStrokePaint(Color.WHITE);
                 return result;
@@ -338,7 +339,8 @@ public class NameIcon extends EditorIcon {
     protected LabelFigure _getLabel(CompositeFigure background, String name) {
         // FIXME: For book.
         // LabelFigure label = new LabelFigure(name, _labelFont, 1.0, SwingConstants.CENTER, Color.WHITE);
-        LabelFigure label = new LabelFigure(name, _labelFont, 1.0, SwingConstants.CENTER);
+        LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                SwingConstants.CENTER);
         Rectangle2D backBounds = background.getBackgroundFigure().getBounds();
         label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
         return label;

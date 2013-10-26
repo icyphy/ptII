@@ -74,13 +74,16 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
      */
     public void createEditor(NamedObj object, Frame parent) {
         try {
-            TypedCompositeActor multiFrameSystem = ((PtidesToMultiFrame) getContainer()).generateMultiFrameSystem(EDF.class);
+            TypedCompositeActor multiFrameSystem = ((PtidesToMultiFrame) getContainer())
+                    .generateMultiFrameSystem(EDF.class);
             _layoutMultiFrameSystem(multiFrameSystem);
-            Configuration configuration = ((TableauFrame) parent).getConfiguration();
+            Configuration configuration = ((TableauFrame) parent)
+                    .getConfiguration();
             configuration.openInstance(multiFrameSystem);
         } catch (NameDuplicationException ex) {
             // The constructor of actors throws this.
-            System.err.println("According to open instance this should not be thrown.");
+            System.err
+                    .println("According to open instance this should not be thrown.");
         } catch (IllegalActionException ex) {
             // The EDF construction might throw this.
             System.err.println("Could not open new window");
@@ -91,7 +94,9 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private static void _layoutMultiFrameSystem(TypedCompositeActor multiFrameSystem) throws IllegalActionException, NameDuplicationException {
+    private static void _layoutMultiFrameSystem(
+            TypedCompositeActor multiFrameSystem)
+            throws IllegalActionException, NameDuplicationException {
         int multiFrameTaskXPos = 0;
         int multiFrameTaskYPos = 100;
         int multiFrameTaskSpacing = 100;
@@ -99,12 +104,16 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
         int taskFrameYPos = 100;
         int taskFrameSpacing = 100;
 
-        for (MultiFrameTask multiFrameTask : multiFrameSystem.entityList(MultiFrameTask.class)) {
-            (new Location(multiFrameTask, "_location")).setLocation(new double[]{multiFrameTaskXPos, multiFrameTaskYPos});
+        for (MultiFrameTask multiFrameTask : multiFrameSystem
+                .entityList(MultiFrameTask.class)) {
+            (new Location(multiFrameTask, "_location"))
+                    .setLocation(new double[] { multiFrameTaskXPos,
+                            multiFrameTaskYPos });
 
             TaskFrame initialFrame = null;
             int taskFrameXPos = 0;
-            for (TaskFrame taskFrame : multiFrameTask.entityList(TaskFrame.class)) {
+            for (TaskFrame taskFrame : multiFrameTask
+                    .entityList(TaskFrame.class)) {
                 if (taskFrame._initial) {
                     initialFrame = taskFrame;
                     break;
@@ -114,9 +123,12 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
             do {
                 currentFrame.initialize();
                 if (currentFrame.getNextFrame() == initialFrame) {
-                    new Vertex((Relation) currentFrame.output.linkedRelationList().get(0), "_vertex");
+                    new Vertex((Relation) currentFrame.output
+                            .linkedRelationList().get(0), "_vertex");
                 }
-                (new Location(currentFrame, "_location")).setLocation(new double[]{taskFrameXPos, taskFrameYPos});
+                (new Location(currentFrame, "_location"))
+                        .setLocation(new double[] { taskFrameXPos,
+                                taskFrameYPos });
                 currentFrame = currentFrame.getNextFrame();
                 taskFrameXPos += taskFrameSpacing;
             } while (currentFrame != initialFrame && currentFrame != null);

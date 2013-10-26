@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 package ptolemy.homer.gui;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -152,7 +153,8 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
                 .attributeList(Settable.class)) {
             if (((Settable) attribute).getVisibility().equals(Settable.FULL)) {
                 if (_filter != null && _filter.length() > 0) {
-                    if (((Nameable) attribute).getFullName().toLowerCase(Locale.getDefault())
+                    if (((Nameable) attribute).getFullName()
+                            .toLowerCase(Locale.getDefault())
                             .contains(_filter.toLowerCase(Locale.getDefault()))) {
                         children.add(attribute);
                     }

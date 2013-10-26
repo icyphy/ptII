@@ -937,11 +937,6 @@ public class JavaFragmentParserTokenManager implements
         } while (start++ != end);
     }
 
-    private final void jjCheckNAddStates(int start) {
-        jjCheckNAdd(jjnextStates[start]);
-        jjCheckNAdd(jjnextStates[start + 1]);
-    }
-
     static final long[] jjbitVec0 = { 0xfffffffffffffffeL, 0xffffffffffffffffL,
             0xffffffffffffffffL, 0xffffffffffffffffL };
 
@@ -965,12 +960,11 @@ public class JavaFragmentParserTokenManager implements
     static final long[] jjbitVec8 = { 0x3fffffffffffL, 0x0L, 0x0L, 0x0L };
 
     private final int jjMoveNfa_0(int startState, int curPos) {
-        int[] nextStates;
         int startsAt = 0;
         jjnewStateCnt = 52;
         int i = 1;
         jjstateSet[0] = startState;
-        int j, kind = 0x7fffffff;
+        int kind = 0x7fffffff;
         for (;;) {
             if (++jjround == 0x7fffffff) {
                 ReInitRounds();
@@ -1458,12 +1452,11 @@ public class JavaFragmentParserTokenManager implements
     }
 
     private final int jjMoveNfa_1(int startState, int curPos) {
-        int[] nextStates;
         int startsAt = 0;
         jjnewStateCnt = 3;
         int i = 1;
         jjstateSet[0] = startState;
-        int j, kind = 0x7fffffff;
+        int kind = 0x7fffffff;
         for (;;) {
             if (++jjround == 0x7fffffff) {
                 ReInitRounds();
@@ -1497,7 +1490,6 @@ public class JavaFragmentParserTokenManager implements
                     }
                 } while (i != startsAt);
             } else if (curChar < 128) {
-                long l = 1L << (curChar & 077);
                 MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     default:
@@ -1506,10 +1498,6 @@ public class JavaFragmentParserTokenManager implements
                 } while (i != startsAt);
             } else {
                 int hiByte = curChar >> 8;
-                int i1 = hiByte >> 6;
-                long l1 = 1L << (hiByte & 077);
-                int i2 = (curChar & 0xff) >> 6;
-                long l2 = 1L << (curChar & 077);
                 MatchLoop: do {
                     switch (jjstateSet[--i]) {
                     default:
@@ -1737,7 +1725,6 @@ public class JavaFragmentParserTokenManager implements
     int jjmatchedKind;
 
     public Token getNextToken() {
-        int kind;
         Token specialToken = null;
         Token matchedToken;
         int curPos = 0;

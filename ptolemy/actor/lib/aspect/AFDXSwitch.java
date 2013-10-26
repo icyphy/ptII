@@ -33,7 +33,6 @@ package ptolemy.actor.lib.aspect;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.IOPort;
@@ -371,11 +370,9 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                     Object[] output = (Object[]) event.contents;
                     Receiver receiver = (Receiver) output[0];
 
-                    Actor actor;
                     if (receiver instanceof IntermediateReceiver) {
-                        actor = (Actor) ((IntermediateReceiver) receiver).communicationAspect;
                     } else {
-                        actor = (Actor) receiver.getContainer().getContainer();
+                        receiver.getContainer().getContainer();
                     }
                     //int actorPort = _actorPorts.get(actor);
                     int outputPortID = _getPortID(receiver, false);
@@ -484,8 +481,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
 
         Time lastTimeStamp = currentTime;
         if (_inputTokens.get(inputPortID).size() > 0) {
-            if (currentTime.compareTo((Time) ((Object[]) _inputTokens.get(
-                    inputPortID).getLast().contents)[3]) == 0) {
+            if (currentTime.compareTo(((Object[]) _inputTokens.get(inputPortID)
+                    .getLast().contents)[3]) == 0) {
                 multicast = true;
             }
 
@@ -521,7 +518,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @param portIn The id of the switch port.
      */
     public void setPortIn(Port port, int portIn) {
-        _ioPortToSwitchInPort.put((IOPort) port, portIn);
+        _ioPortToSwitchInPort.put(port, portIn);
     }
 
     /** Set the id of the switch output that is sending tokens to this actor port.
@@ -529,7 +526,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      * @param portOut The id of the switch port.
      */
     public void setPortOut(Port port, int portOut) {
-        _ioPortToSwitchOutPort.put((IOPort) port, portOut);
+        _ioPortToSwitchOutPort.put(port, portOut);
     }
 
     /** Reset the communication aspect and clear the tokens.
@@ -680,7 +677,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  are going out of the switch.
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
-    public static class AfdxSwitchAttributes extends CommunicationAspectAttributes {
+    public static class AfdxSwitchAttributes extends
+            CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.

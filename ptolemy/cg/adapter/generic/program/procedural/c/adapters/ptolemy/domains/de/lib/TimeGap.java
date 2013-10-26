@@ -53,11 +53,7 @@ public class TimeGap extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
 
 }

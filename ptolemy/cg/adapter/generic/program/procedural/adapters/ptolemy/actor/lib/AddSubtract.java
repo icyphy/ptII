@@ -99,10 +99,12 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         } else {
             Type type = actor.output.getType();
             if (!getCodeGenerator().isPrimitive(type)) {
-                if (getCodeGenerator() instanceof CCodeGenerator)
-                    initArgs.add("$new(" + getCodeGenerator().codeGenType(type) + "(0))");
-                else
+                if (getCodeGenerator() instanceof CCodeGenerator) {
+                    initArgs.add("$new(" + getCodeGenerator().codeGenType(type)
+                            + "(0))");
+                } else {
                     initArgs.add("$tokenFunc($get(output)::zero())");
+                }
             } else {
                 // FIXME: this seems wrong, why doesn't zero work here?
                 //$PTII/bin/ptcg -language java ./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/AddSubtract.xml

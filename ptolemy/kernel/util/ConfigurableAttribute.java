@@ -430,9 +430,6 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
     // The default text in the body of the configure.
     private String _defaultText;
 
-    // The display name, if set.
-    private String _displayName;
-
     // Listeners for changes in value.
     private List _valueListeners;
 

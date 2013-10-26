@@ -195,7 +195,7 @@ public class TypeLattice {
          *  @return The Type object representing UNKNOWN.
          */
         public Object bottom() {
-                return _basicLattice.bottom();
+            return _basicLattice.bottom();
         }
 
         /** Compare two types in the type lattice. The arguments must be
@@ -212,116 +212,113 @@ public class TypeLattice {
          *   are not instances of Type.
          */
         public int compare(Object t1, Object t2) {
-                if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
-                    throw new IllegalArgumentException(
-                            "TheTypeLattice.compare: "
-                                    + "Arguments are not instances of Type: "
-                                    + " type1 = " + t1 + ", type2 = " + t2);
-                }
-                // System.out.println("compare " + type1 + " and " + type2 + " = " + _lattice.compare(type1, type2));
+            if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
+                throw new IllegalArgumentException("TheTypeLattice.compare: "
+                        + "Arguments are not instances of Type: " + " type1 = "
+                        + t1 + ", type2 = " + t2);
+            }
+            // System.out.println("compare " + type1 + " and " + type2 + " = " + _lattice.compare(type1, type2));
 
+            if (t1 == t2) {
+                return SAME;
+            }
+            Integer val;
+            StringBuilder key = new StringBuilder(((Type) t1).toString());
+            key.append("<");
+            key.append(((Type) t2).toString());
 
-                if (t1 == t2) {
-                    return SAME;
-                }
-                Integer val;
-                StringBuilder key = new StringBuilder(((Type) t1).toString());
-                key.append("<");
-                key.append(((Type) t2).toString());
+            // Uncommment the false below to measure the impact of
+            // _lattice.compare() on ptolemy.data package performance... Run
+            // ptolemy/data/type/test/performance.xml before and after...(zk)
+            if (//false &&
+            (val = _getCachedTypeComparisonResult(key.toString())) != null) {
+                return val;
+            }
 
-                // Uncommment the false below to measure the impact of
-                // _lattice.compare() on ptolemy.data package performance... Run
-                // ptolemy/data/type/test/performance.xml before and after...(zk)
-                if (//false &&
-                        (val = _getCachedTypeComparisonResult(key.toString())) != null) {
-                    return val;
-                }
+            Type ct1 = (Type) t1;
+            Type ct2 = (Type) t2;
 
-                Type ct1 = (Type) t1;
-                Type ct2 = (Type) t2;
+            Type t1Rep = _toRepresentative(ct1);
+            Type t2Rep = _toRepresentative(ct2);
 
-                Type t1Rep = _toRepresentative(ct1);
-                Type t2Rep = _toRepresentative(ct2);
-
-                int result = INCOMPARABLE;
-                if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                    result = ((StructuredType) t1)
-                            ._compare((StructuredType) t2);
-                } else if (t1Rep instanceof ArrayType
-                        && !(t2Rep instanceof ArrayType)
-                        && !t2.equals(BaseType.UNKNOWN)
-                        && !t2.equals(BaseType.GENERAL)
-                        && !t2.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayType arrayType = (ArrayType) t1;
-                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
-                        // If we have a Const with {1,2,3} -> Display
-                        // then we used to fail here.
-                        result = INCOMPARABLE;
-                    } else {
-                        int elementComparison = compare(
-                                ((ArrayType) ct1).getElementType(), t2Rep);
-                        if (elementComparison == SAME
-                                || elementComparison == HIGHER) {
-                            result = HIGHER;
-                        } else {
-                            if (t2Rep == BaseType.GENERAL) {
-                                result = LOWER;
-                            } else {
-                                result = INCOMPARABLE;
-                            }
-                        }
-                    }
-                } else if (t2Rep instanceof ArrayType
-                        && !(t1Rep instanceof ArrayType)
-                        && !t1.equals(BaseType.UNKNOWN)
-                        && !t1.equals(BaseType.GENERAL)
-                        && !t1.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayType arrayType = (ArrayType) t2;
-                    if (arrayType.hasKnownLength() && arrayType.length() != 1
-                            && !t1.equals(BaseType.GENERAL)) {
-                        result = INCOMPARABLE;
-                    } else {
-                        int elementComparison = compare(
-                                ((ArrayType) ct2).getElementType(), t1Rep);
-                        if (elementComparison == SAME
-                                || elementComparison == HIGHER) {
-                            result = LOWER;
-                        } else {
-                            if (t1Rep == BaseType.GENERAL) {
-                                result = HIGHER;
-                            } else {
-                                result = INCOMPARABLE;
-                            }
-                        }
-                    }
-                } else if (_basicLattice.containsNodeWeight(t1Rep)
-                        && _basicLattice.containsNodeWeight(t2Rep)) {
-                    // Both are neither the same structured type, nor an array
-                    // and non-array pair, so their type relation is defined
-                    // by the basic lattice.
-                    result = _basicLattice.compare(t1Rep, t2Rep);
+            int result = INCOMPARABLE;
+            if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
+                result = ((StructuredType) t1)._compare((StructuredType) t2);
+            } else if (t1Rep instanceof ArrayType
+                    && !(t2Rep instanceof ArrayType)
+                    && !t2.equals(BaseType.UNKNOWN)
+                    && !t2.equals(BaseType.GENERAL)
+                    && !t2.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t1;
+                if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    // If we have a Const with {1,2,3} -> Display
+                    // then we used to fail here.
+                    result = INCOMPARABLE;
                 } else {
-                    // Both arguments are not the same structured type, and
-                    // at least one is user defined, so their relation is
-                    // rather simple.
-                    if (t1Rep.equals(t2Rep)) {
-                        result = SAME;
-                    } else if (t1Rep == BaseType.UNKNOWN
-                            || t2Rep == BaseType.GENERAL) {
-                        result = LOWER;
-                    } else if (t2Rep == BaseType.UNKNOWN
-                            || t1Rep == BaseType.GENERAL) {
+                    int elementComparison = compare(
+                            ((ArrayType) ct1).getElementType(), t2Rep);
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
                         result = HIGHER;
                     } else {
-                        result = INCOMPARABLE;
+                        if (t2Rep == BaseType.GENERAL) {
+                            result = LOWER;
+                        } else {
+                            result = INCOMPARABLE;
+                        }
                     }
                 }
+            } else if (t2Rep instanceof ArrayType
+                    && !(t1Rep instanceof ArrayType)
+                    && !t1.equals(BaseType.UNKNOWN)
+                    && !t1.equals(BaseType.GENERAL)
+                    && !t1.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t2;
+                if (arrayType.hasKnownLength() && arrayType.length() != 1
+                        && !t1.equals(BaseType.GENERAL)) {
+                    result = INCOMPARABLE;
+                } else {
+                    int elementComparison = compare(
+                            ((ArrayType) ct2).getElementType(), t1Rep);
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
+                        result = LOWER;
+                    } else {
+                        if (t1Rep == BaseType.GENERAL) {
+                            result = HIGHER;
+                        } else {
+                            result = INCOMPARABLE;
+                        }
+                    }
+                }
+            } else if (_basicLattice.containsNodeWeight(t1Rep)
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
+                // Both are neither the same structured type, nor an array
+                // and non-array pair, so their type relation is defined
+                // by the basic lattice.
+                result = _basicLattice.compare(t1Rep, t2Rep);
+            } else {
+                // Both arguments are not the same structured type, and
+                // at least one is user defined, so their relation is
+                // rather simple.
+                if (t1Rep.equals(t2Rep)) {
+                    result = SAME;
+                } else if (t1Rep == BaseType.UNKNOWN
+                        || t2Rep == BaseType.GENERAL) {
+                    result = LOWER;
+                } else if (t2Rep == BaseType.UNKNOWN
+                        || t1Rep == BaseType.GENERAL) {
+                    result = HIGHER;
+                } else {
+                    result = INCOMPARABLE;
+                }
+            }
 
-                 _setCachedTypeComparisonResult(key.toString(), result);
+            _setCachedTypeComparisonResult(key.toString(), result);
 
-                return result;
+            return result;
         }
 
         /** Throw an exception. This operation is not supported since the
@@ -342,115 +339,111 @@ public class TypeLattice {
          *   specified arguments are not instances of Type.
          */
         public Object greatestLowerBound(Object t1, Object t2) {
-                if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
-                    throw new IllegalArgumentException(
-                            "TheTypeLattice.greatestLowerBound: "
-                                    + "Arguments are not instances of Type.");
-                }
+            if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
+                throw new IllegalArgumentException(
+                        "TheTypeLattice.greatestLowerBound: "
+                                + "Arguments are not instances of Type.");
+            }
 
-                Type ct1 = (Type) t1;
-                Type ct2 = (Type) t2;
+            Type ct1 = (Type) t1;
+            Type ct2 = (Type) t2;
 
-                Type t1Rep = _toRepresentative(ct1);
-                Type t2Rep = _toRepresentative(ct2);
+            Type t1Rep = _toRepresentative(ct1);
+            Type t2Rep = _toRepresentative(ct2);
 
-                if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                    return ((StructuredType) t1)
-                            ._greatestLowerBound((StructuredType) t2);
-                } else if (t1Rep instanceof ArrayType
-                        && !(t2Rep instanceof ArrayType)
-                        && !t2.equals(BaseType.UNKNOWN)
-                        && !t2.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayType arrayType = (ArrayType) t1;
-                    int elementComparison = compare(
-                            ((ArrayType) ct1).getElementType(), t2Rep);
-                    if (elementComparison == SAME
-                            || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength()
-                                && arrayType.length() != 1) {
-                            return BaseType.UNKNOWN;
-                        } else {
-                            return t2;
-                        }
+            if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
+                return ((StructuredType) t1)
+                        ._greatestLowerBound((StructuredType) t2);
+            } else if (t1Rep instanceof ArrayType
+                    && !(t2Rep instanceof ArrayType)
+                    && !t2.equals(BaseType.UNKNOWN)
+                    && !t2.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t1;
+                int elementComparison = compare(
+                        ((ArrayType) ct1).getElementType(), t2Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        return BaseType.UNKNOWN;
                     } else {
-                        if (t2Rep == BaseType.GENERAL) {
-                            return t1;
-                        } else {
-                            // INCOMPARABLE
-                            if (_basicLattice.containsNodeWeight(t2Rep)) {
-                                return _basicLattice.greatestLowerBound(t1Rep,
-                                        t2Rep);
-                            } else {
-                                // t2 is a user type (has no representative in the
-                                // basic lattice). Arrays of this type are not supported.
-                                return BaseType.UNKNOWN;
-                            }
-                        }
-                    }
-                } else if (t2Rep instanceof ArrayType
-                        && !(t1Rep instanceof ArrayType)
-                        && !t1.equals(BaseType.UNKNOWN)
-                        && !t1.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayType arrayType = (ArrayType) t2;
-                    int elementComparison = compare(
-                            ((ArrayType) ct2).getElementType(), t1Rep);
-                    if (elementComparison == SAME
-                            || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength()
-                                && arrayType.length() != 1) {
-                            return BaseType.UNKNOWN;
-                        } else {
-                            return t1;
-                        }
-                    } else {
-                        if (t1Rep == BaseType.GENERAL) {
-                            return t2;
-                        } else {
-                            // INCOMPARABLE
-                            if (_basicLattice.containsNodeWeight(t1Rep)) {
-                                return _basicLattice.greatestLowerBound(t1Rep,
-                                        t2Rep);
-                            } else {
-                                // t1 is a user type (has no representative in the
-                                // basic lattice). Arrays of this type are not supported.
-                                return BaseType.UNKNOWN;
-                            }
-                        }
-                    }
-                } else if (_basicLattice.containsNodeWeight(t1Rep)
-                        && _basicLattice.containsNodeWeight(t2Rep)) {
-                    // Both are neither the same structured type, nor an array
-                    // and non-array pair, so their type relation is defined
-                    // by the basic lattice.
-                    int relation = _basicLattice.compare(t1Rep, t2Rep);
-
-                    if (relation == SAME) {
-                        return t1;
-                    } else if (relation == LOWER) {
-                        return t1;
-                    } else if (relation == HIGHER) {
                         return t2;
-                    } else { // INCOMPARABLE
-                        return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
                     }
                 } else {
-                    // Both arguments are not the same structured type, and
-                    // at least one is user defined, so their relation is
-                    // rather simple.
-                    if (t1Rep.equals(t2Rep)) {
+                    if (t2Rep == BaseType.GENERAL) {
                         return t1;
-                    } else if (t1Rep == BaseType.UNKNOWN
-                            || t2Rep == BaseType.GENERAL) {
-                        return t1;
-                    } else if (t2Rep == BaseType.UNKNOWN
-                            || t1Rep == BaseType.GENERAL) {
-                        return t2;
                     } else {
-                        return bottom();
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t2Rep)) {
+                            return _basicLattice.greatestLowerBound(t1Rep,
+                                    t2Rep);
+                        } else {
+                            // t2 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.UNKNOWN;
+                        }
                     }
                 }
+            } else if (t2Rep instanceof ArrayType
+                    && !(t1Rep instanceof ArrayType)
+                    && !t1.equals(BaseType.UNKNOWN)
+                    && !t1.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t2;
+                int elementComparison = compare(
+                        ((ArrayType) ct2).getElementType(), t1Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        return BaseType.UNKNOWN;
+                    } else {
+                        return t1;
+                    }
+                } else {
+                    if (t1Rep == BaseType.GENERAL) {
+                        return t2;
+                    } else {
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t1Rep)) {
+                            return _basicLattice.greatestLowerBound(t1Rep,
+                                    t2Rep);
+                        } else {
+                            // t1 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.UNKNOWN;
+                        }
+                    }
+                }
+            } else if (_basicLattice.containsNodeWeight(t1Rep)
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
+                // Both are neither the same structured type, nor an array
+                // and non-array pair, so their type relation is defined
+                // by the basic lattice.
+                int relation = _basicLattice.compare(t1Rep, t2Rep);
+
+                if (relation == SAME) {
+                    return t1;
+                } else if (relation == LOWER) {
+                    return t1;
+                } else if (relation == HIGHER) {
+                    return t2;
+                } else { // INCOMPARABLE
+                    return _basicLattice.greatestLowerBound(t1Rep, t2Rep);
+                }
+            } else {
+                // Both arguments are not the same structured type, and
+                // at least one is user defined, so their relation is
+                // rather simple.
+                if (t1Rep.equals(t2Rep)) {
+                    return t1;
+                } else if (t1Rep == BaseType.UNKNOWN
+                        || t2Rep == BaseType.GENERAL) {
+                    return t1;
+                } else if (t2Rep == BaseType.UNKNOWN
+                        || t1Rep == BaseType.GENERAL) {
+                    return t2;
+                } else {
+                    return bottom();
+                }
+            }
         }
 
         /** Return the greatest lower bound of a subset.
@@ -458,20 +451,20 @@ public class TypeLattice {
          *  @return an instance of Type.
          */
         public Object greatestLowerBound(Set<Object> subset) {
-                if (subset.size() == 0) {
-                    return BaseType.GENERAL;
-                }
+            if (subset.size() == 0) {
+                return BaseType.GENERAL;
+            }
 
-                Iterator<?> itr = subset.iterator();
-                Object glb = itr.next();
+            Iterator<?> itr = subset.iterator();
+            Object glb = itr.next();
 
-                // start looping from index 0 so that subset[0] is checked for
-                // possible exception, in case the subset has only one element.
-                while (itr.hasNext()) {
-                    glb = greatestLowerBound(glb, itr.next());
-                }
+            // start looping from index 0 so that subset[0] is checked for
+            // possible exception, in case the subset has only one element.
+            while (itr.hasNext()) {
+                glb = greatestLowerBound(glb, itr.next());
+            }
 
-                return glb;
+            return glb;
         }
 
         /** Return the greatest type of a set of types, or null if the
@@ -485,28 +478,28 @@ public class TypeLattice {
          *  @return A Type or null.
          */
         public Object greatestElement(Set<Object> subset) {
-                // Compare each element with all of the other elements to search
-                // for the greatest one. This is a simple, brute force algorithm,
-                // but may be inefficient. A more efficient one is used in
-                // the graph package, but more complex.
-                for (Object o1 : subset) {
-                    boolean isGreatest = true;
+            // Compare each element with all of the other elements to search
+            // for the greatest one. This is a simple, brute force algorithm,
+            // but may be inefficient. A more efficient one is used in
+            // the graph package, but more complex.
+            for (Object o1 : subset) {
+                boolean isGreatest = true;
 
-                    for (Object o2 : subset) {
-                        int result = compare(o1, o2);
+                for (Object o2 : subset) {
+                    int result = compare(o1, o2);
 
-                        if (result == CPO.LOWER || result == CPO.INCOMPARABLE) {
-                            isGreatest = false;
-                            break;
-                        }
-                    }
-
-                    if (isGreatest == true) {
-                        return o1;
+                    if (result == CPO.LOWER || result == CPO.INCOMPARABLE) {
+                        isGreatest = false;
+                        break;
                     }
                 }
-                // Otherwise, the subset does not contain a greatest element.
-                return null;
+
+                if (isGreatest == true) {
+                    return o1;
+                }
+            }
+            // Otherwise, the subset does not contain a greatest element.
+            return null;
         }
 
         /** Return true.
@@ -527,28 +520,28 @@ public class TypeLattice {
          *  @return A Type or null.
          */
         public Object leastElement(Set<Object> subset) {
-                // Compare each element with all of the other elements to search
-                // for the least one. This is a simple, brute force algorithm,
-                // but may be inefficient. A more efficient one is used in
-                // the graph package, but more complex.
-                for (Object o1 : subset) {
-                    boolean isLeast = true;
+            // Compare each element with all of the other elements to search
+            // for the least one. This is a simple, brute force algorithm,
+            // but may be inefficient. A more efficient one is used in
+            // the graph package, but more complex.
+            for (Object o1 : subset) {
+                boolean isLeast = true;
 
-                    for (Object o2 : subset) {
-                        int result = compare(o1, o2);
+                for (Object o2 : subset) {
+                    int result = compare(o1, o2);
 
-                        if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
-                            isLeast = false;
-                            break;
-                        }
-                    }
-
-                    if (isLeast == true) {
-                        return o1;
+                    if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
+                        isLeast = false;
+                        break;
                     }
                 }
-                // Otherwise, the subset does not contain a least element.
-                return null;
+
+                if (isLeast == true) {
+                    return o1;
+                }
+            }
+            // Otherwise, the subset does not contain a least element.
+            return null;
         }
 
         /** Return the least upper bound of two types.
@@ -557,160 +550,156 @@ public class TypeLattice {
          *  @return an instance of Type.
          */
         public Object leastUpperBound(Object t1, Object t2) {
-                if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
-                    throw new IllegalArgumentException(
-                            "TheTypeLattice.leastUpperBound: "
-                                    + "Arguments are not instances of Type.");
-                }
+            if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
+                throw new IllegalArgumentException(
+                        "TheTypeLattice.leastUpperBound: "
+                                + "Arguments are not instances of Type.");
+            }
 
-                // System.out.println("LUB of " + t1 + " and " + t2);
-                Type ct1 = (Type) t1;
-                Type ct2 = (Type) t2;
+            // System.out.println("LUB of " + t1 + " and " + t2);
+            Type ct1 = (Type) t1;
+            Type ct2 = (Type) t2;
 
-                Type t1Rep = _toRepresentative(ct1);
-                Type t2Rep = _toRepresentative(ct2);
+            Type t1Rep = _toRepresentative(ct1);
+            Type t2Rep = _toRepresentative(ct2);
 
-                if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                    return ((StructuredType) t1)
-                            ._leastUpperBound((StructuredType) t2);
-                } else if (t1Rep instanceof ArrayType
-                        && !(t2Rep instanceof ArrayType)
-                        && !t2.equals(BaseType.UNKNOWN)
-                        && !t2.equals(BaseType.GENERAL)
-                        && !t2.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayType arrayType = (ArrayType) t1;
-                    Type elementType = ((ArrayType) ct1).getElementType();
-                    int elementComparison = compare(elementType, t2Rep);
-                    if (elementComparison == SAME
-                            || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength()
-                                && arrayType.length() != 1) {
-                            // Least upper bound is unsized type.
-                            return new ArrayType(elementType);
-                        } else {
-                            return t1;
-                        }
+            if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
+                return ((StructuredType) t1)
+                        ._leastUpperBound((StructuredType) t2);
+            } else if (t1Rep instanceof ArrayType
+                    && !(t2Rep instanceof ArrayType)
+                    && !t2.equals(BaseType.UNKNOWN)
+                    && !t2.equals(BaseType.GENERAL)
+                    && !t2.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t1;
+                Type elementType = ((ArrayType) ct1).getElementType();
+                int elementComparison = compare(elementType, t2Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        // Least upper bound is unsized type.
+                        return new ArrayType(elementType);
                     } else {
-                        if (t2Rep == BaseType.GENERAL) {
-                            return t2;
-                        } else {
-                            // INCOMPARABLE
-                            if (_basicLattice.containsNodeWeight(t2Rep)
-                                    && _basicLattice
-                                            .containsNodeWeight(elementType)) {
-                                // The least upper bound is an array of the LUB
-                                // of t2Rep and the element type of t1.
-                                return new ArrayType(
-                                        (Type) _basicLattice.leastUpperBound(
-                                                elementType, t2Rep));
-                            } else {
-                                // t2 is a user type (has no representative in the
-                                // basic lattice). Arrays of this type are not supported.
-                                return BaseType.GENERAL;
-                            }
-                        }
-                    }
-                } else if (t1.equals(BaseType.ARRAY_BOTTOM)
-                        && !(t2Rep instanceof ArrayType)
-                        && !t2.equals(BaseType.UNKNOWN)
-                        && !t2.equals(BaseType.GENERAL)
-                        && !t2.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 10/8/12, to make lub(arrayBottom, double) = {double}
-                    // INCOMPARABLE
-                    if (_basicLattice.containsNodeWeight(t2Rep)) {
-                        // The least upper bound is an array of t2Rep.
-                        return new ArrayType(t2Rep);
-                    } else {
-                        // t2 is a user type (has no representative in the
-                        // basic lattice). Arrays of this type are not supported.
-                        return BaseType.GENERAL;
-                    }
-                } else if (t2Rep instanceof ArrayType
-                        && !(t1Rep instanceof ArrayType)
-                        && !t1.equals(BaseType.UNKNOWN)
-                        && !t1.equals(BaseType.GENERAL)
-                        && !t1.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayType arrayType = (ArrayType) t2;
-                    Type elementType = ((ArrayType) ct2).getElementType();
-                    int elementComparison = compare(elementType, t1Rep);
-                    if (elementComparison == SAME
-                            || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength()
-                                && arrayType.length() != 1) {
-                            // Least upper bound is unsized type.
-                            return new ArrayType(elementType);
-                        } else {
-                            return t2;
-                        }
-                    } else {
-                        if (t1Rep == BaseType.GENERAL) {
-                            return t1;
-                        } else {
-                            // INCOMPARABLE
-                            if (_basicLattice.containsNodeWeight(t1Rep)
-                                    && _basicLattice
-                                            .containsNodeWeight(elementType)) {
-                                // The least upper bound is an array of the LUB
-                                // of t2Rep and the element type of t1.
-                                return new ArrayType(
-                                        (Type) _basicLattice.leastUpperBound(
-                                                elementType, t1Rep));
-                            } else {
-                                // t1 is a user type (has no representative in the
-                                // basic lattice). Arrays of this type are not supported.
-                                return BaseType.GENERAL;
-                            }
-                        }
-                    }
-                } else if (t2.equals(BaseType.ARRAY_BOTTOM)
-                        && !(t1Rep instanceof ArrayType)
-                        && !t1.equals(BaseType.UNKNOWN)
-                        && !t1.equals(BaseType.GENERAL)
-                        && !t1.equals(BaseType.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 10/8/12, to make lub(double, arrayBottom) = {double}
-                    // INCOMPARABLE
-                    if (_basicLattice.containsNodeWeight(t1Rep)) {
-                        // The least upper bound is an array of t2Rep.
-                        return new ArrayType(t1Rep);
-                    } else {
-                        // t2 is a user type (has no representative in the
-                        // basic lattice). Arrays of this type are not supported.
-                        return BaseType.GENERAL;
-                    }
-                } else if (_basicLattice.containsNodeWeight(t1Rep)
-                        && _basicLattice.containsNodeWeight(t2Rep)) {
-                    // Both are neither the same structured type, nor an array
-                    // and non-array pair, so their type relation is defined
-                    // by the basic lattice.
-                    int relation = _basicLattice.compare(t1Rep, t2Rep);
-
-                    if (relation == SAME) {
                         return t1;
-                    } else if (relation == LOWER) {
-                        return t2;
-                    } else if (relation == HIGHER) {
-                        return t1;
-                    } else { // INCOMPARABLE
-                        return _basicLattice.leastUpperBound(t1Rep, t2Rep);
                     }
                 } else {
-                    // Both arguments are not the same structured type, and
-                    // at least one is user defined, so their relation is
-                    // rather simple.
-                    if (t1Rep.equals(t2Rep)) {
-                        return t1;
-                    } else if (t1Rep == BaseType.UNKNOWN
-                            || t2Rep == BaseType.GENERAL) {
+                    if (t2Rep == BaseType.GENERAL) {
                         return t2;
-                    } else if (t2Rep == BaseType.UNKNOWN
-                            || t1Rep == BaseType.GENERAL) {
-                        return t1;
                     } else {
-                        return top();
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t2Rep)
+                                && _basicLattice
+                                        .containsNodeWeight(elementType)) {
+                            // The least upper bound is an array of the LUB
+                            // of t2Rep and the element type of t1.
+                            return new ArrayType(
+                                    (Type) _basicLattice.leastUpperBound(
+                                            elementType, t2Rep));
+                        } else {
+                            // t2 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.GENERAL;
+                        }
                     }
                 }
+            } else if (t1.equals(BaseType.ARRAY_BOTTOM)
+                    && !(t2Rep instanceof ArrayType)
+                    && !t2.equals(BaseType.UNKNOWN)
+                    && !t2.equals(BaseType.GENERAL)
+                    && !t2.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 10/8/12, to make lub(arrayBottom, double) = {double}
+                // INCOMPARABLE
+                if (_basicLattice.containsNodeWeight(t2Rep)) {
+                    // The least upper bound is an array of t2Rep.
+                    return new ArrayType(t2Rep);
+                } else {
+                    // t2 is a user type (has no representative in the
+                    // basic lattice). Arrays of this type are not supported.
+                    return BaseType.GENERAL;
+                }
+            } else if (t2Rep instanceof ArrayType
+                    && !(t1Rep instanceof ArrayType)
+                    && !t1.equals(BaseType.UNKNOWN)
+                    && !t1.equals(BaseType.GENERAL)
+                    && !t1.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
+                ArrayType arrayType = (ArrayType) t2;
+                Type elementType = ((ArrayType) ct2).getElementType();
+                int elementComparison = compare(elementType, t1Rep);
+                if (elementComparison == SAME || elementComparison == HIGHER) {
+                    if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                        // Least upper bound is unsized type.
+                        return new ArrayType(elementType);
+                    } else {
+                        return t2;
+                    }
+                } else {
+                    if (t1Rep == BaseType.GENERAL) {
+                        return t1;
+                    } else {
+                        // INCOMPARABLE
+                        if (_basicLattice.containsNodeWeight(t1Rep)
+                                && _basicLattice
+                                        .containsNodeWeight(elementType)) {
+                            // The least upper bound is an array of the LUB
+                            // of t2Rep and the element type of t1.
+                            return new ArrayType(
+                                    (Type) _basicLattice.leastUpperBound(
+                                            elementType, t1Rep));
+                        } else {
+                            // t1 is a user type (has no representative in the
+                            // basic lattice). Arrays of this type are not supported.
+                            return BaseType.GENERAL;
+                        }
+                    }
+                }
+            } else if (t2.equals(BaseType.ARRAY_BOTTOM)
+                    && !(t1Rep instanceof ArrayType)
+                    && !t1.equals(BaseType.UNKNOWN)
+                    && !t1.equals(BaseType.GENERAL)
+                    && !t1.equals(BaseType.ARRAY_BOTTOM)) {
+                // NOTE: Added by EAL, 10/8/12, to make lub(double, arrayBottom) = {double}
+                // INCOMPARABLE
+                if (_basicLattice.containsNodeWeight(t1Rep)) {
+                    // The least upper bound is an array of t2Rep.
+                    return new ArrayType(t1Rep);
+                } else {
+                    // t2 is a user type (has no representative in the
+                    // basic lattice). Arrays of this type are not supported.
+                    return BaseType.GENERAL;
+                }
+            } else if (_basicLattice.containsNodeWeight(t1Rep)
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
+                // Both are neither the same structured type, nor an array
+                // and non-array pair, so their type relation is defined
+                // by the basic lattice.
+                int relation = _basicLattice.compare(t1Rep, t2Rep);
+
+                if (relation == SAME) {
+                    return t1;
+                } else if (relation == LOWER) {
+                    return t2;
+                } else if (relation == HIGHER) {
+                    return t1;
+                } else { // INCOMPARABLE
+                    return _basicLattice.leastUpperBound(t1Rep, t2Rep);
+                }
+            } else {
+                // Both arguments are not the same structured type, and
+                // at least one is user defined, so their relation is
+                // rather simple.
+                if (t1Rep.equals(t2Rep)) {
+                    return t1;
+                } else if (t1Rep == BaseType.UNKNOWN
+                        || t2Rep == BaseType.GENERAL) {
+                    return t2;
+                } else if (t2Rep == BaseType.UNKNOWN
+                        || t1Rep == BaseType.GENERAL) {
+                    return t1;
+                } else {
+                    return top();
+                }
+            }
         }
 
         /** Return the least upper bound of a subset.
@@ -718,27 +707,27 @@ public class TypeLattice {
          *  @return an instance of Type.
          */
         public Object leastUpperBound(Set<Object> subset) {
-                if (subset.size() == 0) {
-                    return BaseType.UNKNOWN;
-                }
+            if (subset.size() == 0) {
+                return BaseType.UNKNOWN;
+            }
 
-                Iterator<?> itr = subset.iterator();
-                Object lub = itr.next();
+            Iterator<?> itr = subset.iterator();
+            Object lub = itr.next();
 
-                // start looping from index 0 so that subset[0] is checked for
-                // possible exception, in case the subset has only one element.
-                while (itr.hasNext()) {
-                    lub = leastUpperBound(lub, itr.next());
-                }
+            // start looping from index 0 so that subset[0] is checked for
+            // possible exception, in case the subset has only one element.
+            while (itr.hasNext()) {
+                lub = leastUpperBound(lub, itr.next());
+            }
 
-                return lub;
+            return lub;
         }
 
         /** Return the top element of the type lattice, which is General.
          *  @return The Type object representing General.
          */
         public Object top() {
-                return _basicLattice.top();
+            return _basicLattice.top();
         }
 
         /** Throw an exception. This operation is not supported since the
@@ -756,146 +745,140 @@ public class TypeLattice {
         ////                    private constructor                ////
         // the constructor is private so only the outer class can use it.
         private TheTypeLattice() {
-                _basicLattice = new DirectedAcyclicGraph();
+            _basicLattice = new DirectedAcyclicGraph();
 
-                StructuredType arrayRep = new ArrayType(BaseType.UNKNOWN)
-                        ._getRepresentative();
+            StructuredType arrayRep = new ArrayType(BaseType.UNKNOWN)
+                    ._getRepresentative();
 
-                String[] labels = new String[0];
-                Type[] types = new Type[0];
-                StructuredType recordRep = new RecordType(labels, types)
-                        ._getRepresentative();
-                StructuredType unionRep = new UnionType(labels, types)
-                        ._getRepresentative();
+            String[] labels = new String[0];
+            Type[] types = new Type[0];
+            StructuredType recordRep = new RecordType(labels, types)
+                    ._getRepresentative();
+            StructuredType unionRep = new UnionType(labels, types)
+                    ._getRepresentative();
 
-                /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(
-                        new ptolemy.data.type.Type[0],
-                        ptolemy.data.type.BaseType.UNKNOWN)
-                        ._getRepresentative();
+            /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(
+                    new ptolemy.data.type.Type[0],
+                    ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
 
-                _basicLattice.addNodeWeight(BaseType.BOOLEAN);
-                _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
-                _basicLattice.addNodeWeight(BaseType.UNSIGNED_BYTE);
-                _basicLattice.addNodeWeight(BaseType.COMPLEX);
-                _basicLattice.addNodeWeight(BaseType.COMPLEX_MATRIX);
-                _basicLattice.addNodeWeight(BaseType.DOUBLE);
-                _basicLattice.addNodeWeight(BaseType.DOUBLE_MATRIX);
-                _basicLattice.addNodeWeight(BaseType.UNSIZED_FIX);
-                _basicLattice.addNodeWeight(BaseType.SIZED_FIX);
-                _basicLattice.addNodeWeight(BaseType.FIX_MATRIX);
-                _basicLattice.addNodeWeight(BaseType.FLOAT);
-                _basicLattice.addNodeWeight(BaseType.INT);
-                _basicLattice.addNodeWeight(BaseType.INT_MATRIX);
-                _basicLattice.addNodeWeight(BaseType.LONG);
-                _basicLattice.addNodeWeight(BaseType.LONG_MATRIX);
-                _basicLattice.addNodeWeight(BaseType.MATRIX);
-                _basicLattice.addNodeWeight(BaseType.UNKNOWN);
-                // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
-                // _basicLattice.addNodeWeight(BaseType.NUMERICAL);
-                _basicLattice.addNodeWeight(BaseType.OBJECT);
+            _basicLattice.addNodeWeight(BaseType.BOOLEAN);
+            _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
+            _basicLattice.addNodeWeight(BaseType.UNSIGNED_BYTE);
+            _basicLattice.addNodeWeight(BaseType.COMPLEX);
+            _basicLattice.addNodeWeight(BaseType.COMPLEX_MATRIX);
+            _basicLattice.addNodeWeight(BaseType.DOUBLE);
+            _basicLattice.addNodeWeight(BaseType.DOUBLE_MATRIX);
+            _basicLattice.addNodeWeight(BaseType.UNSIZED_FIX);
+            _basicLattice.addNodeWeight(BaseType.SIZED_FIX);
+            _basicLattice.addNodeWeight(BaseType.FIX_MATRIX);
+            _basicLattice.addNodeWeight(BaseType.FLOAT);
+            _basicLattice.addNodeWeight(BaseType.INT);
+            _basicLattice.addNodeWeight(BaseType.INT_MATRIX);
+            _basicLattice.addNodeWeight(BaseType.LONG);
+            _basicLattice.addNodeWeight(BaseType.LONG_MATRIX);
+            _basicLattice.addNodeWeight(BaseType.MATRIX);
+            _basicLattice.addNodeWeight(BaseType.UNKNOWN);
+            // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
+            // _basicLattice.addNodeWeight(BaseType.NUMERICAL);
+            _basicLattice.addNodeWeight(BaseType.OBJECT);
 
-                // Strange bug here, see moml/test/aJVMBug.xml
-                // and ptdevel email from 7/21.
-                //_basicLattice.addNodeWeight(BaseType.ACTOR);
-                _basicLattice.addNodeWeight(ActorToken.TYPE);
+            // Strange bug here, see moml/test/aJVMBug.xml
+            // and ptdevel email from 7/21.
+            //_basicLattice.addNodeWeight(BaseType.ACTOR);
+            _basicLattice.addNodeWeight(ActorToken.TYPE);
 
-                _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
-                _basicLattice.addNodeWeight(BaseType.SCALAR);
-                _basicLattice.addNodeWeight(BaseType.SHORT);
-                _basicLattice.addNodeWeight(BaseType.STRING);
-                _basicLattice.addNodeWeight(BaseType.EVENT);
-                _basicLattice.addNodeWeight(BaseType.GENERAL);
-                _basicLattice.addNodeWeight(BaseType.PETITE);
-                _basicLattice.addNodeWeight(BaseType.NIL);
+            _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
+            _basicLattice.addNodeWeight(BaseType.SCALAR);
+            _basicLattice.addNodeWeight(BaseType.SHORT);
+            _basicLattice.addNodeWeight(BaseType.STRING);
+            _basicLattice.addNodeWeight(BaseType.EVENT);
+            _basicLattice.addNodeWeight(BaseType.GENERAL);
+            _basicLattice.addNodeWeight(BaseType.PETITE);
+            _basicLattice.addNodeWeight(BaseType.NIL);
 
-                _basicLattice.addNodeWeight(arrayRep);
-                _basicLattice.addNodeWeight(BaseType.ARRAY_BOTTOM);
-                _basicLattice.addNodeWeight(recordRep);
-                _basicLattice.addNodeWeight(unionRep);
+            _basicLattice.addNodeWeight(arrayRep);
+            _basicLattice.addNodeWeight(BaseType.ARRAY_BOTTOM);
+            _basicLattice.addNodeWeight(recordRep);
+            _basicLattice.addNodeWeight(unionRep);
 
-                _basicLattice.addEdge(BaseType.XMLTOKEN, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
-                _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
+            _basicLattice.addEdge(BaseType.XMLTOKEN, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
+            _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
 
-                // More of the strange jvm bug, see above.
-                //_basicLattice.addEdge(BaseType.ACTOR, BaseType.GENERAL);
-                //_basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ACTOR);
-                _basicLattice.addEdge(ActorToken.TYPE, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.UNKNOWN, ActorToken.TYPE);
+            // More of the strange jvm bug, see above.
+            //_basicLattice.addEdge(BaseType.ACTOR, BaseType.GENERAL);
+            //_basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ACTOR);
+            _basicLattice.addEdge(ActorToken.TYPE, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, ActorToken.TYPE);
 
-                _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
-                _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);
-                _basicLattice
-                        .addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
-                _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.SCALAR);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
+            _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
+            _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
+            _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.SCALAR);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
 
-                // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
-                // _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
-                _basicLattice.addEdge(BaseType.FIX_MATRIX, BaseType.MATRIX);
-                _basicLattice.addEdge(BaseType.SCALAR, BaseType.MATRIX);
-                _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.MATRIX);
-                _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.MATRIX);
+            // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
+            // _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.FIX_MATRIX, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.SCALAR, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.MATRIX);
+            _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.MATRIX);
 
-                _basicLattice
-                        .addEdge(BaseType.UNSIZED_FIX, BaseType.FIX_MATRIX);
-                _basicLattice.addEdge(BaseType.SIZED_FIX, BaseType.UNSIZED_FIX);
-                _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.SCALAR);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.SIZED_FIX);
-                _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
-                _basicLattice.addEdge(BaseType.LONG, BaseType.LONG_MATRIX);
-                _basicLattice
-                        .addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
-                _basicLattice.addEdge(BaseType.INT, BaseType.LONG);
-                _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.UNSIGNED_BYTE);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.PETITE);
-                _basicLattice.addEdge(BaseType.INT_MATRIX,
-                        BaseType.DOUBLE_MATRIX);
-                _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
-                        BaseType.COMPLEX_MATRIX);
-                _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
-                _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
-                _basicLattice.addEdge(BaseType.DOUBLE, BaseType.SCALAR);
+            _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.FIX_MATRIX);
+            _basicLattice.addEdge(BaseType.SIZED_FIX, BaseType.UNSIZED_FIX);
+            _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.SCALAR);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.SIZED_FIX);
+            _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
+            _basicLattice.addEdge(BaseType.LONG, BaseType.LONG_MATRIX);
+            _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
+            _basicLattice.addEdge(BaseType.INT, BaseType.LONG);
+            _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.UNSIGNED_BYTE);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.PETITE);
+            _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
+            _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
+                    BaseType.COMPLEX_MATRIX);
+            _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
+            _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
+            _basicLattice.addEdge(BaseType.DOUBLE, BaseType.SCALAR);
 
-                _basicLattice.addEdge(BaseType.PETITE, BaseType.DOUBLE);
-                _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
-                _basicLattice
-                        .addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
+            _basicLattice.addEdge(BaseType.PETITE, BaseType.DOUBLE);
+            _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
+            _basicLattice.addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
 
-                _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
-                _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.SHORT);
-                _basicLattice.addEdge(BaseType.SHORT, BaseType.INT);
-                _basicLattice.addEdge(BaseType.SHORT, BaseType.FLOAT);
-                _basicLattice.addEdge(BaseType.FLOAT, BaseType.DOUBLE);
+            _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
+            _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.SHORT);
+            _basicLattice.addEdge(BaseType.SHORT, BaseType.INT);
+            _basicLattice.addEdge(BaseType.SHORT, BaseType.FLOAT);
+            _basicLattice.addEdge(BaseType.FLOAT, BaseType.DOUBLE);
 
-                _basicLattice.addEdge(BaseType.EVENT, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.EVENT);
+            _basicLattice.addEdge(BaseType.EVENT, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.EVENT);
 
-                // NOTE: Below used to add an edge to BaseType.STRING, but
-                // other concrete array types are not < STRING (see compare methods above).
-                // EAL 10/8/12.
-                _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.ARRAY_BOTTOM, arrayRep);
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ARRAY_BOTTOM);
+            // NOTE: Below used to add an edge to BaseType.STRING, but
+            // other concrete array types are not < STRING (see compare methods above).
+            // EAL 10/8/12.
+            _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.ARRAY_BOTTOM, arrayRep);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.ARRAY_BOTTOM);
 
-                _basicLattice.addEdge(recordRep, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);
+            _basicLattice.addEdge(recordRep, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, recordRep);
 
-                _basicLattice.addEdge(unionRep, BaseType.GENERAL);
-                _basicLattice.addEdge(BaseType.UNKNOWN, unionRep);
+            _basicLattice.addEdge(unionRep, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, unionRep);
 
-                _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.NIL);
-                _basicLattice.addEdge(BaseType.NIL, BaseType.BOOLEAN);
-                // NOTE: Redundant, given edge to UnsignedByte
-                // _basicLattice.addEdge(BaseType.NIL, BaseType.DOUBLE);
-                // _basicLattice.addEdge(BaseType.NIL, BaseType.LONG);
-                // _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
-                _basicLattice.addEdge(BaseType.NIL, BaseType.UNSIGNED_BYTE);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.NIL);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.BOOLEAN);
+            // NOTE: Redundant, given edge to UnsignedByte
+            // _basicLattice.addEdge(BaseType.NIL, BaseType.DOUBLE);
+            // _basicLattice.addEdge(BaseType.NIL, BaseType.LONG);
+            // _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.UNSIGNED_BYTE);
 
-                assert _basicLattice.isLattice();
+            assert _basicLattice.isLattice();
         }
 
         ///////////////////////////////////////////////////////////////

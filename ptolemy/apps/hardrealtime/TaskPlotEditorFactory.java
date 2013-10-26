@@ -80,15 +80,18 @@ public class TaskPlotEditorFactory extends EditorFactory {
         try {
             // If there is no plot tableau or if it has been closed
             if (_plotTableau == null || _plotTableau.getContainer() == null) {
-                Configuration configuration = ((TableauFrame) parent).getConfiguration();
+                Configuration configuration = ((TableauFrame) parent)
+                        .getConfiguration();
                 if (_plot == null) {
                     _plot = new TaskPlot();
                 }
-                PlotEffigy schedulePlotEffigy = new PlotEffigy(configuration, "plotterEffigy");
+                PlotEffigy schedulePlotEffigy = new PlotEffigy(configuration,
+                        "plotterEffigy");
                 schedulePlotEffigy.setPlot(_plot);
                 schedulePlotEffigy.setModel(this.getContainer());
                 schedulePlotEffigy.identifier.setExpression("Task Schedule");
-                _plotTableau = configuration.createPrimaryTableau(schedulePlotEffigy);
+                _plotTableau = configuration
+                        .createPrimaryTableau(schedulePlotEffigy);
                 _plot.setVisible(true);
             }
         } catch (Throwable throwable) {

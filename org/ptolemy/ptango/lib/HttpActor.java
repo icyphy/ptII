@@ -396,7 +396,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
         for (int i = 0; i < response.getWidth(); i++) {
             if (response.hasToken(i)) {
-                responseData.response = ((StringToken) response.get(i)).stringValue();
+                responseData.response = ((StringToken) response.get(i))
+                        .stringValue();
                 responseFound = true;
                 if (_debugging) {
                     _debug("Received response on the response input port: "
@@ -430,7 +431,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             // In that case, there is no issue with multiple outputs.
             if (director instanceof SuperdenseTimeDirector) {
                 Time currentTime = director.getModelTime();
-                int microstep = ((SuperdenseTimeDirector)director).getIndex();
+                int microstep = ((SuperdenseTimeDirector) director).getIndex();
                 if (_lastOutputTime != null
                         && _lastOutputTime.equals(currentTime)
                         && microstep == _lastMicrostep) {
@@ -447,27 +448,31 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             if (_request.requestType == 0) {
                 if (_debugging) {
                     _debug("Sending get request URI: " + _request.requestURI);
-                    _debug("Sending get request parameters: " + _request.parameters);
+                    _debug("Sending get request parameters: "
+                            + _request.parameters);
                 }
                 getRequestURI.send(0, new StringToken(_request.requestURI));
                 getParameters.send(0, _request.parameters);
                 if (_request.cookies != null && _request.cookies.length() > 0) {
                     if (_debugging) {
-                        _debug("Sending cookies to getCookies port: " + _request.cookies);
+                        _debug("Sending cookies to getCookies port: "
+                                + _request.cookies);
                     }
                     getCookies.send(0, _request.cookies);
                 }
             } else {
                 if (_debugging) {
                     _debug("Sending post request URI: " + _request.requestURI);
-                    _debug("Sending post request parameters: " + _request.parameters);
+                    _debug("Sending post request parameters: "
+                            + _request.parameters);
                 }
                 postRequestURI.send(0, new StringToken(_request.requestURI));
                 postParameters.send(0, _request.parameters);
                 if (_request.cookies != null && _request.cookies.length() > 0) {
                     postCookies.send(0, _request.cookies);
                     if (_debugging) {
-                        _debug("Sending cookies to postCookies port: " + _request.cookies);
+                        _debug("Sending cookies to postCookies port: "
+                                + _request.cookies);
                     }
                 }
             }
@@ -625,10 +630,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 response.setContentType("text/html");
 
                 if (_debugging) {
-                    _debug("**** Handling a "
-                            + ((type == 0) ? "get" : "post")
-                            + " request to URI "
-                            + _request.requestURI);
+                    _debug("**** Handling a " + ((type == 0) ? "get" : "post")
+                            + " request to URI " + _request.requestURI);
                 }
 
                 try {
@@ -642,10 +645,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     _request.parameters = _readParameters(request);
 
                     // Figure out what time to request a firing for.
-                    long elapsedRealTime = System.currentTimeMillis() - _initializeRealTime;
+                    long elapsedRealTime = System.currentTimeMillis()
+                            - _initializeRealTime;
                     // Assume model time is in seconds, not milliseconds.
                     elapsedRealTime = elapsedRealTime / 1000;
-                    Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
+                    Time timeOfRequest = _initializeModelTime
+                            .add(elapsedRealTime);
 
                     if (_debugging) {
                         _debug("**** Request firing at time " + timeOfRequest);
@@ -674,7 +679,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         long startTime = System.currentTimeMillis();
                         long timeoutValue = 30000L;
                         try {
-                            timeoutValue = ((LongToken) timeout.getToken()).longValue();
+                            timeoutValue = ((LongToken) timeout.getToken())
+                                    .longValue();
                         } catch (IllegalActionException e) {
                             // Ignore and use default of 30 seconds.
                         }
@@ -693,7 +699,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         if (_debugging) {
                             _debug("*** Request thread interrupted.");
                         }
-                        response.getWriter().println("Get request thread interrupted");
+                        response.getWriter().println(
+                                "Get request thread interrupted");
                         // Indicate that there is no longer a pending request or response.
                         _request = null;
                         _response = null;
@@ -730,17 +737,18 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          */
         private RecordToken _readCookies(HttpServletRequest request)
                 throws IllegalActionException {
-            ArrayToken labels = (ArrayToken)requestedCookies.getToken();
+            ArrayToken labels = (ArrayToken) requestedCookies.getToken();
             if (labels.length() == 0) {
                 // No cookies requested.
                 // Return an empty record.
                 return RecordToken.EMPTY_RECORD;
             }
             // First, provide default empty string values for requested cookies.
-            LinkedHashMap<String,Token> map = new LinkedHashMap<String,Token>();
+            LinkedHashMap<String, Token> map = new LinkedHashMap<String, Token>();
             StringToken emptyString = new StringToken("");
             for (int i = 0; i < labels.length(); i++) {
-                String label = ((StringToken)labels.getElement(i)).stringValue();
+                String label = ((StringToken) labels.getElement(i))
+                        .stringValue();
                 map.put(label, emptyString);
             }
             // Next, override these default values with any cookies provided in the request.
@@ -805,7 +813,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  @param cookies The cookies.
          *  @param response The HttpServletResponse to write the cookies to.
          */
-        private void _writeCookies(RecordToken cookies, HttpServletResponse response) {
+        private void _writeCookies(RecordToken cookies,
+                HttpServletResponse response) {
             // TODO:  Allow permanent cookies.  Current implementation produces
             // session cookies.  Session cookies are stored in
             // the browser's memory, and are erased when the browser is closed
@@ -814,7 +823,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 String value;
                 Token recordValue = cookies.get(label);
                 if (recordValue instanceof StringToken) {
-                    value = ((StringToken)recordValue).stringValue();
+                    value = ((StringToken) recordValue).stringValue();
                 } else {
                     value = recordValue.toString();
                 }

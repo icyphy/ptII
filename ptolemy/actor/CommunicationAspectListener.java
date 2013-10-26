@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor;
 
-
 /** This interface defines a listener for communication aspects.
  *
  *  @author Patricia Derler

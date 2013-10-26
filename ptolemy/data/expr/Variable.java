@@ -638,7 +638,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (value == null) {
             tokenString = "null";
         } else if (isStringMode()) {
-            tokenString = ((StringToken)value).stringValue();
+            tokenString = ((StringToken) value).stringValue();
         } else {
             tokenString = value.toString();
         }
@@ -829,9 +829,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // Warn if there are variables that depend on this one.
         if (container != previousContainer && previousContainer != null
                 && _valueListeners != null && _valueListeners.size() > 0) {
-            if (!MessageHandler.yesNoQuestion("WARNING: There are variables depending on " + getName() + ". Continue?")) {
+            if (!MessageHandler
+                    .yesNoQuestion("WARNING: There are variables depending on "
+                            + getName() + ". Continue?")) {
                 // Cancel.
-                throw new IllegalActionException(this, "Cancelled change of container.");
+                throw new IllegalActionException(this,
+                        "Cancelled change of container.");
             }
         }
 
@@ -1006,7 +1009,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                             // string mode if the listener is in string mode so
                             // referenced variables are correctly renamed. See:
                             // https://projects.ecoinformatics.org/ecoinfo/issues/5723
-                            writer.setStringMode(((Variable) listener).isStringMode());
+                            writer.setStringMode(((Variable) listener)
+                                    .isStringMode());
                             ((Variable) listener)
                                     .setExpression(writer
                                             .parseTreeToExpression(((Variable) listener)._parseTree));
@@ -1662,10 +1666,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // to itself.
         if (_dependencyLoop && _needsEvaluation) {
             _dependencyLoop = false;
-            throw new CircularDependencyError(this, "There is a dependency loop"
-                    + " where " + getFullName() + " directly or indirectly"
-                    + " refers to itself in its expression: "
-                    + _currentExpression);
+            throw new CircularDependencyError(this,
+                    "There is a dependency loop" + " where " + getFullName()
+                            + " directly or indirectly"
+                            + " refers to itself in its expression: "
+                            + _currentExpression);
         }
 
         _dependencyLoop = true;
@@ -1796,8 +1801,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                             // There are a bunch of things that need to be fixed, but there are also
                             // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
                             // that refer to parameter not present when the model is parsed.
-                            System.out.println("The message below is a Warning, and can be ignored.");
-                            System.out.println("See https://projects.ecoinformatics.org/ecoinfo/issues/6000");
+                            System.out
+                                    .println("The message below is a Warning, and can be ignored.");
+                            System.out
+                                    .println("See https://projects.ecoinformatics.org/ecoinfo/issues/6000");
                             System.out.println("####  Start of Warning ####");
                             new IllegalActionException(this, ex,
                                     "Warning:, there was a problem propagating \""
@@ -1857,7 +1864,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 // if it is no longer in scope.
                 if (listener instanceof Variable) {
                     try {
-                        if (((Variable)listener).getVariable(getName()) != this) {
+                        if (((Variable) listener).getVariable(getName()) != this) {
                             // This variable is no longer in the scope of the listener.
                             listeners.remove();
                             continue;
@@ -1962,8 +1969,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // 1) a type was declared that has elements of type unknown
             // 2) no type was declared
             // otherwise, set _varType to _declaredType
-            if (_declaredType instanceof StructuredType && !_declaredType.isConstant()) {
-                  ((StructuredType) _varType)
+            if (_declaredType instanceof StructuredType
+                    && !_declaredType.isConstant()) {
+                ((StructuredType) _varType)
                         .updateType((StructuredType) newToken.getType());
             } else if (_declaredType.equals(BaseType.UNKNOWN)) {
                 // this could be either a structured or basic type
@@ -2159,8 +2167,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public Type getType(String name)
-                throws IllegalActionException {
+        public Type getType(String name) throws IllegalActionException {
             NamedObj reference;
             if (_reference == null) {
                 reference = Variable.this.getContainer();

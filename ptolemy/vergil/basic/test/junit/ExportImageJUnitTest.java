@@ -27,6 +27,7 @@
  */
 
 package ptolemy.vergil.basic.test.junit;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -163,7 +164,8 @@ public class ExportImageJUnitTest {
                     try {
                         System.out.print(" " + formatName + " ");
                         File imageFile = File.createTempFile(
-                                model[0].getName(), formatName.toLowerCase(Locale.getDefault()));
+                                model[0].getName(),
+                                formatName.toLowerCase(Locale.getDefault()));
                         imageFile.deleteOnExit();
                         OutputStream out = null;
                         try {

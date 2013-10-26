@@ -103,6 +103,6 @@ public class OrderedRecordAssembler extends RecordAssembler {
         RecordToken result = new OrderedRecordToken(labels, values);
 
         output.send(0, result);
-     }
+    }
 
 }

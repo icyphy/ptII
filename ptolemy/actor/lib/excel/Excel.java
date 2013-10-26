@@ -210,7 +210,8 @@ public class Excel extends TypedAtomicActor {
 
         try {
             if (workbook == null) {
-                throw new NullPointerException("The workbook was not initialized?");
+                throw new NullPointerException(
+                        "The workbook was not initialized?");
             } else {
                 // Excel output
                 workbook.write();

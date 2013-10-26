@@ -503,10 +503,11 @@ public class JarSigner {
             while (metaEntries.hasMoreElements()) {
                 JarEntry metaEntry = (JarEntry) metaEntries.nextElement();
                 if (metaEntry.getName().startsWith("META-INF")
-                        && !(manifestFileName.equalsIgnoreCase(metaEntry.getName())
+                        && !(manifestFileName.equalsIgnoreCase(metaEntry
+                                .getName())
                                 || signatureFileName.equalsIgnoreCase(metaEntry
                                         .getName()) || signatureBlockName
-                                .equalsIgnoreCase(metaEntry.getName()))) {
+                                    .equalsIgnoreCase(metaEntry.getName()))) {
                     _writeJarEntry(metaEntry, jarFile, jarOutputStream);
                 }
             }

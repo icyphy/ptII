@@ -146,7 +146,8 @@ public class AttributesListPanel extends JPanel {
         try {
 
             AttributesManager attributeManager = new AttributesManager();
-            List<XMLDBAttribute> xmlAttList = attributeManager.getDBAttributes();
+            List<XMLDBAttribute> xmlAttList = attributeManager
+                    .getDBAttributes();
 
             for (XMLDBAttribute a : xmlAttList) {
 

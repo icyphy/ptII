@@ -39,8 +39,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 @version $Id$
 @since Ptolemy II 10.0
  */
-public class CurrentMicrostep
-        extends NamedProgramCodeGeneratorAdapter {
+public class CurrentMicrostep extends NamedProgramCodeGeneratorAdapter {
     /**
      *  Construct a CurrentMicrostep adapter.
      *  @param actor The given ptolemy.actor.lib.CurrentMicrostep actor.

@@ -27,6 +27,7 @@
 */
 
 package ptolemy.util.test.junit;
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;

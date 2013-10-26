@@ -136,7 +136,7 @@ public class WebServer extends AbstractInitializableAttribute {
         }
         resourceLocation.setExpression(path);
 
-        temporaryFileLocation = new FileParameter(this,"temporaryFileLocation");
+        temporaryFileLocation = new FileParameter(this, "temporaryFileLocation");
         temporaryFileLocation.setExpression("$TMPDIR");
     }
 
@@ -349,9 +349,10 @@ public class WebServer extends AbstractInitializableAttribute {
         // Throw an exception if the model does not have a name
         try {
             _appInfo = new WebApplicationInfo(modelName, applicationPathString,
-                temporaryFileLocation);
+                    temporaryFileLocation);
         } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Failed to create WebApplicationInfo");
+            throw new IllegalActionException(this, e,
+                    "Failed to create WebApplicationInfo");
         }
 
         // Collect requested servlet mappings from all model objects
@@ -360,10 +361,11 @@ public class WebServer extends AbstractInitializableAttribute {
         // Also, now it only looks for entities, and it does not penetrate opaque composites.
         NamedObj container = getContainer();
         if (!(container instanceof CompositeEntity)) {
-            throw new IllegalActionException(this, "Container is required to be a CompositeEntity.");
+            throw new IllegalActionException(this,
+                    "Container is required to be a CompositeEntity.");
         }
-        List<Entity> entities =
-                   ((CompositeEntity)container).allAtomicEntityList();
+        List<Entity> entities = ((CompositeEntity) container)
+                .allAtomicEntityList();
         for (Entity entity : entities) {
             if (entity instanceof HttpService) {
                 HttpService service = (HttpService) entity;
@@ -381,11 +383,15 @@ public class WebServer extends AbstractInitializableAttribute {
                 try {
                     _appInfo.addServletInfo(path, service.getServlet());
                 } catch (Exception e) {
-                    throw new IllegalActionException(this, "Actor " +
-                    entity.getName() + " requested the web service URL "
-                    + path + " , but this URL has already been claimed "
-                    + "by another actor or by a resource in this WebServer."
-                    + "  Please specify a unique URL.");
+                    throw new IllegalActionException(
+                            this,
+                            "Actor "
+                                    + entity.getName()
+                                    + " requested the web service URL "
+                                    + path
+                                    + " , but this URL has already been claimed "
+                                    + "by another actor or by a resource in this WebServer."
+                                    + "  Please specify a unique URL.");
                 }
             }
         }
@@ -400,58 +406,58 @@ public class WebServer extends AbstractInitializableAttribute {
         HashSet<URL> seen = new HashSet<URL>();
         for (FileParameter base : bases) {
             // If blank, omit
-            if (base.getExpression() != null
-                    && !base.getExpression().isEmpty()) {
-            try {
+            if (base.getExpression() != null && !base.getExpression().isEmpty()) {
+                try {
 
-                // Use the ClassLoader to obtain the location (vs. specifying
-                // a directory on the file system), so that the demos
-                // can also be run from within a .jar file
+                    // Use the ClassLoader to obtain the location (vs. specifying
+                    // a directory on the file system), so that the demos
+                    // can also be run from within a .jar file
 
-                // If expression starts with $PTII/ , strip this
-                // Assumes .jar file uses $PTII as root location
-                // Assumes full path is given
-                // TODO:  What to do about paths relative to model's location?
-                // Would these work?  None are used so far.
-                String expression = base.getExpression();
-                if (expression.startsWith("$PTII/")) {
-                    expression = expression.substring(6);
-                }
-
-                // Get directory.  Add trailing "/"
-                // Try ClassLoader first to resolve any directories within
-                // Ptolemy tree.  If the directory is not part of the tree
-                // (e.g. $TMPDIR), the ClassLoader will not find it, so then
-                // use the expression directly
-                URL baseURL;
-
-                if (this.getClass().getClassLoader().getResource(expression)
-                        != null) {
-                    baseURL = new URL(this.getClass().getClassLoader()
-                            .getResource(expression).toExternalForm() + "/");
-                } else {
-                    baseURL = base.asURL();
-                }
-
-                if (baseURL != null) {
-                    URL baseAsURL = base.asURL();
-                    if (seen.contains(baseAsURL)) {
-                        continue;
+                    // If expression starts with $PTII/ , strip this
+                    // Assumes .jar file uses $PTII as root location
+                    // Assumes full path is given
+                    // TODO:  What to do about paths relative to model's location?
+                    // Would these work?  None are used so far.
+                    String expression = base.getExpression();
+                    if (expression.startsWith("$PTII/")) {
+                        expression = expression.substring(6);
                     }
-                    seen.add(baseAsURL);
-                    if (_debugging) {
-                        _debug("Adding resource location: " + baseAsURL);
+
+                    // Get directory.  Add trailing "/"
+                    // Try ClassLoader first to resolve any directories within
+                    // Ptolemy tree.  If the directory is not part of the tree
+                    // (e.g. $TMPDIR), the ClassLoader will not find it, so then
+                    // use the expression directly
+                    URL baseURL;
+
+                    if (this.getClass().getClassLoader()
+                            .getResource(expression) != null) {
+                        baseURL = new URL(this.getClass().getClassLoader()
+                                .getResource(expression).toExternalForm()
+                                + "/");
+                    } else {
+                        baseURL = base.asURL();
                     }
-                    resourceLocations.add(new FileResource(baseAsURL));
+
+                    if (baseURL != null) {
+                        URL baseAsURL = base.asURL();
+                        if (seen.contains(baseAsURL)) {
+                            continue;
+                        }
+                        seen.add(baseAsURL);
+                        if (_debugging) {
+                            _debug("Adding resource location: " + baseAsURL);
+                        }
+                        resourceLocations.add(new FileResource(baseAsURL));
+                    }
+                } catch (URISyntaxException e2) {
+                    throw new IllegalActionException(this,
+                            "Resource base is not a valid URI: "
+                                    + base.stringValue());
+                } catch (IOException e3) {
+                    throw new IllegalActionException(this,
+                            "Can't access resource base: " + base.stringValue());
                 }
-            } catch (URISyntaxException e2) {
-                throw new IllegalActionException(this,
-                        "Resource base is not a valid URI: "
-                                + base.stringValue());
-            } catch (IOException e3) {
-                throw new IllegalActionException(this,
-                        "Can't access resource base: " + base.stringValue());
-            }
             }
         }
 
@@ -459,21 +465,22 @@ public class WebServer extends AbstractInitializableAttribute {
         // duplicate path is requested
         try {
             _appInfo.addResourceInfo(new URI(resourcePath.stringValue()),
-                resourceLocations);
+                    resourceLocations);
         } catch (URISyntaxException e) {
-            throw new IllegalActionException(this, "Resource path is not a " +
-                            "valid URI.");
+            throw new IllegalActionException(this, "Resource path is not a "
+                    + "valid URI.");
         } catch (Exception e2) {
-            throw new IllegalActionException(this, e2, "Failed to add resource info.");
+            throw new IllegalActionException(this, e2,
+                    "Failed to add resource info.");
         }
 
         try {
             _serverManager.register(_appInfo, _portNumber);
         } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Failed to register web server.");
+            throw new IllegalActionException(this, e,
+                    "Failed to register web server.");
         }
     }
-
 
     /** Unregister this application with the web server manager.
      *
@@ -489,7 +496,8 @@ public class WebServer extends AbstractInitializableAttribute {
         } catch (Exception e) {
             // Do not throw an exception here, because it will mask an exception
             // that occurred during trying to register the server.
-            System.err.println("Warning: Failed to unregister web server.\n" + e);
+            System.err.println("Warning: Failed to unregister web server.\n"
+                    + e);
         }
     }
 

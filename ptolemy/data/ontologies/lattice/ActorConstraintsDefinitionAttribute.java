@@ -237,18 +237,20 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                         _constraintTermExpressions.add(constraintExpression);
                     }
 
-                    List<Attribute> attributes = tempActorInstance.attributeList();
+                    List<Attribute> attributes = tempActorInstance
+                            .attributeList();
                     for (Attribute actorAttribute : attributes) {
                         // If the attribute is not visible, skip it.
                         if (!(attribute instanceof Settable)
-                                || !((Settable)attribute).getVisibility().equals(Settable.FULL)) {
+                                || !((Settable) attribute).getVisibility()
+                                        .equals(Settable.FULL)) {
                             continue;
                         }
                         // Also skip the attribute if the name starts with an underscore.
                         if (!actorAttribute.getName().startsWith("_")) {
                             StringParameter constraintExpression = new StringParameter(
                                     this,
-                                    createConstraintParameterName((NamedObj) actorAttribute));
+                                    createConstraintParameterName(actorAttribute));
                             // Include no constraints by default.
                             constraintExpression.setExpression(NO_CONSTRAINTS);
 
@@ -259,7 +261,8 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             constraintExpression.addChoice(LTE);
                             constraintExpression.addChoice(EQ);
 
-                            _constraintTermExpressions.add(constraintExpression);
+                            _constraintTermExpressions
+                                    .add(constraintExpression);
                         }
                     }
                     tempActorInstance.setContainer(null);

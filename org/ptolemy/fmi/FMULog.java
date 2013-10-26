@@ -64,12 +64,12 @@ public class FMULog {
      *  @param message The message in printf format
      */
     public static void log(FMIModelDescription modelDescription,
-            Pointer fmiComponent, String instanceName,
-            int status, String category, String message) {
+            Pointer fmiComponent, String instanceName, int status,
+            String category, String message) {
 
         // We need the ffi_cif so we can call the new Native.ffi_closure_va_*
         // functions which allow us to access variadic arguments.
-        long ffi_cif = Pointer.nativeCif (fmiComponent);
+        long ffi_cif = Pointer.nativeCif(fmiComponent);
 
         // FIXME: Need to handle the fmi-specific # format:
         // #<Type><valueReference#, where <Type> is one of
@@ -92,7 +92,9 @@ public class FMULog {
                     // Skip over all the formatting parts besides the
                     // conversion at the end.
                     // XXX There must be a better way...
-                    final char[] conversions = new char[] { 'd', 'i', 'o', 'x', 'X', 'e', 'E', 'f', 'F', 'g', 'G', 'a', 'A', 'c', 's', 'p', 'n', 'u', '%' };
+                    final char[] conversions = new char[] { 'd', 'i', 'o', 'x',
+                            'X', 'e', 'E', 'f', 'F', 'g', 'G', 'a', 'A', 'c',
+                            's', 'p', 'n', 'u', '%' };
 
                     // Find the conversion
                     StringBuffer flags = new StringBuffer();
@@ -111,7 +113,7 @@ public class FMULog {
                                 break;
                             }
                         }
-                        if (! foundConversion) {
+                        if (!foundConversion) {
                             flags.append(msg[i]);
                             i++;
                         }
@@ -120,16 +122,23 @@ public class FMULog {
                     switch (msg[i]) {
                     case 'd':
                     case 'i':
-                        out.append(String.format("%" + flags.toString() + msg[i],
-                                                 foundLong ? Native.ffi_closure_va_sint64(ffi_cif) : Native.ffi_closure_va_sint32(ffi_cif)));
+                        out.append(String.format(
+                                "%" + flags.toString() + msg[i],
+                                foundLong ? Native
+                                        .ffi_closure_va_sint64(ffi_cif)
+                                        : Native.ffi_closure_va_sint32(ffi_cif)));
                         break;
 
                     case 'o': // Unsigned octal
                     case 'x': // Unsigned hex
                     case 'X': // Unsigned hex
                     case 'u': // Unsigned decimal which must be converted to 'd' since String.format() doesnot handle it.
-                        out.append(String.format("%" + flags.toString() + (msg[i] == 'u' ? 'd' : msg[i]),
-                                        foundLong ? Native.ffi_closure_va_uint64(ffi_cif) : Native.ffi_closure_va_uint32(ffi_cif)));
+                        out.append(String.format(
+                                "%" + flags.toString()
+                                        + (msg[i] == 'u' ? 'd' : msg[i]),
+                                foundLong ? Native
+                                        .ffi_closure_va_uint64(ffi_cif)
+                                        : Native.ffi_closure_va_uint32(ffi_cif)));
                         break;
 
                     // DOU are deprecated.  Does FMI support them?
@@ -142,24 +151,27 @@ public class FMULog {
                     case 'a':
                     case 'A':
                         // XXX Can you handle a long double in Java?  Not checking foundLong
-                        out.append(String.format("%" + flags.toString() + msg[i],
-                                   Native.ffi_closure_va_double(ffi_cif)));
+                        out.append(String.format("%" + flags.toString()
+                                + msg[i], Native.ffi_closure_va_double(ffi_cif)));
                         break;
 
                     case 'c': // Unsigned char
                         // Assuming 1 byte char
-                        out.append(String.format("%" + flags.toString() + msg[i],
-                                                 (char)Native.ffi_closure_va_uint8(ffi_cif)));
+                        out.append(String.format("%" + flags.toString()
+                                + msg[i],
+                                (char) Native.ffi_closure_va_uint8(ffi_cif)));
                         break;
 
                     case 's': // String
                         // C strings: Read until you hit NUL (utf-8 is NUL safe).
                         out.append(String.format("%" + flags.toString() + "s",
-                                                 Native.ffi_closure_va_pointer(ffi_cif).getString(0)));
+                                Native.ffi_closure_va_pointer(ffi_cif)
+                                        .getString(0)));
                         break;
 
                     case 'p': // Pointer
-                        out.append(Pointer.nativeValue(Native.ffi_closure_va_pointer(ffi_cif)));
+                        out.append(Pointer.nativeValue(Native
+                                .ffi_closure_va_pointer(ffi_cif)));
                         break;
 
                     case 'n':
@@ -222,8 +234,14 @@ public class FMULog {
             }
             // The format is from FMUSDK.  Please do not change it, we
             // want to keep compatibility with FMUSDK.
-            System.out.println(FMULogUtilities.fmiStatusToString(status) + " " + instanceName + "(" + category + "): "
-                    + FMULogUtilities.replaceVariableReferences(modelDescription, out.toString()));
+            System.out.println(FMULogUtilities.fmiStatusToString(status)
+                    + " "
+                    + instanceName
+                    + "("
+                    + category
+                    + "): "
+                    + FMULogUtilities.replaceVariableReferences(
+                            modelDescription, out.toString()));
         }
     }
 }

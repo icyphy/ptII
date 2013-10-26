@@ -28,6 +28,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Insets;
@@ -297,8 +298,8 @@ public class LayoutConstraintsManager {
                             xmlEncoder.setOwner(component);
 
                             String methodName = "set"
-                                    + propertyName.substring(0, 1)
-                                            .toUpperCase(Locale.getDefault())
+                                    + propertyName.substring(0, 1).toUpperCase(
+                                            Locale.getDefault())
                                     + (propertyName.length() > 1 ? propertyName
                                             .substring(1) : "");
                             xmlEncoder.writeStatement(new Statement(xmlEncoder,

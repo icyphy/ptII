@@ -248,8 +248,8 @@ public class AudioViewer extends PlotApplication {
                 out = new FileOutputStream(_file);
                 _sound.write(new DataOutputStream(out));
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Error writing file \"" + _file + "\". "+ ex, "AudioViewer error",
+                JOptionPane.showMessageDialog(this, "Error writing file \""
+                        + _file + "\". " + ex, "AudioViewer error",
                         JOptionPane.ERROR_MESSAGE);
             } finally {
                 if (out != null) {
@@ -257,8 +257,8 @@ public class AudioViewer extends PlotApplication {
                         out.close();
                     } catch (IOException ex2) {
                         JOptionPane.showMessageDialog(this,
-                                "Error closing file \"" + _file + "\". "+ ex2, "AudioViewer error",
-                                JOptionPane.ERROR_MESSAGE);
+                                "Error closing file \"" + _file + "\". " + ex2,
+                                "AudioViewer error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

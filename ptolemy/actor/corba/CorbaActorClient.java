@@ -169,7 +169,8 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  for the variables and parameters.
      *  @exception IllegalActionException If thrown by the base class.
      */
-    public void attributeTypeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeTypeChanged(Attribute attribute)
+            throws IllegalActionException {
         _typesValid = false; // Set flag to invalidate cached type constraints
         super.attributeChanged(attribute);
     }

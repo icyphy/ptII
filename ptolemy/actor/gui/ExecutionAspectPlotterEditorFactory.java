@@ -51,7 +51,8 @@ import ptolemy.plot.Plot;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class ExecutionAspectPlotterEditorFactory extends EditorFactory implements ExecutionAspectListener {
+public class ExecutionAspectPlotterEditorFactory extends EditorFactory
+        implements ExecutionAspectListener {
 
     /**
      * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
@@ -142,28 +143,21 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
             if (_previousY.get(actor) == null) {
                 _previousY.put(actor, (double) actorDataset);
             }
-            plot.addPoint(actorDataset, x,
-                    _previousY.get(actor), true);
+            plot.addPoint(actorDataset, x, _previousY.get(actor), true);
             _previousY.put(actor, (double) actorDataset);
         } else if (scheduleEvent == ExecutionEventType.START) {
-            plot.addPoint(actorDataset, x,
-                    _previousY.get(actor), true);
-            plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
+            plot.addPoint(actorDataset, x, _previousY.get(actor), true);
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
             _previousY.put(actor, actorDataset + 0.6);
         } else if (scheduleEvent == ExecutionEventType.STOP) {
             if (_previousY.get(actor) != actorDataset) {
-                plot.addPoint(actorDataset, x,
-                        actorDataset + 0.6, true);
-                plot.addPoint(actorDataset, x,
-                        actorDataset, true);
+                plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
+                plot.addPoint(actorDataset, x, actorDataset, true);
             }
             _previousY.put(actor, (double) actorDataset);
         } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
-            plot.addPoint(actorDataset, x,
-                    actorDataset + 0.6, true);
-            plot.addPoint(actorDataset, x,
-                    actorDataset + 0.4, true);
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
+            plot.addPoint(actorDataset, x, actorDataset + 0.4, true);
             _previousY.put(actor, actorDataset + 0.4);
         }
         plot.fillPlot();
@@ -192,13 +186,13 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
         plot.clearLegends();
         plot.clear(false);
         plot.addLegend(_actors.size() - 1, _scheduler.getName());
-        _previousY.put((NamedObj) _scheduler, Double.valueOf(_actors.size() - 1));
+        _previousY.put((NamedObj) _scheduler,
+                Double.valueOf(_actors.size() - 1));
         plot.clear(false);
         plot.clearLegends();
 
         for (NamedObj actor : _actors) {
-            plot.addLegend(
-                    _actors.indexOf(actor), actor.getName());
+            plot.addLegend(_actors.indexOf(actor), actor.getName());
             event(actor, 0.0, null);
             _previousY.put(actor, Double.valueOf(_actors.indexOf(actor)));
         }

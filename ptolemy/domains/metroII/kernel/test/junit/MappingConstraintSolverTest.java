@@ -103,7 +103,7 @@ public class MappingConstraintSolverTest extends TestCase {
         assertEquals(Event.Status.PROPOSED, eventC.getStatus());
         assertEquals(Event.Status.PROPOSED, eventD.getStatus());
         assertEquals(Event.Status.PROPOSED, eventE.getStatus());
-        assertEquals(Event.Status.WAITING,  eventF.getStatus());
+        assertEquals(Event.Status.WAITING, eventF.getStatus());
         assertEquals(Event.Status.PROPOSED, eventG.getStatus());
 
         assertEquals(solver.numConstraints(), 5);

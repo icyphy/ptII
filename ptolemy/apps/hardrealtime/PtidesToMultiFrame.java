@@ -60,7 +60,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// PtidesToMultiFrame
 
@@ -136,7 +135,8 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *    if the minimum interarrival time is not sufficiently large.
      * @throws NameDuplicationException If creating a multiframe task throws it.
      */
-    public TypedCompositeActor generateMultiFrameSystem(Class<? extends Director> directorClass)
+    public TypedCompositeActor generateMultiFrameSystem(
+            Class<? extends Director> directorClass)
             throws IllegalActionException, NameDuplicationException {
         _multiFrameSystem = new TypedCompositeActor();
         // Call preinitialize of the Ptides platform to calculate
@@ -144,10 +144,14 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
         ((TypedCompositeActor) getContainer()).preinitialize();
         // Add EDF director to multiframe system.
         try {
-            Director multiFrameScheduler = directorClass.getDeclaredConstructor(CompositeEntity.class, String.class).newInstance(_multiFrameSystem, "EDF");
-            multiFrameScheduler.stopTime.setExpression(_MULTIFRAME_TASK_SYSTEM_STOP_TIME + "");
+            Director multiFrameScheduler = directorClass
+                    .getDeclaredConstructor(CompositeEntity.class, String.class)
+                    .newInstance(_multiFrameSystem, "EDF");
+            multiFrameScheduler.stopTime
+                    .setExpression(_MULTIFRAME_TASK_SYSTEM_STOP_TIME + "");
         } catch (Throwable ex) {
-            throw new InternalErrorException("Could not create a director of type " + directorClass);
+            throw new InternalErrorException(
+                    "Could not create a director of type " + directorClass);
         }
 
         for (Channel inputChannel : _getProgramInputChannels()) {
@@ -160,20 +164,29 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
             double time = 0.0;
             while (pendingChannels.size() > 0) {
                 // Find pending channel that has the minimum release time.
-                int mininumReleaseTimeIndex = _findMinimumReleaseTime(pendingChannels, pendingPathDelays);
-                Channel minimumReleaseTimeChannel = pendingChannels.get(mininumReleaseTimeIndex);
-                Double minimumReleaseTimePathDelay = pendingPathDelays.get(mininumReleaseTimeIndex);
-                double minimumReleaseTime = _getChannelPathReleaseTime(minimumReleaseTimeChannel, minimumReleaseTimePathDelay);
+                int mininumReleaseTimeIndex = _findMinimumReleaseTime(
+                        pendingChannels, pendingPathDelays);
+                Channel minimumReleaseTimeChannel = pendingChannels
+                        .get(mininumReleaseTimeIndex);
+                Double minimumReleaseTimePathDelay = pendingPathDelays
+                        .get(mininumReleaseTimeIndex);
+                double minimumReleaseTime = _getChannelPathReleaseTime(
+                        minimumReleaseTimeChannel, minimumReleaseTimePathDelay);
                 pendingChannels.remove(mininumReleaseTimeIndex);
                 pendingPathDelays.remove(mininumReleaseTimeIndex);
 
                 // Instantiate task frame that corresponds to path to channel.
-                Actor downstreamActor = (Actor) minimumReleaseTimeChannel._port.getContainer();
+                Actor downstreamActor = (Actor) minimumReleaseTimeChannel._port
+                        .getContainer();
                 double actorOffset = 0.0;
                 double actorRelativeDeadline = 0.0;
                 try {
-                    actorOffset = ((DoubleToken) ((Parameter) minimumReleaseTimeChannel._port.getAttribute("delayOffset")).getToken()).doubleValue();
-                    actorRelativeDeadline = ((DoubleToken)((Parameter) minimumReleaseTimeChannel._port.getAttribute("relativeDeadline")).getToken()).doubleValue();
+                    actorOffset = ((DoubleToken) ((Parameter) minimumReleaseTimeChannel._port
+                            .getAttribute("delayOffset")).getToken())
+                            .doubleValue();
+                    actorRelativeDeadline = ((DoubleToken) ((Parameter) minimumReleaseTimeChannel._port
+                            .getAttribute("relativeDeadline")).getToken())
+                            .doubleValue();
                 } catch (IllegalActionException ex) {
                     // We will get here if accessing the delay offset of the port or its relative deadline fails.
                     // Since we explicitly preinitialize the Ptides platform, we should not get here.
@@ -181,20 +194,24 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
                 }
                 double deadline = actorOffset + actorRelativeDeadline;
                 double actorExecutionTime = _getActorExecutionTime(downstreamActor);
-                _addTaskFrame(downstreamActor, minimumReleaseTime - time, actorExecutionTime, deadline);
+                _addTaskFrame(downstreamActor, minimumReleaseTime - time,
+                        actorExecutionTime, deadline);
                 time = minimumReleaseTime;
 
                 // Add actor output channels to pending set.
                 for (Channel outputChannel : _getActorOutputChannels(downstreamActor)) {
                     pendingChannels.add(outputChannel);
-                    pendingPathDelays.add(minimumReleaseTimePathDelay + _getActorDelay(downstreamActor));
+                    pendingPathDelays.add(minimumReleaseTimePathDelay
+                            + _getActorDelay(downstreamActor));
                 }
             }
             double minimumInterarrivalTime = _getInputChannelMinimumInterarrivalTime(inputChannel);
             if (minimumInterarrivalTime < time) {
-                throw new IllegalActionException("Cannot translate to multiframe task, minimum interarrival time input port is not sufficiently large.");
+                throw new IllegalActionException(
+                        "Cannot translate to multiframe task, minimum interarrival time input port is not sufficiently large.");
             }
-            _linkTaskFrames(_lastTaskFrame, _firstTaskFrame, (int) Math.round(minimumInterarrivalTime - time));
+            _linkTaskFrames(_lastTaskFrame, _firstTaskFrame,
+                    (int) Math.round(minimumInterarrivalTime - time));
         }
         return _multiFrameSystem;
     }
@@ -222,8 +239,9 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
     private void _addMultiFrameTask(Channel inputChannel)
             throws IllegalActionException, NameDuplicationException {
         IOPort ptidesInputPort = _getInputPortFromInputChannel(inputChannel);
-        _multiFrameTask = new MultiFrameTask(_multiFrameSystem, ptidesInputPort.getName());
-        _multiFrameTaskActorNames = new HashMap<String,Integer>();
+        _multiFrameTask = new MultiFrameTask(_multiFrameSystem,
+                ptidesInputPort.getName());
+        _multiFrameTaskActorNames = new HashMap<String, Integer>();
         _lastTaskFrame = _firstTaskFrame = null;
     }
 
@@ -234,7 +252,9 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      * @param relativeDeadline
      * @throws IllegalActionException If attributedChanged throws it.
      */
-    private void _addTaskFrame(Actor actor, double separation, double executionTime, double relativeDeadline) throws IllegalActionException {
+    private void _addTaskFrame(Actor actor, double separation,
+            double executionTime, double relativeDeadline)
+            throws IllegalActionException {
         String taskFrameName = actor.getName();
         if (_multiFrameTaskActorNames.containsKey(actor.getName())) {
             int index = _multiFrameTaskActorNames.get(actor.getName());
@@ -256,7 +276,8 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
             // If this is not the first frame
             taskFrame.initial.setExpression("false");
             // Link with the last frame
-            _linkTaskFrames(_lastTaskFrame, taskFrame, (int) Math.round(separation));
+            _linkTaskFrames(_lastTaskFrame, taskFrame,
+                    (int) Math.round(separation));
         } else {
             // If it is the fist frame, set initialFrame to true
             _firstTaskFrame = taskFrame;
@@ -268,16 +289,19 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
         _lastTaskFrame = taskFrame;
     }
 
-    private int _findMinimumReleaseTime(List<Channel> channels, List<Double> pathDelays) {
+    private int _findMinimumReleaseTime(List<Channel> channels,
+            List<Double> pathDelays) {
         Channel minimumReleaseTimeChannel = channels.get(0);
         Double minimumReleaseTimePathDelay = pathDelays.get(0);
-        double minimumReleaseTime = _getChannelPathReleaseTime(minimumReleaseTimeChannel, minimumReleaseTimePathDelay);
+        double minimumReleaseTime = _getChannelPathReleaseTime(
+                minimumReleaseTimeChannel, minimumReleaseTimePathDelay);
         int minimumReleaseTimeIndex = 0;
         for (int i = 0; i < channels.size(); ++i) {
             Channel pendingChannel = channels.get(i);
             Double pendingPathDelay = pathDelays.get(i);
             double channelPathReleaseTime = 0.0;
-            channelPathReleaseTime = _getChannelPathReleaseTime(pendingChannel, pendingPathDelay);
+            channelPathReleaseTime = _getChannelPathReleaseTime(pendingChannel,
+                    pendingPathDelay);
             if (channelPathReleaseTime < minimumReleaseTime) {
                 minimumReleaseTimeChannel = pendingChannel;
                 minimumReleaseTimePathDelay = pendingPathDelay;
@@ -292,7 +316,8 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
         double delay = 0.0;
         if (actor instanceof TimeDelay) {
             try {
-                delay = ((DoubleToken) ((TimeDelay) actor).minimumDelay.getToken()).doubleValue();
+                delay = ((DoubleToken) ((TimeDelay) actor).minimumDelay
+                        .getToken()).doubleValue();
             } catch (IllegalActionException e) {
                 delay = 0.0;
             }
@@ -305,7 +330,8 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
         for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
                 .attributeList(ExecutionTimeAttributes.class)) {
             try {
-                EDFScheduler scheduler = ((TypedCompositeActor) getContainer()).entityList(EDFScheduler.class).get(0);
+                EDFScheduler scheduler = ((TypedCompositeActor) getContainer())
+                        .entityList(EDFScheduler.class).get(0);
                 if (resourceAttributes.getDecorator().equals(scheduler)) {
                     Token token = resourceAttributes.executionTime.getToken();
                     if (token != null) {
@@ -325,9 +351,11 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
         for (Object outputPort : actor.outputPortList()) {
             for (Object orelation : ((Port) outputPort).linkedRelationList()) {
                 IORelation relation = (IORelation) orelation;
-                for (IOPort downstreamInputPort : relation.linkedDestinationPortList()) {
+                for (IOPort downstreamInputPort : relation
+                        .linkedDestinationPortList()) {
                     if (downstreamInputPort.getContainer() != getContainer()) {
-                        outputChannels.add(new Channel(downstreamInputPort, relation));
+                        outputChannels.add(new Channel(downstreamInputPort,
+                                relation));
                     }
                 }
             }
@@ -346,7 +374,8 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      */
     private double _getChannelPathReleaseTime(Channel channel, double pathDelay) {
         try {
-            double portDelayOffset = ((DoubleToken) ((Parameter) channel._port.getAttribute("delayOffset")).getToken()).doubleValue();
+            double portDelayOffset = ((DoubleToken) ((Parameter) channel._port
+                    .getAttribute("delayOffset")).getToken()).doubleValue();
             return pathDelay - portDelayOffset;
         } catch (IllegalActionException ex) {
             throw new RuntimeException(ex);
@@ -357,15 +386,18 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
             throws IllegalActionException {
         IOPort ptidesInputPort = _getInputPortFromInputChannel(inputChannel);
 
-        for (InputModelAttributes attribute : ptidesInputPort.attributeList(InputModelAttributes.class)) {
+        for (InputModelAttributes attribute : ptidesInputPort
+                .attributeList(InputModelAttributes.class)) {
             Token token = attribute.minimumInterarrivalTime.getToken();
             if (token != null) {
-                return ((DoubleToken) attribute.minimumInterarrivalTime.getToken()).doubleValue();
+                return ((DoubleToken) attribute.minimumInterarrivalTime
+                        .getToken()).doubleValue();
 
             }
         }
         // Best effort: go up the hierarchy and check if input port is connected to a DiscreteClock and get it's period.
-        IOPort mirrorPort = (IOPort) ptidesInputPort.deepConnectedPortList().get(0);
+        IOPort mirrorPort = (IOPort) ptidesInputPort.deepConnectedPortList()
+                .get(0);
         List<Object> outputPorts = mirrorPort.deepConnectedPortList();
         if (outputPorts.size() == 1) {
             IOPort outputPort = (IOPort) outputPorts.get(0);
@@ -383,9 +415,11 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
 
     private IOPort _getInputPortFromInputChannel(Channel inputChannel)
             throws IllegalActionException {
-        List<IOPort> upstreamPorts = inputChannel._relation.linkedSourcePortList();
+        List<IOPort> upstreamPorts = inputChannel._relation
+                .linkedSourcePortList();
         if (upstreamPorts.size() != 1) {
-            throw new IllegalActionException("Input channel is not connected to a single Ptides input port");
+            throw new IllegalActionException(
+                    "Input channel is not connected to a single Ptides input port");
         }
         return upstreamPorts.get(0);
     }
@@ -401,16 +435,20 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
             TypedIOPort port = (TypedIOPort) object;
             List relationList = port.insideRelationList();
             if (relationList.size() == 1) {
-                TypedIORelation relation = (TypedIORelation) relationList.get(0);
-                for (IOPort downstreamPort : relation.linkedDestinationPortList()) {
-                    programInputChannels.add(new Channel((TypedIOPort) downstreamPort, relation));
+                TypedIORelation relation = (TypedIORelation) relationList
+                        .get(0);
+                for (IOPort downstreamPort : relation
+                        .linkedDestinationPortList()) {
+                    programInputChannels.add(new Channel(downstreamPort,
+                            relation));
                 }
             }
         }
         return programInputChannels;
     }
 
-    private static TypedIORelation _linkTaskFrames(TaskFrame source, TaskFrame target, int separation) {
+    private static TypedIORelation _linkTaskFrames(TaskFrame source,
+            TaskFrame target, int separation) {
         CompositeEntity container = (CompositeEntity) source.getContainer();
         String relationName = source.getName() + target.getName();
         TypedIORelation relation;
@@ -418,7 +456,8 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
             relation = new TypedIORelation(container, relationName);
             source.output.link(relation);
             target.input.link(relation);
-            (new Parameter(relation, "separation")).setExpression(separation + "");
+            (new Parameter(relation, "separation")).setExpression(separation
+                    + "");
         } catch (KernelException ex) {
             // We should not get here:
             throw new RuntimeException(ex);

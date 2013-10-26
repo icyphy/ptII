@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -102,10 +103,10 @@ public class FSMActor
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append(super.generateInitializeCode());
 
-//        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
-//        State initialState = fsmActor.getInitialState();
-//
-//        _updateCurrentState(codeBuffer, initialState);
+        //        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+        //        State initialState = fsmActor.getInitialState();
+        //
+        //        _updateCurrentState(codeBuffer, initialState);
 
         return processCode(codeBuffer.toString());
     }
@@ -142,7 +143,8 @@ public class FSMActor
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
-            codeStream.append(_eol + inputPort.getType() + " " + generateName(inputPort));
+            codeStream.append(_eol + inputPort.getType() + " "
+                    + generateName(inputPort));
             if (inputPort.isMultiport()) {
                 codeStream.append("[" + inputPort.getWidth() + "]");
             }
@@ -185,31 +187,36 @@ public class FSMActor
                 .iterator();
         // add input ports
         while (inputPorts.hasNext()) {
-            if (getComponent() instanceof ModalController)
+            if (getComponent() instanceof ModalController) {
                 break;
+            }
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-            for (int i = 0; i < inputPort.getWidth() ; i++) {
-                codeBuffer.append(_eol + "if ($hasToken(" + generateSimpleName(inputPort));
-                if (inputPort.isMultiport())
+            for (int i = 0; i < inputPort.getWidth(); i++) {
+                codeBuffer.append(_eol + "if ($hasToken("
+                        + generateSimpleName(inputPort));
+                if (inputPort.isMultiport()) {
                     codeBuffer.append("#" + i);
+                }
                 codeBuffer.append("))" + _eol);
 
-                codeBuffer.append(_eol + generateName(inputPort) + " = $get(" + generateSimpleName(inputPort));
-                if (inputPort.isMultiport())
+                codeBuffer.append(_eol + generateName(inputPort) + " = $get("
+                        + generateSimpleName(inputPort));
+                if (inputPort.isMultiport()) {
                     codeBuffer.append("#" + i);
+                }
                 codeBuffer.append(");" + _eol);
             }
         }
 
         // States are numbered according to the order they are created,
         // i.e., the same order as in list returned by the method entityList().
-        codeBuffer.append("switch (" +  name + "__currentState" + ")" + _eol + "{"
-                + _eol);
+        codeBuffer.append("switch (" + name + "__currentState" + ")" + _eol
+                + "{" + _eol);
 
         for (State state : (List<State>) fsmActor.entityList()) {
             // For each state...
-            codeBuffer.append("case " + CodeGeneratorAdapter.generateName(state)
-                    + ":" + _eol);
+            codeBuffer.append("case "
+                    + CodeGeneratorAdapter.generateName(state) + ":" + _eol);
 
             // The transitions (all, preemptive or non-preemptive
             // depending on the instance of TransitionRetriever given)
@@ -241,7 +248,8 @@ public class FSMActor
                 String guard = transition.getGuardExpression();
 
                 if (transition.isDefault()
-                        || guard.toLowerCase(Locale.getDefault()).equals("true")) {
+                        || guard.toLowerCase(Locale.getDefault())
+                                .equals("true")) {
 
                     // We don't need to generate if-predicate for this,
                     // and we can skip the rest of the transitions.
@@ -257,9 +265,9 @@ public class FSMActor
                     }
                     transitionCount++;
 
-                    if (guard.compareTo("") == 0)
+                    if (guard.compareTo("") == 0) {
                         codeBuffer.append("true) ");
-                    else {
+                    } else {
 
                         PtParser parser = new PtParser();
 
@@ -282,11 +290,11 @@ public class FSMActor
                         ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
                                 .getParseTreeCodeGenerator();
 
-                        parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
-                                _scope);
+                        parseTreeCodeGenerator.evaluateParseTree(
+                                guardParseTree, _scope);
 
-                        codeBuffer
-                                .append(parseTreeCodeGenerator.generateFireCode());
+                        codeBuffer.append(parseTreeCodeGenerator
+                                .generateFireCode());
 
                         codeBuffer.append(") ");
                     }
@@ -311,7 +319,6 @@ public class FSMActor
                                 .next();
                         NamedObj destination = action
                                 .getDestination(destinationName);
-
 
                         int channel = -1;
                         if (channelNumber != null) {
@@ -382,29 +389,29 @@ public class FSMActor
                                     //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
                                     //      .getContainer().getContainer());
 
-//                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-//                                            .getAdapter(
-//                                                    ((IOPort) destination)
-//                                                            .getContainer()
-//                                                            .getContainer());
+                                    //                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                                    //                                            .getAdapter(
+                                    //                                                    ((IOPort) destination)
+                                    //                                                            .getContainer()
+                                    //                                                            .getContainer());
 
-//                                    StringBuffer containerReference = new StringBuffer();
-//
-//                                    //containerReference.append("$ref("
-//                                    //        + generateSimpleName(destination));
-//                                    containerReference.append("$new("
-//                                            + generateSimpleName(destination));
-//
-//                                    if (((IOPort) destination).isMultiport()) {
-//                                        containerReference.append("#" + i);
-//                                    }
-//
-//                                    containerReference.append(")");
-//
-//                                    codeBuffer.append(containerHelper
-//                                            .processCode(containerReference
-//                                                    .toString())
-//                                            + " = ");
+                                    //                                    StringBuffer containerReference = new StringBuffer();
+                                    //
+                                    //                                    //containerReference.append("$ref("
+                                    //                                    //        + generateSimpleName(destination));
+                                    //                                    containerReference.append("$new("
+                                    //                                            + generateSimpleName(destination));
+                                    //
+                                    //                                    if (((IOPort) destination).isMultiport()) {
+                                    //                                        containerReference.append("#" + i);
+                                    //                                    }
+                                    //
+                                    //                                    containerReference.append(")");
+                                    //
+                                    //                                    codeBuffer.append(containerHelper
+                                    //                                            .processCode(containerReference
+                                    //                                                    .toString())
+                                    //                                            + " = ");
 
                                     //sendCode.append("$send("
                                     //        + generateSimpleName(destination)
@@ -527,7 +534,8 @@ public class FSMActor
                 }
 
                 // indicates no transition is taken.
-                codeBuffer.append(_eol + modalName + "__transitionFlag = 0;" + _eol);
+                codeBuffer.append(_eol + modalName + "__transitionFlag = 0;"
+                        + _eol);
 
                 // Generate code for updating configuration number of this
                 // FSMActor's container.  Note we need this because the
@@ -552,7 +560,8 @@ public class FSMActor
         }
 
         codeBuffer.append(_eol + "}" + _eol); // end of switch statement
-        code.append(TemplateParser.unescapeName(processCode(codeBuffer.toString()))); // was initially enclosed with processCode()
+        code.append(TemplateParser.unescapeName(processCode(codeBuffer
+                .toString()))); // was initially enclosed with processCode()
     }
 
     /** A class implementing this interface implements a method to

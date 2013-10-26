@@ -43,7 +43,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 //// InputModelAttributes
 
@@ -102,8 +101,10 @@ public class InputModelAttributes extends DecoratorAttributes {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == minimumInterarrivalTime && minimumInterarrivalTime.getToken() != null) {
-            double newTime = ((DoubleToken) minimumInterarrivalTime.getToken()).doubleValue();
+        if (attribute == minimumInterarrivalTime
+                && minimumInterarrivalTime.getToken() != null) {
+            double newTime = ((DoubleToken) minimumInterarrivalTime.getToken())
+                    .doubleValue();
             if (newTime < 0) {
                 throw new IllegalActionException(getContainer(),
                         "The minimum interarrival time of an input source cannot be negative.");
@@ -126,7 +127,8 @@ public class InputModelAttributes extends DecoratorAttributes {
     /** Create the parameter. */
     private void _init() {
         try {
-            minimumInterarrivalTime = new Parameter(this, "minimum inter-arrival time");
+            minimumInterarrivalTime = new Parameter(this,
+                    "minimum inter-arrival time");
             minimumInterarrivalTime.setTypeEquals(BaseType.DOUBLE);
         } catch (KernelException ex) {
             // This should not occur.

@@ -104,11 +104,10 @@ public class NonStrictDelay extends Transformer {
      */
     public void declareDelayDependency() throws IllegalActionException {
         if (getDirector() instanceof SRDirector) {
-            _declareDelayDependency(input, output, ((SRDirector)getDirector()).periodValue());
+            _declareDelayDependency(input, output,
+                    ((SRDirector) getDirector()).periodValue());
         }
     }
-
-
 
     /** Send to the output the previous token received. If no token
      *  was received on the previous tick,

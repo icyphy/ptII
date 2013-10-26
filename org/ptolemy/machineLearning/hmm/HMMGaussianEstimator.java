@@ -1,5 +1,4 @@
 
-
 /* Parameter Estimation for Graphical Models.
 
 Copyright (c) 1998-2013 The Regents of the University of California.
@@ -83,189 +82,193 @@ the parameter estimation stops iterating and delivers the parameter estimates.
  @Pt.AcceptedRating
  */
 public class HMMGaussianEstimator extends ParameterEstimator {
-   /** Construct an actor with the given container and name.
-    *  @param container The container.
-    *  @param name The name of this actor
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public HMMGaussianEstimator(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public HMMGaussianEstimator(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       mean = new TypedIOPort(this, "mean", false, true);
-       mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        mean = new TypedIOPort(this, "mean", false, true);
+        mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-       standardDeviation = new TypedIOPort(this, "standardDeviation", false, true);
-       standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        standardDeviation = new TypedIOPort(this, "standardDeviation", false,
+                true);
+        standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-       meanVectorGuess = new Parameter(this, "meanVectorGuess");
-       meanVectorGuess.setExpression("{0.0, 4.0}");
-       meanVectorGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        meanVectorGuess = new Parameter(this, "meanVectorGuess");
+        meanVectorGuess.setExpression("{0.0, 4.0}");
+        meanVectorGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-       standardDeviationGuess = new Parameter(this, "standardDeviationGuess");
-       standardDeviationGuess.setExpression("{1.0, 1.0}");
-       standardDeviationGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        standardDeviationGuess = new Parameter(this, "standardDeviationGuess");
+        standardDeviationGuess.setExpression("{1.0, 1.0}");
+        standardDeviationGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-   }
+    }
 
-   public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
-       if (attribute == meanVectorGuess) {
-           int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
-           _mu0 = new double[nS];
-           for ( int i = 0; i < nS; i++) {
-               _mu0[i] = ((DoubleToken)((ArrayToken) meanVectorGuess.getToken()).getElement(i))
-                       .doubleValue();
-           }
-       } else if (attribute == standardDeviationGuess) {
-           int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
-           _sigma0 = new double[nS];
-           for ( int i = 0; i < nS; i++) {
-               _sigma0[i] = ((DoubleToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(i))
-                       .doubleValue();
-           }
-       } else {
-           super.attributeChanged(attribute);
-       }
-   }
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == meanVectorGuess) {
+            int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
+            _mu0 = new double[nS];
+            for (int i = 0; i < nS; i++) {
+                _mu0[i] = ((DoubleToken) ((ArrayToken) meanVectorGuess
+                        .getToken()).getElement(i)).doubleValue();
+            }
+        } else if (attribute == standardDeviationGuess) {
+            int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
+            _sigma0 = new double[nS];
+            for (int i = 0; i < nS; i++) {
+                _sigma0[i] = ((DoubleToken) ((ArrayToken) standardDeviationGuess
+                        .getToken()).getElement(i)).doubleValue();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-   public TypedIOPort mean;
+    public TypedIOPort mean;
 
-   public TypedIOPort standardDeviation;
+    public TypedIOPort standardDeviation;
 
-   public Parameter meanVectorGuess;
+    public Parameter meanVectorGuess;
 
-   public Parameter standardDeviationGuess;
+    public Parameter standardDeviationGuess;
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-       public Object clone(Workspace workspace) throws CloneNotSupportedException {
-           HMMGaussianEstimator newObject = (HMMGaussianEstimator) super
-                   .clone(workspace);
-           newObject._sigma0 = new double[_nStates];
-           newObject._mu0 = new double[_nStates];
-           return newObject;
-       }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HMMGaussianEstimator newObject = (HMMGaussianEstimator) super
+                .clone(workspace);
+        newObject._sigma0 = new double[_nStates];
+        newObject._mu0 = new double[_nStates];
+        return newObject;
+    }
 
-       public void fire() throws IllegalActionException {
-       super.fire();
+    public void fire() throws IllegalActionException {
+        super.fire();
 
-       if ((_nStates != _sigma0.length) ||(_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nStates != _mu0.length))
-       {
-           throw new IllegalActionException(this, "Parameter guess vectors must have equal lengths.");
-       }
+        if ((_nStates != _sigma0.length)
+                || (_nStates != _transitionMatrix.length)
+                || (_nStates != _priors.length) || (_nStates != _mu0.length)) {
+            throw new IllegalActionException(this,
+                    "Parameter guess vectors must have equal lengths.");
+        }
 
-       boolean converged = _EMParameterEstimation();
+        _EMParameterEstimation();
 
-       Token[] mTokens = new Token[_nStates];
-       Token[] sTokens = new Token[_nStates];
-       Token[] pTokens = new Token[_nStates];
+        Token[] mTokens = new Token[_nStates];
+        Token[] sTokens = new Token[_nStates];
+        Token[] pTokens = new Token[_nStates];
 
+        for (int i = 0; i < _nStates; i++) {
+            mTokens[i] = new DoubleToken(m_new[i]);
+            sTokens[i] = new DoubleToken(s_new[i]);
+            pTokens[i] = new DoubleToken(prior_new[i]);
+        }
+        mean.send(0, new ArrayToken(mTokens));
+        standardDeviation.send(0, new ArrayToken(sTokens));
+        transitionMatrix.send(0, new DoubleMatrixToken(A_new));
+        priorEstimates.send(0, new ArrayToken(pTokens));
+        // broadcast best-effort parameter estimates
 
-           for ( int i = 0; i< _nStates; i++) {
-               mTokens[i] = new DoubleToken(m_new[i]);
-               sTokens[i] = new DoubleToken(s_new[i]);
-               pTokens[i] = new DoubleToken(prior_new[i]);
-           }
-           mean.send(0, new ArrayToken(mTokens));
-           standardDeviation.send(0, new ArrayToken(sTokens));
-           transitionMatrix.send(0, new DoubleMatrixToken(A_new));
-           priorEstimates.send(0, new ArrayToken(pTokens));
-           // broadcast best-effort parameter estimates
+    }
 
+    protected double emissionProbability(double y, int hiddenState) {
 
+        double s = _sigma[hiddenState];
+        double m = _mu[hiddenState];
 
+        return 1.0 / (Math.sqrt(2 * Math.PI) * s)
+                * Math.exp(-0.5 * Math.pow((y - m) / s, 2));
+    }
 
-   }
-   protected double emissionProbability(double y, int hiddenState) {
+    protected boolean _checkForConvergence(int iterations) {
 
-       double s = _sigma[hiddenState];
-       double m = _mu[hiddenState];
+        if ((m_new[0] != m_new[0]) || (s_new[0] != s_new[0])
+                || (A_new[0] != A_new[0]) || (prior_new[0] != prior_new[0])) {
+            // if no convergence in 10 iterations, issue warning message.
+            if ((iterations >= _nIterations - 1)) {
+                // return the guess parameters
+                m_new = _mu0;
+                s_new = _sigma0;
+                A_new = _A0;
+                prior_new = _priors;
+                System.out
+                        .println("Expectation Maximization failed to converge");
+                return false;
+            } else if (_randomize) {
+                // randomize means
+                double minO = _observations[0];
+                double maxO = _observations[0];
+                for (int t = 0; t < _observations.length; t++) {
+                    if (_observations[t] < minO) {
+                        minO = _observations[t];
+                    }
+                    if (_observations[t] > maxO) {
+                        maxO = _observations[t];
+                    }
+                }
+                double L = maxO - minO;
+                // make new random guess
+                for (int i = 0; i < _nStates; i++) {
+                    m_new[i] = L / _nStates * Math.random() + L * i / _nStates
+                            + minO;
+                    s_new[i] = Math.abs((maxO - minO) * Math.random())
+                            / _nStates;
+                    for (int j = 0; j < _nStates; j++) {
+                        //A_new[i][j] = 1.0/nStates;
+                    }
+                }
+                A_new = _A0;
+                // sort arrays
+                Arrays.sort(m_new);
+                prior_new = _priors;
+            }
+        }
+        return true;
+    }
 
-       return 1.0/(Math.sqrt(2*Math.PI)*s)*Math.exp(-0.5*Math.pow((y-m)/s, 2));
-   }
+    protected void _initializeEMParameters() {
 
-protected boolean _checkForConvergence(int iterations) {
+        // set the initial values of parameters
+        _sigma = _sigma0;
+        _mu = _mu0;
+        _transitionMatrix = _A0;
+        _priorIn = _priors;
 
+        A_new = new double[_nStates][_nStates];
+        m_new = new double[_nStates];
+        s_new = new double[_nStates];
+        prior_new = new double[_nStates];
+    }
 
-       if ((m_new[0] != m_new[0]) || (s_new[0]!=s_new[0]) || (A_new[0]!=A_new[0]) || (prior_new[0]!=prior_new[0])) {
-           // if no convergence in 10 iterations, issue warning message.
-           if ( (iterations >= _nIterations-1)) {
-               // return the guess parameters
-               m_new = _mu0;
-               s_new = _sigma0;
-               A_new = _A0;
-               prior_new = _priors;
-               System.out.println("Expectation Maximization failed to converge");
-               return false;
-           }else if (_randomize) {
-               // randomize means
-               double minO = _observations[0];
-               double maxO = _observations[0];
-               for (int t=0; t<_observations.length; t++) {
-                   if (_observations[t] < minO) {
-                       minO = _observations[t];
-                   }
-                   if (_observations[t] > maxO) {
-                       maxO = _observations[t];
-                   }
-               }
-               double L = maxO - minO;
-               // make new random guess
-               for ( int i = 0; i< _nStates; i++) {
-                   m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO;
-                   s_new[i] = Math.abs((maxO - minO)*Math.random())/_nStates;
-                   for ( int j = 0 ; j < _nStates; j++) {
-                       //A_new[i][j] = 1.0/nStates;
-                   }
-               }
-               A_new = _A0;
-               // sort arrays
-               Arrays.sort(m_new);
-               prior_new = _priors;
-           }
-       }
-       return true;
-   }
+    protected void _iterateEM() {
 
-   protected void _initializeEMParameters() {
+        newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix,
+                _priorIn, 0);
+        m_new = (double[]) newEstimates.get("mu_hat");
+        s_new = (double[]) newEstimates.get("s_hat");
+        A_new = (double[][]) newEstimates.get("A_hat");
+        prior_new = (double[]) newEstimates.get("pi_hat");
+        likelihood = (Double) (newEstimates.get("likelihood"));
+    }
 
-    // set the initial values of parameters
-       _sigma = _sigma0;
-       _mu = _mu0;
-       _transitionMatrix = _A0;
-       _priorIn = _priors;
-
-       A_new = new double[_nStates][_nStates];
-       m_new = new double[_nStates];
-       s_new = new double[_nStates];
-       prior_new = new double[_nStates];
-   }
-
-   protected void _iterateEM() {
-
-       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn,0);
-       m_new = (double[])   newEstimates.get("mu_hat");
-       s_new = (double[])   newEstimates.get("s_hat");
-       A_new = (double[][]) newEstimates.get("A_hat");
-       prior_new = (double[]) newEstimates.get("pi_hat");
-       likelihood = (Double) (newEstimates.get("likelihood"));
-   }
-
-   protected void _updateEstimates() {
-       _transitionMatrix    = A_new;
-       _sigma = s_new;
-       _mu    = m_new;
-       _priorIn = _priors; // set to the original priors
-   }
-
+    protected void _updateEstimates() {
+        _transitionMatrix = A_new;
+        _sigma = s_new;
+        _mu = m_new;
+        _priorIn = _priors; // set to the original priors
+    }
 
     private double[] _mu;
     private double[] _mu0;
@@ -274,8 +277,8 @@ protected boolean _checkForConvergence(int iterations) {
 
     // EM Specific Parameters
     private double[][] A_new;
-    private double[]   m_new;
-    private double[]   s_new;
+    private double[] m_new;
+    private double[] s_new;
     private double[] prior_new;
 
 }

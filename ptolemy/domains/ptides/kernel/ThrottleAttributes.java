@@ -144,8 +144,7 @@ public class ThrottleAttributes extends DecoratorAttributes {
             useMaximumLookaheadTime.setExpression("false");
             useMaximumLookaheadTime.setTypeEquals(BaseType.BOOLEAN);
 
-            maximumLookaheadTime = new Parameter(this,
-                    "maximumLookaheadTime");
+            maximumLookaheadTime = new Parameter(this, "maximumLookaheadTime");
             maximumLookaheadTime.setExpression("0.0");
 
             useMaximumFutureEvents = new Parameter(this,

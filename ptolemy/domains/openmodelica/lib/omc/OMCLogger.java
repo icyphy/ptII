@@ -76,7 +76,7 @@ public class OMCLogger {
         } catch (SecurityException ex) {
             throw new IllegalActionException(ex.getMessage());
         } catch (IOException ex) {
-           throw new IllegalActionException(ex.getMessage());
+            throw new IllegalActionException(ex.getMessage());
         }
         // Set format of the log to show date and time first.
         _fileHandler.setFormatter(new Formatter() {
@@ -118,7 +118,7 @@ public class OMCLogger {
 
         if (username == null) {
             System.err
-            .println("Could not get user.name property?  Using 'nobody'.");
+                    .println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";
@@ -164,7 +164,8 @@ public class OMCLogger {
             try {
                 _omcLoggerInstance = new OMCLogger();
             } catch (IllegalActionException e) {
-              new IllegalActionException("Unable to get instance of OMCLogger!" + e.getMessage());
+                new IllegalActionException(
+                        "Unable to get instance of OMCLogger!" + e.getMessage());
             }
         }
         return _omcLoggerInstance;

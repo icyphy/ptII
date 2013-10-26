@@ -74,7 +74,7 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-            return processCode(super._generateFireCode());
+        return processCode(super._generateFireCode());
     }
 
     /*public String generateFireCode() throws IllegalActionException {
@@ -92,7 +92,7 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
-*/
+    */
     /** Return the name of the port that is the time source.
      *  @return The string "trigger".
      */

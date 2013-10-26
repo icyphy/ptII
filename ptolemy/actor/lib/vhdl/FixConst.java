@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+
 import java.util.Locale;
 
 import ptolemy.actor.TypedIOPort;

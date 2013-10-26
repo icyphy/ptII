@@ -60,8 +60,9 @@ public class StaticSchedulingDirectorAttributes extends DecoratorAttributes {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public StaticSchedulingDirectorAttributes(NamedObj target, GenericCodeGenerator decorator)
-            throws IllegalActionException, NameDuplicationException {
+    public StaticSchedulingDirectorAttributes(NamedObj target,
+            GenericCodeGenerator decorator) throws IllegalActionException,
+            NameDuplicationException {
         super(target, decorator);
         _init();
     }
@@ -104,8 +105,8 @@ public class StaticSchedulingDirectorAttributes extends DecoratorAttributes {
             padBuffers.setTypeEquals(BaseType.BOOLEAN);
             padBuffers.setExpression("true");
 
-            allowDynamicMultiportReference = new Parameter(
-                    this, "allowDynamicMultiportReference");
+            allowDynamicMultiportReference = new Parameter(this,
+                    "allowDynamicMultiportReference");
             allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
             allowDynamicMultiportReference.setExpression("false");
         } catch (KernelException ex) {

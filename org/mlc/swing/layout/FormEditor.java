@@ -28,6 +28,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -614,10 +615,12 @@ public class FormEditor extends JPanel {
                                 .get(insertIndex);
                         String testName = getComponentName(testComponent);
                         if (testName != null) {
-                            testName = testName.toUpperCase(Locale.getDefault());
+                            testName = testName
+                                    .toUpperCase(Locale.getDefault());
                         }
-                        if (insertComponentName.toUpperCase(Locale.getDefault()).compareTo(
-                                testName) <= 0) {
+                        if (insertComponentName
+                                .toUpperCase(Locale.getDefault()).compareTo(
+                                        testName) <= 0) {
                             break;
                         } else {
                             insertIndex++;

@@ -113,8 +113,8 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
      *  @param time The time when the event happened.
      *  @param event The type of the event. e.g. message received, message sent, ...
      */
-    public void event(final CommunicationAspect qm, Actor source, int messageId,
-            int messageCnt, double time, EventType event) {
+    public void event(final CommunicationAspect qm, Actor source,
+            int messageId, int messageCnt, double time, EventType event) {
 
         if (plot == null) {
             return;
@@ -163,7 +163,9 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
                 int idx = _communicationAspects.indexOf(aspect);
                 plot.addLegend(idx, ((NamedObj) aspect).getName());
                 plot.addPoint(idx, 0.0, /*idx*/0, false);
-                colors[idx] = ((ColorAttribute)((NamedObj) aspect).getAttribute(CommunicationAspect.decoratorHighlightColorName)).asColor();
+                colors[idx] = ((ColorAttribute) ((NamedObj) aspect)
+                        .getAttribute(CommunicationAspect.decoratorHighlightColorName))
+                        .asColor();
             }
 
             plot.doLayout();
@@ -198,8 +200,9 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
          *                    If the name coincides with an attribute already in
          *                    the container.
          */
-        public CommunicationAspectMonitorEditorFactory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+        public CommunicationAspectMonitorEditorFactory(NamedObj container,
+                String name) throws IllegalActionException,
+                NameDuplicationException {
             super(container, name);
         }
 

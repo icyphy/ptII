@@ -137,14 +137,16 @@ public class ImportFMUAction extends AbstractAction {
                 // Use this file chooser so that we can read URLs or files.
                 query.addFileChooser("location", "Location (URL)",
                         _lastLocation,
-                        /* URI base */ null,
-                        /* File startingDirectory */ basicGraphFrame.getLastDirectory(),
-                        /* allowFiles */ true,
-                        /* allowDirectories */ false,
+                        /* URI base */null,
+                        /* File startingDirectory */basicGraphFrame
+                                .getLastDirectory(),
+                        /* allowFiles */true,
+                        /* allowDirectories */false,
                         /* Color background */
                         PtolemyQuery.preferredBackgroundColor(_frame),
                         PtolemyQuery.preferredForegroundColor(_frame));
-                query.addCheckBox("modelExchange", "Import for Model Exchange", _lastModelExchange);
+                query.addCheckBox("modelExchange", "Import for Model Exchange",
+                        _lastModelExchange);
 
                 ComponentDialog dialog = new ComponentDialog(_frame,
                         "Instantiate Functional Mock-up Unit (FMU)", query);
@@ -168,25 +170,28 @@ public class ImportFMUAction extends AbstractAction {
 
                     // Get the associated Ptolemy model.
                     GraphController controller = basicGraphFrame.getJGraph()
-                        .getGraphPane().getGraphController();
+                            .getGraphPane().getGraphController();
                     AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                        .getGraphModel();
+                            .getGraphModel();
                     NamedObj context = model.getPtolemyModel();
 
                     // Create a temporary FileParameter so that we can use
                     // $PTII or $CLASSPATH.  The issue here is that the dialog
                     // that is brought up is a ptolemy.gui.Query, which
                     // does not know about FileParameter
-                    FileParameter fmuFileParameter = (FileParameter)context.getAttribute("_fmuFile", FileParameter.class);
+                    FileParameter fmuFileParameter = (FileParameter) context
+                            .getAttribute("_fmuFile", FileParameter.class);
                     try {
                         if (fmuFileParameter == null) {
-                            fmuFileParameter = new FileParameter(context, "_fmuFile");
+                            fmuFileParameter = new FileParameter(context,
+                                    "_fmuFile");
                         }
                         fmuFileParameter.setExpression(fmuFileName);
                         fmuFileParameter.setPersistent(false);
                         fmuFileParameter.setVisibility(Settable.EXPERT);
 
-                        FMUImport.importFMU(this, fmuFileParameter, context, x, y, _lastModelExchange);
+                        FMUImport.importFMU(this, fmuFileParameter, context, x,
+                                y, _lastModelExchange);
                     } finally {
                         // Avoid leaving a parameter in the model.
                         fmuFileParameter.setContainer(null);

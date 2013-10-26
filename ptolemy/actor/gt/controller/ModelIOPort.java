@@ -74,8 +74,8 @@ public class ModelIOPort extends RefinementPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public ModelIOPort(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public ModelIOPort(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         setTypeEquals(ActorToken.TYPE);
     }

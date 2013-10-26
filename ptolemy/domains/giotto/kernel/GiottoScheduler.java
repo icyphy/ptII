@@ -176,9 +176,11 @@ public class GiottoScheduler extends Scheduler {
             Actor actor = (Actor) actorListIterator.next();
             int frequency = 1;
             try {
-                frequency = GiottoDirector.getActorFrequency((NamedObj)actor, (GiottoDirector)getContainer());
+                frequency = GiottoDirector.getActorFrequency((NamedObj) actor,
+                        (GiottoDirector) getContainer());
             } catch (IllegalActionException e) {
-                throw new NotSchedulableException(actor, "Invalid frequency: " + e.getMessage());
+                throw new NotSchedulableException(actor, "Invalid frequency: "
+                        + e.getMessage());
             }
 
             // if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {

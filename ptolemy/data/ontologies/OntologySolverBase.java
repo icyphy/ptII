@@ -601,7 +601,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         // This was missing adapters directory for the correct package name.
         Ontology ontology = solver.getOntology();
         if (ontology == null) {
-            throw new IllegalActionException(solver, "No ontology has been given.");
+            throw new IllegalActionException(solver,
+                    "No ontology has been given.");
         }
         return solver.getClass().getPackage().getName() + ".adapters."
                 + ontology.getName();

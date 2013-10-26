@@ -134,7 +134,8 @@ public class Console extends Tableau {
          * Customized ByteArrayOutputStream. Refresh the frame whenever new
          * print-outs come in.
          */
-        public static class MyByteArrayOutputStream extends ByteArrayOutputStream {
+        public static class MyByteArrayOutputStream extends
+                ByteArrayOutputStream {
             /** Create an output stream.
              *  @param textArea The textarea that gets updated.
              *  @param tableau The tableau containing the text area.

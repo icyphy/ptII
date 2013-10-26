@@ -181,10 +181,8 @@ public class ImportG4LTLAction extends AbstractAction {
                         }
                     }
 
-                    result = G4LTL.synthesizeFromFile(solver, file, optionTechnique,
-                            unrollSteps, true);
-
-
+                    result = G4LTL.synthesizeFromFile(solver, file,
+                            optionTechnique, unrollSteps, true);
 
                     if (result.isStrategyFound() == false) {
                         // Try to see if a counter-strategy exists
@@ -199,23 +197,24 @@ public class ImportG4LTLAction extends AbstractAction {
 
                         if (option == 0) {
                             result = G4LTL.synthesizeFromFile(solver, file,
-                                    optionTechnique, unrollSteps,
-                                    false);
+                                    optionTechnique, unrollSteps, false);
                         }
 
-                        JOptionPane.showMessageDialog(null, result.getMessage1(),
-                                "G4LTL@Ptolemy II", JOptionPane.DEFAULT_OPTION,
-                                icon);
+                        JOptionPane.showMessageDialog(null,
+                                result.getMessage1(), "G4LTL@Ptolemy II",
+                                JOptionPane.DEFAULT_OPTION, icon);
                         return;
                     } else {
                         if (!Version.BSD_VERSION) {
                             if (!result.getMessage2().equals("")) {
                                 // Generate the multiplexer
-                                G4LTL.updateModel(result.getMessage2(), basicGraphFrame.getModel());
+                                G4LTL.updateModel(result.getMessage2(),
+                                        basicGraphFrame.getModel());
                             }
                         }
                     }
-                    G4LTL.updateModel(result.getMessage1(), basicGraphFrame.getModel());
+                    G4LTL.updateModel(result.getMessage1(),
+                            basicGraphFrame.getModel());
                 } catch (Exception ex) {
                     basicGraphFrame.report(new IllegalActionException(
                             basicGraphFrame.getModel(), ex,

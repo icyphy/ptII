@@ -351,6 +351,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  function. This can be used in a guard to trigger a transition.
      */
     public Parameter timeout;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -415,7 +416,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-
     /** Return false because backward type inference is not implemented
      *  for this actor.
      *  @return false
@@ -478,7 +478,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
 
         try {
-            newObject.probability.setToken(newObject.new ProbabilityFunctionToken());
+            newObject.probability
+                    .setToken(newObject.new ProbabilityFunctionToken());
             newObject.timeout.setToken(newObject.new TimeoutFunctionToken());
         } catch (IllegalActionException e) {
             // Should not occur, because it didn't occur in the object being cloned.
@@ -875,7 +876,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     // not just those that are marked immediate.
                     // The third from last ensures that we look only at
                     // non-preemptive transitions.
-                    _chooseTransitions(transitionList, false, false, false, false);
+                    _chooseTransitions(transitionList, false, false, false,
+                            false);
                 }
             }
         }
@@ -1810,8 +1812,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     }
 
-
-
     /** Set the last chosen transition. Note that this erases
      *  any previously set chosen transitions and makes the specified
      *  transition the only chosen transition, ignoring immediate
@@ -2087,11 +2087,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If something goes wrong.
      */
     protected void _chooseTransitions(List<Transition> transitionList,
-            boolean preemptive, boolean immediateOnly,
-            boolean inInitialize, boolean inPreinitialize)
-            throws IllegalActionException {
+            boolean preemptive, boolean immediateOnly, boolean inInitialize,
+            boolean inPreinitialize) throws IllegalActionException {
         Transition chosenTransition = _chooseTransition(_currentState,
-                transitionList, preemptive, immediateOnly, inInitialize, inPreinitialize);
+                transitionList, preemptive, immediateOnly, inInitialize,
+                inPreinitialize);
 
         // A self-loop that is immediate is not allowed, because if it is enabled,
         // it implied an infinite number of traversals.
@@ -2127,7 +2127,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _debug("** Checking for immediate transitions out of the next state: "
                         + nextState.getName());
             }
-
 
             // Try preemptive transitions first, then non-preemptive.
             chosenTransition = _chooseTransition(nextState, transitionList,
@@ -3001,7 +3000,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 // It makes no sense for error transitions to be preemptive,
                 // so we look only at non-preemptive error transitions.
-                _chooseTransitions(errorTransitionList, false, false, false, false);
+                _chooseTransitions(errorTransitionList, false, false, false,
+                        false);
             }
         }
     }
@@ -3202,9 +3202,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         if (destination instanceof IOPort) {
                             // This sets the parameter only for this FSMActor. If this actor
                             // is contained by a ModalModel, we need to set it for that port too.
-                            DFUtilities.setTokenInitProduction((IOPort)destination, 1);
+                            DFUtilities.setTokenInitProduction(
+                                    (IOPort) destination, 1);
                             if (getContainer() instanceof ModalModel) {
-                                IOPort port = (IOPort)((ModalModel) getContainer()).getPort(destination.getName());
+                                IOPort port = (IOPort) ((ModalModel) getContainer())
+                                        .getPort(destination.getName());
                                 if (port != null) {
                                     DFUtilities.setTokenInitProduction(port, 1);
                                 }
@@ -3371,7 +3373,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _oldThreshold = 0.0;
         }
 
-
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
         }
@@ -3437,14 +3438,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-
-    private void _createRandomGenerator() throws IllegalActionException{
+    private void _createRandomGenerator() throws IllegalActionException {
 
         _seed = ((LongToken) seed.getToken()).longValue();
         if (_seed == 0L) {
             _seed = System.currentTimeMillis() + hashCode();
-        }
-        else {
+        } else {
             _seed = _seed + getFullName().hashCode();
         }
         _randomToken = new Random(_seed);
@@ -3571,7 +3570,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             timeout.setVisibility(Settable.EXPERT);
 
             probability = new Parameter(this, "probability");
-            probability.setToken( new ProbabilityFunctionToken());
+            probability.setToken(new ProbabilityFunctionToken());
             probability.setVisibility(Settable.EXPERT);
 
             seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
@@ -4132,6 +4131,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** values of the already-evaluated probabilistic transitions within a single firing.
      * Used to keep probabilistic transitions invariant within the firing **/
     private HashMap<Transition, BooleanToken> _transitionEvaluatedTo;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -4293,48 +4293,47 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** The implementation of probabilistic transitions */
     private class ProbabilityFunction implements Function {
         @Override
-        public Token apply(Token[] arguments)
-                throws IllegalActionException {
+        public Token apply(Token[] arguments) throws IllegalActionException {
 
-            if (arguments[0] instanceof DoubleToken || arguments[0] instanceof IntToken) {
-                if ( arguments[0] instanceof IntToken) {
+            if (arguments[0] instanceof DoubleToken
+                    || arguments[0] instanceof IntToken) {
+                if (arguments[0] instanceof IntToken) {
                     // to allow expresions 0 and 1 (instead of 0.0 and 1.0)
-                    _guardProbability = (double)((IntToken)arguments[0]).intValue();
-                }
-                else {
-                    _guardProbability = ((DoubleToken)arguments[0]).doubleValue();
+                    _guardProbability = ((IntToken) arguments[0]).intValue();
+                } else {
+                    _guardProbability = ((DoubleToken) arguments[0])
+                            .doubleValue();
                 }
 
                 if (_transitionBeingTested == null) {
                     return BooleanToken.FALSE;
                 }
 
-                 // First, check if the transition has already been evaluated. If so, return the result. If not,
-                 // change threshold and evaluate.
+                // First, check if the transition has already been evaluated. If so, return the result. If not,
+                // change threshold and evaluate.
 
-                 if (_transitionEvaluatedTo.get(_transitionBeingTested) != null) {
-                     // means we have already evaluated this transition,
-                     return (BooleanToken)_transitionEvaluatedTo.get(_transitionBeingTested);
-                 }
-                 else
-                 {
-                     // no record has been found; evaluate.
-                     if (_guardProbability + _oldThreshold > 1.0 || (_guardProbability > 1.0)) {
-                         throw new IllegalActionException("Probability range exceeds [0.0,1.0]");
-                     }
-                     else if ((_oldThreshold <= _randomValue) && _randomValue <= (_oldThreshold + _guardProbability))
-                     {
-                         _oldThreshold += _guardProbability;
-                         _transitionEvaluatedTo.put(_transitionBeingTested, BooleanToken.TRUE);
-                         return BooleanToken.TRUE;
-                     }
-                     else
-                     {
-                         _oldThreshold += _guardProbability;
-                         _transitionEvaluatedTo.put(_transitionBeingTested, BooleanToken.FALSE);
-                         return BooleanToken.FALSE;
-                     }
-                 }
+                if (_transitionEvaluatedTo.get(_transitionBeingTested) != null) {
+                    // means we have already evaluated this transition,
+                    return _transitionEvaluatedTo.get(_transitionBeingTested);
+                } else {
+                    // no record has been found; evaluate.
+                    if (_guardProbability + _oldThreshold > 1.0
+                            || (_guardProbability > 1.0)) {
+                        throw new IllegalActionException(
+                                "Probability range exceeds [0.0,1.0]");
+                    } else if ((_oldThreshold <= _randomValue)
+                            && _randomValue <= (_oldThreshold + _guardProbability)) {
+                        _oldThreshold += _guardProbability;
+                        _transitionEvaluatedTo.put(_transitionBeingTested,
+                                BooleanToken.TRUE);
+                        return BooleanToken.TRUE;
+                    } else {
+                        _oldThreshold += _guardProbability;
+                        _transitionEvaluatedTo.put(_transitionBeingTested,
+                                BooleanToken.FALSE);
+                        return BooleanToken.FALSE;
+                    }
+                }
             }
             return BooleanToken.FALSE;
         }
@@ -4362,7 +4361,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     _TIMEOUT_FUNCTION_ARGUMENT_TYPE, BaseType.BOOLEAN));
         }
     }
-
 
     /** The implementation of the timeout function as a function. */
     private class TimeoutFunction implements Function {

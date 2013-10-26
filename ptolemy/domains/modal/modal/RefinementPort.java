@@ -87,8 +87,8 @@ public class RefinementPort extends ModalBasePort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public RefinementPort(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public RefinementPort(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _checkWhetherMirrorIsInput();
     }

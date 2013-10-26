@@ -168,123 +168,169 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
         // is private, we did it here which works but is not nice ...
         if (getComponent().getContainer() instanceof PtidesPlatform) {
             StringBuffer result = new StringBuffer();
-            CompositeActor container = (CompositeActor)_director.getContainer();
-            String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-            String sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
-            result.append(_eol + sanitizedDirectorName + "->container = " + sanitizedContainerName + ";");
-            result.append(_eol + sanitizedDirectorName + "->_startTime = " + _director.getModelStartTime() + ";");
-            result.append(_eol + sanitizedDirectorName + "->_stopTime = " + _director.getModelStopTime() + ";");
-            result.append(_eol + sanitizedDirectorName + "->localClock->container = (struct Director*)" + sanitizedDirectorName + ";");
+            CompositeActor container = (CompositeActor) _director
+                    .getContainer();
+            String sanitizedContainerName = CodeGeneratorAdapter
+                    .generateName(container);
+            String sanitizedDirectorName = CodeGeneratorAdapter
+                    .generateName(_director);
+            result.append(_eol + sanitizedDirectorName + "->container = "
+                    + sanitizedContainerName + ";");
+            result.append(_eol + sanitizedDirectorName + "->_startTime = "
+                    + _director.getModelStartTime() + ";");
+            result.append(_eol + sanitizedDirectorName + "->_stopTime = "
+                    + _director.getModelStopTime() + ";");
+            result.append(_eol + sanitizedDirectorName
+                    + "->localClock->container = (struct Director*)"
+                    + sanitizedDirectorName + ";");
 
             List<?> containedActors = container.deepEntityList();
             Iterator<?> actors = containedActors.iterator();
             // First loop to create the struct IOPort
             while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
-                String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
-                Iterator<?> ports = ((Actor)actor).inputPortList().iterator();
+                Actor actor = (Actor) actors.next();
+                String sanitizedActorName = CodeGeneratorAdapter
+                        .generateName((NamedObj) actor);
+                Iterator<?> ports = actor.inputPortList().iterator();
                 while (ports.hasNext()) {
-                    IOPort port = (IOPort)ports.next();
-                    if (!port.isOutsideConnected())
+                    IOPort port = (IOPort) ports.next();
+                    if (!port.isOutsideConnected()) {
                         continue;
-                    result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
-                            " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
+                    }
+                    result.append(_eol + "struct IOPort* " + sanitizedActorName
+                            + "_" + port.getName() + " = (struct IOPort*)"
+                            + sanitizedActorName + "_get_" + port.getName()
+                            + "();");
                 }
-                ports = ((Actor)actor).outputPortList().iterator();
+                ports = actor.outputPortList().iterator();
                 while (ports.hasNext()) {
-                    IOPort port = (IOPort)ports.next();
-                    if (!port.isOutsideConnected())
+                    IOPort port = (IOPort) ports.next();
+                    if (!port.isOutsideConnected()) {
                         continue;
-                    result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
-                            " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
+                    }
+                    result.append(_eol + "struct IOPort* " + sanitizedActorName
+                            + "_" + port.getName() + " = (struct IOPort*)"
+                            + sanitizedActorName + "_get_" + port.getName()
+                            + "();");
                 }
             }
             // Second loop to link the ports and put the depths
             actors = containedActors.iterator();
             while (actors.hasNext()) {
-                NamedObj actor = (NamedObj)actors.next();
-                String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
-                Iterator<?> ports = ((Actor)actor).outputPortList().iterator();
+                NamedObj actor = (NamedObj) actors.next();
+                String sanitizedActorName = CodeGeneratorAdapter
+                        .generateName(actor);
+                Iterator<?> ports = ((Actor) actor).outputPortList().iterator();
                 while (ports.hasNext()) {
-                    IOPort port = (IOPort)ports.next();
-                    if (!port.isOutsideConnected())
+                    IOPort port = (IOPort) ports.next();
+                    if (!port.isOutsideConnected()) {
                         continue;
+                    }
 
                     int i = 0;
                     int j = 0;
                     Receiver[][] receiverss = port.getRemoteReceivers();
-                    for (i = 0 ; i < receiverss.length ; i++) {
-                        if (receiverss[i] == null)
+                    for (i = 0; i < receiverss.length; i++) {
+                        if (receiverss[i] == null) {
                             continue;
-                        for (j = 0 ; j < receiverss[i].length ; j++) {
+                        }
+                        for (j = 0; j < receiverss[i].length; j++) {
                             Receiver receiver = receiverss[i][j];
                             IOPort farPort = receiver.getContainer();
                             NamedObj farActor = farPort.getContainer();
-                            String sanitizedFarActorName = CodeGeneratorAdapter.generateName(farActor);
+                            String sanitizedFarActorName = CodeGeneratorAdapter
+                                    .generateName(farActor);
                             String farPortName;
-                            if (farActor == container)
-                                farPortName = farPort.getName() + "->_localInsideReceivers, ";
-                            else
-                                farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
+                            if (farActor == container) {
+                                farPortName = farPort.getName()
+                                        + "->_localInsideReceivers, ";
+                            } else {
+                                farPortName = sanitizedFarActorName + "_"
+                                        + farPort.getName()
+                                        + "->_localReceivers, ";
+                            }
 
                             int foo = 0;
                             int bar = 0;
                             Receiver[][] farReceiverss;
-                            if (farPort.isOutput() && farPort.isOpaque())
+                            if (farPort.isOutput() && farPort.isOpaque()) {
                                 farReceiverss = farPort.getInsideReceivers();
-                            else
+                            } else {
                                 farReceiverss = farPort.getReceivers();
-                            loops:
-                            for (foo = 0 ; foo < farReceiverss.length ; foo++)
-                                for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                                    if (farReceiverss[foo][bar].equals(receiver))
+                            }
+                            loops: for (foo = 0; foo < farReceiverss.length; foo++) {
+                                for (bar = 0; bar < farReceiverss[foo].length; bar++) {
+                                    if (farReceiverss[foo][bar]
+                                            .equals(receiver)) {
                                         break loops;
+                                    }
+                                }
+                            }
 
-                            if (foo == farReceiverss.length)
+                            if (foo == farReceiverss.length) {
                                 throw new IllegalActionException(container,
-                                        "Receiver not found in port : " + port.getFullName() + "in actor : " + sanitizedActorName);
+                                        "Receiver not found in port : "
+                                                + port.getFullName()
+                                                + "in actor : "
+                                                + sanitizedActorName);
+                            }
 
-                            result.append(_eol + "pblListAdd(pblListGet(" + sanitizedActorName + "_" + port.getName() + "->_farReceivers, " + i + ")" +
-                                            ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
+                            result.append(_eol + "pblListAdd(pblListGet("
+                                    + sanitizedActorName + "_" + port.getName()
+                                    + "->_farReceivers, " + i + ")"
+                                    + ", pblListGet(pblListGet(" + farPortName
+                                    + foo + "), " + bar + "));");
                         }
                     }
                 }
             }
             // In the case of a CompositeActor, we have to initialize the insideReceivers
-            Iterator<?> ports = ((Actor)container).inputPortList().iterator();
+            Iterator<?> ports = ((Actor) container).inputPortList().iterator();
             while (ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
-                if (!port.isInsideConnected())
+                IOPort port = (IOPort) ports.next();
+                if (!port.isInsideConnected()) {
                     continue;
+                }
                 int i = 0;
                 int j = 0;
                 Receiver[][] receiverss = port.deepGetReceivers();
-                for (i = 0 ; i < receiverss.length ; i++) {
-                    if (receiverss[i] == null)
+                for (i = 0; i < receiverss.length; i++) {
+                    if (receiverss[i] == null) {
                         continue;
-                    for (j = 0 ; j < receiverss[i].length ; j++) {
+                    }
+                    for (j = 0; j < receiverss[i].length; j++) {
                         Receiver receiver = receiverss[i][j];
                         IOPort farPort = receiver.getContainer();
                         NamedObj farActor = farPort.getContainer();
-                        String sanitizedFarActorName = CodeGeneratorAdapter.generateName(farActor);
-                        String farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
+                        String sanitizedFarActorName = CodeGeneratorAdapter
+                                .generateName(farActor);
+                        String farPortName = sanitizedFarActorName + "_"
+                                + farPort.getName() + "->_localReceivers, ";
 
                         int foo = 0;
                         int bar = 0;
                         Receiver[][] farReceiverss;
                         farReceiverss = farPort.getReceivers();
-                        loops:
-                        for (foo = 0 ; foo < farReceiverss.length ; foo++)
-                            for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                                if (farReceiverss[foo][bar].equals(receiver))
+                        loops: for (foo = 0; foo < farReceiverss.length; foo++) {
+                            for (bar = 0; bar < farReceiverss[foo].length; bar++) {
+                                if (farReceiverss[foo][bar].equals(receiver)) {
                                     break loops;
+                                }
+                            }
+                        }
 
-                        if (foo == farReceiverss.length)
+                        if (foo == farReceiverss.length) {
                             throw new IllegalActionException(container,
-                                    "Receiver not found in port : " + port.getFullName() + " in actor : " + sanitizedContainerName);
+                                    "Receiver not found in port : "
+                                            + port.getFullName()
+                                            + " in actor : "
+                                            + sanitizedContainerName);
+                        }
 
-                        result.append(_eol + "pblListAdd(pblListGet(" + port.getName() + "->_insideReceivers, " + i + ")" +
-                                        ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
+                        result.append(_eol + "pblListAdd(pblListGet("
+                                + port.getName() + "->_insideReceivers, " + i
+                                + ")" + ", pblListGet(pblListGet("
+                                + farPortName + foo + "), " + bar + "));");
                     }
                 }
             }
@@ -597,7 +643,9 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    public String generateVariableDeclaration(NamedProgramCodeGeneratorAdapter adapter) throws IllegalActionException {
+    public String generateVariableDeclaration(
+            NamedProgramCodeGeneratorAdapter adapter)
+            throws IllegalActionException {
         return _generateVariableDeclaration(adapter);
     }
 
@@ -639,7 +687,9 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
-    public String generateVariableInitialization(NamedProgramCodeGeneratorAdapter adapter) throws IllegalActionException {
+    public String generateVariableInitialization(
+            NamedProgramCodeGeneratorAdapter adapter)
+            throws IllegalActionException {
         return _generateVariableInitialization(adapter);
     }
 

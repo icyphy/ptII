@@ -125,7 +125,8 @@ public class VergilApplication extends MoMLApplication {
         // String[]) starts a thread, which used to mean that the
         // message handler and error handler were not registered
         // before the thread starts.
-        super("ptolemy/configs", args, new VergilGraphicalMessageHandler(), new VergilErrorHandler());
+        super("ptolemy/configs", args, new VergilGraphicalMessageHandler(),
+                new VergilErrorHandler());
     }
 
     ///////////////////////////////////////////////////////////////////

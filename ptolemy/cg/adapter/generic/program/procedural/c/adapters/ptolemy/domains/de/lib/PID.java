@@ -95,8 +95,10 @@ public class PID extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
 
         LinkedList args = new LinkedList();
-        if (((ptolemy.domains.de.lib.PID) getComponent()).reset.isOutsideConnected())
+        if (((ptolemy.domains.de.lib.PID) getComponent()).reset
+                .isOutsideConnected()) {
             codeStream.appendCodeBlock("resetConnectedBlock", args);
+        }
 
         codeStream.appendCodeBlock("postFireBlock", args);
         return processCode(codeStream.toString());
@@ -104,7 +106,6 @@ public class PID extends NamedProgramCodeGeneratorAdapter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /**
      * Generate fire code.

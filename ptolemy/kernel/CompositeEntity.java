@@ -500,7 +500,7 @@ public class CompositeEntity extends ComponentEntity {
                 workspace().doneReading();
             } catch (Throwable ex) {
                 throw new InternalErrorException(this, ex, "Internal Error: "
-                                                 + "workspace().doneReading() failed?");
+                        + "workspace().doneReading() failed?");
             }
         }
     }
@@ -2206,7 +2206,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected List<Decorator> _containedDecorators() {
         List<Decorator> result = super._containedDecorators();
-        result.addAll((List<Decorator>)entityList(Decorator.class));
+        result.addAll(entityList(Decorator.class));
         return result;
     }
 

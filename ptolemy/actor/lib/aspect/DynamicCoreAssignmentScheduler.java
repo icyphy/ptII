@@ -102,8 +102,8 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime,
-            Time deadline, Time executionTime) throws IllegalActionException {
+    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
+            Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         Time minimumRemainingTime = null;
         // Check if is already executing somewhere.
@@ -114,10 +114,12 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
                 // This actor is currently executing on this scheduler.
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
-                notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
-                            ExecutionEventType.START);
+                notifyExecutionListeners(scheduler,
+                        currentPlatformTime.getDoubleValue(),
+                        ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                        notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                    notifyExecutionListeners(scheduler,
+                            currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
                 }
                 _remainingTimeOnCore.put(scheduler, time);
@@ -136,10 +138,12 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
             if (remainingTime == null || remainingTime.getDoubleValue() == 0.0) {
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
-                notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                notifyExecutionListeners(scheduler,
+                        currentPlatformTime.getDoubleValue(),
                         ExecutionEventType.START);
                 if (time.getDoubleValue() == 0.0) {
-                        notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
+                    notifyExecutionListeners(scheduler,
+                            currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
                 }
                 _remainingTimeOnCore.put(scheduler, time);

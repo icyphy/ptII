@@ -26,6 +26,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -1651,7 +1652,7 @@ out.println("\\begin{document}");
      *  @see #getColors()
      */
     public void setColors(Object[] colors) {
-         setColors((Color[]) colors);
+        setColors((Color[]) colors);
     }
 
     /** Set the file to read when init() is called.
@@ -4910,4 +4911,3 @@ out.println("\\begin{document}");
     /** True if we have printed the securityExceptionMessage. */
     private static boolean _printedSecurityExceptionMessage = false;
 }
-

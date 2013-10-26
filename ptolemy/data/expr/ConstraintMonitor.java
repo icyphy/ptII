@@ -152,7 +152,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == includeOpaqueContents || attribute == includeTransparents) {
+        if (attribute == includeOpaqueContents
+                || attribute == includeTransparents) {
             invalidate();
         }
         super.attributeChanged(attribute);
@@ -167,7 +168,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @return The new object.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConstraintMonitor newObject = (ConstraintMonitor) super.clone(workspace);
+        ConstraintMonitor newObject = (ConstraintMonitor) super
+                .clone(workspace);
         newObject._lastValueWarning = null;
         newObject._decoratedObjects = null;
         newObject._decoratedObjectsVersion = -1L;
@@ -187,8 +189,10 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target)
             throws IllegalActionException {
-        boolean transparents = ((BooleanToken)includeTransparents.getToken()).booleanValue();
-        boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
+        boolean transparents = ((BooleanToken) includeTransparents.getToken())
+                .booleanValue();
+        boolean opaques = ((BooleanToken) includeOpaqueContents.getToken())
+                .booleanValue();
         NamedObj container = getContainer();
         // If the container of this decorator is not a CompositeEntity,
         // then it cannot possibly deeply contain the target.
@@ -196,9 +200,11 @@ public class ConstraintMonitor extends Parameter implements Decorator {
             return null;
         }
         if (target instanceof Entity
-                && !((Entity)target).isClassDefinition()
-                && (transparents || !(target instanceof CompositeEntity) || ((CompositeEntity)target).isOpaque())
-                && _deepContains((CompositeEntity)container, (Entity)target, opaques)) {
+                && !((Entity) target).isClassDefinition()
+                && (transparents || !(target instanceof CompositeEntity) || ((CompositeEntity) target)
+                        .isOpaque())
+                && _deepContains((CompositeEntity) container, (Entity) target,
+                        opaques)) {
             try {
                 return new ConstraintMonitorAttributes(target, this);
             } catch (NameDuplicationException e) {
@@ -222,10 +228,12 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         if (workspace().getVersion() == _decoratedObjectsVersion) {
             return _decoratedObjects;
         }
-        boolean transparents = ((BooleanToken)includeTransparents.getToken()).booleanValue();
-        boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
+        boolean transparents = ((BooleanToken) includeTransparents.getToken())
+                .booleanValue();
+        boolean opaques = ((BooleanToken) includeOpaqueContents.getToken())
+                .booleanValue();
 
-        CompositeEntity container = (CompositeEntity)getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
 
         _decoratedObjectsVersion = workspace().getVersion();
 
@@ -237,7 +245,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
 
         // Now the more complex case.
         _decoratedObjects = new LinkedList<NamedObj>();
-        _addAllContainedEntities(container, _decoratedObjects, transparents, opaques);
+        _addAllContainedEntities(container, _decoratedObjects, transparents,
+                opaques);
         return _decoratedObjects;
     }
 
@@ -246,7 +255,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @exception IllegalActionException
      */
     public boolean isGlobalDecorator() throws IllegalActionException {
-        boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
+        boolean opaques = ((BooleanToken) includeOpaqueContents.getToken())
+                .booleanValue();
         return opaques;
     }
 
@@ -263,21 +273,22 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         Token result = super.getToken();
         // Check to see whether we need to report errors.
         // Avoid duplicate notices.
-        boolean enabled = ((BooleanToken)warningEnabled.getToken()).booleanValue();
+        boolean enabled = ((BooleanToken) warningEnabled.getToken())
+                .booleanValue();
         if (!result.equals(_lastValueWarning)) {
             if (enabled) {
-                double thresholdValue = ((DoubleToken)threshold.getToken()).doubleValue();
-                double aggregateValue = ((DoubleToken)result).doubleValue();
+                double thresholdValue = ((DoubleToken) threshold.getToken())
+                        .doubleValue();
+                double aggregateValue = ((DoubleToken) result).doubleValue();
                 if (aggregateValue >= thresholdValue) {
                     _lastValueWarning = result;
                     String message = "WARNING: "
                             + getName()
                             + " constraint monitor: Aggregate value of "
                             + aggregateValue
-                            + ((aggregateValue == thresholdValue) ? " hits " : " exceeds ")
-                            + "threshold of "
-                            + threshold
-                            + ".";
+                            + ((aggregateValue == thresholdValue) ? " hits "
+                                    : " exceeds ") + "threshold of "
+                            + threshold + ".";
                     MessageHandler.message(message);
                 } else {
                     // No warning.
@@ -313,8 +324,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         for (NamedObj decoratedObject : decoratedObjects) {
             // The following will create the DecoratorAttributes if it does not
             // already exist, and associate it with this decorator.
-            ConstraintMonitorAttributes decoratorAttributes = (ConstraintMonitorAttributes)
-                    decoratedObject.getDecoratorAttributes(this);
+            ConstraintMonitorAttributes decoratorAttributes = (ConstraintMonitorAttributes) decoratedObject
+                    .getDecoratorAttributes(this);
             decoratorAttributes.value.addValueListener(this);
         }
         return super.validate();
@@ -348,21 +359,21 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @param opaques Specification of whether to include the
      *   contents of opaque composite entities.
      */
-    protected void _addAllContainedEntities(
-            CompositeEntity container,
-            List<NamedObj> result,
-            boolean transparents,
-            boolean opaques) {
+    protected void _addAllContainedEntities(CompositeEntity container,
+            List<NamedObj> result, boolean transparents, boolean opaques) {
         try {
             _workspace.getReadAccess();
             List<Entity> entities = container.entityList();
             for (Entity entity : entities) {
                 boolean isComposite = entity instanceof CompositeEntity;
-                if (!isComposite || ((CompositeEntity)entity).isOpaque() || transparents) {
+                if (!isComposite || ((CompositeEntity) entity).isOpaque()
+                        || transparents) {
                     result.add(entity);
                 }
-                if (isComposite && (!((CompositeEntity)entity).isOpaque() || opaques)) {
-                    _addAllContainedEntities((CompositeEntity)entity, result, transparents, opaques);
+                if (isComposite
+                        && (!((CompositeEntity) entity).isOpaque() || opaques)) {
+                    _addAllContainedEntities((CompositeEntity) entity, result,
+                            transparents, opaques);
                 }
             }
         } finally {
@@ -378,12 +389,13 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *   in the hierarchy.
      *  @return True if the specified target is deeply contained by the container
      */
-    protected boolean _deepContains(
-            CompositeEntity container, Entity target, boolean opaques) {
+    protected boolean _deepContains(CompositeEntity container, Entity target,
+            boolean opaques) {
         try {
             _workspace.getReadAccess();
             if (target != null) {
-                CompositeEntity targetContainer = (CompositeEntity)target.getContainer();
+                CompositeEntity targetContainer = (CompositeEntity) target
+                        .getContainer();
                 while (targetContainer != null) {
                     if (targetContainer == container) {
                         return true;
@@ -391,7 +403,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                     if (!opaques && targetContainer.isOpaque()) {
                         return false;
                     }
-                    targetContainer = (CompositeEntity)targetContainer.getContainer();
+                    targetContainer = (CompositeEntity) targetContainer
+                            .getContainer();
                 }
             }
             return false;
@@ -399,7 +412,6 @@ public class ConstraintMonitor extends Parameter implements Decorator {
             _workspace.doneReading();
         }
     }
-
 
     /** Evaluate the current expression to a token, which in this case means
      *  to sum the values of all the decorated objects.
@@ -410,8 +422,9 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         double result = 0.0;
         List<NamedObj> decoratedObjects = decoratedObjects();
         for (NamedObj decoratedObject : decoratedObjects) {
-            Parameter value = (Parameter)decoratedObject.getDecoratorAttribute(this, "value");
-            result += ((DoubleToken)value.getToken()).doubleValue();
+            Parameter value = (Parameter) decoratedObject
+                    .getDecoratorAttribute(this, "value");
+            result += ((DoubleToken) value.getToken()).doubleValue();
         }
         setToken(new DoubleToken(result));
         _needsEvaluation = false;
@@ -438,8 +451,9 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     static public class ConstraintMonitorAttributes extends DecoratorAttributes
             implements HierarchyListener {
 
-        public ConstraintMonitorAttributes(NamedObj container, ConstraintMonitor decorator)
-                throws IllegalActionException, NameDuplicationException {
+        public ConstraintMonitorAttributes(NamedObj container,
+                ConstraintMonitor decorator) throws IllegalActionException,
+                NameDuplicationException {
             super(container, decorator);
             _init();
             value.addValueListener(decorator);
@@ -460,11 +474,12 @@ public class ConstraintMonitor extends Parameter implements Decorator {
          *  @exception IllegalActionException If the change is not acceptable
          *   to this container (not thrown in this base class).
          */
-        public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        public void attributeChanged(Attribute attribute)
+                throws IllegalActionException {
             // The following will establish a link to my decorator if it exists.
             super.attributeChanged(attribute);
             if (_decorator != null) {
-                value.addValueListener((ConstraintMonitor)_decorator);
+                value.addValueListener((ConstraintMonitor) _decorator);
             } else {
                 super.attributeChanged(attribute);
             }
@@ -475,7 +490,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
          *   acceptable.
          */
         public void hierarchyChanged() throws IllegalActionException {
-            ConstraintMonitor decorator = (ConstraintMonitor)getDecorator();
+            ConstraintMonitor decorator = (ConstraintMonitor) getDecorator();
             if (_previousDecorator != null && decorator != _previousDecorator) {
                 // Force an evaluation of the decorator, since this attribute
                 // may no longer be in scope.
@@ -487,12 +502,13 @@ public class ConstraintMonitor extends Parameter implements Decorator {
          *  @exception IllegalActionException If the change is not acceptable.
          */
         public void hierarchyWillChange() throws IllegalActionException {
-            _previousDecorator = (ConstraintMonitor)getDecorator();
+            _previousDecorator = (ConstraintMonitor) getDecorator();
         }
 
         private ConstraintMonitor _previousDecorator = null;
 
-        private void _init() throws IllegalActionException, NameDuplicationException {
+        private void _init() throws IllegalActionException,
+                NameDuplicationException {
             value = new Parameter(this, "value");
             value.setTypeEquals(BaseType.DOUBLE);
             value.setExpression("0.0");

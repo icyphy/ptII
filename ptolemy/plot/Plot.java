@@ -26,6 +26,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
+
 // TO DO:
 //   - steps between points rather than connected lines.
 //   - cubic spline interpolation
@@ -245,8 +246,9 @@ public class Plot extends PlotBox implements PlotInterface {
             // already have a dataset with the same legend.
             String possibleLegend = getLegend(dataset);
 
-            if (possibleLegend == null || (possibleLegend != null
-                            && !possibleLegend.equals(legend))) {
+            if (possibleLegend == null
+                    || (possibleLegend != null && !possibleLegend
+                            .equals(legend))) {
                 super.addLegend(dataset, legend);
             }
         }

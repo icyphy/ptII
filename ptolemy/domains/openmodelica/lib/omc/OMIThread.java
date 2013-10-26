@@ -144,8 +144,9 @@ public class OMIThread extends Thread {
                 } else if (parameters.length == 1) {
                     _toServer.write("setfilter#3#" + parameters[0] + "#end");
                     _toServer.flush();
-                } else
+                } else {
                     System.err.println("There is no filter to set!");
+                }
 
                 try {
                     Thread.sleep(1000);
@@ -191,8 +192,6 @@ public class OMIThread extends Thread {
         String outputResult = null;
         char[] transferServerBuffer = new char[1024];
         char[] controlServerBuffer = new char[124];
-        int streamIndex = 0;
-
         try {
             _inFromControlServer.read(controlServerBuffer);
             String statusMessage = new String(controlServerBuffer).trim();
@@ -212,7 +211,7 @@ public class OMIThread extends Thread {
                 try {
                     // It returns -1 if the end of the stream is reached.
                     // If not, it returns the number of chars that have been read.
-                    Outerloop: while ((streamIndex = _inFromTransferServer
+                    Outerloop: while ((_inFromTransferServer
                             .read(transferServerBuffer)) != -1) {
 
                         wholeSimulationResult = new String(transferServerBuffer)
@@ -229,18 +228,20 @@ public class OMIThread extends Thread {
                                     // There is a need to have this condition, because the simulation does not
                                     // stop automatically.
                                     if ((timeSplitResult[j].toString()
-                                            .startsWith(_stopTime)))
+                                            .startsWith(_stopTime))) {
                                         break Outerloop;
-                                    else {
-                                        if (outputResult != null)
+                                    } else {
+                                        if (outputResult != null) {
                                             outputResult += "At time : "
                                                     + timeSplitResult[j] + " ";
-                                        else
+                                        } else {
                                             outputResult = "At time : "
                                                     + timeSplitResult[j] + " ";
+                                        }
                                     }
-                                } else
+                                } else {
                                     outputResult += timeSplitResult[j] + " ";
+                                }
                             }
                             outputResult += "\n";
                         }

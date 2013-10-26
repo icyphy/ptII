@@ -278,177 +278,179 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 System.out.println("Warning: the directorPackage does not end "
                         + "with '.kernel', it is :" + directorPackage);
             }
-                _domainJar = _getDomainJar(directorPackage);
-         }
+            _domainJar = _getDomainJar(directorPackage);
+        }
 
-         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
-         _codeBase = MakefileWriter.codeBase(_targetPackage, _outputDirectory,
-                 _ptIIJarsPath);
+        _codeBase = MakefileWriter.codeBase(_targetPackage, _outputDirectory,
+                _ptIIJarsPath);
 
-         // Create the directory where we will create the files.
-         File outputDirectoryFile = new File(_outputDirectory);
+        // Create the directory where we will create the files.
+        File outputDirectoryFile = new File(_outputDirectory);
 
-         if (!outputDirectoryFile.isDirectory()) {
-             // MakefileWriter should have already created the directory
-             if (!outputDirectoryFile.mkdirs()) {
-                 System.out.println("Warning: Failed to create directory \""
-                         + outputDirectoryFile + "\"");
-             }
-         }
-
-         // The JNLP file to be created
-         String jnlpSourceFileName = _outputDirectory + "/"
-                 + _sanitizedModelName + ".jnlp";
-         String jnlpJarFileName = _outputDirectory + "/signed_"
-                 + _sanitizedModelName + ".jar";
-         String jnlpUnsignedJarFileName = _outputDirectory + "/"
-                 + _sanitizedModelName + ".jar";
-
-         try {
-             // If the code base is the current directory, then we
-             // copy the jar files over and set the value of _domainJar
-             // to the names of the jar files separated by commas.
-             // We always want to generate the list of jar files so
-             // that if for example we use fsm, then we are sure to
-             // include diva.jar
-             // We do both the applet jar files and the jnlp jar files
-             StringBuffer jarFilesResults = new StringBuffer();
-             StringBuffer jnlpJarFilesResults = new StringBuffer();
-
-             // Include files like Foo/Foo.jar that include the model
-             // and gifs for use in old-style applets.
-             if (new File(jnlpUnsignedJarFileName).exists()) {
-                 // Use this only in applets, we handle jnlp specially.
-                 jarFilesResults.append(_targetPath + _sanitizedModelName
-                         + ".jar");
-             }
-
-             // This is the signed jar file that includes the .jnlp file
-             // FIXME: what if we don't want a signed jar?
-             jnlpJarFilesResults.insert(0, "        <jar href=\"" + _targetPath
-                     + "signed_" + _sanitizedModelName + ".jar\""
-                     + _jarFileLengthAttribute(jnlpSourceFileName)
-                     + "\n             main=\"true\"/>\n");
-
-             boolean sawSignedOnce = false;
-
-             if (director != null) {
-                 Set modelJarFiles = _findModelJarFiles(director);
-                 Iterator jarFileNames = modelJarFiles.iterator();
-                 while (jarFileNames.hasNext()) {
-                     String jarFileName = (String) jarFileNames.next();
-                     System.out.println("AppletWriter: jar: " + jarFileName);
-                     if (jarFilesResults.length() > 0) {
-                         jarFilesResults.append(",");
-                     }
-                     jarFilesResults.append(jarFileName);
-
-                     jnlpJarFilesResults
-                         .append(_checkForJNLPExtensions(jarFileName));
-
-                     // If the ptII/signed directory contains the jar file, then set
-                     // signed to "signed/".  Otherwise, set signed to "".
-                     String signed = "";
-                     String signedJarFileName = _ptIIJarsPath + File.separator
-                         + "signed" + File.separator + jarFileName;
-                     if (new File(signedJarFileName).exists()) {
-                         signed = "signed/";
-                         sawSignedOnce = true;
-                     } else {
-                         if (new File(_ptIIJarsPath + File.separator + "signed")
-                                 .exists()) {
-                             sawSignedOnce = true;
-                         }
-                     }
-                     if (signed.equals("") && sawSignedOnce) {
-                         // We saw something in the signed directory, but this file
-                         // is not there, so we sign it.
-                         try {
-                             _signJarFile(_ptIIJarsPath + File.separator
-                                     + jarFileName, signedJarFileName);
-                             signed = "signed" + File.separator;
-                         } catch (Exception ex) {
-                             throw new InternalErrorException(null, ex,
-                                     "Failed to sign \"" + _ptIIJarsPath
-                                     + File.separator + jarFileName
-                                     + "\" and create \""
-                                     + signedJarFileName + "\"");
-                         }
-                     }
-                     System.out.println("signedJarFile: " + signedJarFileName
-                             + " signed: \"" + signed + "\"");
-                jnlpJarFilesResults.append("        <jar href=\""
-                        + signed
-                        + jarFileName
-                        + "\""
-                        + _jarFileLengthAttribute(_ptIIJarsPath
-                                + File.separator + signed + jarFileName)
-                        + "\n             download=\"eager\"/>\n");
-                 }
-
-                 _modelJarFiles = jarFilesResults.toString();
-
-                 sawSignedOnce = false;
-
-                 // Get the vergil jar files for the applet
-                 jarFilesResults = new StringBuffer();
-                 // We don't reset the jar files for jnlp because we assume
-                 // all JNLP files run vergil.
-
-                 Set vergilJarFiles = _findVergilJarFiles(director, modelJarFiles);
-
-            Iterator vergilJarFileNames = vergilJarFiles.iterator();
-            while (vergilJarFileNames.hasNext()) {
-                String jarFileName = (String) vergilJarFileNames.next();
-                if (modelJarFiles.contains(jarFileName)) {
-                    continue;
-                }
-
-                if (jarFilesResults.length() > 0) {
-                    jarFilesResults.append(",");
-                }
-
-                jarFilesResults.append(jarFileName);
-
-                // If the ptII/signed directory contains the jar file, then set
-                // signed to "signed/".  Otherwise, set signed to "".
-                String signed = "";
-                String signedJarFileName = _ptIIJarsPath + File.separator
-                        + "signed" + File.separator + jarFileName;
-                if (new File(signedJarFileName).exists()) {
-                    ;
-                    signed = "signed/";
-                } else {
-                    if (new File(_ptIIJarsPath + File.separator + "signed")
-                            .exists()) {
-                        sawSignedOnce = true;
-                    }
-                }
-                if (signed == "" && sawSignedOnce) {
-                    // We saw something in the signed directory, but this file
-                    // is not there, so we sign it.
-                    try {
-                        _signJarFile(_ptIIJarsPath + File.separator
-                                + jarFileName, _ptIIJarsPath + File.separator
-                                + "signed" + File.separator + jarFileName);
-                        signed = "signed/";
-                    } catch (Exception ex) {
-                        throw new InternalErrorException(null, ex,
-                                "Failed to sign \"" + _ptIIJarsPath
-                                        + File.separator + jarFileName
-                                        + "\" and create \""
-                                        + signedJarFileName + "\"");
-                    }
-                }
-                jnlpJarFilesResults.append("        <jar href=\""
-                        + signed
-                        + jarFileName
-                        + "\""
-                        + _jarFileLengthAttribute(_ptIIJarsPath
-                                + File.separator + signed + jarFileName)
-                        + "\n             download=\"eager\"/>\n");
+        if (!outputDirectoryFile.isDirectory()) {
+            // MakefileWriter should have already created the directory
+            if (!outputDirectoryFile.mkdirs()) {
+                System.out.println("Warning: Failed to create directory \""
+                        + outputDirectoryFile + "\"");
             }
+        }
+
+        // The JNLP file to be created
+        String jnlpSourceFileName = _outputDirectory + "/"
+                + _sanitizedModelName + ".jnlp";
+        String jnlpJarFileName = _outputDirectory + "/signed_"
+                + _sanitizedModelName + ".jar";
+        String jnlpUnsignedJarFileName = _outputDirectory + "/"
+                + _sanitizedModelName + ".jar";
+
+        try {
+            // If the code base is the current directory, then we
+            // copy the jar files over and set the value of _domainJar
+            // to the names of the jar files separated by commas.
+            // We always want to generate the list of jar files so
+            // that if for example we use fsm, then we are sure to
+            // include diva.jar
+            // We do both the applet jar files and the jnlp jar files
+            StringBuffer jarFilesResults = new StringBuffer();
+            StringBuffer jnlpJarFilesResults = new StringBuffer();
+
+            // Include files like Foo/Foo.jar that include the model
+            // and gifs for use in old-style applets.
+            if (new File(jnlpUnsignedJarFileName).exists()) {
+                // Use this only in applets, we handle jnlp specially.
+                jarFilesResults.append(_targetPath + _sanitizedModelName
+                        + ".jar");
+            }
+
+            // This is the signed jar file that includes the .jnlp file
+            // FIXME: what if we don't want a signed jar?
+            jnlpJarFilesResults.insert(0, "        <jar href=\"" + _targetPath
+                    + "signed_" + _sanitizedModelName + ".jar\""
+                    + _jarFileLengthAttribute(jnlpSourceFileName)
+                    + "\n             main=\"true\"/>\n");
+
+            boolean sawSignedOnce = false;
+
+            if (director != null) {
+                Set modelJarFiles = _findModelJarFiles(director);
+                Iterator jarFileNames = modelJarFiles.iterator();
+                while (jarFileNames.hasNext()) {
+                    String jarFileName = (String) jarFileNames.next();
+                    System.out.println("AppletWriter: jar: " + jarFileName);
+                    if (jarFilesResults.length() > 0) {
+                        jarFilesResults.append(",");
+                    }
+                    jarFilesResults.append(jarFileName);
+
+                    jnlpJarFilesResults
+                            .append(_checkForJNLPExtensions(jarFileName));
+
+                    // If the ptII/signed directory contains the jar file, then set
+                    // signed to "signed/".  Otherwise, set signed to "".
+                    String signed = "";
+                    String signedJarFileName = _ptIIJarsPath + File.separator
+                            + "signed" + File.separator + jarFileName;
+                    if (new File(signedJarFileName).exists()) {
+                        signed = "signed/";
+                        sawSignedOnce = true;
+                    } else {
+                        if (new File(_ptIIJarsPath + File.separator + "signed")
+                                .exists()) {
+                            sawSignedOnce = true;
+                        }
+                    }
+                    if (signed.equals("") && sawSignedOnce) {
+                        // We saw something in the signed directory, but this file
+                        // is not there, so we sign it.
+                        try {
+                            _signJarFile(_ptIIJarsPath + File.separator
+                                    + jarFileName, signedJarFileName);
+                            signed = "signed" + File.separator;
+                        } catch (Exception ex) {
+                            throw new InternalErrorException(null, ex,
+                                    "Failed to sign \"" + _ptIIJarsPath
+                                            + File.separator + jarFileName
+                                            + "\" and create \""
+                                            + signedJarFileName + "\"");
+                        }
+                    }
+                    System.out.println("signedJarFile: " + signedJarFileName
+                            + " signed: \"" + signed + "\"");
+                    jnlpJarFilesResults.append("        <jar href=\""
+                            + signed
+                            + jarFileName
+                            + "\""
+                            + _jarFileLengthAttribute(_ptIIJarsPath
+                                    + File.separator + signed + jarFileName)
+                            + "\n             download=\"eager\"/>\n");
+                }
+
+                _modelJarFiles = jarFilesResults.toString();
+
+                sawSignedOnce = false;
+
+                // Get the vergil jar files for the applet
+                jarFilesResults = new StringBuffer();
+                // We don't reset the jar files for jnlp because we assume
+                // all JNLP files run vergil.
+
+                Set vergilJarFiles = _findVergilJarFiles(director,
+                        modelJarFiles);
+
+                Iterator vergilJarFileNames = vergilJarFiles.iterator();
+                while (vergilJarFileNames.hasNext()) {
+                    String jarFileName = (String) vergilJarFileNames.next();
+                    if (modelJarFiles.contains(jarFileName)) {
+                        continue;
+                    }
+
+                    if (jarFilesResults.length() > 0) {
+                        jarFilesResults.append(",");
+                    }
+
+                    jarFilesResults.append(jarFileName);
+
+                    // If the ptII/signed directory contains the jar file, then set
+                    // signed to "signed/".  Otherwise, set signed to "".
+                    String signed = "";
+                    String signedJarFileName = _ptIIJarsPath + File.separator
+                            + "signed" + File.separator + jarFileName;
+                    if (new File(signedJarFileName).exists()) {
+                        ;
+                        signed = "signed/";
+                    } else {
+                        if (new File(_ptIIJarsPath + File.separator + "signed")
+                                .exists()) {
+                            sawSignedOnce = true;
+                        }
+                    }
+                    if (signed == "" && sawSignedOnce) {
+                        // We saw something in the signed directory, but this file
+                        // is not there, so we sign it.
+                        try {
+                            _signJarFile(_ptIIJarsPath + File.separator
+                                    + jarFileName, _ptIIJarsPath
+                                    + File.separator + "signed"
+                                    + File.separator + jarFileName);
+                            signed = "signed/";
+                        } catch (Exception ex) {
+                            throw new InternalErrorException(null, ex,
+                                    "Failed to sign \"" + _ptIIJarsPath
+                                            + File.separator + jarFileName
+                                            + "\" and create \""
+                                            + signedJarFileName + "\"");
+                        }
+                    }
+                    jnlpJarFilesResults.append("        <jar href=\""
+                            + signed
+                            + jarFileName
+                            + "\""
+                            + _jarFileLengthAttribute(_ptIIJarsPath
+                                    + File.separator + signed + jarFileName)
+                            + "\n             download=\"eager\"/>\n");
+                }
             }
             _vergilJarFiles = jarFilesResults.toString();
             _jnlpJars = jnlpJarFilesResults.toString();
@@ -732,28 +734,34 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 results.put(className, "ptolemy/codegen/codegen.jar");
             } else if (className.contains("ptolemy.data.ontologies")) {
                 if (_debug) {
-                    System.out.println("_allAttributeJars ontologies: " + className
-                                       + " " + "ptolemy/data/ontologies/ontologies.jar");
+                    System.out.println("_allAttributeJars ontologies: "
+                            + className + " "
+                            + "ptolemy/data/ontologies/ontologies.jar");
                 }
                 results.put(className, "ptolemy/data/ontologies/ontologies.jar");
             } else if (className.contains("ptolemy.vergil.kernel.attributes")) {
                 if (_debug) {
-                    System.out.println("_allAttributeJars export.web: " + className
-                            + " " + "ptolemy/vergil/vergilApplet.jar");
+                    System.out.println("_allAttributeJars export.web: "
+                            + className + " "
+                            + "ptolemy/vergil/vergilApplet.jar");
                 }
                 results.put(className, "ptolemy/vergil/vergilApplet.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.html")) {
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.web: " + className
-                            + " " + "ptolemy/vergil/basic/export/html/html.jar");
+                    System.out.println("_allAtomicEntityJars export.web: "
+                            + className + " "
+                            + "ptolemy/vergil/basic/export/html/html.jar");
                 }
-                results.put(className, "ptolemy/vergil/basic/export/html/html.jar");
+                results.put(className,
+                        "ptolemy/vergil/basic/export/html/html.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.web")) {
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.web: " + className
-                            + " " + "ptolemy/vergil/basic/export/web/web.jar");
+                    System.out.println("_allAtomicEntityJars export.web: "
+                            + className + " "
+                            + "ptolemy/vergil/basic/export/web/web.jar");
                 }
-                results.put(className, "ptolemy/vergil/basic/export/web/web.jar");
+                results.put(className,
+                        "ptolemy/vergil/basic/export/web/web.jar");
             } else {
                 results.put(object.getClass().getName(), _getDomainJar(object
                         .getClass().getPackage().getName()));
@@ -837,8 +845,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 results.put(className, "ptolemy/backtrack/backtrack.jar");
             } else if (className.contains("ptolemy.actor.lib.aspect")) {
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars aspect: " + className
-                            + " " + "ptolemy/actor/lib/aspect/aspect.jar");
+                    System.out.println("_allAtomicEntityJars aspect: "
+                            + className + " "
+                            + "ptolemy/actor/lib/aspect/aspect.jar");
                 }
                 results.put(className, "ptolemy/actor/lib/aspect/aspect.jar");
             } else if (className.contains("ptolemy.actor.lib.jai")) {
@@ -855,27 +864,38 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 results.put(className, "ptolemy/actor/lib/jmf/jmf.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.html")) {
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.html: " + className
-                            + " " + "ptolemy/vergil/basic/export/html/html.jar");
+                    System.out.println("_allAtomicEntityJars export.html: "
+                            + className + " "
+                            + "ptolemy/vergil/basic/export/html/html.jar");
                 }
-                results.put(className, "ptolemy/vergil/basic/export/html/html.jar");
+                results.put(className,
+                        "ptolemy/vergil/basic/export/html/html.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.web")) {
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.web: " + className
-                            + " " + "ptolemy/vergil/basic/export/web/web.jar");
+                    System.out.println("_allAtomicEntityJars export.web: "
+                            + className + " "
+                            + "ptolemy/vergil/basic/export/web/web.jar");
                 }
-                results.put(className, "ptolemy/vergil/basic/export/web/web.jar");
+                results.put(className,
+                        "ptolemy/vergil/basic/export/web/web.jar");
             } else if (className.contains("lib.gui.")) {
                 // Needed for ptolemy.domains.sr.lib.gui.NonStrictDisplay and any other classes in domains.*.lib.gui.
                 // We get the package of the package.
                 String packageName = object.getClass().getPackage().getName();
-                String parentPackage = packageName.substring(0, packageName.lastIndexOf("."));
+                String parentPackage = packageName.substring(0,
+                        packageName.lastIndexOf("."));
                 if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.web: Adjust for class with lib.gui " + className
-                                       + " " + _getDomainJar(parentPackage) + " " + parentPackage);
+                    System.out
+                            .println("_allAtomicEntityJars export.web: Adjust for class with lib.gui "
+                                    + className
+                                    + " "
+                                    + _getDomainJar(parentPackage)
+                                    + " "
+                                    + parentPackage);
                 }
 
-                results.put(object.getClass().getName(), _getDomainJar(parentPackage));
+                results.put(object.getClass().getName(),
+                        _getDomainJar(parentPackage));
             } else {
                 // Add in the entity
                 results.put(object.getClass().getName(), _getDomainJar(object
@@ -1633,9 +1653,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         if (jarFilesThatHaveBeenRequired
-            .contains("ptolemy/data/ontologies/ontologies.jar")) {
-            auxiliaryClassMap.put("ontologies requires tester", "ptolemy/domains/tester/tester.jar");
-            auxiliaryClassMap.put("ontologies requires vergil/ontologies/ontologies.jar", "ptolemy/vergil/ontologies/ontologies.jar");
+                .contains("ptolemy/data/ontologies/ontologies.jar")) {
+            auxiliaryClassMap.put("ontologies requires tester",
+                    "ptolemy/domains/tester/tester.jar");
+            auxiliaryClassMap.put(
+                    "ontologies requires vergil/ontologies/ontologies.jar",
+                    "ptolemy/vergil/ontologies/ontologies.jar");
         }
 
         if (jarFilesThatHaveBeenRequired
@@ -1651,9 +1674,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         if (jarFilesThatHaveBeenRequired
-            .contains("org/ptolemy/ptango/ptango.jar")) {
-            auxiliaryClassMap.put("ptango requires jetty", "lib/jetty-all-8.1.5-v20120716.jar");
-            auxiliaryClassMap.put("ptango requires javax.servlet", "lib/javax.servlet-api-3.0.1.jar");
+                .contains("org/ptolemy/ptango/ptango.jar")) {
+            auxiliaryClassMap.put("ptango requires jetty",
+                    "lib/jetty-all-8.1.5-v20120716.jar");
+            auxiliaryClassMap.put("ptango requires javax.servlet",
+                    "lib/javax.servlet-api-3.0.1.jar");
             auxiliaryClassMap.put("ptango requires smack", "lib/smack.jar");
             auxiliaryClassMap.put("ptango requires smackx", "lib/smackx.jar");
         }
@@ -2030,11 +2055,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     // Will this madness ever end?
                     if (!jarFile.delete()) {
                         System.out.println("Warning: could not remove \""
-                                           + jarFile.getCanonicalPath() + "\"");
+                                + jarFile.getCanonicalPath() + "\"");
                     }
                     if (!jarFile.delete()) {
                         System.out.println("Warning: could not remove \""
-                                           + jarFile.getCanonicalPath() + "\"");
+                                + jarFile.getCanonicalPath() + "\"");
                     }
                     System.out.println("Removed " + jarFile);
                 }
@@ -2083,47 +2108,53 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     temporaryJarFileName = null;
                     temporaryJarFileName = new File(outputJarFileName);
                     if (!temporaryJarFileName.renameTo(jarFile)) {
-                        System.out.println("About to throw an exception!!! Attempt #2: Failed to rename \""
-                                + temporaryJarFileName
-                                + "\" to \""
-                                + jarFile
-                                + "\", source file "
-                                + (temporaryJarFileName.exists() ? "exists"
-                                        : "does not exist")
-                                + ", destination file "
-                                + (jarFile.exists() ? "exists"
-                                        : "does not exist")
-                                + ", destination file "
-                                + (jarFile.canWrite() ? "can" : "cannot")
-                                + " be written.  "
-                                + "The directory "
-                                + jarFileDirectory
-                                + (jarFileDirectory.isDirectory() ? " is"
-                                        : " is not") + " a directory.");
+                        System.out
+                                .println("About to throw an exception!!! Attempt #2: Failed to rename \""
+                                        + temporaryJarFileName
+                                        + "\" to \""
+                                        + jarFile
+                                        + "\", source file "
+                                        + (temporaryJarFileName.exists() ? "exists"
+                                                : "does not exist")
+                                        + ", destination file "
+                                        + (jarFile.exists() ? "exists"
+                                                : "does not exist")
+                                        + ", destination file "
+                                        + (jarFile.canWrite() ? "can"
+                                                : "cannot")
+                                        + " be written.  "
+                                        + "The directory "
+                                        + jarFileDirectory
+                                        + (jarFileDirectory.isDirectory() ? " is"
+                                                : " is not") + " a directory.");
                         // GRR.  Under Linux, File.renameTo() seems to
                         // fail if the File was created with
                         // createTempFile, so we copy it.
-                        if (FileUtilities.binaryCopyURLToFile(temporaryJarFileName.toURL(), jarFile)) {
-                            System.out.println("Successfully copied " + temporaryJarFileName
-                                               + " to " + jarFile);
+                        if (FileUtilities.binaryCopyURLToFile(
+                                temporaryJarFileName.toURL(), jarFile)) {
+                            System.out.println("Successfully copied "
+                                    + temporaryJarFileName + " to " + jarFile);
                         } else {
-                            throw new IOException("Attempt #3: Failed to copy \""
-                                              + temporaryJarFileName
-                                + "\" to \""
-                                + jarFile
-                                + "\", source file "
-                                + (temporaryJarFileName.exists() ? "exists"
-                                        : "does not exist")
-                                + ", destination file "
-                                + (jarFile.exists() ? "exists"
-                                        : "does not exist")
-                                + ", destination file "
-                                + (jarFile.canWrite() ? "can" : "cannot")
-                                + " be written.  "
-                                + "The directory "
-                                + jarFileDirectory
-                                + (jarFileDirectory.isDirectory() ? " is"
-                                        : " is not") + " a directory.");
+                            throw new IOException(
+                                    "Attempt #3: Failed to copy \""
+                                            + temporaryJarFileName
+                                            + "\" to \""
+                                            + jarFile
+                                            + "\", source file "
+                                            + (temporaryJarFileName.exists() ? "exists"
+                                                    : "does not exist")
+                                            + ", destination file "
+                                            + (jarFile.exists() ? "exists"
+                                                    : "does not exist")
+                                            + ", destination file "
+                                            + (jarFile.canWrite() ? "can"
+                                                    : "cannot")
+                                            + " be written.  "
+                                            + "The directory "
+                                            + jarFileDirectory
+                                            + (jarFileDirectory.isDirectory() ? " is"
+                                                    : " is not")
+                                            + " a directory.");
                         }
                     }
                 }

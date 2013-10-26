@@ -306,7 +306,7 @@ public class Expression extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _tokenMap = new HashMap<String,Token>();
+        _tokenMap = new HashMap<String, Token>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -322,7 +322,7 @@ public class Expression extends TypedAtomicActor {
      *  This is protected so that if a subclass overrides fire(), it
      *  can determine the values of the inputs.
      */
-    protected Map<String,Token> _tokenMap;
+    protected Map<String, Token> _tokenMap;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -344,7 +344,7 @@ public class Expression extends TypedAtomicActor {
                 return new IntToken(_iterationCount);
             }
 
-            Token token = (Token) _tokenMap.get(name);
+            Token token = _tokenMap.get(name);
 
             if (token != null) {
                 return token;

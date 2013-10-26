@@ -80,11 +80,11 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  @param fileFilter The filter (with ? and * as wildcards) to filter
      *   the accepted file names.
      */
-    public RecursiveFileFilter(boolean recursive,
-            boolean includeFiles, boolean includeDirectories,
-            boolean filesOnly, boolean directoriesOnly,
-            String fileFilter) {
-        this(recursive, includeFiles, includeDirectories, false, false, null, false);
+    public RecursiveFileFilter(boolean recursive, boolean includeFiles,
+            boolean includeDirectories, boolean filesOnly,
+            boolean directoriesOnly, String fileFilter) {
+        this(recursive, includeFiles, includeDirectories, false, false, null,
+                false);
     }
 
     /** Construct a recursive file filter.  This method has four
@@ -104,10 +104,9 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  be converted into a Java regular expression.  The DirectoryListing
      *  actor calls this with a false value.
      */
-    public RecursiveFileFilter(boolean recursive,
-            boolean includeFiles, boolean includeDirectories,
-            boolean filesOnly, boolean directoriesOnly,
-            String fileFilter, boolean escape) {
+    public RecursiveFileFilter(boolean recursive, boolean includeFiles,
+            boolean includeDirectories, boolean filesOnly,
+            boolean directoriesOnly, String fileFilter, boolean escape) {
         _recursive = recursive;
         _includeFiles = includeFiles;
         _includeDirectories = includeDirectories;
@@ -135,12 +134,8 @@ public class RecursiveFileFilter implements FilenameFilter {
         File file = new File(dir, name);
         boolean isDirectory = file.isDirectory();
         boolean isFile = file.isFile();
-        if (((!_directoriesOnly && !_filesOnly)
-                        && ((isFile && _includeFiles)
-                                || (isDirectory && _includeDirectories)))
-                || ((_filesOnly && isFile)
-                        || (_directoriesOnly && isDirectory)
-                        || (!_directoriesOnly && !_filesOnly))) {
+        if (((!_directoriesOnly && !_filesOnly) && ((isFile && _includeFiles) || (isDirectory && _includeDirectories)))
+                || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
             // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
             // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
             Matcher match = _pattern.matcher(name);
@@ -176,12 +171,11 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  @return The array of all the files and directories found.
      */
     public static File[] listFiles(File directory, boolean recursive,
-            boolean includeFiles, boolean includeDirectories,
-            String fileFilter) {
+            boolean includeFiles, boolean includeDirectories, String fileFilter) {
         // gt uses this method.
         return RecursiveFileFilter.listFiles(directory, recursive,
-                includeFiles, includeDirectories,
-                false, false, fileFilter, true);
+                includeFiles, includeDirectories, false, false, fileFilter,
+                true);
     }
 
     /** List all the files and directories within the given directory.
@@ -204,8 +198,8 @@ public class RecursiveFileFilter implements FilenameFilter {
             String fileFilter, boolean escape) {
         // DirectoryListing uses this method.
         return RecursiveFileFilter.listFiles(directory, recursive,
-                includeFiles, includeDirectories,
-                false, false, fileFilter, escape);
+                includeFiles, includeDirectories, false, false, fileFilter,
+                escape);
     }
 
     /** List all the files and directories within the given directory.
@@ -224,13 +218,13 @@ public class RecursiveFileFilter implements FilenameFilter {
      */
     public static File[] listFiles(File directory, boolean recursive,
             boolean includeFiles, boolean includeDirectories,
-            boolean filesOnly, boolean directoriesOnly,
-                                   String fileFilter) {
+            boolean filesOnly, boolean directoriesOnly, String fileFilter) {
         return RecursiveFileFilter.listFiles(directory, recursive,
-                                             includeFiles, includeDirectories,
-                                             filesOnly, directoriesOnly, fileFilter, true);
+                includeFiles, includeDirectories, filesOnly, directoriesOnly,
+                fileFilter, true);
 
     }
+
     /** List all the files and directories within the given directory.
      *  This method has four parameters to control whether
      *  files and directories are included.  Not all combinations make sense.
@@ -250,11 +244,11 @@ public class RecursiveFileFilter implements FilenameFilter {
      */
     public static File[] listFiles(File directory, boolean recursive,
             boolean includeFiles, boolean includeDirectories,
-            boolean filesOnly, boolean directoriesOnly,
-            String fileFilter, boolean escape) {
+            boolean filesOnly, boolean directoriesOnly, String fileFilter,
+            boolean escape) {
         RecursiveFileFilter filter = new RecursiveFileFilter(recursive,
-                includeFiles, includeDirectories,
-                filesOnly, directoriesOnly, fileFilter, escape);
+                includeFiles, includeDirectories, filesOnly, directoriesOnly,
+                fileFilter, escape);
         directory.list(filter);
         List<File> files = filter.getFiles();
         Collections.sort(files, new FileComparator());
@@ -269,8 +263,7 @@ public class RecursiveFileFilter implements FilenameFilter {
      */
     private String _escape(String string) {
         String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
-        return escaped.replaceAll("\\\\\\*", ".*").replaceAll("\\\\\\?",
-                ".?");
+        return escaped.replaceAll("\\\\\\*", ".*").replaceAll("\\\\\\?", ".?");
     }
 
     /** The pattern for the wildcard conversion.
@@ -318,7 +311,7 @@ public class RecursiveFileFilter implements FilenameFilter {
        @Pt.AcceptedRating Red (tfeng)
     */
     private static class FileComparator implements Comparator<File>,
-                                                   Serializable {
+            Serializable {
 
         /** Compare two files with their names.
          *
@@ -328,9 +321,7 @@ public class RecursiveFileFilter implements FilenameFilter {
          *   than file2.
          */
         public int compare(File file1, File file2) {
-            return file1.getAbsolutePath().compareTo(
-                    file2.getAbsolutePath());
+            return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());
         }
     }
 }
-

@@ -27,6 +27,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+
 import java.math.BigInteger;
 import java.util.Locale;
 
@@ -153,11 +154,13 @@ public class LogicFunction extends SynchronousFixTransformer {
             if (intResult != null) {
                 Overflow overflow = Overflow
                         .getName(((Parameter) getAttribute("outputOverflow"))
-                                .getExpression().toLowerCase(Locale.getDefault()));
+                                .getExpression().toLowerCase(
+                                        Locale.getDefault()));
 
                 Rounding rounding = Rounding
                         .getName(((Parameter) getAttribute("outputRounding"))
-                                .getExpression().toLowerCase(Locale.getDefault()));
+                                .getExpression().toLowerCase(
+                                        Locale.getDefault()));
                 FixPoint result = new FixPoint(intResult.doubleValue(),
                         new FixPointQuantization(precision, overflow, rounding));
                 sendOutput(output, 0, new FixToken(result));

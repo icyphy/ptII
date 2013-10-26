@@ -323,13 +323,12 @@ public class EditParametersDialog extends ComponentDialog implements
             _query.setMessage(message);
         }
 
-        _query.addChoice("class", "Class", new String[]{
+        _query.addChoice("class", "Class", new String[] {
                 "ptolemy.data.expr.Parameter",
                 "ptolemy.data.expr.FileParameter",
                 "ptolemy.kernel.util.StringAttribute",
-                "ptolemy.actor.gui.ColorAttribute"
-                }, "ptolemy.data.expr.Parameter", true);
-
+                "ptolemy.actor.gui.ColorAttribute" },
+                "ptolemy.data.expr.Parameter", true);
 
         _query.addLine("name", "Name", name);
         _query.addLine("default", "Default value", defValue);
@@ -350,8 +349,7 @@ public class EditParametersDialog extends ComponentDialog implements
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\"" + newName + "\" value=\""
-                    + newDefValue + "\" class=\""
-                    + parameterClass + "\"/>";
+                    + newDefValue + "\" class=\"" + parameterClass + "\"/>";
             _target.addChangeListener(this);
 
             MoMLChangeRequest request = new MoMLChangeRequest(this, _target,

@@ -88,8 +88,8 @@ public class FMULogUtilities {
      * processed.  The input will be of the format "foo #r1234# bar".
      * @return a String with the variable references replaced.
      */
-    public static String replaceVariableReferences(FMIModelDescription modelDescription,
-           String messageString) {
+    public static String replaceVariableReferences(
+            FMIModelDescription modelDescription, String messageString) {
         int i = 0;
         StringBuffer results = new StringBuffer();
         char[] message = messageString.toCharArray();
@@ -103,9 +103,10 @@ public class FMULogUtilities {
                 }
                 c = message[i];
             } else {
-                int end = messageString.indexOf('#', i+1);
+                int end = messageString.indexOf('#', i + 1);
                 if (end == -1) {
-                    results.append("(Unmatched '#' in \"" + messageString + "\".)");
+                    results.append("(Unmatched '#' in \"" + messageString
+                            + "\".)");
                     results.append('#');
                     break;
                 }
@@ -114,12 +115,13 @@ public class FMULogUtilities {
                     results.append('#');
                     i += 2;
                     if (i >= message.length) {
-                        throw new ArrayIndexOutOfBoundsException("Internal Error");
+                        throw new ArrayIndexOutOfBoundsException(
+                                "Internal Error");
                     }
                     c = message[i];
                 } else {
                     Class fmiTypeClass = null;
-                    char typeName = message[i+1]; // one of ribs
+                    char typeName = message[i + 1]; // one of ribs
                     switch (typeName) {
                     case 'r':
                         fmiTypeClass = FMI_REAL_TYPE_CLASS;
@@ -139,16 +141,20 @@ public class FMULogUtilities {
                     }
 
                     if (fmiTypeClass == null) {
-                        results.append("(TypeName: '" + typeName + "' not supported, must be r, i, b or s.)");
+                        results.append("(TypeName: '" + typeName
+                                + "' not supported, must be r, i, b or s.)");
                         i++;
                     } else {
-                        String integerString = messageString.substring(i+2, end);
+                        String integerString = messageString.substring(i + 2,
+                                end);
                         try {
-                            int variableReference = Integer.valueOf(integerString);
+                            int variableReference = Integer
+                                    .valueOf(integerString);
                             boolean foundIt = false;
                             for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
                                 if (scalarVariable.valueReference == variableReference
-                                        && scalarVariable.type.getClass().isAssignableFrom(fmiTypeClass)) {
+                                        && scalarVariable.type.getClass()
+                                                .isAssignableFrom(fmiTypeClass)) {
                                     foundIt = true;
                                     results.append(scalarVariable.name);
                                     break;
@@ -159,11 +165,14 @@ public class FMULogUtilities {
                             }
                             i += (end - i + 1);
                             if (i >= message.length) {
-                                throw new ArrayIndexOutOfBoundsException("Internal Error");
+                                throw new ArrayIndexOutOfBoundsException(
+                                        "Internal Error");
                             }
                             c = message[i];
                         } catch (NumberFormatException ex) {
-                            results.append("(NumberFormatException: \"" + integerString + "\" in \"" + messageString + "\")");
+                            results.append("(NumberFormatException: \""
+                                    + integerString + "\" in \""
+                                    + messageString + "\")");
                             results.append('#');
                             break;
                         }
@@ -221,10 +230,14 @@ public class FMULogUtilities {
 
     static {
         try {
-            FMI_REAL_TYPE_CLASS = Class.forName("org.ptolemy.fmi.type.FMIRealType");
-            FMI_INTEGER_TYPE_CLASS = Class.forName("org.ptolemy.fmi.type.FMIIntegerType");
-            FMI_BOOLEAN_TYPE_CLASS = Class.forName("org.ptolemy.fmi.type.FMIBooleanType");
-            FMI_STRING_TYPE_CLASS = Class.forName("org.ptolemy.fmi.type.FMIBooleanType");
+            FMI_REAL_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIRealType");
+            FMI_INTEGER_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIIntegerType");
+            FMI_BOOLEAN_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIBooleanType");
+            FMI_STRING_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIBooleanType");
         } catch (ClassNotFoundException ex) {
             throw new ExceptionInInitializerError(ex);
         }

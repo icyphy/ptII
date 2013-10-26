@@ -166,15 +166,15 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
         double result = 0.0;
         boolean foundOne = false;
         if (in1.hasToken(0)) {
-            result += ((DoubleToken)in1.get(0)).doubleValue();
+            result += ((DoubleToken) in1.get(0)).doubleValue();
             foundOne = true;
         }
         if (in2.hasToken(0)) {
-            result += ((DoubleToken)in2.get(0)).doubleValue();
+            result += ((DoubleToken) in2.get(0)).doubleValue();
             foundOne = true;
         }
         if (in3.hasToken(0)) {
-            result += ((DoubleToken)in3.get(0)).doubleValue();
+            result += ((DoubleToken) in3.get(0)).doubleValue();
             foundOne = true;
         }
         if (foundOne) {

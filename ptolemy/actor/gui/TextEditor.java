@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.gui;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -68,7 +69,6 @@ import ptolemy.gui.UndoListener;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
-
 ///////////////////////////////////////////////////////////////////
 //// TextEditor
 
@@ -86,7 +86,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (eal)
  */
 public class TextEditor extends TableauFrame implements DocumentListener,
-                                                        ImageExportable, Printable {
+        ImageExportable, Printable {
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -302,9 +302,12 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                 - format.getImageableY() - bottomMargin)
                 / lineHeight);
 
-        int lineYPosition = (int) Math.ceil(format.getImageableY() + lineHeight);
+        int lineYPosition = (int) Math
+                .ceil(format.getImageableY() + lineHeight);
 
-        return _print(graphics2D, index, linesPerPage, lineHeight, (int)format.getImageableX(), lineYPosition, format.getHeight() - bottomMargin);
+        return _print(graphics2D, index, linesPerPage, lineHeight,
+                (int) format.getImageableX(), lineYPosition, format.getHeight()
+                        - bottomMargin);
 
     }
 
@@ -341,11 +344,13 @@ public class TextEditor extends TableauFrame implements DocumentListener,
         double lineHeight = graphics2D.getFontMetrics().getHeight()
                 - graphics2D.getFontMetrics().getLeading() / 2;
 
-        int linesPerPage = (int) Math.floor((drawRect.height - bottomMargin) / lineHeight);
+        int linesPerPage = (int) Math.floor((drawRect.height - bottomMargin)
+                / lineHeight);
 
-        int lineYPosition = (int)Math.ceil(lineHeight);
+        int lineYPosition = (int) Math.ceil(lineHeight);
 
-        return _print(graphics2D, 0 /* page */, linesPerPage, lineHeight, 0, lineYPosition, drawRect.height - bottomMargin);
+        return _print(graphics2D, 0 /* page */, linesPerPage, lineHeight, 0,
+                lineYPosition, drawRect.height - bottomMargin);
     }
 
     /** React to notification that there was a removal from the document.
@@ -578,8 +583,10 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                 }
 
                 // Here, we differ from PlotTableauFrame:
-                int returnVal = fileDialog.showDialog(TextEditor.this,
-                        "Export " + _formatName.toUpperCase(Locale.getDefault()));
+                int returnVal = fileDialog.showDialog(
+                        TextEditor.this,
+                        "Export "
+                                + _formatName.toUpperCase(Locale.getDefault()));
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = fileDialog.getCurrentDirectory();
@@ -614,8 +621,10 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                             + file.getName());
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Export to " + _formatName.toUpperCase(Locale.getDefault())
-                        + " failed", ex);
+                MessageHandler.error(
+                        "Export to "
+                                + _formatName.toUpperCase(Locale.getDefault())
+                                + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }
@@ -635,14 +644,15 @@ public class TextEditor extends TableauFrame implements DocumentListener,
         return hints;
     }
 
-
     /** Print the contents of the editor to a Graphics.
      *  This used both by the print facility and the exportImage facility.
      *  @param graphics2D The context into which the page is drawn.
      *  @return PAGE_EXISTS if the page is rendered successfully, or
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      */
-    private int _print(Graphics2D graphics2D, int index, int linesPerPage, double lineHeight, int lineXPosition, int linePosition, double bottomLinePosition) {
+    private int _print(Graphics2D graphics2D, int index, int linesPerPage,
+            double lineHeight, int lineXPosition, int linePosition,
+            double bottomLinePosition) {
 
         int startLine = linesPerPage * index;
 
@@ -657,8 +667,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                         text.getLineStartOffset(line),
                         text.getLineEndOffset(line)
                                 - text.getLineStartOffset(line));
-                graphics2D.drawString(linetext, lineXPosition,
-                        linePosition);
+                graphics2D.drawString(linetext, lineXPosition, linePosition);
             } catch (BadLocationException e) {
                 // Ignore. Never a bad location.
             }

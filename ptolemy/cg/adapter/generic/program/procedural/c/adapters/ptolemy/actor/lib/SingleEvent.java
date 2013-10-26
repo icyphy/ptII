@@ -99,8 +99,8 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
     @Override
     protected String _generateFireCode() throws IllegalActionException {
         // FIXME : not sure if this call is really necessary
-            super._generateFireCode();
-            CodeStream codeStream = _templateParser.getCodeStream();
+        super._generateFireCode();
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
 

@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic.export.html;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
@@ -857,38 +858,48 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     .getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
             // System.out.println("ExportHTMLAction: model: " + model + " model name: " + model.getName() + " " + model.getContainer() + " name: " + model.getContainer().getName() + model.getContainer().getContainer());
 
-            if (linkToJNLP && (model.getContainer() == null
-                               || /* Ptera */ model.getContainer().getContainer() == null && model.getName().equals("_Controller"))) {
-                String linkToHelp = "<a href=\"" + ssiRoot + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\"" + ssiRoot + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a> (<i>Java Plug-in Required</i>)";
+            if (linkToJNLP
+                    && (model.getContainer() == null || /* Ptera */model
+                            .getContainer().getContainer() == null
+                            && model.getName().equals("_Controller"))) {
+                String linkToHelp = "<a href=\""
+                        + ssiRoot
+                        + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\""
+                        + ssiRoot
+                        + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a> (<i>Java Plug-in Required</i>)";
 
-                printWriter.println("<p>Below is a browsable image of the model.</p> "
-                                    + "<ul>\n"
-                                    + "<li>For an executable version,"
-                                    + "<!-- We use the deployJava.js script so that Java "
-                                    + "will be installed if necessary -->\n"
-                                    + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
-                                    + "<script>\n"
-                                    + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
-                                    + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
-                                    + "  var url = parentDir + \""
-                                    + _sanitizedModelName + ".jnlp\";\n"
-                                    + "  deployJava.createWebStartLaunchButton(url);\n"
-                                    // FIXME: Don't use <table> here, use css.
-                                    + "  document.write(\"<table><tr><td>the WebStart version.</td><td>"
-                                    + linkToHelp.replace("\"", "\\\"") + "</td></tr></table>\");\n"
-                                    + "</script>\n"
-                                    + "<noscript>\n"
-                                    + "<a href=\"../"
-                                    + _sanitizedModelName + ".jnlp\">WebStart version</a>. \n"
-                                    + linkToHelp
-                                    + "</noscript>\n"
-                                    + "</li>\n");
-                printWriter.println("<li>To view or save the MoML file for this model, "
-                        + "<a href=\"../" + _sanitizedModelName
-                        + ".xml\">click here</a>.</li>");
+                printWriter
+                        .println("<p>Below is a browsable image of the model.</p> "
+                                + "<ul>\n"
+                                + "<li>For an executable version,"
+                                + "<!-- We use the deployJava.js script so that Java "
+                                + "will be installed if necessary -->\n"
+                                + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
+                                + "<script>\n"
+                                + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
+                                + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
+                                + "  var url = parentDir + \""
+                                + _sanitizedModelName
+                                + ".jnlp\";\n"
+                                + "  deployJava.createWebStartLaunchButton(url);\n"
+                                // FIXME: Don't use <table> here, use css.
+                                + "  document.write(\"<table><tr><td>the WebStart version.</td><td>"
+                                + linkToHelp.replace("\"", "\\\"")
+                                + "</td></tr></table>\");\n"
+                                + "</script>\n"
+                                + "<noscript>\n"
+                                + "<a href=\"../"
+                                + _sanitizedModelName
+                                + ".jnlp\">WebStart version</a>. \n"
+                                + linkToHelp + "</noscript>\n" + "</li>\n");
+                printWriter
+                        .println("<li>To view or save the MoML file for this model, "
+                                + "<a href=\"../"
+                                + _sanitizedModelName
+                                + ".xml\">click here</a>.</li>");
                 if (usePtWebsite) {
                     printWriter.println("<li>For a chapter overview, "
-                                + "<a href=\"../index.html\">click here</a>.</li>");
+                            + "<a href=\"../index.html\">click here</a>.</li>");
                 }
                 printWriter.println("</ul>");
 
@@ -958,8 +969,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     // but it does seem to do that, so I assume that's what it does.
                     Writer fileWriter = null;
                     try {
-                        File file =
-                                new File(parameters.directoryToExportTo, key);
+                        File file = new File(parameters.directoryToExportTo,
+                                key);
                         if (parameters.deleteFilesOnExit) {
                             file.deleteOnExit();
                         }
@@ -1161,7 +1172,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                     .equals(eventType)
                                     && (script.include.stringValue().equals(
                                             include) || script.include
-                                            .stringValue().toLowerCase(Locale.getDefault())
+                                            .stringValue()
+                                            .toLowerCase(Locale.getDefault())
                                             .equals("all"))
                                     && script.instancesOf.stringValue().equals(
                                             instancesOf)) {
@@ -1183,7 +1195,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 .attributeList(DefaultIconLink.class);
                         for (DefaultIconLink script : defaults) {
                             if ((script.include.stringValue().equals(include) || script.include
-                                    .stringValue().toLowerCase(Locale.getDefault()).equals("all"))
+                                    .stringValue()
+                                    .toLowerCase(Locale.getDefault())
+                                    .equals("all"))
                                     && script.instancesOf.stringValue().equals(
                                             instancesOf)) {
                                 // Skip this default from the configuration.
@@ -1458,8 +1472,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
         // will have been opened.
         CompositeEntity actualEntity = entity;
         if (tableau instanceof ActorGraphTableau) {
-            PtolemyEffigy actualEffigy = (PtolemyEffigy)tableau.getContainer();
-            actualEntity = (CompositeEntity)actualEffigy.getModel();
+            PtolemyEffigy actualEffigy = (PtolemyEffigy) tableau.getContainer();
+            actualEntity = (CompositeEntity) actualEffigy.getModel();
         }
         List<Entity> entities = actualEntity.entityList();
         for (Entity inside : entities) {

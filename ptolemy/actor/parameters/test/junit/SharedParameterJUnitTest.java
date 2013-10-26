@@ -78,7 +78,8 @@ public class SharedParameterJUnitTest {
         // ....setContainer() is done with null or another container.
 
         // Findbugs: avoid a dead local store here.
-        /* SharedParameter sharedParameter = */ new SharedParameter(compositeActor, "sharedParameter", null, "4.5" );
+        /* SharedParameter sharedParameter = */new SharedParameter(
+                compositeActor, "sharedParameter", null, "4.5");
 
         Collection<Initializable> initializables = _getInitializableField(compositeActor);
 
@@ -91,22 +92,28 @@ public class SharedParameterJUnitTest {
         // NOTE: Shouldn't this be clone(workspace)?
         Workspace clonedWorkspace = new Workspace("clonedWorkspace");
 
-        CompositeActor clonedCompositeActor = (CompositeActor) compositeActor.clone(clonedWorkspace);
+        CompositeActor clonedCompositeActor = (CompositeActor) compositeActor
+                .clone(clonedWorkspace);
 
         Collection<Initializable> clonedInitializables = _getInitializableField(clonedCompositeActor);
 
         assertTrue(initializables.size() == clonedInitializables.size());
 
         for (Initializable initializable : initializables) {
-            NamedObj initializableContainer = ((NamedObj) initializable).getContainer();
+            NamedObj initializableContainer = ((NamedObj) initializable)
+                    .getContainer();
             for (Initializable clonedInitializable : clonedInitializables) {
-                NamedObj clonedInitializableContainer = ((NamedObj) clonedInitializable).getContainer();
+                NamedObj clonedInitializableContainer = ((NamedObj) clonedInitializable)
+                        .getContainer();
 
                 // First, check for equals.
                 if (initializable.equals(clonedInitializable)) {
-                    System.out.println("Error!.  An initializable: " + ((NamedObj) initializable).getFullName ()
-                            + "(contained in " + initializableContainer.getFullName()
-                            + ", with workspace: " + initializableContainer.workspace().getName()
+                    System.out.println("Error!.  An initializable: "
+                            + ((NamedObj) initializable).getFullName()
+                            + "(contained in "
+                            + initializableContainer.getFullName()
+                            + ", with workspace: "
+                            + initializableContainer.workspace().getName()
                             + ") is equal to an initializable in the clone: "
                             + ((NamedObj) clonedInitializable).getFullName());
                 }
@@ -114,12 +121,14 @@ public class SharedParameterJUnitTest {
 
                 // Then, check for the same container.
                 if (initializableContainer.equals(clonedInitializableContainer)) {
-                    System.out.println("Error!.  The container of " + ((NamedObj) initializable).getFullName ()
-                            + " is " + initializableContainer.getFullName()
+                    System.out.println("Error!.  The container of "
+                            + ((NamedObj) initializable).getFullName() + " is "
+                            + initializableContainer.getFullName()
                             + ", which is the same as the container of "
                             + ((NamedObj) clonedInitializable).getFullName());
                 }
-                assertTrue(!initializableContainer.equals(clonedInitializableContainer));
+                assertTrue(!initializableContainer
+                        .equals(clonedInitializableContainer));
             }
         }
 
@@ -153,13 +162,17 @@ public class SharedParameterJUnitTest {
      *  @return The value of the protected _initializable field.
      *  @exception Exception If the field cannot be accessed.
      */
-    private Collection<Initializable> _getInitializableField(CompositeActor compositeActor) throws Exception {
+    private Collection<Initializable> _getInitializableField(
+            CompositeActor compositeActor) throws Exception {
         Field[] fields = compositeActor.getClass().getDeclaredFields();
-        for (int i = 0 ; i < fields.length; i++) {
+        for (int i = 0; i < fields.length; i++) {
             fields[i].setAccessible(true);
             if (fields[i].getName().equals("_initializables")) {
-                Collection<Initializable> initializables = (Collection<Initializable>) fields[i].get(compositeActor);
-                System.out.println("fields: " + fields[i].getName() + ": " + initializables + " workspace: " + compositeActor.workspace());
+                Collection<Initializable> initializables = (Collection<Initializable>) fields[i]
+                        .get(compositeActor);
+                System.out.println("fields: " + fields[i].getName() + ": "
+                        + initializables + " workspace: "
+                        + compositeActor.workspace());
                 return initializables;
             }
         }

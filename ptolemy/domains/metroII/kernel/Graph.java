@@ -64,7 +64,8 @@ public class Graph implements Cloneable {
     @Override
     public Graph clone() throws CloneNotSupportedException {
         Graph newObject = (Graph) super.clone();
-        newObject._nodeConnection = (ArrayList<ArrayList<Integer>>) _nodeConnection.clone();
+        newObject._nodeConnection = (ArrayList<ArrayList<Integer>>) _nodeConnection
+                .clone();
         newObject._edge = (ArrayList<Pair<Integer, Integer>>) _edge.clone();
         return newObject;
     }
@@ -91,7 +92,8 @@ public class Graph implements Cloneable {
         // System.out.println(id1+" "+id2);
         for (Integer edgeId : _nodeConnection.get(id1)) {
             // System.out.println(_edge.get(edgeId).getFirst().intValue()+":"+_edge.get(edgeId).getSecond().intValue());
-            if (_edge.get(edgeId).getFirst().intValue() == id2 || _edge.get(edgeId).getSecond().intValue() == id2) {
+            if (_edge.get(edgeId).getFirst().intValue() == id2
+                    || _edge.get(edgeId).getSecond().intValue() == id2) {
                 return true;
             }
         }
@@ -126,7 +128,7 @@ public class Graph implements Cloneable {
      * @return An iterator of the edges connected to nodeId.
      */
     public Iterable<Integer> getEdges(int nodeId) {
-        return (Iterable<Integer>) _nodeConnection.get(nodeId);
+        return _nodeConnection.get(nodeId);
     }
 
     /**

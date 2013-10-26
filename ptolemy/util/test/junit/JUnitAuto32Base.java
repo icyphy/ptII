@@ -73,8 +73,7 @@ import org.junit.runners.Suite;
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({
-        ptolemy.util.test.junit.Auto32Tests.class
+@Suite.SuiteClasses({ ptolemy.util.test.junit.Auto32Tests.class
 
 })
 public class JUnitAuto32Base {

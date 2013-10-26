@@ -137,11 +137,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-//        System.out.println("Pushing events: ");
-//        for (Builder etb : events) {
-//            System.out
-//                    .println(etb.getName() + " " + etb.getStatus().toString());
-//        }
+        //        System.out.println("Pushing events: ");
+        //        for (Builder etb : events) {
+        //            System.out
+        //                    .println(etb.getName() + " " + etb.getStatus().toString());
+        //        }
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
@@ -184,18 +184,17 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         for (Event e : ev.getEventList()) {
             events.add(e.toBuilder());
         }
-//        System.out.println("Sync events: ");
-//        for (Builder etb : events) {
-//            System.out
-//                    .println(etb.getName() + " " + etb.getStatus().toString());
-//        }
+        //        System.out.println("Sync events: ");
+        //        for (Builder etb : events) {
+        //            System.out
+        //                    .println(etb.getName() + " " + etb.getStatus().toString());
+        //        }
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
             }
         }
     }
-
 
     /**
      * Fire the wrapped Metro-SystemC model.

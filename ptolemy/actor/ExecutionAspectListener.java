@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-
 package ptolemy.actor;
 
 import java.util.List;

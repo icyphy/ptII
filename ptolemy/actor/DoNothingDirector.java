@@ -95,7 +95,7 @@ public class DoNothingDirector extends Director {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
-            ((CompositeActor)container).getManager().finish();
+            ((CompositeActor) container).getManager().finish();
         }
     }
 

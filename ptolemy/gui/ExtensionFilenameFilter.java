@@ -28,6 +28,7 @@
  * redistribute the Software for such purposes.
  */
 package ptolemy.gui;
+
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -333,7 +334,8 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
             int i = filename.lastIndexOf('.');
 
             if (i > 0 && i < filename.length() - 1) {
-                return filename.substring(i + 1).toLowerCase(Locale.getDefault());
+                return filename.substring(i + 1).toLowerCase(
+                        Locale.getDefault());
             }
         }
         return null;

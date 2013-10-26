@@ -33,7 +33,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /** This actor implements an output port in a CompositeExecutionAspect
  *  (@link CompositeExecutionAspect).
 *   This actor simply stores the token from the input and provides methods

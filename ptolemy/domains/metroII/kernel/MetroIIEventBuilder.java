@@ -80,9 +80,8 @@ public class MetroIIEventBuilder {
         if (scaler > 1) {
             assert Math.abs(scaler - (int) scaler) < 0.00001;
             timeValue = timeValue * ((int) scaler);
-        }
-        else {
-            double iScaler = 1/scaler;
+        } else {
+            double iScaler = 1 / scaler;
             assert Math.abs(iScaler - (int) iScaler) < 0.00001;
             timeValue = timeValue / ((int) iScaler);
         }
@@ -169,6 +168,5 @@ public class MetroIIEventBuilder {
         }
         return false;
     }
-
 
 }

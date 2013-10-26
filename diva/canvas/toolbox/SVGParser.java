@@ -25,6 +25,7 @@
  *
  */
 package diva.canvas.toolbox;
+
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;

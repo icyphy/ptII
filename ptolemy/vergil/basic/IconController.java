@@ -229,7 +229,8 @@ public class IconController extends ParameterizedNodeController {
 
             try {
                 // clear highlighting
-                Attribute highlightColor = object.getAttribute("_decoratorHighlightColor");
+                Attribute highlightColor = object
+                        .getAttribute("_decoratorHighlightColor");
                 if (highlightColor != null) {
                     object.removeAttribute(highlightColor);
                 }
@@ -238,19 +239,26 @@ public class IconController extends ParameterizedNodeController {
                 decorators.addAll(object.decorators());
 
                 for (Decorator decorator : decorators) {
-                    DecoratorAttributes decoratorAttributes = object.getDecoratorAttributes(decorator);
+                    DecoratorAttributes decoratorAttributes = object
+                            .getDecoratorAttributes(decorator);
                     if (decoratorAttributes instanceof ExecutionAttributes) {
-                        if (decoratorAttributes.getDecorator() != null &&
-                                ((ExecutionAttributes)decoratorAttributes).enabled()) {
+                        if (decoratorAttributes.getDecorator() != null
+                                && ((ExecutionAttributes) decoratorAttributes)
+                                        .enabled()) {
                             try {
-                                if (object.getAttribute("_decoratorHighlightColor") == null) {
-                                    highlightColor = new ColorAttribute(object, "_decoratorHighlightColor");
-                                    Attribute attribute = ((NamedObj)decorator).getAttribute("decoratorHighlightColor");
+                                if (object
+                                        .getAttribute("_decoratorHighlightColor") == null) {
+                                    highlightColor = new ColorAttribute(object,
+                                            "_decoratorHighlightColor");
+                                    Attribute attribute = ((NamedObj) decorator)
+                                            .getAttribute("decoratorHighlightColor");
                                     String colorExpression = "{0.5, 0.5, 0.5, 0.5}";
                                     if (attribute != null) {
-                                        colorExpression = (((ColorAttribute)attribute).getToken()).toString();
+                                        colorExpression = (((ColorAttribute) attribute)
+                                                .getToken()).toString();
                                     }
-                                    ((ColorAttribute)highlightColor).setExpression(colorExpression);
+                                    ((ColorAttribute) highlightColor)
+                                            .setExpression(colorExpression);
                                 }
                             } catch (NameDuplicationException e) {
                                 // Not gonna happen.

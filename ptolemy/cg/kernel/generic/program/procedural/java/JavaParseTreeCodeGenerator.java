@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.kernel.generic.program.procedural.java;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -649,7 +650,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         functionCode.append("\n}\n),\n new ptolemy.data.type.Type[] \n{\n");
         for (int i = 0; i < argumentTypes.length; i++) {
             functionCode.append("ptolemy.data.type.BaseType."
-                    + argumentTypes[i].toString().toUpperCase(Locale.getDefault()));
+                    + argumentTypes[i].toString().toUpperCase(
+                            Locale.getDefault()));
             if (i < argumentTypes.length - 1) {
                 functionCode.append(", ");
             }

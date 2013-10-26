@@ -38,19 +38,17 @@ public class DTDValidator {
             // Parse document
             //            Document d = b.parse(args[0]);
             // Findbugs: avoid a dead local store here.
-            /* Document d = */ b.parse(new java.io.FileInputStream(fil),
-                                 args[1] + File.separator);
-        }
-        catch(SAXException e) {
+            /* Document d = */b.parse(new java.io.FileInputStream(fil),
+                    args[1] + File.separator);
+        } catch (SAXException e) {
             System.err.println(e.getMessage());
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             System.err.println(e.getMessage());
-        }
-        catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             System.err.println(e.getMessage());
         }
     }
+
     /** Inner class for error handling
      */
     private static class MyErrorHandler implements ErrorHandler {
@@ -82,17 +80,14 @@ public class DTDValidator {
             error(e);
         }
 
-
         /** Prints the error message to <code>System.err</code>
          *@param s The string that will be added in front of the exception
          *         message
          *@param e The exception
          */
         private void printInfo(String s, SAXParseException e) {
-            System.err.println(s +
-                               fil + ":"
-                               + e.getLineNumber() + ": "
-                               + e.getMessage());
+            System.err.println(s + fil + ":" + e.getLineNumber() + ": "
+                    + e.getMessage());
         }
     }
 }

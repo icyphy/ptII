@@ -379,23 +379,23 @@ public class SendMail extends TypedAtomicActor {
 
         if (!((BooleanToken) reallySendMail.getToken()).booleanValue()) {
             // Don't want to actually send email, so we just return now.
-                if (_debugging) {
-                        _debug("reallySendMail is false, so no mail is sent.");
-                }
+            if (_debugging) {
+                _debug("reallySendMail is false, so no mail is sent.");
+            }
             return true;
         }
 
-            if (_debugging) {
-                    _debug("Sending mail with properties: " + _props.toString());
-            }
+        if (_debugging) {
+            _debug("Sending mail with properties: " + _props.toString());
+        }
 
         Authenticator auth = new SMTPAuthenticator();
         Session mailSession = Session.getDefaultInstance(_props, auth);
         // Uncomment for debugging info to stdout.
-            if (_debugging) {
-                    _debug("Debug info from mail session going to standard out.");
+        if (_debugging) {
+            _debug("Debug info from mail session going to standard out.");
             mailSession.setDebug(true);
-            }
+        }
 
         try {
             Transport transport = mailSession.getTransport();

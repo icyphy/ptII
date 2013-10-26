@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.actor.gui;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -561,8 +562,10 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
                     }
                 }
 
-                int returnVal = fileDialog.showDialog(PlotTableauFrame.this,
-                        "Export " + _formatName.toUpperCase(Locale.getDefault()));
+                int returnVal = fileDialog.showDialog(
+                        PlotTableauFrame.this,
+                        "Export "
+                                + _formatName.toUpperCase(Locale.getDefault()));
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = fileDialog.getCurrentDirectory();
@@ -597,8 +600,10 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
                             + file.getName());
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Export to " + _formatName.toUpperCase(Locale.getDefault())
-                        + " failed", ex);
+                MessageHandler.error(
+                        "Export to "
+                                + _formatName.toUpperCase(Locale.getDefault())
+                                + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }

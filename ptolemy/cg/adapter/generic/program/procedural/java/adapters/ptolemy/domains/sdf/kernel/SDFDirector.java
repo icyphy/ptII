@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;

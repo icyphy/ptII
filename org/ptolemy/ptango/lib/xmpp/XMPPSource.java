@@ -225,7 +225,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         }
 
         _handlePublishedItems(items);
-        this.notify();  // Notify other handlePublishedItems methods waiting
+        this.notify(); // Notify other handlePublishedItems methods waiting
     }
 
     /** Set _hasInitialized to false, so that invocations of

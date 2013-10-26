@@ -58,10 +58,10 @@ public final class WebServerManager {
     ////                         public methods                    ////
 
     public static WebServerManager getInstance() {
-       if (_instance == null) {
-          _instance = new WebServerManager();
-       }
-       return _instance;
+        if (_instance == null) {
+            _instance = new WebServerManager();
+        }
+        return _instance;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,7 +98,6 @@ public final class WebServerManager {
         return false;
     }
 
-
     /** Return true if the given application is registered with the
      * server associated with the given port and this server is running;
      * false otherwise.  The model name is used to identify the application -
@@ -117,7 +116,7 @@ public final class WebServerManager {
         WebServerUtilities server = null;
 
         for (WebServerUtilities theServer : _servers) {
-            if (theServer.getPortNumber()== portNumber) {
+            if (theServer.getPortNumber() == portNumber) {
                 server = theServer;
                 break;
             }
@@ -125,8 +124,7 @@ public final class WebServerManager {
 
         if (server != null) {
             // FIXME:  Use just model name, or whole application info object?
-            if (server.isHostingModel(fullModelName)
-                    && server.isRunning()) {
+            if (server.isHostingModel(fullModelName) && server.isRunning()) {
                 return true;
             }
         }
@@ -148,7 +146,7 @@ public final class WebServerManager {
      */
 
     public void register(WebApplicationInfo appInfo, int portNumber)
-        throws Exception{
+            throws Exception {
         // Fetch server at this port, if any.  If none, create and start a new
         // server for this port.  If the port number is <=0, use the default
         // port of 8080
@@ -187,7 +185,7 @@ public final class WebServerManager {
      * or the application cannot be stopped.
      */
     public void unregister(WebApplicationInfo appInfo, int portNumber)
-            throws Exception{
+            throws Exception {
         // Check if this application has been registered to a server.
         // First, get the server running on this port.
         WebServerUtilities server = null;
@@ -199,9 +197,10 @@ public final class WebServerManager {
         }
 
         if (server == null) {
-            throw new Exception("Application " + appInfo.getModelName() +
-                    "attempted to unregister itself for port number " + portNumber +
-                    ", but there is no server associated with this port.");
+            throw new Exception("Application " + appInfo.getModelName()
+                    + "attempted to unregister itself for port number "
+                    + portNumber
+                    + ", but there is no server associated with this port.");
         }
 
         // This will throw an exception if the application is not registered on
@@ -225,6 +224,5 @@ public final class WebServerManager {
     /** The singleton instance of the WebServerManager class */
     private static WebServerManager _instance = null;
 
-    private HashSet<WebServerUtilities> _servers =
-            new HashSet<WebServerUtilities>();
- }
+    private HashSet<WebServerUtilities> _servers = new HashSet<WebServerUtilities>();
+}

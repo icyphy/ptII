@@ -42,6 +42,7 @@ public class CvArr extends Structure {
     public CvArr(Pointer p) {
         super(p);
     };
+
     /** Return the field names in the proper order.
      *  <p>This is new in jna-3.5.0.
      *  @return a list of strings that name the fields in order.

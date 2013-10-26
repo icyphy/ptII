@@ -128,16 +128,14 @@ public class Precocious extends TypedAtomicActor {
         if (output.isOutsideConnected()) {
             output.send(0, new IntToken(_count));
         } else {
-            ChangeRequest request = new ChangeRequest(this,"Find recipient") {
+            ChangeRequest request = new ChangeRequest(this, "Find recipient") {
                 protected void _execute() throws IllegalActionException {
-                    CompositeEntity container = (CompositeEntity)
-                            getContainer();
+                    CompositeEntity container = (CompositeEntity) getContainer();
                     List<Entity> entities = container.entityList();
                     for (Entity entity : entities) {
                         List<IOPort> ports = entity.portList();
                         for (IOPort port : ports) {
-                            if (port.isInput()
-                                    && !port.isOutsideConnected()) {
+                            if (port.isInput() && !port.isOutsideConnected()) {
                                 container.connect(output, port);
                                 return;
                             }
@@ -148,7 +146,7 @@ public class Precocious extends TypedAtomicActor {
             requestChange(request);
         }
 
-        double period = ((DoubleToken)firingPeriod.getToken()).doubleValue();
+        double period = ((DoubleToken) firingPeriod.getToken()).doubleValue();
         getDirector().fireAt(this, getDirector().getModelTime().add(period));
     }
 

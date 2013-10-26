@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 
 package ptolemy.cg.kernel.generic.program.procedural.c;
+
 import java.util.Locale;
 
 import ptolemy.actor.CompositeActor;
@@ -228,9 +229,10 @@ public class CTemplateParser extends ProceduralTemplateParser {
             }
             return cgType.toLowerCase(Locale.getDefault());
         } else if (macro.equals("ModelName")) {
-            return ((CCodeGenerator)super._codeGenerator).getModelName();
+            return ((CCodeGenerator) super._codeGenerator).getModelName();
         } else if (macro.equals("DirectorName")) {
-            return CodeGeneratorAdapter.generateName(((NamedObj) _component)) + ".container->director";
+            return CodeGeneratorAdapter.generateName(((NamedObj) _component))
+                    + ".container->director";
         }
 
         // We will assume that it is a call to a polymorphic

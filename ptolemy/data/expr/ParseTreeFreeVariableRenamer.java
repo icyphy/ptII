@@ -67,7 +67,7 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
         // If the variable containing a reference to the variable to be
         // renamed is in string mode, prepend a $ to the name.
         if (_dependentVariable.isStringMode()) {
-            _name = "$" +  name;
+            _name = "$" + name;
         } else {
             _name = name;
         }

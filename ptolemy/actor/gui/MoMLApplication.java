@@ -80,9 +80,9 @@ public class MoMLApplication extends ConfigurationApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public MoMLApplication(String basePath, String[] args) throws Exception {
-        this(basePath, args, new ActorGraphicalMessageHandler(), new SimpleErrorHandler());
+        this(basePath, args, new ActorGraphicalMessageHandler(),
+                new SimpleErrorHandler());
     }
-
 
     /** Parse the specified command-line arguments, instantiating classes
      *  and reading files that are specified.
@@ -94,8 +94,9 @@ public class MoMLApplication extends ConfigurationApplication {
      *  @param errorHandler The MoML error handler.
      *  @exception Exception If command line arguments have problems.
      */
-    public MoMLApplication(String basePath, String[] args, MessageHandler messageHandler,
-                           ErrorHandler errorHandler) throws Exception {
+    public MoMLApplication(String basePath, String[] args,
+            MessageHandler messageHandler, ErrorHandler errorHandler)
+            throws Exception {
         super(basePath, args, messageHandler, errorHandler);
     }
 

@@ -508,8 +508,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                                 FiringEvent.AFTER_POSTFIRE));
                     }
 
-                    Iterator<?> inputPorts = firing.actor().inputPortList()
-                            .iterator();
+                    firing.actor().inputPortList().iterator();
 
                     if (_pendingIteration.get(actor.getFullName()) > 0) {
                         assert actor.prefire();

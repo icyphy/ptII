@@ -201,8 +201,10 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args)
             throws Exception {
-        this(basePath, args, new /*Graphical*/MessageHandler(), new SimpleErrorHandler());
+        this(basePath, args, new /*Graphical*/MessageHandler(),
+                new SimpleErrorHandler());
     }
+
     /** Parse the specified command-line arguments, instantiating classes
      *  and reading files that are specified.
      *  @param basePath The basePath to look for configurations
@@ -214,7 +216,8 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception Exception If command line arguments have problems.
      */
     public ConfigurationApplication(String basePath, String[] args,
-            MessageHandler messageHandler, ErrorHandler errorHandler) throws Exception {
+            MessageHandler messageHandler, ErrorHandler errorHandler)
+            throws Exception {
         this();
 
         _initializeApplication();
@@ -580,7 +583,7 @@ public class ConfigurationApplication implements ExecutionListener {
             File canonicalModelFile = FileUtilities.nameToFile(modelFileName,
                     null);
             if (canonicalModelFile == null) {
-                throw new IOException("Could not find \""+ modelFileName
+                throw new IOException("Could not find \"" + modelFileName
                         + "\".");
             }
             String canonicalModelFileName = canonicalModelFile
@@ -990,8 +993,8 @@ public class ConfigurationApplication implements ExecutionListener {
                             Configuration configuration;
                             // URL.equals() is very expensive so we convert to a URI first  See:
                             //http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
-                            if (specificationURL.toURI()
-                                    .equals(_initialSpecificationURI)) {
+                            if (specificationURL.toURI().equals(
+                                    _initialSpecificationURI)) {
                                 // Avoid rereading the configuration, which will result
                                 // in the old configuration being removed, which exits the app.
                                 configuration = _configuration;

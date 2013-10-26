@@ -99,15 +99,13 @@ public class ArrayElementAsMatrix extends Transformer {
         x.setTypeEquals(BaseType.INT);
         x.setExpression("0");
         new Parameter(x.getPort(), "_showName", BooleanToken.TRUE);
-        new StringAttribute(x.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        new StringAttribute(x.getPort(), "_cardinal").setExpression("SOUTH");
 
         y = new PortParameter(this, "y");
         y.setTypeEquals(BaseType.INT);
         y.setExpression("0");
         new Parameter(y.getPort(), "_showName", BooleanToken.TRUE);
-        new StringAttribute(y.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        new StringAttribute(y.getPort(), "_cardinal").setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1,5 +1,4 @@
 
-
 /* Parameter Estimation for Graphical Models.
 
 Copyright (c) 1998-2013 The Regents of the University of California.
@@ -82,138 +81,147 @@ the parameter estimation stops iterating and delivers the parameter estimates.
  @Pt.AcceptedRating
  */
 public class HMMMultinomialEstimator extends ParameterEstimator {
-   /** Construct an actor with the given container and name.
-    *  @param container The container.
-    *  @param name The name of this actor
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public HMMMultinomialEstimator(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public HMMMultinomialEstimator(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       emissionEstimates = new TypedIOPort(this, "emissionEstimates", false, true);
-       emissionEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        emissionEstimates = new TypedIOPort(this, "emissionEstimates", false,
+                true);
+        emissionEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-       observationProbabilities = new Parameter(this, "observationProbabilities");
-       observationProbabilities.setExpression("[0.6,0.3,0.1;0.1,0.4,0.5]");
-       observationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        observationProbabilities = new Parameter(this,
+                "observationProbabilities");
+        observationProbabilities.setExpression("[0.6,0.3,0.1;0.1,0.4,0.5]");
+        observationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-       nCategories = new Parameter(this, "nCategories");
-       nCategories.setExpression("3");
-       nCategories.setTypeEquals(BaseType.INT);
-       _nCategories = 3;
+        nCategories = new Parameter(this, "nCategories");
+        nCategories.setExpression("3");
+        nCategories.setTypeEquals(BaseType.INT);
+        _nCategories = 3;
 
-       _B = new double[_nStates][_nCategories];
-       _B0 = new double[_nStates][_nCategories];
-   }
+        _B = new double[_nStates][_nCategories];
+        _B0 = new double[_nStates][_nCategories];
+    }
 
-   public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {
-       if (attribute == observationProbabilities) {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == observationProbabilities) {
 
-           int nCat = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
-           _B0 = new double[_nStates][nCat];
-           for (int i = 0; i < _nStates; i++) {
-               for (int j = 0; j< nCat; j++) {
-                   _B0[i][j] = ((DoubleToken)((MatrixToken) observationProbabilities.getToken())
-                           .getElementAsToken(i, j))
-                           .doubleValue();
-               }
-           }
+            int nCat = ((MatrixToken) observationProbabilities.getToken())
+                    .getColumnCount();
+            _B0 = new double[_nStates][nCat];
+            for (int i = 0; i < _nStates; i++) {
+                for (int j = 0; j < nCat; j++) {
+                    _B0[i][j] = ((DoubleToken) ((MatrixToken) observationProbabilities
+                            .getToken()).getElementAsToken(i, j)).doubleValue();
+                }
+            }
 
-       } else if (attribute == nCategories)
-       {
-           int cat = ((IntToken) nCategories.getToken()).intValue();
-           if (cat <= 0) {
-               throw new IllegalActionException(this, "Number of categories must be positive");
-           } else {
-               _nCategories = cat;
-           }
-       }
-       else {
-           super.attributeChanged(attribute);
-       }
-   }
+        } else if (attribute == nCategories) {
+            int cat = ((IntToken) nCategories.getToken()).intValue();
+            if (cat <= 0) {
+                throw new IllegalActionException(this,
+                        "Number of categories must be positive");
+            } else {
+                _nCategories = cat;
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-   public TypedIOPort emissionEstimates;
+    public TypedIOPort emissionEstimates;
 
-   public Parameter observationProbabilities;
+    public Parameter observationProbabilities;
 
-   public Parameter nCategories;
+    public Parameter nCategories;
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   public Object clone(Workspace workspace) throws CloneNotSupportedException {
-       HMMMultinomialEstimator newObject = (HMMMultinomialEstimator) super
-               .clone(workspace);
-       newObject._B = new double[_nStates][_nStates];
-       newObject._B0 = new double[_nStates][_nStates];
-       return newObject;
-   }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HMMMultinomialEstimator newObject = (HMMMultinomialEstimator) super
+                .clone(workspace);
+        newObject._B = new double[_nStates][_nStates];
+        newObject._B0 = new double[_nStates][_nStates];
+        return newObject;
+    }
 
-   public void fire() throws IllegalActionException {
-       super.fire();
+    public void fire() throws IllegalActionException {
+        super.fire();
 
-       if ((_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nCategories != _B0[0].length))
-       {
-           throw new IllegalActionException(this, "Parameter guess vectors cannot have different lengths.");
-       }
+        if ((_nStates != _transitionMatrix.length)
+                || (_nStates != _priors.length)
+                || (_nCategories != _B0[0].length)) {
+            throw new IllegalActionException(this,
+                    "Parameter guess vectors cannot have different lengths.");
+        }
 
-       boolean converged = _EMParameterEstimation();
+        _EMParameterEstimation();
 
-       Token[] pTokens = new Token[_nStates];
-       for ( int i = 0; i< _nStates; i++) {
-           pTokens[i] = new DoubleToken(prior_new[i]);
-       }
-       transitionMatrix.send(0, new DoubleMatrixToken(A_new));
-       emissionEstimates.send(0, new DoubleMatrixToken(B_new));
-       priorEstimates.send(0, new ArrayToken(pTokens));
-   }
+        Token[] pTokens = new Token[_nStates];
+        for (int i = 0; i < _nStates; i++) {
+            pTokens[i] = new DoubleToken(prior_new[i]);
+        }
+        transitionMatrix.send(0, new DoubleMatrixToken(A_new));
+        emissionEstimates.send(0, new DoubleMatrixToken(B_new));
+        priorEstimates.send(0, new ArrayToken(pTokens));
+    }
 
-   public boolean postfire() throws IllegalActionException {
-       _likelihood = 0.0;
-       return true;
-   }
-   protected boolean _checkForConvergence(int iterations) {
-       return true;
-   }
-   protected void _initializeEMParameters() {
-       _transitionMatrix = _A0;
-       _B = _B0;
-       _priorIn = _priors;
+    public boolean postfire() throws IllegalActionException {
+        _likelihood = 0.0;
+        return true;
+    }
+
+    protected boolean _checkForConvergence(int iterations) {
+        return true;
+    }
+
+    protected void _initializeEMParameters() {
+        _transitionMatrix = _A0;
+        _B = _B0;
+        _priorIn = _priors;
         A_new = new double[_nStates][_nStates];
         B_new = new double[_nStates][_nCategories];
         prior_new = new double[_nStates];
-   }
-   protected void _iterateEM() {
-       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn, _nCategories);
-       B_new = (double[][]) newEstimates.get("eta_hat");
-       A_new = (double[][]) newEstimates.get("A_hat");
-       prior_new = (double[]) newEstimates.get("pi_hat");
-       likelihood = (Double) (newEstimates.get("likelihood"));
-   }
-   protected void _updateEstimates() {
-       _transitionMatrix  = A_new;
-       _B = B_new;
-       _priorIn = prior_new;
-   }
-   protected double emissionProbability(double y, int hiddenState) {
-       return _B[hiddenState][(int)y];
-   }
+    }
 
-// emission distributions Bij = P(Yt=j | qt = i)
-private double[][] _B;
-private double[][] _B0;
-private int _nCategories;
+    protected void _iterateEM() {
+        newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix,
+                _priorIn, _nCategories);
+        B_new = (double[][]) newEstimates.get("eta_hat");
+        A_new = (double[][]) newEstimates.get("A_hat");
+        prior_new = (double[]) newEstimates.get("pi_hat");
+        likelihood = (Double) (newEstimates.get("likelihood"));
+    }
 
-private double[][] A_new;
-private double[][] B_new;
-private double[] prior_new;
+    protected void _updateEstimates() {
+        _transitionMatrix = A_new;
+        _B = B_new;
+        _priorIn = prior_new;
+    }
+
+    protected double emissionProbability(double y, int hiddenState) {
+        return _B[hiddenState][(int) y];
+    }
+
+    // emission distributions Bij = P(Yt=j | qt = i)
+    private double[][] _B;
+    private double[][] _B0;
+    private int _nCategories;
+
+    private double[][] A_new;
+    private double[][] B_new;
+    private double[] prior_new;
 }

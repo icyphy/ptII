@@ -812,17 +812,19 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return result && !_stopRequested && !_finishRequested;
     }
 
-   /** Check whether contained refinements have a director.
-    *  @exception IllegalActionException If a contained refinement
-    *  does not have a director.
-    */
+    /** Check whether contained refinements have a director.
+     *  @exception IllegalActionException If a contained refinement
+     *  does not have a director.
+     */
     public void preinitialize() throws IllegalActionException {
         Iterator<?> actors = ((CompositeActor) getContainer()).deepEntityList()
                 .iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            if (!(actor instanceof Refinement) && actor.getContainer() instanceof Refinement) {
-                throw new IllegalActionException(actor.getContainer(), "Refinement is missing a director!");
+            if (!(actor instanceof Refinement)
+                    && actor.getContainer() instanceof Refinement) {
+                throw new IllegalActionException(actor.getContainer(),
+                        "Refinement is missing a director!");
             }
         }
 

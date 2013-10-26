@@ -59,35 +59,44 @@ public class HomerJUnitTest {
     @org.junit.Test
     public void run() throws Throwable {
         SwingUtilities.invokeAndWait(new Runnable() {
-                public void run() {
-                    try {
-                        HomerApplication homerApplication = new HomerApplication(new String[0]);
-                        // See ptserver/PtolemyServerConfig.properties.  Typically ptserver/demo
-                        String modelsDirectory = StringUtilities.getProperty("ptolemy.ptII.dir") + "/"
-                            + ResourceBundle.getBundle("ptserver.PtolemyServerConfig").getString("MODELS_DIRECTORY");
-                        File modelFile = new File(modelsDirectory
-                                + "/SoundSpectrum_demo.layout.xml");
-                        File layoutFile = new File(modelsDirectory
-                                + "/SoundSpectrum_demo.layout.xml");
-                        homerApplication.getHomerMainFrame().openLayout(modelFile.toURI().toURL(),
-                                layoutFile.toURI().toURL());
+            public void run() {
+                try {
+                    HomerApplication homerApplication = new HomerApplication(
+                            new String[0]);
+                    // See ptserver/PtolemyServerConfig.properties.  Typically ptserver/demo
+                    String modelsDirectory = StringUtilities
+                            .getProperty("ptolemy.ptII.dir")
+                            + "/"
+                            + ResourceBundle.getBundle(
+                                    "ptserver.PtolemyServerConfig").getString(
+                                    "MODELS_DIRECTORY");
+                    File modelFile = new File(modelsDirectory
+                            + "/SoundSpectrum_demo.layout.xml");
+                    File layoutFile = new File(modelsDirectory
+                            + "/SoundSpectrum_demo.layout.xml");
+                    homerApplication.getHomerMainFrame().openLayout(
+                            modelFile.toURI().toURL(),
+                            layoutFile.toURI().toURL());
 
-                        Iterator models = homerApplication.models().iterator();
-                        while (models.hasNext()) {
-                            NamedObj model = (NamedObj) models.next();
-                            if (model instanceof CompositeEntity) {
-                                ConfigurationApplication.closeModelWithoutSavingOrExiting((CompositeEntity)model);
-                            }
+                    Iterator models = homerApplication.models().iterator();
+                    while (models.hasNext()) {
+                        NamedObj model = (NamedObj) models.next();
+                        if (model instanceof CompositeEntity) {
+                            ConfigurationApplication
+                                    .closeModelWithoutSavingOrExiting((CompositeEntity) model);
                         }
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
                     }
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
                 }
-            });
-        Thread.currentThread().yield();
+            }
+        });
+        Thread.currentThread();
+        Thread.yield();
         try {
             System.out.println("Start sleeping");
-            Thread.currentThread().sleep(5000);
+            Thread.currentThread();
+            Thread.sleep(5000);
             System.out.println("Done sleeping");
         } catch (InterruptedException ex) {
             System.err.println("HomerJUnitTest interrupted while sleeping?");
@@ -99,6 +108,6 @@ public class HomerJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-            .main("ptolemy.homer.test.junit.HomerJUnitTest");
+                .main("ptolemy.homer.test.junit.HomerJUnitTest");
     }
 }

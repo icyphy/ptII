@@ -76,7 +76,6 @@ public interface FMULibrary extends FMILibrary {
             _modelDescription = modelDescription;
         }
 
-
         /** Log a message.
          *  @param fmiComponent The component that was instantiated.
          *  @param instanceName The name of the instance of the FMU.
@@ -90,7 +89,8 @@ public interface FMULibrary extends FMILibrary {
         public void apply(Pointer fmiComponent, String instanceName,
                 int status, String category, String message) {
             // We place this method in separate file for testing purposes.
-            FMULog.log(_modelDescription, fmiComponent, instanceName, status, category, message);
+            FMULog.log(_modelDescription, fmiComponent, instanceName, status,
+                    category, message);
         }
 
         /** The model description that contains the names of the
@@ -140,7 +140,7 @@ public interface FMULibrary extends FMILibrary {
          *  avoid problems with the memory being garbage collected.
          *  FindBugs suggests that this be final.
          */
-        public static final Map<Pointer,Memory> pointers = new HashMap<Pointer,Memory>();
+        public static final Map<Pointer, Memory> pointers = new HashMap<Pointer, Memory>();
     }
 
     /** A class providing a callback method that frees memory.

@@ -1,30 +1,30 @@
- /* A web server and information about the applications registered to it.
+/* A web server and information about the applications registered to it.
 
- Copyright (c) 2013 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2013 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- */
+*/
 
 package org.ptolemy.ptango.lib;
 
@@ -54,7 +54,6 @@ import org.eclipse.jetty.util.resource.ResourceCollection;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-
 ///////////////////////////////////////////////////////////////////
 ////WebServerUtilities
 
@@ -81,13 +80,13 @@ public class WebServerUtilities {
 
         _server = null;
         _selectChannelConnector = null;
-        }
+    }
 
     /** Construct a new instance of this class with the specified port number.
      *
      * @param portNumber The port number the web server receives requests on
      */
-    public WebServerUtilities(int portNumber) throws Exception{
+    public WebServerUtilities(int portNumber) throws Exception {
 
         _applications = new HashSet<WebApplicationInfo>();
         _maxIdleTime = 30000;
@@ -101,7 +100,7 @@ public class WebServerUtilities {
 
         _server = null;
         _selectChannelConnector = null;
-        }
+    }
 
     /** Construct a new instance of this class with the specified port number
      * and maximum idle time.
@@ -110,7 +109,7 @@ public class WebServerUtilities {
      * @param maxIdleTime The maximum amount of time the web server will wait
      * before sending a timeout response page
      */
-    public WebServerUtilities(int portNumber, int maxIdleTime) throws Exception{
+    public WebServerUtilities(int portNumber, int maxIdleTime) throws Exception {
 
         _applications = new HashSet<WebApplicationInfo>();
 
@@ -128,7 +127,8 @@ public class WebServerUtilities {
         }
 
         _server = null;
-        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -163,8 +163,8 @@ public class WebServerUtilities {
      */
     public boolean isHostingModel(String fullModelName) {
         for (WebApplicationInfo app : _applications) {
-            if (fullModelName != null &&
-                    app.getModelName().equalsIgnoreCase(fullModelName)) {
+            if (fullModelName != null
+                    && app.getModelName().equalsIgnoreCase(fullModelName)) {
                 return true;
             }
         }
@@ -207,14 +207,15 @@ public class WebServerUtilities {
 
         // Ensure that new servlet mappings are distinct from existing
         // servlet and resource handler mappings.  If not, throw exception
-        for (URI servletPath : appInfo.getServletInfo().keySet())
+        for (URI servletPath : appInfo.getServletInfo().keySet()) {
             for (WebApplicationInfo application : _applications) {
-                if (application.hasPath(applicationPath +
-                        servletPath.toString())) {
-                    throw new Exception("Model " + appInfo.getModelName() +
-                            " requested a conflicting URL mapping, " +
-                            applicationPath + servletPath.toString());
+                if (application.hasPath(applicationPath
+                        + servletPath.toString())) {
+                    throw new Exception("Model " + appInfo.getModelName()
+                            + " requested a conflicting URL mapping, "
+                            + applicationPath + servletPath.toString());
                 }
+            }
         }
 
         // If no conflicts, create a handler for the new application
@@ -254,12 +255,12 @@ public class WebServerUtilities {
             // Then, see if an exception has occurred
             synchronized (_lock) {
                 while (!_startAttempted) {
-                     try {
-                         _lock.wait();
-                     } catch (InterruptedException e) {
-                         // FIXME: Do anything special if thread is interrupted?
-                         break;
-                     }
+                    try {
+                        _lock.wait();
+                    } catch (InterruptedException e) {
+                        // FIXME: Do anything special if thread is interrupted?
+                        break;
+                    }
                 }
             }
 
@@ -272,10 +273,10 @@ public class WebServerUtilities {
             // Future.get() would block Ptolemy model execution indefinitely
             if (_exception != null) {
                 if (_exception instanceof BindException) {
-                    throw new Exception("The web server attempted to start on" +
-                            " port " + _portNumber + ", but this port is " +
-                            "already in use.  Perhaps another instance of " +
-                            "Ptolemy is running a web server on this port?");
+                    throw new Exception("The web server attempted to start on"
+                            + " port " + _portNumber + ", but this port is "
+                            + "already in use.  Perhaps another instance of "
+                            + "Ptolemy is running a web server on this port?");
                 } else {
                     throw new Exception(_exception);
                 }
@@ -335,7 +336,7 @@ public class WebServerUtilities {
      * server or if the server cannot be stopped when the last application
      * is unregistered
      */
-    public void unregister(WebApplicationInfo appInfo) throws Exception{
+    public void unregister(WebApplicationInfo appInfo) throws Exception {
 
         // Check if this application is registered on this server.  The model
         // name is used as a key - there should be only one instance of a
@@ -348,43 +349,48 @@ public class WebServerUtilities {
         if (_applications.contains(appInfo)) {
             // Find the handler associated with this application, stop it and
             // remove it from the server
-            ContextHandlerCollection handlers =
-                    (ContextHandlerCollection) _server.getHandler();
+            ContextHandlerCollection handlers = (ContextHandlerCollection) _server
+                    .getHandler();
             for (int i = 0; i < handlers.getHandlers().length; i++) {
-               Handler handler = handlers.getHandlers()[i];
+                Handler handler = handlers.getHandlers()[i];
 
-               // Only need to check servlet handlers (e.g. not the
-               // DefaultHandler, not resource handlers...)
-               // Check for matching application path
-               if (handler instanceof ServletContextHandler &&
-                   ((ServletContextHandler) handler).getContextPath()
-                   .equalsIgnoreCase(appInfo.getApplicationPath().toString())) {
-               for (URI servletPath : appInfo.getServletInfo().keySet()) {
-                   ServletHandler servletHandler =
-                          ((ServletContextHandler) handler).getServletHandler();
-                   for (ServletMapping mapping :
-                       servletHandler.getServletMappings()) {
+                // Only need to check servlet handlers (e.g. not the
+                // DefaultHandler, not resource handlers...)
+                // Check for matching application path
+                if (handler instanceof ServletContextHandler
+                        && ((ServletContextHandler) handler)
+                                .getContextPath()
+                                .equalsIgnoreCase(
+                                        appInfo.getApplicationPath().toString())) {
+                    for (URI servletPath : appInfo.getServletInfo().keySet()) {
+                        ServletHandler servletHandler = ((ServletContextHandler) handler)
+                                .getServletHandler();
+                        for (ServletMapping mapping : servletHandler
+                                .getServletMappings()) {
 
-                       // Any matching path means this is the servlet we want
-                       // to stop and remove
-                       for (String path : mapping.getPathSpecs()) {
-                           if (path.equalsIgnoreCase(servletPath.toString())) {
-                               handler.stop();
-                               handlers.removeHandler(handler);
-                               found = true;
-                               break;
-                           }
-                       }
-                   }
-               }
-               }
+                            // Any matching path means this is the servlet we want
+                            // to stop and remove
+                            for (String path : mapping.getPathSpecs()) {
+                                if (path.equalsIgnoreCase(servletPath
+                                        .toString())) {
+                                    handler.stop();
+                                    handlers.removeHandler(handler);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             // Throw an exception if this application was not found
             if (!found) {
-                throw new Exception("Application " + appInfo.getModelName() +
-                        " requested to be unregistered, but it was not found " +
-                        " on the server.");
+                throw new Exception(
+                        "Application "
+                                + appInfo.getModelName()
+                                + " requested to be unregistered, but it was not found "
+                                + " on the server.");
             }
 
             // What to do about the resource handler?  This might be shared
@@ -393,9 +399,12 @@ public class WebServerUtilities {
             _applications.remove(appInfo);
 
         } else {
-            throw new Exception("Application " + appInfo.getModelName() +
-                    " attempted to unregister itself, but this application is "+
-                    " not registered with the server on port " + _portNumber);
+            throw new Exception(
+                    "Application "
+                            + appInfo.getModelName()
+                            + " attempted to unregister itself, but this application is "
+                            + " not registered with the server on port "
+                            + _portNumber);
         }
 
         // If no applications are left, stop the server
@@ -432,7 +441,7 @@ public class WebServerUtilities {
      *  @param appInfo Information about the web application.
      */
     protected void _createServletHandler(WebApplicationInfo appInfo)
-            throws Exception{
+            throws Exception {
         // Create a new handler to hold servlets from the actors
         ServletContextHandler servletHandler = new ServletContextHandler(
                 ServletContextHandler.SESSIONS);
@@ -440,13 +449,14 @@ public class WebServerUtilities {
         servletHandler.setContextPath(appInfo.getApplicationPath().toString());
 
         for (URI servletPath : appInfo.getServletInfo().keySet()) {
-            servletHandler.addServlet(
-                  new ServletHolder(appInfo.getServletInfo().get(servletPath)),
-                  servletPath.toString());
+            servletHandler
+                    .addServlet(
+                            new ServletHolder(appInfo.getServletInfo().get(
+                                    servletPath)), servletPath.toString());
         }
 
         ((ContextHandlerCollection) _server.getHandler())
-            .addHandler(servletHandler);
+                .addHandler(servletHandler);
 
         // Need to explicitly start the handler since it is added to the
         // server's handler list AFTER the server has already started
@@ -471,84 +481,84 @@ public class WebServerUtilities {
     // mistake e.g. the user forgot to add resource locations?
 
     protected void _createResourceHandlers(WebApplicationInfo appInfo)
-            throws Exception{
+            throws Exception {
 
         // Create resource handlers to serve files such as images, audio, ...
         // See http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
         // There will be one resource handler per requested path
         ArrayList<ContextHandler> handlers = new ArrayList<ContextHandler>();
 
-        for (URI path: appInfo.getResourceInfo().keySet()) {
+        for (URI path : appInfo.getResourceInfo().keySet()) {
             boolean shareHandler = false;
 
             for (WebApplicationInfo application : _applications) {
                 if (application.hasResourcePath(path.toString())) {
                     // Share a handler.  Find the handler and add any new
                     // resource locations.
-                    for (int i = 0; i < ((ContextHandlerCollection)
-                            _server.getHandler()).getHandlers().length; i++) {
-                   ContextHandler handler = (ContextHandler)
-                           ((ContextHandlerCollection)
-                           _server.getHandler()).getHandlers()[i];
+                    for (int i = 0; i < ((ContextHandlerCollection) _server
+                            .getHandler()).getHandlers().length; i++) {
+                        ContextHandler handler = (ContextHandler) ((ContextHandlerCollection) _server
+                                .getHandler()).getHandlers()[i];
 
-                        if (handler.getContextPath()
-                                .equalsIgnoreCase(path.toString())) {
+                        if (handler.getContextPath().equalsIgnoreCase(
+                                path.toString())) {
 
-                                // Stop this resource handler
-                                handler.stop();
+                            // Stop this resource handler
+                            handler.stop();
 
-                                // Add the new resource locations (if any)
-                                // FIXME:  Check if this cast is OK.  Otherwise
-                                // will have to manually remember the resources
-                                ResourceCollection resources =
-                                 (ResourceCollection) handler.getBaseResource();
+                            // Add the new resource locations (if any)
+                            // FIXME:  Check if this cast is OK.  Otherwise
+                            // will have to manually remember the resources
+                            ResourceCollection resources = (ResourceCollection) handler
+                                    .getBaseResource();
 
-                                for (FileResource resource:
-                                    appInfo.getResourceInfo().get(path)) {
-                                    if (!resource.isContainedIn(resources)) {
-                                        // Jetty doesn't seem to offer a method
-                                        // to add a resource to a
-                                        // ResourceCollection?
-                                        // Has addPath(String) but this returns
-                                        // a Resource, but not sure if it
-                                        // creates one...
-                                        ArrayList<Resource> newResources =
-                                                new ArrayList<Resource>(Arrays
-                                             .asList(resources.getResources()));
-                                        newResources.add(resource);
-                                        resources.setResources(newResources
-                                                .toArray(new FileResource
-                                                        [newResources.size()]));
+                            for (FileResource resource : appInfo
+                                    .getResourceInfo().get(path)) {
+                                if (!resource.isContainedIn(resources)) {
+                                    // Jetty doesn't seem to offer a method
+                                    // to add a resource to a
+                                    // ResourceCollection?
+                                    // Has addPath(String) but this returns
+                                    // a Resource, but not sure if it
+                                    // creates one...
+                                    ArrayList<Resource> newResources = new ArrayList<Resource>(
+                                            Arrays.asList(resources
+                                                    .getResources()));
+                                    newResources.add(resource);
+                                    resources
+                                            .setResources(newResources
+                                                    .toArray(new FileResource[newResources
+                                                            .size()]));
 
-                                    }
                                 }
+                            }
 
-                                // Add the temporary file location (if any), if
-                                // not already included
+                            // Add the temporary file location (if any), if
+                            // not already included
 
-                                if (appInfo.getTemporaryFileLocation() != null
-                                        && !appInfo.getTemporaryFileLocation()
-                                        .toString().isEmpty()) {
-                                    FileResource tempResource =
-                                            new FileResource(appInfo
-                                                    .getTemporaryFileLocation()
-                                                    .asURL());
-                                    if (!tempResource.isContainedIn(resources)) {
-                                        ArrayList<Resource> newResources =
-                                                new ArrayList<Resource>(Arrays
-                                             .asList(resources.getResources()));
-                                        newResources.add(tempResource);
-                                        resources.setResources(newResources
-                                                .toArray(new FileResource
-                                                        [newResources.size()]));
-                                    }
+                            if (appInfo.getTemporaryFileLocation() != null
+                                    && !appInfo.getTemporaryFileLocation()
+                                            .toString().isEmpty()) {
+                                FileResource tempResource = new FileResource(
+                                        appInfo.getTemporaryFileLocation()
+                                                .asURL());
+                                if (!tempResource.isContainedIn(resources)) {
+                                    ArrayList<Resource> newResources = new ArrayList<Resource>(
+                                            Arrays.asList(resources
+                                                    .getResources()));
+                                    newResources.add(tempResource);
+                                    resources
+                                            .setResources(newResources
+                                                    .toArray(new FileResource[newResources
+                                                            .size()]));
                                 }
+                            }
 
-                                // Restart the handler
-                                handler.start();
+                            // Restart the handler
+                            handler.start();
 
-                                shareHandler = true;
-                                break;
+                            shareHandler = true;
+                            break;
                         }
                     }
                 }
@@ -578,22 +588,23 @@ public class WebServerUtilities {
                     ArrayList<FileResource> resources = new ArrayList<FileResource>();
                     resources.addAll(appInfo.getResourceInfo().get(path));
 
-                    if (appInfo.getTemporaryFileLocation() != null &&
-                            (appInfo.getTemporaryFileLocation().getExpression()
-                                != null) && (!appInfo.getTemporaryFileLocation()
-                                        .getExpression().isEmpty())) {
+                    if (appInfo.getTemporaryFileLocation() != null
+                            && (appInfo.getTemporaryFileLocation()
+                                    .getExpression() != null)
+                            && (!appInfo.getTemporaryFileLocation()
+                                    .getExpression().isEmpty())) {
 
                         try {
                             resources.add(new FileResource(appInfo
                                     .getTemporaryFileLocation().asURL()));
                         } catch (MalformedURLException e) {
-                            throw new Exception("Temporary file location " +
-                           appInfo.getTemporaryFileLocation() +
-                           " cannot be accessed.");
+                            throw new Exception("Temporary file location "
+                                    + appInfo.getTemporaryFileLocation()
+                                    + " cannot be accessed.");
                         } catch (URISyntaxException e2) {
-                            throw new Exception("Temporary file location " +
-                           appInfo.getTemporaryFileLocation() +
-                           " cannot be accessed.");
+                            throw new Exception("Temporary file location "
+                                    + appInfo.getTemporaryFileLocation()
+                                    + " cannot be accessed.");
                         }
                     }
 
@@ -607,9 +618,9 @@ public class WebServerUtilities {
                         // setResourceBase(String) is a wrapper for
                         // setBaseResource(ResourceCollection) that only allows
                         // one location.
-                        resourceHandler.setBaseResource(new ResourceCollection
-                                (resources.toArray(new FileResource
-                                        [resources.size()])));
+                        resourceHandler.setBaseResource(new ResourceCollection(
+                                resources.toArray(new FileResource[resources
+                                        .size()])));
 
                         fileHandler.setHandler(resourceHandler);
                         handlers.add(fileHandler);
@@ -619,15 +630,14 @@ public class WebServerUtilities {
         }
 
         for (ContextHandler handler : handlers) {
-            ((ContextHandlerCollection)
-                    _server.getHandler()).addHandler(handler);
+            ((ContextHandlerCollection) _server.getHandler())
+                    .addHandler(handler);
 
             // Need to explicitly start each new handler since they are added to
             // the server's handler list AFTER the server has already started
             handler.start();
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -711,19 +721,19 @@ public class WebServerUtilities {
                 try {
                     _server.join();
 
-                    } catch (InterruptedException e) {
-                        // Notify thread users and terminate the server and this
-                        // thread if an exception occurs
-                        try {
-                            _server.stop();
-                        } catch (Exception e2) {
-                            Thread.currentThread().interrupt();
-                            return;
-                        }
+                } catch (InterruptedException e) {
+                    // Notify thread users and terminate the server and this
+                    // thread if an exception occurs
+                    try {
+                        _server.stop();
+                    } catch (Exception e2) {
                         Thread.currentThread().interrupt();
                         return;
                     }
-                    ;
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                ;
             }
 
             try {
@@ -735,4 +745,3 @@ public class WebServerUtilities {
         }
     }
 }
-

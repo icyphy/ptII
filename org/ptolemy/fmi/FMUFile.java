@@ -26,6 +26,7 @@
 
  */
 package org.ptolemy.fmi;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -128,13 +129,18 @@ public class FMUFile {
                         + fmiModelDescription.modelIdentifier + extension;
                 File canonicalFile2 = new File(library).getCanonicalFile();
                 if (canonicalFile2.exists()) {
-                    System.out.println("Could not find " + canonicalFile
-                            + " but " + canonicalFile2 + "exists.  "
-                            + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
+                    System.out
+                            .println("Could not find "
+                                    + canonicalFile
+                                    + " but "
+                                    + canonicalFile2
+                                    + "exists.  "
+                                    + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
                     canonicalFile = canonicalFile2;
                 } else {
                     System.out.println(canonicalFile + " does not exist"
-                            + " also tried " + canonicalFile2 + " for OpenModelica 1.8.1");
+                            + " also tried " + canonicalFile2
+                            + " for OpenModelica 1.8.1");
                 }
             }
         }
@@ -173,7 +179,8 @@ public class FMUFile {
         } catch (IOException ex) {
             // Java 1.5 does not support IOException(String, Throwable).
             // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception = new IOException("Failed to unzip \"" + fmuFileName + "\".");
+            IOException exception = new IOException("Failed to unzip \""
+                    + fmuFileName + "\".");
             exception.initCause(ex);
             throw exception;
         }
@@ -189,7 +196,8 @@ public class FMUFile {
                     break;
                 }
             }
-            if (fileName.endsWith("resources") || fileName.endsWith("resources/")) {
+            if (fileName.endsWith("resources")
+                    || fileName.endsWith("resources/")) {
                 fmuResourceLocation = file.toURI().toURL().toString();
                 if (modelDescriptionFile != null) {
                     break;
@@ -201,18 +209,21 @@ public class FMUFile {
                     + "from the fmu archive \"" + fmuFileName + "\"");
         }
         if (fmuResourceLocation == null) {
-            File fmuResourceFile = new File(modelDescriptionFile.getParent(), "resources");
+            File fmuResourceFile = new File(modelDescriptionFile.getParent(),
+                    "resources");
             fmuResourceLocation = fmuResourceFile.toURI().toURL().toString();
             if (!fmuResourceFile.isDirectory()) {
                 if (fmuResourceFile.exists()) {
                     if (fmuResourceFile.delete()) {
-                        throw new IOException("Could not delete file \"" + fmuResourceFile
-                        + "\" before creating a directory with the same name.");
+                        throw new IOException(
+                                "Could not delete file \""
+                                        + fmuResourceFile
+                                        + "\" before creating a directory with the same name.");
                     }
                 }
                 if (!fmuResourceFile.mkdirs()) {
-                    throw new IOException("Could not create directory \"" + fmuResourceFile
-                        + "\"");
+                    throw new IOException("Could not create directory \""
+                            + fmuResourceFile + "\"");
                 }
             }
         }
@@ -220,13 +231,15 @@ public class FMUFile {
         // Remove any trailing slash.
         if (fmuResourceLocation.endsWith("/")) {
             fmuResourceLocation = fmuResourceLocation.substring(0,
-                    fmuResourceLocation.length()-1);
+                    fmuResourceLocation.length() - 1);
         }
 
         if (fmuResourceLocation.indexOf("%20") != -1) {
-            System.out.println("FMUFile: The fmuResourceLocation \""
-                    + fmuResourceLocation + "\" contains one or more \"%20\"."
-                    + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
+            System.out
+                    .println("FMUFile: The fmuResourceLocation \""
+                            + fmuResourceLocation
+                            + "\" contains one or more \"%20\"."
+                            + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
             fmuResourceLocation = fmuResourceLocation.replace("%20", " ");
         }
 
@@ -243,8 +256,8 @@ public class FMUFile {
         } catch (Throwable throwable) {
             // Java 1.5 does not support IOException(String, Throwable).
             // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception = new IOException("Failed to parse \"" + modelDescriptionFile
-                                                    + "\".");
+            IOException exception = new IOException("Failed to parse \""
+                    + modelDescriptionFile + "\".");
             exception.initCause(throwable);
             throw exception;
         }
@@ -270,8 +283,7 @@ public class FMUFile {
             try {
                 fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
             } catch (NumberFormatException ex) {
-                IOException exception =  new IOException(
-                        "Invalid fmiVersion \""
+                IOException exception = new IOException("Invalid fmiVersion \""
                         + fmiModelDescription.fmiVersion
                         + "\". Required to be of the form n.m, "
                         + "where n and m are natural numbers.");
@@ -280,8 +292,14 @@ public class FMUFile {
             }
             // Under FMI 1.0, the fmuLocation parameter refers to the location
             // of the fmu.
-            if (fmiVersion < 2.0 && fmiModelDescription.fmuResourceLocation.endsWith("resources")) {
-                fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation.substring(0, fmiModelDescription.fmuResourceLocation.length() - "resources".length() - 1); // +1 is to get rid of the /
+            if (fmiVersion < 2.0
+                    && fmiModelDescription.fmuResourceLocation
+                            .endsWith("resources")) {
+                fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation
+                        .substring(
+                                0,
+                                fmiModelDescription.fmuResourceLocation
+                                        .length() - "resources".length() - 1); // +1 is to get rid of the /
             }
         }
         if (root.hasAttribute("modelIdentifier")) {
@@ -375,13 +393,15 @@ public class FMUFile {
                 }
                 if (cosimulation.hasAttribute("canGetAndSetFMUstate")) {
                     fmiModelDescription.canGetAndSetFMUstate = Boolean
-                            .parseBoolean(cosimulation.getAttribute("canGetAndSetFMUstate"));
+                            .parseBoolean(cosimulation
+                                    .getAttribute("canGetAndSetFMUstate"));
                 }
 
                 // canProvideMaxStepSize and fmiGetMaxStepSize() are IBM/UCB extensions to FMI 2.0.
                 if (cosimulation.hasAttribute("canProvideMaxStepSize")) {
                     fmiModelDescription.canProvideMaxStepSize = Boolean
-                            .parseBoolean(cosimulation.getAttribute("canProvideMaxStepSize"));
+                            .parseBoolean(cosimulation
+                                    .getAttribute("canProvideMaxStepSize"));
                 }
             }
         }
@@ -465,7 +485,8 @@ public class FMUFile {
                 if (!entry.isDirectory()) {
                     // Write the files to the disk.
                     try {
-                        FileOutputStream fos = new FileOutputStream(destinationFile);
+                        FileOutputStream fos = new FileOutputStream(
+                                destinationFile);
                         destination = new BufferedOutputStream(fos, BUFFER);
                         int count;
                         while ((count = zipInputStream.read(data, 0, BUFFER)) != -1) {
@@ -487,7 +508,8 @@ public class FMUFile {
                 try {
                     destination.close();
                 } catch (IOException ex) {
-                    System.out.println("FMUFile.unzip(): Failed to close \"" + destinationFile + "\"");
+                    System.out.println("FMUFile.unzip(): Failed to close \""
+                            + destinationFile + "\"");
                 }
             }
             if (zipInputStream != null) {
@@ -520,5 +542,5 @@ public class FMUFile {
     ////                         private variables                 ////
 
     /** Record of previously read files. */
-    private static Map<String,FMIModelDescription> _modelDescriptions = new HashMap<String,FMIModelDescription>();
+    private static Map<String, FMIModelDescription> _modelDescriptions = new HashMap<String, FMIModelDescription>();
 }

@@ -179,8 +179,7 @@ public class CodeGeneratorUtilities {
                 if (value == null) {
                     value = "";
                 }
-                input = StringUtilities.substitute(input, key,
-                        value);
+                input = StringUtilities.substitute(input, key, value);
             }
         }
 

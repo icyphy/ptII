@@ -307,7 +307,8 @@ public class HTMLModelExporter extends VisualModelReference {
      *  @return The cloned attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HTMLModelExporter newObject = (HTMLModelExporter) super.clone(workspace);
+        HTMLModelExporter newObject = (HTMLModelExporter) super
+                .clone(workspace);
         newObject._defaultColor = null;
         newObject._parameters = new ExportParameters();
         return newObject;

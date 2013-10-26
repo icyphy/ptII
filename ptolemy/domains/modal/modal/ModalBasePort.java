@@ -330,10 +330,9 @@ public class ModalBasePort extends TypedIOPort {
      *  @exception NameDuplicationException If the thrown will setting
      *  the container or the container of the relation to null.
      */
-    protected void  _removePort( CompositeEntity oldContainer)
+    protected void _removePort(CompositeEntity oldContainer)
             throws IllegalActionException, NameDuplicationException {
-        Iterator entities = ((CompositeEntity) oldContainer)
-            .entityList().iterator();
+        Iterator entities = oldContainer.entityList().iterator();
 
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
@@ -352,8 +351,8 @@ public class ModalBasePort extends TypedIOPort {
             }
         }
         // Remove the relation as well.
-        ComponentRelation relation = ((CompositeEntity) oldContainer)
-            .getRelation(getName() + "Relation");
+        ComponentRelation relation = oldContainer.getRelation(getName()
+                + "Relation");
 
         if (relation != null) {
             relation.setContainer(null);
@@ -415,7 +414,8 @@ public class ModalBasePort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
-    protected void _setMultiport(boolean isMultiport) throws IllegalActionException {
+    protected void _setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
 

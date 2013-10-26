@@ -474,9 +474,10 @@ public class CanBus extends AtomicCommunicationAspect {
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
-                CanBusAttributes decoratorAttributes = (CanBusAttributes)
-                        decoratedObject.getDecoratorAttributes(this);
-                setCanBusPriority((IOPort) decoratedObject, decoratorAttributes._canPriority);
+                CanBusAttributes decoratorAttributes = (CanBusAttributes) decoratedObject
+                        .getDecoratorAttributes(this);
+                setCanBusPriority((IOPort) decoratedObject,
+                        decoratorAttributes._canPriority);
             }
         }
     }
@@ -486,7 +487,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *  @param canPriority The priority attached to the port.
      */
     public void setCanBusPriority(Port port, int canPriority) {
-        _ioPortToCanPriority.put((IOPort) port, canPriority);
+        _ioPortToCanPriority.put(port, canPriority);
     }
 
     /**

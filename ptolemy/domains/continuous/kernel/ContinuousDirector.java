@@ -1819,12 +1819,14 @@ public class ContinuousDirector extends FixedPointDirector implements
                         + ", the model time (iteration begin time): "
                         + currentTime);
             }
-            if (modifiedTimeExceedsLocalTime < 0 && modifiedTime.compareTo(outTime) < 0) {
-                throw new IllegalActionException(this,
+            if (modifiedTimeExceedsLocalTime < 0
+                    && modifiedTime.compareTo(outTime) < 0) {
+                throw new IllegalActionException(
+                        this,
                         "A TimeRegulator requires time to be set back to "
-                        + modifiedTime
-                        + ", which is less than the last commit time of "
-                        + outTime);
+                                + modifiedTime
+                                + ", which is less than the last commit time of "
+                                + outTime);
             }
             // If we get here, local time exceeds the environment time
             // and we have speculatively executed past that local time.

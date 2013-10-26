@@ -187,8 +187,7 @@ public class TimeDelay extends Transformer {
                 _minimumDelay = oldMinimumDelay;
                 _delay = oldDelay;
                 throw new IllegalActionException(this,
-                        "Cannot have negative delay: "
-                                + _delay);
+                        "Cannot have negative delay: " + _delay);
             }
             if (_minimumDelay > _delay) {
                 _minimumDelay = oldMinimumDelay;
@@ -433,7 +432,6 @@ public class TimeDelay extends Transformer {
 
     /** A local queue to store the delayed output tokens. */
     protected LinkedList<PendingEvent> _pendingOutputs;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

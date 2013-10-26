@@ -182,10 +182,12 @@ public abstract class OntologySolver extends OntologySolverBase implements
      *          from another solver)
      *  @exception IllegalActionException If there is no ontology.
      */
-    public void invokeSolver(boolean displayProperties) throws IllegalActionException {
+    public void invokeSolver(boolean displayProperties)
+            throws IllegalActionException {
         Ontology ontology = getOntology();
         if (ontology == null) {
-            throw new IllegalActionException(this, "No ontology has been given.");
+            throw new IllegalActionException(this,
+                    "No ontology has been given.");
         }
         initialize();
         resolveConcepts();

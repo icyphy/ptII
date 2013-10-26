@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+
 import java.util.Iterator;
 import java.util.Locale;
 

@@ -341,20 +341,20 @@ public class DiscreteClock extends TimedSource {
         // Update the period from the port parameter, if appropriate.
         period.update();
 
-//         // Check for a trigger input.
-//         // Have to consume all trigger inputs.
-//         if (trigger.numberOfSources() > 0) {
-//             // Have to consume all trigger inputs.
-//             for (int i = 0; i < trigger.getWidth(); i++) {
-//                 if (trigger.isKnown(i) && trigger.hasToken(i)) {
-//                     trigger.get(i);
-//                     _triggered = true;
-//                     if (_debugging) {
-//                         _debug("Received a trigger input. Enabling an output.");
-//                     }
-//                 }
-//             }
-//         }
+        //         // Check for a trigger input.
+        //         // Have to consume all trigger inputs.
+        //         if (trigger.numberOfSources() > 0) {
+        //             // Have to consume all trigger inputs.
+        //             for (int i = 0; i < trigger.getWidth(); i++) {
+        //                 if (trigger.isKnown(i) && trigger.hasToken(i)) {
+        //                     trigger.get(i);
+        //                     _triggered = true;
+        //                     if (_debugging) {
+        //                         _debug("Received a trigger input. Enabling an output.");
+        //                     }
+        //                 }
+        //             }
+        //         }
 
         // See whether it is time to produce an output.
         Director director = getDirector();
@@ -592,10 +592,11 @@ public class DiscreteClock extends TimedSource {
             _phase = 0;
             _cycleStartTime = _cycleStartTime.add(periodValue);
         }
-        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         if (_offsets[_phase] > periodValue) {
-            throw new IllegalActionException(this,
-                    "Offset of " + _offsets[_phase] + " is greater than the period " + periodValue);
+            throw new IllegalActionException(this, "Offset of "
+                    + _offsets[_phase] + " is greater than the period "
+                    + periodValue);
         }
         Time nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
         if (_nextOutputTime.equals(nextOutputTime)) {

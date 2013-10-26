@@ -100,7 +100,8 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == executionTime) {
-            double value = ((DoubleToken)executionTime.getToken()).doubleValue();
+            double value = ((DoubleToken) executionTime.getToken())
+                    .doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(getContainer(),
                         "Cannot specify a negative number for executionTime.");

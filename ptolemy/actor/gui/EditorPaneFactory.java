@@ -126,8 +126,9 @@ public class EditorPaneFactory extends Attribute {
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
                     decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
                     decoratorQuery.setTextWidth(DEFAULT_QUERY_WIDTH);
-                    decoratorQuery.addText("Decorator providing the parameters below: "
-                            + decorator.getFullName(), Color.BLACK, 0);
+                    decoratorQuery.addText(
+                            "Decorator providing the parameters below: "
+                                    + decorator.getFullName(), Color.BLACK, 0);
                     boolean foundDecoratorAttribute = false;
 
                     for (Object attribute : decoratorAttributes.attributeList()) {
@@ -143,7 +144,8 @@ public class EditorPaneFactory extends Attribute {
                     if (foundDecoratorAttribute) {
                         if (tabs == null) {
                             tabs = new JTabbedPane();
-                            Component mainTab = createEditorPane(object, new PtolemyQuery(object));
+                            Component mainTab = createEditorPane(object,
+                                    new PtolemyQuery(object));
                             tabs.addTab(object.getDisplayName(), mainTab);
                         }
                         tabs.addTab(decorator.getName(), decoratorQuery);
@@ -197,5 +199,3 @@ public class EditorPaneFactory extends Attribute {
     /** Default width for a query. */
     public static int DEFAULT_QUERY_WIDTH = 40;
 }
-
-

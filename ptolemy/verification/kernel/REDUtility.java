@@ -1383,10 +1383,8 @@ public class REDUtility {
                                                 bean._signal.append("  ?ND_"
                                                         + signalName[0]);
                                             }
-                                            bean._signalSet.add(
-                                                    "?ND_"
-                                                            + signalName[0]
-                                                    .trim());
+                                            bean._signalSet.add("?ND_"
+                                                    + signalName[0].trim());
                                             // specify the fact that this transition has signal.
                                             // if a transition does not have a signal, it can be triggered by "any" signal
 
@@ -1448,12 +1446,12 @@ public class REDUtility {
                                                                             + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(
-                                                                        actor.getName()
-                                                                                + "_"
-                                                                                + lValue
-                                                                                + " != "
-                                                                                + rValue);
+                                                                .add(actor
+                                                                        .getName()
+                                                                        + "_"
+                                                                        + lValue
+                                                                        + " != "
+                                                                        + rValue);
                                                     } else if (Pattern.matches(
                                                             ".*!=.*",
                                                             subGuardCondition)) {
@@ -1478,12 +1476,12 @@ public class REDUtility {
                                                                             + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(
-                                                                       actor.getName()
-                                                                                + "_"
-                                                                                + lValue
-                                                                                + " == "
-                                                                       + rValue);
+                                                                .add(actor
+                                                                        .getName()
+                                                                        + "_"
+                                                                        + lValue
+                                                                        + " == "
+                                                                        + rValue);
 
                                                     } else if (Pattern.matches(
                                                             ".*<=.*",
@@ -1509,12 +1507,12 @@ public class REDUtility {
                                                                             + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(
-                                                                        actor.getName()
-                                                                                + "_"
-                                                                                + lValue
-                                                                                + " > "
-                                                                                + rValue);
+                                                                .add(actor
+                                                                        .getName()
+                                                                        + "_"
+                                                                        + lValue
+                                                                        + " > "
+                                                                        + rValue);
                                                     } else if (Pattern.matches(
                                                             ".*>=.*",
                                                             subGuardCondition)) {
@@ -1540,12 +1538,12 @@ public class REDUtility {
                                                                             + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(
-                                                                        actor.getName()
-                                                                                + "_"
-                                                                                + lValue
-                                                                                + " < "
-                                                                                + rValue);
+                                                                .add(actor
+                                                                        .getName()
+                                                                        + "_"
+                                                                        + lValue
+                                                                        + " < "
+                                                                        + rValue);
                                                     } else if (Pattern.matches(
                                                             ".*>.*",
                                                             subGuardCondition)) {
@@ -1571,12 +1569,12 @@ public class REDUtility {
                                                                             + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(
-                                                                        actor.getName()
-                                                                                + "_"
-                                                                                + lValue
-                                                                                + " <= "
-                                                                                + rValue);
+                                                                .add(actor
+                                                                        .getName()
+                                                                        + "_"
+                                                                        + lValue
+                                                                        + " <= "
+                                                                        + rValue);
 
                                                     } else if (Pattern.matches(
                                                             ".*<.*",
@@ -1604,12 +1602,12 @@ public class REDUtility {
 
                                                         }
                                                         bean._complementedCondition
-                                                                .add(
-                                                                        actor.getName()
-                                                                                + "_"
-                                                                                + lValue
-                                                                                + " >= "
-                                                                                + rValue);
+                                                                .add(actor
+                                                                        .getName()
+                                                                        + "_"
+                                                                        + lValue
+                                                                        + " >= "
+                                                                        + rValue);
                                                     }
 
                                                 } else {
@@ -1734,7 +1732,7 @@ public class REDUtility {
                                 newBean._signal.append(" !Token"
                                         + signal.trim() + "Consume");
                                 newBean._signalSet.add("?ND_"
-                                                       + signal.trim().trim());
+                                        + signal.trim().trim());
                                 if (guard != null
                                         && guard.trim()
                                                 .equalsIgnoreCase("true")) {

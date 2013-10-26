@@ -873,19 +873,20 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      * @return Description of Node.
      */
     public String description(String prefix, String suffix) {
-        StringBuffer desc = new StringBuffer(prefix + "Node: " + getName() + " {" + suffix);
+        StringBuffer desc = new StringBuffer(prefix + "Node: " + getName()
+                + " {" + suffix);
         String indent = "....";
 
         if (isRepresentative() && _isRepresented) {
-            desc.append(prefix + indent + "Representing: " + _represented.getName()
-                    + suffix);
+            desc.append(prefix + indent + "Representing: "
+                    + _represented.getName() + suffix);
         } else {
             desc.append(prefix + indent + "Pure syntactic node" + suffix);
         }
 
-        desc.append(prefix + indent + "Initial: " + _isInitial + suffix + prefix
-                + indent + "Terminal: " + _isTerminal + suffix + prefix
-                + indent + "Isolated: " + _isIsolated + suffix);
+        desc.append(prefix + indent + "Initial: " + _isInitial + suffix
+                + prefix + indent + "Terminal: " + _isTerminal + suffix
+                + prefix + indent + "Isolated: " + _isIsolated + suffix);
 
         desc.append(prefix + indent + "inputs: {" + suffix);
         for (Port port : _inputs) {
@@ -962,7 +963,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
         int permlen = permutation.length;
         int pheight = permlen * 35;
-        StringBuffer svgIcon = new StringBuffer("<svg>\n" + "<rect x=\"-20\" y=\"" + -pheight
+        StringBuffer svgIcon = new StringBuffer("<svg>\n"
+                + "<rect x=\"-20\" y=\"" + -pheight
                 + "\" width=\"40\" height=\"" + 2 * pheight
                 + "\" style=\"fill:red\"/>\n");
 

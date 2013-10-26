@@ -101,8 +101,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         threshold.setTypeEquals(BaseType.DOUBLE);
         new StringAttribute(threshold.getPort(), "_cardinal")
                 .setExpression("SOUTH");
-        new Parameter(threshold.getPort(), "_showName")
-                .setExpression("true");
+        new Parameter(threshold.getPort(), "_showName").setExpression("true");
 
         above = new Parameter(this, "above");
         above.setExpression("false");

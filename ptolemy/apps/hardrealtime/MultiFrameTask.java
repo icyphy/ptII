@@ -97,9 +97,11 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
         director.setContainer(this);
         director.setPersistent(false);
         try {
-            (new SingletonConfigurableAttribute(director, "_hide")).configure(null, null, "true");
+            (new SingletonConfigurableAttribute(director, "_hide")).configure(
+                    null, null, "true");
         } catch (Exception ex) {
-            throw new InternalErrorException(this, ex, "Error trying to hide director.");
+            throw new InternalErrorException(this, ex,
+                    "Error trying to hide director.");
         }
     }
 
@@ -114,8 +116,10 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
         if (nextFireTime().compareTo(_scheduler.getModelTime()) == 0) {
             int deadline = _currentFrame._deadline;
             int executionTime = _currentFrame._executionTime;
-            _scheduler.releaseJob(new Job(_scheduler, deadline, executionTime, _currentFrame, this));
-            _nextFireTime = _scheduler.getModelTime().add(_currentFrame.getSeparationUntilNextFrame());
+            _scheduler.releaseJob(new Job(_scheduler, deadline, executionTime,
+                    _currentFrame, this));
+            _nextFireTime = _scheduler.getModelTime().add(
+                    _currentFrame.getSeparationUntilNextFrame());
             _currentFrame = _currentFrame.getNextFrame();
         }
     }
@@ -134,7 +138,8 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
                 if (_initialFrame == null) {
                     _initialFrame = taskFrame;
                 } else {
-                    throw new IllegalActionException(_initialFrame, taskFrame, "Multiframe task contains at least two initial frames");
+                    throw new IllegalActionException(_initialFrame, taskFrame,
+                            "Multiframe task contains at least two initial frames");
                 }
             }
         }

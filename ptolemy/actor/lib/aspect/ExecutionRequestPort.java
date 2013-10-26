@@ -37,7 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /** This actor implements an input port in a composite communication aspect
  *  (@link CompositeQM).
 *
@@ -66,9 +65,9 @@ public class ExecutionRequestPort extends CommunicationRequestPort {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        RecordType type = new RecordType(
-                new String[]{"actor", "executionTime"},
-                new Type[]{BaseType.OBJECT, BaseType.DOUBLE});
+        RecordType type = new RecordType(new String[] { "actor",
+                "executionTime" }, new Type[] { BaseType.OBJECT,
+                BaseType.DOUBLE });
         value.setTypeEquals(type);
     }
 

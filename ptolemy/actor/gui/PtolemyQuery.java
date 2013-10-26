@@ -829,7 +829,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                                 // In this case, the XML string is not really visible to the user,
                                 // so reporting this as an XML exception makes no sense.
                                 if (ex.getCause() instanceof Exception) {
-                                    throw (Exception)ex.getCause();
+                                    throw (Exception) ex.getCause();
                                 } else {
                                     throw ex;
                                 }

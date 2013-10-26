@@ -1,5 +1,4 @@
 
-
 /* A sequence classifier for Exponential emission HMMs
 
 Copyright (c) 1998-2013 The Regents of the University of California.
@@ -28,6 +27,7 @@ COPYRIGHTENDKEY
 
 */
 package org.ptolemy.machineLearning.hmm;
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -67,92 +67,94 @@ governing the Markovian process representing the hidden state evolution. The <i>
  @Pt.AcceptedRating
  */
 public class HMMExponentialClassifier extends ObservationClassifier {
-   /** Construct an actor with the given container and name.
-    *  @param container The container.
-    *  @param name The name of this actor
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public HMMExponentialClassifier(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public HMMExponentialClassifier(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       lambda =  new PortParameter(this, "lambda");
-       lambda.setExpression("{0.0,3.0}");
-       lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-       StringAttribute cardinality = new StringAttribute(
-               lambda.getPort(), "_cardinal");
-       cardinality.setExpression("SOUTH");
+        lambda = new PortParameter(this, "lambda");
+        lambda.setExpression("{0.0,3.0}");
+        lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        StringAttribute cardinality = new StringAttribute(lambda.getPort(),
+                "_cardinal");
+        cardinality.setExpression("SOUTH");
 
-       //_nStates = ((ArrayToken) meanToken).length();
-       _nStates = ((ArrayToken)lambda.getToken()).length();
-       _lambda = new double[_nStates];
-   }
+        //_nStates = ((ArrayToken) meanToken).length();
+        _nStates = ((ArrayToken) lambda.getToken()).length();
+        _lambda = new double[_nStates];
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-   public PortParameter lambda;
+    public PortParameter lambda;
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   public Object clone(Workspace workspace) throws CloneNotSupportedException {
-       HMMExponentialClassifier newObject = (HMMExponentialClassifier) super
-               .clone(workspace);
-       newObject._lambda = new double[_nStates];
-       return newObject;
-   }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HMMExponentialClassifier newObject = (HMMExponentialClassifier) super
+                .clone(workspace);
+        newObject._lambda = new double[_nStates];
+        return newObject;
+    }
 
-   /** Consume the inputs and produce the outputs of the FFT filter.
-    *  @exception IllegalActionException If a runtime type error occurs.
-    */
-   public void fire() throws IllegalActionException {
-       super.fire();
+    /** Consume the inputs and produce the outputs of the FFT filter.
+     *  @exception IllegalActionException If a runtime type error occurs.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
 
-       lambda.update();
-       transitionMatrix.update();
-       prior.update();
+        lambda.update();
+        transitionMatrix.update();
+        prior.update();
 
-       // update array values and lengths
-       _nStates = ((ArrayToken) lambda.getToken()).length();
+        // update array values and lengths
+        _nStates = ((ArrayToken) lambda.getToken()).length();
 
-       for (int i = 0; i < _nStates; i++) {
-           _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
-                   .doubleValue();
-           _lambda[i] = ((DoubleToken)((ArrayToken) lambda.getToken()).getElement(i))
-                   .doubleValue();
-           for (int j = 0; j< _nStates; j++) {
-               _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
-                       .getElementAsToken(i, j))
-                       .doubleValue();
-           }
-       }
-           if ((_nStates != _lambda.length) ||(_nStates != _transitionMatrixEstimate.length))
-           {
-               throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
-           }
+        for (int i = 0; i < _nStates; i++) {
+            _priors[i] = ((DoubleToken) ((ArrayToken) prior.getToken())
+                    .getElement(i)).doubleValue();
+            _lambda[i] = ((DoubleToken) ((ArrayToken) lambda.getToken())
+                    .getElement(i)).doubleValue();
+            for (int j = 0; j < _nStates; j++) {
+                _transitionMatrixEstimate[i][j] = ((DoubleToken) ((MatrixToken) transitionMatrix
+                        .getToken()).getElementAsToken(i, j)).doubleValue();
+            }
+        }
+        if ((_nStates != _lambda.length)
+                || (_nStates != _transitionMatrixEstimate.length)) {
+            throw new IllegalActionException(this,
+                    "Parameter guess vectors need to have the same length.");
+        }
 
-           int[] classifyStates = new int[_observations.length];
+        int[] classifyStates = new int[_observations.length];
 
-           classifyStates = classifyHMM(_observations , _priors, _transitionMatrixEstimate);
+        classifyStates = classifyHMM(_observations, _priors,
+                _transitionMatrixEstimate);
 
-           IntToken[] _outTokenArray = new IntToken[classifyStates.length];
-           for (int i = 0; i < classifyStates.length; i++) {
+        IntToken[] _outTokenArray = new IntToken[classifyStates.length];
+        for (int i = 0; i < classifyStates.length; i++) {
             _outTokenArray[i] = new IntToken(classifyStates[i]);
-           }
+        }
 
-           output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
-   }
+        output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
+    }
 
-   protected double emissionProbability(double y, int hiddenState) {
-       double m = _lambda[hiddenState];
-       return m*Math.exp(-m*y);
-   }
-   ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////
+    protected double emissionProbability(double y, int hiddenState) {
+        double m = _lambda[hiddenState];
+        return m * Math.exp(-m * y);
+    }
 
-   private double[] _lambda;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private double[] _lambda;
 }

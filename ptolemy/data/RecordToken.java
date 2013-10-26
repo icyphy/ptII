@@ -239,7 +239,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         Iterator<String> iterator = labelSet.iterator();
 
         while (iterator.hasNext()) {
-            String label = (String) iterator.next();
+            String label = iterator.next();
             Token token = get(label);
             code += token.hashCode();
         }
@@ -473,7 +473,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         int i = 0;
 
         while (labels.hasNext()) {
-            String label = (String) labels.next();
+            String label = labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
 
@@ -508,7 +508,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         int i = 0;
 
         while (labels.hasNext()) {
-            String label = (String) labels.next();
+            String label = labels.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
 
@@ -552,7 +552,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         Iterator<String> iterator = myLabelSet.iterator();
 
         while (iterator.hasNext()) {
-            String label = (String) iterator.next();
+            String label = iterator.next();
             Token token1 = get(label);
             Token token2 = recordToken.get(label);
             BooleanToken result = token1.isCloseTo(token2, epsilon);

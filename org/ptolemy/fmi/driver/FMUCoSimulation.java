@@ -179,12 +179,14 @@ public class FMUCoSimulation extends FMUDriver {
 
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.FMULogger(fmiModelDescription), fmiModelDescription.getFMUAllocateMemory(),
+                new FMULibrary.FMULogger(fmiModelDescription),
+                fmiModelDescription.getFMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
 
-        Function instantiateSlave = fmiModelDescription.getFmiFunction("fmiInstantiateSlave");
+        Function instantiateSlave = fmiModelDescription
+                .getFmiFunction("fmiInstantiateSlave");
         System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object[] { _modelIdentifier, fmiModelDescription.guid,
@@ -236,16 +238,17 @@ public class FMUCoSimulation extends FMUDriver {
                         fmiComponent, time, file, csvSeparator, Boolean.FALSE);
             }
             invoke("_fmiTerminateSlave", new Object[] { fmiComponent },
-                   "Could not terminate slave: ");
+                    "Could not terminate slave: ");
 
             // Don't throw an exception while freeing a slave.  Some
             // fmiTerminateSlave calls free the slave for us.
-            Function freeSlave = fmiModelDescription.getFmiFunction("fmiFreeSlaveInstance");
+            Function freeSlave = fmiModelDescription
+                    .getFmiFunction("fmiFreeSlaveInstance");
             int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
-                                                      new Object[] { fmiComponent })).intValue();
+                    new Object[] { fmiComponent })).intValue();
             if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-                new Exception("Warning: Could not free slave instance: " + fmiFlag)
-                    .printStackTrace();
+                new Exception("Warning: Could not free slave instance: "
+                        + fmiFlag).printStackTrace();
             }
         } finally {
             if (file != null) {

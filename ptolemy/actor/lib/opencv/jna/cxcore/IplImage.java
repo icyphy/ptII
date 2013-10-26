@@ -88,31 +88,16 @@ public class IplImage extends Structure {
      *  @return a list of strings that name the fields in order.
      */
     protected List getFieldOrder() {
-        return Arrays.asList(new String[] {
-                    "nSize",
-                    "ID",
-                    "nChannels",
-                    "alphaChannel",
-                    "depth",
-                    "colorModel",
-                    "channelSeq",
-                    "dataOrder",
-                    "origin",
-                    "align",
-                    "width",
-                    "height",
-                    //public IplROI.ByReference roi
-                    //public IplImage maskROI
-                    "roi",
-                    "maskROI",
-                    "imageId",
-                    "tileInfo",
-                    "imageSize",
-                    "imageData",
-                    "widthStep",
-                    "BorderMode",
-                    "BorderConst",
-                    "ImageDataOrigin"
-                });
+        return Arrays.asList(new String[] { "nSize", "ID", "nChannels",
+                "alphaChannel", "depth", "colorModel", "channelSeq",
+                "dataOrder", "origin",
+                "align",
+                "width",
+                "height",
+                //public IplROI.ByReference roi
+                //public IplImage maskROI
+                "roi", "maskROI", "imageId", "tileInfo", "imageSize",
+                "imageData", "widthStep", "BorderMode", "BorderConst",
+                "ImageDataOrigin" });
     }
 }

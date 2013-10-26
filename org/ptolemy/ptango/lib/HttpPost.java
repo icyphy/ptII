@@ -82,8 +82,10 @@ public class HttpPost extends TypedAtomicActor {
         url = new PortParameter(this, "url");
         url.setStringMode(true);
         url.setExpression("http://localhost");
-        new SingletonParameter(url.getPort(), "_showName").setToken(BooleanToken.TRUE);
-        StringAttribute cardinal = new StringAttribute(url.getPort(), "_cardinal");
+        new SingletonParameter(url.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+        StringAttribute cardinal = new StringAttribute(url.getPort(),
+                "_cardinal");
         cardinal.setExpression("SOUTH");
 
         input = new TypedIOPort(this, "input", true, false);
@@ -138,7 +140,7 @@ public class HttpPost extends TypedAtomicActor {
         url.update();
         // If there is no input, do nothing.
         if (input.hasToken(0)) {
-            RecordToken record = (RecordToken)input.get(0);
+            RecordToken record = (RecordToken) input.get(0);
             if (_debugging) {
                 _debug("Read input: " + record);
             }
@@ -171,7 +173,8 @@ public class HttpPost extends TypedAtomicActor {
                 URL url = new URL(urlValue);
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
-                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                OutputStreamWriter writer = new OutputStreamWriter(
+                        connection.getOutputStream());
                 writer.write(data.toString());
                 writer.flush();
 
@@ -181,7 +184,8 @@ public class HttpPost extends TypedAtomicActor {
                     _debug("Waiting for response.");
                 }
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
                 StringBuffer response = new StringBuffer();
                 String line;
                 // FIXME: Need a timeout here!

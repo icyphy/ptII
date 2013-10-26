@@ -379,7 +379,8 @@ public class CompositeActorSimpleApplication {
      *  @param application The application.
      *  @param args The arguments to be passed to the application.
      */
-    protected static void _run(CompositeActorSimpleApplication application, String [] args) {
+    protected static void _run(CompositeActorSimpleApplication application,
+            String[] args) {
         try {
             application.processArgs(args);
             application.waitForFinish();

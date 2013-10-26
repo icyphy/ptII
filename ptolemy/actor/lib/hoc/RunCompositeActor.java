@@ -366,4 +366,4 @@ public class RunCompositeActor extends LifeCycleManager {
 
     /** The count of iterations. */
     private int _iteration;
-    }
+}

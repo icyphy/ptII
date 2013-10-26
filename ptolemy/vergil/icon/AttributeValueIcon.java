@@ -164,13 +164,13 @@ public class AttributeValueIcon extends XMLIcon {
             if (!name.trim().equals("") && container != null) {
                 Attribute candidate = container.getAttribute(name);
                 if (candidate instanceof Settable) {
-                    return (Settable)candidate;
+                    return (Settable) candidate;
                 }
             } else {
                 // No attributeName is given.
                 // If the container is an Attribute, use it.
                 if (container instanceof Settable) {
-                    return (Settable)container;
+                    return (Settable) container;
                 }
             }
         } else if (container instanceof CompositeEntity) {
@@ -180,7 +180,7 @@ public class AttributeValueIcon extends XMLIcon {
                 Attribute candidate = entity.getAttribute(attributeName
                         .getExpression());
                 if (candidate instanceof Settable) {
-                    return (Settable)candidate;
+                    return (Settable) candidate;
                 }
             }
         }

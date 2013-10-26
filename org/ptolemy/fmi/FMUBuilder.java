@@ -122,7 +122,7 @@ public class FMUBuilder {
         String target = architecture;
         if (isWindows) {
             File batchCommand = new File(sourcesDirectory, "build_fmu.bat");
-            if (! batchCommand.exists()) {
+            if (!batchCommand.exists()) {
                 stderr("The DOS batch file \"" + batchCommand
                         + "\" does not exist." + _eol);
                 return false;
@@ -136,9 +136,8 @@ public class FMUBuilder {
 
         ProcessBuilder builder = new ProcessBuilder(command, target);
 
-        stdout("architecture: " + architecture + " isWindows: " + isWindows + "  command: " + command + " target: " + target);
-
-
+        stdout("architecture: " + architecture + " isWindows: " + isWindows
+                + "  command: " + command + " target: " + target);
 
         builder.directory(sourcesDirectory);
 
@@ -163,8 +162,8 @@ public class FMUBuilder {
             process.destroy();
             // Java 1.5 does not support IOException(String, Throwable).
             // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception =  new IOException("The process building " + sharedLibraryFile
-                                                     + " was interrupted.");
+            IOException exception = new IOException("The process building "
+                    + sharedLibraryFile + " was interrupted.");
             exception.initCause(ex);
             throw exception;
         }

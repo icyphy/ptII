@@ -52,6 +52,6 @@ public class CvSize extends Structure {
      *  @return a list of strings that name the fields in order.
      */
     protected List getFieldOrder() {
-        return Arrays.asList(new String[] { "width", "height"});
+        return Arrays.asList(new String[] { "width", "height" });
     }
 }

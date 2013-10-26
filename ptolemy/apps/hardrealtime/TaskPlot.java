@@ -89,9 +89,11 @@ public class TaskPlot extends PlotBox {
      *  @throws IllegalArgumentException If the task whose execution is added
      *  has not released a job yet.
      */
-    public void addExecution(double start, double end, Actor task) throws IllegalArgumentException {
+    public void addExecution(double start, double end, Actor task)
+            throws IllegalArgumentException {
         if (!_tasks.contains(task)) {
-            throw new IllegalArgumentException("Attempt to register execution time for unknown task.");
+            throw new IllegalArgumentException(
+                    "Attempt to register execution time for unknown task.");
         }
         Execution execution = new Execution(start, end);
         if (_executionsPerTask.keySet().contains(task)) {
@@ -124,11 +126,12 @@ public class TaskPlot extends PlotBox {
             if (job.getParentTask() == null) {
                 addYTick(job.getTask().getName(), (double) _tasks.size() - 1);
             } else {
-                addYTick(job.getParentTask().getName() + "." + job.getTask().getName(),
-                        (double) _tasks.size() - 1);
+                addYTick(job.getParentTask().getName() + "."
+                        + job.getTask().getName(), (double) _tasks.size() - 1);
             }
         }
-        _maxDeadline = Math.max(_maxDeadline, job.getAbsoluteDeadline().getDoubleValue());
+        _maxDeadline = Math.max(_maxDeadline, job.getAbsoluteDeadline()
+                .getDoubleValue());
         _maxXRange = Math.max(_maxDeadline, _maxXRange);
         setYRange(-0.5, _tasks.size());
         setXRange(0.0, _maxXRange);
@@ -156,15 +159,18 @@ public class TaskPlot extends PlotBox {
             boolean clearfirst, Rectangle drawRect) {
         super._drawPlot(graphics, clearfirst, drawRect);
 
-        for (Map.Entry<Actor, List<Execution>> taskExecutions : _executionsPerTask.entrySet()) {
+        for (Map.Entry<Actor, List<Execution>> taskExecutions : _executionsPerTask
+                .entrySet()) {
             Actor task = taskExecutions.getKey();
             List<Execution> executions = taskExecutions.getValue();
             int taskindex = _tasks.indexOf(task);
             long ypos = _lry - (long) ((taskindex - _yMin) * _yscale);
             for (Execution execution : executions) {
-                long starti = _ulx + (long) ((execution.start - _xMin) * _xscale);
+                long starti = _ulx
+                        + (long) ((execution.start - _xMin) * _xscale);
                 long endi = _ulx + (long) ((execution.end - _xMin) * _xscale);
-                _drawExecution(graphics, (int) starti, (int) endi, (int) ypos, _colors[taskindex]);
+                _drawExecution(graphics, (int) starti, (int) endi, (int) ypos,
+                        _colors[taskindex]);
             }
         }
 
@@ -175,8 +181,10 @@ public class TaskPlot extends PlotBox {
             long deadlinei = _ulx + (long) ((deadline - _xMin) * _xscale);
             int taskindex = _tasks.indexOf(job.getTask());
             long ypos = _lry - (long) ((taskindex - _yMin) * _yscale);
-            _drawRelease(graphics, (int) releasei, (int) ypos, new Color(0x000000));
-            _drawDeadline(graphics, (int) deadlinei, (int) ypos, new Color(0x000000));
+            _drawRelease(graphics, (int) releasei, (int) ypos, new Color(
+                    0x000000));
+            _drawDeadline(graphics, (int) deadlinei, (int) ypos, new Color(
+                    0x000000));
         }
 
         if (_deadlineMissTask != null) {
@@ -190,38 +198,52 @@ public class TaskPlot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _drawDeadline(Graphics graphics, int deadline, int ypos, Color color) {
+    private void _drawDeadline(Graphics graphics, int deadline, int ypos,
+            Color color) {
         ((Graphics2D) graphics).setStroke(new BasicStroke(2F));
         graphics.setColor(color);
-        graphics.drawLine(deadline, ypos, deadline, ypos - (int) (_deadlineReleaseHeight * _yscale));
-        graphics.drawLine(deadline, ypos, deadline - _arrowHalfWidth, ypos - _arrowHeight);
-        graphics.drawLine(deadline, ypos, deadline + _arrowHalfWidth, ypos - _arrowHeight);
+        graphics.drawLine(deadline, ypos, deadline, ypos
+                - (int) (_deadlineReleaseHeight * _yscale));
+        graphics.drawLine(deadline, ypos, deadline - _arrowHalfWidth, ypos
+                - _arrowHeight);
+        graphics.drawLine(deadline, ypos, deadline + _arrowHalfWidth, ypos
+                - _arrowHeight);
     }
 
-    private void _drawDeadlineMiss(Graphics graphics, int time, int ypos, Color color) {
+    private void _drawDeadlineMiss(Graphics graphics, int time, int ypos,
+            Color color) {
         ((Graphics2D) graphics).setStroke(new BasicStroke(2F));
         graphics.setColor(color);
         int y = ypos - (int) (_deadlineMissHeight * _yscale);
-        graphics.drawLine(time, y, time + _deadlineMissLength, y + _deadlineMissLength);
-        graphics.drawLine(time, y, time - _deadlineMissLength, y + _deadlineMissLength);
-        graphics.drawLine(time, y, time - _deadlineMissLength, y - _deadlineMissLength);
-        graphics.drawLine(time, y, time + _deadlineMissLength, y - _deadlineMissLength);
+        graphics.drawLine(time, y, time + _deadlineMissLength, y
+                + _deadlineMissLength);
+        graphics.drawLine(time, y, time - _deadlineMissLength, y
+                + _deadlineMissLength);
+        graphics.drawLine(time, y, time - _deadlineMissLength, y
+                - _deadlineMissLength);
+        graphics.drawLine(time, y, time + _deadlineMissLength, y
+                - _deadlineMissLength);
     }
 
-    private void _drawExecution(Graphics graphics, int start, int end, int ypos, Color color) {
+    private void _drawExecution(Graphics graphics, int start, int end,
+            int ypos, Color color) {
         ((Graphics2D) graphics).setStroke(new BasicStroke(2F));
         graphics.setColor(color);
         int height = (int) (_executionHeight * _yscale);
         graphics.fillRect(start, ypos - height, end - start, height);
     }
 
-    private void _drawRelease(Graphics graphics, int release, int ypos, Color color) {
+    private void _drawRelease(Graphics graphics, int release, int ypos,
+            Color color) {
         ((Graphics2D) graphics).setStroke(new BasicStroke(2F));
         graphics.setColor(color);
         int yarrowend = ypos - (int) (_deadlineReleaseHeight * _yscale);
-        graphics.drawLine(release, ypos, release, ypos - (int) (_deadlineReleaseHeight * _yscale));
-        graphics.drawLine(release, yarrowend, release - _arrowHalfWidth, yarrowend + _arrowHeight);
-        graphics.drawLine(release, yarrowend, release + _arrowHalfWidth, yarrowend + _arrowHeight);
+        graphics.drawLine(release, ypos, release, ypos
+                - (int) (_deadlineReleaseHeight * _yscale));
+        graphics.drawLine(release, yarrowend, release - _arrowHalfWidth,
+                yarrowend + _arrowHeight);
+        graphics.drawLine(release, yarrowend, release + _arrowHalfWidth,
+                yarrowend + _arrowHeight);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -243,7 +265,6 @@ public class TaskPlot extends PlotBox {
     private double _maxXRange;
     private List<Actor> _tasks;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -252,6 +273,7 @@ public class TaskPlot extends PlotBox {
             this.start = start;
             this.end = end;
         }
+
         public double start, end;
     }
 }

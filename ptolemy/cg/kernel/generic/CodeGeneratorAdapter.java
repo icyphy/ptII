@@ -79,8 +79,7 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
         try {
             // This base class uses a decorator with no parameters.
             // Subclasses will override this to provide parameters.
-            return new DecoratorAttributes(target,
-                    genericCodeGenerator);
+            return new DecoratorAttributes(target, genericCodeGenerator);
         } catch (KernelException ex) {
             // This should not occur.
             throw new InternalErrorException(ex);

@@ -225,7 +225,6 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         return newObject;
     }
 
-
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
@@ -233,7 +232,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *   null if the specified target is not an Actor.
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof IOPort && ((IOPort)target).isInput()) {
+        if (target instanceof IOPort && ((IOPort) target).isInput()) {
             try {
                 return new BasicSwitchAttributes(target, this);
             } catch (KernelException ex) {
@@ -336,11 +335,9 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                     Object[] output = (Object[]) event.contents;
                     Receiver receiver = (Receiver) output[0];
 
-                    Actor actor;
                     if (receiver instanceof IntermediateReceiver) {
-                        actor = (Actor) ((IntermediateReceiver) receiver).communicationAspect;
                     } else {
-                        actor = (Actor) receiver.getContainer().getContainer();
+                        receiver.getContainer().getContainer();
                     }
                     int outputPortID = _getPortID(receiver, false);
                     Time lastTimeStamp = currentTime;
@@ -365,8 +362,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                         Token token = (Token) output[1];
                         _sendToReceiver(receiver, token);
                         _tokenCount--;
-                        sendCommunicationEvent(this, 0,
-                                _tokenCount, EventType.RECEIVED);
+                        sendCommunicationEvent(this, 0, _tokenCount,
+                                EventType.RECEIVED);
                         _outputTokens.get(i).remove(event);
                     }
                 }
@@ -449,10 +446,11 @@ public class BasicSwitch extends AtomicCommunicationAspect {
             for (NamedObj decoratedObject : decoratedObjects) {
                 // The following will create the DecoratorAttributes if it does not
                 // already exist, and associate it with this decorator.
-                BasicSwitchAttributes decoratorAttributes = (BasicSwitchAttributes)
-                        decoratedObject.getDecoratorAttributes(this);
+                BasicSwitchAttributes decoratorAttributes = (BasicSwitchAttributes) decoratedObject
+                        .getDecoratorAttributes(this);
                 setPortIn((IOPort) decoratedObject, decoratorAttributes._portIn);
-                setPortOut((IOPort) decoratedObject, decoratorAttributes._portOut);
+                setPortOut((IOPort) decoratedObject,
+                        decoratorAttributes._portOut);
             }
         }
     }
@@ -462,10 +460,10 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @param portIn The id of the switch port.
      */
     public void setPortIn(Port port, int portIn) {
-            if (_ioPortToSwitchInPort == null) {
-                    _ioPortToSwitchInPort = new HashMap<Port, Integer>();
-            }
-        _ioPortToSwitchInPort.put((IOPort)port, portIn);
+        if (_ioPortToSwitchInPort == null) {
+            _ioPortToSwitchInPort = new HashMap<Port, Integer>();
+        }
+        _ioPortToSwitchInPort.put(port, portIn);
     }
 
     /** Set the id of the switch output that is sending tokens to this actor port.
@@ -473,10 +471,10 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      * @param portOut The id of the switch port.
      */
     public void setPortOut(Port port, int portOut) {
-            if (_ioPortToSwitchOutPort == null) {
-                    _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
-            }
-        _ioPortToSwitchOutPort.put((IOPort)port, portOut);
+        if (_ioPortToSwitchOutPort == null) {
+            _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
+        }
+        _ioPortToSwitchOutPort.put(port, portOut);
     }
 
     /** Reset the communication aspect and clear the tokens.
@@ -590,7 +588,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  are going out of the switch.
      *  @author Patricia Derler
      */
-    public static class BasicSwitchAttributes extends CommunicationAspectAttributes {
+    public static class BasicSwitchAttributes extends
+            CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.
@@ -643,10 +642,12 @@ public class BasicSwitch extends AtomicCommunicationAspect {
             BasicSwitch basicSwitch = (BasicSwitch) getDecorator();
             if (basicSwitch != null) {
                 if (attribute == portIn) {
-                    _portIn = ((IntToken)((Parameter)attribute).getToken()).intValue();
+                    _portIn = ((IntToken) ((Parameter) attribute).getToken())
+                            .intValue();
                     basicSwitch.setPortIn(port, _portIn);
                 } else if (attribute == portOut) {
-                    _portOut = ((IntToken)((Parameter)attribute).getToken()).intValue();
+                    _portOut = ((IntToken) ((Parameter) attribute).getToken())
+                            .intValue();
                     basicSwitch.setPortOut(port, _portOut);
                 } else {
                     super.attributeChanged(attribute);
@@ -675,6 +676,5 @@ public class BasicSwitch extends AtomicCommunicationAspect {
 
         private int _portOut;
     }
-
 
 }

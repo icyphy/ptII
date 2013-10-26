@@ -102,7 +102,8 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
     public AtomicCommunicationAspect(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        ColorAttribute color = new ColorAttribute(this, decoratorHighlightColorName);
+        ColorAttribute color = new ColorAttribute(this,
+                decoratorHighlightColorName);
         color.setExpression("{1.0,0.6,0.0,1.0}");
         _listeners = new ArrayList<CommunicationAspectListener>();
         _parameters = new HashMap<IOPort, List<Attribute>>();
@@ -135,15 +136,15 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *  @return A list of the objects decorated by this decorator.
      */
     public List<NamedObj> decoratedObjects() {
-            if (workspace().getVersion() == _decoratedObjectsVersion) {
+        if (workspace().getVersion() == _decoratedObjectsVersion) {
             return _decoratedObjects;
         }
-            _decoratedObjectsVersion = workspace().getVersion();
+        _decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> list = new ArrayList();
         CompositeEntity container = (CompositeEntity) getContainer();
         for (Object object : container.deepEntityList()) {
             if (object instanceof Actor) {
-                for (Object port : ((Actor)object).inputPortList()) {
+                for (Object port : ((Actor) object).inputPortList()) {
                     list.add((NamedObj) port);
                 }
             }
@@ -215,8 +216,8 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *      by the communication aspect.
      *  @param eventType Type of event.
      */
-    public void sendCommunicationEvent(Actor source, int messageId, int messageCnt,
-            EventType eventType) {
+    public void sendCommunicationEvent(Actor source, int messageId,
+            int messageCnt, EventType eventType) {
         if (_listeners != null) {
             Iterator listeners = _listeners.iterator();
             while (listeners.hasNext()) {
@@ -239,8 +240,8 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
-    public void setContainer(CompositeEntity container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
@@ -282,11 +283,11 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-        /** Cached list of decorated objects. */
-        private List<NamedObj> _decoratedObjects;
+    /** Cached list of decorated objects. */
+    private List<NamedObj> _decoratedObjects;
 
-        /** Version for _decoratedObjects. */
-        private long _decoratedObjectsVersion = -1L;
+    /** Version for _decoratedObjects. */
+    private long _decoratedObjectsVersion = -1L;
 
     /** Listeners registered to receive events from this object. */
     private ArrayList<CommunicationAspectListener> _listeners;

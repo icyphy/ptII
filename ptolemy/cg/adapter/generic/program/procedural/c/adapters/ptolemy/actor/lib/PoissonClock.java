@@ -62,17 +62,22 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
         LinkedList args = new LinkedList();
         Parameter stopTime = ((ptolemy.actor.lib.PoissonClock) getComponent()).stopTime;
-        double doubleStopTime = ((DoubleToken) stopTime.getToken()).doubleValue();
+        double doubleStopTime = ((DoubleToken) stopTime.getToken())
+                .doubleValue();
         ptolemy.actor.lib.PoissonClock actor = (ptolemy.actor.lib.PoissonClock) getComponent();
-        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) actor.getContainer();
+        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) actor
+                .getContainer();
         ptolemy.actor.Director director = container.getDirector();
         double modelStopTime = director.getModelStopTime().getDoubleValue();
-        if (doubleStopTime > modelStopTime)
-                doubleStopTime = modelStopTime;
+        if (doubleStopTime > modelStopTime) {
+            doubleStopTime = modelStopTime;
+        }
         Parameter meanTime = ((ptolemy.actor.lib.PoissonClock) getComponent()).meanTime;
-        double doubleMeanTime = ((DoubleToken) meanTime.getToken()).doubleValue();
+        double doubleMeanTime = ((DoubleToken) meanTime.getToken())
+                .doubleValue();
         Parameter fireAtStart = ((ptolemy.actor.lib.PoissonClock) getComponent()).fireAtStart;
-        boolean boolFireAtStart = ((BooleanToken) fireAtStart.getToken()).booleanValue();
+        boolean boolFireAtStart = ((BooleanToken) fireAtStart.getToken())
+                .booleanValue();
 
         args.add(Double.toString(doubleStopTime));
         args.add(Double.toString(doubleMeanTime));
@@ -86,32 +91,30 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         int size = 0;
 
         if (valuesToken instanceof ArrayToken) {
-                values = ((ArrayToken) valuesToken).arrayValue();
+            values = ((ArrayToken) valuesToken).arrayValue();
             size = values.length;
             args.add(Integer.toString(size));
             int i = 0;
             if (size > 0) {
-                    if (values[0] instanceof DoubleToken) {
-                            valuesDouble = new double[size];
-                    }
-                    else if (values[0] instanceof IntToken) {
-                            valuesInt = new int[size];
-                    }
-                    else {
-                    throw new IllegalActionException("Token type at PoissonClock "
-                            + "not supported yet.");
+                if (values[0] instanceof DoubleToken) {
+                    valuesDouble = new double[size];
+                } else if (values[0] instanceof IntToken) {
+                    valuesInt = new int[size];
+                } else {
+                    throw new IllegalActionException(
+                            "Token type at PoissonClock "
+                                    + "not supported yet.");
                 }
             }
             for (Token t : values) {
-                    if (t instanceof DoubleToken) {
-                            valuesDouble[i++] = ((DoubleToken)t).doubleValue();
-                    }
-                    else if (t instanceof IntToken) {
-                            valuesInt[i++] = ((IntToken)t).intValue();
-                    }
-                    else {
-                    throw new IllegalActionException("Token type at PoissonClock "
-                            + "not supported yet.");
+                if (t instanceof DoubleToken) {
+                    valuesDouble[i++] = ((DoubleToken) t).doubleValue();
+                } else if (t instanceof IntToken) {
+                    valuesInt[i++] = ((IntToken) t).intValue();
+                } else {
+                    throw new IllegalActionException(
+                            "Token type at PoissonClock "
+                                    + "not supported yet.");
                 }
             }
         } else {
@@ -121,25 +124,34 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
 
         StringBuffer valuesString = new StringBuffer();
         int i = 0;
-        if (valuesDouble != null)
-                for (double value : valuesDouble)
-                        valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ");
-        else if (valuesInt != null)
-                for (int value : valuesInt)
-                        valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ");
+        if (valuesDouble != null) {
+            for (double value : valuesDouble) {
+                valuesString.append("$actorSymbol(values)[" + i++ + "] = "
+                        + Double.toString(value) + "; ");
+            }
+        } else if (valuesInt != null) {
+            for (int value : valuesInt) {
+                valuesString.append("$actorSymbol(values)[" + i++ + "] = "
+                        + Integer.toString(value) + "; ");
+            }
+        }
 
         args.add(valuesString.toString());
 
         long longPrivateSeed = 0;
         Parameter privateSeed = ((ptolemy.actor.lib.PoissonClock) getComponent()).privateSeed;
-        if (privateSeed.getToken() instanceof LongToken)
+        if (privateSeed.getToken() instanceof LongToken) {
             longPrivateSeed = ((LongToken) privateSeed.getToken()).longValue();
+        }
         args.add(Long.toString(longPrivateSeed));
 
         long longSeed = 0;
         Parameter seed = ((ptolemy.actor.lib.PoissonClock) getComponent()).seed;
-        if (seed.getToken() instanceof LongToken)
-            longSeed = ((LongToken) seed.getToken()).longValue() + ((ptolemy.actor.lib.PoissonClock) getComponent()).getFullName().hashCode();
+        if (seed.getToken() instanceof LongToken) {
+            longSeed = ((LongToken) seed.getToken()).longValue()
+                    + ((ptolemy.actor.lib.PoissonClock) getComponent())
+                            .getFullName().hashCode();
+        }
         args.add(Long.toString(longSeed));
 
         codeStream.appendCodeBlock("initBlock", args);
@@ -153,13 +165,14 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-            //return processCode(super._generateFireCode());
-            CodeStream codeStream = _templateParser.getCodeStream();
+        //return processCode(super._generateFireCode());
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
 
         codeStream.appendCodeBlock("fireBlockInit");
-        for (int i = 0; i < ((ptolemy.actor.lib.PoissonClock) getComponent()).trigger.getWidth(); i++) {
+        for (int i = 0; i < ((ptolemy.actor.lib.PoissonClock) getComponent()).trigger
+                .getWidth(); i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("fireBlockTrigger", args);
@@ -179,7 +192,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     public String generatePostfireCode() throws IllegalActionException {
-            CodeStream codeStream = _templateParser.getCodeStream();
+        CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
 

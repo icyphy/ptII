@@ -281,7 +281,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         // receivers all the time?
         if (remoteReceivers == null || remoteReceivers.length <= channelIndex
                 || remoteReceivers[channelIndex] == null) {
-                return "";
+            return "";
         }
         StringBuffer code = new StringBuffer();
 

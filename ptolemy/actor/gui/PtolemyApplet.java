@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.gui;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
@@ -405,7 +406,8 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
         int orientation = ModelPane.VERTICAL;
 
         if (orientationSpec != null) {
-            String lowerCaseOrientationSpecTrim = orientationSpec.trim().toLowerCase(Locale.getDefault());
+            String lowerCaseOrientationSpecTrim = orientationSpec.trim()
+                    .toLowerCase(Locale.getDefault());
             if (lowerCaseOrientationSpecTrim.equals("horizontal")) {
                 orientation = ModelPane.HORIZONTAL;
             } else if (lowerCaseOrientationSpecTrim.equals("controls_only")) {
@@ -426,7 +428,8 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
             StringTokenizer tokenizer = new StringTokenizer(controlsSpec, ",");
 
             while (tokenizer.hasMoreTokens()) {
-                String controlSpec = tokenizer.nextToken().trim().toLowerCase(Locale.getDefault());
+                String controlSpec = tokenizer.nextToken().trim()
+                        .toLowerCase(Locale.getDefault());
 
                 if (controlSpec.equals("buttons")) {
                     controls = controls | ModelPane.BUTTONS;

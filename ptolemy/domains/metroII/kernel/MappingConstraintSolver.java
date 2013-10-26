@@ -91,11 +91,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         if (_counter == null) {
             newObject._counter = null;
         } else {
-            newObject._counter = (ConstraintCounter) _counter.clone();
+            newObject._counter = _counter.clone();
         }
-        newObject._mapping = (Graph) _mapping.clone();
-        newObject._eventIDDictionary = (EventDictionary) _eventIDDictionary
-                .clone();
+        newObject._mapping = _mapping.clone();
+        newObject._eventIDDictionary = _eventIDDictionary.clone();
         return newObject;
 
     }
@@ -192,8 +191,8 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
                     //                        assert false;
                     //                    }
 
-//                    System.out.println("Notifying " + e1.getName() + " "
-//                            + e2.getName());
+                    //                    System.out.println("Notifying " + e1.getName() + " "
+                    //                            + e2.getName());
 
                     Iterable<Integer> edges1 = _mapping.getEdges(eventId1);
                     Iterable<Integer> edges2 = _mapping.getEdges(eventId2);
@@ -296,7 +295,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
          */
         public ConstraintCounter clone() throws CloneNotSupportedException {
             ConstraintCounter newObject = (ConstraintCounter) super.clone();
-            newObject._count = (int[]) _count.clone();
+            newObject._count = _count.clone();
             return newObject;
         }
 

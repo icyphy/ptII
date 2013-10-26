@@ -412,8 +412,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         + " " + throwable.getCause());
                 throw new IllegalActionException(this, throwable,
                         "Failed to invoke the initialize method \""
-                        + _initializeMethod + "\" on"
-                        + " the wrapper class.");
+                                + _initializeMethod + "\" on"
+                                + " the wrapper class.");
             }
 
         }
@@ -564,7 +564,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 writer = FileUtilities.openForWriting(codeFileName,
                         codeDirectory.getBaseDirectory(), false);
-                System.out.println("CompiledCompositeActor wrote " + codeDirectory.getBaseDirectory() + " " + codeFileName);
+                System.out
+                        .println("CompiledCompositeActor wrote "
+                                + codeDirectory.getBaseDirectory() + " "
+                                + codeFileName);
                 writer.write(code.toString());
             } finally {
                 if (writer != null) {
@@ -1065,9 +1068,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
         // Used to be
         // Remove leading underscore
-         if (_sanitizedActorName.charAt(0) == '_') {
+        if (_sanitizedActorName.charAt(0) == '_') {
             _sanitizedActorName = _sanitizedActorName.replaceFirst("_", "");
-         }
+        }
         // But _ has a special meaning in JNI and javah will add things after a _
         // Remove all underscores to avoid confusion for JNI
         // related functions.  Each time a .dll file is

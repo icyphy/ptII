@@ -26,6 +26,7 @@
 
  */
 package ptolemy.actor.lib.vhdl;
+
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -122,10 +123,12 @@ public class FixTransformer extends TypedAtomicActor {
                             .getExpression());
 
             Overflow overflow = Overflow.getName(((Parameter) getAttribute(port
-                    .getName() + "Overflow")).getExpression().toLowerCase(Locale.getDefault()));
+                    .getName() + "Overflow")).getExpression().toLowerCase(
+                    Locale.getDefault()));
 
             Rounding rounding = Rounding.getName(((Parameter) getAttribute(port
-                    .getName() + "Rounding")).getExpression().toLowerCase(Locale.getDefault()));
+                    .getName() + "Rounding")).getExpression().toLowerCase(
+                    Locale.getDefault()));
 
             Quantization quantization = new FixPointQuantization(precision,
                     overflow, rounding);
@@ -160,14 +163,16 @@ public class FixTransformer extends TypedAtomicActor {
 
         Iterator iterator = Overflow.nameIterator();
         while (iterator.hasNext()) {
-            overflow.addChoice(((String) iterator.next()).toUpperCase(Locale.getDefault()));
+            overflow.addChoice(((String) iterator.next()).toUpperCase(Locale
+                    .getDefault()));
         }
 
         rounding.setExpression("HALF_EVEN");
 
         iterator = Rounding.nameIterator();
         while (iterator.hasNext()) {
-            rounding.addChoice(((String) iterator.next()).toUpperCase(Locale.getDefault()));
+            rounding.addChoice(((String) iterator.next()).toUpperCase(Locale
+                    .getDefault()));
         }
 
         QueuedTypedIOPort port = new QueuedTypedIOPort(this, name, false, true);

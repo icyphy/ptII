@@ -28,6 +28,7 @@
  */
 
 package ptolemy.cg.kernel.generic.program.procedural.c;
+
 import java.util.Locale;
 
 /**
@@ -88,8 +89,9 @@ public class CCodegenUtilities {
     public static String jniGetArrayElements(String type, String arrayName,
             boolean targetCpp) {
         if (targetCpp) {
-            return "env->Get" + type + "ArrayElements((j" + type.toLowerCase(Locale.getDefault())
-                    + "Array)" + arrayName + ", NULL)";
+            return "env->Get" + type + "ArrayElements((j"
+                    + type.toLowerCase(Locale.getDefault()) + "Array)"
+                    + arrayName + ", NULL)";
         } else {
             return "(*env)->Get" + type + "ArrayElements(env, " + arrayName
                     + ", NULL)";
@@ -198,8 +200,8 @@ public class CCodegenUtilities {
             String elementsPointer, boolean targetCpp) {
         if (targetCpp) {
             return "env->Release" + type + "ArrayElements((j"
-                    + type.toLowerCase(Locale.getDefault()) + "Array)" + arrayName + ", "
-                    + elementsPointer + ", 0)";
+                    + type.toLowerCase(Locale.getDefault()) + "Array)"
+                    + arrayName + ", " + elementsPointer + ", 0)";
         } else {
             return "(*env)->Release" + type + "ArrayElements(env, " + arrayName
                     + ", " + elementsPointer + ", 0)";

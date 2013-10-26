@@ -27,6 +27,7 @@
  */
 
 package ptolemy.vergil.basic.export;
+
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -232,7 +233,8 @@ public class ExportModel {
 
         // Use the model name as the basis for the directory containing
         // the html or as the basis for the image file.
-        final boolean isHTM = formatName.toLowerCase(Locale.getDefault()).startsWith("htm");
+        final boolean isHTM = formatName.toLowerCase(Locale.getDefault())
+                .startsWith("htm");
         if (isHTM) {
             if (outputFileOrDirectory != null) {
                 temporaryHTMLDirectory = new File(outputFileOrDirectory);
@@ -249,7 +251,8 @@ public class ExportModel {
             if (outputFileOrDirectory != null) {
                 // If the filename does not end in the formatName,
                 // append the format name.
-                if (outputFileOrDirectory.endsWith(formatName.toLowerCase(Locale.getDefault()))
+                if (outputFileOrDirectory.endsWith(formatName
+                        .toLowerCase(Locale.getDefault()))
                         || outputFileOrDirectory.endsWith(formatName
                                 .toUpperCase(Locale.getDefault()))) {
                     suffix = "";
@@ -290,106 +293,111 @@ public class ExportModel {
 
         if (run) {
             if (!_runnable(model[0])) {
-                System.out.println("Model \"" + model[0].getFullName()
-                        + "\" contains actors such cannot be run "
-                        + " as part of the export process from ExportModel or "
-                        + "it has a WebExportParameters value that runBeforeExport set to false. "
-                        + "To export run this model and export it, use vergil.");
+                System.out
+                        .println("Model \""
+                                + model[0].getFullName()
+                                + "\" contains actors such cannot be run "
+                                + " as part of the export process from ExportModel or "
+                                + "it has a WebExportParameters value that runBeforeExport set to false. "
+                                + "To export run this model and export it, use vergil.");
             } else {
-            // Optionally run the model.
-            Runnable runAction = new Runnable() {
-                public void run() {
-                    try {
-                        if (!(model[0] instanceof TypedCompositeActor)) {
-                            System.out
-                                    .println(model[0].getFullName()
-                                            + " is a "
-                                            + model[0].getClass().getName()
-                                            + " not a TypedCompositeActor, so it cannot be run.");
-                            return;
-                        }
-                        TypedCompositeActor composite = (TypedCompositeActor) model[0];
-                        System.out
-                                .println("Running " + composite.getFullName());
-                        Manager manager = composite.getManager();
-                        if (manager == null) {
-                            manager = new Manager(composite.workspace(),
-                                    "MyManager");
-                            composite.setManager(manager);
-                        }
-                        composite
-                                .setModelErrorHandler(new BasicModelErrorHandler());
-                        _timer = new Timer(true);
-                        final Director finalDirector = composite.getDirector();
-                        TimerTask doTimeToDie = new TimerTask() {
-                            public void run() {
-                                System.out
-                                        .println("ExportHTMLTimer went off after "
-                                                + timeOut
-                                                + " ms., calling getDirector().finish and getDirector().stopFire()");
-
-                                // NOTE: This used to call stop() on
-                                // the manager, but that's not the
-                                // right thing to do. In particular,
-                                // this could be used inside a
-                                // RunCompositeActor, and it should
-                                // only stop the inside execution, not
-                                // the outside one.  It's also not
-                                // correct to call stop() on the
-                                // director, because stop() requests
-                                // immediate stopping. To give
-                                // determinate stopping, this actor
-                                // needs to complete the current
-                                // iteration.
-
-                                // The Stop actor has similar code.
-                                finalDirector.finish();
-
-                                // To support multithreaded domains,
-                                // also have to call stopFire() to
-                                // request that all actors conclude
-                                // ongoing firings.
-                                finalDirector.stopFire();
-                            }
-                        };
-                        _timer.schedule(doTimeToDie, timeOut);
-
-                        // Calling finish() and stopFire() is not
-                        // sufficient if the model is still
-                        // initializing, so we call stop() on the
-                        // manager after 2x the timeout.
-                        // To replicate:
-
-                        // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml $PTII/ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption
-
-                        final Manager finalManager = manager;
-                        _failSafeTimer = new Timer(true);
-                        TimerTask doFailSafeTimeToDie = new TimerTask() {
-                            public void run() {
-                                System.out
-                                        .println("ExportHTMLTimer went off after "
-                                                + timeOut * 2
-                                                + " ms., calling manager.stop().");
-
-                                finalManager.stop();
-                            }
-                        };
-                        _failSafeTimer.schedule(doFailSafeTimeToDie, timeOut*2);
-
+                // Optionally run the model.
+                Runnable runAction = new Runnable() {
+                    public void run() {
                         try {
-                            manager.execute();
-                        } finally {
-                            _timer.cancel();
-                            _failSafeTimer.cancel();
+                            if (!(model[0] instanceof TypedCompositeActor)) {
+                                System.out
+                                        .println(model[0].getFullName()
+                                                + " is a "
+                                                + model[0].getClass().getName()
+                                                + " not a TypedCompositeActor, so it cannot be run.");
+                                return;
+                            }
+                            TypedCompositeActor composite = (TypedCompositeActor) model[0];
+                            System.out.println("Running "
+                                    + composite.getFullName());
+                            Manager manager = composite.getManager();
+                            if (manager == null) {
+                                manager = new Manager(composite.workspace(),
+                                        "MyManager");
+                                composite.setManager(manager);
+                            }
+                            composite
+                                    .setModelErrorHandler(new BasicModelErrorHandler());
+                            _timer = new Timer(true);
+                            final Director finalDirector = composite
+                                    .getDirector();
+                            TimerTask doTimeToDie = new TimerTask() {
+                                public void run() {
+                                    System.out
+                                            .println("ExportHTMLTimer went off after "
+                                                    + timeOut
+                                                    + " ms., calling getDirector().finish and getDirector().stopFire()");
+
+                                    // NOTE: This used to call stop() on
+                                    // the manager, but that's not the
+                                    // right thing to do. In particular,
+                                    // this could be used inside a
+                                    // RunCompositeActor, and it should
+                                    // only stop the inside execution, not
+                                    // the outside one.  It's also not
+                                    // correct to call stop() on the
+                                    // director, because stop() requests
+                                    // immediate stopping. To give
+                                    // determinate stopping, this actor
+                                    // needs to complete the current
+                                    // iteration.
+
+                                    // The Stop actor has similar code.
+                                    finalDirector.finish();
+
+                                    // To support multithreaded domains,
+                                    // also have to call stopFire() to
+                                    // request that all actors conclude
+                                    // ongoing firings.
+                                    finalDirector.stopFire();
+                                }
+                            };
+                            _timer.schedule(doTimeToDie, timeOut);
+
+                            // Calling finish() and stopFire() is not
+                            // sufficient if the model is still
+                            // initializing, so we call stop() on the
+                            // manager after 2x the timeout.
+                            // To replicate:
+
+                            // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml $PTII/ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption
+
+                            final Manager finalManager = manager;
+                            _failSafeTimer = new Timer(true);
+                            TimerTask doFailSafeTimeToDie = new TimerTask() {
+                                public void run() {
+                                    System.out
+                                            .println("ExportHTMLTimer went off after "
+                                                    + timeOut
+                                                    * 2
+                                                    + " ms., calling manager.stop().");
+
+                                    finalManager.stop();
+                                }
+                            };
+                            _failSafeTimer.schedule(doFailSafeTimeToDie,
+                                    timeOut * 2);
+
+                            try {
+                                manager.execute();
+                            } finally {
+                                _timer.cancel();
+                                _failSafeTimer.cancel();
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            throw new RuntimeException(ex);
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        throw new RuntimeException(ex);
                     }
-                }
-            };
-            SwingUtilities.invokeAndWait(runAction);
-            _sleep();
+                };
+                SwingUtilities.invokeAndWait(runAction);
+                _sleep();
             }
         }
 
@@ -539,7 +547,8 @@ public class ExportModel {
                     OutputStream out = null;
 
                     try {
-                        if (formatName.toLowerCase(Locale.getDefault()).startsWith("htm")) {
+                        if (formatName.toLowerCase(Locale.getDefault())
+                                .startsWith("htm")) {
                             if (!htmlDirectory.isDirectory()) {
                                 if (!htmlDirectory.mkdirs()) {
                                     throw new Exception("Failed to create \""
@@ -851,9 +860,12 @@ public class ExportModel {
                                         + ex);
                     }
                     i++;
-                } else if (args[i].toUpperCase(Locale.getDefault()).equals("GIF")
-                        || args[i].toUpperCase(Locale.getDefault()).startsWith("HTM")
-                        || args[i].toUpperCase(Locale.getDefault()).equals("PNG")) {
+                } else if (args[i].toUpperCase(Locale.getDefault()).equals(
+                        "GIF")
+                        || args[i].toUpperCase(Locale.getDefault()).startsWith(
+                                "HTM")
+                        || args[i].toUpperCase(Locale.getDefault()).equals(
+                                "PNG")) {
                     // The default is GIF.
                     if (web) {
                         throw new IllegalArgumentException("Only one of "
@@ -935,7 +947,6 @@ public class ExportModel {
     /** The Timer used to terminate a run by calling finish() and stopFire()*/
     private static Timer _timer = null;
 
-
     /** The Timer used to terminate a run by calling stop on the
      * manager. This is called fail safe after the movie by the same
      * name.
@@ -957,11 +968,14 @@ public class ExportModel {
      *  @exception IllegalActionException If the WebExportParameter
      *  cannot be read.
      */
-    private boolean _runnable(CompositeEntity model) throws IllegalActionException {
+    private boolean _runnable(CompositeEntity model)
+            throws IllegalActionException {
         // Check for WebExportParameters.runBeforeExport being false.
-        List<WebExportParameters> webExportParameters = model.attributeList(WebExportParameters.class);
+        List<WebExportParameters> webExportParameters = model
+                .attributeList(WebExportParameters.class);
         if (webExportParameters.size() > 0) {
-            if (!((BooleanToken)webExportParameters.get(0).runBeforeExport.getToken()).booleanValue()) {
+            if (!((BooleanToken) webExportParameters.get(0).runBeforeExport
+                    .getToken()).booleanValue()) {
                 return false;
             }
         }
@@ -969,7 +983,7 @@ public class ExportModel {
         // Check for actors that implement UsesInvokeAndWait.
         Iterator atomicEntities = model.allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
-            Entity entity = (Entity)atomicEntities.next();
+            Entity entity = (Entity) atomicEntities.next();
             if (entity instanceof UsesInvokeAndWait) {
                 System.out.println(entity.getFullName()
                         + " invoked SwingUtilities.invokeAndWait()");

@@ -26,6 +26,7 @@
 
  */
 package ptolemy.moml;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -535,7 +536,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
                 }
                 if (_namespaceTranslationTable == null) {
-                    throw new InternalErrorException("_namespaceTranslationTable was null, which should not happen.");
+                    throw new InternalErrorException(
+                            "_namespaceTranslationTable was null, which should not happen.");
                 } else {
                     _namespaceTranslationTable.put(oldValue, value);
                 }
@@ -1234,7 +1236,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             String protocol = result.getProtocol();
 
             if (protocol != null
-                    && protocol.trim().toLowerCase(Locale.getDefault()).equals("http")) {
+                    && protocol.trim().toLowerCase(Locale.getDefault())
+                            .equals("http")) {
                 SecurityManager security = System.getSecurityManager();
                 boolean withinUntrustedApplet = false;
 
@@ -3123,7 +3126,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // don't handle this property
                     String value = (String) _attributes.get("value");
                     if (propertyName == null) {
-                        throw new InternalErrorException("FindBugs: propertyName must not be null when calling _handlePropertyName()");
+                        throw new InternalErrorException(
+                                "FindBugs: propertyName must not be null when calling _handlePropertyName()");
                     } else {
                         _handlePropertyElement(className, propertyName, value);
                     }
@@ -5458,7 +5462,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null && value.trim().toLowerCase(Locale.getDefault()).equals("false")) {
+            if (value != null
+                    && value.trim().toLowerCase(Locale.getDefault())
+                            .equals("false")) {
                 newValue = false;
             }
 
@@ -5519,7 +5525,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null && value.trim().toLowerCase(Locale.getDefault()).equals("false")) {
+            if (value != null
+                    && value.trim().toLowerCase(Locale.getDefault())
+                            .equals("false")) {
                 newValue = false;
             }
 
@@ -5581,7 +5589,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null && value.trim().toLowerCase(Locale.getDefault()).equals("false")) {
+            if (value != null
+                    && value.trim().toLowerCase(Locale.getDefault())
+                            .equals("false")) {
                 newValue = false;
             }
 
@@ -7049,7 +7059,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Have to convert to a URL to check whether the
                 // same file is being specified.
                 URI sourceURI = fileNameToURL(source, _base).toURI();
-                URI candidateSourceURI = fileNameToURL(candidateSource, _base).toURI();
+                URI candidateSourceURI = fileNameToURL(candidateSource, _base)
+                        .toURI();
 
                 // FIXME: URL.equals() is very expensive?  See:
                 // http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html

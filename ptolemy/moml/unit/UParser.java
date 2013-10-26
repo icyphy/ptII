@@ -27,6 +27,7 @@
 */
 
 package ptolemy.moml.unit;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Locale;
@@ -283,15 +284,14 @@ public class UParser implements UParserConstants {
 
     final public UnitEquation Equation() throws ParseException {
         UnitEquation uEquation;
-        Token r;
         UnitExpr lhs, rhs;
         lhs = uExpr();
         switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case EQUALS:
-            r = jj_consume_token(EQUALS);
+            jj_consume_token(EQUALS);
             break;
         case LT:
-            r = jj_consume_token(LT);
+            jj_consume_token(LT);
             break;
         default:
             jj_la1[4] = jj_gen;
@@ -341,7 +341,7 @@ public class UParser implements UParserConstants {
 
     final public double number() throws ParseException {
         int len;
-        String tidied, x;
+        String x;
         switch (jj_ntk == -1 ? jj_ntk() : jj_ntk) {
         case DOUBLE:
             jj_consume_token(DOUBLE);

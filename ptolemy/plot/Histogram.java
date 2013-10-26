@@ -26,6 +26,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.plot;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.BufferedWriter;
@@ -522,7 +523,8 @@ public class Histogram extends PlotBox {
      *  @param clearfirst If true, clear the plot before proceeding.
      *  @param drawRect A specification of the size.
      */
-    protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst, Rectangle drawRect) {
+    protected synchronized void _drawPlot(Graphics graphics,
+            boolean clearfirst, Rectangle drawRect) {
         // This method called when images are exported.
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint

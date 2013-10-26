@@ -25,6 +25,7 @@
  COPYRIGHTENDKEY
  */
 package ptolemy.gui;
+
 // ptolemy.gui.CancelException is deprecated, use ptolemy.util.CancelException.
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -288,7 +289,8 @@ public class MessageHandler {
 
             if (reply == null) {
                 return false;
-            } else if (reply.trim().toLowerCase(Locale.getDefault()).equals("yes")) {
+            } else if (reply.trim().toLowerCase(Locale.getDefault())
+                    .equals("yes")) {
                 return true;
             }
         } catch (IOException ex) {

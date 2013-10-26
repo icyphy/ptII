@@ -155,7 +155,7 @@ public class Counter extends TypedAtomicActor {
 
         if (reset.getWidth() > 0) {
             if (reset.hasToken(0)) {
-                if (((BooleanToken)reset.get(0)).booleanValue()) {
+                if (((BooleanToken) reset.get(0)).booleanValue()) {
                     _latestCount = 0;
                     consumed = true;
                 }

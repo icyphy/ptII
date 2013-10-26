@@ -74,8 +74,8 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
      *                If the container already contains an entity with the
      *                specified name.
      */
-    public MetroIIModalModel(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public MetroIIModalModel(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

@@ -26,6 +26,7 @@
 
  */
 package ptolemy.vergil;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.net.URL;
@@ -253,7 +254,9 @@ public class MoMLViewerApplet extends MoMLApplet {
         // below the schematic.
         String panelFlag = getParameter("includeRunPanel");
 
-        if (panelFlag != null && panelFlag.trim().toLowerCase(Locale.getDefault()).equals("true")) {
+        if (panelFlag != null
+                && panelFlag.trim().toLowerCase(Locale.getDefault())
+                        .equals("true")) {
             // NOTE: We could create a separator between the schematic
             // and the control panel here.
             super._createView();

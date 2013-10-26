@@ -441,17 +441,21 @@ public class IOPortController extends AttributeController {
             // Handle communication aspects.
             try {
                 if (port instanceof IOPort) {
-                    List<CommunicationAspect> communicationAspects = ((IOPort) port).getCommunicationAspects();
-                    if (communicationAspects != null && communicationAspects.size() > 0) {
+                    List<CommunicationAspect> communicationAspects = ((IOPort) port)
+                            .getCommunicationAspects();
+                    if (communicationAspects != null
+                            && communicationAspects.size() > 0) {
                         Object object = null;
                         if (((IOPort) port).isOutput()) {
                             object = communicationAspects.get(0);
                         } else {
-                            object = communicationAspects.get(communicationAspects.size() - 1);
+                            object = communicationAspects
+                                    .get(communicationAspects.size() - 1);
                         }
                         ColorAttribute color = null;
                         if (object != null) {
-                            color = (ColorAttribute)((NamedObj) object).getAttribute(CommunicationAspect.decoratorHighlightColorName);
+                            color = (ColorAttribute) ((NamedObj) object)
+                                    .getAttribute(CommunicationAspect.decoratorHighlightColorName);
                         }
                         if (color != null) {
                             fill = color.asColor();
@@ -467,7 +471,8 @@ public class IOPortController extends AttributeController {
 
                         StringBuffer aspectsStringBuffer = new StringBuffer();
                         for (int j = 0; j < communicationAspects.size(); j++) {
-                            NamedObj namedObj = (NamedObj) communicationAspects.get(j);
+                            NamedObj namedObj = (NamedObj) communicationAspects
+                                    .get(j);
                             if (namedObj != null) {
                                 if (aspectsStringBuffer.length() > 0) {
                                     aspectsStringBuffer.append(", ");
@@ -475,7 +480,8 @@ public class IOPortController extends AttributeController {
                                 aspectsStringBuffer.append(namedObj.getName());
                             }
                         }
-                        info.setExpression("Aspects: " + aspectsStringBuffer.toString());
+                        info.setExpression("Aspects: "
+                                + aspectsStringBuffer.toString());
                     } else {
                         // No CommunicationAspect in use anymore, clean up _showInfo
                         // string.
@@ -483,18 +489,19 @@ public class IOPortController extends AttributeController {
                         // Use Attribute here instead of StringAttribute since
                         // the attribute could be e.g. a StringParameter, which
                         // is an Attribute but not a StringAttribute
-                        Attribute info = (Attribute) port
-                                .getAttribute("_showInfo");
-                        if (info != null &&
-                                info instanceof StringAttribute) {
-                            String infoString = ((StringAttribute)info).getValueAsString();
+                        Attribute info = port.getAttribute("_showInfo");
+                        if (info != null && info instanceof StringAttribute) {
+                            String infoString = ((StringAttribute) info)
+                                    .getValueAsString();
                             if (infoString.contains("Aspects:")) {
                                 int start = infoString.indexOf("Aspects: ");
                                 int end = infoString.length();
-                                String aspectInfo = infoString.substring(start, end);
+                                String aspectInfo = infoString.substring(start,
+                                        end);
                                 infoString = infoString.replace(aspectInfo, "");
                                 infoString = infoString.trim();
-                                ((StringAttribute)info).setExpression(infoString);
+                                ((StringAttribute) info)
+                                        .setExpression(infoString);
                             }
                         }
                     }

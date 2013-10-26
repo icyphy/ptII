@@ -258,8 +258,6 @@ public class IOPort extends ComponentPort {
             Decorator decorator = ((ExecutionAttributes) attribute)
                     .getDecorator();
             if (decorator != null && decorator instanceof CommunicationAspect) {
-                // Invalidate list of communication aspects.
-                _communicationAspectsValid = false;
                 if (isOpaque()) {
                     createReceivers();
                 }
@@ -1365,7 +1363,8 @@ public class IOPort extends ComponentPort {
 
         HashMap<Integer, CommunicationAspectAttributes> _communicationAspectMap = new HashMap<Integer, CommunicationAspectAttributes>();
         int sequenceNumber = 1;
-        List<CommunicationAspectAttributes> communicationAspectList = this.attributeList(CommunicationAspectAttributes.class);
+        List<CommunicationAspectAttributes> communicationAspectList = this
+                .attributeList(CommunicationAspectAttributes.class);
         if (communicationAspectList.size() > 0) {
             try {
                 _workspace.getWriteAccess();
@@ -1373,10 +1372,13 @@ public class IOPort extends ComponentPort {
                 List<CommunicationAspectAttributes> enabledAttributes = new ArrayList();
 
                 for (int i = 0; i < communicationAspectList.size(); i++) {
-                    CommunicationAspectAttributes attribute = communicationAspectList.get(i);
-                    if (((BooleanToken)attribute.enable.getToken()).booleanValue()) {
+                    CommunicationAspectAttributes attribute = communicationAspectList
+                            .get(i);
+                    if (((BooleanToken) attribute.enable.getToken())
+                            .booleanValue()) {
                         enabledAttributes.add(attribute);
-                        int s = ((IntToken)attribute.sequenceNumber.getToken()).intValue();
+                        int s = ((IntToken) attribute.sequenceNumber.getToken())
+                                .intValue();
                         if (s > sequenceNumber) {
                             sequenceNumber = s;
                         }
@@ -1386,11 +1388,17 @@ public class IOPort extends ComponentPort {
                 }
                 sequenceNumber = sequenceNumber + 1;
                 for (int i = 0; i < enabledAttributes.size(); i++) {
-                    final CommunicationAspectAttributes attribute = enabledAttributes.get(i);
+                    final CommunicationAspectAttributes attribute = enabledAttributes
+                            .get(i);
                     final int seqNum = sequenceNumber;
-                    CommunicationAspect communicationAspect = (CommunicationAspect) attribute.getDecorator();
-                    int oldSeqNum = ((IntToken) attribute.sequenceNumber.getToken()).intValue();
-                    if (oldSeqNum == -1 && communicationAspect != null && !_communicationAspects.contains(communicationAspect)) {
+                    CommunicationAspect communicationAspect = (CommunicationAspect) attribute
+                            .getDecorator();
+                    int oldSeqNum = ((IntToken) attribute.sequenceNumber
+                            .getToken()).intValue();
+                    if (oldSeqNum == -1
+                            && communicationAspect != null
+                            && !_communicationAspects
+                                    .contains(communicationAspect)) {
                         attribute.sequenceNumber.setToken(new IntToken(seqNum));
                         _communicationAspectMap.put(seqNum, attribute);
                         sequenceNumber = sequenceNumber + 1;
@@ -1400,16 +1408,19 @@ public class IOPort extends ComponentPort {
                     }
                 }
                 _communicationAspects.clear();
-                Iterator<Integer> iterator = _communicationAspectMap.keySet().iterator();
+                Iterator<Integer> iterator = _communicationAspectMap.keySet()
+                        .iterator();
                 int i = 1;
                 while (iterator.hasNext()) {
 
-                    CommunicationAspectAttributes attribute = _communicationAspectMap.get(iterator.next());
+                    CommunicationAspectAttributes attribute = _communicationAspectMap
+                            .get(iterator.next());
                     attribute.sequenceNumber.setToken(new IntToken(i));
                     i = i + 1;
                     Decorator decorator = attribute.getDecorator();
                     if (decorator != null) {
-                        _communicationAspects.add((CommunicationAspect) decorator);
+                        _communicationAspects
+                                .add((CommunicationAspect) decorator);
                     }
                 }
             } catch (Exception e) {
@@ -1418,7 +1429,6 @@ public class IOPort extends ComponentPort {
                 _workspace.doneWriting();
             }
         }
-        _communicationAspectsValid = true;
         return _communicationAspects;
     }
 
@@ -2264,7 +2274,6 @@ public class IOPort extends ComponentPort {
 
     /** Invalidate the communication aspect list. */
     public void invalidateCommunicationAspects() {
-        _communicationAspectsValid = false;
     }
 
     /** Return true if the port is an input.  The port is an input
@@ -4365,9 +4374,11 @@ public class IOPort extends ComponentPort {
         List<CommunicationAspect> communicationAspects = getCommunicationAspects();
         if (isInput()) {
             for (int i = communicationAspects.size() - 1; i >= 0; i--) {
-                CommunicationAspect communicationAspect = communicationAspects.get(i);
+                CommunicationAspect communicationAspect = communicationAspects
+                        .get(i);
                 if (communicationAspect != null) {
-                    result = communicationAspect.createIntermediateReceiver(result);
+                    result = communicationAspect
+                            .createIntermediateReceiver(result);
                 }
             }
             if (result instanceof IntermediateReceiver) {
@@ -4377,7 +4388,8 @@ public class IOPort extends ComponentPort {
             }
         } else {
             for (int i = 0; i < communicationAspects.size(); i++) {
-                CommunicationAspect communicationAspect = communicationAspects.get(i);
+                CommunicationAspect communicationAspect = communicationAspects
+                        .get(i);
                 result = communicationAspect.createIntermediateReceiver(result);
             }
         }
@@ -4870,11 +4882,6 @@ public class IOPort extends ComponentPort {
 
     /** List of communication aspects specified for the port. */
     private List<CommunicationAspect> _communicationAspects;
-
-    /** True if list of communication aspects was not modified since
-     *  it was last modified.
-     */
-    private boolean _communicationAspectsValid = false;
 
     // A cache of the sink port list.
     private transient LinkedList<IOPort> _sinkPortList;

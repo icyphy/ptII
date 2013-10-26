@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 
 package ptolemy.cg.kernel.generic.program.procedural.java;
+
 import java.util.Locale;
 
 import ptolemy.actor.TypedIOPort;

@@ -1,5 +1,4 @@
 
-
 /* A sequence classifier for Gaussian emission HMMs
 
 Copyright (c) 1998-2013 The Regents of the University of California.
@@ -28,6 +27,7 @@ COPYRIGHTENDKEY
 
 */
 package org.ptolemy.machineLearning.hmm;
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -66,97 +66,101 @@ governing the Markovian process representing the hidden state evolution. The <i>
  @Pt.AcceptedRating
  */
 public class HMMMultinomialClassifier extends ObservationClassifier {
-   /** Construct an actor with the given container and name.
-    *  @param container The container.
-    *  @param name The name of this actor
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public HMMMultinomialClassifier(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public HMMMultinomialClassifier(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       observationProbabilities = new PortParameter(this, "observationProbabilities");
-       observationProbabilities.setExpression("[0.6,0.3,0.1;0.1,0.4,0.5]");
-       observationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
-       StringAttribute cardinality = new StringAttribute(
-               observationProbabilities.getPort(), "_cardinal");
-       cardinality.setExpression("SOUTH");
+        observationProbabilities = new PortParameter(this,
+                "observationProbabilities");
+        observationProbabilities.setExpression("[0.6,0.3,0.1;0.1,0.4,0.5]");
+        observationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        StringAttribute cardinality = new StringAttribute(
+                observationProbabilities.getPort(), "_cardinal");
+        cardinality.setExpression("SOUTH");
 
-       _nCategories = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
+        _nCategories = ((MatrixToken) observationProbabilities.getToken())
+                .getColumnCount();
 
-       _B = new double[_nStates][_nCategories];
-   }
+        _B = new double[_nStates][_nCategories];
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-   public PortParameter observationProbabilities;
+    public PortParameter observationProbabilities;
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   public Object clone(Workspace workspace) throws CloneNotSupportedException {
-       HMMMultinomialClassifier newObject = (HMMMultinomialClassifier) super
-               .clone(workspace);
-       newObject._B = new double[_nStates][_nCategories];
-       return newObject;
-   }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HMMMultinomialClassifier newObject = (HMMMultinomialClassifier) super
+                .clone(workspace);
+        newObject._B = new double[_nStates][_nCategories];
+        return newObject;
+    }
 
-   /** Consume the inputs and produce the outputs of the FFT filter.
-    *  @exception IllegalActionException If a runtime type error occurs.
-    */
-   public void fire() throws IllegalActionException {
-       super.fire();
+    /** Consume the inputs and produce the outputs of the FFT filter.
+     *  @exception IllegalActionException If a runtime type error occurs.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
 
-       observationProbabilities.update();
-       transitionMatrix.update();
-       prior.update();
+        observationProbabilities.update();
+        transitionMatrix.update();
+        prior.update();
 
-       _nCategories = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
+        _nCategories = ((MatrixToken) observationProbabilities.getToken())
+                .getColumnCount();
 
-       // update array values and lengths
-       _nStates = ((ArrayToken) prior.getToken()).length();
+        // update array values and lengths
+        _nStates = ((ArrayToken) prior.getToken()).length();
 
-       for (int i = 0; i < _nStates; i++) {
-           _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
-                   .doubleValue();
-           for (int j = 0; j < _nCategories; j++) {
-               _B[i][j] = ((DoubleToken)((MatrixToken) observationProbabilities.getToken())
-                       .getElementAsToken(i,j))
-                       .doubleValue();
-           }
-           for (int j = 0; j< _nStates; j++) {
-               _transitionMatrixEstimate[i][j] = ((DoubleToken)((MatrixToken) transitionMatrix.getToken())
-                       .getElementAsToken(i, j))
-                       .doubleValue();
-           }
-       }
-           if ((_nStates != _transitionMatrixEstimate[0].length) ||(_nStates != _transitionMatrixEstimate.length))
-           {
-               throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
-           }
+        for (int i = 0; i < _nStates; i++) {
+            _priors[i] = ((DoubleToken) ((ArrayToken) prior.getToken())
+                    .getElement(i)).doubleValue();
+            for (int j = 0; j < _nCategories; j++) {
+                _B[i][j] = ((DoubleToken) ((MatrixToken) observationProbabilities
+                        .getToken()).getElementAsToken(i, j)).doubleValue();
+            }
+            for (int j = 0; j < _nStates; j++) {
+                _transitionMatrixEstimate[i][j] = ((DoubleToken) ((MatrixToken) transitionMatrix
+                        .getToken()).getElementAsToken(i, j)).doubleValue();
+            }
+        }
+        if ((_nStates != _transitionMatrixEstimate[0].length)
+                || (_nStates != _transitionMatrixEstimate.length)) {
+            throw new IllegalActionException(this,
+                    "Parameter guess vectors need to have the same length.");
+        }
 
-           int[] classifyStates = new int[_observations.length];
+        int[] classifyStates = new int[_observations.length];
 
-           classifyStates = classifyHMM(_observations , _priors, _transitionMatrixEstimate);
+        classifyStates = classifyHMM(_observations, _priors,
+                _transitionMatrixEstimate);
 
-           IntToken[] _outTokenArray = new IntToken[classifyStates.length];
-           for (int i = 0; i < classifyStates.length; i++) {
+        IntToken[] _outTokenArray = new IntToken[classifyStates.length];
+        for (int i = 0; i < classifyStates.length; i++) {
             _outTokenArray[i] = new IntToken(classifyStates[i]);
-           }
+        }
 
-           output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
-   }
+        output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
+    }
 
-   protected double emissionProbability(double y, int hiddenState) {
-       return _B[hiddenState][(int)y];
-   }
-   ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////
+    protected double emissionProbability(double y, int hiddenState) {
+        return _B[hiddenState][(int) y];
+    }
 
-   private double[][] _B;
-   private int _nCategories;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private double[][] _B;
+    private int _nCategories;
 }

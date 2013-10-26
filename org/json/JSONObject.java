@@ -1,14 +1,5 @@
 package org.json;
-import java.io.Writer;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeSet;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -33,6 +24,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its
@@ -876,7 +877,8 @@ public class JSONObject {
                         if (key.length() == 1) {
                             key = key.toLowerCase(Locale.getDefault());
                         } else if (!Character.isUpperCase(key.charAt(1))) {
-                            key = key.substring(0, 1).toLowerCase(Locale.getDefault())
+                            key = key.substring(0, 1).toLowerCase(
+                                    Locale.getDefault())
                                     + key.substring(1);
                         }
 

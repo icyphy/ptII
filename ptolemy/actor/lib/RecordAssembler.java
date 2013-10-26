@@ -182,8 +182,7 @@ public class RecordAssembler extends TypedAtomicActor {
         for (TypedIOPort port : _portMap.values()) {
             if (!port.hasToken(0)) {
                 if (_debugging) {
-                    _debug("Port "
-                            + port.getName()
+                    _debug("Port " + port.getName()
                             + " does not have a token, prefire()"
                             + " will return false.");
                 }
@@ -223,7 +222,7 @@ public class RecordAssembler extends TypedAtomicActor {
         Set<Inequality> result = new HashSet<Inequality>();
 
         // make sure the ports are mapped
-       _mapPorts();
+        _mapPorts();
 
         // constrain the type of every input to be greater than or equal to
         // the resolved type of the corresponding field in the output record

@@ -130,8 +130,8 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
-            _debug("PeriodTask " + this + ": nextFireTime is "
-                    + nextFireTime() + ", current time is " + _scheduler.getModelTime());
+            _debug("PeriodTask " + this + ": nextFireTime is " + nextFireTime()
+                    + ", current time is " + _scheduler.getModelTime());
         }
 
         if (nextFireTime().compareTo(_scheduler.getModelTime()) == 0) {
@@ -162,12 +162,16 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
             return new Time(_scheduler, (double) _startOffset);
         } else {
             if (_debugging) {
-                _debug("PeriodicTask " + getName() + ": last time job was released " + _lastTimeReleasedJob);
+                _debug("PeriodicTask " + getName()
+                        + ": last time job was released "
+                        + _lastTimeReleasedJob);
                 _debug("PeriodicTask " + getName() + ": period is " + _period);
-                _debug("PeriodicTask " + getName() + ": next time job will be released " +
-                        (_lastTimeReleasedJob.getDoubleValue() + (double) _period));
+                _debug("PeriodicTask " + getName()
+                        + ": next time job will be released "
+                        + (_lastTimeReleasedJob.getDoubleValue() + _period));
             }
-            return new Time(_scheduler, _lastTimeReleasedJob.getDoubleValue() + (double) _period);
+            return new Time(_scheduler, _lastTimeReleasedJob.getDoubleValue()
+                    + _period);
         }
     }
 
@@ -175,7 +179,8 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
      *  @throws IllegalActionException If creating a new job throws it.
      */
     public void releaseJob() throws IllegalActionException {
-        _scheduler.releaseJob(new Job(_scheduler, _deadline, _executionTime, this));
+        _scheduler.releaseJob(new Job(_scheduler, _deadline, _executionTime,
+                this));
         _lastTimeReleasedJob = _scheduler.getModelTime();
     }
 
@@ -195,16 +200,18 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
             textFormat = "<text x=\"%d\" y=\"%d\" style=\"font-size:13; font-family:SansSerif; fill:white\">%s</text>";
         }
         String iconText = "<svg><circle cx=\"50\" cy=\"50\" r=\"40\"  style=\"fill:blue\"/>";
-        iconText += String.format(textFormat, 30, yPosition, "C: " + _executionTime);
+        iconText += String.format(textFormat, 30, yPosition, "C: "
+                + _executionTime);
         yPosition += yJump;
         iconText += String.format(textFormat, 30, yPosition, "D: " + _deadline);
         yPosition += yJump;
         iconText += String.format(textFormat, 30, yPosition, "P: " + _period);
         yPosition += yJump;
         if (_startOffset != 0) {
-            iconText += String.format(textFormat, 30, yPosition, "S: " + _startOffset);
+            iconText += String.format(textFormat, 30, yPosition, "S: "
+                    + _startOffset);
         }
-        iconText +="</svg>";
+        iconText += "</svg>";
 
         _attachText("_iconDescription", iconText);
     }
