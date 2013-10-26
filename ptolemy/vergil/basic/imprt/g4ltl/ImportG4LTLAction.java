@@ -57,9 +57,9 @@ import diva.gui.GUIUtilities;
 
    <p>"G4LTL is a standalone tool and a Java library for automatically
    generating controllers realizing linear temporal logic (LTL).</p>
- 
+
    <p>See <a href="http://www6.in.tum.de/~chengch/g4ltl/#in_browser">http://www6.in.tum.de/~chengch/g4ltl/</a></p>
- 
+
    <p>This class uses classes defined in $PTII/lib/g4ltl.jar.  See
    $PTII/lib/g4ltl-license.htm.</p>
 
@@ -184,8 +184,8 @@ public class ImportG4LTLAction extends AbstractAction {
                     result = G4LTL.synthesizeFromFile(solver, file, optionTechnique,
                             unrollSteps, true);
 
-                   
-                    
+
+
                     if (result.isStrategyFound() == false) {
                         // Try to see if a counter-strategy exists
 
@@ -199,7 +199,7 @@ public class ImportG4LTLAction extends AbstractAction {
 
                         if (option == 0) {
                             result = G4LTL.synthesizeFromFile(solver, file,
-                                    optionTechnique, unrollSteps,                                    
+                                    optionTechnique, unrollSteps,
                                     false);
                         }
 

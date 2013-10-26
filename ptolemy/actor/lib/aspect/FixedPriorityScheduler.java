@@ -105,13 +105,13 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     public FixedPriorityScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         preemptive = new Parameter(this, "preemptive");
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setExpression("true");
         _preemptive = true;
     }
-    
+
     /** Parameter to configure whether a preemptive or non-preemptive
      *  scheduling strategy should be used. The default value is the
      *  boolean value true.
@@ -119,8 +119,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     public Parameter preemptive;
 
     /** Lowest task priority. */
-    public static int LOWEST_PRIORITY = Integer.MAX_VALUE; 
-    
+    public static int LOWEST_PRIORITY = Integer.MAX_VALUE;
+
     /** If the attribute is <i>preemptive</i> then change the
      *  scheduling algorithm to be preemptive or non-preemptive.
      *  @param attribute The attribute that changed.
@@ -133,7 +133,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
         }
     }
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -147,7 +147,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
 
         return newObject;
     }
-    
+
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
@@ -166,8 +166,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             return null;
         }
     }
-    
-    
+
+
 
     /** Initialize local variables.
      *  @exception IllegalActionException Thrown in super class.
@@ -175,7 +175,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _currentlyExecuting = new Stack(); 
+        _currentlyExecuting = new Stack();
     }
 
     /** Perform rescheduling actions when no new actor requests to be
@@ -183,7 +183,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      * @param environmentTime The outside time.
      * @return Relative time when this aspect has to be executed
      *    again to perform rescheduling actions.
-     * @exception IllegalActionException Thrown in subclasses.   
+     * @exception IllegalActionException Thrown in subclasses.
      */
     @Override
     public Time schedule(Time environmentTime) throws IllegalActionException {
@@ -191,13 +191,13 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
         if (_currentlyExecuting.size() > 0) {
             Actor actor = _currentlyExecuting.peek();
             time = schedule(actor, environmentTime, null, null);
-            if (_lastActorThatFinished == actor && lastActorFinished()) { 
+            if (_lastActorThatFinished == actor && lastActorFinished()) {
                 actor.getDirector().resumeActor(actor);
             }
-        } 
+        }
         return time;
     }
-    
+
     /** Schedule a new actor for execution and return the next time
      *  this aspect has to perform a reschedule.
      *  @param actor The actor to be scheduled.
@@ -237,8 +237,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
                                 notifyExecutionListeners((NamedObj) executing,
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.PREEMPTED);
-                        } 
-                        remainingTime = executionTime; 
+                        }
+                        remainingTime = executionTime;
                         scheduleNewActor(actor, currentPlatformTime, executionTime);
                     } else {
                         _add(actor, executionTime);
@@ -280,8 +280,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
          return remainingTime;
 
     }
-    
-    
+
+
 
     ///////////////////////////////////////////////////////////////////
     //                      protected methods                        //
@@ -306,22 +306,22 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     //                        private methods                        //
 
     private void _add(Actor actor, Time executionTime) throws IllegalActionException {
-        double priority = _getPriority(actor);  
+        double priority = _getPriority(actor);
         boolean added = false;
-        Object[] actors = _currentlyExecuting.toArray();  
+        Object[] actors = _currentlyExecuting.toArray();
         _currentlyExecuting.clear();
         for (int i = 0; i < actors.length; i++) {
             Actor actorInArray = (Actor) actors[i];
-            double actorInArrayPriority = _getPriority(actorInArray); 
-            if (!added && priority >= actorInArrayPriority) { // has lower priority  
+            double actorInArrayPriority = _getPriority(actorInArray);
+            if (!added && priority >= actorInArrayPriority) { // has lower priority
                 _currentlyExecuting.push(actor);
-                _remainingTimes.put(actor, executionTime); 
+                _remainingTimes.put(actor, executionTime);
                 added = true;
-            } 
+            }
             _currentlyExecuting.push(actorInArray);
-        }    
+        }
     }
-    
+
     /** Schedule a new actor which possibly preempts currently executing
      *  actors.
      *  @param actor The actor.
@@ -332,12 +332,12 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             Time executionTime) {
         _currentlyExecuting.push(actor);
         notifyExecutionListeners((NamedObj) actor, currentPlatformTime.getDoubleValue(),
-                    ExecutionEventType.START); 
+                    ExecutionEventType.START);
         _remainingTimes.put(actor, executionTime);
         _lastTimeScheduled.put(actor, currentPlatformTime);
     }
-    
-    /** True if preemptive scheduling strategy should be used. 
+
+    /** True if preemptive scheduling strategy should be used.
      */
     private boolean _preemptive;
 

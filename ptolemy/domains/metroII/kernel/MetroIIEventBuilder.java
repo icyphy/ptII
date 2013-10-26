@@ -36,13 +36,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 
 /**
  * MetroEventBuilder is a set of routines that create Metro events.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIIEventBuilder {
 
@@ -58,7 +58,7 @@ public class MetroIIEventBuilder {
     /**
      * Convert a time value from one resolution to another resolution. Note that
      * this method may result in a loss of precision.
-     * 
+     *
      * @param timeValue
      *            input time value in type 'long'
      * @param fromResolution
@@ -76,13 +76,13 @@ public class MetroIIEventBuilder {
         double scaler = fromResolution / toResolution;
 
         assert scaler > 0;
-        
+
         if (scaler > 1) {
             assert Math.abs(scaler - (int) scaler) < 0.00001;
             timeValue = timeValue * ((int) scaler);
         }
         else {
-            double iScaler = 1/scaler; 
+            double iScaler = 1/scaler;
             assert Math.abs(iScaler - (int) iScaler) < 0.00001;
             timeValue = timeValue / ((int) iScaler);
         }
@@ -92,7 +92,7 @@ public class MetroIIEventBuilder {
 
     /**
      * Create a proposed Metro event.
-     * 
+     *
      * @param eventName
      *            The name of the event
      * @param timeValue
@@ -126,7 +126,7 @@ public class MetroIIEventBuilder {
 
     /**
      * Create a proposed Metro event.
-     * 
+     *
      * @param eventName
      *            The name of the event
      * @return A Metro event with the given name
@@ -143,7 +143,7 @@ public class MetroIIEventBuilder {
     /**
      * Trim the substring from the beginning to the first delimiter '.' from a
      * given string. Example: XXX.YYY.ZZZ -> YYY.ZZZ
-     * 
+     *
      * @param name
      *            The input string
      * @return The trimmed string
@@ -153,10 +153,10 @@ public class MetroIIEventBuilder {
         int pos = name.indexOf(".", 1);
         return name.substring(pos);
     }
-    
+
     /**
      * Check if at least one event is notified in the event vector.
-     * 
+     *
      * @param events
      *            event vector to be checked.
      * @return true if there is at least one event notified.
@@ -169,6 +169,6 @@ public class MetroIIEventBuilder {
         }
         return false;
     }
-    
+
 
 }

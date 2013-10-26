@@ -1,10 +1,10 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU - the Dahlquist test equation. 
+ * Sample implementation of an FMU - the Dahlquist test equation.
  *
- *   der(x) = - k * x and x(0) = 1. 
+ *   der(x) = - k * x and x(0) = 1.
  *   Analytical solution: x(t) = exp(-k*t).
  *
- * (c) 2010 QTronic GmbH 
+ * (c) 2010 QTronic GmbH
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
@@ -65,7 +65,7 @@ static fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
 
 // Used to set the next time event, if any.
 static void eventUpdate(fmiComponent comp, fmiEventInfo* eventInfo) {
-} 
+}
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

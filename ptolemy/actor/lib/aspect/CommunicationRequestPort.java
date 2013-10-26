@@ -57,9 +57,9 @@ import ptolemy.kernel.util.Settable;
 *  @Pt.AcceptedRating Red (derler)
 */
 public class CommunicationRequestPort extends Const {
-    
+
     /** Construct a constant source with the default type set to the RecordToken
-     *  used in the CompositeQM. 
+     *  used in the CompositeQM.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -76,30 +76,30 @@ public class CommunicationRequestPort extends Const {
         } else {
             hide.setToken(new BooleanToken(true));
         }
-        _beforeInitialization = true;  
+        _beforeInitialization = true;
         value.setVisibility(Settable.NONE);
         value.setExpression("");
-        firingCountLimit.setVisibility(Settable.NONE); 
-        
+        firingCountLimit.setVisibility(Settable.NONE);
+
         value.setTypeEquals(new RecordType(
-                new String[]{"receiver", "token"}, 
+                new String[]{"receiver", "token"},
                 new Type[]{BaseType.OBJECT, BaseType.GENERAL}));
     }
-    
-    
-    
+
+
+
     /** Do not set a value before initialization.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown here.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         if (attribute == value && _beforeInitialization) {
-            
+
         }
         super.attributeChanged(attribute);
     }
-    
+
     /** Initialize the iteration counter.  A derived class must call
      *  this method in its initialize() method or the <i>firingCountLimit</i>
      *  feature will not work.
@@ -107,16 +107,16 @@ public class CommunicationRequestPort extends Const {
      *   which could occur if, for example, the director will not accept
      *   sequence actors.
      */
-    public void initialize() throws IllegalActionException { 
-        super.initialize();  
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _beforeInitialization = false;
     }
-    
-    public void wrapup() throws IllegalActionException { 
+
+    public void wrapup() throws IllegalActionException {
         super.wrapup();
-        // to avoid saving the token. 
+        // to avoid saving the token.
         value.setExpression("");
     }
-    
+
     private boolean _beforeInitialization;
 }

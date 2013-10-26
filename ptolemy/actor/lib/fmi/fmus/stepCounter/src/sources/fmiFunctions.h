@@ -120,16 +120,16 @@ extern "C" {
 #include <stdlib.h>
 
 
-/* 
+/*
         Export FMI API functions on Windows and under GCC.
-        If custom linking is desired then the FMIAPI must be 
-        defined before including this file.        For instance, 
+        If custom linking is desired then the FMIAPI must be
+        defined before including this file.        For instance,
         it may be set to __declspec(dllimport).
 */
 #if !defined(FMIAPI) && !defined(FMIAPI_FUNCTION_PREFIX)
  #if defined _WIN32 || defined __CYGWIN__
         /* Note: both gcc & MSVC on Windows support this syntax. */
-      #define FMIAPI __declspec(dllexport) 
+      #define FMIAPI __declspec(dllexport)
  #else
   #if __GNUC__ >= 4
     #define FMIAPI __attribute__ ((visibility ("default")))

@@ -36,8 +36,8 @@
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
- * 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
 package ptolemy.domains.openmodelica.lib.omc;
@@ -66,12 +66,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.plot.compat.PxgraphApplication;
 import ptolemy.util.StringUtilities;
 
-/**    
+/**
   <p> OMCCommand is composed of the implementation of the commands for initializing the communication with
       the OpenModelica compiler(OMC) server, building the Modelica model, fetching the error-information of
       current run, loading the Modelica file and library and modifying parameter(s) and variable(s) of the
-      Modelica model before building the Modelica model in both interactive and non-interactive processing 
-      mode. In addition to executing all these Modelica commands, it plots the result file of the simulation 
+      Modelica model before building the Modelica model in both interactive and non-interactive processing
+      mode. In addition to executing all these Modelica commands, it plots the result file of the simulation
       that is generated in plt format.
   </p>
 
@@ -83,8 +83,8 @@ import ptolemy.util.StringUtilities;
  */
 public class OMCCommand implements IOMCCommand {
     /** Construct an OpenModelica Compiler(OMC) proxy.
-     *  This constructor has no parameter. 
-     *  Private constructor prevents a class from being explicitly instantiated by its callers. 
+     *  This constructor has no parameter.
+     *  Private constructor prevents a class from being explicitly instantiated by its callers.
      */
     private OMCCommand() {
     }
@@ -98,7 +98,7 @@ public class OMCCommand implements IOMCCommand {
     /** The CORBA object for OpenModelica Compiler(OMC) communication.*/
     public OmcCommunication omcCommunication;
 
-    /** 
+    /**
        OMCThread runs the OMC binary file by taking environmental variables
        OPENMODELICAHOME,OPENMODELICALIBRARY and working directory.
      */
@@ -126,7 +126,7 @@ public class OMCCommand implements IOMCCommand {
             final File workingDirectory = temp[1];
 
             // Start OpenModelica Compiler(OMC) as a server listening on the CORBA interface by setting +d=interactiveCorba flag.
-            // Because of using +d=interactiveCorba, CORBA session should be set by +c flag. 
+            // Because of using +d=interactiveCorba, CORBA session should be set by +c flag.
             String command[] = { omcBinary.getAbsolutePath(),
                     "+c=" + _corbaSession, "+d=interactiveCorba" };
 
@@ -231,9 +231,9 @@ public class OMCCommand implements IOMCCommand {
         return buildModelResult;
     }
 
-    /** Check if the (base-)model inherits from other classes. 
+    /** Check if the (base-)model inherits from other classes.
      *  @param modelName The (base-)model that should be built.
-     *  @return Check Return true, if the number of inherited classes is more than zero.  
+     *  @return Check Return true, if the number of inherited classes is more than zero.
      */
     public boolean getInheritanceCount(String modelName) {
 
@@ -278,7 +278,7 @@ public class OMCCommand implements IOMCCommand {
         CompilerResult getComponentsResult = null;
         HashMap<String, String> componentList = null;
 
-        // List all components of the model 
+        // List all components of the model
         // e.g. variable, parameter, constant, etc.
 
         try {
@@ -335,7 +335,7 @@ public class OMCCommand implements IOMCCommand {
     }
 
     /** Fetch the type of Operating System(OS).
-     *  @return osType The name of the operating system(OS). 
+     *  @return osType The name of the operating system(OS).
      */
     public static _osType getOs() {
         String osName = System.getProperty("os.name");
@@ -353,7 +353,7 @@ public class OMCCommand implements IOMCCommand {
     /** Initialize the communication with the OpenModelica compiler(OMC) server.
      *  @throws ConnectException If we're unable to start communicating with
      *  the server.
-     *  @throws InterruptedException 
+     *  @throws InterruptedException
      */
     public synchronized void initServer() throws ConnectException {
 
@@ -388,7 +388,7 @@ public class OMCCommand implements IOMCCommand {
         return retval.toLowerCase().contains("error");
     }
 
-    /** load the Modelica file and library.  
+    /** load the Modelica file and library.
      *  @param fileName File that the (base-)model should be loaded from.
      *  @param modelName Name of the (base-)model that should be built.
      *  @throws ConnectException If commands couldn't
@@ -443,11 +443,11 @@ public class OMCCommand implements IOMCCommand {
 
     /** Modify parameter(s) and variable(s) of the Modelica model before building the Modelica model.
      *  @param parameterValues New values to change the components' values.
-     *  @param modelName The (base-)model that should be built. 
+     *  @param modelName The (base-)model that should be built.
      *  @param components The models' components to change.
      *  @throws ConnectException If commands couldn't
-     *   be sent to the (OpenModelica Compiler)OMC. 
-     *  @throws IllegalActionException 
+     *   be sent to the (OpenModelica Compiler)OMC.
+     *  @throws IllegalActionException
      */
     public void modifyComponents(String parameterValues, String modelName,
             String components) throws IllegalActionException, ConnectException {
@@ -548,8 +548,8 @@ public class OMCCommand implements IOMCCommand {
                             }
                         }
 
-                        // In Modelica, component declaration has variability prefixes discrete, 
-                        // parameter and constant,that defines in which situation the variable 
+                        // In Modelica, component declaration has variability prefixes discrete,
+                        // parameter and constant,that defines in which situation the variable
                         // values of a component are initialized and when they are changed in transient analysis.
                         Iterator childIterator = childIndividualComponent
                                 .keySet().iterator();
@@ -649,7 +649,7 @@ public class OMCCommand implements IOMCCommand {
                                     }
                                 }
                                 //  The "parameter" prefix specifies that the variable is constant during a simulation run,
-                                //  but can have its value initialized before a run, or between runs. 
+                                //  but can have its value initialized before a run, or between runs.
                                 if (childIndividualComponent.get(childKey)
                                         .compareTo("parameter") == 0) {
                                     // Set the modifier value of a component.
@@ -675,7 +675,7 @@ public class OMCCommand implements IOMCCommand {
                                     }
                                 } else if (childIndividualComponent.get(
                                         childKey).compareTo("als") == 0)
-                                    // A discrete-time variable is a piecewise constant 
+                                    // A discrete-time variable is a piecewise constant
                                     // signal which changes its values only at event instants during simulation.
                                     _omcLogger
                                             .getInfo("It's not possible to change the value of "
@@ -704,7 +704,7 @@ public class OMCCommand implements IOMCCommand {
      */
     public void plotPltFile(String modelName) throws ConnectException {
 
-        // Array for saving the file path.  
+        // Array for saving the file path.
         String[] _pltPath = new String[1];
 
         // Send cd() command to the (OpenModelica Compiler)OMC and fetch working directory of OMC as a result.
@@ -734,7 +734,7 @@ public class OMCCommand implements IOMCCommand {
      *   be sent to the (OpenModelic Compiler)OMC.
      *  @throws IOException If the executable result file of buildModel()
      *   couldn't be executed.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException
      */
     public void runModel(String fileName, String modelName, String startTime,
             String stopTime, int numberOfIntervals, String outputFormat,
@@ -873,13 +873,13 @@ public class OMCCommand implements IOMCCommand {
             initServer();
 
         try {
-            // Fetch the error string from OpenModelica Compiler(OMC). 
+            // Fetch the error string from OpenModelica Compiler(OMC).
             // This should be called after an "Error"
             // is received or whenever the queue of errors are emptied.
 
             returnValue[0] = omcCommunication.sendExpression(modelicaCommand);
 
-            // Process of starting OMC is terminated normally after creating OpenModelica object reference on disk. 
+            // Process of starting OMC is terminated normally after creating OpenModelica object reference on disk.
 
             if (!modelicaCommand.equalsIgnoreCase("quit()"))
                 errorMessage = omcCommunication
@@ -902,11 +902,11 @@ public class OMCCommand implements IOMCCommand {
             // FIXME vmcid: SUN  minor code: 211  completed: No
             // Lose connection to OMC(OpenModelica Compiler) server.
 
-            // Generally, this exception occurs when there is significant difference between client code and server code. 
-            // Client code may have been changed or recompiled while server may not be reflecting same. This may be the 
+            // Generally, this exception occurs when there is significant difference between client code and server code.
+            // Client code may have been changed or recompiled while server may not be reflecting same. This may be the
             // version discrepancy too i.e. client and server compiled by different java versions.
-            // In my case, it was the server code was changed. Classes on server were changed due to re-compilation of code at server. 
-            // However, client was still having the old version. 
+            // In my case, it was the server code was changed. Classes on server were changed due to re-compilation of code at server.
+            // However, client was still having the old version.
             // I updated it with new version and my application was working fine.
             // COMM_FAILURE is thrown when there is a communication failure.
 
@@ -966,7 +966,7 @@ public class OMCCommand implements IOMCCommand {
      *  such factors as: OS type, environmental Variables settings,
      *  where the first matching binary found.
      *  @return full path to the OMC binary and the working folder.
-     *  @throws ConnectException If OPENMODELICAHOME is not set 
+     *  @throws ConnectException If OPENMODELICAHOME is not set
      *  and we could not find binary file in the path.
      */
     private File[] _getOmcBinaryPaths() throws ConnectException {
@@ -987,7 +987,7 @@ public class OMCCommand implements IOMCCommand {
         _omcLogger.getInfo(loggerInfo);
 
         // Standard path to (OpenModelica Compiler)OMC binary is encoded in OPENMODELICAHOME
-        // variable. 
+        // variable.
         String openModelicaHome = System.getenv("OPENMODELICAHOME");
         if (openModelicaHome == null) {
             loggerInfo = "OPENMODELICAHOME environmental variable is NULL, trying the PATH variable";
@@ -1010,7 +1010,7 @@ public class OMCCommand implements IOMCCommand {
 
         openModelicaHomeDirectory = new File(openModelicaHome);
 
-        // The subdirectories where (OpenModelica Compiler)OMC binary is located. 
+        // The subdirectories where (OpenModelica Compiler)OMC binary is located.
         // adrpo 2012-06-12 It does not support the old ways! "/omc" and "Compiler/omc".
         String[] subdirs = { "bin" };
 
@@ -1178,11 +1178,11 @@ public class OMCCommand implements IOMCCommand {
         orb = ORB.init(arguments, null);
 
         try {
-            // Convert string to CORBA object. 
+            // Convert string to CORBA object.
             org.omg.CORBA.Object obj = orb
                     .string_to_object(stringifiedObjectReference);
 
-            // Convert object to OmcCommunication object. 
+            // Convert object to OmcCommunication object.
             omcCommunication = OmcCommunicationHelper.narrow(obj);
         } catch (Throwable throwable) {
             throw new RuntimeException("Failed to convert string \""
@@ -1192,7 +1192,7 @@ public class OMCCommand implements IOMCCommand {
     }
 
     /** Start the (OpenModelica Compiler)OMC server by starting OMCThread.
-     *  @throws ConnectException If OPENMODELICAHOME is not set 
+     *  @throws ConnectException If OPENMODELICAHOME is not set
      *  and we could not find binary file in the path.
      */
     private synchronized void _startServer() throws ConnectException {
@@ -1226,7 +1226,7 @@ public class OMCCommand implements IOMCCommand {
     private String _corbaSession = new SimpleDateFormat("HHmmss")
             .format(new Date());
 
-    // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start. 
+    // Indicate if we give up on running OpenModelica Compiler(OMC) as it is unable to start.
     private boolean _couldNotStartOMC = false;
 
     // Environmental variables which should be used for running the result of buildModel.
@@ -1235,10 +1235,10 @@ public class OMCCommand implements IOMCCommand {
     // Set file parameter to the path of dcmotor.mo.
     private String _filePath = null;
 
-    // This object is used for starting OpenModelica Compiler(OMC)'s thread. 
+    // This object is used for starting OpenModelica Compiler(OMC)'s thread.
     private final OMCThread _fOMCThread = new OMCThread();
 
-    // Flag which indicates whether the server should start or not. 
+    // Flag which indicates whether the server should start or not.
     private boolean _fOMCThreadHasBeenScheduled = false;
 
     // OMCCommand Object for accessing a unique source of instance.
@@ -1264,10 +1264,10 @@ public class OMCCommand implements IOMCCommand {
     // Initialization of the number of errors.
     private int _numberOfErrors = 0;
 
-    // Maximum number of compiler errors to display. 
+    // Maximum number of compiler errors to display.
     private int _showMaxErrors = 10;
 
-    // The system path of PTII. 
+    // The system path of PTII.
     private String _systemPath = StringUtilities
             .getProperty("ptolemy.ptII.dir");
 

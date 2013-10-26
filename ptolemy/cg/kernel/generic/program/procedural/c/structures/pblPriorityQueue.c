@@ -109,7 +109,7 @@ const void * right /* The right value for the comparison */
 /**
  * Creates a new priority queue.
  *
- * The priority queue implementation is a 
+ * The priority queue implementation is a
  * <a href="http://en.wikipedia.org/wiki/Binary_heap">binary max-heap</a> using
  * an array list as underlying data structure.
  * The entries kept in the array list are of type \Ref{PblPriorityQueueEntry}.

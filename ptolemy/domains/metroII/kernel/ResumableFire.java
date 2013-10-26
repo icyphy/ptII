@@ -56,32 +56,32 @@ import ptolemy.kernel.util.IllegalActionException;
  * associated with the current state is notified. If the event is notified, call
  * related function of the wrapped actor, transition to the next state, and
  * propose the Metro event associated with the next state. For example,
- * 
+ *
  * <pre>
  *       action: propose FIRE_BEGIN
  * START ---------------------------------------> BEGIN
- * 
- *       guard: FIRE_BEGIN is notified   
+ *
+ *       guard: FIRE_BEGIN is notified
  *       action: call fire(), propose FIRE_END
  * BEGIN ---------------------------------------> FIRE_END
- *  
- *       guard: FIRE_BEGIN is not notified   
+ *
+ *       guard: FIRE_BEGIN is not notified
  *       action: propose FIRE_BEGIN
  * BEGIN ---------------------------------------> BEGIN
  * </pre>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class ResumableFire extends FireMachine {
 
     /**
      * Construct a ResumableFire by wrapping the actor.
-     * 
+     *
      * @param actor
      *            Actor to be wrapped
      */
@@ -106,7 +106,7 @@ public class ResumableFire extends FireMachine {
      * </ol>
      * where 'wait' means checking the status of MetroII event. If notified,
      * continue execution, otherwise proposing the same event again.
-     * 
+     *
      * @param metroIIEventList
      *            A list of MetroII events.
      * @throws IllegalActionException
@@ -171,7 +171,7 @@ public class ResumableFire extends FireMachine {
         } else if (getState() == State.FINAL) {
             // do nothing
         } else {
-            // unknown state; 
+            // unknown state;
             assert false;
         }
     }

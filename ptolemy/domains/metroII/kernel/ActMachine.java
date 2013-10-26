@@ -53,25 +53,25 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
  * The wrapper explicitly records the current state of the FSM. The state
  * transition is triggered by a function call to startOrResume(events) with
  * MetroII events as the arguments.
- * 
+ *
  * <p>
  * For any concrete subclass of ActMachine, the StartOrResumable() interface has
  * to be implemented, in which how the FSM react to MetroII events (or in other
  * words, the state transitions) should be implemented.
  * </p>
- * 
+ *
  * <p>
  * With a concrete implementation of StartOrResumable(), a director (usually a
  * MetroII director) is able to manipulate the wrapped actor by calling
  * StartOrResumable() with MetroII events.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public abstract class ActMachine implements StartOrResumable {
 
@@ -106,7 +106,7 @@ public abstract class ActMachine implements StartOrResumable {
     /**
      * Construct an ActMachine wrapper and initialize a set of the MetroII
      * events that are associated with the states. Reset the current state.
-     * 
+     *
      * @param actor
      *            the actor to be wrapped.
      */
@@ -139,7 +139,7 @@ public abstract class ActMachine implements StartOrResumable {
 
     /**
      * Get the MetroII event associated with the current state.
-     * 
+     *
      * @return the MetroII event associated with the current state.
      */
     public Builder getStateEvent() {
@@ -162,7 +162,7 @@ public abstract class ActMachine implements StartOrResumable {
 
     /**
      * Get the state of the wrapped actor.
-     * 
+     *
      * @see #setState
      * @return The state.
      */
@@ -183,7 +183,7 @@ public abstract class ActMachine implements StartOrResumable {
 
     /**
      * Get the wrapped actor.
-     * 
+     *
      * @return the wrapped actor.
      */
     protected Actor actor() {
@@ -193,7 +193,7 @@ public abstract class ActMachine implements StartOrResumable {
     /**
      * Get the MetroII event associated with the current state and set the state
      * of the event to be PROPOSED.
-     * 
+     *
      * @return the MetroII event associated with the current state
      */
     protected Builder proposeStateEvent() {
@@ -205,7 +205,7 @@ public abstract class ActMachine implements StartOrResumable {
 
     /**
      * Set the state of the wrapped actor.
-     * 
+     *
      * @see #getState
      * @param state
      *            The state to be set
@@ -219,7 +219,7 @@ public abstract class ActMachine implements StartOrResumable {
 
     /**
      * Trim the model name from a full name of an actor or an event.
-     * 
+     *
      * @param name
      *            A full name of an actor or an event.
      * @return The trimmed name.

@@ -1650,7 +1650,7 @@ out.println("\\begin{document}");
      *  Implements the {@link PlotBoxInterface}.
      *  @param colors The array of Colors.
      *  @see #getColors()
-     */        
+     */
     public void setColors(Object[] colors) {
          setColors((Color[]) colors);
     }
@@ -1687,7 +1687,7 @@ out.println("\\begin{document}");
     /** Set the foreground color.
      *  Implements the {@link PlotBoxInterface}.
      *  @param foreground The foreground Color.
-     */        
+     */
     public void setForeground(Object foreground) {
         setForeground((Color) foreground);
     }
@@ -1732,7 +1732,7 @@ out.println("\\begin{document}");
      *  Implements the {@link PlotBoxInterface}.
      *  @param rectangle The Rectangle.
      *  @see #getPlotRectangle()
-     */        
+     */
     public void setPlotRectangle(Object rectangle) {
         setPlotRectangle((Rectangle) rectangle);
     }
@@ -4735,7 +4735,7 @@ out.println("\\begin{document}");
     }
 
     /** Handle key pressed events.
-     */        
+     */
     class CommandListener implements KeyListener {
         /** Handle key pressed events.  See the class comment for details.
          *  @param e The event.

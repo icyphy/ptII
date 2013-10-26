@@ -43,11 +43,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect; 
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.gui.ColorAttribute; 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -65,8 +65,8 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /** This abstract class implements functionality of an atomic
- *  communication aspect.  
- *  Listeners can register with this actor for events happening in this quantity 
+ *  communication aspect.
+ *  Listeners can register with this actor for events happening in this quantity
  *  manager. Events are
  *  created when, for instance, tokens are received or tokens are sent. These
  *  events are implemented in derived classes.
@@ -111,7 +111,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
         color.setExpression("{1.0,0.6,0.0,1.0}");
         _listeners = new ArrayList<CommunicationAspectListener>();
         _parameters = new HashMap<IOPort, List<Attribute>>();
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -156,14 +156,14 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
         _decoratedObjects = list;
         return list;
     }
-    
+
     /** Return true to indicate that this decorator should
      *  decorate objects across opaque hierarchy boundaries.
      */
     public boolean isGlobalDecorator() {
         return true;
     }
-    
+
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
@@ -175,7 +175,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
                 .clone(workspace);
         newObject._listeners = null;
         newObject._parameters = null;
-        
+
         newObject._decoratedObjects = null;
         newObject._decoratedObjectsVersion = -1L;
         return newObject;
@@ -191,8 +191,8 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
-    } 
-    
+    }
+
     /** Add a communication aspect monitor to the list of listeners.
      *  @param monitor The communication aspect monitor.
      */
@@ -262,7 +262,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
+
     /** Send token to receiver.
      *  @param receiver The receiver.
      *  @param token The token.
@@ -274,22 +274,22 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
         if (receiver instanceof IntermediateReceiver) {
             ((IntermediateReceiver) receiver).source = this;
         }
-        receiver.put(token); 
+        receiver.put(token);
     }
 
     /** List of parameters per port.
      */
-    protected HashMap<IOPort, List<Attribute>> _parameters;  
+    protected HashMap<IOPort, List<Attribute>> _parameters;
 
     /** Amount of tokens currently being processed by the switch. */
     protected int _tokenCount;
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
+
         /** Cached list of decorated objects. */
         private List<NamedObj> _decoratedObjects;
-        
+
         /** Version for _decoratedObjects. */
         private long _decoratedObjectsVersion = -1L;
 

@@ -1,10 +1,10 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * sim_support.c
  * Functions used by both FMU simulators fmusim_me and fmusim_cs
- * to parse command-line arguments, to unzip and load an fmu, 
+ * to parse command-line arguments, to unzip and load an fmu,
  * to write CSV file, and more.
- * Copyright 2011 QTronic GmbH. All rights reserved. 
- * -------------------------------------------------------------------------*/ 
+ * Copyright 2011 QTronic GmbH. All rights reserved.
+ * -------------------------------------------------------------------------*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,7 +41,7 @@ int unzip(const char *zipPath, const char *outPath) {
         printf ("error: Could not get current directory\n");
         return 0; // error
     }
-        
+
 
     // change to %PTII%\ptolemy\actor\lib\fmi\fmus\win32 to find 7z.dll and 7z.exe
     if (!GetEnvironmentVariable("PTII", binPath, BUFSIZE)) {
@@ -51,17 +51,17 @@ int unzip(const char *zipPath, const char *outPath) {
         else {
             printf ("error: Could not get value of PTII\n");
         }
-        return 0; // error       
+        return 0; // error
     }
     strcat(binPath, "\\ptolemy\\actor\\lib\\fmi\\fmus\\win32");
     if (!SetCurrentDirectory(binPath)) {
-        printf ("error: could not change to directory '%s'\n", binPath); 
-        return 0; // error        
+        printf ("error: could not change to directory '%s'\n", binPath);
+        return 0; // error
     }
-   
+
     // run the unzip command
     // remove "> NUL" to see the unzip protocol
-    sprintf(cmd, "%s%s \"%s\" > NUL", UNZIP_CMD, outPath, zipPath); 
+    sprintf(cmd, "%s%s \"%s\" > NUL", UNZIP_CMD, outPath, zipPath);
     // printf("cmd='%s'\n", cmd);
     code = system(cmd);
     free(cmd);
@@ -76,11 +76,11 @@ int unzip(const char *zipPath, const char *outPath) {
             default: printf("unknown problem\n");
         }
     }
-    
+
     // restore current directory
     SetCurrentDirectory(cwd);
-    
-    return (code==SEVEN_ZIP_NO_ERROR || code==SEVEN_ZIP_WARNING) ? 1 : 0;  
+
+    return (code==SEVEN_ZIP_NO_ERROR || code==SEVEN_ZIP_WARNING) ? 1 : 0;
 }
 #else /* WINDOWS */
 
@@ -95,11 +95,11 @@ int unzip(const char *zipPath, const char *outPath) {
       printf ("error: Could not get current directory\n");
       return 0; // error
     }
-        
+
     // run the unzip command
     n = strlen(UNZIP_CMD) + strlen(outPath) + 1 +  strlen(zipPath) + 16;
     cmd = (char*)calloc(sizeof(char), n);
-    sprintf(cmd, "%s%s \"%s\" > /dev/null", UNZIP_CMD, outPath, zipPath); 
+    sprintf(cmd, "%s%s \"%s\" > /dev/null", UNZIP_CMD, outPath, zipPath);
     printf("cmd='%s'\n", cmd);
     code = system(cmd);
     free(cmd);
@@ -114,11 +114,11 @@ int unzip(const char *zipPath, const char *outPath) {
             default: printf("unknown problem\n");
         }
     }
-    
+
     // restore current directory
     chdir(cwd);
-    
-    return (code==SEVEN_ZIP_NO_ERROR || code==SEVEN_ZIP_WARNING) ? 1 : 0;  
+
+    return (code==SEVEN_ZIP_NO_ERROR || code==SEVEN_ZIP_WARNING) ? 1 : 0;
 }
 #endif /* WINDOWS */
 
@@ -146,7 +146,7 @@ static char* getTmpPath() {
 #endif
     return strdup(tmpPath);
 }
-#else 
+#else
 // fmuFileName is an absolute path, e.g. "C:\test\a.fmu"
 // or relative to the current dir, e.g. "..\test\a.fmu"
 static char* getFmuPath(const char* fmuFileName){
@@ -181,9 +181,9 @@ static void* getAdr(int* s, FMU *fmu, const char* functionName){
         printf ("warning: Function %s not found in %s\n", name, DLL_SUFFIX);
 #ifdef __APPLE__
         printf ("Error was: %s\n", dlerror());
-#endif 
+#endif
         printf ("If some symbols are found, but not others, check LD_LIBRARY_PATH or DYLD_LIBRARYPATH\n");
-        *s = 0; // mark dll load as 'failed'        
+        *s = 0; // mark dll load as 'failed'
     }
     return fp;
 }
@@ -207,15 +207,15 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     }
     fmu->dllHandle = h;
 
-#ifdef FMI_COSIMULATION   
+#ifdef FMI_COSIMULATION
     fmu->getTypesPlatform        = (fGetTypesPlatform)   getAdr(&s, fmu, "fmiGetTypesPlatform");
-    if (s==0) { 
+    if (s==0) {
         s = 1; // work around bug for FMUs exported using Dymola 2012 and SimulationX 3.x
         fmu->getTypesPlatform    = (fGetTypesPlatform)   getAdr(&s, fmu, "fmiGetModelTypesPlatform");
         if (s==1) printf("  using fmiGetModelTypesPlatform instead\n");
     }
     fmu->instantiateSlave        = (fInstantiateSlave)   getAdr(&s, fmu, "fmiInstantiateSlave");
-    fmu->initializeSlave         = (fInitializeSlave)    getAdr(&s, fmu, "fmiInitializeSlave");    
+    fmu->initializeSlave         = (fInitializeSlave)    getAdr(&s, fmu, "fmiInitializeSlave");
     fmu->terminateSlave          = (fTerminateSlave)     getAdr(&s, fmu, "fmiTerminateSlave");
     fmu->resetSlave              = (fResetSlave)         getAdr(&s, fmu, "fmiResetSlave");
     fmu->freeSlaveInstance       = (fFreeSlaveInstance)  getAdr(&s, fmu, "fmiFreeSlaveInstance");
@@ -228,7 +228,7 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     fmu->getRealStatus           = (fGetRealStatus)      getAdr(&x, fmu, "fmiGetRealStatus");
     fmu->getIntegerStatus        = (fGetIntegerStatus)   getAdr(&x, fmu, "fmiGetIntegerStatus");
     fmu->getBooleanStatus        = (fGetBooleanStatus)   getAdr(&x, fmu, "fmiGetBooleanStatus");
-    fmu->getStringStatus         = (fGetStringStatus)    getAdr(&x, fmu, "fmiGetStringStatus");    
+    fmu->getStringStatus         = (fGetStringStatus)    getAdr(&x, fmu, "fmiGetStringStatus");
 
 #else // FMI for Model Exchange 1.0
     fmu->getModelTypesPlatform   = (fGetModelTypesPlatform) getAdr(&s, fmu, "fmiGetModelTypesPlatform");
@@ -245,7 +245,7 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     fmu->getNominalContinuousStates = (fGetNominalContinuousStates)getAdr(&s, fmu, "fmiGetNominalContinuousStates");
     fmu->getStateValueReferences = (fGetStateValueReferences)getAdr(&s, fmu, "fmiGetStateValueReferences");
     fmu->terminate               = (fTerminate)          getAdr(&s, fmu, "fmiTerminate");
-#endif 
+#endif
     fmu->getVersion              = (fGetVersion)         getAdr(&s, fmu, "fmiGetVersion");
     fmu->setDebugLogging         = (fSetDebugLogging)    getAdr(&s, fmu, "fmiSetDebugLogging");
     fmu->setReal                 = (fSetReal)            getAdr(&s, fmu, "fmiSetReal");
@@ -262,17 +262,17 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     }
     return 1;
 #else
-    return s; 
+    return s;
 #endif
 }
 
 static void printModelDescription(ModelDescription* md){
-    Element* e = (Element*)md;  
+    Element* e = (Element*)md;
     int i;
     printf("%s\n", elmNames[e->type]);
-    for (i=0; i<e->n; i+=2) 
+    for (i=0; i<e->n; i+=2)
         printf("  %s=%s\n", e->attributes[i], e->attributes[i+1]);
-#ifdef FMI_COSIMULATION   
+#ifdef FMI_COSIMULATION
     if (!md->cosimulation) {
         printf("error: No Implementation element found in model description. This FMU is not for Co-Simulation.\n");
         exit(EXIT_FAILURE);
@@ -287,7 +287,7 @@ static void printModelDescription(ModelDescription* md){
         printf("  %s=%s\n", e->attributes[i], e->attributes[i+1]);
     }
 #endif // FMI_VERSION
-#endif // FMI_COSIMULATION  
+#endif // FMI_COSIMULATION
 }
 
 void loadFMU(const char* fmuFileName) {
@@ -295,7 +295,7 @@ void loadFMU(const char* fmuFileName) {
     char* tmpPath;
     char* xmlPath;
     char* dllPath;
-    
+
     // get absolute path to FMU, NULL if not found
     fmuPath = getFmuPath(fmuFileName);
     if (!fmuPath) exit(EXIT_FAILURE);
@@ -313,10 +313,10 @@ void loadFMU(const char* fmuFileName) {
     printModelDescription(fmu.modelDescription);
 
     // load the FMU dll
-    dllPath = calloc(sizeof(char), strlen(tmpPath) + strlen(DLL_DIR) 
+    dllPath = calloc(sizeof(char), strlen(tmpPath) + strlen(DLL_DIR)
             + strlen( getModelIdentifier(fmu.modelDescription)) +  strlen(DLL_SUFFIX) + 1);
     sprintf(dllPath,"%s%s%s%s", tmpPath, DLL_DIR, getModelIdentifier(fmu.modelDescription), DLL_SUFFIX);
-    if (!loadDll(dllPath, &fmu)) exit(EXIT_FAILURE); 
+    if (!loadDll(dllPath, &fmu)) exit(EXIT_FAILURE);
     free(dllPath);
     free(fmuPath);
     free(tmpPath);
@@ -331,7 +331,7 @@ static void doubleToCommaString(char* buffer, double r){
 
 // output time and all non-alias variables in CSV format
 // if separator is ',', columns are separated by ',' and '.' is used for floating-point numbers.
-// otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used 
+// otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used
 // as decimal dot in floating-point numbers.
 void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator, boolean header) {
     int k;
@@ -342,20 +342,20 @@ void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator
     fmiValueReference vr;
     ScalarVariable** vars = fmu->modelDescription->modelVariables;
     char buffer[32];
-    
+
     // print first column
-    if (header) 
-        fprintf(file, "time"); 
+    if (header)
+        fprintf(file, "time");
     else {
-        if (separator==',') 
+        if (separator==',')
             fprintf(file, "%.16g", time);
         else {
             // separator is e.g. ';' or '\t'
             doubleToCommaString(buffer, time);
-            fprintf(file, "%s", buffer);       
+            fprintf(file, "%s", buffer);
         }
     }
-    
+
     // print all other columns
     for (k=0; vars[k]; k++) {
         ScalarVariable* sv = vars[k];
@@ -380,12 +380,12 @@ void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator
             switch (sv->typeSpec->type){
                 case elm_Real:
                     fmu->getReal(c, &vr, 1, &r);
-                    if (separator==',') 
+                    if (separator==',')
                         fprintf(file, ",%.16g", r);
                     else {
                         // separator is e.g. ';' or '\t'
                         doubleToCommaString(buffer, r);
-                        fprintf(file, "%c%s", separator, buffer);       
+                        fprintf(file, "%c%s", separator, buffer);
                     }
                     break;
                 case elm_Integer:
@@ -401,14 +401,14 @@ void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator
                     fmu->getString(c, &vr, 1, &s);
                     fprintf(file, "%c%s", separator, s);
                     break;
-                default: 
+                default:
                     fprintf(file, "%cNoValueForType=%d", separator,sv->typeSpec->type);
             }
         }
     } // for
-    
+
     // terminate this row
-    fprintf(file, "\n"); 
+    fprintf(file, "\n");
 }
 
 static const char* fmiStatusToString(fmiStatus status){
@@ -436,11 +436,11 @@ static ScalarVariable* getSV(FMU* fmu, char type, fmiValueReference vr) {
         case 'r': tp = elm_Real;    break;
         case 'i': tp = elm_Integer; break;
         case 'b': tp = elm_Boolean; break;
-        case 's': tp = elm_String;  break;                
+        case 's': tp = elm_String;  break;
     }
     for (i=0; vars[i]; i++) {
         ScalarVariable* sv = vars[i];
-        if (vr==getValueReference(sv) && tp==sv->typeSpec->type) 
+        if (vr==getValueReference(sv) && tp==sv->typeSpec->type)
             return sv;
     }
     return NULL;
@@ -484,7 +484,7 @@ static void replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU
                     sprintf(buffer+k, "%s", name);
                     k += strlen(name);
                     i += (n+1);
-                    c = msg[i]; 
+                    c = msg[i];
                 }
                 else {
                     // could not parse the number
@@ -509,11 +509,11 @@ void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
           va_start(argp, message);
     vsprintf(msg, message, argp);
 
-    // replace e.g. ## and #r12#  
+    // replace e.g. ## and #r12#
     copy = strdup(msg);
     replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, &fmu);
     free(copy);
-    
+
     // print the final message
     if (!instanceName) instanceName = "?";
     if (!category) category = "?";

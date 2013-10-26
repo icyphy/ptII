@@ -79,7 +79,7 @@ public class FMIRealType extends FMIType {
     }
 
     // FIXME: need more documentation and to describe other variables.
-    
+
     /** The starting value of this real. */
     public Double start;
 }

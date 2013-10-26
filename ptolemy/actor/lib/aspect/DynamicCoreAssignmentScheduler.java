@@ -119,7 +119,7 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
                 if (time.getDoubleValue() == 0.0) {
                         notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
-                } 
+                }
                 _remainingTimeOnCore.put(scheduler, time);
                 _lastActorFinished = scheduler.lastActorFinished();
                 return time;
@@ -141,7 +141,7 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
                 if (time.getDoubleValue() == 0.0) {
                         notifyExecutionListeners(scheduler, currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.STOP);
-                } 
+                }
                 _remainingTimeOnCore.put(scheduler, time);
                 _lastActorFinished = scheduler.lastActorFinished();
                 return time;

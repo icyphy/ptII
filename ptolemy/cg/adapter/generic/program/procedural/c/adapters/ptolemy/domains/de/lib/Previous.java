@@ -74,11 +74,11 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
 
         LinkedList args = new LinkedList();
-        
+
         Parameter initialValue = ((ptolemy.domains.de.lib.Previous) getComponent()).initialValue;
         String type = initialValue.getType().toString();
         type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
-        
+
         Token initialValueToken = initialValue.getToken();
         if (initialValueToken instanceof DoubleToken) {
             double tokenDouble;
@@ -105,12 +105,12 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
         else
             throw new IllegalActionException("Token type at previous : "
                     + type + " not supported yet.");
-        
+
 
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * A function which returns the generated code from the C template
      * postFire method.
@@ -123,11 +123,11 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
 
         return processCode(codeStream.getCodeBlock("postFireBlock"));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     /**
      * Generate fire code.
      * The method generates code that is executed when the <i>input</i> has a Token
@@ -139,7 +139,7 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
         CodeStream codeStream = _templateParser.getCodeStream();
-        
+
         return codeStream.getCodeBlock("fireBlock");
     }
 }

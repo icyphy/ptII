@@ -371,7 +371,7 @@ public class FileUtilities {
                 // get the file, and the reinsert it before returning the URL.
                 String fragment = null;
             if (!file.canRead()) {
-                    
+
                     // FIXME: Need to strip off the fragment part
                     // (the "reference") of the name (after the #),
                     // if there is one, and add it in again by calling set()
@@ -381,7 +381,7 @@ public class FileUtilities {
                             name = splitName[0];
                             fragment = splitName[1];
                     }
-                    
+
                 // FIXME: This is a hack.
                 // Expanding the configuration with Ptolemy II installed
                 // in a directory with spaces in the name fails on

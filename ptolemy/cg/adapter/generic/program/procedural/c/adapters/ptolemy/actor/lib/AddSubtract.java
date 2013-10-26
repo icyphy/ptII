@@ -56,7 +56,7 @@ public class AddSubtract
     public AddSubtract(ptolemy.actor.lib.AddSubtract actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method generates code that loops through each
@@ -115,7 +115,7 @@ public class AddSubtract
         args.add("");
         args.add(outputType);
         args.add(plusType);
-        
+
         codeStream.append(_eol + "bool triggered = false;" + _eol);
 
         for (int i = 0; i < actor.plus.getWidth(); i++) {

@@ -1,5 +1,5 @@
 /*Attributes for ports decorated by a communication aspect.
- 
+
 @Copyright (c) 2011-2013 The Regents of the University of California.
 All rights reserved.
 
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.Settable;
 /** Attributes for ports decorated by a communication aspect.
  *  A port on an actor decorated by a composite communication aspect must
  *  specify the request port that input tokens are routed to.
- * 
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -58,7 +58,7 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
      */
     public CommunicationAspectAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
-        super(target, decorator); 
+        super(target, decorator);
         _init();
     }
 
@@ -70,15 +70,15 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
      */
     public CommunicationAspectAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(target, name); 
+        super(target, name);
         _init();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The sequenceNumber indicates the order in which communication aspects
-     *  are used. It defaults to the integer value -1 to indicate that 
+     *  are used. It defaults to the integer value -1 to indicate that
      *  this communication aspect is not used. After enabling the quantity
      *  manager, this sequence number gets updated automatically.
      */
@@ -88,8 +88,8 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
     ///////////////////////////////////////////////////////////////////
     ////                        public methods                     ////
 
-    /** If attribute is <i>messageLength</i> report the new value 
-     *  to the communication aspect. 
+    /** If attribute is <i>messageLength</i> report the new value
+     *  to the communication aspect.
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      *  Not thrown in this class.
@@ -110,7 +110,7 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
         }
         super.attributeChanged(attribute);
     }
-    
+
     private void _init() throws IllegalActionException, NameDuplicationException {
         sequenceNumber = new Parameter(this, "sequenceNumber", new IntToken(-1));
         sequenceNumber.setPersistent(true);

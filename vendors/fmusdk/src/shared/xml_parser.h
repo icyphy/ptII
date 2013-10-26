@@ -1,8 +1,8 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * xml_parser.h
  * A parser for file modelVariables.xml of an FMU.
  * Supports "FMI for Model Exchange 1.0" and "FMI for Co-Simulation 1.0".
- * Copyright 2011 QTronic GmbH. All rights reserved. 
+ * Copyright 2011 QTronic GmbH. All rights reserved.
  * -------------------------------------------------------------------------*/
 
 #ifndef xml_parser_h
@@ -10,7 +10,7 @@
 
 // define XML_STATIC before including expat.h
 // to prevent error when linking with libexpatMT.lib
-#define XML_STATIC 
+#define XML_STATIC
 #include "expat.h"
 #include "stack.h"
 
@@ -40,7 +40,7 @@ typedef enum {
 } Elm;
 
 // Attributes
-typedef enum { 
+typedef enum {
   att_fmiVersion,att_displayUnit,att_gain,att_offset,att_unit,att_name,att_description,att_quantity,att_relativeQuantity,
   att_min,att_max,att_nominal,att_declaredType,att_start,att_fixed,att_startTime,att_stopTime,att_tolerance,att_value,
   att_valueReference,att_variability,att_causality,att_alias,att_modelName,att_modelIdentifier,att_guid,att_author,
@@ -54,22 +54,22 @@ typedef enum {
 // Enumeration values
 typedef enum {
     enu_flat,enu_structured,enu_constant,enu_parameter,enu_discrete,enu_continuous,
-    enu_input,enu_output,enu_internal,enu_none,enu_noAlias,enu_alias,enu_negatedAlias    
+    enu_input,enu_output,enu_internal,enu_none,enu_noAlias,enu_alias,enu_negatedAlias
 } Enu;
 
-// AST node for element 
-// DisplayUnitDefinition, RealType, IntegerType, BooleanType, StringType, DefaultExperiment, 
+// AST node for element
+// DisplayUnitDefinition, RealType, IntegerType, BooleanType, StringType, DefaultExperiment,
 // Item, Annotation, Name, Real, Integer, Boolean, String, Enumeration, Capabilities, File
 typedef struct {
-    Elm type;          // element type 
+    Elm type;          // element type
     const char** attributes; // null or n attribute value strings
     int n;             // size of attributes, even number
 } Element;
 
-// AST node for element that has a list of elements 
+// AST node for element that has a list of elements
 // BaseUnit, EnumerationType, Tool, DirectDependency, Model
 typedef struct {
-    Elm type;          // element type 
+    Elm type;          // element type
     const char** attributes; // null or n attribute value strings
     int n;             // size of attributes, even number
     Element** list;    // null-terminated array of pointers to elements, not null
@@ -77,15 +77,15 @@ typedef struct {
 
 // AST node for element Type
 typedef struct {
-    Elm type;          // element type 
+    Elm type;          // element type
     const char** attributes; // null or n attribute value strings
     int n;             // size of attributes, an even number
-    Element* typeSpec; // one of RealType, IntegerType etc. 
+    Element* typeSpec; // one of RealType, IntegerType etc.
 } Type;
 
 // AST node for element ScalarVariable
 typedef struct {
-    Elm type;          // element type 
+    Elm type;          // element type
     const char** attributes; // null or n attribute value strings
     int n;             // size of attributes, even number
     Element* typeSpec; // one of Real, Integer, etc
@@ -98,7 +98,7 @@ typedef struct {
     const char** attributes; // null or n attribute value strings
     int n;                   // size of attributes, even number
     Element* capabilities;   // a set of capability attributes
-    ListElement* model;      // non-NULL to support tool coupling, NULL for standalone 
+    ListElement* model;      // non-NULL to support tool coupling, NULL for standalone
 } CoSimulation;
 
 // AST node for element ModelDescription
@@ -107,7 +107,7 @@ typedef struct {
     const char** attributes; // null or n attribute value strings
     int n;             // size of attributes, even number
     ListElement** unitDefinitions;    // NULL or null-terminated list of BaseUnits
-    Type**        typeDefinitions;    // NULL or null-terminated list of Types 
+    Type**        typeDefinitions;    // NULL or null-terminated list of Types
     Element*      defaultExperiment;  // NULL or DefaultExperiment
     ListElement** vendorAnnotations;  // NULL or null-terminated list of Tools
     ScalarVariable** modelVariables;  // NULL or null-terminated list of ScalarVariable
@@ -115,8 +115,8 @@ typedef struct {
 } ModelDescription;
 
 // types of AST nodes used to represent an element
-typedef enum { 
-    astElement, 
+typedef enum {
+    astElement,
     astListElement,
     astType,
     astScalarVariable,
@@ -125,7 +125,7 @@ typedef enum {
 } AstNodeType;
 
 // Possible results when retrieving an attribute value from an element
-typedef enum { 
+typedef enum {
     valueMissing,
     valueDefined,
     valueIllegal

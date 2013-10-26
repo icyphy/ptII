@@ -178,20 +178,20 @@ public class WebServer extends AbstractInitializableAttribute {
      */
     public Parameter port;
 
-    /** The URL prefix used to request resources (files) from this web service.  
+    /** The URL prefix used to request resources (files) from this web service.
      *  For example, an HTML page requesting an image file.
-     *  
-     *  The web server creates a ResourceHandler object to accept incoming HTTP 
-     *  requests for files, such as images, and return those files.  
-     *  The ResourceHandler is assigned a URL prefix, specified in resourcePath, 
+     *
+     *  The web server creates a ResourceHandler object to accept incoming HTTP
+     *  requests for files, such as images, and return those files.
+     *  The ResourceHandler is assigned a URL prefix, specified in resourcePath,
      *  which clients use to submit requests to the ResourceHandler.
 
-     *  The resourcePath should be distinct from all other HttpActor paths in 
-     *  the model.  Otherwise, the ResourceHandler will intercept requests 
+     *  The resourcePath should be distinct from all other HttpActor paths in
+     *  the model.  Otherwise, the ResourceHandler will intercept requests
      *  intended for an HttpActor.
-     *  
+     *
      *  Examples:
-     *  A file can be retrieved using an absolute URL or a relative URL.  
+     *  A file can be retrieved using an absolute URL or a relative URL.
      *  Absolute URLs follow the pattern:
      *  <pre>
      *  protocol://hostname:portname/applicationPath/resourcePath/filename.ext
@@ -274,13 +274,13 @@ public class WebServer extends AbstractInitializableAttribute {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        // Changes to attributes are not currently propagated to the 
-        // web server directly.  They will take effect the next time 
-        // initialize() is called.  
-        
-        // In the future, changes could be propagated immediately to the 
+        // Changes to attributes are not currently propagated to the
+        // web server directly.  They will take effect the next time
+        // initialize() is called.
+
+        // In the future, changes could be propagated immediately to the
         // web server.
-        
+
         if (attribute == port) {
             _portNumber = ((IntToken) port.getToken()).intValue();
         } else {
@@ -325,36 +325,36 @@ public class WebServer extends AbstractInitializableAttribute {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void initialize() throws IllegalActionException {
-        
+
         super.initialize();
-        
+
         if(_debugging) {
             _debug("Initializing web server.");
         }
-        
+
         // Get the web server manager to register this application with
         if (_serverManager == null) {
             _serverManager = WebServerManager.getInstance();
         }
-            
+
         // Get the model name, application path and temporary file location
         String modelName = getFullName();
-        
+
         String applicationPathString = "/";
         if (applicationPath != null) {
             applicationPathString = applicationPath.getExpression();
-        }        
-        
+        }
+
         // Assemble info about this model into a WebApplicationInfo object
         // Throw an exception if the model does not have a name
         try {
-            _appInfo = new WebApplicationInfo(modelName, applicationPathString, 
+            _appInfo = new WebApplicationInfo(modelName, applicationPathString,
                 temporaryFileLocation);
         }catch(Exception e) {
             throw new IllegalActionException(this, e, "Failed to create WebApplicationInfo");
         }
-        
-        // Collect requested servlet mappings from all model objects 
+
+        // Collect requested servlet mappings from all model objects
         // implementing HttpService.  Check for duplicates.
         // NOTE: This used to use the top level, but it makes more sense to use the container.
         // Also, now it only looks for entities, and it does not penetrate opaque composites.
@@ -362,7 +362,7 @@ public class WebServer extends AbstractInitializableAttribute {
         if (!(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, "Container is required to be a CompositeEntity.");
         }
-        List<Entity> entities = 
+        List<Entity> entities =
                    ((CompositeEntity)container).allAtomicEntityList();
         for (Entity entity : entities) {
             if (entity instanceof HttpService) {
@@ -371,7 +371,7 @@ public class WebServer extends AbstractInitializableAttribute {
                 // so that it can get, for example, critical information such
                 // as resourcePath.
                 service.setWebServer(this);
-                
+
                 if(_debugging) {
                     _debug("Found web service: " + entity.getFullName());
                 }
@@ -379,17 +379,17 @@ public class WebServer extends AbstractInitializableAttribute {
                 // Add this path to the list of servlet paths
                 URI path = service.getRelativePath();
                 try {
-                    _appInfo.addServletInfo(path, service.getServlet()); 
+                    _appInfo.addServletInfo(path, service.getServlet());
                 } catch(Exception e) {
-                    throw new IllegalActionException(this, "Actor " + 
-                    entity.getName() + " requested the web service URL " 
-                    + path + " , but this URL has already been claimed " 
-                    + "by another actor or by a resource in this WebServer." 
+                    throw new IllegalActionException(this, "Actor " +
+                    entity.getName() + " requested the web service URL "
+                    + path + " , but this URL has already been claimed "
+                    + "by another actor or by a resource in this WebServer."
                     + "  Please specify a unique URL.");
                 }
             }
         }
-               
+
         // Specify directories or URLs in which to look for resources.
         // These are given by all instances of FileParameter in this
         // WebServer. Use a LinkedHashSet to preserve the order.
@@ -399,15 +399,15 @@ public class WebServer extends AbstractInitializableAttribute {
         // This set includes the temporary file location
         HashSet<URL> seen = new HashSet<URL>();
         for (FileParameter base : bases) {
-            // If blank, omit  
-            if (base.getExpression() != null 
+            // If blank, omit
+            if (base.getExpression() != null
                     && !base.getExpression().isEmpty()) {
             try {
 
-                // Use the ClassLoader to obtain the location (vs. specifying 
+                // Use the ClassLoader to obtain the location (vs. specifying
                 // a directory on the file system), so that the demos
                 // can also be run from within a .jar file
-                 
+
                 // If expression starts with $PTII/ , strip this
                 // Assumes .jar file uses $PTII as root location
                 // Assumes full path is given
@@ -417,22 +417,22 @@ public class WebServer extends AbstractInitializableAttribute {
                 if (expression.startsWith("$PTII/")) {
                     expression = expression.substring(6);
                 }
-                
+
                 // Get directory.  Add trailing "/"
                 // Try ClassLoader first to resolve any directories within
                 // Ptolemy tree.  If the directory is not part of the tree
                 // (e.g. $TMPDIR), the ClassLoader will not find it, so then
                 // use the expression directly
                 URL baseURL;
-                
-                if (this.getClass().getClassLoader().getResource(expression) 
+
+                if (this.getClass().getClassLoader().getResource(expression)
                         != null) {
                     baseURL = new URL(this.getClass().getClassLoader()
                             .getResource(expression).toExternalForm() + "/");
                 } else {
                     baseURL = base.asURL();
                 }
-                           
+
                 if (baseURL != null) {
                     URL baseAsURL = base.asURL();
                     if (seen.contains(baseAsURL)) {
@@ -454,11 +454,11 @@ public class WebServer extends AbstractInitializableAttribute {
             }
             }
         }
-        
-        // Throw an exception if resource path is not a valid URI or if a 
+
+        // Throw an exception if resource path is not a valid URI or if a
         // duplicate path is requested
-        try {           
-            _appInfo.addResourceInfo(new URI(resourcePath.stringValue()), 
+        try {
+            _appInfo.addResourceInfo(new URI(resourcePath.stringValue()),
                 resourceLocations);
         } catch(URISyntaxException e) {
             throw new IllegalActionException(this, "Resource path is not a " +
@@ -466,17 +466,17 @@ public class WebServer extends AbstractInitializableAttribute {
         } catch(Exception e2) {
             throw new IllegalActionException(this, e2, "Failed to add resource info.");
         }
-        
+
         try {
             _serverManager.register(_appInfo, _portNumber);
         } catch(Exception e){
             throw new IllegalActionException(this, e, "Failed to register web server.");
-        }      
+        }
     }
 
-    
-    /** Unregister this application with the web server manager. 
-     * 
+
+    /** Unregister this application with the web server manager.
+     *
      * @exception IllegalActionException if there is a problem unregistering
      * the application */
     public void wrapup() throws IllegalActionException {
@@ -491,19 +491,19 @@ public class WebServer extends AbstractInitializableAttribute {
             // that occurred during trying to register the server.
             System.err.println("Warning: Failed to unregister web server.\n" + e);
         }
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Info about the web application defined by the model. 
+    /** Info about the web application defined by the model.
      */
-    private WebApplicationInfo _appInfo;   
+    private WebApplicationInfo _appInfo;
 
     /** The port number the server receives requests on.
      */
     private int _portNumber = 8078;
-    
+
     /** The manager for this web application. */
     private WebServerManager _serverManager;
 

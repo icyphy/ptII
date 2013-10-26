@@ -61,7 +61,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -84,7 +84,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
         if (!(container instanceof Actor)) {
             throw new IllegalActionException(this, "SynchronizeToRealTime has to be contained by an Actor");
         }
-        
+
         Director director = ((Actor)container).getDirector();
         Object mutexLockObject = director.mutexLockObject();
 
@@ -100,7 +100,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
                     // the SR domain has an upper limit on running
                     // time of Double.MAX_VALUE milliseconds.
                     double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                                        
+
                     double currentTime = director.getModelTime().getDoubleValue();
 
                     if (currentTime <= elapsedTimeInSeconds) {
@@ -147,7 +147,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
         }
         return proposedTime;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

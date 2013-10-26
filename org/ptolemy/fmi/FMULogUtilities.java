@@ -70,7 +70,7 @@ public class FMULogUtilities {
     // which parts are based on FMUSDK.
 
     /** Replace FMI variable references with the name of the variable.
-     *        
+     *
      * <p>The FMI log method optionally takes a variable number of
      * arguments and handles
      * <code>#<i>Type</i><i>valueReference</i>#</code>, specially
@@ -85,7 +85,7 @@ public class FMULogUtilities {
      * @param messageString The string that has had the % directed
      * processed.  The input will be of the format "foo #r1234# bar".
      * @return a String with the variable references replaced.
-     */   
+     */
     public static String replaceVariableReferences(FMIModelDescription modelDescription,
            String messageString) {
         int i = 0;
@@ -159,7 +159,7 @@ public class FMULogUtilities {
                             if (i >= message.length) {
                                 throw new ArrayIndexOutOfBoundsException("Internal Error");
                             }
-                            c = message[i]; 
+                            c = message[i];
                         } catch (NumberFormatException ex) {
                             results.append("(NumberFormatException: \"" + integerString + "\" in \"" + messageString + "\")");
                             results.append('#');
@@ -173,7 +173,7 @@ public class FMULogUtilities {
     }
 
     /** Given a fmiStatus value, return a string description.
-     *  @param status One of the values from 
+     *  @param status One of the values from
      *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
      *  @return A string that describes the status.
      */

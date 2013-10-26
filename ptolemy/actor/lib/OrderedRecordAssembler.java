@@ -55,8 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  Java code that iterates over the fields of the record.</p>
 
  <p>Note that if the display name of a port is set, display name is used in
- the type constraints instead of name. This is useful in case fields to 
- add to the record contain a period, because periods are not allowed in 
+ the type constraints instead of name. This is useful in case fields to
+ add to the record contain a period, because periods are not allowed in
  port names.</p>
 
  @author Ben Leinfelder, Christopher Brooks
@@ -93,7 +93,7 @@ public class OrderedRecordAssembler extends RecordAssembler {
         Set<Entry<String, TypedIOPort>> entries = _portMap.entrySet();
         String[] labels = new String[entries.size()];
         Token[] values = new Token[entries.size()];
-        
+
         for (Entry<String, TypedIOPort> entry : entries) {
             labels[i] = entry.getKey();
             values[i] = entry.getValue().get(0);

@@ -252,7 +252,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
             return null;
         }
     }
-    
+
     /** Return a list of the entities deeply contained by the container
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
@@ -261,7 +261,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
         CompositeEntity container = (CompositeEntity)getContainer();
         return container.deepEntityList();
     }
-    
+
     /** Return false to indicate that this decorator should not
      *  decorate objects across opaque hierarchy boundaries.
      */
@@ -771,7 +771,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
         /** Worst case execution time. */
         public Parameter WCET;
-        
+
         public ExecutionAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException {
             // Create an attribute in the target to store the decorator parameters.
             // Use uniqueName() in case there are multiple decorators in scope with the same name.
@@ -781,7 +781,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                 WCET = new Parameter(this, "WCET");
                 WCET.setExpression("0.0");
                 WCET.setTypeEquals(BaseType.DOUBLE);
-                
+
                 executionTime = new Parameter(this, "executionTime");
                 executionTime.setExpression("0.0");
                 executionTime.setTypeEquals(BaseType.DOUBLE);

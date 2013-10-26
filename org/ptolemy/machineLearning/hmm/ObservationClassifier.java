@@ -47,16 +47,16 @@ import ptolemy.kernel.util.Workspace;
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
 Bayesian Network models. ClassifyObservations is designed to work with <i>
 ExpectationMaximization<\i>, which provides the Maximum-Likelihood model parameters
-from which the observations are assumed to be drawn. The output is an integer array 
+from which the observations are assumed to be drawn. The output is an integer array
 of labels, representing the maximum-likelihood hidden state sequence of the given
 model.
 
 <p>
-The user provides a set of parameter estimates as inputs to the model, and 
-The <i>mean<\i>  is a double array input containing the mean estimate and 
-<i>sigma</i> is a double array input containing standard deviation estimate of 
-each mixture component. If the <i>modelType<\i> is HMM, then an additional input, 
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix 
+The user provides a set of parameter estimates as inputs to the model, and
+The <i>mean<\i>  is a double array input containing the mean estimate and
+<i>sigma</i> is a double array input containing standard deviation estimate of
+each mixture component. If the <i>modelType<\i> is HMM, then an additional input,
+<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
 governing the Markovian process representing the hidden state evolution. The <i>prior
 </i> input is an estimate of the prior state distribution.
 
@@ -64,22 +64,22 @@ governing the Markovian process representing the hidden state evolution. The <i>
  <p>
  <b>References</b>
  <p>[1]
- Jordan, Michael I., et al. <i>An introduction to variational methods for graphical 
+ Jordan, Michael I., et al. <i>An introduction to variational methods for graphical
  models</i>, Springer Netherlands, 1998.
  <p>[2]
- Bilmes, Jeff A. <i>A gentle tutorial of the EM algorithm and its application 
- to parameter estimation for Gaussian mixture and hidden Markov models.</i> 
+ Bilmes, Jeff A. <i>A gentle tutorial of the EM algorithm and its application
+ to parameter estimation for Gaussian mixture and hidden Markov models.</i>
  International Computer Science Institute 4.510 (1998): 126.
 
  @see org.ptolemy.machineLearning.hmm.ParameterEstimator
  @see org.ptolemy.machineLearning.hmm.HMMGaussianClassifier
- @see org.ptolemy.machineLearning.hmm.HMMMultinomialClassifier 
+ @see org.ptolemy.machineLearning.hmm.HMMMultinomialClassifier
 
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public abstract class ObservationClassifier extends TypedAtomicActor {
    /** Construct an actor with the given container and name.
@@ -93,46 +93,46 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
    public ObservationClassifier(CompositeEntity container, String name)
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
-       
+
        prior = new PortParameter(this, "priorDistribution");
        prior.setExpression("{0.5,0.5}");
        prior.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        StringAttribute cardinality = new StringAttribute(
                prior.getPort(), "_cardinal");
        cardinality.setExpression("SOUTH");
-       
+
        transitionMatrix = new PortParameter(this, "transitionMatrix");
        transitionMatrix.setExpression("[0.5,0.5;0.5,0.5]");
        transitionMatrix.setTypeEquals(BaseType.DOUBLE_MATRIX);
        cardinality = new StringAttribute(
                transitionMatrix.getPort(), "_cardinal");
        cardinality.setExpression("SOUTH");
-       
+
        input = new TypedIOPort(this, "input", true, false);
        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-       
+
        output = new TypedIOPort(this, "output", false, true);
-       output.setTypeEquals(new ArrayType(BaseType.INT)); 
-       
+       output.setTypeEquals(new ArrayType(BaseType.INT));
+
        //_nStates = ((ArrayToken) meanToken).length();
-       _nStates = ((ArrayToken)prior.getToken()).length(); 
+       _nStates = ((ArrayToken)prior.getToken()).length();
        _transitionMatrixEstimate = new double[_nStates][_nStates];
        _priors = new double[_nStates];
-       
-       
+
+
    }
 
    ///////////////////////////////////////////////////////////////////
    ////                         public variables                  ////
 
-   
-   public PortParameter prior; 
-   
+
+   public PortParameter prior;
+
    public PortParameter transitionMatrix;
-   
+
    public TypedIOPort output;
-   
-   public TypedIOPort input; 
+
+   public TypedIOPort input;
 
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
@@ -140,45 +140,45 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
    public Object clone(Workspace workspace) throws CloneNotSupportedException {
        ObservationClassifier newObject = (ObservationClassifier) super
                .clone(workspace);
-       newObject._priors = new double[_nStates]; 
-       newObject._transitionMatrixEstimate = new double[_nStates][_nStates]; 
+       newObject._priors = new double[_nStates];
+       newObject._transitionMatrixEstimate = new double[_nStates][_nStates];
        return newObject;
    }
-   
+
    /** Consume the inputs and produce the outputs of the FFT filter.
     *  @exception IllegalActionException If a runtime type error occurs.
     */
    public void fire() throws IllegalActionException {
        super.fire();
-       
+
        if( input.hasToken(0)){
            // Read input ports
-           
-           Token observationArray= input.get(0); 
+
+           Token observationArray= input.get(0);
            _classificationLength = ((ArrayToken) observationArray).length();
            _observations = new double[_classificationLength];
-           
-           // Get Observation Values as doubles 
+
+           // Get Observation Values as doubles
            //FIXME: should the observations  allowed to be vectors of doubles, too?
            for (int i = 0; i < _classificationLength; i++) {
                _observations[i] = ((DoubleToken) ((ArrayToken)observationArray).getElement(i))
                        .doubleValue();
-           } 
+           }
        }else{
            _observations = null;
        }
-       
+
    }
 
    protected final int[] classifyHMM(double[] y, double[] prior,double[][] A)
    {
        int nStates = prior.length;
-       double[][] alphas = new double[y.length][nStates]; 
+       double[][] alphas = new double[y.length][nStates];
        double[][] gamma = new double[y.length][nStates];
        // do this with org.apache.commons.math3.distribution
        //later NormalDistribution gaussian = ...
-       
-       double[] alphaNormalizers = new double[y.length];       
+
+       double[] alphaNormalizers = new double[y.length];
        double alphaSum = 0;
        for(int t=0; t< y.length ; t++){
            alphaSum = 0;
@@ -188,7 +188,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                     alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
                }else{
                    for(int qt = 0; qt < nStates; qt++){
-                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt]; 
+                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt];
                    }
                }
                alphaSum += alphas[t][i];
@@ -198,16 +198,16 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                alphas[t][i] /= alphaSum;
                alphaNormalizers[t] = alphaSum;
            }
-       }    
-       for(int t=y.length-1; t>=0 ; t--){  
-           for( int qt=0; qt < nStates; qt ++){ 
+       }
+       for(int t=y.length-1; t>=0 ; t--){
+           for( int qt=0; qt < nStates; qt ++){
                if( t == y.length -1){
                    gamma[t][qt] = alphas[t][qt];
                }else{
                    gamma[t][qt]=0;
                    for ( int qtp = 0 ; qtp < nStates ; qtp ++){
                        double alphasum = 0;
-                       for( int j=0; j < nStates; j ++){ 
+                       for( int j=0; j < nStates; j ++){
                            alphasum += alphas[t][j]*A[j][qtp];
                        }
                        gamma[t][qt] += (alphas[t][qt]*A[qt][qtp]*gamma[t+1][qtp])/alphasum;
@@ -215,7 +215,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                }
            }
        }
-       
+
        //  Classification to clusters
        int[] clusterAssignments = new int[y.length];
        for( int t = 0; t < y.length; t++){
@@ -229,7 +229,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
        }
        return clusterAssignments;
    }
-   
+
    public static final int[] gaussianClassifyMM(int startAt, double[] y, double[] mu, double[] sigma, double[] prior)
    {
        int nStates = mu.length;
@@ -237,7 +237,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
        double[][] tau = new double[y.length][nStates];
        // the classified states of observations
        int[] clusterAssignments = new int[y.length];
-       
+
        for(int t=0; t< y.length ; t++){
            for (int i=0; i < nStates; i++){
                tau[t][i] = prior[i]*gaussian(y[t], mu[i],sigma[i]);
@@ -246,33 +246,33 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                }
            }
        }
-      
+
        return clusterAssignments;
    }
-   
+
    private static final double gaussian(double x, double mu, double sigma){
-       
+
        return 1.0/(Math.sqrt(2*Math.PI)*sigma)*Math.exp(-0.5*Math.pow((x-mu)/sigma, 2));
    }
 
    ///////////////////////////////////////////////////////////////////
    ////                         protected variables                 ////
-   protected abstract double emissionProbability(double y, int hiddenState); 
-   
+   protected abstract double emissionProbability(double y, int hiddenState);
+
    /* length of the observation array to be classified */
    protected int _classificationLength;
 
    /* observation array */
-   protected double[] _observations; 
-   
+   protected double[] _observations;
+
    /* number of hidden states */
-   protected int _nStates;  
-   
+   protected int _nStates;
+
    /* transition matrix estimate for the markov chain model */
    protected double[][] _transitionMatrixEstimate;
-   
+
    /* prior hidden state distribution */
    protected double[] _priors;
-   
-   
+
+
 }

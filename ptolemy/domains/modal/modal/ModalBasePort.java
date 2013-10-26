@@ -51,8 +51,8 @@ import ptolemy.kernel.util.Workspace;
   ModalRefinementPort in turn extends RefinementPort.  RefinementPort
   has different functionality for methods like setInput(),
   setMultiport(), setName() and setOutput().  Therefore, this base
-  class defines protected versions of the common implementations of 
-  these methods that are called by the public versions of these 
+  class defines protected versions of the common implementations of
+  these methods that are called by the public versions of these
   methods in ModalPort and ModelRefinementPort, thus avoiding
   code duplication.</p>
 
@@ -354,12 +354,12 @@ public class ModalBasePort extends TypedIOPort {
         // Remove the relation as well.
         ComponentRelation relation = ((CompositeEntity) oldContainer)
             .getRelation(getName() + "Relation");
-        
+
         if (relation != null) {
             relation.setContainer(null);
         }
     }
-        
+
     /** If the argument is true, make the port an input port.
      *  If the argument is false, make the port not an input port.
      *  This method overrides the base class to make the same

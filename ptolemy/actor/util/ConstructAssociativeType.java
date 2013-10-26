@@ -100,7 +100,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
             } else {
                 labels[i] = port.getDisplayName();
             }
-            
+
             if (portTypeTerm.isSettable()) {
                 types[i] = (Type) portTypeTerm.getValue();
             } else {

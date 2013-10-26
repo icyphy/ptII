@@ -107,9 +107,9 @@ public class NonStrictDelay extends Transformer {
             _declareDelayDependency(input, output, ((SRDirector)getDirector()).periodValue());
         }
     }
-    
-    
-    
+
+
+
     /** Send to the output the previous token received. If no token
      *  was received on the previous tick,
      *  then assert that the output is absent. If this is
@@ -174,7 +174,7 @@ public class NonStrictDelay extends Transformer {
         }
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

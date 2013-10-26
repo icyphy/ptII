@@ -1800,9 +1800,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Note that time has already been automatically adjusted with the
         // accumulated suspend time.
         Time outTime = localClock.getLocalTimeForCurrentEnvironmentTime();
-        
+
         int localTimeExceedsOutsideTime = currentTime.compareTo(outTime);
-        
+
         Time modifiedTime = _consultTimeRegulators(currentTime);
         int modifiedTimeExceedsLocalTime = modifiedTime.compareTo(currentTime);
 

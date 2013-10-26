@@ -192,7 +192,7 @@ public class RunCompositeActor extends LifeCycleManager {
      */
     public void fire() throws IllegalActionException {
         // Note that super.fire() is not called here probably because
-        // CompositeActor.fire() transfers inputs. 
+        // CompositeActor.fire() transfers inputs.
 
         // FIXME: CompositeActor.fire() invokes the piggyback.fire(),
         // this method does not.

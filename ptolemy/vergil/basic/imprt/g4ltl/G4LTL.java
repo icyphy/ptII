@@ -46,9 +46,9 @@ import ptolemy.moml.MoMLParser;
 
    <p>"G4LTL is a standalone tool and a Java library for automatically
    generating controllers realizing linear temporal logic (LTL).</p>
- 
+
    <p>See <a href="http://sourceforge.net/projects/g4ltl/#in_browser">http://sourceforge.net/projects/g4ltl/</a></p>
- 
+
    <p>This class uses classes defined in $PTII/lib/g4ltl.jar.  See
    $PTII/lib/g4ltl-license.htm.</p>
 
@@ -86,7 +86,7 @@ public class G4LTL {
     }
 
     /** Given a Linear Temporal Logic (LTL) file, generate the
-     * corresponding MoML and update the MoML.  
+     * corresponding MoML and update the MoML.
      *
      * <p>This is the main entry point for non-gui use of the g4ltl
      * package.  If finding a strategy fails the gui may want to ask
@@ -136,7 +136,7 @@ public class G4LTL {
         String moml = "";
         String updatedName = "";
         if (model != null) {
-            // Change the name of the output module to an unused name.                        
+            // Change the name of the output module to an unused name.
             moml = model.exportMoMLPlain();
             String moduleName = "model";
             int i = 1;

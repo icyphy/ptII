@@ -286,7 +286,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
-    public int print(Graphics graphics, PageFormat format, int index) 
+    public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         if (graphics == null) {
             return Printable.NO_SUCH_PAGE;

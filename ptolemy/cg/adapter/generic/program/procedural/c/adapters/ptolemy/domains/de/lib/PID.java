@@ -83,7 +83,7 @@ public class PID extends NamedProgramCodeGeneratorAdapter {
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * A function which returns the generated code from the C template
      * postFire method.
@@ -97,15 +97,15 @@ public class PID extends NamedProgramCodeGeneratorAdapter {
         LinkedList args = new LinkedList();
         if (((ptolemy.domains.de.lib.PID) getComponent()).reset.isOutsideConnected())
             codeStream.appendCodeBlock("resetConnectedBlock", args);
-        
+
         codeStream.appendCodeBlock("postFireBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     /**
      * Generate fire code.
      * The method generates code that is executed when the <i>input</i> has a Token
@@ -120,7 +120,7 @@ public class PID extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
 
         codeStream.appendCodeBlock("customFireBlock", args);
-        
+
         return codeStream.toString();
     }
 }

@@ -206,7 +206,7 @@ public class ImportFMUAction extends AbstractAction {
 
     /** The most recent location for instantiating a class. */
     private String _lastLocation = "";
-    
+
     /** The most recent selection of Model Exchange (vs. Co-Simulation). */
     private boolean _lastModelExchange = false;
 }

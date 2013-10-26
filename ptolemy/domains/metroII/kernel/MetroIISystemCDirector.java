@@ -1,5 +1,5 @@
 /* MetroIISystemCDirector wraps a Metro-SystemC model as a Metro actor in Ptolemy.
- 
+
 Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -54,13 +54,13 @@ import ptolemy.kernel.util.Workspace;
 /**
  * MetroIISystemCDirector wraps a Metro-SystemC model as a Metro actor in
  * Ptolemy.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIISystemCDirector extends Director implements GetFirable {
 
@@ -68,7 +68,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * Construct a MetroIISystemCDirector with a name and a container. The
      * container argument must not be null, or a NullPointerException will be
      * thrown.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -92,7 +92,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * Clone the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
-     * 
+     *
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException
@@ -109,7 +109,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
     /**
      * Push Metro events into the pipe.
-     * 
+     *
      * @param events
      *            the events to be added into the pipe.
      */
@@ -156,7 +156,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
     /**
      * Synchronize the status of events from the pipe.
-     * 
+     *
      * @param events
      *            the events to be synchronized from the pipe.
      */
@@ -259,7 +259,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire().
      */
     @Override

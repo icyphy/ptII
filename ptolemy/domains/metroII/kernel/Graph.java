@@ -33,9 +33,9 @@ import java.util.ArrayList;
 //// Graph
 
 /**
-* 
+*
 * Graph is an adjacency list data structure for representing mapping constraints.
-* 
+*
 * @author Liangpeng Guo
 * @version $Id$
 * @since Ptolemy II 9.1
@@ -52,7 +52,7 @@ public class Graph implements Cloneable {
         _nodeConnection = new ArrayList<ArrayList<Integer>>();
         _edge = new ArrayList<Pair<Integer, Integer>>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -63,23 +63,23 @@ public class Graph implements Cloneable {
      */
     @Override
     public Graph clone() throws CloneNotSupportedException {
-        Graph newObject = (Graph) super.clone(); 
-        newObject._nodeConnection = (ArrayList<ArrayList<Integer>>) _nodeConnection.clone(); 
-        newObject._edge = (ArrayList<Pair<Integer, Integer>>) _edge.clone(); 
-        return newObject; 
+        Graph newObject = (Graph) super.clone();
+        newObject._nodeConnection = (ArrayList<ArrayList<Integer>>) _nodeConnection.clone();
+        newObject._edge = (ArrayList<Pair<Integer, Integer>>) _edge.clone();
+        return newObject;
     }
-    
+
     /**
      * Clear the linked list to the initial state. Remove all the mapping constraints.
      */
     public void clear() {
         _nodeConnection.clear();
-        _edge.clear(); 
+        _edge.clear();
     }
 
     /**
-     * Check if there is a mapping constraint constraining event id1 and event id2. 
-     * 
+     * Check if there is a mapping constraint constraining event id1 and event id2.
+     *
      * @param id1 ID of the first event.
      * @param id2 ID of the second event.
      * @return true if there is a mapping constraint.
@@ -88,9 +88,9 @@ public class Graph implements Cloneable {
         if (id1 >= _nodeConnection.size() || id2 >= _nodeConnection.size()) {
             return false;
         }
-        // System.out.println(id1+" "+id2); 
+        // System.out.println(id1+" "+id2);
         for (Integer edgeId : _nodeConnection.get(id1)) {
-            // System.out.println(_edge.get(edgeId).getFirst().intValue()+":"+_edge.get(edgeId).getSecond().intValue()); 
+            // System.out.println(_edge.get(edgeId).getFirst().intValue()+":"+_edge.get(edgeId).getSecond().intValue());
             if (_edge.get(edgeId).getFirst().intValue() == id2 || _edge.get(edgeId).getSecond().intValue() == id2) {
                 return true;
             }
@@ -98,7 +98,7 @@ public class Graph implements Cloneable {
         return false;
     }
 
-    /** Add a mapping constraint (A, B). Event A and B are given by id1 and id2. 
+    /** Add a mapping constraint (A, B). Event A and B are given by id1 and id2.
     *
     * @param id1 ID of event A in the constraint
     * @param id2 ID of event B in the constraint
@@ -107,7 +107,7 @@ public class Graph implements Cloneable {
         if (contains(id1, id2)) {
             return;
         }
-        // System.out.println("adding "+id1+" "+id2); 
+        // System.out.println("adding "+id1+" "+id2);
         _edge.add(new Pair(id1, id2));
         int largerId = id1;
         if (id2 > id1) {
@@ -158,8 +158,8 @@ public class Graph implements Cloneable {
     ////                         private fields                    ////
 
     /** The adjacency list that represents the mapping constraints
-     *  (event pairs). _nodeConnection.get(id) gives a list of edges connected with 
-     *  node ID id. 
+     *  (event pairs). _nodeConnection.get(id) gives a list of edges connected with
+     *  node ID id.
      */
     private ArrayList<ArrayList<Integer>> _nodeConnection;
 

@@ -236,7 +236,7 @@ public class EditParametersDialog extends ComponentDialog implements
                     // Ignore the cancel.
                 }
             }
-        } 
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -322,21 +322,21 @@ public class EditParametersDialog extends ComponentDialog implements
         if (message != null) {
             _query.setMessage(message);
         }
- 
+
         _query.addChoice("class", "Class", new String[]{
                 "ptolemy.data.expr.Parameter",
                 "ptolemy.data.expr.FileParameter",
                 "ptolemy.kernel.util.StringAttribute",
                 "ptolemy.actor.gui.ColorAttribute"
                 }, "ptolemy.data.expr.Parameter", true);
-        
+
 
         _query.addLine("name", "Name", name);
         _query.addLine("default", "Default value", defValue);
-        
+
         ComponentDialog dialog = new ComponentDialog(_owner,
                 "Add a new parameter to " + _target.getFullName(), _query, null);
-        
+
         String parameterClass = _query.getStringValue("class");
 
         // If the OK button was pressed, then queue a mutation
@@ -360,7 +360,7 @@ public class EditParametersDialog extends ComponentDialog implements
             _target.requestChange(request);
         }
         return dialog;
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

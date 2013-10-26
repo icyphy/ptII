@@ -92,10 +92,10 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
 
         return writer.toString();
     }
-    
+
     /** Specify whether the expression to write is in string mode.
      *  FIXME string mode has only been implemented for leaf and sum nodes.
-     *  @param stringMode True to put the expression to write in string mode. 
+     *  @param stringMode True to put the expression to write in string mode.
      */
     public void setStringMode(boolean stringMode) {
         _isStringMode = stringMode;
@@ -354,8 +354,8 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             }
         }
     }
-    
+
     /** Indicates if string mode is on. */
     private boolean _isStringMode = false;
-    
+
 }

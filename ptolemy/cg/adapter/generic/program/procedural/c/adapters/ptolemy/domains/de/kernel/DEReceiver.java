@@ -48,11 +48,11 @@ import ptolemy.kernel.util.IllegalActionException;
  * This class generates the DE-specific methods for the director.
  * Those methods are : get, hasToken, put
  * It also deals with the type conversions.
- * 
+ *
  * Note that for now the generated code is C Code. What we need
  * to do later, is to call some non-languages-specific functions in here
  * which are implemented in a specific C adapter.
- * 
+ *
  * @author William Lucas, based on SDFReceiver.java by Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -74,7 +74,7 @@ public class DEReceiver extends Receiver  {
             _forComposite = true;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -99,7 +99,7 @@ public class DEReceiver extends Receiver  {
         //result = "DEReceiverGet(&(" + result + "))";
         return result;
     }
-    
+
     /** Generates code to check the receiver has a token.
      *  @param offset The offset of the receiver, ignored in this base
      *  class.
@@ -119,7 +119,7 @@ public class DEReceiver extends Receiver  {
 //        String actorName = CodeGeneratorAdapter.generateName(port.getContainer());
         String result = "(*(" + port.getName() + "->hasToken))((struct IOPort*) " + port.getName() + ", " + channel + ")";
 //        String result = "ReceiverHasToken(" + actorName + ".ports[enum_" + actorName + "_" + port.getName() + "].receivers + " + channel + ")";
-        return result; 
+        return result;
     }
 
     /** Generate code for putting tokens from the receiver.
@@ -142,7 +142,7 @@ public class DEReceiver extends Receiver  {
         // The sink is actually also irrelevant, since we will get rid of it later.
         ProgramCodeGeneratorAdapter.Channel source = new Channel(sourcePort, 0);
         ProgramCodeGeneratorAdapter.Channel sink = new Channel(port, channel);
-             
+
         token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
                 .getContainer().getContainer())).getTemplateParser()
                 .generateTypeConvertStatement(source, sink, 0, token);
@@ -179,21 +179,21 @@ public class DEReceiver extends Receiver  {
         try {
 //                String nameInput = _getDirectorForReceiver().getReference(port,
 //                    new String[] { Integer.toString(channel), offset },
-//                    forComposite, true, containingActorAdapter); 
+//                    forComposite, true, containingActorAdapter);
 //                String actorSourceName = CodeGeneratorAdapter.generateName(sourcePort.getContainer());
 //                String actorDestName = CodeGeneratorAdapter.generateName(port.getContainer());
 //                String actorDestNameForArgs = actorDestName;
 //                if (port.getContainer() instanceof CompositeActor)
 //                    actorDestNameForArgs = "(" + actorDestName + ".actor)";
-//                String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" + 
+//                String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" +
 //                        actorSourceName + "_" + sourcePort.getName() + "_" + actorDestName + "_" + port.getName() + "_" + channel + "]";
                 String type = getCodeGenerator().codeGenType(port.getType());
                 //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
                 result = "(*(" + port.getName() + "->send))((struct IOPort*) " + port.getName() + ", " + channel + ", ";
-                
+
                 result += "$new(" + type + "(" + token + ")));" + _eol;
 //                result += _eol + "(*(" + actorDestNameForArgs + ".container->director->fireAtFunction))(&"+ actorDestNameForArgs
-//                            +", " + actorDestNameForArgs + ".container->director->currentModelTime, " 
+//                            +", " + actorDestNameForArgs + ".container->director->currentModelTime, "
 //                            + actorDestNameForArgs + ".container->director->currentMicrostep);" + _eol;
         } catch (Throwable throwable) {
             result = _getExecutiveDirectorForReceiver().getReference(port,

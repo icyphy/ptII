@@ -40,7 +40,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * GetFirable is the Yieldadapter interface for actors. Any class implementing
  * this interface has the ability to 'yield return' in getfire() by calling
  * 'resultHandler.handleResult(events)'.
- * 
+ *
  * <p>
  * Instead of calling getfire() directly, the caller function should obtain an
  * YieldAdapterIterable from adapter(). Every time YieldAdapterIterable.next()
@@ -50,7 +50,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * 'resultHandler.handleResult(events)'. If YieldAdapterIterable.hasNext()
  * returns false, it means getfire() has reached 'return' and terminated.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -62,7 +62,7 @@ public interface GetFirable {
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter();
@@ -70,7 +70,7 @@ public interface GetFirable {
     /**
      * An implementation of getfire() has the ability to 'yield return' in
      * getfire() by calling 'resultHandler.handleResult(events)'.
-     * 
+     *
      * @param resultHandler
      *            iterable of events 'yield returned'.
      * @exception CollectionAbortedException

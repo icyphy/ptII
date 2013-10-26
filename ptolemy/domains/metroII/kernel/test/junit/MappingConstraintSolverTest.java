@@ -37,8 +37,8 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 ///////////////////////////////////////////////////////////////////
 //// MappingConstraintSolverTest
 
-/** 
- * MappingConstraintSolverTest is a unit test for MappingConstraintSolver. It tests 
+/**
+ * MappingConstraintSolverTest is a unit test for MappingConstraintSolver. It tests
  * <ol>
  * <li> whether the mapping constraints can be correctly added even with duplicate inputs</li>
  * <li> whether the constraints are correctly resolved when some event are in presence and some are not</li>
@@ -75,7 +75,7 @@ public class MappingConstraintSolverTest extends TestCase {
 
         Event.Builder eventA = _createMetroIIEvent("A");
         Event.Builder eventB = _createMetroIIEvent("B");
-        Event.Builder eventC = _createMetroIIEvent("C"); 
+        Event.Builder eventC = _createMetroIIEvent("C");
         Event.Builder eventD = _createMetroIIEvent("D");
         Event.Builder eventE = _createMetroIIEvent("E");
         Event.Builder eventF = _createMetroIIEvent("F");
@@ -97,7 +97,7 @@ public class MappingConstraintSolverTest extends TestCase {
         System.out.println(eventE.getStatus());
         System.out.println(eventF.getStatus());
         System.out.println(eventG.getStatus());
-        
+
         assertEquals(Event.Status.PROPOSED, eventA.getStatus());
         assertEquals(Event.Status.PROPOSED, eventB.getStatus());
         assertEquals(Event.Status.PROPOSED, eventC.getStatus());

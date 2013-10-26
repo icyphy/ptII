@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
-/** 
+/**
  * This actor calculates the inverse FFT of a complex input array.
  * The order of the IFFT determines the number of tokens that
  * will be consumed and produced on each firing. The order is
@@ -68,7 +68,7 @@ public class IFFT extends SDFTransformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /**     
+    /**
      * The order of the IFFT.  The type is IntToken, and the value should
      * be greater than zero.  The default value is an IntToken with value 8.
      */
@@ -87,7 +87,7 @@ public class IFFT extends SDFTransformer implements Rollbackable {
 
     private Complex[] _inComplexArray;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -107,7 +107,7 @@ public class IFFT extends SDFTransformer implements Rollbackable {
         output_tokenProductionRate.setExpression("2^order");
     }
 
-    /**     
+    /**
      * Ensure that the order parameter is positive and recompute the
      * size of internal buffers.
      * @param attribute The attribute that has changed.
@@ -127,7 +127,7 @@ public class IFFT extends SDFTransformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Consume the inputs and produce the outputs of the IFFT filter.
      * @exception IllegalActionException If a runtime type error occurs.
      */

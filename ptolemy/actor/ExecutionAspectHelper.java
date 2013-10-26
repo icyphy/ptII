@@ -32,10 +32,10 @@ package ptolemy.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.actor.ExecutionAspectListener.ExecutionEventType; 
-import ptolemy.actor.util.Time; 
+import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity; 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -49,8 +49,8 @@ import ptolemy.kernel.util.NamedObj;
   @Pt.AcceptedRating Red (derler)
  */
 public class ExecutionAspectHelper {
-        
-        /** Execution aspects are decorators and this method recursively computes 
+
+        /** Execution aspects are decorators and this method recursively computes
          *  all entities inside a given container that are decorated by execution aspects.
          *  @param container The container.
          *  @return All entities to decorate.
@@ -65,10 +65,10 @@ public class ExecutionAspectHelper {
                                     .getEntitiesToDecorate((CompositeEntity) entity));
                 }
             }
-        } 
+        }
         return toDecorate;
     }
-     
+
     /** Schedule an actor for execution on an aspect and return the next time
      *  this aspect has to perform an action. Derived classes
      *  must implement this method to actually schedule actors, this
@@ -80,12 +80,12 @@ public class ExecutionAspectHelper {
      *  @param actor The actor to be scheduled.
      *  @param environmentTime The current platform time.
      *  @param deadline The deadline timestamp of the event to be scheduled.
-     *  This can be the same as the environmentTime. 
+     *  This can be the same as the environmentTime.
      *  @return Relative time when this aspect has to be executed
      *    again to perform rescheduling actions.
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
-     */ 
+     */
     public static Time schedule(ActorExecutionAspect aspect, Actor actor, Time environmentTime, Time deadline)
             throws IllegalActionException {
         Director director = ((CompositeActor) ((ComponentEntity)aspect).getContainer()).getDirector();
@@ -95,5 +95,5 @@ public class ExecutionAspectHelper {
         return aspect.schedule(actor, environmentTime, deadline, new Time(director,
                 executionTime));
     }
-        
+
 }

@@ -192,7 +192,7 @@ public class StaticSchedulingDirector extends Director {
                 code.append(codeGenerator
                         .generateFireFunctionMethodInvocation((NamedObj) actor)
                         + "();" + _eol);
-                
+
                 if (!(codeGenerator instanceof CCodeGenerator))
                     _generateUpdatePortOffsetCode(code, actor);
 

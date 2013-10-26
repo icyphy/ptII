@@ -95,7 +95,7 @@ public class CompositeActorSimpleApplication {
         CompositeActorSimpleApplication application = new CompositeActorSimpleApplication();
         _run(application, args);
     }
-    
+
     /** Return the list of models.
      *  @return The list of models passed in as arguments.
      */

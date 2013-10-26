@@ -50,19 +50,19 @@ import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// MetroIISRDirector
-// 
+//
 
 /**
  * MetroIISRDirector is a Synchronous Reactive (SR) director that adapts to
  * MetroII semantics.
- * 
+ *
  * <p>
  * In MetroIISRDirector, the actor firing will first trigger a MetroII event to
  * be PROPOSED. The firing will not be executed until the MetroII event is
  * NOTIFIED. In other words, all the actors under MetroIISRDirector are
  * considered as MetroII actors.
  * </p>
- * 
+ *
  * <p>
  * By using a MetroIISRDirector, the user understands the firing of the MetroII
  * actor might be affected by MetroIIDirector on the upper level and the
@@ -73,13 +73,13 @@ import ptolemy.kernel.util.Workspace;
  * the fixed point. These non-determinisms are desirable and can be used to
  * optimize the architectures.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIISRDirector extends SRDirector implements GetFirable {
 
@@ -87,7 +87,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      * Construct a director in the default workspace with an empty string as its
      * name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
-     * 
+     *
      * @exception IllegalActionException
      *                If the name has a period in it, or the director is not
      *                compatible with the specified container.
@@ -105,7 +105,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      * Construct a director in the given workspace with an empty name. The
      * director is added to the list of objects in the workspace. Increment the
      * version number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace for this object.
      * @exception IllegalActionException
@@ -126,7 +126,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -147,7 +147,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      * Clone the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
-     * 
+     *
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException
@@ -168,7 +168,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -187,7 +187,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      * firing will not be executed until the MetroII event is NOTIFIED. In other
      * words, all the actors under MetroIISRDirector are considered as MetroII
      * actors.
-     * 
+     *
      * By using a MetroIISRDirector, the user understands the firing of the
      * MetroII actor might be affected by MetroIIDirector on the upper level and
      * the architectural model which the MetroII actor is mapped onto.
@@ -279,7 +279,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
 
     /**
      * Create a MetroII event.
-     * 
+     *
      * @param name
      *            MetroII event name
      * @return MetroII event builder

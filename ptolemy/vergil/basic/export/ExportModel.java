@@ -291,11 +291,11 @@ public class ExportModel {
 
         if (run) {
             if (!_runnable(model[0])) {
-                System.out.println("Model \"" + model[0].getFullName() 
+                System.out.println("Model \"" + model[0].getFullName()
                         + "\" contains actors such cannot be run "
                         + " as part of the export process from ExportModel or "
                         + "it has a WebExportParameters value that runBeforeExport set to false. "
-                        + "To export run this model and export it, use vergil."); 
+                        + "To export run this model and export it, use vergil.");
             } else {
             // Optionally run the model.
             Runnable runAction = new Runnable() {
@@ -948,7 +948,7 @@ public class ExportModel {
 
     /** Return true if the model is runnable from this context.
      *  Models that invoke SwingUtilities.invokeAndWait()
-     *  are not runnable here.  To export such a model, use 
+     *  are not runnable here.  To export such a model, use
      *  vergil.
      *  If the model has a WebExportParameters parameter
      *  then the value of the runBeforeExport Parameter is
@@ -972,10 +972,10 @@ public class ExportModel {
         while (atomicEntities.hasNext()) {
             Entity entity = (Entity)atomicEntities.next();
             if (entity instanceof UsesInvokeAndWait){
-                System.out.println(entity.getFullName() 
+                System.out.println(entity.getFullName()
                         + " invoked SwingUtilities.invokeAndWait()");
                 return false;
-            } 
+            }
         }
         return true;
     }

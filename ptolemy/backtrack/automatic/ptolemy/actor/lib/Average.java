@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/** 
+/**
  * <p>Output the average of the inputs after the last time a true token is
  * received at the reset port.
  * One output is produced each time the actor is fired.
@@ -74,7 +74,7 @@ public class Average extends Transformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The reset port of type BooleanToken. If this input port
      * receives a True token, then the averaging process will be
      * reset.
@@ -95,7 +95,7 @@ public class Average extends Transformer implements Rollbackable {
 
     private int _latestCount;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -112,7 +112,7 @@ public class Average extends Transformer implements Rollbackable {
         new SingletonParameter(reset, "_showName").setToken(BooleanToken.TRUE);
     }
 
-    /**     
+    /**
      * Consume at most one token from the <i>input</i>
      * and compute the average of the input tokens so far. Send the
      * result to the output.  If there is no input token available,
@@ -153,7 +153,7 @@ public class Average extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Reset the count of inputs.
      * @exception IllegalActionException If the parent class throws it.
      */
@@ -163,7 +163,7 @@ public class Average extends Transformer implements Rollbackable {
         $ASSIGN$_sum(null);
     }
 
-    /**     
+    /**
      * Record the most recent input as part of the running average.
      * Do nothing if there is no input.
      * @exception IllegalActionException If the base class throws it.

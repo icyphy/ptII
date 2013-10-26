@@ -40,17 +40,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
-Container for decorator attributes that are provided to local sources and 
+Container for decorator attributes that are provided to local sources and
 other actors that schedule their own firings by
-a {@link PtidesDirector}. Local sources in Ptides can produce an infinite 
+a {@link PtidesDirector}. Local sources in Ptides can produce an infinite
 number of future events. Whether this can happen depends on the execution
-strategy implemented in the Ptides director. Note that in a DE composite, 
+strategy implemented in the Ptides director. Note that in a DE composite,
 all events are produced in time-stamp order. In Ptides we do not have
 this restriction; events can be produced out of timestamp order as long
 as the event is safe to process. Local sources are triggered by pure
 events produced during a firing of a local source. Such a pure event is
-always safe to process. 
-The attributes provided by this decorator are used to throttle the 
+always safe to process.
+The attributes provided by this decorator are used to throttle the
 production of events by local sources in Ptides.
 
 <ul>
@@ -72,7 +72,7 @@ The decorated actor should produce events with timestamps up to maximumLookahead
 time units ahead of the current platform time, but there should not be more than
 maximumFutureEvents events from this actor in the event queue at any time.
 
- @author  Patricia Derler 
+ @author  Patricia Derler
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
@@ -125,8 +125,8 @@ public class ThrottleAttributes extends DecoratorAttributes {
      */
     public Parameter useMaximumFutureEvents;
 
-    /** The maximumFutureEvents parameter specifies the maximum number 
-     *  of events produced by the decorated actor that can be present 
+    /** The maximumFutureEvents parameter specifies the maximum number
+     *  of events produced by the decorated actor that can be present
      *  in the event queue at a time.
      *  This parameter contains an int value that defaults to 0.
      */

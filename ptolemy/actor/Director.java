@@ -247,7 +247,7 @@ public class Director extends Attribute implements Executable {
         newObject._initializables = null;
         newObject._startTime = null;
         newObject._stopTime = null;
-        newObject._zeroTime = new Time(newObject); 
+        newObject._zeroTime = new Time(newObject);
         newObject._executionAspects = null;
         newObject._aspectForActor = null;
         newObject._nextScheduleTime = null;
@@ -938,17 +938,17 @@ public class Director extends Attribute implements Executable {
             _resourceScheduling = true;
         }
     }
-    
+
     /** Resume the execution of an actor that was previously blocked because
      *  it didn't have all the resources it needed for execution. This method
      *  is called by {@link ActorExecutionAspect} actors.
-     *  
+     *
      *  In this base class, the implementation is empty. Derived directors
      *  should override this method to handle resuming of actor execution.
      *  @param actor The actor that resumes execution.
      *  @throws IllegalActionException Not thrown here but in derived classes.
      */
-    public void resumeActor(Actor actor) throws IllegalActionException { 
+    public void resumeActor(Actor actor) throws IllegalActionException {
     }
 
     /** Indicate that resolved types in the model may no longer be valid.
@@ -1066,7 +1066,7 @@ public class Director extends Attribute implements Executable {
             return Executable.COMPLETED;
         }
     }
-    
+
     /** Return the object to use to obtain a mutex lock on this director.
      *  This base class returns this director itself, but subclasses may
      *  return something else.
@@ -1131,7 +1131,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called prefire().");
         }
-        
+
         Time modifiedTime = _consultTimeRegulators(
                 localClock.getLocalTimeForCurrentEnvironmentTime());
 
@@ -1686,7 +1686,7 @@ public class Director extends Attribute implements Executable {
         return _aspectForActor.get(actor) != null
                 && _aspectForActor.get(actor).lastScheduledActorFinished();
     }
-    
+
     /** Consult all attributes contained by the container of this director
      *  that implement the {@link TimeRegulator} interface, if any, and return the
      *  smallest time returned by those regulators. If there are no such
@@ -1792,10 +1792,10 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Find the ExecutionAspect for the actor. Only one ExecutionAspect
-     * 
+     *
      *  @param actor The actor to be scheduled.
      *  @return The aspect.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected ActorExecutionAspect _getExecutionAspect(Actor actor) throws IllegalActionException {
         if (_aspectForActor == null) {
@@ -1807,7 +1807,7 @@ public class Director extends Attribute implements Executable {
                     .attributeList(ExecutionAttributes.class)) {
                 if (((BooleanToken)executionAttributes.enable.getToken()).booleanValue()) {
                     result = (ActorExecutionAspect) executionAttributes.getDecorator();
-                    _aspectForActor.put(actor, result);  
+                    _aspectForActor.put(actor, result);
                     break;
                 }
             }
@@ -1939,7 +1939,7 @@ public class Director extends Attribute implements Executable {
         if (aspect != null) {
             Time environmentTime = ((CompositeActor)  aspect
                     .getContainer()).getDirector().getEnvironmentTime();
-            time = ExecutionAspectHelper.schedule(aspect, actor, environmentTime, 
+            time = ExecutionAspectHelper.schedule(aspect, actor, environmentTime,
                     getDeadline(actor, timestamp));
             if (_nextScheduleTime == null) {
                 _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
@@ -1956,10 +1956,10 @@ public class Director extends Attribute implements Executable {
                             fireAtTime);
                 }
             }
-        } 
+        }
         return time == null || finished;
     }
-    
+
     /** Set of actors that have returned false from  postfire(),
      *  indicating that they do not wish to be iterated again.
      */
@@ -1985,7 +1985,7 @@ public class Director extends Attribute implements Executable {
     /** ExecutionAspects in the container of this director.
      */
     protected List<ActorExecutionAspect> _executionAspects;
-    
+
     /** Next time the aspect wants to be executed. */
     protected HashMap<ActorExecutionAspect, Time> _nextScheduleTime;
 

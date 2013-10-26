@@ -47,24 +47,24 @@ import ptolemy.kernel.util.Workspace;
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
 Bayesian Network models. ClassifyObservations is designed to work with <i>
 ExpectationMaximization<\i>, which provides the Maximum-Likelihood model parameters
-from which the observations are assumed to be drawn. The output is an integer array 
+from which the observations are assumed to be drawn. The output is an integer array
 of labels, representing the maximum-likelihood hidden state sequence of the given
 model.
 
 <p>
-The user provides a set of parameter estimates as inputs to the model, and 
-The <i>mean<\i>  is a double array input containing the mean estimate and 
-<i>sigma</i> is a double array input containing standard deviation estimate of 
-each mixture component. If the <i>modelType<\i> is HMM, then an additional input, 
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix 
+The user provides a set of parameter estimates as inputs to the model, and
+The <i>mean<\i>  is a double array input containing the mean estimate and
+<i>sigma</i> is a double array input containing standard deviation estimate of
+each mixture component. If the <i>modelType<\i> is HMM, then an additional input,
+<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
 governing the Markovian process representing the hidden state evolution. The <i>prior
-</i> input is an estimate of the prior state distribution.  
+</i> input is an estimate of the prior state distribution.
 
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class HMMExponentialClassifier extends ObservationClassifier {
    /** Construct an actor with the given container and name.
@@ -84,17 +84,17 @@ public class HMMExponentialClassifier extends ObservationClassifier {
        lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        StringAttribute cardinality = new StringAttribute(
                lambda.getPort(), "_cardinal");
-       cardinality.setExpression("SOUTH"); 
-       
+       cardinality.setExpression("SOUTH");
+
        //_nStates = ((ArrayToken) meanToken).length();
        _nStates = ((ArrayToken)lambda.getToken()).length();
        _lambda = new double[_nStates];
    }
 
    ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  //// 
-   
-   public PortParameter lambda;  
+   ////                         public variables                  ////
+
+   public PortParameter lambda;
 
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
@@ -102,24 +102,24 @@ public class HMMExponentialClassifier extends ObservationClassifier {
    public Object clone(Workspace workspace) throws CloneNotSupportedException {
        HMMExponentialClassifier newObject = (HMMExponentialClassifier) super
                .clone(workspace);
-       newObject._lambda = new double[_nStates];  
+       newObject._lambda = new double[_nStates];
        return newObject;
    }
-   
+
    /** Consume the inputs and produce the outputs of the FFT filter.
     *  @exception IllegalActionException If a runtime type error occurs.
     */
    public void fire() throws IllegalActionException {
        super.fire();
-       
-       lambda.update(); 
+
+       lambda.update();
        transitionMatrix.update();
        prior.update();
-       
+
        // update array values and lengths
-       _nStates = ((ArrayToken) lambda.getToken()).length();  
-       
-       for (int i = 0; i < _nStates; i++) { 
+       _nStates = ((ArrayToken) lambda.getToken()).length();
+
+       for (int i = 0; i < _nStates; i++) {
            _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
                    .doubleValue();
            _lambda[i] = ((DoubleToken)((ArrayToken) lambda.getToken()).getElement(i))
@@ -129,30 +129,30 @@ public class HMMExponentialClassifier extends ObservationClassifier {
                        .getElementAsToken(i, j))
                        .doubleValue();
            }
-       } 
+       }
            if( (_nStates != _lambda.length) ||(_nStates != _transitionMatrixEstimate.length))
            {
                throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
            }
-           
+
            int[] classifyStates = new int[_observations.length];
-           
+
            classifyStates = classifyHMM(_observations , _priors, _transitionMatrixEstimate);
-           
+
            IntToken[] _outTokenArray = new IntToken[classifyStates.length];
            for (int i = 0; i < classifyStates.length; i++) {
             _outTokenArray[i] = new IntToken(classifyStates[i]);
            }
-    
+
            output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
    }
 
-   protected double emissionProbability(double y, int hiddenState){ 
-       double m = _lambda[hiddenState]; 
+   protected double emissionProbability(double y, int hiddenState){
+       double m = _lambda[hiddenState];
        return m*Math.exp(-m*y);
    }
    ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////  
-   
-   private double[] _lambda;  
+   ////                         private variables                 ////
+
+   private double[] _lambda;
 }

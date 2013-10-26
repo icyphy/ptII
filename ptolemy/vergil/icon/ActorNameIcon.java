@@ -122,7 +122,7 @@ public class ActorNameIcon extends BoxedValueIcon {
     }
 
     /** True if we have printed a message about failing to create
-     *  background figures. 
+     *  background figures.
      */
     private boolean _printedMessage;
 }

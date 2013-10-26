@@ -71,7 +71,7 @@ public class Assert extends Expression {
     public Assert(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Hide the output port.
         SingletonParameter showName = new SingletonParameter(output, "_hide");
         showName.setPersistent(false);
@@ -79,14 +79,14 @@ public class Assert extends Expression {
 
         // Set the type of the output port to ensure that the expression is predicate.
         output.setTypeEquals(BaseType.BOOLEAN);
-        
+
         message = new StringParameter(this, "message");
         message.setExpression("Assertion failed.");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The error message to display when the assertion is violated.
      *  This is a string that defaults to "Assertion failed.".
      */
@@ -131,7 +131,7 @@ public class Assert extends Expression {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (!((BooleanToken)_result).booleanValue()) {
             StringBuffer info = new StringBuffer();
             info.append(message.stringValue());
@@ -147,7 +147,7 @@ public class Assert extends Expression {
             }
             throw new IllegalActionException(this, info.toString());
         }
-        
+
         // If we get here, assertion has passed.
         // Copy the inputs to the outputs.
         for (String inputName : _tokenMap.keySet()) {
@@ -157,7 +157,7 @@ public class Assert extends Expression {
             outputPort.send(0, _tokenMap.get(inputName));
         }
     }
-    
+
     /** Override the base class to create a specialized port.
      *  @param name The name for the new port.
      *  @return The new port.
@@ -172,14 +172,14 @@ public class Assert extends Expression {
             throw new InternalErrorException(e);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
     /** Override the base class to create an output port corresponding
      *  to each new input port added. The output port will have as its
      *  display name the name of the input port. It will not be persistent
-     *  (will not be exported to the MoML file). 
+     *  (will not be exported to the MoML file).
      *  @param port The port to add to this entity.
      *  @exception IllegalActionException If the port has no name.
      *  @exception NameDuplicationException If the port name collides with a
@@ -189,7 +189,7 @@ public class Assert extends Expression {
     protected void _addPort(TypedIOPort port) throws IllegalActionException,
             NameDuplicationException {
         super._addPort(port);
-        
+
         if (_creatingOutputPort || _cloning) {
             return;
         }
@@ -204,7 +204,7 @@ public class Assert extends Expression {
         // The _cloning flag above tells us that.
         _createOutputPort(port);
     }
-    
+
     /** Override the base class to remove the corresponding
      *  output port, if the specified port is an input port, or
      *  the corresponding input port, if the specified port is an
@@ -216,7 +216,7 @@ public class Assert extends Expression {
     protected void _removePort(Port port) {
         super._removePort(port);
         String name = port.getName();
-        
+
         // Remove the corresponding output port.
         // NOTE: If a corresponding output port exists, then remove
         // it whether this is an output port or not. The user may
@@ -261,7 +261,7 @@ public class Assert extends Expression {
             showName = new SingletonParameter(port, "_showName");
             showName.setPersistent(false);
             showName.setExpression("true");
-        
+
             String name = port.getName();
 
             // If there is already a port with the correct name, use that.
@@ -286,25 +286,25 @@ public class Assert extends Expression {
             _creatingOutputPort = false;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
-    
+
     /** Flag indicating that we are being cloned.
      *  Note that this flag will be cloned into the clone, so it needs
      *  to be reset in the both the clone and clonee.
      */
     private boolean _cloning = false;
-    
+
     /** Flag indicating that we are adding a corresponding output port. */
     private boolean _creatingOutputPort;
-    
+
     /** Map from input port name to the corresponding output port. */
     private HashMap<String,TypedIOPort> _outputPortMap = new HashMap<String,TypedIOPort>();
-    
+
     /** Prefix given to output port names. */
     private final static String _OUTPUT_PORT_PREFIX = "_correspondingOutputPort_";
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
 
@@ -329,7 +329,7 @@ public class Assert extends Expression {
         }
         // Override setName() to also change the name of the corresponding
         // output port.
-        public void setName(final String name) 
+        public void setName(final String name)
                 throws IllegalActionException, NameDuplicationException {
             final String oldName = getName();
             super.setName(name);
@@ -345,7 +345,7 @@ public class Assert extends Expression {
                     outputPort.setDisplayName(name);
                     container._outputPortMap.remove(oldName);
                     container._outputPortMap.put(name, outputPort);
-                }                        
+                }
             }
         }
     }

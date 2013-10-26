@@ -1,5 +1,5 @@
 /* This class creates and stores the log file in the temporary folder.
- * 
+ *
  * Copyright (c) 2012-2013,
  * Programming Environments Laboratory (PELAB),
  * Department of Computer and getInformation Science (IDA),
@@ -65,10 +65,10 @@ public class OMCLogger {
      *  This constructor has no parameter.
      *  It creates the log file in the temporary folder and sets the format
      *  of the log to show date and time first.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     private OMCLogger() throws IllegalActionException {
-        
+
         String logPath = createDirectoryForResult();
         String logFullPath = logPath + "omcLog.txt";
         try {
@@ -148,8 +148,8 @@ public class OMCLogger {
         _omcLoggerInstance = null;
     }
 
-    /** Fetch the Info LogLevel and write them in the log. 
-     *  @param infoMessage The info message. 
+    /** Fetch the Info LogLevel and write them in the log.
+     *  @param infoMessage The info message.
      */
     public void getInfo(String infoMessage) {
         omcLogger.info(infoMessage);
@@ -174,7 +174,7 @@ public class OMCLogger {
     ////                         private variables                 ////
     // The handler for writing to OpenModelica Compiler(OMC) log.
     private FileHandler _fileHandler = null;
-    
+
     // OMCLogger Object for accessing a unique source of instance.
     private static OMCLogger _omcLoggerInstance = null;
 }

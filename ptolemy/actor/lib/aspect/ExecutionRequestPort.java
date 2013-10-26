@@ -52,9 +52,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 *  @Pt.AcceptedRating Red (derler)
 */
 public class ExecutionRequestPort extends CommunicationRequestPort {
-    
+
     /** Construct a constant source with the default type set to the RecordToken
-     *  used in the CompositeQM. 
+     *  used in the CompositeQM.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -65,9 +65,9 @@ public class ExecutionRequestPort extends CommunicationRequestPort {
     public ExecutionRequestPort(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         RecordType type = new RecordType(
-                new String[]{"actor", "executionTime"}, 
+                new String[]{"actor", "executionTime"},
                 new Type[]{BaseType.OBJECT, BaseType.DOUBLE});
         value.setTypeEquals(type);
     }

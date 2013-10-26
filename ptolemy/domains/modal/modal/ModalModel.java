@@ -490,7 +490,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
         return true;
     }
-    
+
     /** Initialize the mode controller and all the refinements by
      * calling the initialize() method in the super class. Build the
      * local maps for receivers. Suspend all the refinements of states

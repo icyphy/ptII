@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU 
+ * Sample implementation of an FMU
  * This demonstrates the use of all FMU variable types.
- * (c) 2010 QTronic GmbH 
+ * (c) 2010 QTronic GmbH
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
@@ -88,7 +88,7 @@ static void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     b(bool_out_) = !b(bool_out_);
     if (i(int_out_)<12) copy(string_out_, month[i(int_out_)]);
     else eventInfo->terminateSimulation = fmiTrue;
-} 
+}
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

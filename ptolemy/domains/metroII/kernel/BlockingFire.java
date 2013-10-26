@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * interfaces so that the actor can be seen as a FSM from outside. More
  * specifically, the wrapper implements startOrResume(event_list) function that
  * gives how the FSM reacts to the Metro events.
- * 
+ *
  * <p>
  * The FireMachine has the following states. Each represents a state of the
  * wrapped actor:
@@ -63,11 +63,11 @@ import ptolemy.kernel.util.IllegalActionException;
  * full actor name should be 'Test.Ramp'. The Metro event associated with the
  * state BEGIN of the actor is 'Ramp.FIRE_BEGIN'.
  * </p>
- * 
+ *
  * <p>
  * Neither START nor FINAL is associated with any state event.
  * </p>
- * 
+ *
  * <p>
  * When startOrResume() is called, the wrapper checks if the Metro event
  * associated with the current state is notified. If the event is notified, call
@@ -76,36 +76,36 @@ import ptolemy.kernel.util.IllegalActionException;
  * associated with no state event, simply transition to the next state, and
  * propose the Metro event associated with the next state. The 'next' state is
  * defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
- * 
+ *
  * <pre>
  *       action: propose FIRE_BEGIN
  * START ---------------------------------------> BEGIN
- * 
- *       guard: FIRE_BEGIN is notified   
+ *
+ *       guard: FIRE_BEGIN is notified
  *       action: call fire(), propose FIRE_END
  * BEGIN ---------------------------------------> FIRE_END
- *  
- *       guard: FIRE_BEGIN is not notified   
+ *
+ *       guard: FIRE_BEGIN is not notified
  *       action: propose FIRE_BEGIN
  * BEGIN ---------------------------------------> BEGIN
  * </pre>
- * 
+ *
  * </p>
- * 
- * 
+ *
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 
 public class BlockingFire extends FireMachine {
 
     /**
      * Construct a basic wrapper and wrap the input actor.
-     * 
+     *
      * @param actor
      *            the actor to be wrapped.
      */
@@ -124,20 +124,20 @@ public class BlockingFire extends FireMachine {
      * is associated with no state event, simply transition to the next state,
      * and propose the Metro event associated with the next state. The 'next'
      * state is defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
-     * 
+     *
      * <pre>
      *       action: propose FIRE_BEGIN
      * START ---------------------------------------> BEGIN
-     * 
-     *       guard: FIRE_BEGIN is notified   
+     *
+     *       guard: FIRE_BEGIN is notified
      *       action: call fire(), propose FIRE_END
      * BEGIN ---------------------------------------> FIRE_END
-     *  
-     *       guard: FIRE_BEGIN is not notified   
+     *
+     *       guard: FIRE_BEGIN is not notified
      *       action: propose FIRE_BEGIN
      * BEGIN ---------------------------------------> BEGIN
      * </pre>
-     * 
+     *
      * @param metroIIEventList
      *            a list of MetroII events that are proposed. It is set by
      *            startOrResume() not the caller.
@@ -170,7 +170,7 @@ public class BlockingFire extends FireMachine {
         } else if (getState() == State.FINAL) {
             // do nothing
         } else {
-            // unknown state; 
+            // unknown state;
             assert false;
         }
 

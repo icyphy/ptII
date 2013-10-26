@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 *   This actor simply stores the token from the input and provides methods
 *   to access the token. A token in this port is a RecordToken containing
 *   an actor object and the execution time of this actor. The meaning is that
-*   the actor can resume execution. 
+*   the actor can resume execution.
 *   The CompositeExecutionAspect calls these methods.
 *
 *  @author Patricia Derler
@@ -63,7 +63,7 @@ public class ExecutionResponsePort extends CommunicationResponsePort {
      */
     public ExecutionResponsePort(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
-    } 
-    
+        super(container, name);
+    }
+
 }

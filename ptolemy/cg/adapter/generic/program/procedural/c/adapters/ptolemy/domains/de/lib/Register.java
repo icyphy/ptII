@@ -55,25 +55,25 @@ public class Register extends MostRecent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * A function which returns the generated code from the C template
      * preFire method.
      * @return A string representing the preFire C code for this actor
      * @throws IllegalActionException If illegal macro names are found.
      */
-    public String generatePrefireCode() throws IllegalActionException {             
+    public String generatePrefireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
         ptolemy.domains.de.lib.Register actor = (ptolemy.domains.de.lib.Register) getComponent();
-        
+
         codeStream.appendCodeBlock("beginPreFireBlock", args);
-        
+
         if (actor.input.isOutsideConnected()) {
             codeStream.appendCodeBlock("inputConnectedPreFireBlock");
         }
-        
+
         if (actor.trigger.isOutsideConnected()) {
             for (int j = 0; j < actor.trigger.getWidth(); j++) {
                 args.clear();
@@ -81,17 +81,17 @@ public class Register extends MostRecent {
                 codeStream.appendCodeBlock("preFireLoopBlock", args);
             }
         }
-        
+
         args.clear();
         codeStream.appendCodeBlock("endPreFireBlock", args);
 
         return processCode(codeStream.toString());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     /**
      * Generate fire code.
      * The method generates code that is executed when the <i>input</i> has a Token
@@ -105,48 +105,48 @@ public class Register extends MostRecent {
         codeStream.clear();
         LinkedList args = new LinkedList();
         ptolemy.domains.de.lib.Register actor = (ptolemy.domains.de.lib.Register) getComponent();
-        
+
         int inputWidth = actor.input.getWidth();
         int outputWidth = actor.output.getWidth();
         int triggerWidth = actor.trigger.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);
-        
+
         args.add(Integer.toString(inputWidth));
         args.add(Integer.toString(outputWidth));
         args.add(Integer.toString(triggerWidth));
-        
+
         codeStream.appendCodeBlock("InitFireBlock", args);
-        
+
         for (int i = 0; i < triggerWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("triggerLoopFireBlock", args);
         }
-        
+
         args.clear();
         codeStream.appendCodeBlock("ifTriggeredFireBlock", args);
-        
+
         for (int i = 0; i < commonWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("ifTriggeredLoopFireBlock", args);
         }
-        
+
         args.clear();
         codeStream.appendCodeBlock("endIfTriggeredFireBlock", args);
-        
+
         for (int i = 0; i < commonWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("inputChannelLoopFireBlock", args);
         }
-        
+
         for (int i = commonWidth; i < inputWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("throwTokensLoopFireBlock", args);
         }
-        
+
         return processCode(codeStream.toString());
     }
 }

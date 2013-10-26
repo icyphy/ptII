@@ -48,7 +48,7 @@ public class IplROI extends Structure {
             Structure.ByReference {
     }
     /** Return the field names in the proper order.
-     *  <p>This is new in jna-3.5.0.   
+     *  <p>This is new in jna-3.5.0.
      *  @return a list of strings that name the fields in order.
      */
     protected List getFieldOrder() {

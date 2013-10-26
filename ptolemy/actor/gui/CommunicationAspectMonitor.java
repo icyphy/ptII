@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
 
-/** This actor implements a Communication aspect Monitor. 
+/** This actor implements a Communication aspect Monitor.
  *  This monitor shows when communication aspects in the model receive messages
  *  and send messages in a 2D plot. The x-Axis is the time, the y-Axis shows how
  *  many messages are currently processed by the communication aspect.

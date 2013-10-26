@@ -46,24 +46,24 @@ import ptolemy.kernel.util.Workspace;
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
 Bayesian Network models. ClassifyObservations is designed to work with <i>
 ExpectationMaximization<\i>, which provides the Maximum-Likelihood model parameters
-from which the observations are assumed to be drawn. The output is an integer array 
+from which the observations are assumed to be drawn. The output is an integer array
 of labels, representing the maximum-likelihood hidden state sequence of the given
 model.
 
 <p>
-The user provides a set of parameter estimates as inputs to the model, and 
-The <i>mean<\i>  is a double array input containing the mean estimate and 
-<i>sigma</i> is a double array input containing standard deviation estimate of 
-each mixture component. If the <i>modelType<\i> is HMM, then an additional input, 
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix 
+The user provides a set of parameter estimates as inputs to the model, and
+The <i>mean<\i>  is a double array input containing the mean estimate and
+<i>sigma</i> is a double array input containing standard deviation estimate of
+each mixture component. If the <i>modelType<\i> is HMM, then an additional input,
+<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
 governing the Markovian process representing the hidden state evolution. The <i>prior
-</i> input is an estimate of the prior state distribution.  
+</i> input is an estimate of the prior state distribution.
 
  @author Ilge Akkaya
 @version $Id$
  @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class HMMMultinomialClassifier extends ObservationClassifier {
    /** Construct an actor with the given container and name.
@@ -77,23 +77,23 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
    public HMMMultinomialClassifier(CompositeEntity container, String name)
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
-       
+
        observationProbabilities = new PortParameter(this, "observationProbabilities");
        observationProbabilities.setExpression("[0.6,0.3,0.1;0.1,0.4,0.5]");
        observationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
        StringAttribute cardinality = new StringAttribute(
                observationProbabilities.getPort(), "_cardinal");
-       cardinality.setExpression("SOUTH"); 
-       
+       cardinality.setExpression("SOUTH");
+
        _nCategories = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
-       
+
        _B = new double[_nStates][_nCategories];
    }
 
    ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  //// 
-   
-   public PortParameter observationProbabilities;   
+   ////                         public variables                  ////
+
+   public PortParameter observationProbabilities;
 
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
@@ -104,26 +104,26 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
        newObject._B = new double[_nStates][_nCategories];
        return newObject;
    }
-   
+
    /** Consume the inputs and produce the outputs of the FFT filter.
     *  @exception IllegalActionException If a runtime type error occurs.
     */
    public void fire() throws IllegalActionException {
        super.fire();
-       
+
        observationProbabilities.update();
        transitionMatrix.update();
        prior.update();
-       
+
        _nCategories = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
-       
+
        // update array values and lengths
-       _nStates = ((ArrayToken) prior.getToken()).length();  
-       
+       _nStates = ((ArrayToken) prior.getToken()).length();
+
        for (int i = 0; i < _nStates; i++) {
            _priors[i] = ((DoubleToken)((ArrayToken) prior.getToken()).getElement(i))
                    .doubleValue();
-           for (int j = 0; j < _nCategories; j++){ 
+           for (int j = 0; j < _nCategories; j++){
                _B[i][j] = ((DoubleToken)((MatrixToken) observationProbabilities.getToken())
                        .getElementAsToken(i,j))
                        .doubleValue();
@@ -133,30 +133,30 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
                        .getElementAsToken(i, j))
                        .doubleValue();
            }
-       } 
+       }
            if( (_nStates != _transitionMatrixEstimate[0].length) ||(_nStates != _transitionMatrixEstimate.length))
            {
                throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
            }
-           
+
            int[] classifyStates = new int[_observations.length];
-           
+
            classifyStates = classifyHMM(_observations , _priors, _transitionMatrixEstimate);
-           
+
            IntToken[] _outTokenArray = new IntToken[classifyStates.length];
            for (int i = 0; i < classifyStates.length; i++) {
             _outTokenArray[i] = new IntToken(classifyStates[i]);
            }
-    
+
            output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
    }
 
    protected double emissionProbability(double y, int hiddenState){
-       return _B[hiddenState][(int)y];  
+       return _B[hiddenState][(int)y];
    }
    ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////  
-   
-   private double[][] _B;  
+   ////                         private variables                 ////
+
+   private double[][] _B;
    private int _nCategories;
 }

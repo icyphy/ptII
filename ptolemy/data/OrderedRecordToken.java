@@ -41,12 +41,12 @@ import ptolemy.util.StringUtilities;
 //// OrderedRecordToken
 
 /**
- A token that contains a set of label/token pairs. Record labels may be 
- arbitrary strings. Operations on record tokens result in new record tokens 
- containing only the common fields, where the operation specifies how to 
- combine the data in the common fields.  Thus, for example, if two record 
- tokens are added or subtracted, then common records (those with the same 
- labels) will be added or subtracted, and the disjoint records will not 
+ A token that contains a set of label/token pairs. Record labels may be
+ arbitrary strings. Operations on record tokens result in new record tokens
+ containing only the common fields, where the operation specifies how to
+ combine the data in the common fields.  Thus, for example, if two record
+ tokens are added or subtracted, then common records (those with the same
+ labels) will be added or subtracted, and the disjoint records will not
  appear in the result.
 
  <p>This implementation maintains the order of the entries as they were added.
@@ -171,7 +171,7 @@ public class OrderedRecordToken extends RecordToken {
      *  <code>[<i>label</i> = <i>value</i>, <i>label</i> = <i>value</i>, ...]</code>
      *  The record fields are listed in the their original order
      *  <p>Record labels that contain any non-Java identifier characters
-     *  are surrounded with double quotes. Quotes within label strings are 
+     *  are surrounded with double quotes. Quotes within label strings are
      *  escaped using a backslash.
      *  </p>
      *

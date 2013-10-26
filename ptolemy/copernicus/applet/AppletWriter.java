@@ -273,7 +273,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (director != null) {
             String directorPackage = director.getClass().getPackage().getName();
-            
+
             if (!directorPackage.endsWith(".kernel")) {
                 System.out.println("Warning: the directorPackage does not end "
                         + "with '.kernel', it is :" + directorPackage);
@@ -386,7 +386,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + File.separator + signed + jarFileName)
                         + "\n             download=\"eager\"/>\n");
                  }
-                 
+
                  _modelJarFiles = jarFilesResults.toString();
 
                  sawSignedOnce = false;
@@ -2024,7 +2024,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
 
             if (renameJarFile) {
-                if (jarFile.exists()) { 
+                if (jarFile.exists()) {
                     // Windows XP has a toy file system that requires
                     // that we *remove* the file before calling File.renameTo().
                     // Will this madness ever end?

@@ -36,7 +36,7 @@ import java.util.List;
 import ptolemy.kernel.util.NamedObj;
 
 /** This is an interface for an execution aspect. Classes that implement
- *  this interface are interested in schedule events created by 
+ *  this interface are interested in schedule events created by
  *  resource schedulers.
  *
  * @author Patricia Derler

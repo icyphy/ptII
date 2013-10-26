@@ -1,4 +1,4 @@
-/* This actor implements a communication aspect which manages all end-systems 
+/* This actor implements a communication aspect which manages all end-systems
    for an AFDX network.
 
 @Copyright (c) 2010-2011 The Regents of the University of California.
@@ -65,14 +65,14 @@ import ptolemy.kernel.util.Workspace;
 
 /** This actor is an {@link CommunicationAspect} that simulates an AFDX End-systems component
  *  When its {@link #sendToken(Receiver, Receiver, Token)} method is called,
- *  the delivery of the specified token to the specified receiver is delayed according 
+ *  the delivery of the specified token to the specified receiver is delayed according
  *  to the AFDX end-system protocol and behavior. Only one actor of this kind is required
  *  to manage all end-systems of one AFDX network.
- *  <p> 
- *  For more information please refer to: 
+ *  <p>
+ *  For more information please refer to:
  *      <i>AFDX network simulation in PtolemyII</i>.
  *      <i>AFDX standard document</i>.
- *       
+ *
  *  @author Gilles Lasnier
  *  @version $Id: AFDXESs.java 67578 2013-09-25 19:35:12Z pd $
  *  @since Ptolemy II 8.0
@@ -122,8 +122,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
     ///////////////////////////////////////////////////////////////////
     //                          public variables                     //
 
-    /** 
-     * The bit rate of the bus. This is a double with default value to 100 
+    /**
+     * The bit rate of the bus. This is a double with default value to 100
      * Mbits/s. It is required to be positive.
      */
     public Parameter bitRate;
@@ -178,10 +178,10 @@ public class AFDXESs extends AtomicCommunicationAspect {
         return newObject;
     }
 
-    /** Fire the actor. 
+    /** Fire the actor.
      *  Typically, the fire() method performs the computation associated
-     *  with an actor. 
-     *  Here, it delivers (if required) the intended token to the intended receiver(s).  
+     *  with an actor.
+     *  Here, it delivers (if required) the intended token to the intended receiver(s).
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
@@ -389,9 +389,9 @@ public class AFDXESs extends AtomicCommunicationAspect {
     }
 
     /** Initiate a send of the specified token to the specified
-     *  receiver. This method will schedule a refiring of this actor 
+     *  receiver. This method will schedule a refiring of this actor
      *  according to the requirements of the AFDX protocol.
-     *  
+     *
      *  @param source Sender of the token.
      *  @param receiver The receiver to send to.
      *  @param token The token to send.
@@ -483,7 +483,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
     /** Set name of virtual link that is parameterized on a port.
      * @param port The port.
-     * @param name The virtual link name. 
+     * @param name The virtual link name.
      */
     public void setVlinkName(IOPort port, String name) {
         AFDXVlink vl;
@@ -499,7 +499,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
     /** Set bag value that is parameterized on a port.
      * @param port The port.
-     * @param bag The bag value. 
+     * @param bag The bag value.
      */
     public void setBag(IOPort port, Double bag) {
         AFDXVlink vl;
@@ -515,7 +515,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
     /** Set frame size that is parameterized on a port.
      * @param port The port.
-     * @param size The frame size. 
+     * @param size The frame size.
      */
     public void setFrameSize(IOPort port, int size) {
         AFDXVlink vl;
@@ -531,7 +531,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
     /** Set the name of the scheduler that is parameterized on a port..
      * @param port The port.
-     * @param name The name. 
+     * @param name The name.
      */
     public void setSchedulerMultiplexorName(IOPort port, String name)
             throws IllegalActionException {
@@ -587,7 +587,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Tokens received as input to the AFDX traffic regulator 
+    /** Tokens received as input to the AFDX traffic regulator
      * (aka Lissor or Shaper).
      */
     protected HashMap<String, LinkedList<TimedEvent>> _afdxVLinksQueue;
@@ -608,7 +608,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
      */
     protected HashMap<String, LinkedList<TimedEvent>> _afdxSchedMuxsQueue;
 
-    /** Next time a token is sent and the next token can be processed. 
+    /** Next time a token is sent and the next token can be processed.
      */
     protected Time _nextFireTime;
 
@@ -636,7 +636,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
     private static final String payload = "payload";
 
     /** The attributes configured per port which is mediated by a
-     *  AFDXESs. XXX  
+     *  AFDXESs. XXX
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
     public static class AFDXESsAttributes extends CommunicationAspectAttributes {
@@ -683,8 +683,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
          */
         public Parameter schedulerMultiplexorName;
 
-        /** If attribute is <i>portIn</i> or <i>portOut</i>, 
-         *  report the new values to the communication aspect. 
+        /** If attribute is <i>portIn</i> or <i>portOut</i>,
+         *  report the new values to the communication aspect.
          *  @param attribute The changed parameter.
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.

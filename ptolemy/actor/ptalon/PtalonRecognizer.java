@@ -42,7 +42,7 @@ import antlr.collections.AST;
 import antlr.collections.impl.ASTArray;
 import antlr.collections.impl.BitSet;
 
-/** 
+/**
   PtalonRecognizer.java generated from populator.g by ANTLR.
 
   @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
@@ -57,9 +57,9 @@ public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTok
  {
 
     private boolean _gtExtension = false;
-    
+
     private boolean _isInTransformation = false;
-    
+
     public void enableGTExtension(boolean enable) {
         _gtExtension = enable;
     }
@@ -100,7 +100,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
  * Generate corresponding tree #(PORT ID), #(INPORT ID), or #(OUTPORT ID).
  */
         public final void port_declaration() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST port_declaration_AST = null;
@@ -113,10 +113,10 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 Token  d = null;
                 PtalonAST d_AST = null;
                 PtalonAST e_AST = null;
-                
+
                 boolean dynamic_name = false;
-                
-                
+
+
                 {
                 switch ( LA(1)) {
                 case PORT:
@@ -126,9 +126,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         match(PORT);
                         if ( inputState.guessing==0 ) {
                                 port_declaration_AST = (PtalonAST)currentAST.root;
-                                
+
                                 port_declaration_AST = a_AST;
-                                
+
                                 currentAST.root = port_declaration_AST;
                                 currentAST.child = port_declaration_AST!=null &&port_declaration_AST.getFirstChild()!=null ?
                                         port_declaration_AST.getFirstChild() : port_declaration_AST;
@@ -146,9 +146,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 match(RBRACKET);
                                 if ( inputState.guessing==0 ) {
                                         port_declaration_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         port_declaration_AST = (PtalonAST)astFactory.create(MULTIPORT,"multiport");
-                                        
+
                                         currentAST.root = port_declaration_AST;
                                         currentAST.child = port_declaration_AST!=null &&port_declaration_AST.getFirstChild()!=null ?
                                                 port_declaration_AST.getFirstChild() : port_declaration_AST;
@@ -175,9 +175,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         match(INPORT);
                         if ( inputState.guessing==0 ) {
                                 port_declaration_AST = (PtalonAST)currentAST.root;
-                                
+
                                 port_declaration_AST = b_AST;
-                                
+
                                 currentAST.root = port_declaration_AST;
                                 currentAST.child = port_declaration_AST!=null &&port_declaration_AST.getFirstChild()!=null ?
                                         port_declaration_AST.getFirstChild() : port_declaration_AST;
@@ -195,9 +195,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 match(RBRACKET);
                                 if ( inputState.guessing==0 ) {
                                         port_declaration_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         port_declaration_AST = (PtalonAST)astFactory.create(MULTIINPORT,"multiinport");
-                                        
+
                                         currentAST.root = port_declaration_AST;
                                         currentAST.child = port_declaration_AST!=null &&port_declaration_AST.getFirstChild()!=null ?
                                                 port_declaration_AST.getFirstChild() : port_declaration_AST;
@@ -224,9 +224,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         match(OUTPORT);
                         if ( inputState.guessing==0 ) {
                                 port_declaration_AST = (PtalonAST)currentAST.root;
-                                
+
                                 port_declaration_AST = c_AST;
-                                
+
                                 currentAST.root = port_declaration_AST;
                                 currentAST.child = port_declaration_AST!=null &&port_declaration_AST.getFirstChild()!=null ?
                                         port_declaration_AST.getFirstChild() : port_declaration_AST;
@@ -244,9 +244,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 match(RBRACKET);
                                 if ( inputState.guessing==0 ) {
                                         port_declaration_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         port_declaration_AST = (PtalonAST)astFactory.create(MULTIOUTPORT,"multioutport");
-                                        
+
                                         currentAST.root = port_declaration_AST;
                                         currentAST.child = port_declaration_AST!=null &&port_declaration_AST.getFirstChild()!=null ?
                                                 port_declaration_AST.getFirstChild() : port_declaration_AST;
@@ -282,9 +282,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         expression();
                         e_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
-                                
+
                                 dynamic_name = true;
-                                
+
                         }
                         break;
                 }
@@ -300,17 +300,17 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 }
                 if ( inputState.guessing==0 ) {
                         port_declaration_AST = (PtalonAST)currentAST.root;
-                        
+
                         if (dynamic_name) {
                         port_declaration_AST.addChild((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(d_AST).add(e_AST)));
                         } else {
                         port_declaration_AST.addChild(d_AST);
                         }
-                        
+
                 }
                 returnAST = port_declaration_AST;
         }
-        
+
 /**
  * Parse anything inside XML-like block
  * <p>&lt  /&gt
@@ -318,30 +318,30 @@ public PtalonRecognizer(ParserSharedInputState state) {
  * <p>#(EXPRESSION)
  * <p>where the text of the token EXPRESSION is the expression
  * inside the XML-like block.
- * 
+ *
  */
         public final void expression() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST expression_AST = null;
                 Token  b = null;
                 PtalonAST b_AST = null;
-                
+
                 String out = "";
-                
-                
+
+
                 b = LT(1);
                 b_AST = (PtalonAST)astFactory.create(b);
                 match(EXPRESSION);
                 if ( inputState.guessing==0 ) {
                         expression_AST = (PtalonAST)currentAST.root;
-                        
+
                         String full = b.getText();
                         int length = full.length();
                         out += full.substring(2, length - 2);
                         expression_AST = (PtalonAST)astFactory.create(EXPRESSION,out);
-                        
+
                         currentAST.root = expression_AST;
                         currentAST.child = expression_AST!=null &&expression_AST.getFirstChild()!=null ?
                                 expression_AST.getFirstChild() : expression_AST;
@@ -349,18 +349,18 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 }
                 returnAST = expression_AST;
         }
-        
+
 /**
  * Parse for one of:
  * <p>parameter <i>ID</i>
  * <p>actor <i>ID</i>
- * <p>where parameterType is either "parameter", "intparameter", or 
+ * <p>where parameterType is either "parameter", "intparameter", or
  * "outparameter".
- * Generate corresponding tree #(PARAMETER ID), #(INTPARAMETER ID), or 
+ * Generate corresponding tree #(PARAMETER ID), #(INTPARAMETER ID), or
  * #(BOOLPARAMETER ID).
  */
         public final void parameter_declaration() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST parameter_declaration_AST = null;
@@ -375,11 +375,11 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 Token  d = null;
                 PtalonAST d_AST = null;
                 PtalonAST q_AST = null;
-                
+
                 boolean addChild = true;
                 boolean dynamic_name = false;
-                
-                
+
+
                 {
                 switch ( LA(1)) {
                 case PARAMETER:
@@ -397,9 +397,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 expression();
                                 n_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
-                                        
+
                                         dynamic_name = true;
-                                        
+
                                 }
                                 break;
                         }
@@ -425,14 +425,14 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 e_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         parameter_declaration_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         if (dynamic_name) {
                                         parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(PARAM_EQUALS,"=")).add((PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(c_AST).add(n_AST))))).add(e_AST));
                                         } else {
                                         parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(PARAM_EQUALS,"=")).add((PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add(c_AST))).add(e_AST));
                                         }
                                         addChild = false;
-                                        
+
                                         currentAST.root = parameter_declaration_AST;
                                         currentAST.child = parameter_declaration_AST!=null &&parameter_declaration_AST.getFirstChild()!=null ?
                                                 parameter_declaration_AST.getFirstChild() : parameter_declaration_AST;
@@ -452,7 +452,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         }
                         if ( inputState.guessing==0 ) {
                                 parameter_declaration_AST = (PtalonAST)currentAST.root;
-                                
+
                                 if (addChild) {
                                 if (dynamic_name) {
                                 parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(c_AST).add(n_AST))));
@@ -460,7 +460,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add(c_AST));
                                 }
                                 }
-                                
+
                                 currentAST.root = parameter_declaration_AST;
                                 currentAST.child = parameter_declaration_AST!=null &&parameter_declaration_AST.getFirstChild()!=null ?
                                         parameter_declaration_AST.getFirstChild() : parameter_declaration_AST;
@@ -486,9 +486,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 tmp8_AST = (PtalonAST)astFactory.create(LT(1));
                                 match(ACTORPARAM);
                                 if ( inputState.guessing==0 ) {
-                                        
+
                                         a_AST = (PtalonAST)astFactory.create(ACTOR,"actor");
-                                        
+
                                 }
                                 break;
                         }
@@ -512,10 +512,10 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 q_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         parameter_declaration_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(ACTOR_EQUALS,"=")).add((PtalonAST)astFactory.make( (new ASTArray(2)).add(a_AST).add(d_AST))).add(q_AST));
                                         addChild = false;
-                                        
+
                                         currentAST.root = parameter_declaration_AST;
                                         currentAST.child = parameter_declaration_AST!=null &&parameter_declaration_AST.getFirstChild()!=null ?
                                                 parameter_declaration_AST.getFirstChild() : parameter_declaration_AST;
@@ -535,11 +535,11 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         }
                         if ( inputState.guessing==0 ) {
                                 parameter_declaration_AST = (PtalonAST)currentAST.root;
-                                
+
                                 if (addChild) {
                                 parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(a_AST).add(d_AST));
                                 }
-                                
+
                                 currentAST.root = parameter_declaration_AST;
                                 currentAST.child = parameter_declaration_AST!=null &&parameter_declaration_AST.getFirstChild()!=null ?
                                         parameter_declaration_AST.getFirstChild() : parameter_declaration_AST;
@@ -555,7 +555,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 }
                 returnAST = parameter_declaration_AST;
         }
-        
+
 /**
  * Parse qualified identifier:
  * <p><i>ID</i>
@@ -564,7 +564,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
  * <p>Generate tree #(QUALID)
  */
         public final void qualified_identifier() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST qualified_identifier_AST = null;
@@ -572,10 +572,10 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 PtalonAST p_AST = null;
                 PtalonAST a_AST = null;
                 PtalonAST b_AST = null;
-                
+
                 StringBuffer identifier = new StringBuffer();
-                
-                
+
+
                 {
                 if ((LA(1)==ID) && (LA(2)==COLON)) {
                         p = LT(1);
@@ -585,9 +585,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         tmp10_AST = (PtalonAST)astFactory.create(LT(1));
                         match(COLON);
                         if ( inputState.guessing==0 ) {
-                                
+
                                 identifier.append(p_AST.getText() + ":");
-                                
+
                         }
                 }
                 else if ((_tokenSet_0.member(LA(1))) && (LA(2)==DOT||LA(2)==SEMI)) {
@@ -595,14 +595,14 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 else {
                         throw new NoViableAltException(LT(1), getFilename());
                 }
-                
+
                 }
                 keyword_or_identifier();
                 a_AST = (PtalonAST)returnAST;
                 if ( inputState.guessing==0 ) {
-                        
+
                         identifier.append(a_AST.getText());
-                        
+
                 }
                 {
                 _loop21:
@@ -614,22 +614,22 @@ public PtalonRecognizer(ParserSharedInputState state) {
                                 keyword_or_identifier();
                                 b_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
-                                        
+
                                         identifier.append("." +  b_AST.getText());
-                                        
+
                                 }
                         }
                         else {
                                 break _loop21;
                         }
-                        
+
                 } while (true);
                 }
                 if ( inputState.guessing==0 ) {
                         qualified_identifier_AST = (PtalonAST)currentAST.root;
-                        
+
                         qualified_identifier_AST = (PtalonAST)astFactory.create(QUALID,identifier.toString());
-                        
+
                         currentAST.root = qualified_identifier_AST;
                         currentAST.child = qualified_identifier_AST!=null &&qualified_identifier_AST.getFirstChild()!=null ?
                                 qualified_identifier_AST.getFirstChild() : qualified_identifier_AST;
@@ -637,14 +637,14 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 }
                 returnAST = qualified_identifier_AST;
         }
-        
+
 /**
  * Parse relation declaration:
  * <p>relation <i>ID</i>
  * <p>Generate tree #(RELATION ID)
  */
         public final void relation_declaration() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST relation_declaration_AST = null;
@@ -653,7 +653,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 Token  i = null;
                 PtalonAST i_AST = null;
                 PtalonAST e_AST = null;
-                
+
                 r = LT(1);
                 r_AST = (PtalonAST)astFactory.create(r);
                 astFactory.makeASTRoot(currentAST, r_AST);
@@ -670,9 +670,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         e_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
                                 relation_declaration_AST = (PtalonAST)currentAST.root;
-                                
+
                                 relation_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(r_AST).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(i_AST).add(e_AST))));
-                                
+
                                 currentAST.root = relation_declaration_AST;
                                 currentAST.child = relation_declaration_AST!=null &&relation_declaration_AST.getFirstChild()!=null ?
                                         relation_declaration_AST.getFirstChild() : relation_declaration_AST;
@@ -693,9 +693,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 relation_declaration_AST = (PtalonAST)currentAST.root;
                 returnAST = relation_declaration_AST;
         }
-        
+
         public final void transparent_relation_declaration() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST transparent_relation_declaration_AST = null;
@@ -706,10 +706,10 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 Token  i = null;
                 PtalonAST i_AST = null;
                 PtalonAST e_AST = null;
-                
+
                 boolean created = false;
-                
-                
+
+
                 {
                 switch ( LA(1)) {
                 case TRANSPARENT:
@@ -749,11 +749,11 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         e_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
                                 transparent_relation_declaration_AST = (PtalonAST)currentAST.root;
-                                
-                                transparent_relation_declaration_AST = 
+
+                                transparent_relation_declaration_AST =
                                 (PtalonAST)astFactory.make( (new ASTArray(2)).add((PtalonAST)astFactory.create(TRANSPARENT,"transparent")).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(i_AST).add(e_AST))));
                                 created = true;
-                                
+
                                 currentAST.root = transparent_relation_declaration_AST;
                                 currentAST.child = transparent_relation_declaration_AST!=null &&transparent_relation_declaration_AST.getFirstChild()!=null ?
                                         transparent_relation_declaration_AST.getFirstChild() : transparent_relation_declaration_AST;
@@ -773,11 +773,11 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 }
                 if ( inputState.guessing==0 ) {
                         transparent_relation_declaration_AST = (PtalonAST)currentAST.root;
-                        
+
                         if (!created) {
                         transparent_relation_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add((PtalonAST)astFactory.create(TRANSPARENT,"transparent")).add(i_AST));
                         }
-                        
+
                         currentAST.root = transparent_relation_declaration_AST;
                         currentAST.child = transparent_relation_declaration_AST!=null &&transparent_relation_declaration_AST.getFirstChild()!=null ?
                                 transparent_relation_declaration_AST.getFirstChild() : transparent_relation_declaration_AST;
@@ -785,13 +785,13 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 }
                 returnAST = transparent_relation_declaration_AST;
         }
-        
+
         public final void keyword_or_identifier() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST keyword_or_identifier_AST = null;
-                
+
                 switch ( LA(1)) {
                 case ID:
                 {
@@ -980,7 +980,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 }
                 returnAST = keyword_or_identifier_AST;
         }
-        
+
 /**
  * Parse statements of one of form:
  * <p><i>ID</i> := <i>ID</i>
@@ -994,7 +994,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
  * <p>#(ASSIGN ID expression)
  */
         public final void assignment() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST assignment_AST = null;
@@ -1008,11 +1008,11 @@ public PtalonRecognizer(ParserSharedInputState state) {
                 PtalonAST e_AST = null;
                 PtalonAST d_AST = null;
                 PtalonAST f_AST = null;
-                
+
                 boolean dynamic_name = false;
                 boolean dynamic_left = false;
-                
-                
+
+
                 l = LT(1);
                 l_AST = (PtalonAST)astFactory.create(l);
                 match(ID);
@@ -1023,9 +1023,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
                         expression();
                         lExp_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
-                                
+
                                 dynamic_left = true;
-                                
+
                         }
                         break;
                 }
@@ -1106,9 +1106,9 @@ inputState.guessing--;
                                 expression();
                                 e_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
-                                        
+
                                         dynamic_name = true;
-                                        
+
                                 }
                                 break;
                         }
@@ -1125,7 +1125,7 @@ inputState.guessing--;
                         }
                         if ( inputState.guessing==0 ) {
                                 assignment_AST = (PtalonAST)currentAST.root;
-                                
+
                                 PtalonAST left;
                                 if (dynamic_left) {
                                 left = (PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(l_AST).add(lExp_AST));
@@ -1137,7 +1137,7 @@ inputState.guessing--;
                                 } else {
                                 assignment_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add(a_AST).add(left).add(r_AST));
                                 }
-                                
+
                                 currentAST.root = assignment_AST;
                                 currentAST.child = assignment_AST!=null &&assignment_AST.getFirstChild()!=null ?
                                         assignment_AST.getFirstChild() : assignment_AST;
@@ -1153,9 +1153,9 @@ inputState.guessing--;
                                 d_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         assignment_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         assignment_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add(a_AST).add(l_AST).add(d_AST));
-                                        
+
                                         currentAST.root = assignment_AST;
                                         currentAST.child = assignment_AST!=null &&assignment_AST.getFirstChild()!=null ?
                                                 assignment_AST.getFirstChild() : assignment_AST;
@@ -1169,9 +1169,9 @@ inputState.guessing--;
                                 f_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         assignment_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         assignment_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add(a_AST).add(l_AST).add(f_AST));
-                                        
+
                                         currentAST.root = assignment_AST;
                                         currentAST.child = assignment_AST!=null &&assignment_AST.getFirstChild()!=null ?
                                                 assignment_AST.getFirstChild() : assignment_AST;
@@ -1189,11 +1189,11 @@ inputState.guessing--;
                 else {
                         throw new NoViableAltException(LT(1), getFilename());
                 }
-                
+
                 }
                 returnAST = assignment_AST;
         }
-        
+
 /**
  * Parse statements of one of form:
  * <p><i>ID</i>(<i>assignment</i>, <i>assignment</i>, ...)
@@ -1203,7 +1203,7 @@ inputState.guessing--;
  * <i>ID</i> in the statement, or the name of the declared actor.
  */
         public final void actor_declaration() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST actor_declaration_AST = null;
@@ -1212,7 +1212,7 @@ inputState.guessing--;
                 PtalonAST b_AST = null;
                 PtalonAST c_AST = null;
                 PtalonAST d_AST = null;
-                
+
                 {
                 if ((LA(1)==ID) && (LA(2)==ASSIGN||LA(2)==EXPRESSION)) {
                         actor_id();
@@ -1226,7 +1226,7 @@ inputState.guessing--;
                 else {
                         throw new NoViableAltException(LT(1), getFilename());
                 }
-                
+
                 }
                 b = LT(1);
                 b_AST = (PtalonAST)astFactory.create(b);
@@ -1236,13 +1236,13 @@ inputState.guessing--;
                 match(LPAREN);
                 if ( inputState.guessing==0 ) {
                         actor_declaration_AST = (PtalonAST)currentAST.root;
-                        
+
                         b_AST = (PtalonAST)astFactory.create(ACTOR_DECLARATION,b.getText());
                         actor_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(1)).add(b_AST));
                         if (a_AST != null) {
                                 actor_declaration_AST.addChild(a_AST);
                         }
-                        
+
                         currentAST.root = actor_declaration_AST;
                         currentAST.child = actor_declaration_AST!=null &&actor_declaration_AST.getFirstChild()!=null ?
                                 actor_declaration_AST.getFirstChild() : actor_declaration_AST;
@@ -1256,9 +1256,9 @@ inputState.guessing--;
                         c_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
                                 actor_declaration_AST = (PtalonAST)currentAST.root;
-                                
+
                                 actor_declaration_AST.addChild(c_AST);
-                                
+
                         }
                         {
                         _loop37:
@@ -1271,15 +1271,15 @@ inputState.guessing--;
                                         d_AST = (PtalonAST)returnAST;
                                         if ( inputState.guessing==0 ) {
                                                 actor_declaration_AST = (PtalonAST)currentAST.root;
-                                                
+
                                                 actor_declaration_AST.addChild(d_AST);
-                                                
+
                                         }
                                 }
                                 else {
                                         break _loop37;
                                 }
-                                
+
                         } while (true);
                         }
                         break;
@@ -1299,24 +1299,24 @@ inputState.guessing--;
                 match(RPAREN);
                 returnAST = actor_declaration_AST;
         }
-        
+
         public final void actor_id() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST actor_id_AST = null;
                 Token  a = null;
                 PtalonAST a_AST = null;
                 PtalonAST b_AST = null;
-                
+
                 a = LT(1);
                 a_AST = (PtalonAST)astFactory.create(a);
                 match(ID);
                 if ( inputState.guessing==0 ) {
                         actor_id_AST = (PtalonAST)currentAST.root;
-                        
+
                                         actor_id_AST = (PtalonAST)astFactory.create(ACTOR_ID,a.getText());
-                                
+
                         currentAST.root = actor_id_AST;
                         currentAST.child = actor_id_AST!=null &&actor_id_AST.getFirstChild()!=null ?
                                 actor_id_AST.getFirstChild() : actor_id_AST;
@@ -1342,19 +1342,19 @@ inputState.guessing--;
                 }
                 if ( inputState.guessing==0 ) {
                         actor_id_AST = (PtalonAST)currentAST.root;
-                        
+
                                         actor_id_AST.addChild(b_AST);
-                                
+
                 }
                 returnAST = actor_id_AST;
         }
-        
+
         public final void atomic_statement() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST atomic_statement_AST = null;
-                
+
                 {
                 switch ( LA(1)) {
                 case PARAMETER:
@@ -1404,9 +1404,9 @@ inputState.guessing--;
                 atomic_statement_AST = (PtalonAST)currentAST.root;
                 returnAST = atomic_statement_AST;
         }
-        
+
         public final void transformation_declaration() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST transformation_declaration_AST = null;
@@ -1421,10 +1421,10 @@ inputState.guessing--;
                 Token  d = null;
                 PtalonAST d_AST = null;
                 PtalonAST e_AST = null;
-                
+
                 boolean dynamic_name = false;
-                
-                
+
+
                 {
                 switch ( LA(1)) {
                 case NEGATE:
@@ -1537,9 +1537,9 @@ inputState.guessing--;
                         expression();
                         e_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
-                                
+
                                 dynamic_name = true;
-                                
+
                         }
                         break;
                 }
@@ -1555,19 +1555,19 @@ inputState.guessing--;
                 }
                 if ( inputState.guessing==0 ) {
                         transformation_declaration_AST = (PtalonAST)currentAST.root;
-                        
+
                         if (dynamic_name) {
                         transformation_declaration_AST.addChild((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(d_AST).add(e_AST)));
                         } else {
                         transformation_declaration_AST.addChild(d_AST);
                         }
-                        
+
                 }
                 returnAST = transformation_declaration_AST;
         }
-        
+
         public final void conditional_statement() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST conditional_statement_AST = null;
@@ -1580,11 +1580,11 @@ inputState.guessing--;
                 PtalonAST a2_AST = null;
                 PtalonAST c2_AST = null;
                 PtalonAST i2_AST = null;
-                
+
                 AST trueTree = null;
                 AST falseTree = null;
-                
-                
+
+
                 i = LT(1);
                 i_AST = (PtalonAST)astFactory.create(i);
                 match(IF);
@@ -1592,11 +1592,11 @@ inputState.guessing--;
                 b_AST = (PtalonAST)returnAST;
                 if ( inputState.guessing==0 ) {
                         conditional_statement_AST = (PtalonAST)currentAST.root;
-                        
+
                         conditional_statement_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(i_AST).add(b_AST));
                         trueTree = (PtalonAST)astFactory.create(TRUEBRANCH,"true branch");
                         falseTree = (PtalonAST)astFactory.create(FALSEBRANCH,"false branch");
-                        
+
                         currentAST.root = conditional_statement_AST;
                         currentAST.child = conditional_statement_AST!=null &&conditional_statement_AST.getFirstChild()!=null ?
                                 conditional_statement_AST.getFirstChild() : conditional_statement_AST;
@@ -1624,9 +1624,9 @@ inputState.guessing--;
                                 atomic_statement();
                                 a1_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
-                                        
+
                                         trueTree.addChild(a1_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -1635,9 +1635,9 @@ inputState.guessing--;
                                 conditional_statement();
                                 c1_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
-                                        
+
                                         trueTree.addChild(c1_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -1646,9 +1646,9 @@ inputState.guessing--;
                                 iterative_statement();
                                 i1_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
-                                        
+
                                         trueTree.addChild(i1_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -1687,9 +1687,9 @@ inputState.guessing--;
                                         atomic_statement();
                                         a2_AST = (PtalonAST)returnAST;
                                         if ( inputState.guessing==0 ) {
-                                                
+
                                                 falseTree.addChild(a2_AST);
-                                                
+
                                         }
                                         break;
                                 }
@@ -1698,9 +1698,9 @@ inputState.guessing--;
                                         conditional_statement();
                                         c2_AST = (PtalonAST)returnAST;
                                         if ( inputState.guessing==0 ) {
-                                                
+
                                                 falseTree.addChild(c2_AST);
-                                                
+
                                         }
                                         break;
                                 }
@@ -1709,9 +1709,9 @@ inputState.guessing--;
                                         iterative_statement();
                                         i2_AST = (PtalonAST)returnAST;
                                         if ( inputState.guessing==0 ) {
-                                                
+
                                                 falseTree.addChild(i2_AST);
-                                                
+
                                         }
                                         break;
                                 }
@@ -1752,16 +1752,16 @@ inputState.guessing--;
                 }
                 if ( inputState.guessing==0 ) {
                         conditional_statement_AST = (PtalonAST)currentAST.root;
-                        
+
                         conditional_statement_AST.addChild(trueTree);
                         conditional_statement_AST.addChild(falseTree);
-                        
+
                 }
                 returnAST = conditional_statement_AST;
         }
-        
+
         public final void iterative_statement() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST iterative_statement_AST = null;
@@ -1779,7 +1779,7 @@ inputState.guessing--;
                 Token  c = null;
                 PtalonAST c_AST = null;
                 PtalonAST next_AST = null;
-                
+
                 f = LT(1);
                 f_AST = (PtalonAST)astFactory.create(f);
                 match(FOR);
@@ -1798,9 +1798,9 @@ inputState.guessing--;
                 match(LCURLY);
                 if ( inputState.guessing==0 ) {
                         iterative_statement_AST = (PtalonAST)currentAST.root;
-                        
+
                         iterative_statement_AST = (PtalonAST)astFactory.make( (new ASTArray(4)).add(f_AST).add((PtalonAST)astFactory.make( (new ASTArray(2)).add((PtalonAST)astFactory.create(VARIABLE,"variable")).add(a_AST))).add((PtalonAST)astFactory.make( (new ASTArray(2)).add(b_AST).add(init_AST))).add((PtalonAST)astFactory.make( (new ASTArray(2)).add((PtalonAST)astFactory.create(SATISFIES,"satisfies")).add(sat_AST))));
-                        
+
                         currentAST.root = iterative_statement_AST;
                         currentAST.child = iterative_statement_AST!=null &&iterative_statement_AST.getFirstChild()!=null ?
                                 iterative_statement_AST.getFirstChild() : iterative_statement_AST;
@@ -1816,9 +1816,9 @@ inputState.guessing--;
                                 it_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         iterative_statement_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         iterative_statement_AST.addChild(it_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -1828,9 +1828,9 @@ inputState.guessing--;
                                 cond_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         iterative_statement_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         iterative_statement_AST.addChild(cond_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -1852,9 +1852,9 @@ inputState.guessing--;
                                 at_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         iterative_statement_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         iterative_statement_AST.addChild(at_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -1875,15 +1875,15 @@ inputState.guessing--;
                 next_AST = (PtalonAST)returnAST;
                 if ( inputState.guessing==0 ) {
                         iterative_statement_AST = (PtalonAST)currentAST.root;
-                        
+
                         iterative_statement_AST.addChild((PtalonAST)astFactory.make( (new ASTArray(2)).add(c_AST).add(next_AST)));
-                        
+
                 }
                 returnAST = iterative_statement_AST;
         }
-        
+
         public final void actor_definition() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST actor_definition_AST = null;
@@ -1895,17 +1895,17 @@ inputState.guessing--;
                 PtalonAST c_AST = null;
                 PtalonAST i_AST = null;
                 PtalonAST t_AST = null;
-                
+
                 boolean danglingPortsOkay = false;
                 boolean attachDanglingPorts = false;
-                
-                
+
+
                 if ( inputState.guessing==0 ) {
                         actor_definition_AST = (PtalonAST)currentAST.root;
-                        
+
                         actor_definition_AST = (PtalonAST)astFactory.create(ACTOR_DEFINITION);
                         _isInTransformation = false;
-                        
+
                         currentAST.root = actor_definition_AST;
                         currentAST.child = actor_definition_AST!=null &&actor_definition_AST.getFirstChild()!=null ?
                                 actor_definition_AST.getFirstChild() : actor_definition_AST;
@@ -1918,9 +1918,9 @@ inputState.guessing--;
                         danglingPortsOkay();
                         d_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
-                                
+
                                 danglingPortsOkay = true;
-                                
+
                         }
                         break;
                 }
@@ -1942,9 +1942,9 @@ inputState.guessing--;
                         attachDanglingPorts();
                         at_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
-                                
+
                                 attachDanglingPorts = true;
-                                
+
                         }
                         break;
                 }
@@ -1963,7 +1963,7 @@ inputState.guessing--;
                 match(ID);
                 if ( inputState.guessing==0 ) {
                         actor_definition_AST = (PtalonAST)currentAST.root;
-                        
+
                         actor_definition_AST.setText(a.getText());
                         if (danglingPortsOkay) {
                         actor_definition_AST.addChild(d_AST);
@@ -1971,7 +1971,7 @@ inputState.guessing--;
                         if (attachDanglingPorts) {
                         actor_definition_AST.addChild(at_AST);
                         }
-                        
+
                 }
                 match(IS);
                 match(LCURLY);
@@ -1997,9 +1997,9 @@ inputState.guessing--;
                                 b_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         actor_definition_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         actor_definition_AST.addChild(b_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -2009,9 +2009,9 @@ inputState.guessing--;
                                 c_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         actor_definition_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         actor_definition_AST.addChild(c_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -2021,9 +2021,9 @@ inputState.guessing--;
                                 i_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         actor_definition_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         actor_definition_AST.addChild(i_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -2043,25 +2043,25 @@ inputState.guessing--;
                         t_AST = (PtalonAST)returnAST;
                         if ( inputState.guessing==0 ) {
                                 actor_definition_AST = (PtalonAST)currentAST.root;
-                                
+
                                 actor_definition_AST.addChild(t_AST);
-                                
+
                         }
                 }
                 else {
                         throw new NoViableAltException(LT(1), getFilename());
                 }
-                
+
                 }
                 returnAST = actor_definition_AST;
         }
-        
+
         public final void danglingPortsOkay() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST danglingPortsOkay_AST = null;
-                
+
                 PtalonAST tmp49_AST = null;
                 tmp49_AST = (PtalonAST)astFactory.create(LT(1));
                 astFactory.addASTChild(currentAST, tmp49_AST);
@@ -2070,13 +2070,13 @@ inputState.guessing--;
                 danglingPortsOkay_AST = (PtalonAST)currentAST.root;
                 returnAST = danglingPortsOkay_AST;
         }
-        
+
         public final void attachDanglingPorts() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST attachDanglingPorts_AST = null;
-                
+
                 PtalonAST tmp51_AST = null;
                 tmp51_AST = (PtalonAST)astFactory.create(LT(1));
                 astFactory.addASTChild(currentAST, tmp51_AST);
@@ -2085,9 +2085,9 @@ inputState.guessing--;
                 attachDanglingPorts_AST = (PtalonAST)currentAST.root;
                 returnAST = attachDanglingPorts_AST;
         }
-        
+
         public final void transformation() throws RecognitionException, TokenStreamException {
-                
+
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST transformation_AST = null;
@@ -2096,13 +2096,13 @@ inputState.guessing--;
                 PtalonAST b_AST = null;
                 PtalonAST c_AST = null;
                 PtalonAST i_AST = null;
-                
+
                 if ( inputState.guessing==0 ) {
                         transformation_AST = (PtalonAST)currentAST.root;
-                        
+
                         transformation_AST = (PtalonAST)astFactory.create(TRANSFORMATION);
                                 _isInTransformation = true;
-                        
+
                         currentAST.root = transformation_AST;
                         currentAST.child = transformation_AST!=null &&transformation_AST.getFirstChild()!=null ?
                                 transformation_AST.getFirstChild() : transformation_AST;
@@ -2120,9 +2120,9 @@ inputState.guessing--;
                         match(PLUS);
                         if ( inputState.guessing==0 ) {
                                 transformation_AST = (PtalonAST)currentAST.root;
-                                
+
                                 transformation_AST.addChild(s_AST);
-                                
+
                         }
                         break;
                 }
@@ -2159,9 +2159,9 @@ inputState.guessing--;
                                 b_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         transformation_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         transformation_AST.addChild(b_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -2171,9 +2171,9 @@ inputState.guessing--;
                                 c_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         transformation_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         transformation_AST.addChild(c_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -2183,9 +2183,9 @@ inputState.guessing--;
                                 i_AST = (PtalonAST)returnAST;
                                 if ( inputState.guessing==0 ) {
                                         transformation_AST = (PtalonAST)currentAST.root;
-                                        
+
                                         transformation_AST.addChild(i_AST);
-                                        
+
                                 }
                                 break;
                         }
@@ -2197,15 +2197,15 @@ inputState.guessing--;
                 } while (true);
                 }
                 if ( inputState.guessing==0 ) {
-                        
+
                                 _isInTransformation = false;
-                        
+
                 }
                 match(RCURLY);
                 returnAST = transformation_AST;
         }
-        
-        
+
+
         public static final String[] _tokenNames = {
                 "<0>",
                 "EOF",
@@ -2283,15 +2283,15 @@ inputState.guessing--;
                 "LINE_COMMENT",
                 "COMMENT"
         };
-        
+
         protected void buildTokenTypeASTClassMap() {
                 tokenTypeToASTClassMap=null;
         };
-        
+
         private static final long[] mk_tokenSet_0() {
                 long[] data = { 1073338256L, 0L};
                 return data;
         }
         public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
-        
+
         }

@@ -626,9 +626,9 @@ public class PtidesPlatform extends MirrorComposite {
             }
             return localClock.getLocalTime();
         }
-        
+
         @Override
-        public Time getModelTime() { 
+        public Time getModelTime() {
             return getEnvironmentTime();
         }
 
@@ -805,12 +805,12 @@ public class PtidesPlatform extends MirrorComposite {
                             Object[] timestamps = ((PtidesPort) ((MirrorPort) port)
                                     .getAssociatedPort())
                                     .getTimestampForToken(t);
-                            
+
                             int microstep = ((PtidesPort) ((MirrorPort) port)
                                     .getAssociatedPort())
                                     .getMicrostepForToken(t);
 
-                            Time timestamp = (Time) timestamps[0]; 
+                            Time timestamp = (Time) timestamps[0];
 
                             Token[] values = new Token[] {
                                     new DoubleToken(timestamp.getDoubleValue()),

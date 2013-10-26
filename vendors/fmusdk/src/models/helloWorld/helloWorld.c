@@ -41,7 +41,7 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
             fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
             fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
     ModelInstance* component;
-    
+
     // Perform checks.
     // FIXME: Boilerplate below is shared among all test FMUs. Consolidate to one file.
     // Logger callback is required.
@@ -49,18 +49,18 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
         return NULL;
     }
     // Functions to allocate and free memory are required.
-    if (!functions.allocateMemory || !functions.freeMemory) { 
-        functions.logger(NULL, instanceName, fmiError, "error", 
+    if (!functions.allocateMemory || !functions.freeMemory) {
+        functions.logger(NULL, instanceName, fmiError, "error",
                 "fmiInstantiateSlave: Missing callback function: freeMemory");
         return NULL;
     }
-    if (!instanceName || strlen(instanceName)==0) { 
-        functions.logger(NULL, instanceName, fmiError, "error", 
+    if (!instanceName || strlen(instanceName)==0) {
+        functions.logger(NULL, instanceName, fmiError, "error",
                 "fmiInstantiateSlave: Missing instance name.");
         return NULL;
     }
     if (strcmp(GUID, MODEL_GUID)) {
-        functions.logger(NULL, instanceName, fmiError, "error", 
+        functions.logger(NULL, instanceName, fmiError, "error",
                 "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, MODEL_GUID);
         return NULL;
     }
@@ -71,10 +71,10 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     component->r[0] = 42.0;
     component->functions = functions;
     component->instanceName = instanceName;
-    
+
     functions.logger(component, instanceName, fmiOK, "message",
                      "Invoked fmiInstantiateSlave for instance %s.", instanceName);
-    
+
     return component;
 }
 
@@ -98,7 +98,7 @@ void fmiFreeSlaveInstance(fmiComponent c) {
     component->functions.freeMemory(component);
 }
 
-fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
+fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean newStep) {
     printf("Invoked fmiDoStep: %g, %g, newStep: %s\n", currentCommunicationPoint,
             communicationStepSize, (newStep)?"true":"false");

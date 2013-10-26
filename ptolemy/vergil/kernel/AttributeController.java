@@ -148,7 +148,7 @@ public class AttributeController extends IconController {
         }
 
     }
-    
+
     /** Render the value of the _highlightColor parameter.
      *  @param namedObj  The NamedObj that contains the _highlightColor
      *  parameter.

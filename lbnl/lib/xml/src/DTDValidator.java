@@ -38,9 +38,9 @@ public class DTDValidator {
             // Parse document
             //            Document d = b.parse(args[0]);
             // Findbugs: avoid a dead local store here.
-            /* Document d = */ b.parse(new java.io.FileInputStream(fil), 
+            /* Document d = */ b.parse(new java.io.FileInputStream(fil),
                                  args[1] + File.separator);
-        } 
+        }
         catch(SAXException e) {
             System.err.println(e.getMessage());
         }
@@ -57,7 +57,7 @@ public class DTDValidator {
 
         /** Writes warning messages to <code>System.err</code>
          *
-         *@param e The exception 
+         *@param e The exception
          *@exception SAXException If a SAXException occurs
          */
         public void warning(SAXParseException e) throws SAXException {
@@ -66,7 +66,7 @@ public class DTDValidator {
 
         /** Writes error messages to <code>System.err</code>
          *
-         *@param e The exception 
+         *@param e The exception
          *@exception SAXException If a SAXException occurs
          */
         public void error(SAXParseException e) throws SAXException {
@@ -75,7 +75,7 @@ public class DTDValidator {
 
         /** Writes error messages to <code>System.err</code>
          *
-         *@param e The exception 
+         *@param e The exception
          *@exception SAXException If a SAXException occurs
          */
         public void fatalError(SAXParseException e) throws SAXException {
@@ -89,9 +89,9 @@ public class DTDValidator {
          *@param e The exception
          */
         private void printInfo(String s, SAXParseException e) {
-            System.err.println(s + 
+            System.err.println(s +
                                fil + ":"
-                               + e.getLineNumber() + ": " 
+                               + e.getLineNumber() + ": "
                                + e.getMessage());
         }
     }
@@ -143,7 +143,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED

@@ -65,13 +65,13 @@ public class ConstraintMonitorIcon extends BoxedValueIcon {
     public ConstraintMonitorIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         okColor = new ColorAttribute(this, "okColor");
         okColor.setExpression("{0.3, 1.0, 0.3, 1.0}");
 
         closeColor = new ColorAttribute(this, "closeColor");
         closeColor.setExpression("{1.0, 1.0, 0.0, 1.0}");
-        
+
         closeFraction = new Parameter(this, "closeFraction");
         closeFraction.setTypeEquals(BaseType.DOUBLE);
         closeFraction.setExpression("0.1");
@@ -88,7 +88,7 @@ public class ConstraintMonitorIcon extends BoxedValueIcon {
      *  This defaults to yellow.
      */
     public ColorAttribute closeColor;
-    
+
     /** Fraction of the threshold that is to be considered close
      *  to the threshold. This is a double that defaults to 0.1.
      */
@@ -127,10 +127,10 @@ public class ConstraintMonitorIcon extends BoxedValueIcon {
         } catch (IllegalActionException e) {
             // Ignore and use default color.
         }
-        
+
         return super.createBackgroundFigure();
     }
-    
+
     /** Override the base class to throw an exception if the container is
      *  not an instance of {@link ConstraintMonitor}.
      *  @exception IllegalActionException If this attribute is not of the

@@ -156,8 +156,8 @@ public class ExportParameters {
      *  This is a boolean that defaults to false.
      */
     public boolean copyJavaScriptFiles;
-    
-    /** If true, files generated will be deleted when the JVM terminates. 
+
+    /** If true, files generated will be deleted when the JVM terminates.
      */
     public boolean deleteFilesOnExit;
 

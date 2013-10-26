@@ -294,7 +294,7 @@ fmiComponent fmiInstantiateSlave(
     component->lastSuccessfulTime = -1.0;
     component->atBreakpoint = fmiFalse;
     component->functions = functions;
-    
+
     // Need to allocate memory and copy the string because JNA stores the string
     // in a temporary buffer that gets GC'd.
     component->instanceName = (char*)functions->allocateMemory(1 + strlen(instanceName), sizeof(char));
@@ -333,7 +333,7 @@ fmiStatus fmiInitializeSlave(fmiComponent c,
     printf("%s: Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g..\n",
            component->instanceName, tStart, stopTimeDefined, tStop);
     fflush(stdout);
-    
+
     component->lastSuccessfulTime = tStart;
     component->atBreakpoint = fmiFalse;
     component->relativeTolerance = relativeTolerance;

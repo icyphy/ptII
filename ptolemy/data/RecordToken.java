@@ -48,12 +48,12 @@ import ptolemy.util.StringUtilities;
 //// RecordToken
 
 /**
- A token that contains a set of label/token pairs. Record labels may be 
- arbitrary strings. Operations on record tokens result in new record tokens 
- containing only the common fields, where the operation specifies how to 
- combine the data in the common fields.  Thus, for example, if two record 
- tokens are added or subtracted, then common records (those with the same 
- labels) will be added or subtracted, and the disjoint records will not 
+ A token that contains a set of label/token pairs. Record labels may be
+ arbitrary strings. Operations on record tokens result in new record tokens
+ containing only the common fields, where the operation specifies how to
+ combine the data in the common fields.  Thus, for example, if two record
+ tokens are added or subtracted, then common records (those with the same
+ labels) will be added or subtracted, and the disjoint records will not
  appear in the result.
 
  @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee; contributors: J. S. Senecal, Marten Lohstroh
@@ -97,11 +97,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     /** Construct a RecordToken from the specified string.
      *
-     * <p>Record labels that contain any non-Java identifier characters 
-     * must be presented as a string i.e., surrounded with single or double 
+     * <p>Record labels that contain any non-Java identifier characters
+     * must be presented as a string i.e., surrounded with single or double
      * quotes. Quotes within label strings must be escaped using a backslash.
      * </p>
-     * 
+     *
      *  @param init A string expression of a record.
      *  @exception IllegalActionException If the string does not
      *  contain a parsable record.
@@ -373,8 +373,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  The record fields are listed in the lexicographical order of the
      *  labels determined by the java.lang.String.compareTo() method.
      *
-     *  <p>Record labels that contain any non-Java identifier characters 
-     *  are surrounded with double quotes. Quotes within label strings are 
+     *  <p>Record labels that contain any non-Java identifier characters
+     *  are surrounded with double quotes. Quotes within label strings are
      *  escaped using a backslash.
      *  </p>
      *

@@ -418,7 +418,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                     if (event.timeStamp.compareTo(currentTime) == 0) {
                         Object[] output = (Object[]) event.contents;
 
-                        // The receiver is an AFDXSwitch (qm). 
+                        // The receiver is an AFDXSwitch (qm).
                         Receiver receiver = (Receiver) output[0];
                         if (receiver instanceof IntermediateReceiver) {
                             String[] labels = new String[] { timestamp, vlink,
@@ -517,8 +517,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
     }
 
     /** Set the id of the switch input that is receiving tokens from this actor port.
-     *  @param port The actor port. 
-     *  @param portIn The id of the switch port. 
+     *  @param port The actor port.
+     *  @param portIn The id of the switch port.
      */
     public void setPortIn(Port port, int portIn) {
         _ioPortToSwitchInPort.put((IOPort) port, portIn);
@@ -526,7 +526,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
 
     /** Set the id of the switch output that is sending tokens to this actor port.
      * @param port The actor port.
-     * @param portOut The id of the switch port. 
+     * @param portOut The id of the switch port.
      */
     public void setPortOut(Port port, int portOut) {
         _ioPortToSwitchOutPort.put((IOPort) port, portOut);
@@ -641,14 +641,14 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
     /** Tokens to be sent to outputs. */
     protected HashMap<Integer, LinkedList<TimedEvent>> _outputTokens;
 
-    /** Tokens sent to ports mediated by this communication aspect 
-     *  are rerouted to the switch ports with the IDs specified in this 
+    /** Tokens sent to ports mediated by this communication aspect
+     *  are rerouted to the switch ports with the IDs specified in this
      *  map.
      */
     protected HashMap<Port, Integer> _ioPortToSwitchInPort;
 
     /** Tokens set to ports mediated by this communication aspect are
-     *  processed by this communication aspect and then forwarded 
+     *  processed by this communication aspect and then forwarded
      *  to the port through the switch port with ID specified here.
      */
     protected HashMap<Port, Integer> _ioPortToSwitchOutPort;
@@ -677,7 +677,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
     /** The attributes configured per port which is mediated by a
      *  AfdxSwitch. The mediation where (which switch port) messages
      *  are going into the switch and where (which switch port) messages
-     *  are going out of the switch.  
+     *  are going out of the switch.
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
     public static class AfdxSwitchAttributes extends CommunicationAspectAttributes {
@@ -721,8 +721,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
          */
         public Parameter portOut;
 
-        /** If attribute is <i>portIn</i> or <i>portOut</i>, 
-         *  report the new values to the communication aspect. 
+        /** If attribute is <i>portIn</i> or <i>portOut</i>,
+         *  report the new values to the communication aspect.
          *  @param attribute The changed parameter.
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.

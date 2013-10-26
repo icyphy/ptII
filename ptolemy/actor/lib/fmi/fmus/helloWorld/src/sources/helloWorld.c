@@ -40,20 +40,20 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     ModelInstance* component;
 
     // Perform checks.
-    if (!functions.logger) 
+    if (!functions.logger)
         return NULL;
-    if (!functions.allocateMemory || !functions.freeMemory){ 
-        functions.logger(NULL, instanceName, fmiError, "error", 
+    if (!functions.allocateMemory || !functions.freeMemory){
+        functions.logger(NULL, instanceName, fmiError, "error",
                 "fmiInstantiateSlave: Missing callback function: freeMemory");
         return NULL;
     }
-    if (!instanceName || strlen(instanceName)==0) { 
-        functions.logger(NULL, instanceName, fmiError, "error", 
+    if (!instanceName || strlen(instanceName)==0) {
+        functions.logger(NULL, instanceName, fmiError, "error",
                 "fmiInstantiateSlave: Missing instance name.");
         return NULL;
     }
     if (strcmp(GUID, MODEL_GUID)) {
-        functions.logger(NULL, instanceName, fmiError, "error", 
+        functions.logger(NULL, instanceName, fmiError, "error",
                 "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, MODEL_GUID);
         return NULL;
     }
@@ -64,7 +64,7 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     component->r[0] = 42.0;
     component->functions = functions;
     component->instanceName = instanceName;
-    
+
     return component;
 }
 
@@ -82,7 +82,7 @@ void fmiFreeSlaveInstance(fmiComponent c) {
     component->functions.freeMemory(component);
 }
 
-fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint, 
+fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean newStep) {
     return fmiOK;
 }

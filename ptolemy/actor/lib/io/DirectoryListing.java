@@ -470,7 +470,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     /** Cached value of listOnlyDirectories parameter. */
     private boolean _listOnlyDirectories;
 

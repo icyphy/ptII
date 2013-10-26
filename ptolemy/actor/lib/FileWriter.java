@@ -209,9 +209,9 @@ public class FileWriter extends Sink {
 
         // To get the file to close.
         _setWriter(null);
-        
-        // Since we have closed the writer, we also need to clear 
-        // _previousFilename, so that a new writer will be opened for this 
+
+        // Since we have closed the writer, we also need to clear
+        // _previousFilename, so that a new writer will be opened for this
         // filename if the model is executed again
         _previousFilename = null;
     }

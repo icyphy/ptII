@@ -1,5 +1,5 @@
 /* MetroFSMDirector extends FSMDirector to support MetroII semantics.
- 
+
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -48,19 +48,19 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * MetroFSMDirector extends FSMDirector to support MetroII semantics.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id: MetroFSMDirector.java 66808 2013-07-03 00:20:58Z glp $
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
 
     /**
      * Construct a MetroFSMDirector.
-     * 
+     *
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
@@ -71,7 +71,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
 
     /**
      * Construct a MetroFSMDirector based on a given container and a name.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -93,7 +93,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -111,7 +111,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      * Clone the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
-     * 
+     *
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException

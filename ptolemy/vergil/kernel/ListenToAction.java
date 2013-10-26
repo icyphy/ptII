@@ -114,13 +114,13 @@ public class ListenToAction extends FigureAction {
                     textEffigy, textEffigy.uniqueName("debugListener"
                             + object.getName()));
             debugTableau.setDebuggable(object);
-            
+
             // If the actor is an ExecutionAspect, open Plot as well.
             if (object instanceof ActorExecutionAspect) {
-                //Effigy plotEffigy = new 
+                //Effigy plotEffigy = new
                 ExecutionAspectPlotterEditorFactory factory = new ExecutionAspectPlotterEditorFactory(object,
-                            object.uniqueName("_editorFactory")); 
-                
+                            object.uniqueName("_editorFactory"));
+
                 ((ActorExecutionAspect)object).addExecutingListener(factory);
                 factory.createEditor(object, this.getFrame());
             }
@@ -140,5 +140,5 @@ public class ListenToAction extends FigureAction {
 
     private BasicGraphController _controller;
 
-    private NamedObj _target; 
+    private NamedObj _target;
 }

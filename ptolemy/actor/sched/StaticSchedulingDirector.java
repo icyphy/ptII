@@ -156,7 +156,7 @@ public class StaticSchedulingDirector extends Director {
         _savedSchedule = null;
         _savedSchedulePosition = -1;
         _savedIterationCount = 0;
-        
+
         _actorFinished = false;
     };
 
@@ -288,17 +288,17 @@ public class StaticSchedulingDirector extends Director {
         }
         return result;
     }
-    
+
     /** Resume the execution of an actor that was previously blocked because
      *  it didn't have all the resources it needed for execution.
      *  @param actor The actor that resumes execution.
      *  @throws IllegalActionException Not thrown here but in derived classes.
      */
     @Override
-    public void resumeActor(Actor actor) throws IllegalActionException { 
+    public void resumeActor(Actor actor) throws IllegalActionException {
         _actorFinished = true;
     }
-    
+
     /** Return true if the director is ready to fire. This method is
      *  called by the container of this director to determine whether
      *  the director is ready to execute. It does <i>not</i> call
@@ -447,8 +447,8 @@ public class StaticSchedulingDirector extends Director {
     /** The value returned by the prefire() method. */
     protected boolean _prefire = false;
 
-    private boolean _actorFinished;    
-    
+    private boolean _actorFinished;
+
     /** Computed schedule that has not been fully executed because this
      *  director is waiting for resources.
      */

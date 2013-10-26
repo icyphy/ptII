@@ -706,7 +706,7 @@ public class SysMLSequentialDirector extends Director implements
     }
 
     /** Iterate the specified actor once.
-     *  @param actor The actor to be iterated.        
+     *  @param actor The actor to be iterated.
      *  @return True if either prefire() returns false
      *   or postfire() returns true.
      *  @exception IllegalActionException If the actor throws it.
@@ -832,7 +832,7 @@ public class SysMLSequentialDirector extends Director implements
 
 
         /** Return true if the argument is an instance of RefireRequest
-         *  and compares as the same value.   
+         *  and compares as the same value.
          *  @param object An instance of Object.
          *  @return True if the argument is a RefireRequest.
          */

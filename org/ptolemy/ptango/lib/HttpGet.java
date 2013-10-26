@@ -84,34 +84,34 @@ public class HttpGet extends LimitedFiringSource {
         new SingletonParameter(url.getPort(), "_showName").setToken(BooleanToken.TRUE);
         StringAttribute cardinal = new StringAttribute(url.getPort(), "_cardinal");
         cardinal.setExpression("SOUTH");
-        
+
         timeout = new Parameter(this, "timeout");
         timeout.setTypeEquals(BaseType.INT);
         timeout.setExpression("30000");
         timeout.addChoice("NONE");
-        
+
         timeoutResponse = new StringParameter(this, "timeoutResponse");
-        
+
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");
-        
+
         output.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The end of line character(s).  The default value is the value
      *  of the line.separator property
      */
     public Parameter newline;
-    
+
     /** The timeout in milliseconds for establishing a connection or reading a value.
      *  Set to NONE to specify no timeout.
      *  This is an integer that defaults to 30000, giving a timeout of 30 seconds.
      */
     public Parameter timeout;
-    
+
     /** The response to send upon timeout.
      *  If this is empty, then this actor will throw an exception rather than send a response.
      *  This is a string that defaults to empty.
@@ -147,14 +147,14 @@ public class HttpGet extends LimitedFiringSource {
                 _debug("Opening URL connection.");
             }
             _connection = theURL.openConnection();
-            
+
             // If a timeout has been specified, set it.
             int timeoutValue = ((IntToken)timeout.getToken()).intValue();
             if (timeoutValue >= 0) {
                 _connection.setConnectTimeout(timeoutValue);
                 _connection.setReadTimeout(timeoutValue);
             }
-            
+
             while (inputStreamReader == null) {
                 try {
                     inputStreamReader = new InputStreamReader(_connection.getInputStream());
@@ -174,7 +174,7 @@ public class HttpGet extends LimitedFiringSource {
                 _debug("Input stream is open. Reading it.");
             }
             reader = new BufferedReader(inputStreamReader);
-            
+
             StringBuffer lineBuffer = new StringBuffer();
             String newlineValue = ((StringToken) newline.getToken())
                     .stringValue();
@@ -215,14 +215,14 @@ public class HttpGet extends LimitedFiringSource {
             _connection = null;
         }
     }
-    
+
     public void wrapup() {
         if (_connection instanceof HttpURLConnection) {
             // FIXME: Does nothing!!!!!!!!!!!!!!
             ((HttpURLConnection)_connection).disconnect();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

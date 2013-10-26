@@ -31,8 +31,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
-   This director only extends Continuous director. 
+/**
+   This director only extends Continuous director.
 
    @author Mana Mirzaei, Based on ContinuousDirector by Edward A. Lee
    @version $Id$

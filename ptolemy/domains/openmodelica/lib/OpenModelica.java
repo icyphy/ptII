@@ -51,24 +51,24 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**  
-    <p>One actor provided in the Vergil, <i>MoreLibraries</i> Under <i>OpenModelica</i>.  
+/**
+    <p>One actor provided in the Vergil, <i>MoreLibraries</i> Under <i>OpenModelica</i>.
     It is called <i>OpenModelica</i>; To view or edit its Modelica script, look inside the actor. </p>
     <p>OpenModelica actor starts the OpenModelica Compiler(OMC) server listening on the CORBA interface
     in initialize(). In fire(), upon modifying the value of variable(s) and parameter(s) by input port or actor's
     parameter, the Modelica model is built in <i>non-interactive</i> or <i>interactive</i> mode.
     <p>Upon building the model in an interactive mode, client and servers are created, IP and ports of the servers
-    are set and streams for transferring information between client and servers are set up. Afterwards, 
+    are set and streams for transferring information between client and servers are set up. Afterwards,
     the simulation result is sent from the Transfer Server to the Ptolemy II. The simulation result
     is displayed step by step according to the parameters of the OpenModelica actor.
-    The formula for calculating the step time is step time = (stop time - start time) / number of intervals. 
-    There is one issue, the simulation does not stop automatically at the stop time that is selected as one of the 
-    OpenModelica actors' parameters. So during fetching the result back from Transfer server, stop time should be 
-    checked, this checking is occurred in OMIThread. The simulation result is sent in the string format to 
+    The formula for calculating the step time is step time = (stop time - start time) / number of intervals.
+    There is one issue, the simulation does not stop automatically at the stop time that is selected as one of the
+    OpenModelica actors' parameters. So during fetching the result back from Transfer server, stop time should be
+    checked, this checking is occurred in OMIThread. The simulation result is sent in the string format to
     the output port of the OpenModelica actor to be displayed by Display actor.</p>
-    <p>In case of building the model in a non-interactive mode, it's not possible to have the result step by step, the 
-    whole simulation result is displayed according to the start and stop time of simulation that are set as 
-    OpenModelica actors' parameters.</p>   
+    <p>In case of building the model in a non-interactive mode, it's not possible to have the result step by step, the
+    whole simulation result is displayed according to the start and stop time of simulation that are set as
+    OpenModelica actors' parameters.</p>
     <p>In the final phase, wrapup(), the OMC server is stopped.</p>
 
    @author Mana Mirzaei
@@ -150,17 +150,17 @@ public class OpenModelica extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                    public ports and parameters           ////
 
-    /** The base-model that should be built. 
+    /** The base-model that should be built.
      *  The default value of this parameter is null.
      */
     public static StringParameter baseModel;
 
-    /** The file that the base-model should be loaded from.  
+    /** The file that the base-model should be loaded from.
      *  The default value of this parameter is null.
      */
     public FileParameter dependecies;
 
-    /** The file that the (child-)model should be loaded from.  
+    /** The file that the (child-)model should be loaded from.
      *  The default value is "dcmotor.mo".
      */
     public FileParameter fileName;
@@ -173,7 +173,7 @@ public class OpenModelica extends TypedAtomicActor {
     /** Input port of the OpenModelica actor, that gets input from Ramp. */
     public TypedIOPort input;
 
-    /** Number of intervals in the result file.  
+    /** Number of intervals in the result file.
      *  The default value of this parameter is the integer 500.
      */
     public Parameter numberOfIntervals;
@@ -197,17 +197,17 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public StringParameter processingMode;
 
-    /** The start time of the simulation.    
+    /** The start time of the simulation.
      *  The default value of this parameter is double 0.0.
      */
     public Parameter simulationStartTime;
 
-    /** The stop time of the simulation.  
+    /** The stop time of the simulation.
      *  The default value of this parameter is double 0.1.
      */
     public Parameter simulationStopTime;
 
-    /** The (sub-)model that should be built. 
+    /** The (sub-)model that should be built.
      *  The default value is "dcmotor".
      */
     public static StringParameter subModel;
@@ -239,13 +239,13 @@ public class OpenModelica extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Invoke the fire() of the super class. Then, Modelica library and model(s) are loaded. 
-     *  Upon modifying the value of variable(s) and parameter(s) by input port or actors' parameters, 
-     *  the Modelica model is built in <i>non-interactive</i> or <i>interactive</i> mode. 
+    /** Invoke the fire() of the super class. Then, Modelica library and model(s) are loaded.
+     *  Upon modifying the value of variable(s) and parameter(s) by input port or actors' parameters,
+     *  the Modelica model is built in <i>non-interactive</i> or <i>interactive</i> mode.
      *  <p>After building the model in an interactive mode, the simulation result
-     *  is calculated step by step according to the parameters of the OpenModelica actor. 
-     *  The result is sent in the string format to the output port of the OpenModelica actor to be 
-     *  displayed by Display actor.</p> 
+     *  is calculated step by step according to the parameters of the OpenModelica actor.
+     *  The result is sent in the string format to the output port of the OpenModelica actor to be
+     *  displayed by Display actor.</p>
      *  @throws IllegalActionException If the evaluation of the expression
      *  triggers it, or the evaluation yields a null result, or the evaluation
      *  yields an incompatible type, or if there is no director.
@@ -257,8 +257,8 @@ public class OpenModelica extends TypedAtomicActor {
         try {
             _omcCommand.loadFile(fileName.getExpression(),
                     subModel.getExpression());
-            // If the model is inherited from a base model, 
-            // that base model should be loaded in advance to the child model. 
+            // If the model is inherited from a base model,
+            // that base model should be loaded in advance to the child model.
             // Otherwise, the child one could not be built.
             if (!(dependecies.getExpression().isEmpty() && baseModel
                     .getExpression().isEmpty()))
@@ -292,7 +292,7 @@ public class OpenModelica extends TypedAtomicActor {
                 throw new IllegalActionException(
                         "Unable to modify components' values!" + e.getMessage());
             }
-            // There is no value to be passed to the OpenModelica actor's port and the new value is set by 
+            // There is no value to be passed to the OpenModelica actor's port and the new value is set by
             // actors' parameters.
         } else if (!(input.getWidth() > 0)) {
             if (!(parameter.getExpression().isEmpty() && initialValue
@@ -351,11 +351,11 @@ public class OpenModelica extends TypedAtomicActor {
                     _omcCommand.plotPltFile(subModel.getExpression());
             }
 
-            // In case of building the model in an interactive mode, client and servers are created, 
-            // IP and ports of the servers are set and streams for transferring information between 
+            // In case of building the model in an interactive mode, client and servers are created,
+            // IP and ports of the servers are set and streams for transferring information between
             // client and servers are set up all in the constructor of the thread.
-            // Through starting the thread, the simulation result is sent from the server to the 
-            // Ptolemy II in the string format. 
+            // Through starting the thread, the simulation result is sent from the server to the
+            // Ptolemy II in the string format.
             if (processingMode.getExpression().equalsIgnoreCase("interactive")
                     && !(variableFilter.getExpression().isEmpty())) {
                 _omiThread = new OMIThread(
@@ -406,7 +406,7 @@ public class OpenModelica extends TypedAtomicActor {
             _omcLogger.getInfo(loggerInfo);
             _omcLogger.destroy();
         } catch (ConnectException e) {
-            // FIXME org.omg.CORBA.COMM_FAILURE: 
+            // FIXME org.omg.CORBA.COMM_FAILURE:
             // vmcid: SUN  minor code: 211  completed: No : Unable to send quit()
             new IllegalActionException(
             "ServerError : OMC is unable to start!" + e.getMessage()).printStackTrace();
@@ -417,10 +417,10 @@ public class OpenModelica extends TypedAtomicActor {
     ////                         private variables                 ////
     // OMCCommand Object for accessing a unique source of instance.
     private OMCCommand _omcCommand = null;
-    
+
     // OMCLogger Object for accessing a unique source of instance.
     private OMCLogger _omcLogger = null;
 
-    // OMIThread Object. 
+    // OMIThread Object.
     private OMIThread _omiThread = null;
 }

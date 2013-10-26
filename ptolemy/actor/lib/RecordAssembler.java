@@ -80,8 +80,8 @@ import ptolemy.kernel.util.Workspace;
  corresponding input port.
  </p>
  <p>Note that if the display name of a port is set, display name is used in
- the type constraints instead of name. This is useful in case fields to 
- add to the record contain a period, because periods are not allowed in 
+ the type constraints instead of name. This is useful in case fields to
+ add to the record contain a period, because periods are not allowed in
  port names.</p>
 
 
@@ -145,7 +145,7 @@ public class RecordAssembler extends TypedAtomicActor {
         Set<Entry<String, TypedIOPort>> entries = _portMap.entrySet();
         String[] labels = new String[entries.size()];
         Token[] values = new Token[entries.size()];
-        
+
         for (Entry<String, TypedIOPort> entry : entries) {
             labels[i] = entry.getKey();
             values[i] = entry.getValue().get(0);
@@ -159,7 +159,7 @@ public class RecordAssembler extends TypedAtomicActor {
 
     /** React to a name change of contained ports. Update the internal
      *  mapping from names and aliases to port objects, and invalidate
-     *  the resolved types. 
+     *  the resolved types.
      *  @param object The object that changed.
      */
     @Override
@@ -224,7 +224,7 @@ public class RecordAssembler extends TypedAtomicActor {
 
         // make sure the ports are mapped
        _mapPorts();
-        
+
         // constrain the type of every input to be greater than or equal to
         // the resolved type of the corresponding field in the output record
         for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
@@ -232,7 +232,7 @@ public class RecordAssembler extends TypedAtomicActor {
             TypedIOPort input = entry.getValue();
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
-                result.add(new Inequality(new ExtractFieldType(output, 
+                result.add(new Inequality(new ExtractFieldType(output,
                         inputName), input.getTypeTerm()));
             }
         }
@@ -255,14 +255,14 @@ public class RecordAssembler extends TypedAtomicActor {
     }
 
     /** Map port names or aliases to port objects. If the mapping
-     *  has changed, then invalidate the resolved types, which 
+     *  has changed, then invalidate the resolved types, which
      *  forces new type constraints with appropriate field names
-     *  to be generated. 
+     *  to be generated.
      */
     protected void _mapPorts() {
         // Retrieve the manager.
         Manager manager = this.getManager();
-        
+
         // Generate a new mapping from names/aliases to ports.
         Map<String, TypedIOPort> oldMap = _portMap;
         _portMap = new HashMap<String, TypedIOPort>();
@@ -279,18 +279,18 @@ public class RecordAssembler extends TypedAtomicActor {
                 _portMap.put(alias, p);
             }
         }
-        
+
         // Only invalidate resolved types if there actually was a name change.
         // As a result, new type constraints will be generated.
         if (manager != null && (oldMap == null || !_portMap.equals(oldMap))) {
             manager.invalidateResolvedTypes();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
-    
+
     /** Keeps track of which name or alias is associated with which port. */
     protected Map<String, TypedIOPort> _portMap;
-    
+
 }

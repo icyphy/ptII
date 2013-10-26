@@ -111,10 +111,10 @@ public class MessageHandler {
     }
 
     /** If the nightly build is running, then return true.
-     *   
+     *
      *  <p>This method merely checks to see if the
      *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty
-     *  or if the "ptolemy.ptII.batchMode" property exists and is not empty 
+     *  or if the "ptolemy.ptII.batchMode" property exists and is not empty
      *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.
      *
      *  <p>To run the test suite in the Nightly Build mode, use></p>
@@ -216,7 +216,7 @@ public class MessageHandler {
             return true;
         }
     }
-    
+
     /** Ask the user a yes/no/cancel question, and return true if the
      *  answer is yes.  If the user clicks on the "Cancel" button,
      *  then throw an exception.

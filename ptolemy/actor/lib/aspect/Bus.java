@@ -41,7 +41,7 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ExecutionAttributes; 
+import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.lib.aspect.CompositeCommunicationAspect.CompositeCommunicationAspectAttributes;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
@@ -70,29 +70,29 @@ import ptolemy.kernel.util.Workspace;
  *  the delivery of the specified token to the specified receiver
  *  according to a service rule. Specifically, if the actor is
  *  not currently servicing a previous token, then it delivers
- *  the token with a delay given by the <i>serviceTimeMultiplicationFactor</i> 
+ *  the token with a delay given by the <i>serviceTimeMultiplicationFactor</i>
  *  parameter multiplied by the <i>messageLength</i> parameter specified in the port.
  *  If the actor is currently servicing a previous token, then it waits
  *  until it has finished servicing that token (and any other pending
- *  tokens), and then delays for an additional amount given by 
+ *  tokens), and then delays for an additional amount given by
  *  <i>serviceTimeMultiplicationFactor</i> * <i>messageLength</i>.
- *  In the default case of the <i>messageLength</i> = 1, the behavior is similar to 
+ *  In the default case of the <i>messageLength</i> = 1, the behavior is similar to
  *  the {@link Server} actor.
  *  Tokens are processed in FIFO order.
  *  <p>
  *  To use this communication aspect, drag an instance of this Bus
  *  into the model, and (optionally)
  *  assign it a name. Then, on any input port whose communication is to be
- *  mediated by this instance of Bus, open the configuration dialogue, 
- *  select the tab with the name of the bus in the title and select the 
+ *  mediated by this instance of Bus, open the configuration dialogue,
+ *  select the tab with the name of the bus in the title and select the
  *  <i>enable</i> attribute. The message length is by default set to 1
  *  but can be configured in this tab.
  *  <p>
  *  Several Bus communication aspects can be used in sequence. The order in which
  *  Tokens are sent through Buses depends on the order in which these are
- *  enabled via the DecoratorAttributes. 
+ *  enabled via the DecoratorAttributes.
  *  <p>
- *  This actor is tested in continuous and DE. 
+ *  This actor is tested in continuous and DE.
  *  @author Patricia Derler, Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -129,7 +129,7 @@ public class Bus extends AtomicCommunicationAspect {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** The service time for the default messageLength of 1. This is a double with default 0.1.
      *  It is required to be positive.
      */
@@ -157,7 +157,7 @@ public class Bus extends AtomicCommunicationAspect {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
@@ -192,7 +192,7 @@ public class Bus extends AtomicCommunicationAspect {
                             + " container as the Bus.");
         }
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
-                this, receiver); 
+                this, receiver);
         return intermediateReceiver;
     }
 
@@ -242,9 +242,9 @@ public class Bus extends AtomicCommunicationAspect {
                 _debug("At time " + currentTime + ", completing send to "
                         + receiver.getContainer().getFullName() + ": " + token);
             }
-        } 
+        }
     }
-    
+
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -295,14 +295,14 @@ public class Bus extends AtomicCommunicationAspect {
                     sendCommunicationEvent((Actor) receiver.getContainer().getContainer(),
                             0, _tokenCount, EventType.RECEIVED);
                 }
-            } 
+            }
         }
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
                         .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
         }
-        _receiversAndTokensToSendTo.clear(); 
+        _receiversAndTokensToSendTo.clear();
         return super.postfire();
     }
 
@@ -342,7 +342,7 @@ public class Bus extends AtomicCommunicationAspect {
         // same value. Thus, this Bus can be used only in domains
         // that either call fire() at most once per iteration,
         // or domains that have a fixed-point semantics.
-        Token tokenToSend = _receiversAndTokensToSendTo.get(receiver); 
+        Token tokenToSend = _receiversAndTokensToSendTo.get(receiver);
         if (tokenToSend != null) {
             if (!tokenToSend.equals(token)) {
                 throw new IllegalActionException(this, receiver.getContainer(),
@@ -353,19 +353,19 @@ public class Bus extends AtomicCommunicationAspect {
             }
         } else {
             // In the Continuous domain, this actor gets fired whether tokens are available
-            // or not. In the DE domain we need to schedule a refiring.  
+            // or not. In the DE domain we need to schedule a refiring.
             if (token != null) {
                 _receiversAndTokensToSendTo.put(receiver, token);
                 _tempReceiverQueue.put(receiver);
-                
+
                 if (!(getDirector() instanceof FixedPointDirector)) {
                     _tokens.put(new Object[] { receiver, token });
                     _tokenCount++;
                     sendCommunicationEvent((Actor) source.getContainer().getContainer(),
-                            0, _tokenCount, EventType.RECEIVED); 
+                            0, _tokenCount, EventType.RECEIVED);
                     if (_tokens.size() == 1) { // no refiring has been scheduled
                         _scheduleRefire();
-                    } 
+                    }
                     _receiversAndTokensToSendTo.clear();
                 }
             }
@@ -377,7 +377,7 @@ public class Bus extends AtomicCommunicationAspect {
                     + receiver.getContainer().getFullName() + ": " + token);
         }
     }
-    
+
     /** Override the base class to first set the container, then establish
      *  a connection with any decorated objects it finds in scope in the new
      *  container.
@@ -407,8 +407,8 @@ public class Bus extends AtomicCommunicationAspect {
 
 
     /** Set the message length for tokens sent to this actor port.
-     *  @param port The actor port. 
-     *  @param messageLength The message length. 
+     *  @param port The actor port.
+     *  @param messageLength The message length.
      */
     public void setMessageLength(IOPort port, double messageLength) {
             if (_messageLengths == null) {
@@ -420,7 +420,7 @@ public class Bus extends AtomicCommunicationAspect {
     /**
      * Nothing to do.
      */
-    public void reset() { 
+    public void reset() {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -458,11 +458,11 @@ public class Bus extends AtomicCommunicationAspect {
     /** Next time a token is sent and the next token can be processed. */
     private Time _nextTimeFree;
 
-    /** Map of receivers and tokens to which the token provided via 
+    /** Map of receivers and tokens to which the token provided via
      *  sendToken() should be sent to. This is used with FixedPointDirectors.
      */
     private HashMap<Receiver, Token> _receiversAndTokensToSendTo;
-    
+
     /** During the fix point iteration keep track of the order of tokens sent to
      *  receivers. The tokens are stored in _receiversAndTokensToSendTo.
      */
@@ -474,8 +474,8 @@ public class Bus extends AtomicCommunicationAspect {
     /** Tokens stored for processing. This is used with the DE Director. */
     private FIFOQueue _tokens;
 
-    /** The port specific attributes for ports mediated by a Bus. 
-     *  
+    /** The port specific attributes for ports mediated by a Bus.
+     *
      *  @author Patricia Derler
      */
     public static class BusAttributes extends CommunicationAspectAttributes {
@@ -507,36 +507,36 @@ public class Bus extends AtomicCommunicationAspect {
         ///////////////////////////////////////////////////////////////////
         ////                         parameters                        ////
 
-        /** Message length per port. The total time the token is 
+        /** Message length per port. The total time the token is
          *  delayed at a quantity manger is the serviceTimeMultiplicationFactor
          *  * messageLength + the time other tokens need to be serviced.
          */
         public Parameter messageLength;
-        
-        /** If attribute is <i>messageLength</i> report the new value 
-         *  to the communication aspect. 
+
+        /** If attribute is <i>messageLength</i> report the new value
+         *  to the communication aspect.
          *  @param attribute The changed parameter.
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
          */
         public void attributeChanged(Attribute attribute)
-                throws IllegalActionException { 
+                throws IllegalActionException {
             if (attribute == messageLength) {
                 if (((BooleanToken)enable.getToken()).booleanValue()) {
-                    IOPort port = (IOPort) getContainer(); 
+                    IOPort port = (IOPort) getContainer();
                     Bus bus = (Bus) getDecorator();
                     if (bus != null) {
                         Token token = messageLength.getToken();
                         if (token != null) {
                                 _messageLength = ((ScalarToken)token).doubleValue();
                             bus.setMessageLength(port, _messageLength);
-                        } 
+                        }
                     }
                 }
             } else {
                 super.attributeChanged(attribute);
             }
-        } 
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                        private methods                    ////
@@ -553,11 +553,11 @@ public class Bus extends AtomicCommunicationAspect {
                 throw new InternalErrorException(ex);
             }
         }
-        
+
         private double _messageLength;
     }
 
-    
+
 }
 
 

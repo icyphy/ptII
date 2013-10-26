@@ -70,7 +70,7 @@ import org.w3c.dom.NodeList;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUFile {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -160,12 +160,12 @@ public class FMUFile {
      */
     public static FMIModelDescription parseFMUFile(String fmuFileName)
             throws IOException {
-        
+
         FMIModelDescription result = _modelDescriptions.get(fmuFileName);
         if (result != null) {
             return result;
         }
-        
+
         // Unzip the file.
         List<File> files = null;
         try {
@@ -219,7 +219,7 @@ public class FMUFile {
 
         // Remove any trailing slash.
         if (fmuResourceLocation.endsWith("/")) {
-            fmuResourceLocation = fmuResourceLocation.substring(0, 
+            fmuResourceLocation = fmuResourceLocation.substring(0,
                     fmuResourceLocation.length()-1);
         }
 
@@ -253,7 +253,7 @@ public class FMUFile {
 
         // Create an object that represents the modelDescription.xml file
         FMIModelDescription fmiModelDescription = new FMIModelDescription();
-        
+
         // Record this model description in case there is another instance of this FMU.
         _modelDescriptions.put(fmuFileName, fmiModelDescription);
 
@@ -278,7 +278,7 @@ public class FMUFile {
                 exception.initCause(ex);
                 throw exception;
             }
-            // Under FMI 1.0, the fmuLocation parameter refers to the location 
+            // Under FMI 1.0, the fmuLocation parameter refers to the location
             // of the fmu.
             if (fmiVersion < 2.0 && fmiModelDescription.fmuResourceLocation.endsWith("resources")) {
                 fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation.substring(0, fmiModelDescription.fmuResourceLocation.length() - "resources".length() - 1); // +1 is to get rid of the /
@@ -496,7 +496,7 @@ public class FMUFile {
         }
         return files;
     }
-    
+
     /** Return true if this is a 32bit JVM.
      *  @return true if this is a 32bit JVM.
      */

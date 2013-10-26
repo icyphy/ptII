@@ -80,7 +80,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
         String type = initialValue.getType().toString();
         type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
         args.add(type);
-        
+
         Token initialValueToken = initialValue.getToken();
         if (initialValueToken instanceof DoubleToken) {
             double tokenDouble;
@@ -105,12 +105,12 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
         else
             throw new IllegalActionException("Token type at MostRecent : "
                     + type + " not supported yet.");
-        
+
 
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * A function which returns the generated code from the C template
      * preFire method.
@@ -122,9 +122,9 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
         LinkedList args = new LinkedList();
         ptolemy.domains.de.lib.MostRecent actor = (ptolemy.domains.de.lib.MostRecent) getComponent();
-        
+
         codeStream.appendCodeBlock("beginPreFireBlock", args);
-        
+
         if (actor.trigger.isOutsideConnected()) {
             for (int j = 0; j < actor.trigger.getWidth(); j++) {
                 args.clear();
@@ -132,13 +132,13 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
                 codeStream.appendCodeBlock("preFireLoopBlock", args);
             }
         }
-        
+
         args.clear();
         codeStream.appendCodeBlock("endPreFireBlock", args);
 
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * A function which returns the generated code from the C template
      * wrapup method.
@@ -148,14 +148,14 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
     public String generateWrapupCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
-        
+
         return processCode(codeStream.getCodeBlock("wrapupBlock"));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
+
     /**
      * Generate fire code.
      * The method generates code that is executed when the <i>input</i> has a Token
@@ -170,48 +170,48 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
         codeStream.clear();
         LinkedList args = new LinkedList();
         ptolemy.domains.de.lib.MostRecent actor = (ptolemy.domains.de.lib.MostRecent) getComponent();
-        
+
         int inputWidth = actor.input.getWidth();
         int outputWidth = actor.output.getWidth();
         int triggerWidth = actor.trigger.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);
-        
+
         args.add(Integer.toString(inputWidth));
         args.add(Integer.toString(outputWidth));
         args.add(Integer.toString(triggerWidth));
-        
+
         codeStream.appendCodeBlock("InitFireBlock", args);
-        
+
         for (int i = 0; i < commonWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("inputChannelLoopFireBlock", args);
         }
-        
+
         for (int i = commonWidth; i < inputWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("throwTokensLoopFireBlock", args);
         }
-        
+
         for (int i = 0; i < triggerWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("triggerLoopFireBlock", args);
         }
-        
+
         args.clear();
         codeStream.appendCodeBlock("ifTriggeredFireBlock", args);
-        
+
         for (int i = 0; i < commonWidth; i++) {
             args.clear();
             args.add(Integer.toString(i));
             codeStream.appendCodeBlock("ifTriggeredLoopFireBlock", args);
         }
-        
+
         args.clear();
         codeStream.appendCodeBlock("endIfTriggeredFireBlock", args);
-        
+
         return processCode(codeStream.toString());
     }
 }

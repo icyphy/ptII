@@ -1454,13 +1454,13 @@ public abstract class Top extends JFrame {
         }
 
         fileDialog.show();
-        
+
         if (fileDialog.getDirectory() == null) {
             _directory = new File("");
         } else {
             _directory = new File(fileDialog.getDirectory());
         }
-        
+
         try {
             // NOTE: It would be nice if it were possible to enter
             // a URL in the file chooser, but Java's file chooser does

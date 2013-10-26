@@ -68,7 +68,7 @@ public class FMIModelDescription {
      *  if not present in the XML file.
      */
     public boolean canGetAndSetFMUstate = false;
-    
+
     /** For the IBM/UCB proposed extension to FMI 2.0, there is a
      *  capability flag canProvideMaxStepSize that indicates that
      *  the FMU implements the procedure fmiGetMaxStepSize().
@@ -96,7 +96,7 @@ public class FMIModelDescription {
      * must match the guid in the shared library.
      */
     public String guid;
-    
+
     /** If true, then the FMU is intended for model exchange, not
      *  co-simulation.
      */
@@ -137,7 +137,7 @@ public class FMIModelDescription {
 
     /** Unload the native library and free up any Java references
      *  to memory allocated by the allocate memory callback.
-     */        
+     */
     public void dispose() {
         if (_fmuAllocateMemory != null) {
             // Prevent a memory leak by releasing Memory and Pointer objects to the GC.
@@ -223,7 +223,7 @@ public class FMIModelDescription {
     }
 
     /** Get the native function from the native library.
-     *        
+     *
      *  <p>A FMI 1.0 FMU will have functions like MyModel_fmiGetReal().</p>
      *
      *  <p>A FMI 2.0 FMU that is shipped with C source code or with a
@@ -233,7 +233,7 @@ public class FMIModelDescription {
      *  library (and without C source code), will have functions like
      *  fmiGetReal().</p>
      *
-     *  <p>This method tries both formats.  The leading modelIdentifier is 
+     *  <p>This method tries both formats.  The leading modelIdentifier is
      *  tried first because we believe that FMUs should be shipped with source code.
      *  If the function name with the leading modelIdentifier is not found, then
      *  just the functionName is tried.</p>

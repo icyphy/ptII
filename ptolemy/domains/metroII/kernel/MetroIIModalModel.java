@@ -1,5 +1,5 @@
 /* MetroIIModalModel extends ModalModel to support enclosing MetroFSMDirector.
- 
+
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -50,13 +50,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * MetroIIModalModel extends ModalModel to support enclosing MetroIIFSMDirector.
- * 
+ *
  * @author Liangpeng Guo.
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIIModalModel extends ModalModel implements GetFirable {
 
@@ -64,7 +64,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
      * Construct a modal model in the specified workspace with no container and
      * an empty string as a name. You can then change the name with setName().
      * If the workspace argument is null, then use the default workspace.
-     * 
+     *
      * @param workspace
      *            The workspace that will list the actor.
      * @exception IllegalActionException
@@ -82,7 +82,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
     /**
      * Construct a modal model with a name and a container. The container
      * argument must not be null, or a NullPointerException will be thrown.
-     * 
+     *
      * @param container
      *            The container.
      * @param name
@@ -101,7 +101,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -117,7 +117,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
 
     /**
      * getfire() should be identical to getfire() of MetroCompositeActor.
-     * 
+     *
      * If this actor is opaque, transfer any data from the input ports of this
      * composite to the ports connected on the inside, and then invoke the
      * fire() method of its local director. The transfer is accomplished by
@@ -128,7 +128,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
      * from here). After the fire() method of the director returns, send any
      * output data created by calling the local director's transferOutputs
      * method.
-     * 
+     *
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {

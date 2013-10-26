@@ -338,7 +338,7 @@ public class Type {
         if (object.getClass() != getClass()) {
             return false;
         }
-        
+
         if (_primitiveNum == ((Type)object)._primitiveNum
                 && ((Type) object)._fullName.equals(_fullName)) {
             return true;

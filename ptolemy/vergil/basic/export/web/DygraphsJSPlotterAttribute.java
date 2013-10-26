@@ -156,13 +156,13 @@ public class DygraphsJSPlotterAttribute extends JSPlotterAttribute {
         for (String line : _plotCodeStart) {
             insertHeaderContent(true, false, line + "\n");
         }
-        
+
         // Insert custom content, if any
         if (customContent != null && customContent.getExpression() != null
                     && !customContent.getExpression().equals("")) {
             insertHeaderContent(true, false, customContent.getExpression());
         }
-        
+
         // Insert rest of plotcode
         for (String line : _plotCodeEnd) {
             insertHeaderContent(true, false, line + "\n");
@@ -224,23 +224,23 @@ public class DygraphsJSPlotterAttribute extends JSPlotterAttribute {
             "\t<li><b style=\"color:blue;\">Zoom-in/out</b> to/from an interval by <b style=\"color:blue;\">dragging</b> on the lower chart.</li>",
             "</ol>" };
 
-    /** JavaScript code to plot the figure using the Dygraphs library. 
+    /** JavaScript code to plot the figure using the Dygraphs library.
      *  Separated into start and end so custom content can be inserted.  */
     private static String[] _plotCodeStart = {
             "\t\t\t\tvar pieChart, dataTable, seriesLabels;\n",
             "\t\t\t\t$(document).ready(function() {",
             "\t\t\t\t\t// parse data and create main chart",
             "\t\t\t\t\tparseJSON();", "\t\t\t\t\tcreateMainChart();",
-            "\t\t\t\t});", 
+            "\t\t\t\t});",
             "\t\t\t\t\tfunction createMainChart() {",
             "\t\t\t\t\t\tmainChart = new Dygraph(",
             "\t\t\t\t\t\t\tdocument.getElementById(\"mainChart-container\"),",
             "\t\t\t\t\t\t\tdataTable,",
             "\t\t\t\t\t\t\t{"};
-    
-    /** JavaScript code to plot the figure using the Dygraphs library. 
-     *  Separated into start and end so custom content can be inserted.  */           
-    private static String[] _plotCodeEnd = {        
+
+    /** JavaScript code to plot the figure using the Dygraphs library.
+     *  Separated into start and end so custom content can be inserted.  */
+    private static String[] _plotCodeEnd = {
             "\t\t\t\t\t\t\t\tlabels: seriesLabels,",
             "\t\t\t\t\t\t\t\txlabel: config.xAxisTitle,",
             "\t\t\t\t\t\t\t\tylabel: config.yAxisTitle,",

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * StartOrResumable defines the interface of an actor to MetroIIDirector. This
  * interface defines the common functionality in atomic actor and composite
  * actor.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -69,7 +69,7 @@ public interface StartOrResumable {
      * or NOTIFIED). Therefore, when the function resumes the state, it should
      * continue the execution based on updated MetroII Events.
      * </p>
-     * 
+     *
      * @param metroIIEventList
      *            List of MetroII Events
      * @throws IllegalActionException
@@ -80,7 +80,7 @@ public interface StartOrResumable {
 
     /**
      * Reset the state of startOrResumable.
-     * 
+     *
      */
     public void reset();
 

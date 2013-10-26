@@ -144,7 +144,7 @@ public class JFileChooserBugFix {
     /** The HTMLEditorKit*/
     private HTMLEditorKit _HTMLEditorKit;
 
-    /** True if we have printed the message about failing to set the 
+    /** True if we have printed the message about failing to set the
      *  background.
      */
     private boolean _printedMessage;

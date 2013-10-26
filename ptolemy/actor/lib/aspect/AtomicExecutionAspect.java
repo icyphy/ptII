@@ -69,12 +69,12 @@ is decorated with these this parameter:
      This is a boolean that defaults to false.
 </ul>
 
-This base class is not used but to use derived classes, drag them into a model 
-and enable the actors that will use the resource. 
+This base class is not used but to use derived classes, drag them into a model
+and enable the actors that will use the resource.
 
 Currently, the following Directors honor ExecutionAspect settings:
 <ul>
-<li> PtidesDirector. A ExecutionAspect on a PtidesPlatform will cause the 
+<li> PtidesDirector. A ExecutionAspect on a PtidesPlatform will cause the
 platform time at which actors produce their outputs
 to be delayed by the specified execution time beyond the platform time at
 which the resource becomes available to execute the actor. </li>
@@ -85,7 +85,7 @@ will change the MoC and nondeterminism is introduced with ExecutionAspects.
 hierarchy layers by a PtidesDirector. </li>
 <li> SysMLSequentialDirector, if contained hierarchically directly or via multiple
 hierarchy layers by a PtidesDirector. </li>
-</ul>  
+</ul>
 
 @author Patricia Derler
 @author Edward A. Lee
@@ -114,13 +114,13 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         attribute.setExpression("{0.0,0.8,0.0,1.0}");
         _executionAspectListeners = new ArrayList<ExecutionAspectListener>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
 
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this resource scheduler.
-     *  @param listener The listener to be added. 
+     *  @param listener The listener to be added.
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
@@ -129,7 +129,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         if (_actors == null) {
             initializeDecoratedActors();
         }
-        listener.initialize(_actors, this); 
+        listener.initialize(_actors, this);
     }
 
     /** Clone the actor into the specified workspace.
@@ -174,14 +174,14 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         CompositeEntity container = (CompositeEntity) getContainer();
         return ExecutionAspectHelper.getEntitiesToDecorate(container);
     }
-    
-    
+
+
 
     /** Perform rescheduling if necessary.
          *  @exception IllegalActionException Not thrown here.
          */
         @Override
-        public void fire() throws IllegalActionException { 
+        public void fire() throws IllegalActionException {
             super.fire();
             Time time = schedule(getDirector().getModelTime());
             if (time.getDoubleValue() > 0.0) {
@@ -201,7 +201,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         double executionTime = 0.0;
         for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
                 .attributeList(ExecutionTimeAttributes.class)) {
-            if (resourceAttributes.getDecorator() != null && 
+            if (resourceAttributes.getDecorator() != null &&
                     resourceAttributes.getDecorator().equals(this)) {
                 Token token = resourceAttributes.executionTime.getToken();
                 if (token != null) {
@@ -229,7 +229,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     public Time getTime(double time) throws IllegalActionException {
         return new Time(((CompositeActor) getContainer()).getDirector(), time);
     }
-    
+
     /** Initialize local variables.
      * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
@@ -239,10 +239,10 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         _remainingTimes = new HashMap<Actor, Time>();
         _lastTimeScheduled = new HashMap<Actor, Time>();
         _actors = new ArrayList<NamedObj>();
-    
+
         initializeDecoratedActors();
         _actors.add(this);
-        
+
         for (ExecutionAspectListener listener : _executionAspectListeners) {
             listener.initialize(_actors, this);
         }
@@ -250,7 +250,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
 
     ///////////////////////////////////////////////////////////////////
         //                          protected methods                    //
-        
+
         /** Iterate through all entities deeply contained by the container,
          *  record for each that it is not executing.
          *  @exception IllegalActionException If the decorator parameters cannot be read.
@@ -273,16 +273,16 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     }
 
         /** Check whether the execution of an actor is handled by
-     *  this aspect actor. 
+     *  this aspect actor.
      *  @param actor The actor.
-     *  @return True, if the actor execution is handled by this 
-     *  aspect actor. 
+     *  @return True, if the actor execution is handled by this
+     *  aspect actor.
      */
         @Override
     public boolean isWaitingForResource(Actor actor) {
         return _remainingTimes.get(actor) != null;
     }
-    
+
     /** If the last actor that was scheduled finished execution
      *  then this method returns true.
      *  @return True if last actor that was scheduled finished
@@ -292,10 +292,10 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     public boolean lastScheduledActorFinished() {
         return _lastActorFinished;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                           private methods                     //
-    
+
     /** Notify schedule listeners about rescheduling events.
      * @param entity Entity that is being scheduled.
      * @param time Time when entity is being scheduled.
@@ -341,7 +341,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
      * @param environmentTime The outside time.
      * @return Relative time when this Scheduler has to be executed
      *    again to perform rescheduling actions.
-     * @exception IllegalActionException Thrown in subclasses.   
+     * @exception IllegalActionException Thrown in subclasses.
      */
     @Override
     public Time schedule(Time environmentTime) throws IllegalActionException {
@@ -349,11 +349,11 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     }
 
     /** Schedule the actor. In this base class, do nothing.  Derived
-         *  classes should schedule the actor.   
+         *  classes should schedule the actor.
          *  @param actor The actor to be scheduled.
          *  @param environmentTime The current platform time.
          *  @param deadline The deadline timestamp of the event to be scheduled.
-         *  This can be the same as the environmentTime. 
+         *  This can be the same as the environmentTime.
          *  @param executionTime The execution time of the actor.
          *  @return Relative time when this Scheduler has to be executed
          *    again to perform rescheduling actions.  In this base class, null
@@ -363,7 +363,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
          */
     @Override
         public Time schedule(Actor actor, Time environmentTime, Time deadline,
-                Time executionTime) throws IllegalActionException { 
+                Time executionTime) throws IllegalActionException {
             return null;
         }
 
@@ -387,7 +387,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         super.wrapup();
         for (NamedObj actor : _actors) {
                 notifyExecutionListeners(actor, ((CompositeActor) getContainer()).getDirector()
-                        .getEnvironmentTime().getDoubleValue(), null); 
+                        .getEnvironmentTime().getDoubleValue(), null);
         }
     }
 
@@ -400,7 +400,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
      *  @param timestamp The time when the actor wants to be fired.
      *  @return The deadline for the actor.
      *  @exception IllegalActionException If time objects cannot be created.
-     */    
+     */
     protected Time _getDeadline(Actor actor, Time timestamp)
             throws IllegalActionException {
         return Time.POSITIVE_INFINITY;
@@ -408,7 +408,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
 
     /** Return whether last actor that was scheduled finished execution.
          *  @return True if last actor finished execution.
-         */ 
+         */
         protected boolean lastActorFinished() {
             return _lastActorFinished;
         }
@@ -418,12 +418,12 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
 
         /** Actors decorated by this aspect. */
     protected List<NamedObj> _actors;
-    
+
     /** True if in the last request to schedule an actor, this actor
      *  finished execution.
      */
     protected boolean _lastActorFinished;
-    
+
     /** Last actor that finished execution.
      */
     protected Actor _lastActorThatFinished;
@@ -441,7 +441,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
     /** Listeners that want to be informed about rescheduling events.
      */
     protected List<ExecutionAspectListener> _executionAspectListeners;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     //                           private methods                     //
@@ -465,7 +465,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
                     }
                     _remainingTimes.put((Actor) entity, null);
                     notifyExecutionListeners(entity, 0.0, null);
-                    
+
                 } else if (entity instanceof CompositeActor) {
                     _initializeManagedEntities(((CompositeActor) entity)
                             .deepEntityList());
@@ -474,5 +474,5 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements ActorExec
         }
     }
 
-    
+
 }

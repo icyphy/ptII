@@ -85,7 +85,7 @@ public class StaticSchedulingDirectorAttributes extends DecoratorAttributes {
      *  This is a boolean that defaults to true.
      */
     public Parameter padBuffers;
-    
+
     /** Indicator of whether to allow dynamic multiport references.
      *  If true, then channels in multiports can be dynamically
      *  referenced using the $ref macro.

@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------*
  * fmuTemplate.h
  * Definitions used in fmiModelFunctions.c and by the includer of this file
- * (c) 2010 QTronic GmbH 
+ * (c) 2010 QTronic GmbH
  * ---------------------------------------------------------------------------*/
 
 #include <stdio.h>

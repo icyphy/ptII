@@ -58,13 +58,13 @@ public interface CommunicationAspect {
      *  @exception IllegalActionException If the receiver cannot be created.
      */
     public Receiver createIntermediateReceiver(Receiver receiver)
-            throws IllegalActionException; 
-    
+            throws IllegalActionException;
+
     /** Add a communication aspect monitor to the list of listeners.
      *  @param monitor The communication aspect monitor.
      */
     public void registerListener(CommunicationAspectListener monitor);
-    
+
     /** Reset the CommunicationAspect.
      */
     public void reset();
@@ -80,8 +80,8 @@ public interface CommunicationAspect {
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
-            throws IllegalActionException; 
-    
+            throws IllegalActionException;
+
     /** The parameter name of the decorator highlight color.
      */
     public static String decoratorHighlightColorName = "decoratorHighlightColor";

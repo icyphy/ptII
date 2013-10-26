@@ -185,7 +185,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return "#ifndef " + constant + _eol + "#define " + constant + " "
                 + value + _eol + "#endif" + _eol;
     }
-    
+
     /** Generate the fire function method name. This method is called
      *  when the firing code of each actor is not inlined.  In this
      *  class, each actor's firing code is in a function with the
@@ -285,9 +285,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
                     + escapeName + "_initialize("
                     + "JNIEnv *env_glob, jobject obj_glob) {"
-                    + _eol + "env = env_glob;" 
+                    + _eol + "env = env_glob;"
                     + _eol + "obj = obj_glob;";
-            
+
         }
     }
 
@@ -368,25 +368,25 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
-            
+
             if (((BooleanToken) measureTime.getToken()).booleanValue()) {
                 mainEntryCode.append(_eol + "struct timeval start, end;");
-                mainEntryCode.append(_eol + "long mtime, secs, usecs;"); 
+                mainEntryCode.append(_eol + "long mtime, secs, usecs;");
                 mainEntryCode.append(_eol + "gettimeofday(&start, NULL);");
             }
-            
+
             mainEntryCode.append(_eol + "//boolean completedSuccessfully = false;");
             mainEntryCode.append(_eol + _eol + "initialize();");
-            
+
             mainEntryCode.append(_eol + "while (true) {");
             mainEntryCode.append(_eol + "if (!iterate()) {");
             mainEntryCode.append(_eol + "break;");
             mainEntryCode.append(_eol + "}");
             mainEntryCode.append(_eol + "//completedSuccessfully = true;");
-            
+
             mainEntryCode.append(_eol + "}");
             mainEntryCode.append(_eol + "wrapup();");
-            
+
             if (((BooleanToken) measureTime.getToken()).booleanValue()) {
                 mainEntryCode.append(_eol + "gettimeofday(&end, NULL);");
                 mainEntryCode.append(_eol + "secs  = end.tv_sec  - start.tv_sec;");
@@ -399,7 +399,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } else {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
-                    
+
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
                     + _eol + "Java_" + escapeName + "_fire (" + _eol
@@ -419,7 +419,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
                 mainEntryCode.append(_eol + inputPort.getName() + " = " + inputPort.getName() + "_glob;");
             }
-            
+
             mainEntryCode.append(_eol + _sanitizedModelName + "_fire();" + _eol);
         }
         return mainEntryCode.toString();
@@ -510,7 +510,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeH.append(_eol + "#include <limits.h>");
         codeH.append(_eol + "#include <stdarg.h>");
         codeH.append(_eol + "#include \"pbl.h\"");
-        
+
         // Add the extra-define
         for (String extraDefine : _definesToAdd) {
             codeH.append(_eol + "#define " + extraDefine);
@@ -522,7 +522,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeC.append(_eol
                 + comment("Generate type resolution code for "
                         + getContainer().getFullName()));
-        
+
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
         CodeStream sharedStream = new CodeStream(
@@ -546,7 +546,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeH.append(_eol + "typedef struct Receiver Receiver;");
         codeH.append(_eol + "typedef struct Director Director;");
         codeH.append(_eol + "typedef double Time;" + _eol);
-        
+
         // Generate type map.
         StringBuffer typeMembers = new StringBuffer();
         codeH.append("#define TYPE_Token -1 " + _eol);
@@ -555,7 +555,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             codeH.append("#define TYPE_Scalar -1 " + _eol);
 
         for (int i = 0; i < typesArray.length; i++) {
-            
+
             // We have to define a new structure
             if (typesArray[i].endsWith("Structure")) {
                 // Open the .c file for each structure.
@@ -568,9 +568,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 typeStreams[i] = new CodeStream(
                         "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/"
                                 + typesArray[i] + ".c", this);
-    
+
                 codeH.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
-    
+
                 // Dynamically generate all the types within the union.
                 typeMembers.append(typesArray[i] + "Token " + typesArray[i] + ";");
                 if (i < typesArray.length - 1) {
@@ -609,7 +609,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
             typeStreams[i].appendCodeBlock("declareBlock");
-            codeH.append(typeStreams[i].toString());            
+            codeH.append(typeStreams[i].toString());
         }
 
         ArrayList<String> args = new ArrayList<String>();
@@ -632,7 +632,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // Set to true if we need to scalarDelete() method.
         boolean defineScalarDeleteMethod = false;
-        
+
         // Define the generic convert method
         StringBuffer convertImplementation = new StringBuffer(_eol + "Token convert(Token t, char type) {" + _eol);
         convertImplementation.append("if (t.type == type)" + _eol + "return t;" + _eol);
@@ -663,14 +663,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         sharedStream.clear();
         sharedStream.appendCodeBlock("convertPrimitivesBlockImplementation");
         codeC.append(sharedStream.toString());
-        
+
         sharedStream.clear();
 
         StringBuffer typeFunctionCode = new StringBuffer();
-        for (int i = 0; i < typesArray.length; i++) {        
+        for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
             //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
-            
+
             // Appends the Structure code in case of a structure declaration
             if (typesArray[i].endsWith("Structure")) {
                 //typeStreams[i].appendCodeBlock("funcImplementationBlock");
@@ -779,28 +779,28 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // We have to declare all the functions which have not been declared before.
         /*for (String functionName : _overloadedFunctionSet) {
-                if (!functionsDeclared.contains(functionName) 
+                if (!functionsDeclared.contains(functionName)
                                 && !functionName.endsWith("_new")
                                 && !functionName.endsWith("_delete")) {
                         args.clear();
                         //args.add(functionName);
-                        _overloadedFunctionsDeclaration = 
+                        _overloadedFunctionsDeclaration =
                         sharedStream.append("// functionHeader: " + _eol);
                         sharedStream.appendCodeBlock(functionName, args);
                 }
         }*/
-        
+
         // sharedStream should the global code (e.g. token declaration,
         // constants, and etc.)
         codeH.append(sharedStream.toString());
-        
+
         sharedStream.clear();
         if (defineUnsupportedTypeFunctionMethod) {
             // Some type/function combos are not supported, so we
             // save space by defining only one method.
             sharedStream.appendCodeBlock("unsupportedTypeFunction");
         }
-        
+
         if (defineScalarDeleteMethod) {
             // Types that share the scalarDelete() method, which does nothing.
             // We use one method so as to reduce code size.
@@ -813,7 +813,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // save space by defining only one method.
             sharedStream.appendCodeBlock("unsupportedTypeFunctionDeclaration");
         }
-        
+
         if (defineScalarDeleteMethod) {
             // Types that share the scalarDelete() method, which does nothing.
             // We use one method so as to reduce code size.
@@ -825,13 +825,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // add_Type1_Type2, negate_Type, and etc.
         codeC.append(_overloadedFunctions.toString());
         codeH.append(_overloadedFunctionsDeclaration.toString());
-        
+
         // Generate function type and token table.
         codeC.append(generateFunctionTable(typesArray, functionsArray));
-        
+
         codeH.append("#define NUM_TYPE " + typesArray.length + _eol);
         codeH.append("#define NUM_FUNC " + functionsArray.length + _eol);
-        
+
         codeH.append("extern Token (*functionTable[NUM_TYPE][NUM_FUNC])"
                 + "(Token, ...);" + _eol);
 
@@ -963,7 +963,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + "JNIEnv *env, jobject obj);" + _eol;
         }
     }
-    
+
     /** Generate the model name.
      *  @return a string for the model name.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -985,31 +985,31 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     public void markFunctionCalled(String name,
             ProceduralTemplateParser templateParser)
             throws IllegalActionException {
-    
+
         try {
             String functionCode = _overloadedFunctions.getCodeBlock(name);
             HashSet<String> functions = _getReferencedFunctions();
-            
+
             boolean macro = false;
             int indexEndDeclaration = functionCode.indexOf('{');
             String declarationFunctionCode = "";
             if (indexEndDeclaration > 0)
-                declarationFunctionCode = functionCode.substring(0, indexEndDeclaration) + ";" + _eol; 
+                declarationFunctionCode = functionCode.substring(0, indexEndDeclaration) + ";" + _eol;
             else if (functionCode.startsWith("#define")) {
                 // int this case the function is a macro, we have to define it in the types.h !
                 declarationFunctionCode = functionCode;
                 macro = true;
             }
             if (!_overloadedFunctionSet.contains(name)) {
-    
+
                 String code = templateParser == null ? processCode(functionCode)
                         : templateParser.processCode(functionCode);
                 String declarationCode = templateParser == null ? processCode(declarationFunctionCode)
                         : templateParser.processCode(declarationFunctionCode);
-    
+
                 if (!macro) // In case of a macro we do not want to add the code to the types.c
                     _overloadedFunctions.append(code);
-                
+
                 boolean ok = true;
                 for (String partName : functions)
                     if (name.endsWith(partName) || name.endsWith("_new") || name.endsWith("_equals")) {
@@ -1019,14 +1019,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 if (ok) {
                     _overloadedFunctionsDeclaration.append(declarationCode);
                 }
-                
-    
+
+
                 _overloadedFunctionSet.add(name);
             }
             if (name.startsWith("Array_")) {
                 // Array_xxx might need to have xxx added.
                 // See c/actor/lib/test/auto/MultiplyDivide5.xml
-    
+
                 // FIXME: this will add any function, which means that
                 // if the user has Array_foo, foo is added.  Is this right?
                 _tokenFuncUsed.add(name.substring(6));
@@ -1036,7 +1036,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     "Failed to mark function called for \"" + name + "\" in \""
                             + getComponent().getFullName() + "\"");
         }
-    
+
     }
 
     /** Split a long function body into multiple functions.
@@ -1111,7 +1111,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @see ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter#getIncludeDirectories()
      */
     protected void _addActorIncludeDirectories(NamedProgramCodeGeneratorAdapter adapter) throws IllegalActionException {
-        
+
         Set<String> actorIncludeDirectories = adapter.getIncludeDirectories();
         Iterator<String> includeIterator = actorIncludeDirectories.iterator();
         while (includeIterator.hasNext()) {
@@ -1151,7 +1151,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String cCodegenPath = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/";
         String typeDir = cCodegenPath + "type/";
         String functionDir = typeDir + "polymorphic/";
-        
+
         _overloadedFunctionsDeclaration = new CodeStream(functionDir, this);
 
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
@@ -1322,18 +1322,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  This method is the main entry point.
      *  We do not call the super method because it is too different from it.
      *  For instance, there is not only one file generated, but a few.
-     *  
+     *
      *  The code generation algorithm works as followed :
      *  We generate a file with the name of the model (+ .c) and its header
      *  file. In this file we have the implementation of a ptolemy manager in
      *  C ({@link ptolemy.actor.Manager}.
-     *  
+     *
      *  Also for, each Composite Actor (including the top level container)
      *  We generate the files implementing the behavior of the director and
      *  of all the actors. (sources files are in the src directory and header
      *  files in includes directory)
      *  Moreover, for each folder a makefile is generated.
-     *  
+     *
      *  @param code The given string buffer.
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.
@@ -1346,7 +1346,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // generation process takes more than 10 seconds.
         long startTime = new Date().getTime();
         long overallStartTime = startTime;
-        
+
         StringBuffer codeMainH = new StringBuffer();
         StringBuffer codeTypesH = new StringBuffer();
         StringBuffer codeTypesC = new StringBuffer();
@@ -1354,7 +1354,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _reset();
 
         _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
-        
+
         // Analyze type conversions that may be needed.
         // This must be called before any code is generated.
         _analyzeTypeConversions();
@@ -1362,7 +1362,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Report time consumed if appropriate.
         startTime = _printTimeAndMemory(startTime,
                 "CCodeGenerator.analyzeTypeConvert() consumed: ");
-        
+
         // Create the needed directories
         String directory = codeDirectory.stringValue();
         if (!directory.endsWith("/"))
@@ -1384,14 +1384,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // Findbugs wants that
             directory += "";
         }
-        
+
         /////////////////////////////////////////////////////////////////////
-        
+
         CompositeActor container = (CompositeActor)getContainer();
         String sanitizedNameContainer = CodeGeneratorAdapter.generateName(container);
         _generateAndWriteCompositeActorCode(container, "");
-        
-        
+
+
         /////////////////////////////////////////////////////////////////////
 
 
@@ -1410,37 +1410,37 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         startTime = _printTimeAndMemory(startTime,
                 "CCodeGenerator: generating code consumed: ");
-        
+
         // The appending phase.
         code.append(generateCopyright());
         codeMainH.append(generateCopyright());
         codeTypesH.append(generateCopyright());
         codeTypesC.append(generateCopyright());
 
-        
+
         // appending the .h multi-inclusions protection macro
-        codeMainH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_MAIN_H" + _eol 
+        codeMainH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_MAIN_H" + _eol
                 + "#define NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_MAIN_H" + _eol);
-        
+
         //////////////////////////////////////////////////////////////
         // Writing the Manager (main) file                          //
         //////////////////////////////////////////////////////////////
-        
+
         // Header file declaration
-        
+
         codeMainH.append(_eol + "#include \"" + sanitizedNameContainer + ".h\"");
         code.append(_eol + "#include \"" + _sanitizedModelName + "_Main.h\"");
         if (((BooleanToken) measureTime.getToken()).booleanValue()) {
             code.append(_eol + "#include <sys/time.h>");
             code.append(_eol + "#include <unistd.h>");
         }
-        
+
         // Main entry point function
         code.append(generateMainEntryCode());
 
         code.append(generateMainExitCode());
-        
-        
+
+
         // Preinitialize function
         codeMainH.append(_eol + "static int iterationCount;");
         codeMainH.append(_eol + "void preinitialize();");
@@ -1450,16 +1450,16 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         code.append(_eol + sanitizedNameContainer + "_New();");
         code.append(_eol + "(*(" + sanitizedNameContainer + "->preinitialize))(" + sanitizedNameContainer + ");");
         code.append(_eol + "}");
-        
-        
+
+
         // Initialize function
         codeMainH.append(generateInitializeProcedureName());
         code.append(generateInitializeEntryCode());
         code.append(_eol + "preinitialize();");
         code.append(_eol + "(*(" + sanitizedNameContainer + "->initialize))(" + sanitizedNameContainer + ");");
         code.append(generateInitializeExitCode());
-        
-        
+
+
         // Iterate function
         codeMainH.append(_eol + "boolean iterate();");
         code.append(_eol + "boolean iterate() {");
@@ -1471,30 +1471,30 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         code.append(_eol + "}");
         code.append(_eol + "return result;");
         code.append(_eol + "}");
-        
-        
+
+
         // wrapup function
         codeMainH.append(generateWrapupProcedureName());
         code.append(generateWrapupEntryCode());
         code.append(_eol + "(*(" + sanitizedNameContainer + "->wrapup))(" + sanitizedNameContainer + ");");
         code.append(generateWrapupExitCode());
-        
+
         // Closing the ifndef in the main header
         codeMainH.append(_eol + "#endif");
-        
+
 
         //////////////////////////////////////////////////
         // Appending the code for the types files       //
         //////////////////////////////////////////////////
-        
+
         // appending the .h multi-inclusions protection macro
-        codeTypesH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_TYPES_H" + _eol 
+        codeTypesH.append("#ifndef NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_TYPES_H" + _eol
                 + "#define NO_" + _sanitizedModelName.toUpperCase(Locale.getDefault()) + "_TYPES_H" + _eol);
-        
+
         // Get any include or import lines needed by the variable declarations.
         codeTypesH.append(_eol + typeResolutionCode[0]);
-        typeResolutionCode[0] = null;        
-        
+        typeResolutionCode[0] = null;
+
         codeTypesH.append(comment("end typeResolution code"));
         codeTypesC.append(typeResolutionCode[1]);
         typeResolutionCode[1] = null;
@@ -1510,27 +1510,27 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         startTime = _printTimeAndMemory(startTime,
                 "CCodeGenerator: appending code consumed: ");
-        
+
         //////////////////////////////////////////////////
         // final pass                                   //
         //////////////////////////////////////////////////
-        
+
         code = _finalPassOverCode(code);
         codeMainH = _finalPassOverCode(codeMainH);
         codeTypesH = _finalPassOverCode(codeTypesH);
         codeTypesC = _finalPassOverCode(codeTypesC);
         startTime = _printTimeAndMemory(startTime,
                 "CCodeGenerator: final pass consumed: ");
-        
+
         //////////////////////////////////////////////////
         // Writing files                                //
         //////////////////////////////////////////////////
-        
+
         _writeCodeFileName(code, _sanitizedModelName + "_Main.c", true, false);
         _writeCodeFileName(codeMainH, _sanitizedModelName + "_Main.h", true, false);
         _writeCodeFileName(codeTypesH, directoryCommons + "_ptTypes.h", true, false);
         _writeCodeFileName(codeTypesC, directoryCommons + "_ptTypes.c", true, false);
-        
+
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_AtomicActor.h");
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_AtomicActor.c");
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_Actor.h");
@@ -1547,8 +1547,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_Director.h");
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_LocalClock.c");
         _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/", directoryCommons, "_LocalClock.h");
-       
-        
+
+
         _copyCFileTosrc("ptolemy/cg/kernel/generic/program/procedural/c/structures/", directoryCommons, "pbl.c");
         _copyCFileTosrc("ptolemy/cg/kernel/generic/program/procedural/c/structures/", directoryCommons, "pbl.h");
         _copyCFileTosrc("ptolemy/cg/kernel/generic/program/procedural/c/structures/", directoryCommons, "pblCollection.c");
@@ -1559,23 +1559,23 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _copyCFileTosrc("ptolemy/cg/kernel/generic/program/procedural/c/structures/", directoryCommons, "pblMap.c");
         _copyCFileTosrc("ptolemy/cg/kernel/generic/program/procedural/c/structures/", directoryCommons, "pblPriorityQueue.c");
         _copyCFileTosrc("ptolemy/cg/kernel/generic/program/procedural/c/structures/", directoryCommons, "pblSet.c");
-        
-        
+
+
         code = null;
         codeMainH = null;
         codeTypesH = null;
         codeTypesC = null;
-        
+
         // Writing the Makefile
         _writeMakefile(container, directory);
 
         /*startTime =*/_printTimeAndMemory(startTime,
                 "CCodeGenerator: writing code consumed: ");
-        
+
         //////////////////////////////////////////
         // Executing commands                   //
         //////////////////////////////////////////
-        
+
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
@@ -1585,13 +1585,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         return _executeCommands();
     }
-    
+
     /** Generate the code for a constructor.
      *  @param actor The actor for which constructor code shall be generated.
      *  @return The constructor code.
      *  @exception IllegalActionException If there is a problem
      *  generating the code.
-     */  
+     */
     protected String _generateConstructorCode(Actor actor) throws IllegalActionException {
         StringBuffer result = new StringBuffer(_eol);
         String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
@@ -1599,7 +1599,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         CompositeActor container = (CompositeActor)actor.getContainer();
         while (!container.isOpaque())
             container = (CompositeActor)container.getContainer();
-        
+
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
         result.append(sanitizedActorName + "->container = " + sanitizedContainerName + ";" + _eol);
         result.append(sanitizedActorName + "->preinitialize = " + sanitizedActorName + "_preinitialize;" + _eol);
@@ -1608,35 +1608,35 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         result.append(sanitizedActorName + "->fire = " + sanitizedActorName + "_fire;" + _eol);
         result.append(sanitizedActorName + "->postfire = " + sanitizedActorName + "_postfire;" + _eol);
         result.append(sanitizedActorName + "->wrapup = " + sanitizedActorName + "_wrapup;" + _eol);
-        
+
         Iterator<?> inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()){
             TypedIOPort iPort = (TypedIOPort) inputPorts.next();
-            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(iPort);
             result.append(portAdapter.generatePortDeclaration() + _eol);
         }
-        
+
         Iterator<?> outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()){
             TypedIOPort oPort = (TypedIOPort) outputPorts.next();
-            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(oPort);
             result.append(portAdapter.generatePortDeclaration() + _eol);
         }
-        
+
         result.append("return " + sanitizedActorName + ";" + _eol);
-        
+
         return result.toString();
     }
-    
+
     /** Generate the code for a constructor.
      *  @param actor The Composite actor for which constructor code
      *  shall be generated.
      *  @return The constructor code.
      *  @exception IllegalActionException If there is a problem
      *  generating the code.
-     */  
+     */
     protected String _generateConstructorCode(CompositeActor actor) throws IllegalActionException {
         StringBuffer result = new StringBuffer(_eol);
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
@@ -1645,7 +1645,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             CompositeActor container = (CompositeActor)actor.getContainer();
             while (!container.isOpaque())
                 container = (CompositeActor)container.getContainer();
-            result.append(_eol + sanitizedActorName + "->container = " 
+            result.append(_eol + sanitizedActorName + "->container = "
                 + CodeGeneratorAdapter.generateName(actor.getContainer()) + ";" + _eol);
         }
 
@@ -1663,17 +1663,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             if (CodeGeneratorAdapter.generateName(act).contains("Controller"))
                 continue;
             if (act instanceof AtomicActor) {
-                result.append(CodeGeneratorAdapter.generateName(act) 
-                        + " = " + CodeGeneratorAdapter.generateName(act) + "_New();" + _eol);      
+                result.append(CodeGeneratorAdapter.generateName(act)
+                        + " = " + CodeGeneratorAdapter.generateName(act) + "_New();" + _eol);
             }
             else if (act instanceof CompositeEntity) {
-                result.append(CodeGeneratorAdapter.generateName(act) 
-                        + " = " + CodeGeneratorAdapter.generateName(act) + "_New();" + _eol); 
+                result.append(CodeGeneratorAdapter.generateName(act)
+                        + " = " + CodeGeneratorAdapter.generateName(act) + "_New();" + _eol);
             }
             else
                 throw new IllegalActionException(actor,
                         "Unsupported type of Actor : " + act.getFullName());
-            result.append("pblListAdd(" +sanitizedActorName + "->_containedEntities, " 
+            result.append("pblListAdd(" +sanitizedActorName + "->_containedEntities, "
                         + CodeGeneratorAdapter.generateName(act) + ");" + _eol);
         }
 
@@ -1681,37 +1681,37 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Iterator<?> inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()){
             TypedIOPort iPort = (TypedIOPort) inputPorts.next();
-            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(iPort);
             result.append(portAdapter.generatePortDeclaration() + _eol);
         }
-        
+
         Iterator<?> outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()){
             TypedIOPort oPort = (TypedIOPort) outputPorts.next();
-            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter = 
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort portAdapter =
                     (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.IOPort)getAdapter(oPort);
             result.append(portAdapter.generatePortDeclaration() + _eol);
         }
 
         /* Initialization of the director */
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter =
                 (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(actor.getDirector());
         result.append(directorAdapter.generateConstructorCode());
-        
+
         result.append(_eol + "return " + sanitizedActorName + ";" + _eol);
-        
+
         return result.toString();
     }
-    
+
     /** Generate the code to access ports for an actor.
      *  @param actor The actor for which code shall be generated.
      *  @return The port accessor code.
-     */  
+     */
     protected String _generatePortsAccessorsCode(Actor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
         StringBuffer result = new StringBuffer();
-        
+
         List<?> portList = actor.inputPortList();
         portList.addAll(actor.outputPortList());
         for (Object o : portList) {
@@ -1722,18 +1722,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             result.append("return (struct IOPort*) " + port.getName() + ";" + _eol);
             result.append("}" + _eol);
         }
-        
+
         return result.toString();
     }
-    
+
     /** Generate the code to access ports for a composite actor.
      *  @param actor The actor for which code shall be generated.
      *  @return The port accessor code.
-     */  
+     */
     protected String _generatePortsAccessorsCode(CompositeActor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
         StringBuffer result = new StringBuffer();
-        
+
         List<?> portList = actor.portList();
         for (Object o : portList) {
             IOPort port = (IOPort) o;
@@ -1741,18 +1741,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             result.append("return (struct IOPort*) " + port.getName() + ";" + _eol);
             result.append("}" + _eol);
         }
-        
+
         return result.toString();
     }
-    
+
     /** Generate the code to declare the accessors to ports.
      *  @param actor The actor for which code shall be generated.
      *  @return The port accessor declaration code.
-     */  
+     */
     protected String _generatePortsAccessorsDeclaration(Actor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName((NamedObj)actor);
         StringBuffer result = new StringBuffer();
-        
+
         List<?> portList = actor.inputPortList();
         portList.addAll(actor.outputPortList());
         for (Object o : portList) {
@@ -1761,34 +1761,34 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 continue;
             result.append("struct IOPort* " + sanitizedActorName + "_get_" + port.getName() + "();" + _eol);
         }
-        
+
         return result.toString();
     }
-    
+
     /** Generate the code to declare the accessors to ports.
      *  @param actor The composite actor for which code shall be generated.
      *  @return The port accessor declaration code.
-     */  
+     */
     protected String _generatePortsAccessorsDeclaration(CompositeActor actor) {
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
         StringBuffer result = new StringBuffer();
-        
+
         List<?> portList = actor.portList();
         for (Object o : portList) {
             IOPort port = (IOPort) o;
             result.append("struct IOPort* " + sanitizedActorName + "_get_" + port.getName() + "();" + _eol);
         }
-        
+
         return result.toString();
     }
-    
+
     /** Generate and write the code for an actor.
      *  This method is called by the container actor
-     *  
+     *
      *  There are 2 phases in this method :
      *  First we generate the code for the actor
      *  Then we write the code
-     *  
+     *
      *  @param actor The actor that needs to be generated
      *  @param directorAdapter The adapter of the director.  This
      *  adapter is used to generate variable declarations for the
@@ -1798,8 +1798,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If anything goes wrong during the generation.
      */
     protected void _generateAndWriteActorCode(NamedObj actor,
-             NamedProgramCodeGeneratorAdapter directorAdapter, 
-            CompositeEntity container, String directory) 
+             NamedProgramCodeGeneratorAdapter directorAdapter,
+            CompositeEntity container, String directory)
             throws IllegalActionException {
         /////////////////////////////////////////////
         // Initialization of the actor             //
@@ -1814,13 +1814,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _addActorLibraries(actorAdapter);
 
         actorAdapter.setupAdapter();
-        
+
         /////////////////////////////////////////////
         // Generation of the code of the actor     //
         /////////////////////////////////////////////
-        
+
         StringBuffer actorDefinition = new StringBuffer(_eol);
-        
+
         if (actor instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             actorDefinition.append(_eol + "JNIEnv *env;" + _eol + "jobject obj");
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
@@ -1830,9 +1830,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 actorDefinition.append(";" + _eol + "jobjectArray " + inputPort.getName() + "");
             }
             actorDefinition.append(";" + _eol);
-            actorDefinition.append("jobjectArray tokensToAllOutputPorts;" + _eol);   
+            actorDefinition.append("jobjectArray tokensToAllOutputPorts;" + _eol);
         }
-        
+
         // Generate the declaration of the ports
         StringBuffer portsDefinition = new StringBuffer(_eol);
         Iterator<?> inputPorts = ((Actor) actor).inputPortList()
@@ -1851,22 +1851,22 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 continue;
             portsDefinition.append(_eol + "static struct TypedIOPort* " + outputPort.getName() + ";");
         }
-        
+
         _modifiedVariables = actorAdapter.getModifiedVariables();
-        
+
         // Generate the contructor of the atomic actor
         String constructorEntryCode = _eol +
                 "struct AtomicActor* " +
-                sanitizedActorName + 
+                sanitizedActorName +
                 "_New() {" + _eol;
         String constructorCode = _generateConstructorCode((Actor)actor);
         String constructorExitCode = _eol + "}" + _eol;
         String constructorDeclarationCode = _eol + "struct AtomicActor* " + sanitizedActorName + "_New();";
-        
+
         // Generate the accessors to the ports
         String portAccessors = _generatePortsAccessorsCode((Actor)actor);
         String portAccessorsDeclaration = _generatePortsAccessorsDeclaration((Actor)actor);
-        
+
         // Generate the preinitialization of the actor actor
         String preinitializeMethodEntryCode = _eol
                 + "void "
@@ -1882,9 +1882,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 + comment("End of the preinitalization of the actor : "
                         + sanitizedActorName);
         String preinitializeDeclarationName = _eol + "void "
-                + sanitizedActorName 
+                + sanitizedActorName
                 + "_preinitialize(struct AtomicActor* actor);";
-        
+
         // Generate the variable declaration for this actor
         String variableDeclarationCode = actorAdapter
                 .generatePreinitializeCode();
@@ -1948,14 +1948,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         + sanitizedActorName);
         String wrapupDeclarationName = _eol + "void " + sanitizedActorName
                 + "_wrapup(struct AtomicActor* actor);";
-        
+
         // Generate the variable declaration for this actor
         if (directorAdapter instanceof ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) {
-            variableDeclarationCode += _eol + 
+            variableDeclarationCode += _eol +
                     ((ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) directorAdapter)
                     .generateVariableDeclaration(actorAdapter);
             variableDeclarationCode += _eol + generateVariableDeclaration();
-            preinitializeMethodBodyCode += _eol + 
+            preinitializeMethodBodyCode += _eol +
                     ((ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) directorAdapter)
                     .generateVariableInitialization(actorAdapter);
             preinitializeMethodBodyCode += _eol + generateVariableInitialization();
@@ -1984,7 +1984,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeContainerC.append("#include \"" + sanitizedActorName + ".h\""
                 + _eol);
         String sanitizedContainerName = CodeGeneratorAdapter
-              .generateName(container); 
+              .generateName(container);
         codeContainerH.append("#include \"_ptTypes.h\"" + _eol);
         codeContainerH.append("#include \"_AtomicActor.h\"" + _eol);
         codeContainerH.append("#include \"_TypedIOPort.h\"" + _eol);
@@ -2007,23 +2007,23 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeContainerH.append(portAccessorsDeclaration);
         codeContainerH.append(actorDefinition.toString());
         codeContainerH.append(comment("end actor declaration"));
-        
+
         // Appending the variable declaration
         codeContainerC.append(comment("Variable declaration code"));
         codeContainerC.append(variableDeclarationCode);
         codeContainerC.append(comment("end variable declaration code"));
         variableDeclarationCode = null;
-        
+
         // Appending the ports declaration
         codeContainerC.append(portsDefinition);
         portsDefinition = null;
-        
+
         codeContainerC.append(preinitializeDeclarationName);
         codeContainerC.append(initializeDeclarationName);
         codeContainerC.append(prefireDeclarationName);
         codeContainerC.append(fireDeclarationName);
         codeContainerC.append(postfireDeclarationName);
-        codeContainerC.append(wrapupDeclarationName);        
+        codeContainerC.append(wrapupDeclarationName);
 
         // Appending the constructor code
         codeContainerC.append(constructorEntryCode);
@@ -2032,11 +2032,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         constructorEntryCode = null;
         constructorCode = null;
         constructorExitCode = null;
-        
+
         // Appending the accessors code
         codeContainerC.append(portAccessors);
         portAccessors = null;
-        
+
         // Appending the preinitialization code
         codeContainerC.append(preinitializeMethodEntryCode);
         codeContainerC.append(preinitializeMethodBodyCode);
@@ -2060,11 +2060,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         prefireMethodEntryCode = null;
         prefireMethodBodyCode = null;
         prefireMethodExitCode = null;
-        
+
         // Appending the fire code
         codeContainerC.append(fireMethodBodyCode);
         fireMethodBodyCode = null;
-        
+
         // Appending the postfire code
         codeContainerC.append(postfireMethodEntryCode);
         codeContainerC.append(postfireMethodBodyCode);
@@ -2072,7 +2072,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         postfireMethodEntryCode = null;
         postfireMethodBodyCode = null;
         postfireMethodExitCode = null;
-        
+
         // Appending the wrapup code
         codeContainerC.append(wrapupMethodEntryCode);
         codeContainerC.append(wrapupMethodBodyCode);
@@ -2080,14 +2080,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         wrapupMethodEntryCode = null;
         wrapupMethodBodyCode = null;
         wrapupMethodExitCode = null;
-        
+
         // Closing the ifdef
         codeContainerH.append(_eol + "#endif");
 
         // Final pass on the code
         codeContainerH = _finalPassOverCode(codeContainerH);
         codeContainerC = _finalPassOverCode(codeContainerC);
-        
+
         // Writing the code in the files
         _writeCodeFileName(codeContainerH, directory + "/" + sanitizedActorName + ".h", true,
                 false);
@@ -2098,7 +2098,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeContainerH = null;
         codeContainerC = null;
     }
-    
+
     /** Generate and write the code for a composite actor.
      *  This method is called recursively, for any composite actor present
      *  in the model.
@@ -2108,13 +2108,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  Then we call the generation for each contained actor
      *  Then we call the generation for the director
      *  Finally we generate the makefile corresponding
-     *  
+     *
      *  @param container The actor that needs to be generated
      *  @param containerDirectory A string describing where to write the files
      *  @exception IllegalActionException If anything goes wrong during the generation.
      */
     protected void _generateAndWriteCompositeActorCode(CompositeEntity container, String containerDirectory) throws IllegalActionException {
-        
+
         /////////////////////////////////////////////
         // Initialization of the container         //
         /////////////////////////////////////////////
@@ -2122,7 +2122,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Director director = null;
         if (container instanceof CompositeActor)
             director = ((CompositeActor)container).getDirector();
-        else 
+        else
             throw new IllegalActionException(container,
                     "Unsupported type of Actor : " + container.getFullName());
 
@@ -2145,22 +2145,22 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             throw new IllegalActionException(
                     "Inline is not relevant for a DE model !");
         }
-        
+
         // Create the needed directories
         String directory = codeDirectory.stringValue();
-        
+
         // FIXME : maybe escape some chararcters here
         String sanitizedContainerName = container.getName();
         containerDirectory += "/_" + sanitizedContainerName; //container.getFullName();
         sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
 
         directory = directory + containerDirectory;
-        
+
         if (new File(directory).mkdirs()) {
             //Findbugs wants that
             directory += "";
         }
-        
+
         // add the includes to the makefile
         if (!_includes.contains("-I " + directory))
             _includes.add("-I " + directory);
@@ -2168,7 +2168,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         //////////////////////////////////////////////////
         // Generation and writing of the container code //
         //////////////////////////////////////////////////
-        
+
         // Generate the declaration of the ports
         StringBuffer portsDefinition = new StringBuffer(_eol);
         Iterator<?> inputPorts = ((Actor) container).inputPortList()
@@ -2183,28 +2183,28 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
             portsDefinition.append(_eol + "static struct TypedIOPort* " + outputPort.getName() + ";");
         }
-        
+
         StringBuffer CCode = new StringBuffer(generateCopyright() + _eol);
         CCode.append("#include \"" + sanitizedContainerName + ".h\"" + _eol);
-        
+
         CCode.append(portsDefinition.toString());
-        
+
         String actorType;
         if (container instanceof CompositeActor)
             actorType = "CompositeActor";
         else
             throw new IllegalActionException(container, "CompositeEntity non supported yet :" + container.getClassName());
-        
+
         CCode.append(_eol + "struct " + actorType + "* " + sanitizedContainerName + "_New() {" + _eol);
-        
+
         CCode.append(_generateConstructorCode((CompositeActor)container) + _eol);
-        
+
         CCode.append("}" + _eol);
-        
+
         StringBuffer HCode = new StringBuffer(generateCopyright() + _eol);
         HCode.append("#ifndef _" + sanitizedContainerName.toUpperCase(Locale.getDefault()) + "_H_" + _eol +
                 "#define _" + sanitizedContainerName.toUpperCase(Locale.getDefault()) + "_H_" + _eol);
-        
+
         HCode.append("#include \"_" + actorType + ".h\"" + _eol);
         HCode.append("#include \"_AtomicActor.h\"" + _eol);
         String directorType = director.getClass().getSimpleName();
@@ -2215,7 +2215,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
         if (container.getContainer() != null)
             HCode.append("#include \"" + CodeGeneratorAdapter.generateName(container.getContainer()) + ".h\"" + _eol);
-        
+
         for (Object containedActorO : container.deepEntityList()) {
             NamedObj containedActor = (NamedObj) containedActorO;
             if (CodeGeneratorAdapter.generateName(containedActor).contains("Controller"))
@@ -2231,7 +2231,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             HCode.append(_eol + "void " + sanitizedContainerName + "_transferModalOutputs(PblMap* mapTokensOut);"  + _eol);
             HCode.append(_eol + "void " + sanitizedContainerName + "_makeTransitions(struct FSMDirector* director);"  + _eol);
         }
-        
+
         for (Object containedActorO : container.deepEntityList()) {
             NamedObj containedActor = (NamedObj) containedActorO;
             if (CodeGeneratorAdapter.generateName(containedActor).contains("Controller"))
@@ -2241,19 +2241,19 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             else if (containedActor instanceof CompositeActor)
                 HCode.append("struct CompositeActor* " + CodeGeneratorAdapter.generateName(containedActor) + ";" + _eol);
         }
-        
+
         // Generate the accessors to the ports
         String portAccessors = _generatePortsAccessorsCode((CompositeActor)container);
         String portAccessorsDeclaration = _generatePortsAccessorsDeclaration((CompositeActor)container);
         HCode.append(portAccessorsDeclaration);
         CCode.append(portAccessors);
-        
+
         HCode.append("#endif" + _eol);
-        
+
         // Final pass on the code
         HCode = _finalPassOverCode(HCode);
         CCode = _finalPassOverCode(CCode);
-        
+
         // Writing the code in the files
         _writeCodeFileName(HCode, directory + "/" + sanitizedContainerName + ".h", true,
                 false);
@@ -2263,66 +2263,66 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // freeing memory
         HCode = null;
         CCode = null;
-        
+
         if (((CompositeActor)container).getDirector() instanceof SDFDirector) {
             CCode = new StringBuffer();
-            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector directorAdapter = 
-                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector) 
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector directorAdapter =
+                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector)
                     getAdapter(((CompositeActor)container).getDirector());
-            
+
             CCode.append("#include \"" + sanitizedContainerName + ".h\"");
-            
+
             CCode.append(_eol + "void " + sanitizedContainerName + "_Schedule_iterate() {");
             CCode.append(_eol + directorAdapter.generateSchedule());
             CCode.append(_eol + "}");
-            
+
             _writeCodeFileName(CCode, directory + "/" + sanitizedContainerName + "_SDFSchedule.c", true,
                     false);
-            
+
             CCode = null;
         } else if (((CompositeActor)container).getDirector() instanceof FSMDirector) {
             CCode = new StringBuffer();
-            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMDirector directorAdapter = 
-                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMDirector) 
+            ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMDirector directorAdapter =
+                    (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMDirector)
                     getAdapter(((CompositeActor)container).getDirector());
-            
+
             CCode.append("#include \"" + sanitizedContainerName + ".h\"");
-            
+
             // Variables declaration
             CCode.append(_eol + directorAdapter.generateVariableDeclaration());
-            
+
             // Transfer inputs to modal model function
-            CCode.append(_eol + "void " + sanitizedContainerName + 
+            CCode.append(_eol + "void " + sanitizedContainerName +
                     "_transferModalInputs(PblMap* mapTokensIn) {");
             CCode.append(_eol + directorAdapter.generateTransferInputCode());
             CCode.append(_eol + "}");
-            
+
             // Transfer outputs to modal model function
-            CCode.append(_eol + "void " + sanitizedContainerName + 
+            CCode.append(_eol + "void " + sanitizedContainerName +
                     "_transferModalOutputs(PblMap* mapTokensOut) {");
             CCode.append(_eol + directorAdapter.generateTransferOutputCode());
             CCode.append(_eol + "}");
-            
+
             // Transition code for the modal model
             CCode.append(_eol + "void " + sanitizedContainerName + "_makeTransitions(struct FSMDirector* director) {");
             CCode.append(_eol + directorAdapter.generateFireFunctionCode());
             CCode.append(_eol + "}");
-            
+
             _writeCodeFileName(CCode, directory + "/" + sanitizedContainerName + "_FSMTransitionCode.c", true,
                     false);
-            
+
             CCode = null;
         }
-        
+
         ////////////////////////////////////
         // End of the writing of the code //
         ////////////////////////////////////
-        
+
         String directoryC = codeDirectory.stringValue();
         if (!directoryC.endsWith("/"))
             directoryC += "/";
         String directoryCommons = directoryC + "commons/";
-        
+
         if (((CompositeActor)container).getDirector() instanceof PtidesDirector) {
             // in order to mark the Record_new function
             processCode("$new(Record(0.0,0,0));");
@@ -2340,7 +2340,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/", directoryCommons, "_PtidesMirrorPort.c");
             _definesToAdd.add("PTIDESDIRECTOR 11");
             _definesToAdd.add("PTIDESPLATFORMDIRECTOR 3");
-            
+
         } else if (((CompositeActor)container).getDirector() instanceof DEDirector) {
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_CalendarQueue.h");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/", directoryCommons, "_CalendarQueue.c");
@@ -2358,7 +2358,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/", directoryCommons, "_SDFDirector.h");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/", directoryCommons, "_SDFDirector.c");
             _definesToAdd.add("SDFDIRECTOR 2");
-        } 
+        }
         else if (((CompositeActor)container).getDirector() instanceof FSMDirector) {
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel/", directoryCommons, "_FSMReceiver.h");
             _copyCFileTosrc("ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel/", directoryCommons, "_FSMReceiver.c");
@@ -2374,12 +2374,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
-            
+
             // The recursive call
             if (actor instanceof ModalController)
                 continue;
             else if (actor instanceof AtomicActor || actor instanceof FSMActor)
-                _generateAndWriteActorCode(actor, (NamedProgramCodeGeneratorAdapter)getAdapter(director), 
+                _generateAndWriteActorCode(actor, (NamedProgramCodeGeneratorAdapter)getAdapter(director),
                         container, directory);
             else if (actor instanceof CompositeEntity)
                 _generateAndWriteCompositeActorCode((CompositeEntity) actor, containerDirectory);
@@ -2393,7 +2393,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 throw new IllegalActionException(container,
                         "Unsupported type of Actor : " + actor.getFullName());
         }
-        
+
         // Generate the director code
 //        _generateAndWriteDirectorCode(director, directoryIncludes, directorySrc);
 
@@ -2402,32 +2402,32 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 //            _writeMakefile(container, directory);
 //        _writeMakefile(container, directorySrc);
     }
-    
+
 //    /** Generate and write the code for a director within
 //     *  a container.
 //     *  This method is called by the container actor
-//     *    
+//     *
 //     *  @param director The director that needs to be generated.
 //     *  @param includesDirectory The directory path of the includes files
 //     *  @param srcDirectory The directory path of the sources files
 //     *  @exception IllegalActionException If anything goes wrong during the generation.
 //     */
-//    protected void _generateAndWriteDirectorCode(Director director, String includesDirectory, String srcDirectory) 
+//    protected void _generateAndWriteDirectorCode(Director director, String includesDirectory, String srcDirectory)
 //            throws IllegalActionException {
 //        // This is an error case
 //        // Transparent actors should be treated at upper level
 //        if (director == null)
 //            throw new IllegalActionException(getComponent(),
 //                    "Trying to generate code for a null director!");
-//                
-//        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+//
+//        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter =
 //                (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
-//        
+//
 //        String sanitizedDirectorName = CodeGeneratorAdapter.generateName(director);
-//        
+//
 //        StringBuffer codeDirectorC = new StringBuffer();
 //        StringBuffer codeDirectorH = new StringBuffer();
-//        
+//
 //        codeDirectorH.append(generateCopyright());
 //        codeDirectorC.append(generateCopyright());
 //
@@ -2435,35 +2435,35 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 //                + sanitizedDirectorName.toUpperCase(Locale.getDefault()) + "_H" + _eol
 //                + "#define NO_" + sanitizedDirectorName.toUpperCase(Locale.getDefault()) + "_H"
 //                + _eol);
-//        
-//        codeDirectorH.append(_generateIncludeFiles(directorAdapter));       
-//        codeDirectorH.append("#include \"" + _sanitizedModelName + "__Director.h\"" + _eol);       
-//        codeDirectorH.append("#include \"" + _sanitizedModelName + ".h\"" + _eol);       
-//        codeDirectorH.append("#include <stdbool.h>" + _eol);              
+//
+//        codeDirectorH.append(_generateIncludeFiles(directorAdapter));
+//        codeDirectorH.append("#include \"" + _sanitizedModelName + "__Director.h\"" + _eol);
+//        codeDirectorH.append("#include \"" + _sanitizedModelName + ".h\"" + _eol);
+//        codeDirectorH.append("#include <stdbool.h>" + _eol);
 //        codeDirectorC.append("#include \"" + sanitizedDirectorName + ".h\"" + _eol);
-//        codeDirectorC.append(_eol + directorAdapter.generateMainLoop());       
-//        
+//        codeDirectorC.append(_eol + directorAdapter.generateMainLoop());
+//
 //        codeDirectorH.append(_eol + directorAdapter.generateVariableDeclaration());
-//        
+//
 //        // FIXME : DE director dependent implement it in the father
 //        if (director instanceof DEDirector)
-//            codeDirectorH.append(_eol + 
+//            codeDirectorH.append(_eol +
 //                    ((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel.DEDirector)directorAdapter)
 //                    .generateFunctionsDeclaration());
 //        else if (director instanceof SDFDirector)
-//            codeDirectorH.append(_eol + 
+//            codeDirectorH.append(_eol +
 //                    ((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector)directorAdapter)
 //                    .generateFunctionsDeclaration());
 //        else if (director instanceof FSMDirector)
-//            codeDirectorH.append(_eol + 
+//            codeDirectorH.append(_eol +
 //                    ((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel.FSMDirector)directorAdapter)
 //                    .generateFunctionsDeclaration());
 //        codeDirectorH.append(_eol + "#endif");
-//        
+//
 //        // Final pass on the code
 //        codeDirectorC = _finalPassOverCode(codeDirectorC);
 //        codeDirectorH = _finalPassOverCode(codeDirectorH);
-//        
+//
 //        // Writing the code in the files
 //        _writeCodeFileName(codeDirectorH, includesDirectory + "/" + sanitizedDirectorName + ".h", true,
 //                false);
@@ -2474,7 +2474,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 //        codeDirectorH = null;
 //        codeDirectorC = null;
 //    }
-    
+
     /** Generate the body code that lies between variable declaration
      *  and wrapup. This method delegates to the director adapter
      *  to generate a main loop.
@@ -2495,7 +2495,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (director == null) {
             throw new IllegalActionException(model, "Does not have a director.");
         }
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter =
                 (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
 
         if (_isTopLevel()) {
@@ -2508,8 +2508,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         return code;
     }
-    
-    /** Generate the declarations of the code shared by actors, 
+
+    /** Generate the declarations of the code shared by actors,
      *  including globally defined
      *  data struct types and static methods or variables shared by multiple
      *  instances of the same actor type.
@@ -2541,8 +2541,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return code.toString();
     }
 
-    
-    
+
+
     /** Generate include files. FIXME: State what is included.
      *  @param actorAdapter The adapter that has the header files.
      *  @return The #include statements, surrounded by #ifndef to ensure
@@ -2667,7 +2667,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         //try {
-       
+
         File codeDirectoryFile = new File(currentDirectory);
         if (codeDirectoryFile.isFile()) {
             throw new IllegalActionException(this, "Error: "
@@ -2697,10 +2697,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 director = ((CompositeActor)container).getDirector();
             else if (container instanceof FSMActor)
                 director = ((FSMActor)container).getDirector();
-            else 
+            else
                 throw new IllegalActionException(container,
                         "Unsupported type of Actor : " + container.getFullName());
-            
+
             if (director != null && director instanceof DEDirector) {
                 StringBuffer ptcgC = new StringBuffer("$(shell find . -type f -name '*.c')");//"src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
                 StringBuffer ptcgO = new StringBuffer();//"build/types.o build/Actor.o build/CalendarQueue.o build/DEDirector.o build/DEEvent.o build/DEReceiver.o build/IOPort.o";
@@ -2719,7 +2719,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 substituteMap.put("@PTCG_CFILES@", "$(shell find . -type f -name '*.c')");
                 substituteMap.put("@PTCG_OFILES@", "");
             }
-            
+
             // Define substitutions to be used in the makefile
             substituteMap.put("@PTJNI_NO_CYGWIN@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
@@ -2883,15 +2883,15 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
         return buffer.toString();
     }
-    
+
     /** Copy a C (or h) file into the directory /src of the project.
      *  This is useful to copy the files pre-written in C.
      *  @param codeFileName the name of the file to copy.
-     *  
+     *
      */
     private void _copyCFileTosrc(String path, String directoryToCopy, String codeFileName) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         BufferedReader cFileReader = null;
         String cFileName = path + codeFileName;
         codeFileName = directoryToCopy + codeFileName;
@@ -2942,14 +2942,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
         }
-        
+
         String result = code.toString();
         code = new StringBuffer();
         code.append(result);
-        
+
         super._writeCodeFileName(code, codeFileName, true, false);
     }
-    
+
     /** Get the header files needed to compile with the jvm library.
       *  @return A set of strings that are names of the header files
       *   needed by the code generated for jvm library
@@ -3122,11 +3122,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         files.add("<jni.h>");
         return files;
     }
-    
+
     private HashSet<String> _getTypeIDToUsed(HashSet<String> types) {
         HashSet<String> result = new HashSet<String>();
         result.addAll(types);
-    
+
         for (String type : types) {
             if (type.endsWith("Array")) {
                 String elementType = type.replace("Array", "");
@@ -3151,7 +3151,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the set of referenced functions.
      * @return The set of referenced functions.
      */
@@ -3164,7 +3164,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         functions.add("isCloseTo");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
-    
+
         //System.out.println("CCodeGenerator: all referenced functions: " + functions);
         return functions;
     }
@@ -3180,11 +3180,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (functions.contains("equals") || functions.contains("isCloseTo")) {
             types.add("Boolean");
         }
-    
+
         if (functions.contains("toString")) {
             types.add("String");
         }
-    
+
         if (functions.contains("isCloseTo")
         //&& _newTypesUsed.contains("Int")
         //&& !_newTypesUsed.contains("Double")
@@ -3192,7 +3192,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
         }
-    
+
         types.addAll(_newTypesUsed);
         //System.out.println("CCodeGenerator: all referenced types: " + types);
         return types;
@@ -3232,10 +3232,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** A list of actors present to include in the makefile*/
     private List<String> _actorsToInclude;
-    
+
     /** A list of the defines to add in the _types.h file */
     private List<String> _definesToAdd = new LinkedList<String>();
-    
+
     private CodeStream _overloadedFunctionsDeclaration;
     private CodeStream _overloadedFunctions;
 

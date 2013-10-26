@@ -696,7 +696,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     } else {
                         updates.put(ColumnNames.COL_NAME, Boolean.FALSE);
                     }
-                    
+
                 }
 
                 // Put this in the MoMLChangeRequest if the value is

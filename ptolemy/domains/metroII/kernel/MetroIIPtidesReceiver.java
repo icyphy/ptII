@@ -52,12 +52,12 @@ import ptolemy.kernel.util.InternalErrorException;
  * However we still want to extend DEReceiver so that the structure is uniform
  * in that PtidesBasicDirector extends DEDirector, and PtidesBasicReceiver
  * extends DEReceiver.
- * 
+ *
  * <p>
  * This class is identical to PtidesReceiver except Ptides directors are mapped
  * to MetroIIPtidesDirector.
  * </p>
- * 
+ *
  * @author Jia Zou, Slobodan Matic, Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -75,7 +75,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
     /**
      * Construct an empty queue with the specified IOPort container.
-     * 
+     *
      * @param container
      *            The IOPort that contains this receiver.
      * @exception IllegalActionException
@@ -93,7 +93,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      * at the correct timestamp and microstep and invoke the corresponding actor
      * whose input port contains this receiver. This receiver may contain more
      * than one events.
-     * 
+     *
      * @param token
      *            The token to be put, or null to not put a token.
      */
@@ -112,7 +112,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      * Actually put the token into this receiver. This method should be called
      * by the director when to token is ready to be processed by the actor where
      * this receiver resides.
-     * 
+     *
      * @param token
      *            The token to be put to this receiver, or null to put no token.
      */
@@ -126,7 +126,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      * Remove the token from the list of stored tokens. This is only used to
      * remove tokens that were stored temporarily in the receiver to check
      * whether the actor's prefire returns true.
-     * 
+     *
      * @param token
      *            The token to be removed.
      */
@@ -144,7 +144,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      * Otherwise, it's the executive director of the container of its port.Note
      * that the director returned is guaranteed to be non-null. This method is
      * read synchronized on the workspace.
-     * 
+     *
      * @return An instance of DEDirector.
      * @exception IllegalActionException
      *                If there is no container port, or if the port has no
@@ -206,7 +206,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
         /**
          * Construct an Event with a token and time stamp.
-         * 
+         *
          * @param token
          *            Token for the event.
          * @param tag
@@ -222,7 +222,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
         /**
          * Return the tag of this event.
-         * 
+         *
          * @return The tag of the event.
          */
         public Tag getTag() {
@@ -231,7 +231,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
 
         /**
          * Return the token of this event.
-         * 
+         *
          * @return The token of the event.
          */
         public Token getToken() {
@@ -252,19 +252,19 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      * to compare Tokens, therefore am comparing DoubleTokens and IntTokens
      * here. If other kinds of Tokens are used, this Comparer needs to be
      * extended.
-     * 
+     *
      * @author Jia Zou, Slobodan Matic, Patricia Derler
-     * 
+     *
      */
     public static class TagComparator implements Comparator {
 
         /**
          * Compare two events according to time stamps and values.
-         * 
+         *
          * FIXME Because there is no general compare method for tokens, I
          * implemented the comparison for int and double tokens. A more general
          * compare is required.
-         * 
+         *
          * @param arg0
          *            First event.
          * @param arg1

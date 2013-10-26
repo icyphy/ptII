@@ -2677,7 +2677,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         // Only include the palettePane and panner if there is an actor library.
         // The ptinyViewer configuration uses this.
-        if (configuration != null 
+        if (configuration != null
                 && (CompositeEntity) configuration.getEntity("actor library") != null) {
             _libraryModel = new VisibleTreeModel(_topLibrary);
             // Second arguments prevents parameter values from showing in the library.

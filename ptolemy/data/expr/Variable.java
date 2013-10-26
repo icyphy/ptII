@@ -1940,13 +1940,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                         + "Cannot clone the declared type of this Variable.");
             } // FIXME: clone seems unnecessary
 
-            // [marten 05/28/13] 
-            // This doesn't seem to do anything, it substitutes 
+            // [marten 05/28/13]
+            // This doesn't seem to do anything, it substitutes
             // unknowns for unknowns
             /*if (declaredType instanceof StructuredType) {
                 ((StructuredType) declaredType).initialize(BaseType.UNKNOWN);
             }*/
-            
+
             // declared type must be >= proposed type, convert new token (upcast)
             if (declaredType.isCompatible(newToken.getType())) {
                 newToken = declaredType.convert(newToken);
@@ -1972,7 +1972,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 // this can only be a basic type
                 _varType = _declaredType;
             }
-                
+
             // Check setTypeAtMost constraint.
             if (_typeAtMost != BaseType.UNKNOWN) {
                 // Recalculate this in case the type has changed.
@@ -2423,7 +2423,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Subclass of IllegalActionException for use in reporting
      *  circular dependency errors.
      */
@@ -2432,7 +2432,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             super(object, detail);
         }
     }
-    
+
     private class TypeTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////

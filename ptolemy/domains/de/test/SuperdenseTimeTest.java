@@ -92,7 +92,7 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
         in3.setTypeEquals(BaseType.DOUBLE);
         out = new TypedIOPort(this, "out", false, true);
         out.setTypeEquals(BaseType.DOUBLE);
-        
+
         _inputPorts = new LinkedList<IOPort>();
         _inputPorts.add(in1);
         _inputPorts.add(in2);
@@ -155,8 +155,8 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
         _value = null;
         _count = 0;
     }
-    
-    /** Read the inputs and sum them. 
+
+    /** Read the inputs and sum them.
      *  @return True if a stop has not been requested.
      */
     public synchronized boolean postfire() throws IllegalActionException {
@@ -187,13 +187,13 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The causality interface. */
     private CausalityInterface _causalityInterface;
-    
+
     /** Count of firings. */
     private int _count;
-    
+
     /** A collection of the two input ports, for use in the causality interface. */
     private Collection<IOPort> _inputPorts;
 

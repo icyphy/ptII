@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
    The interface to the OMCCommand.
 
-   @author Mana Mirzaei 
+   @author Mana Mirzaei
    @version $Id$
    @since Ptolemy II 9.1
    @Pt.ProposedRating Red (cxh)
@@ -66,9 +66,9 @@ public interface IOMCCommand {
      */
     public CompilerResult buildModel(String modelName) throws ConnectException;
 
-    /** Check if the (base-)model inherits from other classes. 
+    /** Check if the (base-)model inherits from other classes.
      *  @param modelName The (base-)model that should be built.
-     *  @return Check Return true, if the number of inherited classes is more than zero.  
+     *  @return Check Return true, if the number of inherited classes is more than zero.
      */
     public boolean getInheritanceCount(String modelName);
 
@@ -91,7 +91,7 @@ public interface IOMCCommand {
      */
     public boolean isError(String retval);
 
-    /** load the Modelica file and library.  
+    /** load the Modelica file and library.
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
      *  @return Checks If Modelica library and model are loaded.
@@ -103,11 +103,11 @@ public interface IOMCCommand {
 
     /** Modify parameter(s) and variable(s) of the Modelica model before building the Modelica model.
      *  @param parameterValues New values to change the components' values.
-     *  @param modelName The (base-)model that should be built. 
+     *  @param modelName The (base-)model that should be built.
      *  @param components The models' components to change.
      *  @throws ConnectException If commands couldn't
-     *   be sent to the (OpenModelica Compiler)OMC. 
-     *  @throws IllegalActionException 
+     *   be sent to the (OpenModelica Compiler)OMC.
+     *  @throws IllegalActionException
      */
     public void modifyComponents(String parameterValues, String modelName,
             String components) throws IllegalActionException, ConnectException;
@@ -132,7 +132,7 @@ public interface IOMCCommand {
      *   be sent to the (OpenModelic Compiler)OMC.
      *  @throws IOException If the executable result file of buildModel()
      *   couldn't be executed.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException
      */
     public void runModel(String fileName, String modelName, String startTime,
             String stopTime, int numberOfIntervals, String outputFormat,

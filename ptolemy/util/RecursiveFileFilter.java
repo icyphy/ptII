@@ -81,7 +81,7 @@ public class RecursiveFileFilter implements FilenameFilter {
      *   the accepted file names.
      */
     public RecursiveFileFilter(boolean recursive,
-            boolean includeFiles, boolean includeDirectories, 
+            boolean includeFiles, boolean includeDirectories,
             boolean filesOnly, boolean directoriesOnly,
             String fileFilter) {
         this(recursive, includeFiles, includeDirectories, false, false, null, false);
@@ -105,7 +105,7 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  actor calls this with a false value.
      */
     public RecursiveFileFilter(boolean recursive,
-            boolean includeFiles, boolean includeDirectories, 
+            boolean includeFiles, boolean includeDirectories,
             boolean filesOnly, boolean directoriesOnly,
             String fileFilter, boolean escape) {
         _recursive = recursive;

@@ -319,12 +319,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
         newObject._URIpath = null;
-        
+
         newObject._request = null;
         newObject._response = null;
-        
+
         newObject.setCookies.setTypeAtMost(BaseType.RECORD);
-        
+
         return newObject;
     }
 
@@ -355,7 +355,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
     /** If there are input tokens on the {@link #response} or
      *  {@link #setCookies} ports, then queue a response to be
-     *  sent by the servelet for a corresponding request. 
+     *  sent by the servelet for a corresponding request.
      *  If the servlet has received
      *  an HTTP request, then also produce on the output ports
      *  the details of the request.
@@ -422,7 +422,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         // If there is a pending request, produce outputs for that request,
         // including any cookies from that request.
         if (_request != null) {
-            
+
             // To avoid the risk of producing two outputs at the same superdense time,
             // check the time of the last output.
             Director director = getDirector();
@@ -441,7 +441,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 _lastMicrostep = microstep;
                 _lastOutputTime = currentTime;
             }
-            
+
             // Remove the request from the head of the queue so that
             // each request is handled no more than once.
             if (_request.requestType == 0) {
@@ -490,7 +490,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         _initializeRealTime = System.currentTimeMillis();
         _lastOutputTime = null;
     }
-    
+
     /** Set the relative path that this HttpService is mapped to.
      *  This method is required by the HttpService interface.
      *  @param path The relative path that this HttpService is mapped to.
@@ -512,25 +512,25 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The model time at which this actor was last initialized. */
     private Time _initializeModelTime;
 
     /** The real time at which this actor was last initialized, in milliseconds. */
     private long _initializeRealTime;
-    
+
     /** Time of the last output. */
     private Time _lastOutputTime;
-    
+
     /** Microstep of the last output. */
     private int _lastMicrostep;
-        
+
     /** The pending request. */
     private HttpRequest _request;
-    
+
     /** The pending response. */
     private HttpResponse _response;
-    
+
     /** The URI for the relative path from the "path" parameter.
      *  A URI is used here to make sure the "path" parameter conforms to
      *  all of the URI naming conventions.
@@ -542,7 +542,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
     ///////////////////////////////////////////////////////////////////
     //// ActorServlet
-    
+
     /** A servlet providing implementations of get and post.
      *  The way this servlet works is that when a get or post
      *  HTTP request is received, it records the properties of
@@ -618,7 +618,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             // allowing the fire method to execute its own synchronized blocks.
             synchronized (HttpActor.this) {
                 _request = new HttpRequest();
-                
+
                 _request.requestURI = request.getRequestURI();
                 _request.requestType = type;
 
@@ -646,14 +646,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     // Assume model time is in seconds, not milliseconds.
                     elapsedRealTime = elapsedRealTime / 1000;
                     Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
-                    
+
                     if (_debugging) {
                         _debug("**** Request firing at time " + timeOfRequest);
                     }
 
                     // Note that fireAt() will modify the requested firing time if it is in the past.
                     getDirector().fireAt(HttpActor.this, timeOfRequest);
-                    
+
                 } catch (IllegalActionException e) {
                     _request = null;
                     _writeError(response, HttpServletResponse.SC_BAD_REQUEST,
@@ -700,7 +700,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         return;
                     }
                 }
-                
+
                 response.setStatus(HttpServletResponse.SC_OK);
 
                 // Write all cookies to the response, if there are some new
@@ -756,7 +756,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             }
             return new RecordToken(map);
         }
-        
+
         /** Read the parameters from the HttpServletRequest, construct
          *  a record token containing the parameters, and return that record.
          *  @param request  The HttpServletRequest to read paramters from.  The
@@ -864,7 +864,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             writer.flush();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// HttpRequest
 
@@ -884,7 +884,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         /** The URI issued in the get request. */
         public String requestURI;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// HttpResponse
 
@@ -899,7 +899,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  provided on the input port.)
          */
         public RecordToken cookies;
-        
+
         /** A flag indicating that new cookies have been received on the
          *  setCookies port, and that all cookies should be written to the
          *  HttpServletResponse in the doGet() or doPost() method.
@@ -907,7 +907,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  HttpServletResponse, but it would be inefficient.
          */
         public boolean hasNewCookies;
-        
+
         /** The text of the response. */
         public String response;
     }

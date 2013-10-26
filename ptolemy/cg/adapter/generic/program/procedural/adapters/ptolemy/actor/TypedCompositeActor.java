@@ -412,7 +412,7 @@ public class TypedCompositeActor extends
 
         return sharedCode;
     }
-    
+
     /** Generate a set of shared code fragments of the associated
      *  composite actor.  It returns the result of calling
      *  getSharedCode() method of the adapters of all contained actors.

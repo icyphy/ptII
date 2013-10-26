@@ -572,7 +572,7 @@ public abstract class AbstractConvertibleToken extends Token {
                 throw new IllegalActionException(null, ex, notSupportedMessage(
                         "subtract", this, rightArgument));
             }
-           
+
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.subtractReverse(this);
             return result;

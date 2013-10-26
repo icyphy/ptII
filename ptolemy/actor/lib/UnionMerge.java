@@ -157,7 +157,7 @@ public class UnionMerge extends TypedAtomicActor {
 
     /** React to a name change of contained ports. Update the internal
      *  mapping from names and aliases to port objects, and invalidate
-     *  the resolved types. 
+     *  the resolved types.
      *  @param object The object that changed.
      */
     @Override
@@ -166,7 +166,7 @@ public class UnionMerge extends TypedAtomicActor {
             _mapPorts();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -193,7 +193,7 @@ public class UnionMerge extends TypedAtomicActor {
 
         // make sure the ports are mapped
             _mapPorts();
-        
+
         // constrain the fields in the output union to be greater than or
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
@@ -205,7 +205,7 @@ public class UnionMerge extends TypedAtomicActor {
             TypedIOPort input = entry.getValue();
             // constrain the type of every input to be >= the resolved type
             // of the corresponding field in the output union
-            result.add(new Inequality(new ExtractFieldType(output, inputName), 
+            result.add(new Inequality(new ExtractFieldType(output, inputName),
                     input.getTypeTerm()));
         }
 
@@ -226,16 +226,16 @@ public class UnionMerge extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
-    
+
     /** Map port names or aliases to port objects. If the mapping
-     *  has changed, then invalidate the resolved types, which 
+     *  has changed, then invalidate the resolved types, which
      *  forces new type constraints with appropriate field names
-     *  to be generated. 
+     *  to be generated.
      */
     private void _mapPorts() {
         // Retrieve the manager.
         Manager manager = this.getManager();
-        
+
         // Generate a new mapping from names/aliases to ports.
         Map<String, TypedIOPort> oldMap = _portMap;
         _portMap = new HashMap<String, TypedIOPort>();
@@ -252,18 +252,18 @@ public class UnionMerge extends TypedAtomicActor {
                 _portMap.put(alias, p);
             }
         }
-        
+
         // Only invalidate resolved types if there actually was a name change.
         // As a result, new type constraints will be generated.
         if (manager != null && (oldMap == null || !_portMap.equals(oldMap))) {
             manager.invalidateResolvedTypes();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-    
+
     /** Keeps track of which name or alias is associated with which port. */
     private Map<String, TypedIOPort> _portMap;
-    
+
 }

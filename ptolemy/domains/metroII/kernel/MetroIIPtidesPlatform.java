@@ -79,23 +79,23 @@ import ptolemy.kernel.util.Workspace;
  * ports. Ptides platforms can only contain the following ports: SensorPort,
  * ActuatorPort, NetworkReceiverPort, NetworkTransmitterPort. A Ptides platform
  * must contain a PtidesDirector.
- * 
+ *
  * <p>
  * Network ports receive and transmit RecordTokens that encapsuate Ptides events
  * (timestamp and value). A NetworkReceiverPort extracts the timestamp of the
  * Ptides event in the RecordToken and creates a new event on the event queue on
  * the PtidesDirector with this timestamp.
  * </p>
- * 
+ *
  * FIXME: The base class seems to have some support for ParameterPorts but
  * nothing that really works?
- * 
+ *
  * <p>
  * This class is identical to PtidesPlatform except ports are mapped to
  * MetroIIPtidesPort, composite actors are mapped to MetroIICompositeActor, and
  * Ptides director is mapped to MetroIIPtidesDirector.
  * </p>
- * 
+ *
  * @author Patricia Derler, Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 0.2
@@ -113,7 +113,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * local director initially, and its executive director will be simply the
      * director of the container. You should set a director before attempting to
      * execute it.
-     * 
+     *
      * @param container
      *            The container actor.
      * @param name
@@ -137,7 +137,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * workspace. You should set the local director or executive director before
      * attempting to send data to the actor or to execute it. Add the actor to
      * the workspace directory. Increment the version number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace that will list the actor.
      * @exception IllegalActionException
@@ -158,7 +158,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     /**
      * Clone the object into the specified workspace. This overrides the base
      * class to set the association with iterationCount.
-     * 
+     *
      * @param workspace
      *            The workspace for the new object.
      * @return A new NamedObj.
@@ -199,9 +199,9 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     /**
      * FIXME: Return SensorPort or ActuatorPort. How do i know if the port is an
      * input or an output?
-     * 
+     *
      * Override the base class to return a specialized port.
-     * 
+     *
      * @param name
      *            The name of the port to create.
      * @return A new instance of PtidesMirrorPort, an inner class.
@@ -233,7 +233,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     /**
      * Read inputs from ParameterPorts and update the paramter of the
      * associatedPort.
-     * 
+     *
      * @exception IllegalActionException
      *                If reading from parameter associated with port fails.
      */
@@ -275,7 +275,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * This overrides the base class so that if one of the ports belongs to this
      * PtidesPlatform actor, then its element type is compared against the
      * inside port.
-     * 
+     *
      * @param sourcePort
      *            The source port.
      * @param destinationPortList
@@ -356,7 +356,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * be an array type and the proper constraint on the element type of the
      * array is made. If the source port has no possible sources of data, then
      * no type constraints are added for it.
-     * 
+     *
      * @param sourcePort
      *            The source port.
      * @return A list of instances of Inequality.
@@ -462,7 +462,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
     /**
      * Check if given MirrorPort is associated with a NetworkReceiverPort.
-     * 
+     *
      * @param port
      *            The MirrorPort.
      * @return True if is associated with a NetworkReceiverPort.
@@ -474,7 +474,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
     /**
      * Check if given MirrorPort is associated with a NetworkTransmitterPort.
-     * 
+     *
      * @param port
      *            The MirrorPort.
      * @return True if is associated with a NetworkTransmitterPort.
@@ -541,7 +541,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Construct an actor with a name and a container.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -559,7 +559,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Override the base class to return a specialized port.
-         * 
+         *
          * @param name
          *            The name of the port to create.
          * @return A new instance of PtidesMirrorPort, an inner class.
@@ -578,7 +578,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Return a specialized ParameterPort.
-         * 
+         *
          * @param name
          *            The name of the port to create.
          * @return The new ParameterPort.
@@ -617,7 +617,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * director before attempting to send data to the actor or to execute
          * it. Add the actor to the workspace directory. Increment the version
          * number of the workspace.
-         * 
+         *
          * @param workspace
          *            The workspace that will list the actor.
          * @exception IllegalActionException
@@ -634,7 +634,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Invoke fire of the embedded PtidesDirector.
-         * 
+         *
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
@@ -645,7 +645,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         /**
          * Forward this call to the director that governs this PtidesPlatform
          * actor.
-         * 
+         *
          * @exception IllegalActionException
          *                Thrown if fireContainerAt of the enclosing director
          *                cannot be invoked.
@@ -670,7 +670,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         /**
          * Get current environment time from the director that contains this
          * PtidesPlatform actor.
-         * 
+         *
          * @return Environment time.
          */
         public Time getEnvironmentTime() {
@@ -691,7 +691,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Invoke initialize of the embedded PtidesDirector.
-         * 
+         *
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
@@ -702,7 +702,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Return a new instance of QueueReceiver.
-         * 
+         *
          * @return A new instance of QueueReceiver.
          * @see QueueReceiver
          */
@@ -713,7 +713,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         /**
          * Call prefire of super class to update local time and invoke prefire
          * of the embedded PtidesDirector.
-         * 
+         *
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
@@ -724,7 +724,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Invoke postfire of the embedded PtidesDirector.
-         * 
+         *
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
@@ -736,7 +736,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * Transfer data from an input port of the container to the ports it is
          * connected to on the inside. This method extracts tokens from a record
          * token if the associated port is a network port.
-         * 
+         *
          * @exception IllegalActionException
          *                Not thrown in this base class.
          * @param port
@@ -859,7 +859,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * Transfer data from the inside receivers of an output port of the
          * container to the ports it is connected to on the outside. Create a
          * RecordToken if the associated port is a NetworkTransmitterPort.
-         * 
+         *
          * @exception IllegalActionException
          *                Not thrown in this base class.
          * @param port
@@ -923,7 +923,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Get the PtidesDirector that is contained by the PtidesComposite.
-         * 
+         *
          * @return The PtidesDirector.
          * @exception IllegalActionException
          *                If no PtidesDirector is contained.
@@ -996,7 +996,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * argument is null, then use the default workspace. The object is added
          * to the workspace directory. Increment the version number of the
          * workspace.
-         * 
+         *
          * @param workspace
          *            The workspace that will list the port.
          */
@@ -1014,7 +1014,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /**
          * Create a new instance of a port for PtidesPlatform.
-         * 
+         *
          * @param container
          *            The container for the port.
          * @param name
@@ -1040,7 +1040,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         /**
          * Override the base class to not convert the token if it is a
          * PtidesPlatform. FIXME: correct?
-         * 
+         *
          * @param token
          *            The token to convert.
          * @return The converted token.

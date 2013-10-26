@@ -107,7 +107,7 @@ public class HTMLModelExporter extends VisualModelReference {
         runBeforeExport = new Parameter(this, "runBeforeExport");
         runBeforeExport.setTypeEquals(BaseType.BOOLEAN);
         runBeforeExport.setExpression("false");
-        
+
         deleteFilesOnExit = new Parameter(this, "deleteFilesOnExit");
         deleteFilesOnExit.setTypeEquals(BaseType.BOOLEAN);
         deleteFilesOnExit.setExpression("true");
@@ -165,8 +165,8 @@ public class HTMLModelExporter extends VisualModelReference {
      *  This is a boolean that defaults to false.
      */
     public Parameter copyJavaScriptFiles;
-    
-    /** If true, deleted generated files when the JVM exits. 
+
+    /** If true, deleted generated files when the JVM exits.
      */
     public Parameter deleteFilesOnExit;
 

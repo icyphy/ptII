@@ -41,9 +41,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.plot.Plot;
 
-/** Factory that creates the plotter for the schedule of actors on a 
+/** Factory that creates the plotter for the schedule of actors on a
  *  resource scheduler.
- * 
+ *
  * @author Patricia Derler
    @version $Id$
    @since Ptolemy II 9.0
@@ -52,7 +52,7 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (derler)
  */
 public class ExecutionAspectPlotterEditorFactory extends EditorFactory implements ExecutionAspectListener {
-    
+
     /**
      * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
      *
@@ -111,7 +111,7 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
             configuration.createPrimaryTableau(schedulePlotterEffigy);
 
             plot.setVisible(true);
-            
+
             if (_actors != null) {
                 _initPlot();
             }
@@ -120,7 +120,7 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
                     "Cannot create Schedule Plotter");
         }
     }
-    
+
     /** Plot a new execution event for an actor (i.e. an actor
      *  started/finished execution, was preempted or resumed).
      * @param actor The actor.
@@ -132,7 +132,7 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
         if (plot == null) {
             return;
         }
-    
+
         double x = physicalTime;
         int actorDataset = _actors.indexOf(actor);
         if (actorDataset == -1) {
@@ -151,7 +151,7 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
             plot.addPoint(actorDataset, x,
                     actorDataset + 0.6, true);
             _previousY.put(actor, actorDataset + 0.6);
-        } else if (scheduleEvent == ExecutionEventType.STOP) { 
+        } else if (scheduleEvent == ExecutionEventType.STOP) {
             if (_previousY.get(actor) != actorDataset) {
                 plot.addPoint(actorDataset, x,
                         actorDataset + 0.6, true);
@@ -169,8 +169,8 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
         plot.fillPlot();
         plot.repaint();
     }
-    
-    /** Initialize plot. 
+
+    /** Initialize plot.
      *  @param actors Actors scheduled by the resource scheduler associated with
      *    this plot.
      *  @param scheduler Resource Scheduler associated with this plot.
@@ -182,20 +182,20 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
             _initPlot();
         }
     }
-    
+
     /** Contains the actors inside a ptides platform (=platforms). */
     protected List<NamedObj> _actors;
-    
+
     /** Initialize legend.
      */
     private void _initPlot() {
         plot.clearLegends();
         plot.clear(false);
-        plot.addLegend(_actors.size() - 1, _scheduler.getName()); 
-        _previousY.put((NamedObj) _scheduler, Double.valueOf(_actors.size() - 1)); 
+        plot.addLegend(_actors.size() - 1, _scheduler.getName());
+        _previousY.put((NamedObj) _scheduler, Double.valueOf(_actors.size() - 1));
         plot.clear(false);
         plot.clearLegends();
-    
+
         for (NamedObj actor : _actors) {
             plot.addLegend(
                     _actors.indexOf(actor), actor.getName());
@@ -210,8 +210,8 @@ public class ExecutionAspectPlotterEditorFactory extends EditorFactory implement
     private ActorExecutionAspect _scheduler;
 
     /** Previous positions of the actor data set. */
-    private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>(); 
-    
+    private HashMap<NamedObj, Double> _previousY = new HashMap<NamedObj, Double>();
+
     /** This static variable is increased by 1 every time a new
      *  SchedulePlotter is generated. The id is assigned as a unique
      *  id to every schedule plotter.

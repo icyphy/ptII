@@ -79,8 +79,8 @@ public class ExecutionAttributes extends DecoratorAttributes {
         super(target, name);
         _init();
     }
-    
-    
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
@@ -89,12 +89,12 @@ public class ExecutionAttributes extends DecoratorAttributes {
      *  the resource scheduler decorator.
      *  This is a boolean that defaults to false.
      */
-    public Parameter enable; 
+    public Parameter enable;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        public methods                     ////
-    
+
     /** React to a change in an attribute.  If the attribute is
      *  <i>enable</i>, remember the value.
      *  @param attribute The attribute that changed.
@@ -108,8 +108,8 @@ public class ExecutionAttributes extends DecoratorAttributes {
         }
         super.attributeChanged(attribute);
     }
-    
-    /** Return whether the decorator associated with this attribute is 
+
+    /** Return whether the decorator associated with this attribute is
      *  enabled.
      *  @return True if enabled.
      */
@@ -126,12 +126,12 @@ public class ExecutionAttributes extends DecoratorAttributes {
         try {
             enable = new Parameter(this, "enable");
             enable.setExpression("false");
-            enable.setTypeEquals(BaseType.BOOLEAN); 
+            enable.setTypeEquals(BaseType.BOOLEAN);
         } catch (KernelException ex) {
             // This should not occur.
             throw new InternalErrorException(ex);
         }
     }
-    
+
     private boolean _enabled;
 }

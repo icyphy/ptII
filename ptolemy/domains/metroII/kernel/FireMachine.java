@@ -36,7 +36,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 //// FireMachine
 
 /**
- * 
+ *
  * FireMachine is an abstract wrapper for actors to adapt to MetroII semantics.
  * FireMachine wraps an actor with a set of FSM interfaces so that the actor can
  * be be seen as a FSM from outside. We pre-define the following states and each
@@ -51,13 +51,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
  * The wrapper explicitly records the current state of the FSM. The state
  * transition is triggered by a function call to startOrResume(events) with
  * MetroII events as the arguments.
- * 
+ *
  * <p>
  * For any concrete subclass of ActMachine, the StartOrResumable() interface has
  * to be implemented, in which how the FSM react to MetroII events (or in other
  * words, the state transitions) should be implemented.
  * </p>
- * 
+ *
  * <p>
  * The difference between ActMachine (@see ActMachine) and FireMachine is that
  * the FireMachine only wrap the getfire() function while ActMachine also wraps
@@ -66,13 +66,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
  * control the firing of an actor by calling StartOrResumable() with MetroII
  * events.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public abstract class FireMachine implements StartOrResumable {
 
@@ -105,7 +105,7 @@ public abstract class FireMachine implements StartOrResumable {
 
     /**
      * Construct an FireMachine wrapper and initialize the MetroII events.
-     * 
+     *
      * @param actor
      *            the actor whose getfire() is to be wrapped.
      */
@@ -131,7 +131,7 @@ public abstract class FireMachine implements StartOrResumable {
 
     /**
      * Return the MetroII event associated with the current state.
-     * 
+     *
      * @return the MetroII event associated with the current state.
      */
     public Builder getStateEvent() {
@@ -150,7 +150,7 @@ public abstract class FireMachine implements StartOrResumable {
 
     /**
      * Get the state of the wrapped actor.
-     * 
+     *
      * @return the state.
      * @see #setState(State)
      */
@@ -171,7 +171,7 @@ public abstract class FireMachine implements StartOrResumable {
 
     /**
      * Return the wrapped actor.
-     * 
+     *
      * @return the wrapped actor.
      */
     protected Actor actor() {
@@ -181,7 +181,7 @@ public abstract class FireMachine implements StartOrResumable {
     /**
      * Return the MetroII event associated with the current state and set the
      * state of the event to be PROPOSED.
-     * 
+     *
      * @return the MetroII event associated with the current state
      */
     protected Builder proposeStateEvent() {
@@ -195,7 +195,7 @@ public abstract class FireMachine implements StartOrResumable {
 
     /**
      * Set the state of the wrapped actor.
-     * 
+     *
      * @param state
      *            the state to be set.
      * @see #getState()
@@ -209,7 +209,7 @@ public abstract class FireMachine implements StartOrResumable {
 
     /**
      * Trim the substring until (including) '.' from name.
-     * 
+     *
      * @param name
      *            the input string.
      * @return The trimmed string.

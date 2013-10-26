@@ -47,11 +47,11 @@ import ptolemy.kernel.util.IllegalActionException;
  * or put() is associated with two MetroII events. The data token transfer will
  * not occur until the associated MetroII events are NOTIFIED.
  * </p>
- * 
+ *
  * <p>
  * The implementation is obsolete and needs to be updated.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
@@ -65,7 +65,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
     /**
      * Return the director in charge.
-     * 
+     *
      * @return the director in charge.
      */
     public MetroIIPNDirector getDirector() {
@@ -76,10 +76,10 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
      * Get a token from this receiver. If the receiver is empty then block until
      * a token becomes available. If this receiver is terminated during the
      * execution of this method, then throw a TerminateProcessException.
-     * 
+     *
      * The method will not return until the 'xxx.get.end' MetroII event is
      * NOTIFIED.
-     * 
+     *
      * @return The token contained by this receiver.
      */
     public Token get() {
@@ -99,7 +99,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
     /**
      * Put a token on the queue contained in this receiver. The 'put' will not
      * occur until the associated MetroII event '*.put.begin' is NOTIFIED.
-     * 
+     *
      * @param token
      *            The token to be put in the receiver, or null to not put
      *            anything.
@@ -123,7 +123,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
 
     /**
      * Set the container. This overrides the base class to record the director.
-     * 
+     *
      * @param port
      *            The container.
      * @exception IllegalActionException

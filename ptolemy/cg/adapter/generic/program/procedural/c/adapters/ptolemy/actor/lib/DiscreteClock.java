@@ -70,7 +70,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
     //        codeStream.appendCodeBlock("fireBlock", args);
     //        return processCode(codeStream.toString());
     //    }
-    
+
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -85,16 +85,16 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
                 doubleStopTime = modelStopTime;
         Parameter period = ((ptolemy.actor.lib.DiscreteClock) getComponent()).period;
         double doublePeriod = ((DoubleToken) period.getToken()).doubleValue();
-        
+
         args.add(Double.toString(doubleStopTime));
         args.add(Double.toString(doublePeriod));
-        
+
         Parameter offsetPar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).offsets;
         Token offsetToken = offsetPar.getToken();
         Token[] offsets;
         double[] offsetsDouble = null;
         int size = 0;
-        
+
         if (offsetToken instanceof ArrayToken) {
                 offsets = ((ArrayToken) offsetToken).arrayValue();
             size = offsets.length;
@@ -122,14 +122,14 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             throw new IllegalActionException("Token type at DiscreteClock "
                     + "not supported yet.");
         }
-        
+
         StringBuffer offsetsString = new StringBuffer();
         int i = 0;
-        for (double offset : offsetsDouble) 
+        for (double offset : offsetsDouble)
                 offsetsString.append("$actorSymbol(offsets)["+ i++ +"] = " + Double.toString(offset) + "; ");
-                
+
         args.add(offsetsString.toString());
-        
+
         Parameter valuesPar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).values;
         Token valuesToken = valuesPar.getToken();
         Token[] values;
@@ -137,7 +137,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         int[] valuesInt = null;
         boolean[] valuesBool = null;
         size = 0;
-        
+
         if (valuesToken instanceof ArrayToken) {
                 values = ((ArrayToken) valuesToken).arrayValue();
             size = values.length;
@@ -177,7 +177,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             throw new IllegalActionException("Token type at DiscreteClock "
                     + "not supported yet.");
         }
-        
+
         StringBuffer valuesString = new StringBuffer();
         i = 0;
         if (valuesDouble != null) {
@@ -185,46 +185,46 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
                 valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Double.toString(value) + "; ");
             }
         } else if (valuesInt != null) {
-            for (int value : valuesInt) { 
+            for (int value : valuesInt) {
                 valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Integer.toString(value) + "; ");
             }
         } else if (valuesBool != null) {
             for (boolean value : valuesBool) {
                 valuesString.append("$actorSymbol(values)["+ i++ +"] = " + Boolean.toString(value) + "; ");
             }
-        }            
+        }
         args.add(valuesString.toString());
-        
+
         codeStream.appendCodeBlock("initBlock", args);
-        
+
         if (((ptolemy.actor.lib.DiscreteClock) getComponent()).start.isOutsideConnected()) {
             codeStream.appendCodeBlock("startConnectedInit");
         }
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * Generate the fire code of a single event.
      * @return The generated code.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
             CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
-        
+
         ptolemy.actor.lib.DiscreteClock clock = (ptolemy.actor.lib.DiscreteClock) getComponent();
-        
+
         if (clock.start.numberOfSources() > 0)
             codeStream.appendCodeBlock("startConnected");
-        
+
         if (clock.stop.numberOfSources() > 0)
             codeStream.appendCodeBlock("stopConnected");
-        
+
         if (((PortParameter)clock.period).getPort().isOutsideConnected())
             codeStream.appendCodeBlock("periodConnected");
-        
+
         if (clock.trigger.numberOfSources() > 0) {
             // Have to consume all trigger inputs.
             for (int i = 0; i < clock.trigger.getWidth(); i++) {
@@ -233,13 +233,13 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
                 codeStream.appendCodeBlock("triggerConnected", args);
             }
         }
-        
+
         args.clear();
         codeStream.appendCodeBlock("fireTestBlock");
-        
+
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * Generate the postfire code. We do not call the super
      * method, because we have arguments to add here
@@ -253,19 +253,19 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
-        
+
         Parameter valuePar = ((ptolemy.actor.lib.DiscreteClock) getComponent()).values;
         Token valueToken = valuePar.getToken();
         Token[] values;
         int size = 0;
-        
+
         if (valueToken instanceof ArrayToken) {
             values = ((ArrayToken) valueToken).arrayValue();
             size = values.length;
         }
         args.add(Integer.toString(size));
         args.add(Boolean.toString(((ptolemy.actor.lib.DiscreteClock) getComponent()).trigger.numberOfSources() > 0));
-            
+
         codeStream.appendCodeBlock("postfireBlock", args);
         return processCode(codeStream.toString());
     }

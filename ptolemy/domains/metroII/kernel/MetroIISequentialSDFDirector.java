@@ -1,5 +1,5 @@
 /* MetroSequentialSDFDirector extends SDFDirector to support Metro semantics.
- 
+
 Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -57,13 +57,13 @@ import ptolemy.kernel.util.Workspace;
  * MetroSequentialSDFDirector extends SDFDirector to support Metro semantics.
  * The order of actor firing should be static and identical to fire(). Each
  * actor is fired only if the associated Metro event is notified.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id: MetroSequentialSDFDirector.java 67619 2013-10-02 20:32:10Z glp$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIISequentialSDFDirector extends SDFDirector implements
         GetFirable {
@@ -72,7 +72,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      * Construct a director in the default workspace with an empty string as its
      * name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
-     * 
+     *
      * @exception IllegalActionException
      *                If the name has a period in it, or the director is not
      *                compatible with the specified container.
@@ -88,7 +88,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      * Construct a director in the given workspace with an empty name. The
      * director is added to the list of objects in the workspace. Increment the
      * version number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace for this object.
      * @exception IllegalActionException
@@ -108,7 +108,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -128,7 +128,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      * Clone the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
-     * 
+     *
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException
@@ -180,7 +180,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire().
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {

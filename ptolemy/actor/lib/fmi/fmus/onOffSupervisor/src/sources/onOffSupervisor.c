@@ -104,7 +104,7 @@ int checkFMU(
         return 0;
     }
     if (!instanceName || strlen(instanceName)==0) {
-#if USE_LOGGER        
+#if USE_LOGGER
         functions->logger(NULL, instanceName, fmiError, "error",
 #else
         fprintf(stderr, "fmiInstantiateSlave: Missing instance name.\n");
@@ -113,7 +113,7 @@ int checkFMU(
         return 0;
     }
     if (strcmp(GUID, MODEL_GUID)) {
-#if USE_LOGGER        
+#if USE_LOGGER
         functions->logger(NULL, instanceName, fmiError, "error",
                           "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, MODEL_GUID);
 #else

@@ -1,8 +1,8 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * sim_support.h
  * Functions used by the FMU simulatios fmusim_me and fmusim_cs.
- * Copyright 2011 QTronic GmbH. All rights reserved. 
- * -------------------------------------------------------------------------*/ 
+ * Copyright 2011 QTronic GmbH. All rights reserved.
+ * -------------------------------------------------------------------------*/
 
 // Used 7z options, version 4.57:
 // -x   Extracts files from an archive with their full paths in the current dir, or in an output dir if specified
@@ -46,7 +46,7 @@ int unzip(const char *zipPath, const char *outPath);
 void parseArguments(int argc, char *argv[], char** fmuFileName, double* tEnd, double* h, int* loggingOn, char* csv_separator);
 void loadFMU(const char* fmuFileName);
 // Windows wants boolean to be an unsigned char.
-typedef unsigned char boolean; 
+typedef unsigned char boolean;
 void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator, boolean header);
 int error(const char* message);
 void printHelp(const char* fmusim);

@@ -736,7 +736,7 @@ public class StringUtilities {
      */
     public static boolean isValidIdentifier(String name) {
         char[] nameArray = name.toCharArray();
-        
+
         for (int i = 0; i < nameArray.length; i++) {
             if (!Character.isJavaIdentifierPart(nameArray[i])) {
                 return false;
@@ -744,7 +744,7 @@ public class StringUtilities {
         }
         return true;
     }
-    
+
     /**  If the string is longer than 79 characters, split it up by
      *  adding newlines in all newline delimited substrings
      *  that are longer than 79 characters.

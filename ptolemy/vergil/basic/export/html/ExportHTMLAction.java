@@ -236,7 +236,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 + jsBackupDirectory + "\"");
                     }
                 }
-                
+
                 if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
                     try {
                         MessageHandler
@@ -252,17 +252,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     parameters.copyJavaScriptFiles = false;
                 } else {
                     // If deleteFilesOnExit is selected, mark the new
-                    // Javscript directory for deletion.  Mark it first so 
-                    // that it will be deleted after its contained files have 
-                    // been deleted.  Files/directories are deleted in the 
+                    // Javscript directory for deletion.  Mark it first so
+                    // that it will be deleted after its contained files have
+                    // been deleted.  Files/directories are deleted in the
                     // reverse order that they are registered.
                     if (parameters.deleteFilesOnExit) {
                         jsTargetDirectory.deleteOnExit();
                     }
-                    
+
                     // Copy css, JavaScript, and image files.
                     for (String filename : FILENAMES) {
-                        try { 
+                        try {
                             URL lightboxFile = FileUtilities.nameToURL(
                                     jsDirectoryName + filename, null, null);
                             File file = new File(jsTargetDirectory, filename);
@@ -270,7 +270,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 file.deleteOnExit();
                             }
                             FileUtilities.binaryCopyURLToFile(lightboxFile,
-                                    file);                      
+                                    file);
                         } catch (IOException e) {
                             try {
                                 MessageHandler
@@ -879,7 +879,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                     + linkToHelp.replace("\"", "\\\"") + "</td></tr></table>\");\n"
                                     + "</script>\n"
                                     + "<noscript>\n"
-                                    + "<a href=\"../" 
+                                    + "<a href=\"../"
                                     + _sanitizedModelName + ".jnlp\">WebStart version</a>. \n"
                                     + linkToHelp
                                     + "</noscript>\n"
@@ -959,7 +959,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     // but it does seem to do that, so I assume that's what it does.
                     Writer fileWriter = null;
                     try {
-                        File file = 
+                        File file =
                                 new File(parameters.directoryToExportTo, key);
                         if (parameters.deleteFilesOnExit) {
                             file.deleteOnExit();

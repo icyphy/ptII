@@ -1361,17 +1361,17 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         if (_communicationAspects == null) {
             _communicationAspects = new ArrayList<CommunicationAspect>();
-        } 
-        
+        }
+
         HashMap<Integer, CommunicationAspectAttributes> _communicationAspectMap = new HashMap<Integer, CommunicationAspectAttributes>();
         int sequenceNumber = 1;
         List<CommunicationAspectAttributes> communicationAspectList = this.attributeList(CommunicationAspectAttributes.class);
         if (communicationAspectList.size() > 0) {
             try {
-                _workspace.getWriteAccess(); 
-            
+                _workspace.getWriteAccess();
+
                 List<CommunicationAspectAttributes> enabledAttributes = new ArrayList();
-                
+
                 for (int i = 0; i < communicationAspectList.size(); i++) {
                     CommunicationAspectAttributes attribute = communicationAspectList.get(i);
                     if (((BooleanToken)attribute.enable.getToken()).booleanValue()) {
@@ -1380,7 +1380,7 @@ public class IOPort extends ComponentPort {
                         if (s > sequenceNumber) {
                             sequenceNumber = s;
                         }
-                    } else { 
+                    } else {
                         attribute.sequenceNumber.setToken(new IntToken(-1));
                     }
                 }
@@ -1391,27 +1391,27 @@ public class IOPort extends ComponentPort {
                     CommunicationAspect communicationAspect = (CommunicationAspect) attribute.getDecorator();
                     int oldSeqNum = ((IntToken) attribute.sequenceNumber.getToken()).intValue();
                     if (oldSeqNum == -1 && communicationAspect != null && !_communicationAspects.contains(communicationAspect)) {
-                        attribute.sequenceNumber.setToken(new IntToken(seqNum)); 
-                        _communicationAspectMap.put(seqNum, attribute); 
+                        attribute.sequenceNumber.setToken(new IntToken(seqNum));
+                        _communicationAspectMap.put(seqNum, attribute);
                         sequenceNumber = sequenceNumber + 1;
-                    } else {   
-                        _communicationAspectMap.put(oldSeqNum, attribute);  
-                        
+                    } else {
+                        _communicationAspectMap.put(oldSeqNum, attribute);
+
                     }
-                } 
+                }
                 _communicationAspects.clear();
                 Iterator<Integer> iterator = _communicationAspectMap.keySet().iterator();
                 int i = 1;
                 while (iterator.hasNext()) {
-                    
-                    CommunicationAspectAttributes attribute = _communicationAspectMap.get(iterator.next()); 
+
+                    CommunicationAspectAttributes attribute = _communicationAspectMap.get(iterator.next());
                     attribute.sequenceNumber.setToken(new IntToken(i));
                     i = i + 1;
                     Decorator decorator = attribute.getDecorator();
                     if (decorator != null) {
                         _communicationAspects.add((CommunicationAspect) decorator);
                     }
-                } 
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -1419,7 +1419,7 @@ public class IOPort extends ComponentPort {
             }
         }
         _communicationAspectsValid = true;
-        return _communicationAspects;  
+        return _communicationAspects;
     }
 
     /** If the port is an input, return the receivers that receive data
@@ -2266,7 +2266,7 @@ public class IOPort extends ComponentPort {
     public void invalidateCommunicationAspects() {
         _communicationAspectsValid = false;
     }
-    
+
     /** Return true if the port is an input.  The port is an input
      *  if either setInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is

@@ -706,7 +706,7 @@ public class Manager extends NamedObj implements Runnable {
      *  This method is read synchronized on the workspace.
      *
      *  @return True if postfire() is not called, otherwise, return
-     *  the value returned by postfire(). 
+     *  the value returned by postfire().
      *
      *  @exception KernelException If the model throws it, or if there
      *   is no container.
@@ -1275,7 +1275,7 @@ public class Manager extends NamedObj implements Runnable {
      *  <p> Note that in general, it is best to get that director
      *  and call finish() and stopFire() on the director than
      *  it is to call Manager.stop().<p>
-     * 
+     *
      *  <p> The reason that it is better to call Director.finish()
      *  is that if Manager.stop() is called inside a RunCompositeActor
      *  then only the inside execution will be stopped, not

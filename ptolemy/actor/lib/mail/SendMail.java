@@ -87,13 +87,13 @@ import ptolemy.util.MessageHandler;
  *  <p>To use this actor, download <code>javax.mail.jar</code>
  *  <a href="https://java.net/projects/javamail/pages/Home"><code>https://java.net/projects/javamail/pages/Home</code></a> and place it in
  *  <code>$PTII/vendors/misc/javamail</code>.  Below are the steps:</p>
- *  <pre>   
+ *  <pre>
  *    cd $PTII/vendors/misc/javamail
  *     wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
  *     cd $PTII
  *     ./configure
  *  </pre>
- *  <p>In Eclipse, you will then need to refresh the project.</p> * 
+ *  <p>In Eclipse, you will then need to refresh the project.</p> *
  *
  * @author Edward A. Lee
  * @version $Id$

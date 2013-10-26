@@ -1,4 +1,4 @@
-/* MetroIICompositeActor extends the composite actor to support enclosing Metro directors. 
+/* MetroIICompositeActor extends the composite actor to support enclosing Metro directors.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -50,13 +50,13 @@ import ptolemy.kernel.util.Workspace;
 /**
  * MetroIICompositeActor extends the composite actor to support enclosing Metro
  * directors.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIICompositeActor extends TypedCompositeActor implements
         GetFirable {
@@ -69,7 +69,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Construct a MetroIICompositeActor based on a given worksapce.
-     * 
+     *
      * @param workspace
      *            The workspace for this object.
      */
@@ -79,7 +79,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Construct a MetroIICompositeActor based on a given container and a name.
-     * 
+     *
      * @param container
      *            container of the director.
      * @param name
@@ -101,7 +101,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {

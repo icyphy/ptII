@@ -308,10 +308,10 @@ public class Expression extends TypedAtomicActor {
         super.preinitialize();
         _tokenMap = new HashMap<String,Token>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
-    
+
     /** Variable storing the result of the expression evaluation so that
      *  subclasses can access it in an overridden fire() method.
      */

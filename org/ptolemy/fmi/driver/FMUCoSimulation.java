@@ -90,7 +90,7 @@ public class FMUCoSimulation extends FMUDriver {
      *  <p>For example, under Mac OS X or Linux:
      *  <pre>
      *  java -classpath $PTII/lib/jna-4.0.0-variadic.jar:${PTII} org.ptolemy.fmi.driver.FMUCoSimulation \
-     *  
+     *
      *  </pre>
      *
      *  <p>The command line arguments have the following meaning:</p>

@@ -652,7 +652,7 @@ typedef struct PblList PblHeap;
 struct PblPriorityQueueEntry_s
 {
     int         priority;
-    void    *   element; 
+    void    *   element;
 };
 
 /**

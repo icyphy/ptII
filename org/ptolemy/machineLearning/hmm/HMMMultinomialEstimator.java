@@ -57,29 +57,29 @@ The output ports for a Gaussian HMM model are the <i>mean<\i> and the <i>standar
 vectors of the possible hidden states in addition to the HMM parameters independent
 from the emission density: <i>transitionMatrix<\i> .
 T
-he <i>mean<\i>  is a double array output containing the mean estimates and 
-<i>sigma</i> is a double array output containing standard deviation estimates of 
-each mixture component. If the <i>modelType<\i> is HMM, then an additional output, 
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix 
-governing the Markovian process representing the hidden state evolution. 
-If the <i>modelType<\i> is MM, this port outputs a double array with the prior 
+he <i>mean<\i>  is a double array output containing the mean estimates and
+<i>sigma</i> is a double array output containing standard deviation estimates of
+each mixture component. If the <i>modelType<\i> is HMM, then an additional output,
+<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
+governing the Markovian process representing the hidden state evolution.
+If the <i>modelType<\i> is MM, this port outputs a double array with the prior
 probability estimates of the mixture components.
 </p>
 <p>
 The user-defined parameters are initial guesses for the model parameters, given by
-<i>m0</i>, the mean vector guess, <i>s0</i>, the standard deviation vector guess, 
-<i>prior</i>, the prior state distribution guess, <i>A0</i>, the transition 
-matrix guess ( only for HMM). <i>iterations</i> is the number of EM iterations 
-allowed until convergence. 
-If, during iteration, the conditional log-likelihood of the observed 
+<i>m0</i>, the mean vector guess, <i>s0</i>, the standard deviation vector guess,
+<i>prior</i>, the prior state distribution guess, <i>A0</i>, the transition
+matrix guess ( only for HMM). <i>iterations</i> is the number of EM iterations
+allowed until convergence.
+If, during iteration, the conditional log-likelihood of the observed
 sequence given the parameter estimates converges to a value within <i>likelihoodThreshold</i>,
 the parameter estimation stops iterating and delivers the parameter estimates.
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.1 
+ @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class HMMMultinomialEstimator extends ParameterEstimator {
    /** Construct an actor with the given container and name.
@@ -93,27 +93,27 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
    public HMMMultinomialEstimator(CompositeEntity container, String name)
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
-       
+
        emissionEstimates = new TypedIOPort(this, "emissionEstimates", false, true);
        emissionEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        
+
        observationProbabilities = new Parameter(this, "observationProbabilities");
        observationProbabilities.setExpression("[0.6,0.3,0.1;0.1,0.4,0.5]");
        observationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
-       
+
        nCategories = new Parameter(this, "nCategories");
        nCategories.setExpression("3");
        nCategories.setTypeEquals(BaseType.INT);
        _nCategories = 3;
-       
+
        _B = new double[_nStates][_nCategories];
-       _B0 = new double[_nStates][_nCategories]; 
+       _B0 = new double[_nStates][_nCategories];
    }
-   
+
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
        if(attribute == observationProbabilities){
-          
+
            int nCat = ((MatrixToken) observationProbabilities.getToken()).getColumnCount();
            _B0 = new double[_nStates][nCat];
            for (int i = 0; i < _nStates; i++) {
@@ -123,7 +123,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
                            .doubleValue();
                }
            }
-           
+
        } else if( attribute == nCategories)
        {
            int cat = ((IntToken) nCategories.getToken()).intValue();
@@ -142,41 +142,41 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
    ////                         public variables                  ////
 
    public TypedIOPort emissionEstimates;
-   
+
    public Parameter observationProbabilities;
-   
+
    public Parameter nCategories;
-   
+
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
    public Object clone(Workspace workspace) throws CloneNotSupportedException {
        HMMMultinomialEstimator newObject = (HMMMultinomialEstimator) super
                .clone(workspace);
-       newObject._B = new double[_nStates][_nStates];  
-       newObject._B0 = new double[_nStates][_nStates];  
+       newObject._B = new double[_nStates][_nStates];
+       newObject._B0 = new double[_nStates][_nStates];
        return newObject;
    }
-   
-   public void fire() throws IllegalActionException { 
-       super.fire(); 
-       
+
+   public void fire() throws IllegalActionException {
+       super.fire();
+
        if( (_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nCategories != _B0[0].length))
        {
            throw new IllegalActionException(this, "Parameter guess vectors cannot have different lengths.");
-       } 
-       
+       }
+
        boolean converged = _EMParameterEstimation();
-           
+
        Token[] pTokens = new Token[_nStates];
-       for ( int i = 0; i< _nStates; i++){ 
+       for ( int i = 0; i< _nStates; i++){
            pTokens[i] = new DoubleToken(prior_new[i]);
        }
        transitionMatrix.send(0, new DoubleMatrixToken(A_new));
        emissionEstimates.send(0, new DoubleMatrixToken(B_new));
-       priorEstimates.send(0, new ArrayToken(pTokens)); 
+       priorEstimates.send(0, new ArrayToken(pTokens));
    }
-   
+
    public boolean postfire() throws IllegalActionException {
        _likelihood = 0.0;
        return true;
@@ -193,21 +193,21 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         prior_new = new double[_nStates];
    }
    protected void _iterateEM(){
-       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn, _nCategories); 
-       B_new = (double[][]) newEstimates.get("eta_hat"); 
-       A_new = (double[][]) newEstimates.get("A_hat"); 
+       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn, _nCategories);
+       B_new = (double[][]) newEstimates.get("eta_hat");
+       A_new = (double[][]) newEstimates.get("A_hat");
        prior_new = (double[]) newEstimates.get("pi_hat");
        likelihood = (Double) (newEstimates.get("likelihood"));
    }
    protected void _updateEstimates(){
-       _transitionMatrix  = A_new; 
+       _transitionMatrix  = A_new;
        _B = B_new;
-       _priorIn = prior_new; 
+       _priorIn = prior_new;
    }
    protected double emissionProbability(double y, int hiddenState){
-       return _B[hiddenState][(int)y];  
+       return _B[hiddenState][(int)y];
    }
-   
+
 // emission distributions Bij = P(Yt=j | qt = i)
 private double[][] _B;
 private double[][] _B0;

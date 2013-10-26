@@ -460,7 +460,7 @@ public class EditablePlot extends Plot {
 
     /** Listen for mouse button events.  See the class comment for
      * details.
-     */        
+     */
     public class EditMouseListener implements MouseListener {
         /** Ignored by this listener.
          *  @param event Ignored.
@@ -502,10 +502,10 @@ public class EditablePlot extends Plot {
 
     /** Listen for mouse motion events.  See the class comment for
      * details.
-     */        
+     */
     public class ModifyListener implements MouseMotionListener {
         /** If the mouse is dragged and the 3rd button is pressed,
-         *  then make a record of a new edit point.   
+         *  then make a record of a new edit point.
          *  @param event The event.
          */
         public void mouseDragged(MouseEvent event) {
@@ -522,10 +522,10 @@ public class EditablePlot extends Plot {
     }
 
     /** Control-Z is undo and Control-Y is redo.
-     */        
+     */
     public class UndoListener implements KeyListener {
         /** Handle Control, Z or Y being pressed with
-         *  by calling undo() or redo().   
+         *  by calling undo() or redo().
          *  @param e The KeyEvent.
          */
         public void keyPressed(KeyEvent e) {

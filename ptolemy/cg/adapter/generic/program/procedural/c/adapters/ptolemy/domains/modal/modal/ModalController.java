@@ -67,10 +67,10 @@ public class ModalController
     public ModalController(ptolemy.domains.modal.modal.ModalController component) {
         super(component);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         Public methods                    ////
-    
+
     /** Generate the fire code of the associated controller.
      *  All the steps are described below
      *  It is slightly different from the super class in order to take
@@ -90,11 +90,11 @@ public class ModalController
             throw new IllegalActionException(ndx.toString());
         }
         StringBuffer code = new StringBuffer();
-        
+
         String name = _myController.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
         modalName = modalName.replace('.', '_');
-        
+
         // Generate code for preemptive transition.
         code.append(_eol
                 + getCodeGenerator().comment("1. Preemptive Transition"));
@@ -110,7 +110,7 @@ public class ModalController
 
         // Generate code for refinements.
         _generateRefinementCode(code);
-        
+
         // Transfer the outputs beetween the two types of transitions
         code.append(_eol + "director->transferOutputs(director);" + _eol);
 
@@ -123,7 +123,7 @@ public class ModalController
         return code.toString();
 
     }
-    
+
     /** Generate the postfire code of the associated controller.
     * We generate a switch because we only need to call the postfire method
     * of the current state.
@@ -135,10 +135,10 @@ public class ModalController
     @Override
     public String generatePostfireCode() throws IllegalActionException {
        StringBuffer code = new StringBuffer();
-       
+
        String name = _myController.getFullName().substring(1);
        name = name.replace('.', '_');
-       
+
        code.append(_eol + "switch (" + name + "__currentState) {");
        Iterator states = _myController.entityList().iterator();
        while (states.hasNext()) {
@@ -154,19 +154,19 @@ public class ModalController
                    code.append(_eol + actorHelper.generatePostfireCode());
                }
            }
-           
+
            code.append(_eol + "}" + _eol + "break;");
        }
        code.append(_eol + "}" + _eol + "return true;");
-       
+
        return code.toString();
     }
-    
-    
+
+
 
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         List<TypedIOPort> inputPorts = _myController.inputPortList();
         List<TypedIOPort> outputPorts = _myController.outputPortList();
         String name = _myController.getFullName().substring(1);
@@ -181,7 +181,7 @@ public class ModalController
             inputPort = inputPorts.get(i);
             if (!outputPorts.contains(inputPort)) {
                 int width = inputPort.getWidth();
-                
+
                 code.append(inputPort.getType() + " " + name
                         + "_" + inputPort.getName());
                 if (width > 1) {
@@ -203,7 +203,7 @@ public class ModalController
             }
             code.append(";" + _eol);
         }
-        
+
 
         //code.append("int " + name + "__currentState;" + _eol);
         code.append("int " + modalName + "__transitionFlag;" + _eol);
@@ -223,7 +223,7 @@ public class ModalController
         enumStates.append("};");
         code.append(enumStates);
         code.append(_eol + "enum " + name + "__currentState " + name + "__currentState;");
-        
+
         List<?> list = _myController.getModifiedVariables();
         List<Parameter> done = new ArrayList();
         for (Object o : list) {
@@ -231,7 +231,7 @@ public class ModalController
                 Parameter parameter = (Parameter)o;
                 getCodeGenerator().addModifiedVariables(parameter);
                 done.add(parameter);
-                code.append(_eol + parameter.getType() + " " 
+                code.append(_eol + parameter.getType() + " "
                         + getCodeGenerator().generateVariableName(parameter)
                         + " = "
                         + parameter.getValueAsString() + ";" + _eol);
@@ -242,10 +242,10 @@ public class ModalController
                 "End of create controller variables"));
         return code.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      Protected methods                    ////
-    
+
     /** Generate code for the firing of refinements.
     *
     *  @param code The string buffer that the generated code is appended to.
@@ -257,7 +257,7 @@ public class ModalController
 
         String name = _myController.getFullName().substring(1);
         name = name.replace('.', '_');
-        
+
         int depth = 1;
         code.append(_getIndentPrefix(depth));
         code.append("switch (" + name + "__currentState) {" + _eol);
@@ -272,7 +272,7 @@ public class ModalController
 
             State state = (State) states.next();
             code.append("case " + CodeGeneratorAdapter.generateName(state) + ":" + _eol);
-            
+
             Actor[] actors = state.getRefinement();
 
             if (actors != null) {
@@ -295,10 +295,10 @@ public class ModalController
         code.append("}" + _eol); //end of switch statement
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      Inner classes                        ////
-    
+
     /** Retrieve the non-preemptive transitions. */
     private static class NonPreemptiveTransitions implements
             TransitionRetriever {
@@ -315,7 +315,7 @@ public class ModalController
             }
         }
     }
-    
+
     /** An inner class which retrieves the preemptive transitions. */
     private static class PreemptiveTransitions implements TransitionRetriever {
         /** Retrieve the preemptive transitions.

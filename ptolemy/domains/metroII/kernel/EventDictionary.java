@@ -40,14 +40,14 @@ import java.util.Hashtable;
  * name is added into the dictionary, a new id is created and associated with
  * the added event name.
  * </p>
- * 
- * 
+ *
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class EventDictionary implements Cloneable {
 
@@ -60,7 +60,7 @@ public class EventDictionary implements Cloneable {
 
     /**
      * Clone an EventDictionary.
-     * 
+     *
      * @throws CloneNotSupportedException
      *             the object's class does not implement the Cloneable
      *             interface.
@@ -79,7 +79,7 @@ public class EventDictionary implements Cloneable {
     /**
      * Return the event ID associated with the event name. If the event name is
      * not in the dictionary, return -1;
-     * 
+     *
      * @param name
      *            Event name
      * @return Event ID
@@ -96,7 +96,7 @@ public class EventDictionary implements Cloneable {
      * Add a new event name into the dictionary. If the name is already in the
      * dictionary, do nothing. If the name is new, add the name and create a new
      * ID. Associate the ID the the name.
-     * 
+     *
      * @param name
      *            Event name
      */
@@ -119,7 +119,7 @@ public class EventDictionary implements Cloneable {
 
     /**
      * The dictionary of event name and ID pair.
-     * 
+     *
      */
     private Hashtable<String, Integer> _eventName2ID;
 }

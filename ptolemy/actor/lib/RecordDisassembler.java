@@ -77,7 +77,7 @@ import ptolemy.kernel.util.Workspace;
  and outputs.
  </li>
  </ul>
- 
+
  <p>If the received Token contains more fields than the output ports, the extra
  fields are ignored.</p>
 
@@ -87,8 +87,8 @@ import ptolemy.kernel.util.Workspace;
  record field.</p>
 
  <p>Note that if the display name of a port is set, display name is used in
- the type constraints instead of name. This is useful in case fields to 
- extract from the record contain a period, because periods are not allowed 
+ the type constraints instead of name. This is useful in case fields to
+ extract from the record contain a period, because periods are not allowed
  in port names.</p>
 
  @author Yuhong Xiong, Steve Neuendorffer, Edward A. Lee, Marten Lohstroh
@@ -125,7 +125,7 @@ public class RecordDisassembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -159,7 +159,7 @@ public class RecordDisassembler extends TypedAtomicActor {
                 String label = (String) labels.next();
                 Token value = record.get(label);
                 TypedIOPort port = _portMap.get(label);
-                
+
                 // since the record received may contain more fields than the
                 // output ports, some fields may not have a corresponding
                 // output port.
@@ -172,7 +172,7 @@ public class RecordDisassembler extends TypedAtomicActor {
 
     /** React to a name change of contained ports. Update the internal
      *  mapping from names and aliases to port objects, and invalidate
-     *  the resolved types. 
+     *  the resolved types.
      *  @param object The object that changed.
      */
     @Override
@@ -181,7 +181,7 @@ public class RecordDisassembler extends TypedAtomicActor {
             _mapPorts();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -213,17 +213,17 @@ public class RecordDisassembler extends TypedAtomicActor {
 
         // make sure the ports are mapped
         _mapPorts();
-        
+
         // constrain the fields in the input record to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
         result.add(new Inequality(new ConstructAssociativeType(
-                _portMap.values(), RecordType.class), input.getTypeTerm())); 
+                _portMap.values(), RecordType.class), input.getTypeTerm()));
 
         for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
             String outputName = entry.getKey();
             TypedIOPort output = entry.getValue();
-            
+
             labels.add(outputName);
             types.add(BaseType.GENERAL);
 
@@ -255,16 +255,16 @@ public class RecordDisassembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
-    
+
     /** Map port names or aliases to port objects. If the mapping
-     *  has changed, then invalidate the resolved types, which 
+     *  has changed, then invalidate the resolved types, which
      *  forces new type constraints with appropriate field names
-     *  to be generated. 
+     *  to be generated.
      */
     private void _mapPorts() {
         // Retrieve the manager.
         Manager manager = this.getManager();
-        
+
         // Generate a new mapping from names/aliases to ports.
         Map<String, TypedIOPort> oldMap = _portMap;
         _portMap = new HashMap<String, TypedIOPort>();
@@ -281,17 +281,17 @@ public class RecordDisassembler extends TypedAtomicActor {
                 _portMap.put(alias, p);
             }
         }
-        
+
         // Only invalidate resolved types if there actually was a name change.
         // As a result, new type constraints will be generated.
         if (manager != null && (oldMap == null || !_portMap.equals(oldMap))) {
             manager.invalidateResolvedTypes();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-    
+
     /** Keeps track of which name or alias is associated with which port. */
     private Map<String, TypedIOPort> _portMap;
 

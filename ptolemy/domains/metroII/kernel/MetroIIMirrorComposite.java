@@ -59,15 +59,15 @@ import ptolemy.moml.HandlesInternalLinks;
 //// MirrorComposite
 
 /**
- * 
+ *
  * A composite that contain one actor and mirror the ports and parameters of
  * that actor.
- * 
+ *
  * <p>
  * This class is identical to MirrorComposite except it extends
  * MetroIICompositeActor instead of CompositeActor.
  * </p>
- * 
+ *
  * @author Edward A. Lee, Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 6.1
@@ -83,7 +83,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * use the workspace of the container for synchronization and version
      * counts. If the name argument is null, then the name is set to the empty
      * string. Increment the version of the workspace.
-     * 
+     *
      * @param container
      *            The container actor.
      * @param name
@@ -107,7 +107,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * workspace. You should set the local director or executive director before
      * attempting to send data to the actor or to execute it. Add the actor to
      * the workspace directory. Increment the version number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace that will list the actor.
      */
@@ -123,7 +123,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * use the workspace of the container for synchronization and version
      * counts. If the name argument is null, then the name is set to the empty
      * string. Increment the version of the workspace.
-     * 
+     *
      * @param container
      *            The container actor.
      * @param name
@@ -151,7 +151,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * Clone the object into the specified workspace. This overrides the base
      * class to set up the associations in the mirror ports and to set a flag
      * indicating that cloning is complete.
-     * 
+     *
      * @param workspace
      *            The workspace for the new object.
      * @return A new NamedObj.
@@ -188,7 +188,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
     /**
      * Override the base class to return a specialized port.
-     * 
+     *
      * @param name
      *            The name of the port to create.
      * @return A new instance of IteratePort, an inner class.
@@ -216,7 +216,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
     /**
      * Create a new ParameterMirrorPort.
-     * 
+     *
      * @param name
      *            The name of the port to create.
      * @return A new instance of PtidesMirrorPort, an inner class.
@@ -241,7 +241,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * Override the base class to queue a change request to remove any
      * previously contained entity and its mirrored ports, and to mirror the
      * ports of the added entity.
-     * 
+     *
      * @param entity
      *            Entity to contain.
      * @exception IllegalActionException
@@ -375,7 +375,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * Add a port to this actor. This overrides the base class to mirror the new
      * port in the contained actor, if there is one, and to establish a
      * connection to a port on the contained actor.
-     * 
+     *
      * @param port
      *            The TypedIOPort to add to this actor.
      * @exception IllegalActionException
@@ -490,7 +490,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * Override the base class to describe contained entities, attributes, and
      * ports, but not inside links or relations. The rest of the contents are
      * generated automatically when a contained entity is inserted.
-     * 
+     *
      * @param output
      *            The output to write to.
      * @param depth
@@ -525,7 +525,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
     /**
      * Override the base class to remove the ports and inside relations of this
      * actor. This method assumes the caller has write access on the workspace.
-     * 
+     *
      * @param entity
      *            The entity being removed from this entity.
      */
@@ -566,7 +566,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * Override the base class to remove the associated port on the inside
      * entity and the link to it, if there is one. This method assumes the
      * caller has write access on the workspace.
-     * 
+     *
      * @param port
      *            The port being removed from this entity.
      */
@@ -628,7 +628,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
     /**
      * Initialize the class.
-     * 
+     *
      * @param mirrorParameterPorts
      *            If true, then mirror instances of ParameterPort.
      */
@@ -660,7 +660,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
         /**
          * Construct an actor with a name and a container.
-         * 
+         *
          * @param container
          *            The container.
          * @param name
@@ -679,7 +679,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
         /**
          * Override the base class to return a specialized port.
-         * 
+         *
          * @param name
          *            The name of the port to create.
          * @return A new instance of MirrorPort.
@@ -700,7 +700,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
          * Add a port to this actor. This overrides the base class to add a
          * corresponding port to the container using a change request, if that
          * port does not already exist.
-         * 
+         *
          * @param port
          *            The TypedIOPort to add to this actor.
          * @exception IllegalActionException

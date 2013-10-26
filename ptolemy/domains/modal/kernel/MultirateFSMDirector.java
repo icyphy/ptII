@@ -763,7 +763,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
         return outputRateChanged;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

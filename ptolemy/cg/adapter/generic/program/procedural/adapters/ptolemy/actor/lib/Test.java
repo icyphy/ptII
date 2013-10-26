@@ -119,7 +119,7 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
 
         //codeStream.appendCodeBlock("initBlock", true);
-        
+
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
         for (int i = 0; i < actor.input.getWidth(); i++) {
             if (!getCodeGenerator().isPrimitive(actor.input.getType())) {

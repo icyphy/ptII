@@ -418,7 +418,7 @@ public class MirrorComposite extends TypedCompositeActor implements
                                             .isMultiport());
                                 }
                             }
-                            
+
                             if (insidePort == null) {
                                 // FindBugs was reporting that insidePort could still be null.
                                 throw new InternalErrorException(MirrorComposite.this, null,

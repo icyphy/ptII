@@ -36,13 +36,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 /**
  * MetroDebugger is a debugging facility for Metro directors. It enables
  * printing information in a customized format.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIIDebugger implements Cloneable {
 
@@ -58,7 +58,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Clone a MetroDebugger.
-     * 
+     *
      * @throws CloneNotSupportedException
      *             the object's class does not implement the Cloneable
      *             interface.
@@ -71,7 +71,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Set the string to be printed out at the beginning of each line.
-     * 
+     *
      * @param prefix
      *            prefix string of each line .
      */
@@ -81,7 +81,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Return whether debugging info is being printed.
-     * 
+     *
      * @return whether debugging info is being printed.
      */
     public boolean debugging() {
@@ -104,7 +104,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Print out a title.
-     * 
+     *
      * @param title
      *            the title to be printed out.
      */
@@ -117,7 +117,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Print out text.
-     * 
+     *
      * @param text
      *            the text to be printed out.
      */
@@ -130,7 +130,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Print out the details of a MetroII event.
-     * 
+     *
      * @param event
      *            the event to be printed out.
      */
@@ -153,7 +153,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Print out the details of a list of MetroII events.
-     * 
+     *
      * @param metroIIEventList
      *            the event list.
      */
@@ -170,7 +170,7 @@ public class MetroIIDebugger implements Cloneable {
 
     /**
      * Print out the details of notified events in a list.
-     * 
+     *
      * @param metroIIEventList
      *            the event list.
      */

@@ -1,19 +1,19 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU - a bouncing ball. 
+ * Sample implementation of an FMU - a bouncing ball.
  * This demonstrates the use of state events and reinit of states.
  * Equations:
  *  der(h) = v;
  *  der(v) = -g;
- *  when h<0 then v := -e * v;  
+ *  when h<0 then v := -e * v;
  *  where
  *    h      height [m], used as state, start = 1
  *    v      velocity of ball [m/s], used as state
- *    der(h) velocity of ball [m/s] 
- *    der(v) acceleration of ball [m/s2] 
- *    g      acceleration of gravity [m/s2], a parameter, start = 9.81 
+ *    der(h) velocity of ball [m/s]
+ *    der(v) acceleration of ball [m/s2]
+ *    g      acceleration of gravity [m/s2], a parameter, start = 9.81
  *    e      a dimensionless parameter, start = 0.7
- *    
- * (c) 2010 QTronic GmbH 
+ *
+ * (c) 2010 QTronic GmbH
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
@@ -74,7 +74,7 @@ fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
 void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 }
 
-// offset for event indicator, adds hysteresis and prevents z=0 at restart 
+// offset for event indicator, adds hysteresis and prevents z=0 at restart
 #define EPS_INDICATORS 1e-14
 
 fmiReal getEventIndicator(ModelInstance* comp, int z) {
@@ -95,7 +95,7 @@ void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     eventInfo->stateValuesChanged  = fmiTrue;
     eventInfo->terminateSimulation = fmiFalse;
     eventInfo->upcomingTimeEvent   = fmiFalse;
- } 
+ }
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

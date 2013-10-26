@@ -50,12 +50,12 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 /**
  * A specialized port for Ptides platform I/O implementing functionality for
  * sensors, actuators and network ports.
- * 
+ *
  * <p>
  * This class is identical to PtidesPort except Ptides director is mapped to
  * MetroIIPtidesDirector.
  * </p>
- * 
+ *
  * @author Patricia Derler, Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -66,7 +66,7 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     /**
      * Create a new PtidesPort with a given container and a name.
-     * 
+     *
      * @param container
      *            The container of the port.
      * @param name
@@ -150,7 +150,7 @@ public class MetroIIPtidesPort extends MirrorPort {
     /**
      * Return true if actuation should happen at event timestamp and false if
      * actuation can happen sooner.
-     * 
+     *
      * @return whether actuation should be done at the event timestamp.
      */
     public boolean actuateAtEventTimestamp() {
@@ -162,7 +162,7 @@ public class MetroIIPtidesPort extends MirrorPort {
      * attribute when its value changes. This overrides the base class so that
      * if the attribute is an instance of TypeAttribute, then it sets the type
      * of the port.
-     * 
+     *
      * @param attribute
      *            The attribute that changed.
      * @exception IllegalActionException
@@ -186,7 +186,7 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     /**
      * Return the timestamp and sourceTimestamp for a specific token.
-     * 
+     *
      * @param t
      *            The token.
      * @return The timestamp.
@@ -203,7 +203,7 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     /**
      * Get the microstep of the event that contained the token.
-     * 
+     *
      * @param t
      *            The token.
      * @return The microstep.
@@ -216,7 +216,7 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     /**
      * Returns true if this object is actuator port.
-     * 
+     *
      * @return true if port is an actuator port.
      */
     public boolean isActuatorPort() {
@@ -225,7 +225,7 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     /**
      * Returns true if this object is sensor port.
-     * 
+     *
      * @return true if this object is sensor port.
      */
     public boolean isSensorPort() {
@@ -234,7 +234,7 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     /**
      * Returns true if this object is network receiver port.
-     * 
+     *
      * @return true if this object is network receiver port.
      */
     public boolean isNetworkReceiverPort() {
@@ -243,7 +243,7 @@ public class MetroIIPtidesPort extends MirrorPort {
 
     /**
      * Returns true if this object is network transmitter port.
-     * 
+     *
      * @return true if this object is network transmitter port.
      */
     public boolean isNetworkTransmitterPort() {
@@ -268,7 +268,7 @@ public class MetroIIPtidesPort extends MirrorPort {
     /**
      * Save token and remember timestamp of the token. Then call send of super
      * class.
-     * 
+     *
      * @param channelIndex
      *            The index of the channel, from 0 to width-1.
      * @param token
@@ -312,7 +312,7 @@ public class MetroIIPtidesPort extends MirrorPort {
     /**
      * Change visibility of parameters depending on the type of port. FIXME:
      * change icon!
-     * 
+     *
      * @exception IllegalActionException
      *                Thrown if icon cannot be changed.
      */

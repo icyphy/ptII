@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 ////PtidesDirector
 
 /**
-* Code generator adapter associated with the PtidesDirector class. 
+* Code generator adapter associated with the PtidesDirector class.
 * This adapter is highly experimental and extends the DE Director
 * adapter.
 * This class is also associated with a code generator.
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 
 public class PtidesDirector extends DEDirector {
-    
+
     /** Construct the code generator adapter associated with the given
      *  PtidesDirector.
      *  @param ptidesDirector The associated
@@ -65,33 +65,33 @@ public class PtidesDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Generate the constructor code for the specified director
      * In this class we initialize the director with its internal
      * parameters and fields.
-     * Also we fill the hashmaps that the director needs : 
+     * Also we fill the hashmaps that the director needs :
      * superdenseDependencyPair, _inputEventQueue, _outputEventDeadlines,
      * _ptidesOutputPortEventQueue ...
-     * 
+     *
      * @return The generated constructor code
      * @throws IllegalActionException Not thrown in this base class.
      */
     @Override
     public String generateConstructorCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generateConstructorCode());
-        
+
         code.append(_eol + _sanitizedDirectorName + "->_superdenseDependencyPair = pblMapNewHashMap();");
         code.append(_eol + "PblMap* tempMap;");
         code.append(_eol + "struct SuperdenseDependency tempEntry;");
         ptolemy.domains.ptides.kernel.PtidesDirector director = (ptolemy.domains.ptides.kernel.PtidesDirector) getComponent();
-        Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> superdenseDependencyPair = 
+        Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> superdenseDependencyPair =
                 director.getSuperdenseDependencyPair();
         for (TypedIOPort port1 : superdenseDependencyPair.keySet()) {
             Map<TypedIOPort, SuperdenseDependency> value = superdenseDependencyPair.get(port1);
             code.append(_eol + "tempMap = pblMapNewHashMap();");
             for (TypedIOPort port2 : value.keySet()) {
                 SuperdenseDependency dependency = value.get(port2);
-                
+
                 code.append(_eol + "tempEntry.time = " + dependency.timeValue() + ";");
                 code.append(_eol + "tempEntry.microstep = " + dependency.indexValue() + ";");
                 String port2Name;
@@ -107,11 +107,11 @@ public class PtidesDirector extends DEDirector {
                 port1Name = port1.getName();
             else
                 port1Name = CodeGeneratorAdapter.generateName(port1.getContainer()) + "_" + port1.getName();
-            code.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->_superdenseDependencyPair, &" 
+            code.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->_superdenseDependencyPair, &"
                     + port1Name + ", sizeof(struct TypedIOPort*), tempMap" +
                     ", sizeof(PblMap));");
         }
-        
+
         return code.toString();
     }
 }

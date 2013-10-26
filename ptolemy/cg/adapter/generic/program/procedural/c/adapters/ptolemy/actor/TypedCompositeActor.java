@@ -55,9 +55,9 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (wlc)
  * @Pt.AcceptedRating Red (wlc)
  */
-public class TypedCompositeActor extends 
+public class TypedCompositeActor extends
     ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
-    
+
     /**
      * Constructor method for the CompositeActor adapter.
      * @param actor the associated actor
@@ -65,7 +65,7 @@ public class TypedCompositeActor extends
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor actor) {
         super(actor);
     }
-    
+
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the
@@ -105,10 +105,10 @@ public class TypedCompositeActor extends
 //                    director);
 //            code.append(directorAdapter.generateFireFunctionCode());
 //        }
-        
+
         return processCode(code.toString());
     }
-    
+
     /**
      * Generate the initialize code for this composite actor.
      *
@@ -121,17 +121,17 @@ public class TypedCompositeActor extends
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList<String> args = new LinkedList();
-        
+
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
-        
+
         args.add(sanitizedContainerName + ".director");
         args.add(sanitizedContainerName);
         codeStream.appendCodeBlock("initializeBlock", args);
-        
+
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * Generate the postfire code for this composite actor.
      *
@@ -144,13 +144,13 @@ public class TypedCompositeActor extends
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList<String> args = new LinkedList();
-        
+
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
-        
-        args.add(sanitizedContainerName + ".director");       
+
+        args.add(sanitizedContainerName + ".director");
         codeStream.appendCodeBlock("postFireBlock", args);
-        
+
         return processCode(codeStream.toString());
     }
 
@@ -166,16 +166,16 @@ public class TypedCompositeActor extends
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList<String> args = new LinkedList();
-        
+
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
-        
+
         args.add(sanitizedContainerName + ".director");
         codeStream.appendCodeBlock("prefireBlock", args);
-        
+
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * Generate the preinitialize code. We do not call the super
      * method, because we have arguments to add here
@@ -189,11 +189,11 @@ public class TypedCompositeActor extends
     public String generatePreinitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
-                           
+
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
-        
+
         codeStream.appendCodeBlock("variableDeclareBlock");
-        
+
         // Here we declare the contained actors
         List actorList = TopActor.deepEntityList();
         Iterator<?> actors = actorList.iterator();
@@ -206,21 +206,21 @@ public class TypedCompositeActor extends
                 codeStream.append("$include(\"" + actorName + ".h\")");
             }
         }
-        
+
         // After the actors we declare the receivers of this container
         Director director = TopActor.getDirector();
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter =
                 (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
         String directorName = CodeGeneratorAdapter.generateName(directorAdapter);
         codeStream.append("$include(\"" + directorName + ".h\")");
-        
+
         // Appends the enum definition for the ports
         if (_enumPortNumbersDefinition != null)
             codeStream.append(_enumPortNumbersDefinition);
-        
+
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * Generate the preinitialize code. We do not call the super
      * method, because we have arguments to add here
@@ -235,11 +235,11 @@ public class TypedCompositeActor extends
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
-        
+
 
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
-        
+
         if (TopActor.getContainer() == null || TopActor instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             // Appending the construction of the actors
             codeStream.append(_eol + sanitizedContainerName + "_constructorActors();");
@@ -252,10 +252,10 @@ public class TypedCompositeActor extends
         args.clear();
         args.add(sanitizedContainerName + ".director");
         codeStream.appendCodeBlock("preinitializeBlock", args);
-        
+
         return processCode(codeStream.toString());
     }
-    
+
     /** Set up adapters contained by the composite actor.
      *  This method is run very early in the code generation sequence,
      *  so adapters that need to set up code generation-time variables
@@ -267,12 +267,12 @@ public class TypedCompositeActor extends
      */
     @Override
     public void setupAdapter() throws IllegalActionException {
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = 
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter =
                 (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator().getAdapter(
                 ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         directorAdapter.setupAdapter();
     }
-    
+
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -283,7 +283,7 @@ public class TypedCompositeActor extends
     public String generateVariableDeclaration() throws IllegalActionException {
         return "";
     }
-    
+
     /** Generate variable initialization for the referenced parameters.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter associated with
@@ -293,7 +293,7 @@ public class TypedCompositeActor extends
     @Override
     public String generateVariableInitialization()
             throws IllegalActionException {
-        
+
         return "";
     }
 
@@ -308,16 +308,16 @@ public class TypedCompositeActor extends
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList<String> args = new LinkedList();
-        
+
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
-        
-        args.add(sanitizedContainerName + ".director");           
+
+        args.add(sanitizedContainerName + ".director");
         codeStream.appendCodeBlock("WrapupBlock", args);
-        
+
         return processCode(codeStream.toString());
     }
-    
+
     /** Return a set of parameters that will be modified during the
      *  execution of the model. These parameters are those returned by
      *  getModifiedVariables() method of directors or actors that
@@ -330,30 +330,30 @@ public class TypedCompositeActor extends
     @Override
     public Set<Parameter> getModifiedVariables() throws IllegalActionException {
         Set<Parameter> set = new HashSet<Parameter>();
-        
+
         return set;
     }
-    
+
     /**
      * Generate the fire code of a Composite Actor.
      * @return The generated code.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
             CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList<String> args = new LinkedList();
-        
+
         ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(TopActor);
         args.add(sanitizedContainerName + ".director");
         args.add(sanitizedContainerName);
         codeStream.appendCodeBlock("fireBlock", args);
-        
+
         return processCode(codeStream.toString());
     }
-    
-    
+
+
     private String _enumPortNumbersDefinition;
 }

@@ -68,24 +68,24 @@ import ptolemy.kernel.util.Workspace;
  * 'Put.Begin' is PROPOSED before trying to put a token into the receiver.
  * Similarly, the actor is blocked until 'Put.Begin' is NOTIFIED.
  * </p>
- * 
+ *
  * <p>
  * Known issue: threads created by Yieldadapter correctly stop but the ones
  * created by ProcessDirector do not. It seems stop() is called for each thread
  * in ProcessDirector.stop() but no effect can be observed. Don't know why. BTW,
  * stop() is a deprecated function in java.
  * </p>
- * 
+ *
  * <p>
  * The implementation is obsolete and needs to be updated.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 
 public class MetroIIPNDirector extends PNDirector implements GetFirable {
@@ -95,9 +95,9 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     * 
+     *
      * Initialize an eventLock vector.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -119,7 +119,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
 
     /**
      * Clone the director into the specified workspace.
-     * 
+     *
      * @param workspace
      *            The workspace for the new object.
      * @return a new MetroIIPNDirector.
@@ -163,7 +163,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
 
     /**
      * Add a proposed MetroII event into the director's event list.
-     * 
+     *
      * @param e
      *            the event to be added.
      */
@@ -173,7 +173,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
 
     /**
      * Return the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire()
      */
     @Override
@@ -194,7 +194,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
      * MetroII events. When getfire() continues, notify the threads blocked on
      * MetroII events based on the event status. A thread blocked on MetroII
      * event is not notified until the blocking MetroII event is NOTIFIED.
-     * 
+     *
      * The rest of the function is copied from fire() of ProcessDirector
      */
     @Override
@@ -344,7 +344,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
      * Create a MetroII event with the name: thread.getName()+suffix Add the
      * MetroII event into the director's event list. Block the thread calling
      * proposeMetroIIEvent().
-     * 
+     *
      * @param suffix
      *            The suffix of MetroII event name
      * @exception InterruptedException
@@ -371,7 +371,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
     /**
      * Return the number of threads that are currently blocked on a MetroII
      * event.
-     * 
+     *
      * @return Return the number of threads that are currently blocked on a
      *         MetroII event.
      */
@@ -407,7 +407,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
 
     /**
      * Create a MetroII event with the given name and type.
-     * 
+     *
      * @param name
      *            Name of the MetroII event
      * @return newly created MetroII event
@@ -423,7 +423,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
     /**
      * Look up the ID of given MetroII event in the dictionary _eventNameID. If
      * not found, add the MetroII event into _eventNameID with a new ID.
-     * 
+     *
      * @param event_name
      *            The name of the event being looked up
      * @return The ID of the event

@@ -44,18 +44,18 @@ import ptolemy.kernel.util.IllegalActionException;
  * ResumableActor is used to wrap any MetroII compatible actor with
  * MetroIIActorInterface.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class ResumableActor extends ActMachine {
     /**
      * Construct a Actor-Thread pair.
-     * 
+     *
      * @param actor
      *            The actor
      */
@@ -73,10 +73,10 @@ public class ResumableActor extends ActMachine {
      * encapsulated in a thread (implemented in YieldAdapter @see
      * net.jimblackler.Utils.YieldAdapter). The thread pauses when getfire()
      * yield-returns a list of MetroII events.
-     * 
+     *
      * @param metroIIEventList
      *            the list of MetroII events getfire() returns.
-     * 
+     *
      * @throws IllegalActionException
      *             if the associated action (e.g. firing) is not permitted.
      */

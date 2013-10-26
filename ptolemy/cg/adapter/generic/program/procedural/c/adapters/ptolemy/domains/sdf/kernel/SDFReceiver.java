@@ -167,19 +167,19 @@ public class SDFReceiver extends ptolemy.cg.adapter.generic.program.procedural.a
         try {
             String actorSourceName = CodeGeneratorAdapter.generateName(sourcePort.getContainer());
             String actorDestName = CodeGeneratorAdapter.generateName(port.getContainer());
-            String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" + 
+            String nameInput = actorSourceName + ".ports[enum_" + actorSourceName + "_" + sourcePort.getName() + "].farReceivers[" +
                     actorSourceName + "_" + sourcePort.getName() + "_" + actorDestName + "_" + port.getName() + "_" + channel + "]";
             String type = getCodeGenerator().codeGenType(port.getType());
             //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
-            
+
             if (port.getType() instanceof StructuredType)
-                result = _eol + "ReceiverPut(" + nameInput 
+                result = _eol + "ReceiverPut(" + nameInput
                         + ", " + token + ");" + _eol;
             else
-                result = _eol + "ReceiverPut(" + nameInput 
+                result = _eol + "ReceiverPut(" + nameInput
                         + ", $new(" + type + "("
                         + token + ")));" + _eol;
-            
+
 //            result = _getDirectorForReceiver().getReference(port,
 //                    new String[] { Integer.toString(channel), offset },
 //                    forComposite, true, containingActorAdapter)

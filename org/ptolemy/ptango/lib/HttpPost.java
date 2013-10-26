@@ -91,7 +91,7 @@ public class HttpPost extends TypedAtomicActor {
         // This constraint ensures that the input will be a record token.
         input.setTypeAtMost(BaseType.RECORD);
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
     }
@@ -174,7 +174,7 @@ public class HttpPost extends TypedAtomicActor {
                 OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
                 writer.write(data.toString());
                 writer.flush();
-                
+
                 if (_debugging) {
                     _debug("Posted: " + data.toString());
                     _debug("To URL: " + url.toString());
@@ -196,7 +196,7 @@ public class HttpPost extends TypedAtomicActor {
                 }
                 writer.close();
                 reader.close();
-                
+
                 output.send(0, new StringToken(response.toString()));
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "postfire() failed");

@@ -120,14 +120,14 @@ public class EditorPaneFactory extends Attribute {
             for (Decorator decorator : decorators) {
                 DecoratorAttributes decoratorAttributes = object
                         .getDecoratorAttributes(decorator);
-                
+
                 if (decoratorAttributes != null) {
                     decoratorAttributes.updateContent();
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
                     decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
-                    decoratorQuery.setTextWidth(DEFAULT_QUERY_WIDTH); 
+                    decoratorQuery.setTextWidth(DEFAULT_QUERY_WIDTH);
                     decoratorQuery.addText("Decorator providing the parameters below: "
-                            + decorator.getFullName(), Color.BLACK, 0); 
+                            + decorator.getFullName(), Color.BLACK, 0);
                     boolean foundDecoratorAttribute = false;
 
                     for (Object attribute : decoratorAttributes.attributeList()) {
@@ -136,7 +136,7 @@ public class EditorPaneFactory extends Attribute {
                             if (Configurer.isVisible(object, settable)) {
                                 foundDecoratorAttribute = true;
                                 decoratorQuery.addStyledEntry(settable);
-                                
+
                             }
                         }
                     }
@@ -175,7 +175,7 @@ public class EditorPaneFactory extends Attribute {
      *  with styles according to the type given in each visible attribute.
      */
     public static Component createEditorPane(NamedObj object, PtolemyQuery query) {
-        query.setTextWidth(DEFAULT_QUERY_WIDTH); 
+        query.setTextWidth(DEFAULT_QUERY_WIDTH);
         boolean foundOne = false;
         List<Settable> parameters = new LinkedList<Settable>(
                 object.attributeList(Settable.class));
@@ -185,7 +185,7 @@ public class EditorPaneFactory extends Attribute {
                 foundOne = true;
                 query.addStyledEntry(parameter);
             }
-        } 
+        }
 
         if (!foundOne) {
             return new JLabel(object.getName() + " has no parameters.");
@@ -193,9 +193,9 @@ public class EditorPaneFactory extends Attribute {
 
         return query;
     }
-    
+
     /** Default width for a query. */
     public static int DEFAULT_QUERY_WIDTH = 40;
 }
 
-        
+

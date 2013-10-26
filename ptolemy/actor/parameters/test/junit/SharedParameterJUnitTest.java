@@ -57,7 +57,7 @@ public class SharedParameterJUnitTest {
      *  clone it.
      *  @exception Exception If there is a problem cloning the
      *  CompositeActor or accessing the _initializable field.
-     */   
+     */
     @org.junit.Test
     public void run() throws Exception {
 
@@ -69,7 +69,7 @@ public class SharedParameterJUnitTest {
         Workspace workspace = new Workspace("myWorkspace");
         CompositeActor compositeActor = new CompositeActor(workspace);
         compositeActor.setName("compositeActor");
-        
+
         // - At construction time (e.g. during parsing), such attributes
         // register themselves as Initializable with their containing
         // entity, and are then stored in that collection.
@@ -92,7 +92,7 @@ public class SharedParameterJUnitTest {
         Workspace clonedWorkspace = new Workspace("clonedWorkspace");
 
         CompositeActor clonedCompositeActor = (CompositeActor) compositeActor.clone(clonedWorkspace);
-        
+
         Collection<Initializable> clonedInitializables = _getInitializableField(clonedCompositeActor);
 
         assertTrue(initializables.size() == clonedInitializables.size());
@@ -111,18 +111,18 @@ public class SharedParameterJUnitTest {
                             + ((NamedObj) clonedInitializable).getFullName());
                 }
                 assertTrue(!initializable.equals(clonedInitializable));
-                
+
                 // Then, check for the same container.
                 if (initializableContainer.equals(clonedInitializableContainer)) {
                     System.out.println("Error!.  The container of " + ((NamedObj) initializable).getFullName ()
                             + " is " + initializableContainer.getFullName()
-                            + ", which is the same as the container of " 
+                            + ", which is the same as the container of "
                             + ((NamedObj) clonedInitializable).getFullName());
                 }
                 assertTrue(!initializableContainer.equals(clonedInitializableContainer));
             }
         }
-        
+
         // Further in the NamedObj.clone(Workspace), all attributes
         // are cloned and are then set to their new container,
         // i.e. end up in the _initializables collection which is
@@ -152,7 +152,7 @@ public class SharedParameterJUnitTest {
      *  @param compositeActor The composite actor.
      *  @return The value of the protected _initializable field.
      *  @exception Exception If the field cannot be accessed.
-     */   
+     */
     private Collection<Initializable> _getInitializableField(CompositeActor compositeActor) throws Exception {
         Field[] fields = compositeActor.getClass().getDeclaredFields();
         for (int i = 0 ; i < fields.length; i++) {

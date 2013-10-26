@@ -1205,7 +1205,7 @@ public class TemplateParser {
     }
 
     /** Set the associated code generator.
-     *  Note that calling {@link #init(Object, ProgramCodeGeneratorAdapter)} 
+     *  Note that calling {@link #init(Object, ProgramCodeGeneratorAdapter)}
      *  also sets the code generator.
      *  @param codeGenerator The code generator associated with this class.
      *  @see #_getCodeGenerator()
@@ -1382,7 +1382,7 @@ public class TemplateParser {
         } else if (macro.equals("fireAt")) {
             return _replaceFireAtMacro(parameter);
         } else if (macro.equals("structure")) {
-            _codeGenerator._newTypesUsed.add(parameter+"Structure");        
+            _codeGenerator._newTypesUsed.add(parameter+"Structure");
         } else {
             // Try calling a method defined in the adapter first.
             try {
@@ -1537,13 +1537,13 @@ public class TemplateParser {
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
 
-    /** The ProgramCodeGenerator, set by calling 
+    /** The ProgramCodeGenerator, set by calling
      *        {@link #init(Object, ProgramCodeGeneratorAdapter)} or
      *  {@link #setCodeGenerator(ProgramCodeGenerator)}.
      */
     protected ProgramCodeGenerator _codeGenerator;
 
-    /** The compoent, set by calling 
+    /** The compoent, set by calling
      *        {@link #init(Object, ProgramCodeGeneratorAdapter)}.
      */
     protected Object _component;
@@ -1633,9 +1633,9 @@ public class TemplateParser {
         return result;
     }
 
-    private String _replaceFireAtMacro(String parameter) 
+    private String _replaceFireAtMacro(String parameter)
                     throws IllegalActionException {
-            // e.g. $fireAt(actorName, timestamp, microstep); 
+            // e.g. $fireAt(actorName, timestamp, microstep);
         List<String> parameters = parseList(parameter);
 
         if (parameters.size() != 3) {
@@ -1656,7 +1656,7 @@ public class TemplateParser {
         result += "(*(director->fireAt))(director, (struct Actor*)" + parameter + ");";
         return result;
     }
-    
+
     private String _replaceGetMacro(String parameter)
             throws IllegalActionException {
         // e.g. $get(input#channel, offset); or
@@ -1826,7 +1826,7 @@ public class TemplateParser {
         return processCode(portAdapter.generatePutCode(channel, offset,
                 dataToken));
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

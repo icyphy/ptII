@@ -31,7 +31,7 @@ package ptolemy.actor.lib.aspect;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType; 
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -81,7 +81,7 @@ public class PriorityResourceAttributes extends ExecutionTimeAttributes {
 
     /** An invisible parameter giving the value of the lowest priority. */
     public Parameter LOWEST_PRIORITY;
-    
+
     /** The priority for scheduling. */
     public Parameter priority;
 
@@ -96,7 +96,7 @@ public class PriorityResourceAttributes extends ExecutionTimeAttributes {
             LOWEST_PRIORITY.setVisibility(Settable.NONE);
             LOWEST_PRIORITY.setToken(new IntToken(Integer.MAX_VALUE));
             LOWEST_PRIORITY.setTypeEquals(BaseType.INT);
-            
+
             priority = new Parameter(this, "priority");
             priority.setExpression("LOWEST_PRIORITY");
             priority.setTypeEquals(BaseType.INT);

@@ -53,16 +53,16 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
     public TimeDelay(ptolemy.actor.lib.TimeDelay actor) {
         super(actor);
     }
-    
+
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
-        
+
         LinkedList args = new LinkedList();
         Parameter delay = ((ptolemy.actor.lib.TimeDelay) getComponent()).delay;
         double value = ((DoubleToken) delay.getToken()).doubleValue();
         args.add(Double.toString(value));
-        
+
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
     }
@@ -70,13 +70,13 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
     /**
      * Generate the fire code of a Time Delay.
      * @return The generated code.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
             return processCode(super._generateFireCode());
     }
-    
+
     /*public String generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();

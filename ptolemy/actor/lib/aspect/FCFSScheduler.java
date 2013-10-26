@@ -90,7 +90,7 @@ public class FCFSScheduler extends AtomicExecutionAspect {
             return null;
         }
     }
-    
+
     /** Schedule a new actor for execution and return the next time
      *  this scheduler has to perform a reschedule.
      *  @param actor The actor to be scheduled.
@@ -131,7 +131,7 @@ public class FCFSScheduler extends AtomicExecutionAspect {
         if (remainingTime.getDoubleValue() == 0.0) {
                 notifyExecutionListeners((NamedObj) currentlyExecuting,
                         currentPlatformTime.getDoubleValue(),
-                        ExecutionEventType.STOP); 
+                        ExecutionEventType.STOP);
 
             _remainingTimes.put(currentlyExecuting, null);
             currentlyExecuting = null;

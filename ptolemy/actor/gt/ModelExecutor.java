@@ -759,7 +759,7 @@ public class ModelExecutor extends TypedAtomicActor {
 
             // FIXME: This method does not call super.send(),
             // which means that the port event listeners are not
-            // notified for this port. 
+            // notified for this port.
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             executorPort.send(channelIndex, token);
@@ -813,7 +813,7 @@ public class ModelExecutor extends TypedAtomicActor {
 
             // FIXME: This method does not call super.send(),
             // which means that the port event listeners are not
-            // notified for this port. 
+            // notified for this port.
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             executorPort.send(channelIndex, tokenArray, vectorLength);

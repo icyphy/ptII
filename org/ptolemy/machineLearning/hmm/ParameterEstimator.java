@@ -29,7 +29,7 @@ COPYRIGHTENDKEY
 */
 package org.ptolemy.machineLearning.hmm;
 
- 
+
 import java.util.HashMap;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
 /**
 <p>This actor implements the Expectation-Maximization(EM) algorithm for
 parameter estimation in graphical stochastic models. Two types of fundamental
-types of Bayesian Network models: <i>Mixture Model(MM)<\i> and <i>Hidden Markov 
+types of Bayesian Network models: <i>Mixture Model(MM)<\i> and <i>Hidden Markov
 Model(HMM)<\i> are supported. The input is an array of observations of arbitrary
 length and the outputs are the parameter estimates for the chosen model.</p>
 <p>
@@ -64,12 +64,12 @@ The output ports reflect the parameter estimates of Gaussian MM or HMM. The Mixt
 Model is parameterized by <i>M</i> states, each distributed according to a distribution
 specified by the <i>emissionDistribution</i> parameter. Currently, the actor supports
 Gaussian emissions.
-The <i>mean<\i>  is a double array output containing the mean estimates and 
-<i>sigma</i> is a double array output containing standard deviation estimates of 
-each mixture component. If the <i>modelType<\i> is HMM, then an additional output, 
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix 
-governing the Markovian process representing the hidden state evolution. 
-If the <i>modelType<\i> is MM, this port outputs a double array with the prior 
+The <i>mean<\i>  is a double array output containing the mean estimates and
+<i>sigma</i> is a double array output containing standard deviation estimates of
+each mixture component. If the <i>modelType<\i> is HMM, then an additional output,
+<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
+governing the Markovian process representing the hidden state evolution.
+If the <i>modelType<\i> is MM, this port outputs a double array with the prior
 probability estimates of the mixture components.
 </p>
 <p>
@@ -87,11 +87,11 @@ converge and is given the option to randomize initial guesses to reiterate.
  <p>
  <b>References</b>
  <p>[1]
- Jordan, Michael I., et al. <i>An introduction to variational methods for graphical 
+ Jordan, Michael I., et al. <i>An introduction to variational methods for graphical
  models</i>, Springer Netherlands, 1998.
  <p>[2]
- Bilmes, Jeff A. <i>A gentle tutorial of the EM algorithm and its application 
- to parameter estimation for Gaussian mixture and hidden Markov models.</i> 
+ Bilmes, Jeff A. <i>A gentle tutorial of the EM algorithm and its application
+ to parameter estimation for Gaussian mixture and hidden Markov models.</i>
  International Computer Science Institute 4.510 (1998): 126.
 
 @see org.ptolemy.machineLearning.hmm.ObservationClassifier
@@ -102,7 +102,7 @@ converge and is given the option to randomize initial guesses to reiterate.
  @version $Id$
  @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public abstract class ParameterEstimator extends TypedAtomicActor {
    /** Construct an actor with the given container and name.
@@ -116,52 +116,52 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
    public ParameterEstimator(CompositeEntity container, String name)
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
-       
+
        input = new TypedIOPort(this, "input", true, false);
        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-       
+
        transitionMatrix = new TypedIOPort(this, "transitionMatrix", false, true);
        transitionMatrix.setTypeEquals( BaseType.DOUBLE_MATRIX);
-       
+
        priorEstimates = new TypedIOPort( this, "priorEstimates", false, true);
-       priorEstimates.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
+       priorEstimates.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        StringAttribute cardinality = new StringAttribute(
                priorEstimates, "_cardinal");
        cardinality.setExpression("SOUTH");
-       
+
        randomizeGuessVectors = new Parameter(this, "randomizeGuessVectors");
        randomizeGuessVectors.setTypeEquals(BaseType.BOOLEAN);
        randomizeGuessVectors.setExpression("false");
-       
+
        likelihoodThreshold = new Parameter(this, "likelihoodThreshold");
        likelihoodThreshold.setExpression("1E-4");
-       likelihoodThreshold.setTypeEquals(BaseType.DOUBLE); 
-       
+       likelihoodThreshold.setTypeEquals(BaseType.DOUBLE);
+
        maxIterations = new Parameter(this, "maxIterations");
        maxIterations.setExpression("10");
-       maxIterations.setTypeEquals(BaseType.INT); 
-       
+       maxIterations.setTypeEquals(BaseType.INT);
+
        A0 = new Parameter(this, "A0");
        A0.setExpression("[0.5, 0.5; 0.5, 0.5]");
        A0.setTypeEquals(BaseType.DOUBLE_MATRIX);
        A0.setDisplayName("Transition Probability Matrix");
-       
+
        priorDistribution = new Parameter(this, "priorDistribution");
        priorDistribution.setExpression("{0.5,0.5}");
-       priorDistribution.setTypeEquals(new ArrayType(BaseType.DOUBLE)); 
-       
+       priorDistribution.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
        nStates = new Parameter(this, "nStates");
        nStates.setExpression("2");
-       nStates.setTypeEquals(BaseType.INT); 
+       nStates.setTypeEquals(BaseType.INT);
        nStates.setDisplayName("numberOfStates");
-       
+
        _initializeArrays();
-      
+
    }
-   
+
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
-       if(attribute == A0){         
+       if(attribute == A0){
            int nRow = ((MatrixToken) A0.getToken()).getRowCount();
            int nCol = ((MatrixToken) A0.getToken()).getColumnCount();
            if(nRow != nCol){
@@ -185,16 +185,16 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
           int nS = ((ArrayToken)priorDistribution.getToken()).length();
            double[] tempPriors = new double[nS];
            double sum = 0.0;
-           
-           for (int i = 0; i < nS; i++) { 
+
+           for (int i = 0; i < nS; i++) {
                tempPriors[i] = ((DoubleToken)((ArrayToken) priorDistribution.getToken()).getElement(i))
                        .doubleValue();
                if(tempPriors[i] < 0.0){
                    throw new IllegalActionException(this, "Priors must be non-negative.");
                }
-               sum += tempPriors[i]; 
+               sum += tempPriors[i];
            }
-           // check if priors is a valid probability vector. 
+           // check if priors is a valid probability vector.
            if( sum != 1.0)
            {
                throw new IllegalActionException(this, "Priors sum to " + sum + " . The sum must equal 1.0.");
@@ -214,16 +214,16 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            }
            else{
                throw new IllegalActionException(this, "Likelihood threshold must be positive.");
-           } 
+           }
        } else if(attribute == nStates){
-           
+
            int nS = ((IntToken)nStates.getToken()).intValue();
            if(nS > 0){
                _nStates = nS;
            }else{
                throw new IllegalActionException(this, "Number of states must be a positive integer");
            }
-           
+
        } else if(attribute == randomizeGuessVectors){
            boolean randomize = ((BooleanToken) randomizeGuessVectors.getToken()).booleanValue();
            _randomize = randomize;
@@ -231,38 +231,38 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            super.attributeChanged(attribute);
        }
    }
-   
+
 
    ///////////////////////////////////////////////////////////////////
    ////                         public variables                  ////
 
    /* The user-provided initial guess of the transition probability matrix*/
    public Parameter A0;
-   
+
    /* The user-provided threshold on the minimum desired improvement on likelihood per iteration*/
    public Parameter likelihoodThreshold;
-   
+
    /* The user-provided maximum number of allowed iterations of the Alpha-Beta Recursion*/
    public Parameter maxIterations;
-   
+
    /* Number of states of the HMM*/
    public Parameter nStates;
-   
+
    /* Boolean that determines whether or not to randomize input guess vectors */
    public Parameter randomizeGuessVectors;
-   
+
    /* The user-provided initial guess on the prior probability distribution*/
    public Parameter priorDistribution;
-  
+
    /* The input port that provides the sample observations*/
    public TypedIOPort input;
-   
+
    /* The vector estimate for the prior distribution on the set of states*/
    public TypedIOPort priorEstimates;
-   
+
    /* The transition matrix estimate obtained by iterating over the observation set*/
-   public TypedIOPort transitionMatrix; 
-   
+   public TypedIOPort transitionMatrix;
+
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
    public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -274,33 +274,33 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        newObject._priors = new double[_nStates];
        return newObject;
    }
-   
+
    public void fire() throws IllegalActionException {
-       
-       super.fire(); 
+
+       super.fire();
        Token observationArray= input.get(0);
-       // observation length is inferred from the input array length. 
+       // observation length is inferred from the input array length.
        int _observationLength = ((ArrayToken)observationArray).length();
        _observations = new double[_observationLength];
        if( _observationLength <= 0){
            throw new IllegalActionException(this, "Observation sequence length "
                    + _observationLength + " but must be greater than zero.");
-       } 
-       // Get Observation Values as doubles 
+       }
+       // Get Observation Values as doubles
        //FIXME: should the observations  allowed to be vectors too, for multivariate distributions?
        for (int i = 0; i < _observationLength; i++) {
            _observations[i] = ((DoubleToken)((ArrayToken) observationArray).getElement(i))
                    .doubleValue();
-       }   
+       }
    }
-   
+
    protected boolean _EMParameterEstimation(){
-       
+
        boolean success = false;
-       _initializeEMParameters(); 
-       
+       _initializeEMParameters();
+
        for( int iterations = 0; iterations< _nIterations; iterations++){
-           
+
            _iterateEM();
            success = _checkForConvergence(iterations);
            // randomization not allowed and convergence was not achieved
@@ -308,39 +308,39 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                break;
            }
            _updateEstimates();
-               
+
            // check convergence within likelihoodThreshold
            if( Math.abs(likelihood - _likelihood) < _likelihoodThreshold){
                break;
            }else{
                _likelihood = likelihood;
-           } 
-       } 
-       
+           }
+       }
+
        return success;
    }
-   
+
    protected abstract double emissionProbability(double y, int hiddenState);
-   
+
    protected void _initializeArrays() throws IllegalActionException{
-       
+
        //_observations = new double[_observationLength];
        // infer the number of states from the mean array
        _likelihood = 0.0;
-       _nStates = ((IntToken)nStates.getToken()).intValue(); 
+       _nStates = ((IntToken)nStates.getToken()).intValue();
        _transitionMatrix = new double[_nStates][_nStates];
        _A0 = new double[_nStates][_nStates];
        _priors = new double[_nStates];
    }
-   
+
    protected abstract void _initializeEMParameters();
-   
+
    protected abstract void _iterateEM();
-   
+
    protected abstract boolean _checkForConvergence(int i);
-   
+
    protected abstract void _updateEstimates();
-   
+
    /* Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
     * and cluster assignment. This method uses normalized alpha values for computing the conditional
     * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
@@ -351,18 +351,18 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        boolean multinomial = (nCategories > 0) ? true : false;
        int nStates = _nStates;
        int nObservations = y.length;
-       
-       double[][] alphas = new double[nObservations][nStates]; 
+
+       double[][] alphas = new double[nObservations][nStates];
        double[][] gamma  = new double[nObservations][nStates];
        double[][][] xi   = new double[nObservations-1][nStates][nStates];
-       
+
        double[][] A_hat  = new double[nStates][nStates];
        double[]   mu_hat = new double[nStates];
        double[]   s_hat  = new double[nStates];
        double[]   pi_hat = new double[nStates];
        double[][] eta_hat = new double[nStates][nCategories];
 
-       double[] alphaNormalizers = new double[nObservations];       
+       double[] alphaNormalizers = new double[nObservations];
        double alphaSum = 0;
        for(int t=0; t< y.length ; t++){
            alphaSum = 0;
@@ -372,7 +372,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                     alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
                }else{
                    for(int qt = 0; qt < nStates; qt++){
-                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt]; 
+                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt];
                    }
                }
                alphaSum += alphas[t][i];
@@ -382,16 +382,16 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                alphas[t][i] /= alphaSum;
                alphaNormalizers[t] = alphaSum;
            }
-       }    
-       for(int t=y.length-1; t>=0 ; t--){  
-           for( int qt=0; qt < nStates; qt ++){ 
+       }
+       for(int t=y.length-1; t>=0 ; t--){
+           for( int qt=0; qt < nStates; qt ++){
                if( t == y.length -1){
                    gamma[t][qt] = alphas[t][qt];
                }else{
                    gamma[t][qt]=0;
                    for ( int qtp = 0 ; qtp < nStates ; qtp ++){
                        double alphasum = 0;
-                       for( int j=0; j < nStates; j ++){ 
+                       for( int j=0; j < nStates; j ++){
                            alphasum += alphas[t][j]*A[j][qtp];
                        }
                        gamma[t][qt] += (alphas[t][qt]*A[qt][qtp]*gamma[t+1][qtp])/alphasum;
@@ -399,7 +399,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                }
            }
        }
- 
+
        //next, calculate the xis ( for the transition matrix)
        for( int next=0; next < nStates; next++){
            for( int now = 0; now < nStates; now++){
@@ -443,7 +443,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            }
            s_hat[j]  = Math.sqrt(s_hat[j]/gammasum[j]);
            // prior probabilities updated
-           pi_hat[j] = gamma[0][j]; 
+           pi_hat[j] = gamma[0][j];
        }
        // labels for the multinomial setting
        if(multinomial){
@@ -451,7 +451,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                for( int j = 0; j < nCategories; j++){
                    for( int t = 0; t< y.length; t++){
                        eta_hat[i][j] += gamma[t][i]*((y[t] == j) ? 1 : 0);
-                   } 
+                   }
                    eta_hat[i][j] /= gammasum[i]; //normalize for gammas
                }
            }
@@ -470,7 +470,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        }
        // compute the log-likelihood P(Y|\theta), where \theta is the set of parameter estimates
        // for the HMM.
-       
+
        double logLikelihood = 0.0;
        for( int t = 0 ; t < _observations.length-1 ; t++)
        {
@@ -479,9 +479,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        }
        // add the emission probability at final time value
        logLikelihood += emissionProbability(y[_observations.length-1], clusterAssignments[_observations.length-1]);
-       
+
        HashMap estimates = new HashMap();
-       
+
        estimates.put("mu_hat", mu_hat);
        estimates.put("s_hat", s_hat);
        estimates.put("gamma", gamma); //this will not be needed for most of the distributions.
@@ -491,28 +491,28 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        estimates.put("likelihood", logLikelihood);
        return estimates;
    }
-   
-   protected HashMap HMMAlphaBetaRecursionNonNormalized(double[] y, double[][] A, double[] prior, int unused) 
+
+   protected HashMap HMMAlphaBetaRecursionNonNormalized(double[] y, double[][] A, double[] prior, int unused)
    {
        int nStates = _nStates;
        int nObservations = y.length;
-       
+
        int nCategories = 3; // FIXME
-       
-       double[][] alphas = new double[nObservations][nStates]; 
-       double[][] betas  = new double[nObservations][nStates]; 
+
+       double[][] alphas = new double[nObservations][nStates];
+       double[][] betas  = new double[nObservations][nStates];
        double[]   Py     = new double[nObservations];
        double[][] gamma  = new double[nObservations][nStates];
        double[][][] xi   = new double[nObservations-1][nStates][nStates];
-       
+
        double[][] A_hat  = new double[nStates][nStates];
        double[]   mu_hat = new double[nStates];
        double[]   s_hat  = new double[nStates];
        double[]   pi_hat = new double[nStates];
        double[][] eta_hat = new double[nStates][nCategories];
 
-       
-       
+
+
        for(int t=0; t< y.length ; t++){
            for (int i=0; i < nStates; i++){
                alphas[t][i] = 0;
@@ -520,12 +520,12 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                     alphas[t][i] =  prior[i]*emissionProbability(y[t], i);
                }else{
                    for(int qt = 0; qt < nStates; qt++){
-                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt]; 
+                       alphas[t][i]+= A[qt][i]*emissionProbability(y[t], i)*alphas[t-1][qt];
                    }
                }
            }
        }
-       
+
        for(int t=y.length-1; t>=0 ; t--){
            // initialize py at time t
            Py[t] = 0;
@@ -537,7 +537,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                }else{
                    // reverse-time recursion  (do this recursively later)
                    for(int qtp = 0; qtp < nStates; qtp++){
-                       betas[t][i]+= A[i][qtp]*emissionProbability(y[t+1], qtp)*betas[t+1][qtp]; 
+                       betas[t][i]+= A[i][qtp]*emissionProbability(y[t+1], qtp)*betas[t+1][qtp];
                    }
                }
                Py[t]+= alphas[t][i]*betas[t][i];
@@ -547,7 +547,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                gamma[t][i] += alphas[t][i]*betas[t][i]/Py[t];
            }
        }
-       
+
        //next, calculate the xis ( for the transition matrix)
        for( int next=0; next < nStates; next++){
            for( int now = 0; now < nStates; now++){
@@ -562,7 +562,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                    }
                    A_hat[now][next] += xi[t][now][next];
                }
-               
+
            }
            mu_hat[next] = 0;
            s_hat[next] = 0;
@@ -571,7 +571,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        double[] rowsum = new double[nStates];
        double[] gammasum = new double[nStates];
        for(int i = 0 ; i< nStates; i++){
-           
+
            rowsum[i] = 0;
            for(int j = 0; j < nStates; j++){
                rowsum[i] += A_hat[i][j];
@@ -581,7 +581,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
            }
            gammasum[i]=0.0;
        }
-       
+
        for(int j = 0; j < nStates; j++) {
            gammasum[j] = 0.0;
            for ( int t = 0; t< y.length; t++){
@@ -589,24 +589,24 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                mu_hat[j] += gamma[t][j]*y[t];
            }
            mu_hat[j] = mu_hat[j]/gammasum[j];
-           
+
            for ( int t = 0; t< y.length; t++){
                s_hat[j] += (gamma[t][j]*Math.pow((y[t]-mu_hat[j]),2));
            }
            s_hat[j]  = Math.sqrt(s_hat[j]/gammasum[j]);
            // prior probabilities updated
-           pi_hat[j] = gamma[0][j]; 
+           pi_hat[j] = gamma[0][j];
        }
-       
+
        for( int i = 0 ; i < nStates; i++){
            for( int j = 0; j < nCategories; j++){
                for( int t = 0; t< y.length; t++){
                    eta_hat[i][j] += gamma[t][i]*((y[t] == j) ? 1 : 0);
-               } 
+               }
                eta_hat[i][j] /= gammasum[i]; //normalize for gammas
            }
        }
-           
+
        // do hidden state sequence estimation to compute the log-likelihood, given the current
        // parameter estimates
        int[] clusterAssignments = new int[y.length];
@@ -621,9 +621,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        }
        // compute the log-likelihood P(Y|\theta), where \theta is the set of parameter estimates
        // for the HMM.
-       
+
        double logLikelihood = 0.0;
-       
+
        for( int t = 0 ; t < _observations.length-1 ; t++)
        {
            logLikelihood += emissionProbability(y[t], clusterAssignments[t]);
@@ -633,9 +633,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        logLikelihood += emissionProbability(y[_observations.length-1], clusterAssignments[_observations.length-1]);
        // display the log-likelihood at this iteration
        //System.out.println(logLikelihood);
-       
+
        HashMap estimates = new HashMap();
-       
+
        estimates.put("mu_hat", mu_hat);
        estimates.put("s_hat", s_hat);
        estimates.put("gamma", gamma); //this will not be needed for most of the distributions.
@@ -643,42 +643,42 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
        estimates.put("pi_hat", pi_hat);
        estimates.put("eta_hat", eta_hat);
        estimates.put("likelihood", logLikelihood);
-              
+
        return estimates;
-   
+
    }
-    
+
    /* User-defined initial guess array for the state transition matrix*/
    protected double[][] _A0;
-   
+
    /* likelihood value of the observations given the current estimates L(x1,....xT | \theta_p)*/
    protected double _likelihood;
-   
+
    protected double _likelihoodThreshold;
-   
+
    /* User-defined number of iterations of the alpha-beta recursion*/
    protected int _nIterations;
-   
+
    /* Number of hidden states in the model*/
    protected int _nStates;
-   
+
    /* Observation array*/
    protected double[] _observations;
-   
+
    /* Prior distribution on hidden states*/
    protected double[] _priors;
-   
+
    /* The prior estimates used in the EM iterations*/
    protected double[] _priorIn;
-   
+
    /* randomize the initial guess vectors or not*/
    protected boolean _randomize;
    /* Initial guess array for the state transition matrix for the Alpha-Beta Recursion*/
    protected double[][] _transitionMatrix;
-   
-   HashMap newEstimates;
-   
-   double likelihood;
-   
 
-} 
+   HashMap newEstimates;
+
+   double likelihood;
+
+
+}

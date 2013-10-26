@@ -39,18 +39,18 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * events via updating the MetroII event passed to resolve() method. An MetroII
  * event status is updated to NOTIFIED when it satisfies all the constraints.
  * Otherwise the event status should be updated to WAITING.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public interface ConstraintSolver {
     /**
      * Update the MetroII events in the specified list.
-     * 
+     *
      * @param metroIIEventList
      *            a list of MetroII events to be updated.
      */

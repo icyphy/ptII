@@ -107,7 +107,7 @@ public class Counter extends TypedAtomicActor {
     /** The output port with type IntToken.
      */
     public TypedIOPort output;
-    
+
     /** The reset input port. This is of type boolean. */
     public TypedIOPort reset;
 
@@ -152,7 +152,7 @@ public class Counter extends TypedAtomicActor {
                 consumed = true;
             }
         }
-        
+
         if (reset.getWidth() > 0) {
             if (reset.hasToken(0)) {
                 if (((BooleanToken)reset.get(0)).booleanValue()) {

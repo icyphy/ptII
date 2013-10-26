@@ -206,7 +206,7 @@ public class Buffer extends CSPActor {
      */
     public boolean postfire() throws IllegalActionException {
         // FIXME: We deliberately ignore the return value of super.postfire()
-        // here because CSPActor.postfire() returns false. 
+        // here because CSPActor.postfire() returns false.
         super.postfire();
 
         // Note that CSPActor.postfire() also ignores the return value

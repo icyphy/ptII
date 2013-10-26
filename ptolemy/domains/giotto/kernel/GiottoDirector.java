@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoReceiver
  */
 public class GiottoDirector extends StaticSchedulingDirector implements Decorator {
-    
+
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -457,7 +457,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements Decorato
         }
         return currentTime.add(nextFiringTime);
     }
-    
+
     /** Return the frequency of the specified actor by accessing a
      *  parameter named "frequency". If there is no such parameter,
      *  then look for a decorator parameter named "frequency."

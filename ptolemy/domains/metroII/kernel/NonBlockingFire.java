@@ -44,20 +44,20 @@ import ptolemy.kernel.util.IllegalActionException;
  * </ol>
  * When startOrResume() is called, if the current state is START, the wrapper
  * calls fire() of the wrapped actor, and transition to FINAL
- * 
- * 
+ *
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class NonBlockingFire extends FireMachine {
 
     /**
      * Construct a NonBlocingfire by wrapping the actor.
-     * 
+     *
      * @param actor
      *            actor to be wrapped.
      */
@@ -68,7 +68,7 @@ public class NonBlockingFire extends FireMachine {
     /**
      * if the current state is START, call fire() of the wrapped actor, and
      * transition to FINAL.
-     * 
+     *
      * @param metroIIEventList
      *            the list of MetroII events that trigger startOrResume().
      * @throws IllegalActionException

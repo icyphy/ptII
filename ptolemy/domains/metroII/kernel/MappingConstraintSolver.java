@@ -58,14 +58,14 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * <li>Step 3: isSatisfied(event id) is called for each event. It returns true
  * if the event satisfies all the mapping constraints.</li>
  * </ol>
- * 
- * 
+ *
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
@@ -77,7 +77,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Clone MappingConstraintSolver.
-     * 
+     *
      * @throws CloneNotSupportedException
      *             the object's class does not implement the Cloneable
      *             interface.
@@ -105,7 +105,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Return the adjacency matrix of mapping constraints as a string.
-     * 
+     *
      * @return the adjacency matrix.
      */
     public String toString() {
@@ -114,7 +114,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Check if the debugging option is checked.
-     * 
+     *
      * @return the state of debugging option
      */
     public boolean debugging() {
@@ -183,13 +183,13 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
                     assert !e1.hasTime() && !e2.hasTime();
 
                     //                    if (e1.hasTime() && !e2.hasTime()) {
-                    //                        assert false;  //e2.setTime(e1.getTime()); 
+                    //                        assert false;  //e2.setTime(e1.getTime());
                     //                    }
                     //                    else if (!e1.hasTime() && e2.hasTime()) {
-                    //                        assert false;  //e1.setTime(e2.getTime()); 
+                    //                        assert false;  //e1.setTime(e2.getTime());
                     //                    }
                     //                    else if (e1.hasTime() && e2.hasTime() && e1.getTime() != e2.getTime()) {
-                    //                        assert false; 
+                    //                        assert false;
                     //                    }
 
 //                    System.out.println("Notifying " + e1.getName() + " "
@@ -201,13 +201,13 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
                     _counter.decreaseCount(edges2);
                 }
             }
-            // System.out.println(_counter); 
+            // System.out.println(_counter);
         }
     }
 
     /**
      * Return the number of mapping constraints.
-     * 
+     *
      * @return the number of mapping constraints.
      */
     public int numConstraints() {
@@ -223,7 +223,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Read mapping constraints from a file.
-     * 
+     *
      * @param filename
      *            Filename of the mapping constraint file.
      * @exception IOException
@@ -247,7 +247,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Add a mapping constraint.
-     * 
+     *
      * @param eventName1
      *            first event in the mapping.
      * @param eventName2
@@ -258,7 +258,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         _eventIDDictionary.add(eventName2);
         int id1 = _eventIDDictionary.getID(eventName1);
         int id2 = _eventIDDictionary.getID(eventName2);
-        // System.out.println(id1+" "+id2); 
+        // System.out.println(id1+" "+id2);
         _mapping.add(id1, id2);
     }
 
@@ -273,15 +273,15 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      * increaseCount(Iterable<Integer> ids) is called, the counter of the
      * constraint whose id is in ids is increased by the number of appearances
      * in ids.
-     * 
+     *
      * @author glp
-     * 
+     *
      */
     private static class ConstraintCounter implements Cloneable {
 
         /**
          * Construct and initialize the counter for each constraint.
-         * 
+         *
          * @param size
          *            the largest possible id of the constraints + 1.
          */
@@ -309,7 +309,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
         /**
          * return the first id in ids whose counter is greater than 1.
-         * 
+         *
          * @param ids
          *            a vector of ids
          * @return the first id in ids whose counter is greater than 1.
@@ -335,7 +335,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * The counter of the constraint whose id is in ids is increased by the
          * number of appearances in ids.
-         * 
+         *
          * @param ids
          *            the vector of ids
          */
@@ -348,7 +348,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * The counter of the constraint whose id is in ids is decreased by the
          * number of appearances in ids.
-         * 
+         *
          * @param ids
          *            the vector of ids
          */

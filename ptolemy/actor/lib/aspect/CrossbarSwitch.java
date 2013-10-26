@@ -47,16 +47,16 @@ import ptolemy.kernel.util.Workspace;
 /** This actor is an {@link CommunicationAspect} that, when its
  *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
- *  according to a delays on input buffers, delays on output buffers 
+ *  according to a delays on input buffers, delays on output buffers
  *  and delays in the switch fabric of a crossbar switch. This actor is
  *  used the same way as the {@link BasicSwitch}; just the switch fabric
  *  implemented here is different. I.e. this switch can potentially exhibit
  *  better throughput performance as some tokens can be processed in parallel
  *  by the switch fabric. For more information on how a crossbar switch works
- *  please refer to the 
- *  <a href="http://en.wikipedia.org/wiki/Crossbar_switch#in_browser">http://en.wikipedia.org/wiki/Crossbar_switch</a> 
+ *  please refer to the
+ *  <a href="http://en.wikipedia.org/wiki/Crossbar_switch#in_browser">http://en.wikipedia.org/wiki/Crossbar_switch</a>
  *  General Properties.
- *  
+ *
  *  @author Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 8.1

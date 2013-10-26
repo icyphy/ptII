@@ -50,7 +50,7 @@ the GiottoDirector.
  @see GiottoReceiver
  */
 public class GiottoAttributes extends DecoratorAttributes {
-        
+
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
      *  @param director The director.

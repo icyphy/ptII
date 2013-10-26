@@ -58,83 +58,83 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 ////WebServerUtilities
 
-/** A web server and information about the applications registered to it.  Used 
+/** A web server and information about the applications registered to it.  Used
  * by {@link org.ptolemy.ptango.lib.WebServerManager}
- * 
+ *
  *   @author Elizabeth Latronico and Edward A. Lee
  *   @version $Id$
  *   @since Ptolemy II 9.0
  *   @Pt.ProposedRating Red (ltrnc)
  *   @Pt.AcceptedRating Red (ltrnc)
  */
- 
+
 public class WebServerUtilities {
-    
+
     /** Construct a new instance of this class with the default port number
      * and maximum idle time.
      */
     public WebServerUtilities() {
-        
-        _applications = new HashSet<WebApplicationInfo>();       
+
+        _applications = new HashSet<WebApplicationInfo>();
         _portNumber = DEFAULT_PORT_NUMBER;
         _maxIdleTime = DEFAULT_MAX_IDLE_TIME;
-       
+
         _server = null;
         _selectChannelConnector = null;
         }
-    
+
     /** Construct a new instance of this class with the specified port number.
-     * 
+     *
      * @param portNumber The port number the web server receives requests on
      */
     public WebServerUtilities(int portNumber) throws Exception{
-        
-        _applications = new HashSet<WebApplicationInfo>();    
+
+        _applications = new HashSet<WebApplicationInfo>();
         _maxIdleTime = 30000;
-        
+
         // If port number is <= 0 or maximum idle time is <= 0 use defaults
         if (portNumber <= 0) {
             _portNumber = DEFAULT_PORT_NUMBER;
         } else {
             _portNumber = portNumber;
         }
-        
+
         _server = null;
         _selectChannelConnector = null;
         }
-    
+
     /** Construct a new instance of this class with the specified port number
      * and maximum idle time.
-     * 
+     *
      * @param portNumber The port number the web server receives requests on
      * @param maxIdleTime The maximum amount of time the web server will wait
      * before sending a timeout response page
      */
     public WebServerUtilities(int portNumber, int maxIdleTime) throws Exception{
-        
+
         _applications = new HashSet<WebApplicationInfo>();
-        
+
         // If port number is <= 0 or maximum idle time is <= 0 use defaults
         if (portNumber <= 0) {
             _portNumber = DEFAULT_PORT_NUMBER;
         } else {
             _portNumber = portNumber;
         }
-        
+
         if (maxIdleTime <= 0) {
             _maxIdleTime = DEFAULT_MAX_IDLE_TIME;
         } else {
             _maxIdleTime = maxIdleTime;
         }
-        
+
         _server = null;
         }
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////   
-    
+    ////                         public methods                    ////
+
     /** Return the maximum amount of time the server will wait before returning
      * a timeout response page.
-     * 
+     *
      * @return The maximum amount of time the server will wait before returning
      * a timeout response page.
      */
@@ -147,32 +147,32 @@ public class WebServerUtilities {
      * is no setPortNumber() method - since web applications ask for a specific
      * port number and changing the port number will cause client requests
      * to the old port number to fail.
-     * 
+     *
      * @return The port number that the server listens to for requests.
      */
     public int getPortNumber() {
         return _portNumber;
     }
-    
-    /** Return true if this web server is hosting the given model; false 
+
+    /** Return true if this web server is hosting the given model; false
      * otherwise.  The full model name should be provided.
-     * 
+     *
      * @param fullModelName  The full name of the model to search for
      * @return true if the web server is hosting the given model; false
      * otherwise
      */
     public boolean isHostingModel(String fullModelName){
         for (WebApplicationInfo app : _applications) {
-            if (fullModelName != null && 
+            if (fullModelName != null &&
                     app.getModelName().equalsIgnoreCase(fullModelName)){
                 return true;
             }
         }
         return false;
     }
-    
-    /** Return true if the web server is running; false otherwise. 
-     * 
+
+    /** Return true if the web server is running; false otherwise.
+     *
      * @return true if the web server is running; false otherwise */
     public boolean isRunning(){
         if (_server != null) {
@@ -181,66 +181,66 @@ public class WebServerUtilities {
             return false;
         }
     }
-    
+
     /** Register the following application on this server.  Start the server
-     * if it has not already been started.  Throw an exception if the new 
-     * application conflicts with existing applications, for example, by 
-     * requesting the same URL mapping.  
-     * 
+     * if it has not already been started.  Throw an exception if the new
+     * application conflicts with existing applications, for example, by
+     * requesting the same URL mapping.
+     *
      * @param appInfo  The application to add to this server
-     * @throws Exception   If the new application conflicts with existing 
+     * @throws Exception   If the new application conflicts with existing
      * applications, for example, by requesting the same URL mapping.
      */
     public void register(WebApplicationInfo appInfo) throws Exception {
-        
-        // FIXME:  Require the application paths to be distinct?  Distinct 
-        // application paths are not strictly necessary, but matching 
-        // application paths could be confusing since it's unclear which 
+
+        // FIXME:  Require the application paths to be distinct?  Distinct
+        // application paths are not strictly necessary, but matching
+        // application paths could be confusing since it's unclear which
         // Ptolemy model is serving the response
-        // If applicationPath is just "/", don't add this as a prefix to 
+        // If applicationPath is just "/", don't add this as a prefix to
         // the servlet path, since that would create a path like "//myApp"
         // instead of "/myApp"
         String applicationPath = appInfo.getApplicationPath().toString();
         if (applicationPath.equals("/")) {
             applicationPath = "";
         }
-        
-        // Ensure that new servlet mappings are distinct from existing 
+
+        // Ensure that new servlet mappings are distinct from existing
         // servlet and resource handler mappings.  If not, throw exception
         for (URI servletPath : appInfo.getServletInfo().keySet())
             for (WebApplicationInfo application : _applications) {
-                if (application.hasPath(applicationPath + 
+                if (application.hasPath(applicationPath +
                         servletPath.toString())) {
-                    throw new Exception("Model " + appInfo.getModelName() + 
-                            " requested a conflicting URL mapping, " + 
+                    throw new Exception("Model " + appInfo.getModelName() +
+                            " requested a conflicting URL mapping, " +
                             applicationPath + servletPath.toString());
                 }
         }
-        
+
         // If no conflicts, create a handler for the new application
-        // If this is the first application, need to create a Jetty server and 
+        // If this is the first application, need to create a Jetty server and
         // set the server's properties
         if (_applications.isEmpty()) {
             _server = new Server();
             _selectChannelConnector = new SelectChannelConnector();
             _selectChannelConnector.setPort(_portNumber);
             _selectChannelConnector.setMaxIdleTime(_maxIdleTime);
-            
-            // Don't allow other programs to use this port (e.g. another 
+
+            // Don't allow other programs to use this port (e.g. another
             // Jetty instance)
             // FIXME:  Need to catch exception
             _selectChannelConnector.setReuseAddress(false);
             _server.setConnectors(new Connector[] { _selectChannelConnector });
-            
-            // Create a ContextHandlerCollection containing only a 
+
+            // Create a ContextHandlerCollection containing only a
             // DefaultHandler.  Other handlers will be added later for web apps
             // See "Configuring the Server - Handlers"
-            // http://www.eclipse.org/jetty/documentation/current/quickstart-config-what.html          
-       
+            // http://www.eclipse.org/jetty/documentation/current/quickstart-config-what.html
+
             ContextHandlerCollection handlers = new ContextHandlerCollection();
             handlers.addHandler(new DefaultHandler());
             _server.setHandler(handlers);
-            
+
             // Start the server in a new thread. Use a custom uncaught exception
             // handler so the server thread can log information about exceptions
             // to the _exceptionMessage variable that the main thread can access
@@ -248,7 +248,7 @@ public class WebServerUtilities {
             _exception = null;
             _serverThread = new Thread(new RunnableServer());
             _serverThread.start();
-            
+
             // Wait until the server has attempted to start
             // The server thread will set _startAttempted to true
             // Then, see if an exception has occurred
@@ -262,11 +262,11 @@ public class WebServerUtilities {
                      }
                 }
             }
-            
+
             // If an exception occurred, re-throw it
-            // One alternative considered was to use a Callable instead of a 
+            // One alternative considered was to use a Callable instead of a
             // a Runnable, since a Callable can throw an exception
-            // However, the calling thread gets the exception back by calling 
+            // However, the calling thread gets the exception back by calling
             // Future.get(), which blocks the calling thread
             // Since in normal operation the server thread runs indefinitely,
             // Future.get() would block Ptolemy model execution indefinitely
@@ -281,90 +281,90 @@ public class WebServerUtilities {
                 }
             }
         }
-        
+
         // Add this application to the list of registered applications
         _applications.add(appInfo);
-        
+
         // Create a handler for servlet requests
         _createServletHandler(appInfo);
-        
-        // Create / re-use handlers for resource requests    
-        // Check if this web app wants to re-use the existing resource handler, 
+
+        // Create / re-use handlers for resource requests
+        // Check if this web app wants to re-use the existing resource handler,
         // or if a new one is needed
-        _createResourceHandlers(appInfo);        
+        _createResourceHandlers(appInfo);
     }
-    
-    /** Set the maximum amount of time, in milliseconds, that the server will 
+
+    /** Set the maximum amount of time, in milliseconds, that the server will
      * wait before returning a timeout response page.
-     * 
-     * @param maxIdleTime The maximum amount of time, in milliseconds, that the 
+     *
+     * @param maxIdleTime The maximum amount of time, in milliseconds, that the
      * server will wait before returning a timeout response page
      */
     public void setMaxIdleTime(int maxIdleTime) {
-        // If the specified max idle time is <=0, use the default 
+        // If the specified max idle time is <=0, use the default
         if (maxIdleTime <= 0) {
             _maxIdleTime = DEFAULT_MAX_IDLE_TIME;
         } else {
             _maxIdleTime = maxIdleTime;
         }
-        
+
         // If there is a server instantiated, change the server's max idle time
         if (_server != null) {
             // Get the server's SelectChannelConnector to change the idle time
-            // There should be only one connector, since the current 
+            // There should be only one connector, since the current
             // implementation runs one server per port, so that web applications
-            // can be developed and tested independently.  The idea is that 
-            // each developer could be assigned a separate port for his or 
-            // her applications.  If there were a single server listening to 
+            // can be developed and tested independently.  The idea is that
+            // each developer could be assigned a separate port for his or
+            // her applications.  If there were a single server listening to
             // multiple ports, then all web applications would listen to all
             // ports, meaning web applications from other developers could
             // intercept requests.
-            
-            // FIXME:  Need to pause the server if it is running, or OK to 
+
+            // FIXME:  Need to pause the server if it is running, or OK to
             // do this while running?
             _selectChannelConnector.setMaxIdleTime(_maxIdleTime);
-            
-        }          
+
+        }
     }
-    
+
     /** Unregister the given application from this server.  If this leaves no
      * applications on the server, stop the server.
-     * 
+     *
      * @param appInfo  The application to remove from the server.
-     * @exception Exception if the application is not registered with this 
+     * @exception Exception if the application is not registered with this
      * server or if the server cannot be stopped when the last application
      * is unregistered
      */
     public void unregister(WebApplicationInfo appInfo) throws Exception{
-        
+
         // Check if this application is registered on this server.  The model
         // name is used as a key - there should be only one instance of a
-        // model registered on any server at one time.  This restriction could 
+        // model registered on any server at one time.  This restriction could
         // be removed in the future if necessary.  But, running two instances
-        // of the same model simultaneously is confusing and probably 
+        // of the same model simultaneously is confusing and probably
         // unintentional.
         boolean found = false;
-        
+
         if (_applications.contains(appInfo)) {
-            // Find the handler associated with this application, stop it and 
+            // Find the handler associated with this application, stop it and
             // remove it from the server
-            ContextHandlerCollection handlers = 
+            ContextHandlerCollection handlers =
                     (ContextHandlerCollection) _server.getHandler();
             for (int i = 0; i < handlers.getHandlers().length; i++) {
                Handler handler = handlers.getHandlers()[i];
-               
-               // Only need to check servlet handlers (e.g. not the 
+
+               // Only need to check servlet handlers (e.g. not the
                // DefaultHandler, not resource handlers...)
                // Check for matching application path
-               if (handler instanceof ServletContextHandler && 
+               if (handler instanceof ServletContextHandler &&
                    ((ServletContextHandler) handler).getContextPath()
                    .equalsIgnoreCase(appInfo.getApplicationPath().toString())) {
                for (URI servletPath : appInfo.getServletInfo().keySet()){
-                   ServletHandler servletHandler = 
+                   ServletHandler servletHandler =
                           ((ServletContextHandler) handler).getServletHandler();
-                   for (ServletMapping mapping : 
+                   for (ServletMapping mapping :
                        servletHandler.getServletMappings()) {
-                                           
+
                        // Any matching path means this is the servlet we want
                        // to stop and remove
                        for (String path : mapping.getPathSpecs()) {
@@ -379,25 +379,25 @@ public class WebServerUtilities {
                }
                }
             }
-            
-            // Throw an exception if this application was not found 
+
+            // Throw an exception if this application was not found
             if (!found) {
                 throw new Exception("Application " + appInfo.getModelName() +
                         " requested to be unregistered, but it was not found " +
                         " on the server.");
             }
-            
+
             // What to do about the resource handler?  This might be shared
-            // by other applications.  Need to keep a list.  
-            // FIXME:  For now, just leave it running.       
+            // by other applications.  Need to keep a list.
+            // FIXME:  For now, just leave it running.
             _applications.remove(appInfo);
-            
+
         } else {
-            throw new Exception("Application " + appInfo.getModelName() + 
+            throw new Exception("Application " + appInfo.getModelName() +
                     " attempted to unregister itself, but this application is "+
-                    " not registered with the server on port " + _portNumber);                 
+                    " not registered with the server on port " + _portNumber);
         }
-        
+
         // If no applications are left, stop the server
         if (_applications.isEmpty()) {
             // Explicitly close the port connection so that the port will be
@@ -405,136 +405,136 @@ public class WebServerUtilities {
             // the port to be relinquished, blocking any new web servers
             _selectChannelConnector.close();
             _serverThread.interrupt();
-            _serverThread = null;          
+            _serverThread = null;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
-    /** Use 8080 as the default port number that the server listens to for 
+
+    /** Use 8080 as the default port number that the server listens to for
      * incoming requests.
      */
     static final int DEFAULT_PORT_NUMBER = 8080;
-    
+
     /** Use 30 seconds (30000 milliseconds) as the default time the server
      * will wait before returning a timeout response page.
      */
     static final int DEFAULT_MAX_IDLE_TIME = 30000;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
-    /** Create a ContextHandler to store all of the servlets defined in the 
-     *  given application (e.g. a Ptolemy model).  Add this handler to the 
+
+    /** Create a ContextHandler to store all of the servlets defined in the
+     *  given application (e.g. a Ptolemy model).  Add this handler to the
      *  collection of handlers for this web server.
      *
      *  @param appInfo Information about the web application.
      */
-    protected void _createServletHandler(WebApplicationInfo appInfo) 
+    protected void _createServletHandler(WebApplicationInfo appInfo)
             throws Exception{
         // Create a new handler to hold servlets from the actors
         ServletContextHandler servletHandler = new ServletContextHandler(
                 ServletContextHandler.SESSIONS);
-        
+
         servletHandler.setContextPath(appInfo.getApplicationPath().toString());
-        
+
         for (URI servletPath : appInfo.getServletInfo().keySet()) {
-            servletHandler.addServlet( 
-                  new ServletHolder(appInfo.getServletInfo().get(servletPath)), 
+            servletHandler.addServlet(
+                  new ServletHolder(appInfo.getServletInfo().get(servletPath)),
                   servletPath.toString());
         }
-        
+
         ((ContextHandlerCollection) _server.getHandler())
             .addHandler(servletHandler);
-         
-        // Need to explicitly start the handler since it is added to the 
+
+        // Need to explicitly start the handler since it is added to the
         // server's handler list AFTER the server has already started
-        servletHandler.start();     
+        servletHandler.start();
     }
-    
-    /** Create or re-use resource handler(s) to serve files such as images, 
-     *  audio, etc.  If the application requests a handler for a path that is 
-     *  already used by an existing resource handler, then the existing handler 
-     *  will be re-used, and the new search locations will be added to its 
-     *  search list.  If a new path is provided, a new resource handler will be 
-     *  created, as long as at least one search location is given.  New 
-     *  handlers are added to the _handlers list. 
+
+    /** Create or re-use resource handler(s) to serve files such as images,
+     *  audio, etc.  If the application requests a handler for a path that is
+     *  already used by an existing resource handler, then the existing handler
+     *  will be re-used, and the new search locations will be added to its
+     *  search list.  If a new path is provided, a new resource handler will be
+     *  created, as long as at least one search location is given.  New
+     *  handlers are added to the _handlers list.
      *
      *  @exception IllegalActionException If a FileParameter is found that is
      *   not a valid URI or references a resource that cannot be found.
      */
-    
-    // FIXME:  Throw exception instead of allowing an empty list?  An 
-    // application is not required to have a resource handler, so an empty 
-    // list is permitted, but how to notify user in case the model has a 
+
+    // FIXME:  Throw exception instead of allowing an empty list?  An
+    // application is not required to have a resource handler, so an empty
+    // list is permitted, but how to notify user in case the model has a
     // mistake e.g. the user forgot to add resource locations?
-    
-    protected void _createResourceHandlers(WebApplicationInfo appInfo) 
+
+    protected void _createResourceHandlers(WebApplicationInfo appInfo)
             throws Exception{
-        
+
         // Create resource handlers to serve files such as images, audio, ...
         // See http://restlet-discuss.1400322.n2.nabble.com/Jetty-Webapp-td7313234.html
         // There will be one resource handler per requested path
         ArrayList<ContextHandler> handlers = new ArrayList<ContextHandler>();
-        
+
         for (URI path: appInfo.getResourceInfo().keySet()) {
             boolean shareHandler = false;
-            
+
             for (WebApplicationInfo application : _applications) {
                 if (application.hasResourcePath(path.toString())) {
                     // Share a handler.  Find the handler and add any new
                     // resource locations.
-                    for (int i = 0; i < ((ContextHandlerCollection) 
+                    for (int i = 0; i < ((ContextHandlerCollection)
                             _server.getHandler()).getHandlers().length; i++) {
-                   ContextHandler handler = (ContextHandler) 
-                           ((ContextHandlerCollection) 
+                   ContextHandler handler = (ContextHandler)
+                           ((ContextHandlerCollection)
                            _server.getHandler()).getHandlers()[i];
 
                         if (handler.getContextPath()
                                 .equalsIgnoreCase(path.toString())) {
-                            
+
                                 // Stop this resource handler
                                 handler.stop();
-                            
+
                                 // Add the new resource locations (if any)
-                                // FIXME:  Check if this cast is OK.  Otherwise 
+                                // FIXME:  Check if this cast is OK.  Otherwise
                                 // will have to manually remember the resources
-                                ResourceCollection resources = 
+                                ResourceCollection resources =
                                  (ResourceCollection) handler.getBaseResource();
-                                
-                                for (FileResource resource: 
+
+                                for (FileResource resource:
                                     appInfo.getResourceInfo().get(path)){
                                     if (!resource.isContainedIn(resources)) {
                                         // Jetty doesn't seem to offer a method
-                                        // to add a resource to a 
-                                        // ResourceCollection?  
+                                        // to add a resource to a
+                                        // ResourceCollection?
                                         // Has addPath(String) but this returns
-                                        // a Resource, but not sure if it 
+                                        // a Resource, but not sure if it
                                         // creates one...
-                                        ArrayList<Resource> newResources = 
+                                        ArrayList<Resource> newResources =
                                                 new ArrayList<Resource>(Arrays
                                              .asList(resources.getResources()));
                                         newResources.add(resource);
                                         resources.setResources(newResources
                                                 .toArray(new FileResource
                                                         [newResources.size()]));
-                     
-                                    }   
+
+                                    }
                                 }
-                                
+
                                 // Add the temporary file location (if any), if
                                 // not already included
 
-                                if (appInfo.getTemporaryFileLocation() != null 
+                                if (appInfo.getTemporaryFileLocation() != null
                                         && !appInfo.getTemporaryFileLocation()
                                         .toString().isEmpty()) {
-                                    FileResource tempResource = 
+                                    FileResource tempResource =
                                             new FileResource(appInfo
                                                     .getTemporaryFileLocation()
                                                     .asURL());
                                     if (!tempResource.isContainedIn(resources)){
-                                        ArrayList<Resource> newResources = 
+                                        ArrayList<Resource> newResources =
                                                 new ArrayList<Resource>(Arrays
                                              .asList(resources.getResources()));
                                         newResources.add(tempResource);
@@ -543,107 +543,107 @@ public class WebServerUtilities {
                                                         [newResources.size()]));
                                     }
                                 }
-                                        
+
                                 // Restart the handler
                                 handler.start();
-                                
+
                                 shareHandler = true;
                                 break;
                         }
                     }
-                } 
-                
+                }
+
                 // Create a new handler if this is a new resource path
                 if (!shareHandler) {
                     ContextHandler fileHandler = new ContextHandler();
-                    
+
                     // Set the path used by other web apps to request files
                     // Example:
                     // $PTII/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
-                    fileHandler.setContextPath(path.toString());                 
+                    fileHandler.setContextPath(path.toString());
 
                     // Enable aliases so that we can use $TMPDIR under Mac OS X
                     // because $TMPDIR is in /var, which is a symbolic link.
                     // FIXME: this opens up a series of security holes.
                     fileHandler.setAliases(true);
-                    
+
                     // Create a new resource handler
                     ResourceHandler resourceHandler = new ResourceHandler();
-                    // For security, do not support listing of directories in the local 
+                    // For security, do not support listing of directories in the local
                     // resource locations.
                     resourceHandler.setDirectoriesListed(false);
-                    
-                    // Tell handler to search requested locations and temporary file 
+
+                    // Tell handler to search requested locations and temporary file
                     // location (if any) for files
                     ArrayList<FileResource> resources = new ArrayList<FileResource>();
                     resources.addAll(appInfo.getResourceInfo().get(path));
-                    
-                    if (appInfo.getTemporaryFileLocation() != null && 
+
+                    if (appInfo.getTemporaryFileLocation() != null &&
                             (appInfo.getTemporaryFileLocation().getExpression()
                                 != null) && (!appInfo.getTemporaryFileLocation()
                                         .getExpression().isEmpty())) {
-                        
+
                         try {
                             resources.add(new FileResource(appInfo
                                     .getTemporaryFileLocation().asURL()));
                         } catch(MalformedURLException e){
-                            throw new Exception("Temporary file location " + 
-                           appInfo.getTemporaryFileLocation() + 
+                            throw new Exception("Temporary file location " +
+                           appInfo.getTemporaryFileLocation() +
                            " cannot be accessed.");
                         } catch(URISyntaxException e2){
-                            throw new Exception("Temporary file location " + 
-                           appInfo.getTemporaryFileLocation() + 
+                            throw new Exception("Temporary file location " +
+                           appInfo.getTemporaryFileLocation() +
                            " cannot be accessed.");
                         }
                     }
-                    
-                    // Ensure that at least one resource location has been 
+
+                    // Ensure that at least one resource location has been
                     // specified. Otherwise, don't add new handler to collection
-                    
+
                     if (resources.size() > 0) {
-                        // Use setBaseResource(ResourceCollection) instead of 
-                        // setResouceBase(String) so that we may add multiple  
+                        // Use setBaseResource(ResourceCollection) instead of
+                        // setResouceBase(String) so that we may add multiple
                         // file locations.
-                        // setResourceBase(String) is a wrapper for 
-                        // setBaseResource(ResourceCollection) that only allows  
+                        // setResourceBase(String) is a wrapper for
+                        // setBaseResource(ResourceCollection) that only allows
                         // one location.
                         resourceHandler.setBaseResource(new ResourceCollection
                                 (resources.toArray(new FileResource
                                         [resources.size()])));
-                                
+
                         fileHandler.setHandler(resourceHandler);
-                        handlers.add(fileHandler);                       
+                        handlers.add(fileHandler);
                     }
                 }
             }
         }
 
         for (ContextHandler handler : handlers) {
-            ((ContextHandlerCollection) 
+            ((ContextHandlerCollection)
                     _server.getHandler()).addHandler(handler);
-            
-            // Need to explicitly start each new handler since they are added to 
+
+            // Need to explicitly start each new handler since they are added to
             // the server's handler list AFTER the server has already started
             handler.start();
         }
-    }    
-    
-    
+    }
+
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////   
-    
+    ////                         private variables                 ////
+
     /** The set of applications running on this web server. */
-    private HashSet<WebApplicationInfo> _applications; 
-    
-    /** An exception thrown (if any) when the server is started.  The main 
+    private HashSet<WebApplicationInfo> _applications;
+
+    /** An exception thrown (if any) when the server is started.  The main
      * thread will check if this exception has been set by the server thread. */
     private Exception _exception;
 
-    /** A lock to synchronize the main and server threads when starting the 
+    /** A lock to synchronize the main and server threads when starting the
      * server.
      */
     private Object _lock = new Object();
-    
+
     /** The maximum idle time for a connection, in milliseconds.
      */
     private int _maxIdleTime;
@@ -651,19 +651,19 @@ public class WebServerUtilities {
     /** The port number the server receives requests on.
      */
     private int _portNumber;
-    
+
     /** The connector binding a port to the server.  */
     SelectChannelConnector _selectChannelConnector;
-    
+
     /** The Jetty web server that runs the associated applications. */
     private Server _server;
-    
+
     /** The thread that runs the web server. */
     private Thread _serverThread;
-    
+
     /** A flag indicating that the server has attempted to start */
     private boolean _startAttempted;
-    
+
     /** A Runnable class to run a Jetty web server in a separate thread.
      */
     private class RunnableServer implements Runnable {
@@ -677,7 +677,7 @@ public class WebServerUtilities {
 
             while (!Thread.interrupted()) {
 
-                // Start the server.  
+                // Start the server.
                 // This is synchronized with the register() method, so that
                 // register() will wait for the server to either start properly
                 // or throw an exception
@@ -687,7 +687,7 @@ public class WebServerUtilities {
                         _server.start();
                         _lock.notify();
                     } catch (Exception e) {
-                        // Notify thread users and terminate the server and this 
+                        // Notify thread users and terminate the server and this
                         // thread if an exception occurs
                         try {
                             _exception = e;
@@ -705,14 +705,14 @@ public class WebServerUtilities {
                     }
                     ;
                 }
-                      
-                // The .join() method blocks the thread until the server 
+
+                // The .join() method blocks the thread until the server
                 // terminates.
                 try {
                     _server.join();
-    
+
                     } catch (InterruptedException e) {
-                        // Notify thread users and terminate the server and this 
+                        // Notify thread users and terminate the server and this
                         // thread if an exception occurs
                         try {
                             _server.stop();
@@ -725,7 +725,7 @@ public class WebServerUtilities {
                     }
                     ;
             }
-            
+
             try {
                 _server.stop();
             } catch (Throwable throwable) {
@@ -735,4 +735,4 @@ public class WebServerUtilities {
         }
     }
 }
- 
+

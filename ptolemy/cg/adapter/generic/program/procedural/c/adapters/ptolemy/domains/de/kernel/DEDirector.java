@@ -69,8 +69,8 @@ import ptolemy.util.StringUtilities;
 ////DEDirector
 
 /**
- * Code generator adapter associated with the DEDirector class. 
- * This adapter is highly experimental since it changes a lot 
+ * Code generator adapter associated with the DEDirector class.
+ * This adapter is highly experimental since it changes a lot
  * of behaviors of the code generation process.
  * This class is also associated with a code generator.
  *
@@ -112,11 +112,11 @@ public class DEDirector extends Director {
 //                        "allowDynamicMultiportReference")).getToken())
 //                .booleanValue();
     }
-    
+
     /** Generate the constructor code for the specified director.
      * In this class we initialize the director with its internal
      * parameters and fields as well as with the depths of the actors.
-     * 
+     *
      * @return The generated constructor code
      * @throws IllegalActionException Not thrown in this base class.
      */
@@ -124,8 +124,8 @@ public class DEDirector extends Director {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor)_director.getContainer();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-        ptolemy.domains.de.kernel.DEDirector director = (ptolemy.domains.de.kernel.DEDirector) _director; 
-        
+        ptolemy.domains.de.kernel.DEDirector director = (ptolemy.domains.de.kernel.DEDirector) _director;
+
         result.append(_eol + getSanitizedDirectorName() + "->container = " + sanitizedContainerName + ";");
         result.append(_eol + _sanitizedDirectorName + "->_startTime = " + director.getModelStartTime() + ";");
         result.append(_eol + _sanitizedDirectorName + "->_stopTime = " + director.getModelStopTime() + ";");
@@ -134,7 +134,7 @@ public class DEDirector extends Director {
         result.append(_eol + _sanitizedDirectorName + "->minBinCount = " + ((IntToken) director.minBinCount.getToken()).intValue() + ";");
         result.append(_eol + _sanitizedDirectorName + "->stopWhenQueueIsEmpty = " + ((BooleanToken) director.stopWhenQueueIsEmpty.getToken()).booleanValue() + ";");
         result.append(_eol + _sanitizedDirectorName + "->localClock->container = (struct Director*)" + _sanitizedDirectorName + ";");
-        
+
         // Add the depth of the container actor
         result.append(_eol + "int* depth = malloc(sizeof(int));");
         CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
@@ -143,7 +143,7 @@ public class DEDirector extends Director {
         result.append(_eol + "*depth = " + depth + ";");
         result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->actorsDepths, &" + sanitizedContainerName +
                 ", sizeof(struct Actor*), depth, sizeof(int));");
-        
+
         // Add the depths of the container's ports
         Iterator<?> ports = ((Actor)container).inputPortList().iterator();
         while (ports.hasNext()) {
@@ -152,7 +152,7 @@ public class DEDirector extends Director {
                 continue;
             depth = causality.getDepthOfPort(port);
             result.append(_eol + "*depth = " + depth + ";");
-            result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + port.getName() + 
+            result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + port.getName() +
                     ", sizeof(struct IOPort*), depth, sizeof(int));");
         }
         ports = ((Actor)container).outputPortList().iterator();
@@ -162,10 +162,10 @@ public class DEDirector extends Director {
                 continue;
             depth = causality.getDepthOfPort(port);
             result.append(_eol + "*depth = " + depth + ";");
-            result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + port.getName() + 
+            result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + port.getName() +
                     ", sizeof(struct IOPort*), depth, sizeof(int));");
         }
-        
+
         List<?> containedActors = container.deepEntityList();
         Iterator<?> actors = containedActors.iterator();
         // First loop to create the struct IOPort
@@ -177,7 +177,7 @@ public class DEDirector extends Director {
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
                     continue;
-                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                         " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
             }
             ports = ((Actor)actor).outputPortList().iterator();
@@ -185,7 +185,7 @@ public class DEDirector extends Director {
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
                     continue;
-                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                         " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
             }
         }
@@ -205,7 +205,7 @@ public class DEDirector extends Director {
                     continue;
                 depth = causality.getDepthOfPort(port);
                 result.append(_eol + "*depth = " + depth + ";");
-                result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + sanitizedActorName + "_" + port.getName() +
                         ", sizeof(struct IOPort*), depth, sizeof(int));");
             }
             ports = ((Actor)actor).outputPortList().iterator();
@@ -215,9 +215,9 @@ public class DEDirector extends Director {
                     continue;
                 depth = causality.getDepthOfPort(port);
                 result.append(_eol + "*depth = " + depth + ";");
-                result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "pblMapAdd(" + _sanitizedDirectorName + "->portsDepths, &" + sanitizedActorName + "_" + port.getName() +
                         ", sizeof(struct IOPort*), depth, sizeof(int));");
-                
+
                 int i = 0;
                 int j = 0;
                 Receiver[][] receiverss = port.getRemoteReceivers();
@@ -234,7 +234,7 @@ public class DEDirector extends Director {
                             farPortName = farPort.getName() + "->_localInsideReceivers, ";
                         else
                             farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                        
+
                         int foo = 0;
                         int bar = 0;
                         Receiver[][] farReceiverss;
@@ -243,15 +243,15 @@ public class DEDirector extends Director {
                         else
                             farReceiverss = farPort.getReceivers();
                         loops:
-                        for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                        for (foo = 0 ; foo < farReceiverss.length ; foo++)
                             for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                                if (farReceiverss[foo][bar].equals(receiver)) 
+                                if (farReceiverss[foo][bar].equals(receiver))
                                     break loops;
-                        
+
                         if (foo == farReceiverss.length)
                             throw new IllegalActionException(container,
                                     "Receiver not found in port : " + port.getFullName() + "in actor : " + sanitizedActorName);
-                        
+
                         result.append(_eol + "pblListAdd(pblListGet(" + sanitizedActorName + "_" + port.getName() + "->_farReceivers, " + i + ")" +
                                         ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                     }
@@ -280,7 +280,7 @@ public class DEDirector extends Director {
                         farPortName = farPort.getName() + "->_localInsideReceivers, ";
                     else
                         farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                    
+
                     int foo = 0;
                     int bar = 0;
                     Receiver[][] farReceiverss;
@@ -289,22 +289,22 @@ public class DEDirector extends Director {
                     else
                         farReceiverss = farPort.getReceivers();
                     loops:
-                    for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                    for (foo = 0 ; foo < farReceiverss.length ; foo++)
                         for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                            if (farReceiverss[foo][bar].equals(receiver)) 
+                            if (farReceiverss[foo][bar].equals(receiver))
                                 break loops;
-                    
+
                     if (foo == farReceiverss.length)
                         throw new IllegalActionException(container,
                                 "Receiver not found in port : " + port.getFullName() + " in actor : " + sanitizedContainerName);
-                    
+
                     result.append(_eol + "pblListAdd(pblListGet(" + port.getName() + "->_insideReceivers, " + i + ")" +
                                     ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                 }
             }
         }
         result.append(_eol + "free(depth);");
-        
+
         return result.toString();
     }
 
@@ -316,7 +316,7 @@ public class DEDirector extends Director {
     public String generateFunctionsDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
-        
+
         code.append(_eol + "int " + _sanitizedDirectorName + "_fire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_fireAt(Actor * actor, Time time, int microstep);");
         code.append(_eol + "Actor * " + _sanitizedDirectorName + "_nextActorToFire();");
@@ -327,10 +327,10 @@ public class DEDirector extends Director {
         code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
         code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
-        
+
         return code.toString();
     }
-    
+
     /** Generate The _fireAt function code.
      *  This method is the direct transposition of the _fireAt function of the director
      *  in C.
@@ -354,11 +354,11 @@ public class DEDirector extends Director {
         code.append(_eol + "CQueuePut(&(" + _sanitizedDirectorName + ".cqueue), newEvent);");
 
         code.append(_eol + "return;");
-        
-        
+
+
         return code.toString();
     }
-    
+
     /** Generate The fire function code. This method calls fire() for in a loop
      *  This method is the direct transposition of the Fire function of the director
      *  in C.
@@ -395,7 +395,7 @@ public class DEDirector extends Director {
 
         return code.toString();
     }
-    
+
     /** Generate The _fire function code.
      *  This method is the direct transposition of the _fire function of the director
      *  in C.
@@ -405,7 +405,7 @@ public class DEDirector extends Director {
      */
     public String generateFirePrivateFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         code.append(_eol + "Actor * actorToFire = " + _sanitizedDirectorName + "_nextActorToFire();");
         code.append(_eol + "" + _sanitizedDirectorName + ".currentActor = actorToFire;");
 
@@ -429,10 +429,10 @@ public class DEDirector extends Director {
         code.append(_eol + "    (*(actorToFire->postfireFunction))();");
         code.append(_eol + "} while (refire);");
         code.append(_eol + "return 0;");
-        
+
         return code.toString();
     }
-    
+
     /** Generate the initialize code for the associated DE director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the adapter associated with
@@ -446,15 +446,15 @@ public class DEDirector extends Director {
         CompositeActor container = ((CompositeActor) _director.getContainer());
         List actorList = container.deepEntityList();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-       
+
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
         code.append(_eol + _eol
                 + codeGenerator.comment("Initialization of the director"));
-        
+
         code.append(_eol + _sanitizedDirectorName + ".noMoreActorToFire = false;");
         code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = 0;");
-        
+
         if (_director.isEmbedded()) {
             ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
             // Some composites, such as RunCompositeActor want to be treated
@@ -465,14 +465,14 @@ public class DEDirector extends Director {
                     + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
             }
         }
-        
+
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
             String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
             code.append(_eol + sanitizedActorName + "_initialize();");
         }
-        
+
         code.append(_eol + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
 
         code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".startTime;");
@@ -495,12 +495,12 @@ public class DEDirector extends Director {
         code.append(_eol
                 + codeGenerator
                         .comment("End of the Initialization of the director"));
-        
+
         return code.toString();
     }
-        
+
 //        Old way of initialization
-//        
+//
 //        code.append(_eol + _eol + "director.actors = calloc("
 //                + actorList.size() + ", sizeof(Actor*));");
 //        code.append(_eol + "if (director.actors == NULL)");
@@ -563,7 +563,7 @@ public class DEDirector extends Director {
 //                    + actor.getName() + "PrefireCode;");
 //            code.append(_eol + "director.actors[" + i + "]->fireFunction = "
 //                    + modelName + "_" + actor.getName() + ";");
-//            
+//
 //            code.append(_eol + "director.actors[" + i
 //                    + "]->postfireFunction = " + actor.getName()
 //                    + "PostfireCode;");
@@ -585,8 +585,8 @@ public class DEDirector extends Director {
 
 
     /** Generate a main loop for an execution under the control of
-     *  this DE director. 
-     *  
+     *  this DE director.
+     *
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
@@ -594,15 +594,15 @@ public class DEDirector extends Director {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
-        
+
         code.append("int " + _sanitizedDirectorName + "_fire() {" + _eol);
         code.append(generateFirePrivateFunctionCode());
         code.append(_eol + "}" + _eol);
-        
+
         code.append("void " + _sanitizedDirectorName + "_fireAt(Actor * actor, Time time, int microstep) {" + _eol);
         code.append(generateFireAtFunctionCode());
         code.append(_eol + "}" + _eol);
-        
+
         code.append("Actor * " + _sanitizedDirectorName + "_nextActorToFire() {" + _eol);
         code.append(generateNextActorToFireFunctionCode());
         code.append(_eol + "}" + _eol);
@@ -626,14 +626,14 @@ public class DEDirector extends Director {
         code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize() {" + _eol);
         code.append(generateInitializeFunctionCode());
         code.append(_eol + "}" + _eol);
-        
+
         code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
         code.append(generateWrapupCode());
         code.append(_eol + "}" + _eol);
-        
+
         return code.toString();
     }
-    
+
     /** Generate The _NextActorToFire function code.
      *  This method is the direct transposition of the _NextActorToFire function of the director
      *  in C.
@@ -694,10 +694,10 @@ public class DEDirector extends Director {
         code.append(_eol + "}");
 
         code.append(_eol + "return actorToFire;");
-        
+
         return code.toString();
     }
-    
+
     /**
      * Generate sanitized name for the given named object. Remove all
      * underscores to avoid conflicts with systems functions.
@@ -737,7 +737,7 @@ public class DEDirector extends Director {
                 _ports.getBufferSize(port));
     }
 
-    /** Generate The postfire function code. 
+    /** Generate The postfire function code.
      *  @return The postfire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -745,7 +745,7 @@ public class DEDirector extends Director {
         StringBuffer code = new StringBuffer();
 
         code.append(_eol + "bool moreOutputsToTransfer = false;");
-        
+
         // Reset the microstep to zero if the next event is
         // in the future.
         code.append(_eol
@@ -770,7 +770,7 @@ public class DEDirector extends Director {
         code.append(_eol
                 + "" + _sanitizedDirectorName + "_fireAt(" + _sanitizedDirectorName + ".currentActor, " + _sanitizedDirectorName + ".currentModelTime, 0);");
         code.append(_eol
-                + "} else if (" + _sanitizedDirectorName + ".noMoreActorToFire && (stop || " 
+                + "} else if (" + _sanitizedDirectorName + ".noMoreActorToFire && (stop || "
                 + _sanitizedDirectorName + ".currentModelTime >= " + _sanitizedDirectorName + ".stopTime)) {");
         code.append(_eol + "return false;");
         code.append(_eol + "}");
@@ -779,14 +779,14 @@ public class DEDirector extends Director {
         return code.toString();
     }
 
-    /** Generate The prefire function code. 
+    /** Generate The prefire function code.
      *  @return The prefire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
     public String generatePreFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
-        
+
+
         if (!_director.isEmbedded()) {
             // A top-level DE director is always ready to fire.
             code.append(_eol + "return true;");
@@ -796,7 +796,7 @@ public class DEDirector extends Director {
         // Update the time
         code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".containerActor->actor.container->director->currentModelTime;");
         code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = " + _sanitizedDirectorName + ".containerActor->actor.container->director->currentMicrostep;");
-        
+
         // If embedded, check the timestamp of the next event to decide
         // whether this director is ready to fire.
         code.append(_eol + "Time nextEventTime = Infinity;");
@@ -820,7 +820,7 @@ public class DEDirector extends Director {
         code.append(_eol + "        nextEventTime = Infinity;");
         code.append(_eol + "    }");
         code.append(_eol + "}");
-        
+
         code.append(_eol + "return true;");
 
         return code.toString();
@@ -839,7 +839,7 @@ public class DEDirector extends Director {
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
 
         getSanitizedDirectorName();
-      
+
         code.append(_eol + _eol + "" + _sanitizedDirectorName + ".cqueue = *(newCQueue());" + _eol);
         code.append(_eol + "" + _sanitizedDirectorName + ".startTime ="
             + _director.getModelStartTime() + ";");
@@ -848,7 +848,7 @@ public class DEDirector extends Director {
         }
         else
             code.append(_eol + "" + _sanitizedDirectorName + ".stopTime =" + _director.getModelStopTime() + ";");
-          
+
         code.append(_eol + "" + _sanitizedDirectorName + ".preinitializeFunction = " + _sanitizedDirectorName + "_Preinitialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".initializeFunction = " + _sanitizedDirectorName + "_Initialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = " + _sanitizedDirectorName + "_Prefire;");
@@ -857,10 +857,10 @@ public class DEDirector extends Director {
         code.append(_eol + "" + _sanitizedDirectorName + ".wrapupFunction = " + _sanitizedDirectorName + "_Wrapup;");
         code.append(_eol + "" + _sanitizedDirectorName + ".fireAtFunction = " + _sanitizedDirectorName + "_fireAt;");
         code.append(_eol + "" + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
-        
+
         return code.toString();
     }
-    
+
     /** Generate the preinitialize code for this director.
      *  The preinitialize code for the director is generated by appending
      *  the preinitialize code for each actor.
@@ -874,20 +874,20 @@ public class DEDirector extends Director {
 
         CompositeActor container = ((CompositeActor) _director.getContainer());
         List actorList = container.deepEntityList();
-        
+
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
             String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
             code.append(_eol + sanitizedActorName + "_preinitialize();");
         }
-        
+
         return code.toString();
     }
-    
 
-    
-    /** Generate the variable declaration. 
+
+
+    /** Generate the variable declaration.
      *
      * <p> We override the super
      * method, because in DE the declaration of the variables are in
@@ -900,14 +900,14 @@ public class DEDirector extends Director {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
-        
+
         code.append(_eol + "Director " + _sanitizedDirectorName + ";");
         //code.append(_eol + super.generateVariableDeclaration());
-        
+
         return code.toString();
     }
-    
-    /** Generate The wrapup function code. 
+
+    /** Generate The wrapup function code.
      *  @return The wrapup function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -938,10 +938,10 @@ public class DEDirector extends Director {
         HashSet<String> result = new HashSet<String>();
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-        
+
         result.add("\"" + sanitizedContainerName + ".h\"");
         result.add(processCode("\"$ModelName()_types.h\""));
-        
+
         return result;
     }
 
@@ -1195,17 +1195,17 @@ public class DEDirector extends Director {
         // FIXME: when does this happen?
         return "";
     }
-    
+
     /** Returns the sanitized name of this director
      *  adapter.
-     * 
+     *
      * @return The name of the director
      */
     public String getSanitizedDirectorName() {
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
         return _sanitizedDirectorName;
     }
-    
+
     /** Return whether we need to pad buffers or not.
      *  @return True when we need to pad buffers.
      *  @exception IllegalActionException If the expression cannot
@@ -1233,9 +1233,9 @@ public class DEDirector extends Director {
             NamedProgramCodeGeneratorAdapter target)
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-    
+
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
-    
+
         String name = CodeGeneratorAdapter.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
@@ -1245,7 +1245,7 @@ public class DEDirector extends Director {
                             + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
-    
+
 //        // Generate variable declarations for input ports.
 //        String inputVariableDeclaration = _generateInputVariableDeclaration(target);
 //        if (inputVariableDeclaration.length() > 1) {
@@ -1254,7 +1254,7 @@ public class DEDirector extends Director {
 //                            + "'s input variable declarations."));
 //            code.append(inputVariableDeclaration);
 //        }
-//    
+//
 //        // Generate variable declarations for output ports.
 //        String outputVariableDeclaration = _generateOutputVariableDeclaration(target);
 //        if (outputVariableDeclaration.length() > 1) {
@@ -1263,7 +1263,7 @@ public class DEDirector extends Director {
 //                            + "'s output variable declarations."));
 //            code.append(outputVariableDeclaration);
 //        }
-//    
+//
 //        // Generate type convert variable declarations.
 //        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
 //        if (typeConvertVariableDeclaration.length() > 1) {
@@ -1272,7 +1272,7 @@ public class DEDirector extends Director {
 //                            + "'s type convert variable declarations."));
 //            code.append(typeConvertVariableDeclaration);
 //        }
-    
+
         return processCode(code.toString());
     }
 
@@ -1343,17 +1343,17 @@ public class DEDirector extends Director {
             }
             _referencedParameters.get(target).add((Parameter) attribute);
         }
-    
+
         result.append(getCodeGenerator().generateVariableName(attribute));
-    
+
         if (!channelAndOffset[0].equals("")) {
             throw new IllegalActionException(getComponent(),
                     "a parameter cannot have channel number.");
         }
-    
+
         if (!channelAndOffset[1].equals("")) {
             //result.append("[" + channelAndOffset[1] + "]");
-    
+
             // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
             // We are not certain that attribute is parameter.
             if (!(attribute instanceof Parameter)) {
@@ -1363,7 +1363,7 @@ public class DEDirector extends Director {
             } else {
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
-    
+
                 result.insert(0, "Array_get(");
                 if (getCodeGenerator().isPrimitive(elementType)) {
                     // Generate type specific Array_get(). e.g. IntArray_get().
@@ -1371,7 +1371,7 @@ public class DEDirector extends Director {
                             + getCodeGenerator().codeGenType(elementType));
                 }
                 result.insert(0, "/*CGH77*/");
-    
+
                 result.append(" ," + channelAndOffset[1] + ")");
             }
         }
@@ -1384,7 +1384,7 @@ public class DEDirector extends Director {
     /** This very simple function just tells if a port is a local port.
      *
      *  @return A boolean true when the port is local
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     static private boolean _checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
@@ -1395,7 +1395,7 @@ public class DEDirector extends Director {
     /** This very simple function just tells if a port is a remote port.
     *
     *  @return A boolean true when the port is remote
-    *  @exception IllegalActionException 
+    *  @exception IllegalActionException
     */
     static private boolean _checkRemote(boolean forComposite, IOPort port) {
         return port.isOutput() && !forComposite || port.isInput()

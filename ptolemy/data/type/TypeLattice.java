@@ -42,9 +42,9 @@ import ptolemy.graph.DirectedAcyclicGraph;
 /**
  Type hierarchy for token classes.
  <p>
- There is exactly one instance of the type lattice. It is constructed 
- once and then does not change during execution. A concurrent hash 
- table is used to cache type comparison results to optimize for 
+ There is exactly one instance of the type lattice. It is constructed
+ once and then does not change during execution. A concurrent hash
+ table is used to cache type comparison results to optimize for
  frequently occurring type comparisons.
  </p>
  <p><a href="http://java.sun.com/docs/books/jls/third_edition/html/typesValues.html">The Java Language Spec, 3rd ed.</a>
@@ -188,7 +188,7 @@ public class TypeLattice {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    
+
     // The infinite type lattice
     private static class TheTypeLattice implements CPO<Object> {
         /** Return the bottom element of the type lattice, which is UNKNOWN.
@@ -228,11 +228,11 @@ public class TypeLattice {
                 StringBuilder key = new StringBuilder(((Type) t1).toString());
                 key.append("<");
                 key.append(((Type) t2).toString());
-                
+
                 // Uncommment the false below to measure the impact of
                 // _lattice.compare() on ptolemy.data package performance... Run
                 // ptolemy/data/type/test/performance.xml before and after...(zk)
-                if (//false && 
+                if (//false &&
                         (val = _getCachedTypeComparisonResult(key.toString())) != null) {
                     return val;
                 }
@@ -318,9 +318,9 @@ public class TypeLattice {
                         result = INCOMPARABLE;
                     }
                 }
-                
+
                  _setCachedTypeComparisonResult(key.toString(), result);
-                
+
                 return result;
         }
 
@@ -935,7 +935,7 @@ public class TypeLattice {
 
         /** The result cache for parts of the type lattice. */
         private final static ConcurrentHashMap<String, Integer> _compareCache = new ConcurrentHashMap<String, Integer>();
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

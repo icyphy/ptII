@@ -64,14 +64,14 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     public FSMDirector(ptolemy.domains.modal.kernel.FSMDirector component) {
         super(component);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         Public methods                    ////
-    
+
     /** Generate the constructor code for the specified director.
      * In this class we initialize the director with its internal
      * parameters and fields as well as with the depths of the actors
-     * 
+     *
      * @return The generated constructor code
      * @throws IllegalActionException Not thrown in this base class.
      */
@@ -79,8 +79,8 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor)_director.getContainer();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-        ptolemy.domains.modal.kernel.FSMDirector director = (ptolemy.domains.modal.kernel.FSMDirector) _director; 
-        
+        ptolemy.domains.modal.kernel.FSMDirector director = (ptolemy.domains.modal.kernel.FSMDirector) _director;
+
         result.append(_eol + getSanitizedDirectorName() + "->container = " + sanitizedContainerName + ";");
         result.append(_eol + _sanitizedDirectorName + "->_startTime = " + director.getModelStartTime() + ";");
         result.append(_eol + _sanitizedDirectorName + "->_stopTime = " + director.getModelStopTime() + ";");
@@ -88,7 +88,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         result.append(_eol + _sanitizedDirectorName + "->makeTransitions = " + sanitizedContainerName + "_makeTransitions;");
         result.append(_eol + _sanitizedDirectorName + "->transferModalInputs = " + sanitizedContainerName + "_transferModalInputs;");
         result.append(_eol + _sanitizedDirectorName + "->transferModalOutputs = " + sanitizedContainerName + "_transferModalOutputs;");
-        
+
         List<?> containedActors = container.deepEntityList();
         Iterator<?> actors = containedActors.iterator();
         // First loop to create the struct IOPort
@@ -102,7 +102,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
                     continue;
-                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                         " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
             }
             ports = ((Actor)actor).outputPortList().iterator();
@@ -110,7 +110,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
                     continue;
-                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                         " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
             }
         }
@@ -145,7 +145,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                             farPortName = farPort.getName() + "->_localInsideReceivers, ";
                         else
                             farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                        
+
                         int foo = 0;
                         int bar = 0;
                         Receiver[][] farReceiverss;
@@ -154,15 +154,15 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                         else
                             farReceiverss = farPort.getReceivers();
                         loops:
-                        for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                        for (foo = 0 ; foo < farReceiverss.length ; foo++)
                             for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                                if (farReceiverss[foo][bar].equals(receiver)) 
+                                if (farReceiverss[foo][bar].equals(receiver))
                                     break loops;
-                        
+
                         if (foo == farReceiverss.length)
                             throw new IllegalActionException(container,
                                     "Receiver not found in port : " + port.getFullName() + "in actor : " + sanitizedActorName);
-                        
+
                         result.append(_eol + "pblListAdd(pblListGet(" + sanitizedActorName + "_" + port.getName() + "->_farReceivers, " + i + ")" +
                                         ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                     }
@@ -189,30 +189,30 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                     if (sanitizedFarActorName.contains("Controller"))
                         continue;
                     String farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                    
+
                     int foo = 0;
                     int bar = 0;
                     Receiver[][] farReceiverss;
                     farReceiverss = farPort.getReceivers();
                     loops:
-                    for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                    for (foo = 0 ; foo < farReceiverss.length ; foo++)
                         for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                            if (farReceiverss[foo][bar].equals(receiver)) 
+                            if (farReceiverss[foo][bar].equals(receiver))
                                 break loops;
-                    
+
                     if (foo == farReceiverss.length)
                         throw new IllegalActionException(container,
                                 "Receiver not found in port : " + port.getFullName() + " in actor : " + sanitizedContainerName);
-                    
+
                     result.append(_eol + "pblListAdd(pblListGet(" + port.getName() + "->_insideReceivers, " + i + ")" +
                                     ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                 }
             }
         }
-        
+
         return result.toString();
     }
-    
+
     /** Generate The functions' declaration code for this director.
     *
     *  @return The functions' declaration function code.
@@ -228,10 +228,10 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
        code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
-       
+
        return code.toString();
    }
-    
+
     /** Generate the initialize function code for the associated FSM director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the adapter associated with
@@ -244,12 +244,12 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         CompositeActor container = ((CompositeActor) _director.getContainer());
         List actorList = container.deepEntityList();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-       
+
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
         code.append(_eol + _eol
                 + codeGenerator.comment("Initialization of the director"));
-        
+
         if (_director.isEmbedded()) {
             ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
             // Some composites, such as RunCompositeActor want to be treated
@@ -260,7 +260,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                     + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
             }
         }
-        
+
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
@@ -268,9 +268,9 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
             if (!actor.getFullName().contains("_Controller"))
                 code.append(_eol + sanitizedActorName + "_initialize();");
         }
-        
+
         code.append(_eol + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
-        
+
         code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".startTime;");
         code.append(_eol + _sanitizedDirectorName + ".exceedStopTime = false;");
 
@@ -278,13 +278,13 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         code.append(_eol
                 + codeGenerator
                         .comment("End of the Initialization of the director"));
-        
+
         return code.toString();
     }
-    
+
     /** Generate a main loop for an execution under the control of
-     *  this FSM director. 
-     *  
+     *  this FSM director.
+     *
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
@@ -312,16 +312,16 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize() {" + _eol);
         code.append(generateInitializeFunctionCode());
         code.append(_eol + "}" + _eol);
-        
+
         code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
         code.append(generateWrapupCode());
         code.append(_eol + "}" + _eol);
-        
+
         return code.toString();
     }
 
     /** Generate the code for the firing of this director.
-     * 
+     *
      *  @return The generated code.
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor.
@@ -343,7 +343,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         }
         return code.toString();
     }
-    
+
     /** Generate the postfire code of the associated composite actor.
     *
     *  @return The postfire code of the associated composite actor.
@@ -371,7 +371,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
        return code.toString();
     }
-    
+
     /** Generate the prefire code of the associated composite actor.
     *
     *  @return The prefire code of the associated composite actor.
@@ -399,12 +399,12 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         //code.append(super.generatePreinitializeCode());
         // We do execute this method without using its result because we need to initialize the offsets
         super.generatePreinitializeCode();
-        
+
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
 
         getSanitizedDirectorName();
-        
+
         code.append(_eol + "" + _sanitizedDirectorName + ".preinitializeFunction = " + _sanitizedDirectorName + "_Preinitialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".initializeFunction = " + _sanitizedDirectorName + "_Initialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = " + _sanitizedDirectorName + "_Prefire;");
@@ -415,7 +415,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
 
         return code.toString();
     }
-    
+
     /** Generate the preinitialize code for this director.
      *  The preinitialize code for the director is generated by appending
      *  the preinitialize code for each actor.
@@ -436,23 +436,23 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
             if (!actor.getFullName().contains("_Controller"))
                 code.append(_eol + sanitizedActorName + "_preinitialize();");
         }
-        
+
         return code.toString();
     }
-    
+
     /** Generate the code for the transfer of input values inside the modal model.
-     * 
+     *
      *  @return The generated code.
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating code for the actor.
      */
     public String generateTransferInputCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String containerName = generateName(container);
-        
-        
+
+
         List<TypedIOPort> inputPorts = container.inputPortList();
         List<TypedIOPort> outputPorts = container.outputPortList();
         TypedIOPort inputPort;
@@ -467,7 +467,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if (!port.getFullName().contains("_Controller")) {
-                code.append(_eol + port.getName() + " = (struct IOPort*)" 
+                code.append(_eol + port.getName() + " = (struct IOPort*)"
                         + containerName + "_get_" + port.getName() + "();");
                 int width = port.getWidth();
                 for (int i = 0 ; i < width ; i++) {
@@ -479,37 +479,37 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                     code.append(_eol + containerName + "__Controller_" + port.getName() + "_isPresent = true;" + _eol);
                     code.append(_eol + "}");
                 }
-                
+
             }
         }
         ports = container.outputPortList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if (!port.getFullName().contains("_Controller")) {
-                code.append(_eol + port.getName() + " = (struct IOPort*)" 
+                code.append(_eol + port.getName() + " = (struct IOPort*)"
                         + containerName + "_get_" + port.getName() + "();");
             }
         }
         return processCode(code.toString());
     }
-    
+
     /** Generate the code for the transfer of output values inside the modal model.
-     * 
+     *
      *  @return The generated code.
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating code for the actor.
      */
     public String generateTransferOutputCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String containerName = generateName(container);
-        
+
         Iterator<?> ports = container.outputPortList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if (!port.getFullName().contains("_Controller")) {
-                code.append(_eol + port.getName() + " = (struct IOPort*)" 
+                code.append(_eol + port.getName() + " = (struct IOPort*)"
                         + containerName + "_get_" + port.getName() + "();");
                 int width = port.getWidth();
                 for (int i = 0 ; i < width ; i++) {
@@ -520,20 +520,20 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                     code.append(".payload." + getCodeGenerator().codeGenType(port.getType()) + ";" + _eol);
                     code.append(_eol + "}");
                 }
-                
+
             }
         }
         ports = container.outputPortList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if (!port.getFullName().contains("_Controller")) {
-                code.append(_eol + port.getName() + " = (struct IOPort*)" 
+                code.append(_eol + port.getName() + " = (struct IOPort*)"
                         + containerName + "_get_" + port.getName() + "();");
             }
         }
         return processCode(code.toString());
     }
-    
+
     /** We override the super method, because the declaration
      * of the variables are in the actor's files.
      *  @return code The generated code.
@@ -544,7 +544,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
-        
+
         CompositeActor container = ((CompositeActor) _director.getContainer());
         //code.append(_eol + "Director " + _sanitizedDirectorName + ";");
         Iterator<?> ports = container.inputPortList().iterator();
@@ -561,7 +561,7 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                 code.append(_eol + "static struct IOPort* " + port.getName() + ";");
             }
         }
-        
+
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
@@ -572,23 +572,23 @@ public class FSMDirector extends ptolemy.cg.adapter.generic.program.procedural.a
                 code.append(adapter.generateVariableDeclaration());
             }
         }
-        
+
         return code.toString();
     }
 
-    
+
     /** Returns the sanitized name of this director adapter.
-     * 
+     *
      * @return The sanitized name of the director
      */
     public String getSanitizedDirectorName() {
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
         return _sanitizedDirectorName;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
-    
+
     /** The sanitized name of the director.
      */
     protected String _sanitizedDirectorName;

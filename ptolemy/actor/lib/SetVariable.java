@@ -408,7 +408,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 result.add(new Inequality(((Variable) attribute).getTypeTerm(),
                         output.getTypeTerm()));
                 if (this.isBackwardTypeInferenceEnabled()) {
-                    result.add(new Inequality(output.getTypeTerm(), 
+                    result.add(new Inequality(output.getTypeTerm(),
                             ((Variable) attribute).getTypeTerm()));
                 }
             }

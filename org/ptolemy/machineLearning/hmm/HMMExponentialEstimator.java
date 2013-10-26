@@ -54,15 +54,15 @@ emissions. The base class ParameterEstimator performs the parameter estimation a
 the HMMGaussianEstimator class contains density-specific methods for the exponential PDF
 calculations and produces the relevant estimates at its output ports.</p>
 <p>
-The output ports for an exponential HMM model is the <i>lambda<\i> 
+The output ports for an exponential HMM model is the <i>lambda<\i>
 vector that contains the rate estimates of the exponential distributions in each possible
 emission category.
 </p>
 <p>
 The user-defined parameters are initial guesses for the model parameters, given by
 <i>lambda0</i>, the rate vector guess, <i>prior</i>, the prior state distribution guess and
-<i>A0</i>, the transition matrix guess. <i>iterations</i> is the number of EM iterations 
-allowed until convergence. If, during iteration, the conditional log-likelihood of the observed 
+<i>A0</i>, the transition matrix guess. <i>iterations</i> is the number of EM iterations
+allowed until convergence. If, during iteration, the conditional log-likelihood of the observed
 sequence given the parameter estimates converges to a value within <i>likelihoodThreshold</i>,
 the parameter estimation stops iterating and delivers the parameter estimates.
 
@@ -70,7 +70,7 @@ the parameter estimation stops iterating and delivers the parameter estimates.
  @version $Id$
  @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class HMMExponentialEstimator extends ParameterEstimator {
    /** Construct an actor with the given container and name.
@@ -84,21 +84,21 @@ public class HMMExponentialEstimator extends ParameterEstimator {
    public HMMExponentialEstimator(CompositeEntity container, String name)
            throws NameDuplicationException, IllegalActionException {
        super(container, name);
-       
-       
-       
+
+
+
        lambdaGuess = new Parameter(this, "lambdaGuess");
        lambdaGuess.setExpression("{1.0, 4.0}");
-       lambdaGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
-       
+       lambdaGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
        _lambda0 = new double[_nStates];
-       _lambda =  new double[_nStates];  
-       
+       _lambda =  new double[_nStates];
+
        // output parameters
        lambda = new TypedIOPort(this, "lambda", false, true);
-       lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
+       lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE));
    }
-   
+
    public void attributeChanged(Attribute attribute)
            throws IllegalActionException {
        if(attribute == lambdaGuess){
@@ -107,7 +107,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
            for ( int i = 0; i < _nStates; i++) {
                _lambda0[i] = ((DoubleToken)((ArrayToken) lambdaGuess.getToken()).getElement(i))
                        .doubleValue();
-           } 
+           }
        }  else{
            super.attributeChanged(attribute);
        }
@@ -116,13 +116,13 @@ public class HMMExponentialEstimator extends ParameterEstimator {
    ///////////////////////////////////////////////////////////////////
    ////                         public variables                  ////
 
-   public TypedIOPort lambda;  
-   
-   public Parameter lambdaGuess;  
-   
+   public TypedIOPort lambda;
+
+   public Parameter lambdaGuess;
+
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
-   
+
    public Object clone(Workspace workspace) throws CloneNotSupportedException {
        HMMExponentialEstimator newObject = (HMMExponentialEstimator) super
                .clone(workspace);
@@ -130,41 +130,41 @@ public class HMMExponentialEstimator extends ParameterEstimator {
        newObject._lambda0 = new double[_nStates];
        return newObject;
    }
-   
+
    public void fire() throws IllegalActionException {
-       super.fire(); 
-       
+       super.fire();
+
        if((_nStates != _transitionMatrix.length) || (_nStates != _priors.length) || (_nStates != _lambda.length))
        {
            throw new IllegalActionException(this, "Parameter guess vectors can not have different lengths.");
        }
-      
+
        boolean converged = _EMParameterEstimation();
-       
+
        Token[] mTokens = new Token[_nStates];
        Token[] pTokens = new Token[_nStates];
        for ( int i = 0; i< _nStates; i++){
            // lambda estimate is the reciprocal of the mean estimate
            _lambda[i] = Math.pow(m_new[i], -1.0);
-           mTokens[i] = new DoubleToken(_lambda[i]); 
+           mTokens[i] = new DoubleToken(_lambda[i]);
            pTokens[i] = new DoubleToken(prior_new[i]);
        }
        // broadcast best-effort parameter estimates
-       lambda.send(0, new ArrayToken(mTokens)); 
+       lambda.send(0, new ArrayToken(mTokens));
        transitionMatrix.send(0, new DoubleMatrixToken(A_new));
-         
+
    }
-   protected double emissionProbability(double y, int hiddenState){ 
-       double m = _lambda[hiddenState]; 
+   protected double emissionProbability(double y, int hiddenState){
+       double m = _lambda[hiddenState];
        return m*Math.exp(-m*y);
-   } 
-   
+   }
+
 protected boolean _checkForConvergence(int iterations){
-       
+
        // check for null estimates
        if((m_new[0] != m_new[0]) || (A_new[0]!=A_new[0]) || (prior_new[0]!=prior_new[0]) ){
            // if no convergence in 10 iterations, issue warning message.
-           if ( (iterations >= _nIterations-1)){ 
+           if ( (iterations >= _nIterations-1)){
                // return the guess parameters
                for ( int i = 0; i< _nStates; i++){
                    m_new[i] = Math.pow(_lambda0[i], -1.0); // reset to initial lambda guesses
@@ -173,7 +173,7 @@ protected boolean _checkForConvergence(int iterations){
                prior_new = _priors; // reset to input priors
                System.out.println("Expectation Maximization failed to converge");
                return false;
-           }else if(_randomize){ 
+           }else if(_randomize){
                // randomize means
                double minO = _observations[0];
                double maxO = _observations[0];
@@ -183,60 +183,60 @@ protected boolean _checkForConvergence(int iterations){
                    }
                    if( _observations[t] > maxO){
                        maxO = _observations[t];
-                   } 
+                   }
                }
                double L = maxO - minO;
                // make new random guess
                for( int i = 0; i< _nStates; i++){
-                   m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO; 
+                   m_new[i] = L/_nStates*Math.random()  +L*i/_nStates + minO;
                    for ( int j = 0 ; j < _nStates; j++){
                        //A_new[i][j] = 1.0/nStates;
-                   } 
+                   }
                }
                A_new = _A0;
                // sort arrays
-               Arrays.sort(m_new); 
-               prior_new = _priors;  
+               Arrays.sort(m_new);
+               prior_new = _priors;
            }
-       }  
+       }
        return true;
    }
    protected void _initializeEMParameters(){
        // set the initial values of parameters
-       _lambda = _lambda0; 
+       _lambda = _lambda0;
        _transitionMatrix = _A0;
        _priorIn = _priors;
-       
+
        A_new = new double[_nStates][_nStates];
-       m_new = new double[_nStates]; 
+       m_new = new double[_nStates];
        prior_new = new double[_nStates];
    }
-   
+
    protected void _iterateEM(){
-       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn,0); 
-       m_new = (double[])   newEstimates.get("mu_hat");  
-       A_new = (double[][]) newEstimates.get("A_hat"); 
+       newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix, _priorIn,0);
+       m_new = (double[])   newEstimates.get("mu_hat");
+       A_new = (double[][]) newEstimates.get("A_hat");
        prior_new = (double[]) newEstimates.get("pi_hat");
        likelihood = (Double) (newEstimates.get("likelihood"));
    }
-   
+
    protected void _updateEstimates(){
-       
+
        _transitionMatrix    = A_new;
        for ( int i = 0; i< _nStates; i++){
            // lambda estimate is the inverse mean estimate
            _lambda[i] = Math.pow(m_new[i], -1.0);
        }
        _priorIn = _priors; // set to the original priors
-       
+
    }
     private double[] _lambda;
     private double[] _lambda0;
-    
-    
-    
+
+
+
  // EM Specific Parameters
     private double[][] A_new;
-    private double[]   m_new; 
+    private double[]   m_new;
     private double[] prior_new;
 }

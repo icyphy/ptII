@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * Conditionally merge the streams at two input ports
  * depending on the value of the boolean control input.
  * In the first firing, this actor consumes a token from the
@@ -100,41 +100,41 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     // consumption rate values.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
 
-    /**     
+    /**
      * Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
 
-    /**     
+    /**
      * Input that selects one of the other input ports.  The type is
      * BooleanToken.
      */
     public TypedIOPort control;
 
-    /**     
+    /**
      * The output port.  The type is at least the type of
      * <i>trueInput</i> and <i>falseInput</i>
      */
     public TypedIOPort output;
 
-    /**     
+    /**
      * This parameter provides token consumption rate for <i>trueInput</i>.
      * The type is int.
      */
     public Parameter trueInput_tokenConsumptionRate;
 
-    /**     
+    /**
      * This parameter provides token consumption rate for <i>falseInput</i>.
      * The type is int.
      */
     public Parameter falseInput_tokenConsumptionRate;
 
-    /**     
+    /**
      * This parameter provides token consumption rate for <i>control</i>.
      * The type is int.
      */
@@ -145,27 +145,27 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     // If on this iteration the control token was used, set it to null.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**     
-     * The most recently read control token. 
+    /**
+     * The most recently read control token.
      */
     private BooleanToken _control = null;
 
-    /**     
-     * Indicator that the control token was used in the fire method. 
+    /**
+     * Indicator that the control token was used in the fire method.
      */
     private boolean _controlUsed = false;
 
-    /**     
-     * A final static IntToken with value 0. 
+    /**
+     * A final static IntToken with value 0.
      */
     private final static IntToken _zero = new IntToken(0);
 
-    /**     
-     * A final static IntToken with value 1. 
+    /**
+     * A final static IntToken with value 1.
      */
     private final static IntToken _one = new IntToken(1);
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -203,7 +203,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "+"width=\"40\" height=\"40\" "+"style=\"fill:white\"/>\n"+"<text x=\"-17\" y=\"-3\" "+"style=\"font-size:14\">\n"+"T \n"+"</text>\n"+"<text x=\"-17\" y=\"15\" "+"style=\"font-size:14\">\n"+"F \n"+"</text>\n"+"<text x=\"-5\" y=\"16\" "+"style=\"font-size:14\">\n"+"C \n"+"</text>\n"+"</svg>\n");
     }
 
-    /**     
+    /**
      * Clone this actor into the specified workspace. The new actor is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
@@ -227,7 +227,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Read a token from the control port or from the input designated
      * by the previously read input from the control port.  In the
      * latter case, send to the token read to the output. In the former
@@ -257,7 +257,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Initialize this actor so that the <i>falseInput</i> is read
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
@@ -271,7 +271,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         control_tokenConsumptionRate.setToken(_one);
     }
 
-    /**     
+    /**
      * Return true, unless stop() has been called, in which case,
      * return false.
      * @return True if execution can continue into the next iteration.
@@ -300,7 +300,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         return super.postfire();
     }
 
-    /**     
+    /**
      * If the mode is to read a control token, then return true
      * if the <i>control</i> input has a token. Otherwise, return
      * true if every channel of the input port specified by the most

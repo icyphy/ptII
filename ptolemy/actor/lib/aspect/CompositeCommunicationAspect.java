@@ -42,7 +42,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect; 
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
@@ -77,7 +77,7 @@ import ptolemy.kernel.util.Workspace;
 *  When an intermediate receiver sends a token to an input port of this
 *  communication aspect, the original receiver and the token are encoded in a
 *  RecordToken. When such a token arrives at an output port, the original token
-*  is extracted and sent to the original receiver. 
+*  is extracted and sent to the original receiver.
 *
 *  @author Patricia Derler
 *  @version $Id$
@@ -129,10 +129,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         _initialize();
     }
 
-    /** This parameter indicates whether the tokens received via the 
-     *  ImmediateReceivers are immediately forwarded to the wrapped 
+    /** This parameter indicates whether the tokens received via the
+     *  ImmediateReceivers are immediately forwarded to the wrapped
      *  receivers or whether they are delayed by this communication aspect
-     *  and only forwarded through a CommunicationResponsePort. 
+     *  and only forwarded through a CommunicationResponsePort.
      *  This parameter is a boolean that defaults to false.
      */
     public Parameter justMonitor;
@@ -346,10 +346,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         }
     }
 
-    /** Set the name of the CommunicationRequestPort that will be receiving tokens from 
+    /** Set the name of the CommunicationRequestPort that will be receiving tokens from
      *  this actor port.
-     *  @param port The actorport.  
-     *  @param inputPortName The name of the CommunicationRePort. 
+     *  @param port The actorport.
+     *  @param inputPortName The name of the CommunicationRePort.
      */
     public void setInputPortName(Port port, String inputPortName) {
         if (_communicationRequestPortNames == null) {
@@ -428,10 +428,10 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Cached list of decorated objects. */
         private List<NamedObj> _decoratedObjects;
-        
+
         /** Version for _decoratedObjects. */
         private long _decoratedObjectsVersion = -1L;
 
@@ -449,9 +449,9 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
 
     /** Attributes for ports decorated by this composite communication aspect.
      *  A port on an actor decorated by a composite communication aspect must
-     *  specify the port in the CompositeCommunicationAspect. 
+     *  specify the port in the CompositeCommunicationAspect.
      *  that input tokens are routed to.
-     * 
+     *
      *  @author Patricia Derler
      */
     public static class CompositeCommunicationAspectAttributes extends CommunicationAspectAttributes {
@@ -511,7 +511,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         /** Add names of available CommunicationRequestPort in CompositeQM as
          *  choices to inputPort.
          *  @exception InteralErrorException Thrown if CompositeQM
-         *    cannot be accessed.  
+         *    cannot be accessed.
          */
         @Override
         public void updateContent() throws InternalErrorException {

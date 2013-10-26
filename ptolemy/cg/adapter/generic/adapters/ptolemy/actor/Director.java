@@ -154,10 +154,10 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     public Set<String> getHeaderFiles() throws IllegalActionException {
         return new HashSet<String>();
     }
-    
+
     /** Generate the constructor code for the specified director.
      * This is only used in the C Code generation.
-     * 
+     *
      * @return If the container is an instance of the PtidesPlatform,
      * then return constructor code.  Otherwise return the empty
      * string.
@@ -175,7 +175,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
             result.append(_eol + sanitizedDirectorName + "->_startTime = " + _director.getModelStartTime() + ";");
             result.append(_eol + sanitizedDirectorName + "->_stopTime = " + _director.getModelStopTime() + ";");
             result.append(_eol + sanitizedDirectorName + "->localClock->container = (struct Director*)" + sanitizedDirectorName + ";");
-            
+
             List<?> containedActors = container.deepEntityList();
             Iterator<?> actors = containedActors.iterator();
             // First loop to create the struct IOPort
@@ -187,7 +187,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     IOPort port = (IOPort)ports.next();
                     if (!port.isOutsideConnected())
                         continue;
-                    result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                    result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                             " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
                 }
                 ports = ((Actor)actor).outputPortList().iterator();
@@ -195,7 +195,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     IOPort port = (IOPort)ports.next();
                     if (!port.isOutsideConnected())
                         continue;
-                    result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                    result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                             " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
                 }
             }
@@ -209,7 +209,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     IOPort port = (IOPort)ports.next();
                     if (!port.isOutsideConnected())
                         continue;
-                    
+
                     int i = 0;
                     int j = 0;
                     Receiver[][] receiverss = port.getRemoteReceivers();
@@ -226,7 +226,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                                 farPortName = farPort.getName() + "->_localInsideReceivers, ";
                             else
                                 farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                            
+
                             int foo = 0;
                             int bar = 0;
                             Receiver[][] farReceiverss;
@@ -235,15 +235,15 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                             else
                                 farReceiverss = farPort.getReceivers();
                             loops:
-                            for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                            for (foo = 0 ; foo < farReceiverss.length ; foo++)
                                 for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                                    if (farReceiverss[foo][bar].equals(receiver)) 
+                                    if (farReceiverss[foo][bar].equals(receiver))
                                         break loops;
-                            
+
                             if (foo == farReceiverss.length)
                                 throw new IllegalActionException(container,
                                         "Receiver not found in port : " + port.getFullName() + "in actor : " + sanitizedActorName);
-                            
+
                             result.append(_eol + "pblListAdd(pblListGet(" + sanitizedActorName + "_" + port.getName() + "->_farReceivers, " + i + ")" +
                                             ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                         }
@@ -268,27 +268,27 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                         NamedObj farActor = farPort.getContainer();
                         String sanitizedFarActorName = CodeGeneratorAdapter.generateName(farActor);
                         String farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                        
+
                         int foo = 0;
                         int bar = 0;
                         Receiver[][] farReceiverss;
                         farReceiverss = farPort.getReceivers();
                         loops:
-                        for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                        for (foo = 0 ; foo < farReceiverss.length ; foo++)
                             for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                                if (farReceiverss[foo][bar].equals(receiver)) 
+                                if (farReceiverss[foo][bar].equals(receiver))
                                     break loops;
-                        
+
                         if (foo == farReceiverss.length)
                             throw new IllegalActionException(container,
                                     "Receiver not found in port : " + port.getFullName() + " in actor : " + sanitizedContainerName);
-                        
+
                         result.append(_eol + "pblListAdd(pblListGet(" + port.getName() + "->_insideReceivers, " + i + ")" +
                                         ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                     }
                 }
             }
-            
+
             return result.toString();
         }
         return "";
@@ -588,9 +588,9 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
         return code.toString();
     }
-    
+
     /** Generate variable declarations for inputs and outputs and parameters.
-     *  Append the declarations to the given string buffer. 
+     *  Append the declarations to the given string buffer.
      *  This method returns the declarations for the param actor only.
      *  @param adapter The adapter for which to generate variable declarations.
      *  @return code The generated code.
@@ -631,7 +631,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
         return code.toString();
     }
-    
+
     /** Generate variable initialization for the referenced parameters.
      *  for the adapter given in argument
      *  @param adapter The adapter for which to generate variable initialization.

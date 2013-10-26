@@ -56,10 +56,10 @@ public class Scale
     public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Generate the declaration of the shared code.  If the Scale_scaleOnLeft() or
      * Scale_scaleOnRight methods are needed, include them in the shared

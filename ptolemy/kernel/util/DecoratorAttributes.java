@@ -55,7 +55,7 @@ These attributes can be retrieved by using
 @Pt.AcceptedRating Red (rodiers)
 */
 public class DecoratorAttributes extends Attribute {
-    
+
     // FIXME: The decoratorName mechanism is very fragile.
     // If the decorator changes name, the connection will be lost.
     // If the container of the decorator changes name, it will again be lost.
@@ -65,7 +65,7 @@ public class DecoratorAttributes extends Attribute {
     // But it may not have been constructed yet. Hence, when a decorator is
     // constructed, it should look for decorated objects and establish the link.
     // This way, it doesn't matter which gets constructed first.
-    
+
     /** Construct a DecoratorAttributes instance to contain the
      *  decorator parameter for the specified container provided
      *  by the specified decorator. This constructor is used
@@ -82,11 +82,11 @@ public class DecoratorAttributes extends Attribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, container.uniqueName("DecoratorAttributesFor_" + decorator.getName()));
         _decorator = decorator;
-        
+
         decoratorName = new StringAttribute(this, "decoratorName");
         decoratorName.setVisibility(Settable.NONE);
     }
-    
+
     /** Construct a DecoratorAttributes instance with the given name
      *  and container.  This constructor is used when parsing MoML files,
      *  where it is assumed that the decorator is specified by name as
@@ -101,7 +101,7 @@ public class DecoratorAttributes extends Attribute {
     public DecoratorAttributes(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         decoratorName = new StringAttribute(this, "decoratorName");
         decoratorName.setVisibility(Settable.NONE);
     }
@@ -119,7 +119,7 @@ public class DecoratorAttributes extends Attribute {
      *  This is a string that is not visible to the user.
      */
     public StringAttribute decoratorName;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -140,7 +140,7 @@ public class DecoratorAttributes extends Attribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException Not thrown in this base class
@@ -183,7 +183,7 @@ public class DecoratorAttributes extends Attribute {
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
-        
+
         // Now invoke the superclass to export MoML.
         super.exportMoML(output, depth, name);
     }
@@ -236,7 +236,7 @@ public class DecoratorAttributes extends Attribute {
         }
         return _decorator;
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 

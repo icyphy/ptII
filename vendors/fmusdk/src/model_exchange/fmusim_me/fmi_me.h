@@ -1,8 +1,8 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * fmi_me.h
  * Function types for all function of the "FMI for Model Exchange 1.0"
- * and a struct with the corresponding function pointers. 
- * Copyright 2011 QTronic GmbH. All rights reserved. 
+ * and a struct with the corresponding function pointers.
+ * Copyright 2011 QTronic GmbH. All rights reserved.
  * -------------------------------------------------------------------------
  */
 
@@ -39,7 +39,7 @@ typedef fmiStatus (*fSetReal)   (fmiComponent c, const fmiValueReference vr[], s
 typedef fmiStatus (*fSetInteger)(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiInteger value[]);
 typedef fmiStatus (*fSetBoolean)(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiBoolean value[]);
 typedef fmiStatus (*fSetString) (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString  value[]);
-typedef fmiStatus (*fInitialize)(fmiComponent c, fmiBoolean toleranceControlled, 
+typedef fmiStatus (*fInitialize)(fmiComponent c, fmiBoolean toleranceControlled,
                                fmiReal relativeTolerance, fmiEventInfo* eventInfo);
 typedef fmiStatus (*fGetDerivatives)    (fmiComponent c, fmiReal derivatives[]    , size_t nx);
 typedef fmiStatus (*fGetEventIndicators)(fmiComponent c, fmiReal eventIndicators[], size_t ni);
@@ -51,7 +51,7 @@ typedef fmiStatus (*fEventUpdate)               (fmiComponent c, fmiBoolean inte
 typedef fmiStatus (*fGetContinuousStates)       (fmiComponent c, fmiReal states[], size_t nx);
 typedef fmiStatus (*fGetNominalContinuousStates)(fmiComponent c, fmiReal x_nominal[], size_t nx);
 typedef fmiStatus (*fGetStateValueReferences)   (fmiComponent c, fmiValueReference vrx[], size_t nx);
-typedef fmiStatus (*fTerminate)                 (fmiComponent c);    
+typedef fmiStatus (*fTerminate)                 (fmiComponent c);
 
 typedef struct {
     ModelDescription* modelDescription;
@@ -79,8 +79,8 @@ typedef struct {
     fGetContinuousStates getContinuousStates;
     fGetNominalContinuousStates getNominalContinuousStates;
     fGetStateValueReferences getStateValueReferences;
-    fTerminate terminate; 
-/*   
+    fTerminate terminate;
+/*
     fInstantiateSlave instantiateSlave;
     fInitializeSlave initializeSlave;
     fTerminateSlave terminateSlave;

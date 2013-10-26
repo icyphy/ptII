@@ -920,7 +920,7 @@ public class SyntacticGraph extends CompositeEntity {
      *  @return code generated from syntactic graph.
      */
     public String generateCode() {
-        StringBuffer code = new StringBuffer(); 
+        StringBuffer code = new StringBuffer();
         for (SyntacticNode node : _nodes) {
             if (node.isRepresentative()) {
                 code.append("" + getLabelFromNode(node) + " = \t"

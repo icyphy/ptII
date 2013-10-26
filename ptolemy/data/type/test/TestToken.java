@@ -64,7 +64,7 @@ public class TestToken extends Token {
     ////                         public methods                    ////
 
     /** Return the object contained by this token.
-     *  @return The object.   
+     *  @return The object.
      */
     public Object getObject() {
         return _object;
@@ -162,7 +162,7 @@ public class TestToken extends Token {
         }
 
         /** Return the class for tokens that this basetype represents.
-         *  @return The class.   
+         *  @return The class.
          */
         public Class getTokenClass() {
             return TestToken.class;

@@ -194,9 +194,9 @@ public class FMUModelExchange extends Transformer {
                                 ? "No files were unzipped from the FMU file "
                                 + fmuFileName + "."
                                 : "The first file in the fmuFile " + fmuFileName
-                                + " was " + _fmiModelDescription.files.get(0) + ".")); 
+                                + " was " + _fmiModelDescription.files.get(0) + "."));
             }
-            
+
 
 //             try { // make the error handling better, because if the file is not valid, its not possible to cancel the error message, one has to use ok instead ;)
 //                 if (fmuFile.getExpression() != "") {
@@ -291,7 +291,7 @@ public class FMUModelExchange extends Transformer {
             if (inputNames.getExpression() != "") {
             _inputVariables = inputNames.getExpression().split(",");
             _inputVector = new double[_inputVariables.length];
-            
+
             foo = helper.new_string_array(_inputVariables.length);
             for (int i = 0; i < _inputVariables.length; i++) {
                 helper.string_array_setitem(foo, i, _inputVariables[i]);
@@ -301,12 +301,12 @@ public class FMUModelExchange extends Transformer {
             _inputVector = new double[0];
             foo = helper.new_string_array(0);
             }
-            
+
             //            _fmu.setInputs(foo, _inputVariables.length);
             } else if (attribute == outputNames) {
             if (outputNames.getExpression() != "") {
             _outputVariables = outputNames.getExpression().split(",");
-            _outputVector = new double[_outputVariables.length];            
+            _outputVector = new double[_outputVariables.length];
 
             foo = helper.new_string_array(_outputVariables.length);
             for (int i = 0; i < _outputVariables.length; i++) {
@@ -417,7 +417,7 @@ public class FMUModelExchange extends Transformer {
             _fireAt(_nextEvent);
         }
 
-        /*        
+        /*
         CausalityInterfaceForComposites cifc = (CausalityInterfaceForComposites)getDirector().getCausalityInterface();
         nextevent = new DEEvent((Actor) this, new Time(getDirector(), _eventTime), 1, cifc.getDepthOfActor(this));
         */

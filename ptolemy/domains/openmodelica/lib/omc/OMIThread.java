@@ -36,8 +36,8 @@
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
- * 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
  */
 
 package ptolemy.domains.openmodelica.lib.omc;
@@ -55,20 +55,20 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
 
-/**   
+/**
       <p>OMIThread runs key modules of OMI: Transfer and Client modules.</P>
-      <p>Transfer module tries to get simulation results from a result manager and sends them to the Ptolemy II 
+      <p>Transfer module tries to get simulation results from a result manager and sends them to the Ptolemy II
       immediately after starting a simulation.</P>
-      <p>The Control module is the interface between OMI and Ptolemy II. It is implemented as a single thread to 
+      <p>The Control module is the interface between OMI and Ptolemy II. It is implemented as a single thread to
       support parallel tasks and independent reactivity. As the main controlling and communication instance at
       simulation initialization phase and while simulation is running it manages simulation properties and also
       behavior. A client can permanently send operations as messages to the Control unit, it can react at any
-      time to feedback from the other internal OMI components and it also sends messages to a client, 
+      time to feedback from the other internal OMI components and it also sends messages to a client,
       for example error or status messages.</P>
-      <p>The network communication technology TCP/IPv4 is used for sending and receiving messages. 
+      <p>The network communication technology TCP/IPv4 is used for sending and receiving messages.
       The above modules are designated for a communication over TCP/IP.</P>
       <p>Prior to running the Transfer and Control module by starting the OMIThread, client and servers are created
-      ,the IP and ports of the servers are set and streams for transferring information between OMI and Ptolemy II 
+      ,the IP and ports of the servers are set and streams for transferring information between OMI and Ptolemy II
       are sets up.</p>
 
       @author Mana Mirzaei
@@ -78,19 +78,19 @@ import ptolemy.kernel.util.IllegalActionException;
       @Pt.AcceptedRating Red (cxh)
  */
 public class OMIThread extends Thread {
-    /** Construct client and servers, set the IP and ports of the servers and set up streams for transferring information 
+    /** Construct client and servers, set the IP and ports of the servers and set up streams for transferring information
      *  between client and servers.
      *  @param parameterFilter Filter for showing the result of the simulation..
      *  @param stopTime Stop time of the simulation.
-     *  @param outputPort The output port that the result of simulation should be sent to. 
+     *  @param outputPort The output port that the result of simulation should be sent to.
      *  @throws IOException If I/O error occurs while creating sockets and streams.
      */
     public OMIThread(String parameterFilter, String stopTime,
             TypedIOPort outputPort) throws IOException {
 
-        // In an interactive processing mode, the simulation does not stop automatically at the stop time that 
-        // is selected as one of the OpenModelica actors' parameters. So during reading the result back from 
-        // Transfer server, stop time should be checked. 
+        // In an interactive processing mode, the simulation does not stop automatically at the stop time that
+        // is selected as one of the OpenModelica actors' parameters. So during reading the result back from
+        // Transfer server, stop time should be checked.
         _stopTime = stopTime;
         _parameterFilter = parameterFilter;
         _outputPort = outputPort;
@@ -121,7 +121,7 @@ public class OMIThread extends Thread {
         _transferServer = new ServerSocket(10502);
         _transferConnection = _transferServer.accept();
 
-        // Set up an input stream to receive the simulation result back from Transfer Server.        
+        // Set up an input stream to receive the simulation result back from Transfer Server.
         _inFromTransferServer = new BufferedReader(new InputStreamReader(
                 _transferConnection.getInputStream()));
 
@@ -131,12 +131,12 @@ public class OMIThread extends Thread {
                 String parameterSequence = _parameterFilter;
                 String[] parameters = null;
 
-                // Split parameters by '#' . e.g. load.w#load.phi. 
+                // Split parameters by '#' . e.g. load.w#load.phi.
                 String parameterDelimiter = "#";
                 parameters = parameterSequence.split(parameterDelimiter);
 
                 if (parameters.length >= 2) {
-                    // The setfilter message is sent to the server to set the filter for variable(s) and parameter(s) 
+                    // The setfilter message is sent to the server to set the filter for variable(s) and parameter(s)
                     // which should send from OMI to Ptolemy II.
                     _toServer
                             .write("setfilter#3#" + parameterSequence + "#end");
@@ -169,15 +169,15 @@ public class OMIThread extends Thread {
     }
 
     /** <p>The simulation result is displayed step by step according to the start time, stop time and number
-     *  of intervals of the OpenModelica actor. The formula for calculating the step time is step time = 
-     *  (stop time - start time) / number of intervals. There is one issue, the simulation does not stop 
-     *  automatically at the stop time that is selected as one of the OpenModelica actors' parameters. 
-     *  So during reading the result back from Transfer server, one condition is set up to check if the stop 
+     *  of intervals of the OpenModelica actor. The formula for calculating the step time is step time =
+     *  (stop time - start time) / number of intervals. There is one issue, the simulation does not stop
+     *  automatically at the stop time that is selected as one of the OpenModelica actors' parameters.
+     *  So during reading the result back from Transfer server, one condition is set up to check if the stop
      *  time is reached. The simulation result according to the parameter's of the OpenModelica actor is sent
      *  in the string format to the output port of the OpenModelica actor to be displayed by Display actor.
      *  </p>
-     *  <p>In addition, the Control module runs prior to running the Transfer one to get the confirmation to 
-     *  run the Transfer module and following running the Transfer module to get the confirmation that the 
+     *  <p>In addition, the Control module runs prior to running the Transfer one to get the confirmation to
+     *  run the Transfer module and following running the Transfer module to get the confirmation that the
      *  simulation is shut down.</p>
      */
     public void run() {
@@ -210,7 +210,7 @@ public class OMIThread extends Thread {
             if (_transferServer.isBound() && _transferConnection.isConnected()
                     && _inFromTransferServer.ready()) {
                 try {
-                    // It returns -1 if the end of the stream is reached. 
+                    // It returns -1 if the end of the stream is reached.
                     // If not, it returns the number of chars that have been read.
                     Outerloop: while ((streamIndex = _inFromTransferServer
                             .read(transferServerBuffer)) != -1) {
@@ -226,7 +226,7 @@ public class OMIThread extends Thread {
                             for (int j = 1; j < timeSplitResult.length; j++) {
                                 if (j == 1) {
                                     // Stop the simulation when the stopTime is reached.
-                                    // There is a need to have this condition, because the simulation does not 
+                                    // There is a need to have this condition, because the simulation does not
                                     // stop automatically.
                                     if ((timeSplitResult[j].toString()
                                             .startsWith(_stopTime)))
@@ -258,7 +258,7 @@ public class OMIThread extends Thread {
 
                 // FIXME THE RESULT SHOULD BE PASSED AS RECORD TOKEN.
                 /*  try {
-                      // It returns -1 if the end of the stream is reached. 
+                      // It returns -1 if the end of the stream is reached.
                       // If not, it returns the number of chars that have been read.
                       Outerloop: while ((streamIndex = _inFromTransferServer
                               .read(transferServerBuffer)) != -1) {
@@ -315,20 +315,20 @@ public class OMIThread extends Thread {
                   } catch (IOException e) {
                       e.printStackTrace();
                   }*/
-                // 
+                //
                 try {
-                    // After displaying the simulation result is done, 
+                    // After displaying the simulation result is done,
                     // the shutdown message is sent to the server to shut the simulation down.
                     char[] controlServerShutDownBuffer = new char[124];
                     _toServer.write("shutdown#5#end");
                     _toServer.flush();
-                 
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         new IOException(e.getMessage()).printStackTrace();
                     }
-                    
+
                     try {
                         _inFromControlServer.read(controlServerShutDownBuffer);
                         String statusMessage = new String(
@@ -365,7 +365,7 @@ public class OMIThread extends Thread {
     // The connection for receiving the confirmation message back from Control Server.
     private Socket _controlConnection;
 
-    // Control server socket. 
+    // Control server socket.
     private ServerSocket _controlServer = null;
 
     // The input stream to receive the response/simulation result back from the control server.

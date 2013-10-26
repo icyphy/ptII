@@ -47,24 +47,24 @@ import ptolemy.kernel.util.Workspace;
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
 Bayesian Network models. ClassifyObservations is designed to work with <i>
 ExpectationMaximization<\i>, which provides the Maximum-Likelihood model parameters
-from which the observations are assumed to be drawn. The output is an integer array 
+from which the observations are assumed to be drawn. The output is an integer array
 of labels, representing the maximum-likelihood hidden state sequence of the given
 model.
 
 <p>
-The user provides a set of parameter estimates as inputs to the model, and 
-The <i>mean<\i>  is a double array input containing the mean estimate and 
-<i>sigma</i> is a double array input containing standard deviation estimate of 
-each mixture component. If the <i>modelType<\i> is HMM, then an additional input, 
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix 
+The user provides a set of parameter estimates as inputs to the model, and
+The <i>mean<\i>  is a double array input containing the mean estimate and
+<i>sigma</i> is a double array input containing standard deviation estimate of
+each mixture component. If the <i>modelType<\i> is HMM, then an additional input,
+<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
 governing the Markovian process representing the hidden state evolution. The <i>prior
-</i> input is an estimate of the prior state distribution.  
+</i> input is an estimate of the prior state distribution.
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.1 
+ @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class HMMGaussianClassifier extends ObservationClassifier {
    /** Construct an actor with the given container and name.
@@ -84,27 +84,27 @@ public class HMMGaussianClassifier extends ObservationClassifier {
        mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        StringAttribute cardinality = new StringAttribute(
                mean.getPort(), "_cardinal");
-       cardinality.setExpression("SOUTH"); 
-       
-       standardDeviation =  new PortParameter(this, "standardDeviation"); 
+       cardinality.setExpression("SOUTH");
+
+       standardDeviation =  new PortParameter(this, "standardDeviation");
        standardDeviation.setExpression("{10E-3,50E-3}");
        standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
        cardinality = new StringAttribute(
                standardDeviation.getPort(), "_cardinal");
        cardinality.setExpression("SOUTH");
-       
+
        //_nStates = ((ArrayToken) meanToken).length();
        _nStates = ((ArrayToken)mean.getToken()).length();
        _mu = new double[_nStates];
-       _sigma = new double[_nStates]; 
+       _sigma = new double[_nStates];
    }
 
    ///////////////////////////////////////////////////////////////////
-   ////                         public variables                  //// 
-   
+   ////                         public variables                  ////
+
    public PortParameter mean;
-   
-   public PortParameter standardDeviation;   
+
+   public PortParameter standardDeviation;
 
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
@@ -112,29 +112,29 @@ public class HMMGaussianClassifier extends ObservationClassifier {
    public Object clone(Workspace workspace) throws CloneNotSupportedException {
        HMMGaussianClassifier newObject = (HMMGaussianClassifier) super
                .clone(workspace);
-       newObject._mu = new double[_nStates]; 
-       newObject._sigma = new double[_nStates]; 
+       newObject._mu = new double[_nStates];
+       newObject._sigma = new double[_nStates];
        return newObject;
    }
-   
+
    /** Consume the inputs and produce the outputs of the FFT filter.
     *  @exception IllegalActionException If a runtime type error occurs.
     */
    public void fire() throws IllegalActionException {
        super.fire();
-       
+
        mean.update();
        standardDeviation.update();
        transitionMatrix.update();
        prior.update();
-       
+
        // update array values and lengths
-       _nStates = ((ArrayToken) mean.getToken()).length();  
+       _nStates = ((ArrayToken) mean.getToken()).length();
        _mu = new double[_nStates];
-       _sigma = new double[_nStates]; 
+       _sigma = new double[_nStates];
        _priors = new double[_nStates];
-       _transitionMatrixEstimate = new double[_nStates][_nStates]; 
-       
+       _transitionMatrixEstimate = new double[_nStates][_nStates];
+
        for (int i = 0; i < _nStates; i++) {
            _sigma[i] = ((DoubleToken)((ArrayToken) standardDeviation.getToken()).getElement(i))
                    .doubleValue();
@@ -147,21 +147,21 @@ public class HMMGaussianClassifier extends ObservationClassifier {
                        .getElementAsToken(i, j))
                        .doubleValue();
            }
-       } 
+       }
            if( (_nStates != _sigma.length) ||(_nStates != _transitionMatrixEstimate.length))
            {
                throw new IllegalActionException(this, "Parameter guess vectors need to have the same length.");
            }
            if(_observations != null){
                int[] classifyStates = new int[_observations.length];
-               
+
                classifyStates = classifyHMM(_observations , _priors, _transitionMatrixEstimate);
-               
+
                IntToken[] _outTokenArray = new IntToken[classifyStates.length];
                for (int i = 0; i < classifyStates.length; i++) {
                 _outTokenArray[i] = new IntToken(classifyStates[i]);
                }
-        
+
                output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
            }
    }
@@ -169,12 +169,12 @@ public class HMMGaussianClassifier extends ObservationClassifier {
    protected double emissionProbability(double y, int hiddenState){
        double s = _sigma[hiddenState];
        double m = _mu[hiddenState];
-       return 1.0/(Math.sqrt(2*Math.PI)*s)*Math.exp(-0.5*Math.pow((y-m)/s, 2));  
+       return 1.0/(Math.sqrt(2*Math.PI)*s)*Math.exp(-0.5*Math.pow((y-m)/s, 2));
    }
    ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////  
-   
-   private double[] _mu;  
+   ////                         private variables                 ////
 
-   private double[] _sigma; 
+   private double[] _mu;
+
+   private double[] _sigma;
 }

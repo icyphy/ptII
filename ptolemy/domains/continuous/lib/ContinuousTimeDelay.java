@@ -186,7 +186,7 @@ public class ContinuousTimeDelay extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ContinuousTimeDelay newObject = (ContinuousTimeDelay) super
                 .clone(workspace);
-        newObject.output.setTypeSameAs(newObject.input); 
+        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
 
@@ -450,5 +450,5 @@ public class ContinuousTimeDelay extends Transformer {
     /** Records the next scheduled fireAt() call, so that we do not request more than
      *  one fireAt() call for a given input event.
      */
-    protected Time _nextFireAt; 
+    protected Time _nextFireAt;
 }

@@ -41,7 +41,7 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.ExecutionAttributes; 
+import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.lib.aspect.CompositeCommunicationAspect.CompositeCommunicationAspectAttributes;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -66,19 +66,19 @@ import ptolemy.kernel.util.Workspace;
 /** A {@link BasicSwitch} actor that, when its
  *  {@link #sendToken(Receiver, Receiver, Token)} method is called, delays
  *  the delivery of the specified token to the specified receiver
- *  according to the delays and contention on input buffers, output buffers, 
+ *  according to the delays and contention on input buffers, output buffers,
  *  and switch fabric delays.
  *
- *  <p>This communication aspect implements a simple switch which has a parametrizable 
- *  number of ports. Note that these ports are not visually represented 
+ *  <p>This communication aspect implements a simple switch which has a parametrizable
+ *  number of ports. Note that these ports are not visually represented
  *  as Ptolemy actor ports. The first token received by this actor is delayed for
  *  <i>inputBufferDelay</i> + <i>switchFabricDelay</i> + <i>outputBufferDelay</i>
  *  time units. Tokens received on the same switch input are buffered in a FIFO queue.
- *  Similarly, tokens for the same output are buffered in FIFO queues. The switch 
+ *  Similarly, tokens for the same output are buffered in FIFO queues. The switch
  *  fabric in this switch acts as a FIFO queue as well. Tokens on different input
- *  and output ports are processed in parallel, tokens in the switch fabric are 
- *  processed one after the other.</p> 
- *  
+ *  and output ports are processed in parallel, tokens in the switch fabric are
+ *  processed one after the other.</p>
+ *
  *  <p>To use this actor, drag it into a model. Input ports get decorated with
  *  {@link BasicSwitchAttributes} which describe the path a token takes through
  *  the switch: the switch input port number and the switch output port
@@ -142,21 +142,21 @@ public class BasicSwitch extends AtomicCommunicationAspect {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Number of ports on the switch. This parameter must contain an
      *  IntToken.  The value defaults to 4. */
     public Parameter numberOfPorts;
-    
+
     /** Time it takes for a token to be put into the input queue.
      *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
     public Parameter inputBufferDelay;
-    
+
     /** Time it takes for a token to be put into the output queue.
      *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
     public Parameter outputBufferDelay;
-    
+
     /** Time it takes for a token to be processed by the switch fabric.
      *  This parameter must contain a DoubleToken. The value defaults
      *  to 0.1. */
@@ -218,7 +218,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @return A new Bus.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        BasicSwitch newObject = (BasicSwitch) super.clone(workspace); 
+        BasicSwitch newObject = (BasicSwitch) super.clone(workspace);
         newObject._ioPortToSwitchInPort = new HashMap<Port, Integer>();
         newObject._ioPortToSwitchOutPort = new HashMap<Port, Integer>();
         newObject._nextFireTime = null;
@@ -227,8 +227,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         newObject._switchFabricQueue = new TreeSet<TimedEvent>();
         return newObject;
     }
-    
-    
+
+
     /** Return the decorated attributes for the target NamedObj.
      *  If the specified target is not an Actor, return null.
      *  @param target The NamedObj that will be decorated.
@@ -390,7 +390,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         _scheduleRefire();
         return super.postfire();
     }
-    
+
     /** Initiate a send of the specified token to the specified
      *  receiver. This method will schedule a refiring of this actor
      *  if there is not one already scheduled.
@@ -400,7 +400,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the refiring request fails.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token)
-            throws IllegalActionException { 
+            throws IllegalActionException {
 
         // If the token is null, then this means there is not actually
         // something to send. Do not take up bus resources for this.
@@ -409,10 +409,10 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         if (getDirector() instanceof DEDirector && token == null) {
             return;
         }
-        Time currentTime = getDirector().getModelTime(); 
+        Time currentTime = getDirector().getModelTime();
 
         int inputPortID = _getPortID(receiver, true);
-        
+
         Time lastTimeStamp = currentTime;
         if (_inputTokens.get(inputPortID).size() > 0) {
             lastTimeStamp = _inputTokens.get(inputPortID).last().timeStamp;
@@ -423,7 +423,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         _tokenCount++;
         sendCommunicationEvent((Actor) source.getContainer().getContainer(), 0,
                 _tokenCount, EventType.RECEIVED);
-        
+
         _scheduleRefire();
 
         if (_debugging) {
@@ -432,8 +432,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                     + receiver.getContainer().getFullName() + ": " + token);
         }
     }
-    
-    /** Make sure that this communication aspect is only used in the DE domain. 
+
+    /** Make sure that this communication aspect is only used in the DE domain.
      *  @param container The container of this actor.
      *  @exception IllegalActionException If thrown by the super class or if the
      *  director of this actor is not a DEDirector.
@@ -446,7 +446,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
             throw new IllegalActionException(this,
                     "This communication aspect is currently only supported in the DE domain.");
         }
-        
+
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
             for (NamedObj decoratedObject : decoratedObjects) {
@@ -461,27 +461,27 @@ public class BasicSwitch extends AtomicCommunicationAspect {
     }
 
     /** Set the id of the switch input that is receiving tokens from this actor port.
-     *  @param port The actor port. 
-     *  @param portIn The id of the switch port. 
+     *  @param port The actor port.
+     *  @param portIn The id of the switch port.
      */
     public void setPortIn(Port port, int portIn) {
             if (_ioPortToSwitchInPort == null) {
                     _ioPortToSwitchInPort = new HashMap<Port, Integer>();
             }
-        _ioPortToSwitchInPort.put((IOPort)port, portIn);  
-    } 
-    
+        _ioPortToSwitchInPort.put((IOPort)port, portIn);
+    }
+
     /** Set the id of the switch output that is sending tokens to this actor port.
      * @param port The actor port.
-     * @param portOut The id of the switch port. 
+     * @param portOut The id of the switch port.
      */
-    public void setPortOut(Port port, int portOut) { 
+    public void setPortOut(Port port, int portOut) {
             if (_ioPortToSwitchOutPort == null) {
                     _ioPortToSwitchOutPort = new HashMap<Port, Integer>();
             }
         _ioPortToSwitchOutPort.put((IOPort)port, portOut);
-    } 
-    
+    }
+
     /** Reset the communication aspect and clear the tokens.
      */
     public void reset() {
@@ -513,7 +513,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Return the IO of the switch port where this receiver is
      *  connected to. The port ID's are set via parameters.
      *  @param receiver The actor receiver.
@@ -526,7 +526,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
             containerPort = containerPort.getContainer();
         }
         Port port = (Port) containerPort;
-        
+
         if (input) {
             return _ioPortToSwitchInPort.get(port);
         } else {
@@ -554,28 +554,28 @@ public class BasicSwitch extends AtomicCommunicationAspect {
 
     /** Next time a token is sent and the next token can be processed. */
     protected Time _nextFireTime;
-    
+
     /** Number of switch ports. */
     protected int _numberOfPorts;
-    
+
     /** Time it takes for a token to be put into the input queue. */
     protected double _inputBufferDelay;
 
     /** Tokens received by the switch. */
     protected HashMap<Integer, TreeSet<TimedEvent>> _inputTokens;
-    
-    /** Tokens sent to ports mediated by this communication aspect 
-     *  are rerouted to the switch ports with the IDs specified in this 
+
+    /** Tokens sent to ports mediated by this communication aspect
+     *  are rerouted to the switch ports with the IDs specified in this
      *  map.
      */
     protected HashMap<Port, Integer> _ioPortToSwitchInPort;
-    
+
     /** Tokens set to ports mediated by this communication aspect are
-     *  processed by this communication aspect and then forwarded 
+     *  processed by this communication aspect and then forwarded
      *  to the port through the switch port with ID specified here.
      */
     protected HashMap<Port, Integer> _ioPortToSwitchOutPort;
-    
+
     /** Time it takes for a token to be put into the output queue. */
     protected double _outputBufferDelay;
 
@@ -586,11 +586,11 @@ public class BasicSwitch extends AtomicCommunicationAspect {
 
     /** Tokens processed by the switch fabric. */
     private TreeSet<TimedEvent> _switchFabricQueue;
-    
+
     /** The attributes configured per port which is mediated by a
      *  BasicSwitch. The mediation where (which switch port) messages
      *  are going into the switch and where (which switch port) messages
-     *  are going out of the switch.  
+     *  are going out of the switch.
      *  @author Patricia Derler
      */
     public static class BasicSwitchAttributes extends CommunicationAspectAttributes {
@@ -604,7 +604,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         public BasicSwitchAttributes(NamedObj container, Decorator decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(container, decorator);
-            _init();  
+            _init();
         }
 
         /** Constructor to use when parsing a MoML file.
@@ -616,7 +616,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         public BasicSwitchAttributes(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            _init(); 
+            _init();
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -627,15 +627,15 @@ public class BasicSwitch extends AtomicCommunicationAspect {
          *  This parameter defaults to the integer value 0.
          */
         public Parameter portIn;
-        
+
         /** The id of the port on the switch to which outgoing messages are
          *  routed to.
          *  This parameter defaults to the integer value 1.
          */
         public Parameter portOut;
-        
-        /** If attribute is <i>portIn</i> or <i>portOut</i>, 
-         *  report the new values to the communication aspect. 
+
+        /** If attribute is <i>portIn</i> or <i>portOut</i>,
+         *  report the new values to the communication aspect.
          *  @param attribute The changed parameter.
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
@@ -655,7 +655,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                     super.attributeChanged(attribute);
                 }
             }
-        } 
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                        private methods                    ////
@@ -673,9 +673,9 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                 throw new InternalErrorException(ex);
             }
         }
-        
+
         private int _portIn;
-        
+
         private int _portOut;
     }
 

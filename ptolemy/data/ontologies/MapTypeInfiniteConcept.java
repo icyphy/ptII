@@ -95,7 +95,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
         MapTypeInfiniteConcept concept = (MapTypeInfiniteConcept) object;
         Ontology ontology = getOntology();
         if (ontology != null && ontology.equals(concept.getOntology())) {
-            if (keySet().equals(concept.keySet())) { 
+            if (keySet().equals(concept.keySet())) {
                 if (_values().equals(concept._values())) {
                     return true;
                 }

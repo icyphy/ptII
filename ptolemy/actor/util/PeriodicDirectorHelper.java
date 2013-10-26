@@ -268,7 +268,7 @@ public class PeriodicDirectorHelper {
                     if (container.getDirector().getName().startsWith("Ptides"))
                         return true;
                 }
-                
+
                 // Enclosing time has not yet reached our expected firing time.
                 // No need to call fireAt(), since presumably we already
                 // did that in postfire().

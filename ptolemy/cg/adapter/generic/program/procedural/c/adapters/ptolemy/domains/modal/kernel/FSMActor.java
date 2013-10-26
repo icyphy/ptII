@@ -171,17 +171,17 @@ public class FSMActor
                 "Generate Transition Code."));
 
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
-        
+
         String name = fsmActor.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
         name = name.replace('.', '_');
         modalName = modalName.replace('.', '_');
-        
+
         // The default value 1 of transitionFlag means the transition
         // will be taken. If no transition is actually taken, it will be
         // set to value 0.
         codeBuffer.append(_eol + modalName + "__transitionFlag = 1;" + _eol);
-     
+
         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
                 .iterator();
         // add input ports
@@ -191,10 +191,10 @@ public class FSMActor
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
             for (int i = 0; i < inputPort.getWidth() ; i++) {
                 codeBuffer.append(_eol + "if ($hasToken(" + generateSimpleName(inputPort));
-                if (inputPort.isMultiport()) 
+                if (inputPort.isMultiport())
                     codeBuffer.append("#" + i);
                 codeBuffer.append("))" + _eol);
-                
+
                 codeBuffer.append(_eol + generateName(inputPort) + " = $get(" + generateSimpleName(inputPort));
                 if (inputPort.isMultiport())
                     codeBuffer.append("#" + i);
@@ -257,7 +257,7 @@ public class FSMActor
                         codeBuffer.append("else if (");
                     }
                     transitionCount++;
-                    
+
                     if (guard.compareTo("") == 0)
                         codeBuffer.append("true) ");
                     else {
@@ -267,7 +267,7 @@ public class FSMActor
                         //int index = guard.indexOf("==");
                         ASTPtRootNode guardParseTree = parser
                                 .generateParseTree(guard);
-    
+
                         if (getTemplateParser() == null) {
                             if (getCodeGenerator() == null) {
                                 // The code generator was not being found.
@@ -279,16 +279,16 @@ public class FSMActor
                             }
                             getCodeGenerator().getAdapter(fsmActor);
                         }
-    
+
                         ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
                                 .getParseTreeCodeGenerator();
-    
+
                         parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                                 _scope);
-    
+
                         codeBuffer
                                 .append(parseTreeCodeGenerator.generateFireCode());
-    
+
                         codeBuffer.append(") ");
                     }
                 }
@@ -313,7 +313,7 @@ public class FSMActor
                         NamedObj destination = action
                                 .getDestination(destinationName);
 
-                        
+
                         int channel = -1;
                         if (channelNumber != null) {
                             channel = channelNumber.intValue();
@@ -797,7 +797,7 @@ public class FSMActor
     private Object _generateStateConstantLabel(State state) {
         return generateName(state);
     }
-    
+
     private static class OutgoingRelations implements TransitionRetriever {
         // Findbugs wants this to be static.
         public Iterator retrieveTransitions(State state) {

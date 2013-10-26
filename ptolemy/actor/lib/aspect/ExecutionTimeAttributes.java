@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
 Container for decorator attributes that are provided to actors by
-a ExecutionAspect that schedules execution times. 
+a ExecutionAspect that schedules execution times.
 The ExecutionAspect decorates actors
 in a model with the attributes contained by this object.
 
@@ -80,7 +80,7 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
         super(target, name);
         _init();
     }
-    
+
     /** The executionTime parameter specifies the execution time of the
      *  decorated object. This means the time that the decorated actor occupies
      *  the decorator resource when it fires.
@@ -90,7 +90,7 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
 
     ///////////////////////////////////////////////////////////////////
     ////                        public methods                     ////
-    
+
     /** React to a change in an attribute.  If the attribute is
      *  <i>executionTime</i>, check that it is non-negative.
      *  @param attribute The attribute that changed.
@@ -108,7 +108,7 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
         }
         super.attributeChanged(attribute);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
@@ -124,5 +124,5 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
             throw new InternalErrorException(ex);
         }
     }
-    
+
 }

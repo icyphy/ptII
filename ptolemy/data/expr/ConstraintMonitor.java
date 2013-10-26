@@ -77,7 +77,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (eal)
  */
 public class ConstraintMonitor extends Parameter implements Decorator {
-    
+
     /** Construct an instance in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -94,23 +94,23 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     public ConstraintMonitor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         setTypeEquals(BaseType.DOUBLE);
         setExpression("0.0");
         setVisibility(Settable.NOT_EDITABLE);
-        
+
         threshold = new Parameter(this, "threshold");
         threshold.setTypeEquals(BaseType.DOUBLE);
         threshold.setExpression("Infinity");
-        
+
         warningEnabled = new Parameter(this, "warningEnabled");
         warningEnabled.setExpression("true");
         warningEnabled.setTypeEquals(BaseType.BOOLEAN);
-        
+
         includeOpaqueContents = new Parameter(this, "includeOpaqueContents");
         includeOpaqueContents.setExpression("false");
         includeOpaqueContents.setTypeEquals(BaseType.BOOLEAN);
-        
+
         includeTransparents = new Parameter(this, "includeTransparents");
         includeTransparents.setExpression("false");
         includeTransparents.setTypeEquals(BaseType.BOOLEAN);
@@ -118,18 +118,18 @@ public class ConstraintMonitor extends Parameter implements Decorator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If true, then this decorator decorates entities within
      *  opaque composite actors. This is a boolean that defaults to
      *  false.
      */
     public Parameter includeOpaqueContents;
-    
+
     /** If true, then this decorator decorates transparent composite
      *  entities. This is a boolean that defaults to false.
      */
     public Parameter includeTransparents;
-    
+
     /** Threshold at which this monitor issues a warning, if
      *  {@link #warningEnabled} is true.
      *  This is a double that defaults to Infinity, meaning no
@@ -142,7 +142,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  This is a boolean that defaults to true.
      */
     public Parameter warningEnabled;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -157,7 +157,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         }
         super.attributeChanged(attribute);
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -234,7 +234,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
             _decoratedObjects = container.deepEntityList();
             return _decoratedObjects;
         }
-        
+
         // Now the more complex case.
         _decoratedObjects = new LinkedList<NamedObj>();
         _addAllContainedEntities(container, _decoratedObjects, transparents, opaques);
@@ -243,13 +243,13 @@ public class ConstraintMonitor extends Parameter implements Decorator {
 
     /** Return the value of {@link #includeOpaqueContents}.
      *  decorate objects across opaque hierarchy boundaries.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException
      */
     public boolean isGlobalDecorator() throws IllegalActionException {
         boolean opaques = ((BooleanToken)includeOpaqueContents.getToken()).booleanValue();
         return opaques;
     }
-        
+
     /** Override the base class to check whether the threshold constraint
      *  is satisfied.
      *  @return The token contained by this variable converted to the
@@ -272,7 +272,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                     _lastValueWarning = result;
                     String message = "WARNING: "
                             + getName()
-                            + " constraint monitor: Aggregate value of " 
+                            + " constraint monitor: Aggregate value of "
                             + aggregateValue
                             + ((aggregateValue == thresholdValue) ? " hits " : " exceeds ")
                             + "threshold of "
@@ -290,7 +290,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         }
         return result;
     }
-    
+
     /** Override the base class to mark this as needing evaluation even though
      *  there is no expression.
      */
@@ -298,7 +298,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         super.invalidate();
         _needsEvaluation = true;
     }
-    
+
     /** Override the base class to establish a connection with any
      *  decorated objects it finds in scope in the container.
      *  @return The current list of value listeners, which are evaluated
@@ -319,7 +319,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         }
         return super.validate();
     }
-    
+
     /** Override the base class to mark that evaluation is needed regardless
      *  of the current expression.
      *  @param settable The object that has changed value.
@@ -349,7 +349,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *   contents of opaque composite entities.
      */
     protected void _addAllContainedEntities(
-            CompositeEntity container, 
+            CompositeEntity container,
             List<NamedObj> result,
             boolean transparents,
             boolean opaques) {
@@ -369,7 +369,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
             _workspace.doneReading();
         }
     }
-    
+
     /** Return true if the specified target is deeply contained by the specified container
      *  subject to the constraints given by the opaques parameter.
      *  @param container The container.
@@ -400,7 +400,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         }
     }
 
-    
+
     /** Evaluate the current expression to a token, which in this case means
      *  to sum the values of all the decorated objects.
      *  @exception IllegalActionException If the expression cannot
@@ -416,28 +416,28 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         setToken(new DoubleToken(result));
         _needsEvaluation = false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private field                     ////
-    
+
     /** Cached list of decorated objects. */
     private List<NamedObj> _decoratedObjects;
-    
+
     /** Version for _decoratedObjects. */
     private long _decoratedObjectsVersion = -1L;
-    
+
     /** To avoid duplicate warnings, when we issue a warning, record the value. */
     private Token _lastValueWarning = null;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Class containing the decorator attributes that decorate objects.
      *  In this case, there is exactly one decorator attribute called <i>value</i>.
      */
     static public class ConstraintMonitorAttributes extends DecoratorAttributes
             implements HierarchyListener {
-        
+
         public ConstraintMonitorAttributes(NamedObj container, ConstraintMonitor decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(container, decorator);
@@ -445,16 +445,16 @@ public class ConstraintMonitor extends Parameter implements Decorator {
             value.addValueListener(decorator);
             container.addHierarchyListener(this);
         }
-        
+
         public ConstraintMonitorAttributes(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
             _init();
             container.addHierarchyListener(this);
         }
-        
+
         public Parameter value;
-        
+
         /** Override the base class so that if the decorator already exists in
          *  scope, the decorator becomes a value listener to the value attribute.
          *  @exception IllegalActionException If the change is not acceptable
@@ -469,7 +469,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                 super.attributeChanged(attribute);
             }
         }
-        
+
         /** Notify this object that the containment hierarchy above it has changed.
          *  @exception IllegalActionException If the change is not
          *   acceptable.
@@ -487,9 +487,9 @@ public class ConstraintMonitor extends Parameter implements Decorator {
          *  @exception IllegalActionException If the change is not acceptable.
          */
         public void hierarchyWillChange() throws IllegalActionException {
-            _previousDecorator = (ConstraintMonitor)getDecorator();            
+            _previousDecorator = (ConstraintMonitor)getDecorator();
         }
-        
+
         private ConstraintMonitor _previousDecorator = null;
 
         private void _init() throws IllegalActionException, NameDuplicationException {

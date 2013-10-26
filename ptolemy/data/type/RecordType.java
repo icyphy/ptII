@@ -82,7 +82,7 @@ public class RecordType extends AssociativeType implements Cloneable {
      *  The labels and the types are specified in two arrays. These two
      *  arrays must have the same length, and their elements have one to
      *  one correspondence. That is, the i'th entry in the types array is
-     *  the type for the i'th label in the labels array. Record labels may be 
+     *  the type for the i'th label in the labels array. Record labels may be
      *  arbitrary strings. To construct the empty record type, set the length
      *  of the argument arrays to 0.
      *     *
@@ -183,14 +183,14 @@ public class RecordType extends AssociativeType implements Cloneable {
     }
 
     /** Convert the argument token into a RecordToken having this
-     *  type, if compatible.  The argument must be a RecordToken, 
-     *  and its type must be a subtype of this record type.  The 
+     *  type, if compatible.  The argument must be a RecordToken,
+     *  and its type must be a subtype of this record type.  The
      *  argument token must have at least the fields of this type.
-     *  Extra fields in the argument token that are not in this 
+     *  Extra fields in the argument token that are not in this
      *  type are preserved.
      *  @param token A token.
      *  @return An RecordToken.
-     *  @exception IllegalActionException If token is incompatible 
+     *  @exception IllegalActionException If token is incompatible
      *  with this type.
      */
     public Token convert(Token token) throws IllegalActionException {
@@ -203,9 +203,9 @@ public class RecordType extends AssociativeType implements Cloneable {
 
         // Undeclared fields are preserved.
         // If we don't do this, it would not be possible to express
-        // type constraints to accommodate actors that operate 
-        // on the entirety of any received record, which may be just 
-        // any record, or a record that must least contains a certain 
+        // type constraints to accommodate actors that operate
+        // on the entirety of any received record, which may be just
+        // any record, or a record that must least contains a certain
         // set of labels.
         Object[] labelArray = recordToken.labelSet().toArray();
 

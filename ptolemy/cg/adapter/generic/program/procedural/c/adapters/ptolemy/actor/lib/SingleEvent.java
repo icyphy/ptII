@@ -90,11 +90,11 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         codeStream.appendCodeBlock("initBlock", args);
         return processCode(codeStream.toString());
     }
-    
+
     /**
      * Generate the fire code of a single event.
      * @return The generated code.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
@@ -103,7 +103,7 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
             CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
-        
+
         Parameter valuePar = ((ptolemy.actor.lib.SingleEvent) getComponent()).value;
         double value;
         Token valueToken = valuePar.getToken();
@@ -121,7 +121,7 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
             throw new IllegalActionException("Token type at single "
                     + "event not supported yet.");
         }
-        
+
         args.add(Double.toString(value));
 
         codeStream.appendCodeBlock("fireBlock", args);

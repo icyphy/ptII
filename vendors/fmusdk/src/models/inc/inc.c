@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------*
  * Sample implementation of an FMU - increments an int counter every second.
- * (c) 2010 QTronic GmbH 
+ * (c) 2010 QTronic GmbH
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
@@ -49,13 +49,13 @@ static void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 // Used to set the next time event, if any.
 static void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     i(counter_) += 1;
-    if (i(counter_) == 13) 
+    if (i(counter_) == 13)
         eventInfo->terminateSimulation = fmiTrue;
     else {
         eventInfo->upcomingTimeEvent   = fmiTrue;
         eventInfo->nextEventTime       = 1 + comp->time;
     }
-} 
+}
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

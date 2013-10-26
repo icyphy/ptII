@@ -1,4 +1,4 @@
-/* TimeScheduler is a ConstraintSolver that handles the time quantity for MetroIIDirector. 
+/* TimeScheduler is a ConstraintSolver that handles the time quantity for MetroIIDirector.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -37,13 +37,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 /**
  * TimeScheduler is a ConstraintSolver that handles the time quantity for
  * MetroIIDirector.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 9.1
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class TimeScheduler implements ConstraintSolver, Cloneable {
 
@@ -125,14 +125,14 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
                             event.setStatus(Status.WAITING);
 //                            Event.Time.Builder builder = Event.Time.newBuilder();
 //                            builder.setValue(time);
-//                            event.setTime(builder); 
+//                            event.setTime(builder);
                         }
                     }
                 }
             }
         }
 
-        // System.out.println("Time Scheduler: "+time); 
+        // System.out.println("Time Scheduler: "+time);
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (event.hasTime()) {

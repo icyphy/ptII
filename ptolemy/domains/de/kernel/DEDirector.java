@@ -248,16 +248,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      * fixing because the only fix I can find would incur considerable
      * overhead on every event transaction, and it is rather difficult to
      * write an actor that will trigger the bug. The SuperdensTimeTest
-     * actor used in this test is such an actor, but as of this writing, 
+     * actor used in this test is such an actor, but as of this writing,
      * there are no such actor in the library.
-     * 
-     * The bug occurs when an actor declares that an output port does 
+     *
+     * The bug occurs when an actor declares that an output port does
      * not depend on any input (something that is rather hard to do
-     * correctly), and then feeds back a signal directly 
-     * from the output to an input. The bug is that an output token 
-     * produced by the actor may be visible to the actor in the very same 
+     * correctly), and then feeds back a signal directly
+     * from the output to an input. The bug is that an output token
+     * produced by the actor may be visible to the actor in the very same
      * firing of the actor, or in postfire of the same iteration. This violates
-     * a principle in DE that when an actor firing begins, all inputs at 
+     * a principle in DE that when an actor firing begins, all inputs at
      * the current superdense time are available.
      */
 
@@ -747,7 +747,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return aFutureTime;
     }
 
-    /** Return the timestamp of the next event in the queue. This is 
+    /** Return the timestamp of the next event in the queue. This is
      *  different from getModelNextIterationTime as it just considers
      *  the local event queue and not that of directors higher up in
      *  the model hierarchy.
@@ -815,8 +815,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     /** Initialize all the contained actors by invoke the initialize() method
      *  of the super class. If any events are generated during the
      *  initialization, and the container is not at the top level, request a
-     *  refiring. 
-     *  <p> 
+     *  refiring.
+     *  <p>
      *  The real start time of the model is recorded when this method
      *  is called. This method is <i>not</i> synchronized on the workspace,
      *  so the caller should be.</p>
@@ -1271,29 +1271,29 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     }
 
     /** Resume the execution of an actor that was previously blocked because
-     *  it didn't have all the resources it needed for execution. This method 
+     *  it didn't have all the resources it needed for execution. This method
      *  puts an event into the queue for the current time.
-     *  
+     *
      *  @param actor The actor that resumes execution.
      *  @throws IllegalActionException Not thrown here but in derived classes.
      */
-    public void resumeActor(Actor actor) throws IllegalActionException { 
+    public void resumeActor(Actor actor) throws IllegalActionException {
         List<DEEvent> events = _actorsInExecution.get(actor);
         Time time = ((CompositeActor)_getExecutionAspect(actor).getContainer()).getDirector().getModelTime();
         if (events == null || events.size() == 0) {
             events = null;
         }
-        
+
         DEEvent event = events.get(0);
-        events.remove(event); 
+        events.remove(event);
         _actorsInExecution.put(actor, events);
-        
+
         if (event.ioPort() != null) {
             _enqueueTriggerEvent(event.ioPort(), time);
         } else {
             _enqueueEvent(actor, time, 1);
         }
-        fireContainerAt(time); 
+        fireContainerAt(time);
         if (_actorsFinished == null) {
             _actorsFinished = new ArrayList();
         }
@@ -1588,9 +1588,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         _enqueueTriggerEvent(ioPort, getModelTime());
     }
 
-    /** Put a trigger event into the event queue with a timestamp that can be 
-     *  different from the current model time. 
-     *  Only resource schedulers can enqueue trigger events with future timestamps. 
+    /** Put a trigger event into the event queue with a timestamp that can be
+     *  different from the current model time.
+     *  Only resource schedulers can enqueue trigger events with future timestamps.
      *  @param ioPort The destination IO port.
      *  @param time The timestamp of the new event.
      *  @throws IllegalActionException If the time argument is not the
@@ -2326,8 +2326,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _actorsFinished.remove(actorToFire);
                 } else if (!_schedule(actorToFire, getModelTime())) {
                     // scheduling of actor returns that actor hasn't been granted all
-                    // the requested resources, create a new event with a future 
-                    // timestamp. 
+                    // the requested resources, create a new event with a future
+                    // timestamp.
                     Time nextScheduleTime = _nextScheduleTime.get(
                             _aspectForActor.get(actorToFire)).add(
                             getModelTime());
@@ -2339,11 +2339,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         events = new ArrayList<DEEvent>();
                     }
                     events.add(lastFoundEvent);
-                    _actorsInExecution.put(actorToFire, events); 
+                    _actorsInExecution.put(actorToFire, events);
                     actorToFire = null;
                 }
             }
-        } // close the loop: LOOPLABEL::GetNextEvent 
+        } // close the loop: LOOPLABEL::GetNextEvent
 
         // Note that the actor to be fired can be null.
         return actorToFire;

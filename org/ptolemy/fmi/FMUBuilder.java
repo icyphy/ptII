@@ -130,7 +130,7 @@ public class FMUBuilder {
             String sharedLibraryFileName = sharedLibraryFile.getName();
             target = sharedLibraryFileName.substring(0,
                     sharedLibraryFileName.length() - 4);
-        } 
+        }
 
         ProcessBuilder builder = new ProcessBuilder(command, target);
 

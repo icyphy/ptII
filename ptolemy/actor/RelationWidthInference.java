@@ -125,7 +125,7 @@ public class RelationWidthInference {
                 }
             }
 
-            long startTime = 0L; 
+            long startTime = 0L;
             // FindBugs: avoid dead local store.
             if (logTimings) {
                 startTime = new Date().getTime();

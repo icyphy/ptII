@@ -48,7 +48,7 @@ import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.CommunicationAspectAttributes;
-import ptolemy.actor.CommunicationAspect; 
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.aspect.Bus.BusAttributes;
 import ptolemy.actor.util.Time;
@@ -454,7 +454,7 @@ public class CanBus extends AtomicCommunicationAspect {
             }
         }
     }
-    
+
     /** Override the base class to first set the container, then establish
      *  a connection with any decorated objects it finds in scope in the new
      *  container.
@@ -483,8 +483,8 @@ public class CanBus extends AtomicCommunicationAspect {
     }
 
     /** Set the canbus priority attached to this actor port.
-     *  @param port The actor port. 
-     *  @param canPriority The priority attached to the port. 
+     *  @param port The actor port.
+     *  @param canPriority The priority attached to the port.
      */
     public void setCanBusPriority(Port port, int canPriority) {
         _ioPortToCanPriority.put((IOPort) port, canPriority);
@@ -579,8 +579,8 @@ public class CanBus extends AtomicCommunicationAspect {
         }
     }
 
-    /** Tokens sent to ports mediated by this communication aspect 
-     *  are rerouted to the switch ports with the IDs specified in this 
+    /** Tokens sent to ports mediated by this communication aspect
+     *  are rerouted to the switch ports with the IDs specified in this
      *  map.
      */
     protected HashMap<Port, Integer> _ioPortToCanPriority;
@@ -638,7 +638,7 @@ public class CanBus extends AtomicCommunicationAspect {
     /** The attributes configured per port which is mediated by a
      *  CanBus. The mediation where (which switch port) messages
      *  are going into the switch and where (which switch port) messages
-     *  are going out of the switch.  
+     *  are going out of the switch.
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
     public static class CanBusAttributes extends CommunicationAspectAttributes {
@@ -675,8 +675,8 @@ public class CanBus extends AtomicCommunicationAspect {
          */
         public Parameter canPriority;
 
-        /** If attribute is <i>portIn</i> or <i>portOut</i>, 
-         *  report the new values to the communication aspect. 
+        /** If attribute is <i>portIn</i> or <i>portOut</i>,
+         *  report the new values to the communication aspect.
          *  @param attribute The changed parameter.
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.

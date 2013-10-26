@@ -37,13 +37,13 @@ import ptolemy.kernel.util.NamedObj;
 
 /** An interface for objects that can intervene in the execution of actors.
  *  A director that executes actors decorated by a resource scheduler has to
- *  consult the resource scheduler before firing the actor. If the resource 
- *  scheduler returns that there are not enough resources available to 
- *  fire the actor, the firing must be postponed. 
+ *  consult the resource scheduler before firing the actor. If the resource
+ *  scheduler returns that there are not enough resources available to
+ *  fire the actor, the firing must be postponed.
  *  <p>
  *  For example, a resource scheduler could represent a CPU and actors scheduled
  *  on a CPU have execution times. The resource scheduler takes care of scheduling
- *  the actors according to a given scheduling strategy and keeping track of the 
+ *  the actors according to a given scheduling strategy and keeping track of the
  *  remaining execution times.
  *
  *  @author Patricia Derler, Edward A. Lee
@@ -53,21 +53,21 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (cxh)
  */
 public interface ActorExecutionAspect extends Decorator {
-    
+
     /** Add schedule listener. If necessary, initialize list of actors
      *  scheduled by this resource scheduler.
-     *  @param listener The listener to be added. 
+     *  @param listener The listener to be added.
      *  @throws IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
     public void addExecutingListener(ExecutionAspectListener listener) throws IllegalActionException;
-    
+
     /** Iterate through all entities deeply contained by the container,
      *  record for each that it is not executing.
      *  @exception IllegalActionException If the decorator parameters cannot be read.
      */
     public void initializeDecoratedActors() throws IllegalActionException;
-    
+
     /** Get the execution time of an actor. If the actor does not have an attribute
      *  specifying the execution time, return the minimum execution time.
      * @param actor The actor.
@@ -88,29 +88,29 @@ public interface ActorExecutionAspect extends Decorator {
      *  finished.
      */
     public boolean lastScheduledActorFinished();
-    
+
     /** Notify execution listeners about rescheduling events.
      * @param entity Entity that is being scheduled.
      * @param time Time when entity is being scheduled.
      * @param eventType Type of event.
      */
     public void notifyExecutionListeners(NamedObj entity, Double time, ExecutionEventType eventType);
-    
+
     /** Perform rescheduling actions when no new actor requests to be
          *  scheduled.
          * @param environmentTime The outside time.
          * @return Relative time when this Scheduler has to be executed
          *    again to perform rescheduling actions.
-         * @exception IllegalActionException Thrown in subclasses.   
+         * @exception IllegalActionException Thrown in subclasses.
          */
         public Time schedule(Time environmentTime) throws IllegalActionException;
-    
+
     /** Schedule the actor. In this base class, do nothing.  Derived
-     *  classes should schedule the actor.   
+     *  classes should schedule the actor.
      *  @param actor The actor to be scheduled.
      *  @param environmentTime The current platform time.
      *  @param deadline The deadline timestamp of the event to be scheduled.
-     *  This can be the same as the environmentTime. 
+     *  This can be the same as the environmentTime.
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again to perform rescheduling actions.  In this base class, null
@@ -120,10 +120,10 @@ public interface ActorExecutionAspect extends Decorator {
      */
     public Time schedule(Actor actor, Time environmentTime, Time deadline,
             Time executionTime) throws IllegalActionException;
-    
+
     /** Remove schedule listener.
      * @param listener The listener to be removed.
      */
     public void removeExecutionListener(ExecutionAspectListener listener);
-    
+
 }

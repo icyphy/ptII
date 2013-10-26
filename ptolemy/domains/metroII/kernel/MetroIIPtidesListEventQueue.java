@@ -45,18 +45,18 @@ import ptolemy.kernel.util.InvalidStateException;
  * Event queue that is a linked list. This provides a totally ordered sorted
  * event queue. It also allows all events to be accessed in the order they are
  * sorted.
- * 
+ *
  * <p>
  * This is identical to PtidesListEventQueue except receivers are mapped to
  * MetroIIPtidesReceiver.
  * </p>
- * 
+ *
  * @author Jia Zou, Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
- * 
+ *
  */
 public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
@@ -78,7 +78,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
     /**
      * Get the smallest event from the event queue.
-     * 
+     *
      * @return a PtidesEvent object.
      * @exception InvalidStateException
      *                if the getFirst() method of the queue throws it.
@@ -93,7 +93,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
     /**
      * Get the event from the event queue that is pointed by the index.
-     * 
+     *
      * @param index
      *            an int specifying the index.
      * @return a DEEvent object pointed to by the index.
@@ -118,7 +118,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     /**
      * Put the event queue into the event queue, and then sort it by timestamp
      * order.
-     * 
+     *
      * @param event
      *            a DEEvent object.
      * @exception IllegalActionException
@@ -148,7 +148,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      * is called, the token associated with this event is transferred to the
      * receiver. Also, the same event should not be taken out of the event queue
      * and then put into the event queue multiple times.
-     * 
+     *
      * @return The event associated with this index in the event queue.
      * @exception InvalidStateException
      */
@@ -168,7 +168,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     /**
      * Take this event and remove it from the event queue. If the event is a
      * DEEvent, then put the token of this event into the receiver.
-     * 
+     *
      * <p>
      * NOTE: this method should only be called once for each event in the event
      * queue, unless the event is not a DEEvent. Because each time this method
@@ -176,7 +176,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      * receiver. Also, the same event should not be taken out of the event queue
      * and then put into the event queue multiple times.
      * </p>
-     * 
+     *
      * @param index
      *            The index of this event in the event queue.
      * @return The event associated with this index in the event queue.
@@ -200,7 +200,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
     /**
      * Return an array representation of this event queue.
-     * 
+     *
      * @return an array of Objects in the list.
      */
     public Object[] toArray() {
@@ -209,7 +209,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
     /**
      * Add a debugger listen for this event queue.
-     * 
+     *
      * @see #removeDebugListener
      */
     public void addDebugListener(DebugListener listener) {
@@ -227,7 +227,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
     /**
      * Remove the debugger listen for this event queue.
-     * 
+     *
      * @see #addDebugListener
      */
     public void removeDebugListener(DebugListener listener) {
@@ -249,7 +249,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      * Send a debug message to all debug listeners that have registered. By
      * convention, messages should not include a newline at the end. The newline
      * will be added by the listener, if appropriate.
-     * 
+     *
      * @param message
      *            The message.
      */

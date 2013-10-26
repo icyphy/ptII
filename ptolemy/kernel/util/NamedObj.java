@@ -1079,7 +1079,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     public NamedObj getContainer() {
         return null;
     }
-    
+
     /** Return the decorator attribute with the specified name for the
      *  specified decorator, or null the specified decorator provides
      *  no attribute with the specified name or the decorator does not
@@ -1103,7 +1103,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             throws IllegalActionException {
         DecoratorAttributes attributes = getDecoratorAttributes(decorator);
         if (attributes != null) {
-            return attributes.getAttribute(name);            
+            return attributes.getAttribute(name);
         }
         return null;
     }
@@ -1601,14 +1601,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         throw new IllegalActionException(this, "Has no container.");
     }
 
-    /** React to a change in a contained named object. This method is 
+    /** React to a change in a contained named object. This method is
      *  called by a contained named object when its name or display name
      *  changes. In this base class, the method does nothing.
      *  @param object The object that changed.
      */
     public void notifyOfNameChange(NamedObj object) {
     }
-    
+
     /** Propagate the existence of this object.
      *  If this object has a container, then ensure that all
      *  objects derived from the container contain an object
@@ -1966,13 +1966,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } finally {
             _workspace.doneWriting();
         }
-        
+
         // Notify container of this change.
         NamedObj container = getContainer();
         if (container != null) {
             container.notifyOfNameChange(this);
         }
-        
+
         if (_debugging) {
             _debug("Changed name from " + oldName + " to " + getFullName());
         }
@@ -2296,7 +2296,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
         }
     }
-    
+
     /** Return a list of decorators contained by this object.
      *  In this base class, this list consists of Attributes that implement
      *  the {@link Decorator} interface. In subclasses, it can contain other
@@ -3341,12 +3341,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
         return false;
     }
-    
+
     /** Update the decorator attributes.
      *  This method finds all decorators in scope (above this object in the hierarchy),
      *  and for each decorator that can decorate this object, creates an entry in
      *  _decoratorAttributes.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @see ptolemy.kernel.util.Decorator#createDecoratorAttributes(NamedObj)
      *  @see #getDecoratorAttributes(Decorator)
      */
@@ -3371,7 +3371,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     }
                     container = container.getContainer();
                 }
-                
+
                 // Find all the instances of DecoratorAttributes contained by this NamedObj,
                 // and put these in the cache, associated with the right decorator.
                 List<DecoratorAttributes> decoratorAttributes = attributeList(DecoratorAttributes.class);
@@ -3393,13 +3393,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         }
                     }
                 }
-                
+
                 // For each remaining decorator, if it decorates this NamedObj, create an entry.
                 for (Decorator decorator : decorators) {
                     DecoratorAttributes attribute = decorator.createDecoratorAttributes(this);
                     _decoratorAttributes.put(decorator, attribute);
                 }
-                
+
                 _decoratorAttributesVersion = workspace().getVersion();
             }
         }
@@ -3424,7 +3424,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  of attributes of type DecoratorAttributes.
      */
     private Map<Decorator, DecoratorAttributes> _decoratorAttributes = new HashMap<Decorator, DecoratorAttributes>();
-    
+
     /** Workspace version for decorated attributes. */
     private long _decoratorAttributesVersion = -1L;
 

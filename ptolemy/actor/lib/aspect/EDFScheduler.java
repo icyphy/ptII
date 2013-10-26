@@ -101,7 +101,7 @@ public class EDFScheduler extends FixedPriorityScheduler {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _deadlines = new HashMap(); 
+        _deadlines = new HashMap();
     }
 
     /** Schedule a new actor for execution and return the next time
@@ -122,21 +122,21 @@ public class EDFScheduler extends FixedPriorityScheduler {
             _deadlines.put(actor, deadline);
         }
         Time time = super.schedule(actor, currentPlatformTime, deadline,
-                executionTime); 
+                executionTime);
         if (lastScheduledActorFinished()) {
             _deadlines.put(actor, null);
             getDirector().resumeActor(actor);
         }
         return time;
     }
-    
-    
+
+
     /** Perform rescheduling actions when no new actor requests to be
      *  scheduled.
      * @param environmentTime The outside time.
      * @return Relative time when this Scheduler has to be executed
      *    again to perform rescheduling actions.
-     * @exception IllegalActionException Thrown in subclasses.   
+     * @exception IllegalActionException Thrown in subclasses.
      */
     @Override
     public Time schedule(Time environmentTime) throws IllegalActionException {

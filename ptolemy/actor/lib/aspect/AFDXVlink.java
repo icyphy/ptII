@@ -40,11 +40,11 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-/** This java obejct implements a virtual-link which belongs to the end-system 
+/** This java obejct implements a virtual-link which belongs to the end-system
  *  of an AFDX Network.
- *  For more information please refer to: 
+ *  For more information please refer to:
  *      <i>AFDX network simulation using PtolemyII</i>.
- *       
+ *
  *  @author G. Lasnier
  *  @version $Id: AFDXVlink.java 67572 2013-09-25 18:33:32Z pd $
  *  @since Ptolemy II 8.0
@@ -78,7 +78,7 @@ public class AFDXVlink {
                 .getAttribute("schedulerMux");
         this._schedulerMux = ((StringToken) smParam.getToken()).stringValue();
 
-        // 'source' connected to the vlink. 
+        // 'source' connected to the vlink.
         this._source = ((IntermediateReceiver) source).source;
     }
 
@@ -127,7 +127,7 @@ public class AFDXVlink {
     /**
      * Set the value of the bag.
      * @param bag The value.
-     */ 
+     */
     public void setBag(Double bag) {
         _bag = bag;
     }
@@ -146,14 +146,14 @@ public class AFDXVlink {
         _frameSize = size;
     }
 
-    /** Get the source actor. 
+    /** Get the source actor.
      * @return The actor.
      */
     public Actor getSource() {
         return _source;
     }
 
-    /** Set the source actor. 
+    /** Set the source actor.
      * @param source The actor.
      */
     public void setSource(Actor source) {

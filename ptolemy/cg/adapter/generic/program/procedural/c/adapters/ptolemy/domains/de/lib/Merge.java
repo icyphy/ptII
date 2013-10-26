@@ -93,7 +93,7 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         LinkedList args = new LinkedList();
-        
+
         ptolemy.domains.de.lib.Merge actor = (ptolemy.domains.de.lib.Merge) getComponent();
 
         code.append(getTemplateParser().generateBlockCode("fireBeginBlock", args));

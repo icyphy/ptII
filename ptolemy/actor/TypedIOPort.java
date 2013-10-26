@@ -437,7 +437,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     public boolean getAutomaticTypeConversion() {
         return _automaticTypeConversion;
     }
-    
+
     /** Remove a type listener from this port.  If the listener is
      *  not attached to this port, do nothing.
      *  @param listener The TypeListener to be removed.
@@ -601,14 +601,14 @@ public class TypedIOPort extends IOPort implements Typeable {
         super.sendInside(channelIndex, token);
     }
 
-    /** Allow actors to disable automatic type conversion on their input 
-     *  ports in case they do not need it. For example, AddSubtract and 
-     *  Display accept any token type, because they make use of methods 
+    /** Allow actors to disable automatic type conversion on their input
+     *  ports in case they do not need it. For example, AddSubtract and
+     *  Display accept any token type, because they make use of methods
      *  that are inherited by all token types. Disabling automatic type
-     *  conversion lets actors use Java's dynamic dispatch mechanism 
-     *  instead. If set to false, received tokens will not be 
+     *  conversion lets actors use Java's dynamic dispatch mechanism
+     *  instead. If set to false, received tokens will not be
      *  converted.
-     *  @param automaticTypeConversion False in order to disable 
+     *  @param automaticTypeConversion False in order to disable
      *  conversion of received tokens, true otherwise.
      *  @see #getAutomaticTypeConversion()
      */
@@ -761,13 +761,13 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  implements the TypedActor interface (the base class ensures that
      *  the container implements the Actor interface), is null, or is
      *  an EntityLibrary.
-     *  Derived classes may call this method to get the appropriate 
+     *  Derived classes may call this method to get the appropriate
      *  functionality if parent classes have redefined _checkContainer();
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedActor, or if the base class throws it.
      */
-    final protected void _checkTypedIOPortContainer(Entity container) 
+    final protected void _checkTypedIOPortContainer(Entity container)
             throws IllegalActionException {
         // ptolemy/domains/modal/modal/RefinementPort.java uses this method.
         if (!(container instanceof TypedActor)
@@ -917,11 +917,11 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     protected Type _resolvedType = BaseType.UNKNOWN;
 
-    /** By default set to true, meaning received tokens will be converted. 
+    /** By default set to true, meaning received tokens will be converted.
      *  If set to false, received tokens will not be converted.
      */
     private boolean _automaticTypeConversion = true;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1032,7 +1032,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         public boolean isValueAcceptable() {
             return isTypeAcceptable();
         }
-        
+
         /** Set the type of this port.
          *  @param type A Type.
          *  @exception IllegalActionException If the new type violates
@@ -1045,12 +1045,12 @@ public class TypedIOPort extends IOPort implements Typeable {
                         "TypedIOPort$TypeTerm.setValue: The type is not "
                                 + "settable.");
             }
-            // The argument type must be a substitution instance for the 
+            // The argument type must be a substitution instance for the
             // declared type, this means:
-            // - for basic types: the argument is equal to declared type, 
+            // - for basic types: the argument is equal to declared type,
             // or declared type is unknown
-            // - for structured types: if the shape of the structure of 
-            // argument and declared type are the same and leafs of the 
+            // - for structured types: if the shape of the structure of
+            // argument and declared type are the same and leafs of the
             // structure of the argument type, which must be basic
             // types, all are substitution instances for the corresponding
             // element types found in the declared type
@@ -1068,7 +1068,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             Type oldType = _resolvedType;
 
-            // The type is settable, so declared type must be unknown, or 
+            // The type is settable, so declared type must be unknown, or
             // a structured type with one or more unknown elements.
             if (_declaredType == BaseType.UNKNOWN) {
                 _resolvedType = (Type) type;

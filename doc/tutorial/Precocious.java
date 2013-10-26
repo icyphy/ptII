@@ -68,7 +68,7 @@ public class Precocious extends TypedAtomicActor {
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(BaseType.INT);
-        
+
         firingPeriod = new Parameter(this, "firingPeriod");
         firingPeriod.setTypeEquals(BaseType.DOUBLE);
         firingPeriod.setExpression("0.1");
@@ -79,12 +79,12 @@ public class Precocious extends TypedAtomicActor {
 
     /** The output port, which has type int. */
     public TypedIOPort output;
-    
+
     /** The period at which this actor will execute.  This is a double
      *  with a default value of 0.1.
      */
     public Parameter firingPeriod;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -119,11 +119,11 @@ public class Precocious extends TypedAtomicActor {
             };
             requestChange(request);
         }
-        
+
         double period = ((DoubleToken)firingPeriod.getToken()).doubleValue();
         getDirector().fireAt(this, getDirector().getModelTime().add(period));
     }
-    
+
     /** Initialize this actor, which in this case requests a firing at
      *  the current time.
      *  @exception IllegalActionException If a derived class throws it.

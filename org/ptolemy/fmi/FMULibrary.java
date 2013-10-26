@@ -90,7 +90,7 @@ public interface FMULibrary extends FMILibrary {
             // We place this method in separate file for testing purposes.
             FMULog.log(_modelDescription, fmiComponent, instanceName, status, category, message);
         }
-        
+
         /** The model description that contains the names of the
          * variables.
          */

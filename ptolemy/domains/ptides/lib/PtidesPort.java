@@ -51,39 +51,39 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 /** A specialized port for Ptides platform I/O implementing
  *  functionality for sensors, actuators and network receiver and
  *  transmitter ports.
- *  
+ *
  *  When creating a port in vergil, a sensor or actuator port is
  *  created. To create a network port, the parameter <i>
  *  isNetworkPort</i> is changed. Upon changing the type of the port,
- *  the icon is changed as well. 
- *  
+ *  the icon is changed as well.
+ *
  *  PtidesPorts are configured by parameters where some parameters
- *  are the same for all types of ports and others are specific 
- *  to the type. Every PtidesPort can be configured with a 
+ *  are the same for all types of ports and others are specific
+ *  to the type. Every PtidesPort can be configured with a
  *  deviceDelay and a deviceDelayBound. The deviceDelay is the amount
- *  of platform time passing between the port receiving the event and 
+ *  of platform time passing between the port receiving the event and
  *  the platform time the event is put on the event queue (for input
  *  ports) or the time the event is released to the environment (for
  *  output ports).  The deviceDelayBound is the maximum of this value
- *  and it is used in the safe-to-process analysis. 
- *  
+ *  and it is used in the safe-to-process analysis.
+ *
  *  Actuators additionally have a parameter actuateAtEventTimestamp
  *  which is used to specify whether the actuator can output events
  *  before the event timestamp or only at the event timestamp.
- *  
- *  A network transmitter has a parameter platformDelayBound 
+ *
+ *  A network transmitter has a parameter platformDelayBound
  *  which is configured to represent the maximum difference between
- *  platform time and the event timestamp if platform time is 
+ *  platform time and the event timestamp if platform time is
  *  ahead of the event timestamp. This is used for the safe-to-process
  *  analysis.
- *  
- *  A network receiver has a parameter sourcePlatformDelayBound 
+ *
+ *  A network receiver has a parameter sourcePlatformDelayBound
  *  which can be used to match the parameter platformDelayBound
- *  on the sending platform. Again, this parameter is used for 
- *  the safe-to-process analysis. 
- *  
+ *  on the sending platform. Again, this parameter is used for
+ *  the safe-to-process analysis.
+ *
  *  Network receivers have an additional parameter networkDelayBound
- *  which describes the maximum physical time input events spent on 
+ *  which describes the maximum physical time input events spent on
  *  the network after being sent by the another PtidesPlatform.
  *
  *  @author Patricia Derler
@@ -170,10 +170,10 @@ public class PtidesPort extends MirrorPort {
 
     /** An assumed upper bound on the difference between platform time and
      *  the event timestamp sent to a network transmitter port
-     *  (<i>isNetworkPort</i> is true and the port is an output), 
-     *  where platform time is smaller than the event timestamp. 
+     *  (<i>isNetworkPort</i> is true and the port is an output),
+     *  where platform time is smaller than the event timestamp.
      *  If the platform time plus the platformDelayBound
-     *  is smaller than the event timestamp, an exception is thrown. 
+     *  is smaller than the event timestamp, an exception is thrown.
      *  This parameter is used in cases where the execution time is larger than
      *  the logical time delays on the platform to indicate that the designer
      *  knows that the execution time is bigger than the time delay on the
@@ -185,17 +185,17 @@ public class PtidesPort extends MirrorPort {
 
     /** An assumed upper bound on the difference between platform time and
      *  the event timestamp received at a network receiver port
-     *  (<i>isNetworkPort</i> is true and the port is an output), 
+     *  (<i>isNetworkPort</i> is true and the port is an output),
      *  where platform time is smaller than the event timestamp.
      *  This is used to indicate that the designer knows that the execution
      *  time on the sending platform is bigger than the time delay on the
-     *  sending platform. 
+     *  sending platform.
      *  Together with the networkDelayBound and the clockSycnhronizationError
      *  this parameter is used to determine whether an event is arriving at
      *  a network receiver too late.
      *  The value specified for the platformDelayBound on a network transmitter
      *  and the value specified for the sourcePlatformDelayBound on a network
-     *  receiver should ideally match, however, this is not enforced.  
+     *  receiver should ideally match, however, this is not enforced.
      *  This is a double that defaults to 0.0.
      */
     public Parameter sourcePlatformDelayBound;
@@ -342,7 +342,7 @@ public class PtidesPort extends MirrorPort {
     }
 
     /** Change visibility of parameters depending on the type of
-     *  port. 
+     *  port.
      *  @exception IllegalActionException Thrown if icon cannot be changed.
      */
     private void _setIconAndParameterVisibility() throws IllegalActionException {

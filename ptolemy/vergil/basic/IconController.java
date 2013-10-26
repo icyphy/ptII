@@ -223,24 +223,24 @@ public class IconController extends ParameterizedNodeController {
             } catch (IllegalActionException e) {
                 // Ignore
             }
-            
+
             // New way to specify a highlight color.
             AttributeController.renderHighlight(object, result);
-            
+
             try {
                 // clear highlighting
                 Attribute highlightColor = object.getAttribute("_decoratorHighlightColor");
                 if (highlightColor != null) {
-                    object.removeAttribute(highlightColor); 
+                    object.removeAttribute(highlightColor);
                 }
-                
+
                 List<Decorator> decorators = new ArrayList();
                 decorators.addAll(object.decorators());
-    
+
                 for (Decorator decorator : decorators) {
                     DecoratorAttributes decoratorAttributes = object.getDecoratorAttributes(decorator);
                     if (decoratorAttributes instanceof ExecutionAttributes) {
-                        if (decoratorAttributes.getDecorator() != null && 
+                        if (decoratorAttributes.getDecorator() != null &&
                                 ((ExecutionAttributes)decoratorAttributes).enabled()) {
                             try {
                                 if (object.getAttribute("_decoratorHighlightColor") == null) {
@@ -255,15 +255,15 @@ public class IconController extends ParameterizedNodeController {
                             } catch (NameDuplicationException e) {
                                 // Not gonna happen.
                             }
-                        } 
+                        }
                     }
                 }
-                
+
             } catch (IllegalActionException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
-            } 
-            
+            }
+
             AttributeController.renderDecoratorHighlight(object, result);
 
             // If a shadow is specified, render it now.

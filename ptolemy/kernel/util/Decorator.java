@@ -101,7 +101,7 @@ public interface Decorator extends Nameable {
      */
     public DecoratorAttributes createDecoratorAttributes(NamedObj target)
             throws IllegalActionException;
-    
+
     /** Return a list of the objects that this decorator decorates. This could
      *  be, for example, all of the entities contained by the container of
      *  this decorator. An implementer of this method is responsible for ensuring
@@ -115,7 +115,7 @@ public interface Decorator extends Nameable {
      *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
     public List<NamedObj> decoratedObjects() throws IllegalActionException;
-    
+
     /** Return true if this decorator should decorate objects across
      *  opaque hierarchy boundaries. That is, return true to make this
      *  decorator visible to objects even within opaque composites.

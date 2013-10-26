@@ -226,7 +226,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                                 createConstraintParameterName((NamedObj) actorPort));
                         // Include no constraints by default.
                         constraintExpression.setExpression(NO_CONSTRAINTS);
-                        
+
                         // Make suggestions.
                         constraintExpression.addChoice(NO_CONSTRAINTS);
                         constraintExpression.addChoice(IGNORE);
@@ -258,7 +258,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             constraintExpression.addChoice(GTE);
                             constraintExpression.addChoice(LTE);
                             constraintExpression.addChoice(EQ);
-                            
+
                             _constraintTermExpressions.add(constraintExpression);
                         }
                     }

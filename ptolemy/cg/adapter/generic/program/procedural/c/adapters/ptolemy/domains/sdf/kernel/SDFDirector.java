@@ -90,11 +90,11 @@ public class SDFDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Generate the constructor code for the specified director.
      * In this class we initialize the director with its internal
      * parameters and fields as well as with the depths of the actors
-     * 
+     *
      * @return The generated constructor code
      * @throws IllegalActionException Not thrown in this base class.
      */
@@ -102,8 +102,8 @@ public class SDFDirector
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor)_director.getContainer();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) _director; 
-        
+        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) _director;
+
         result.append(_eol + getSanitizedDirectorName() + "->container = " + sanitizedContainerName + ";");
         result.append(_eol + _sanitizedDirectorName + "->_startTime = " + director.getModelStartTime() + ";");
         result.append(_eol + _sanitizedDirectorName + "->_stopTime = " + director.getModelStopTime() + ";");
@@ -111,7 +111,7 @@ public class SDFDirector
         result.append(_eol + _sanitizedDirectorName + "->period = " + ((DoubleToken) director.period.getToken()).doubleValue() + ";");
         result.append(_eol + _sanitizedDirectorName + "->localClock->container = (struct Director*)" + _sanitizedDirectorName + ";");
         result.append(_eol + _sanitizedDirectorName + "->schedule = " + sanitizedContainerName + "_Schedule_iterate;");
-        
+
         List<?> containedActors = container.deepEntityList();
         Iterator<?> actors = containedActors.iterator();
         // First loop to create the struct IOPort
@@ -123,7 +123,7 @@ public class SDFDirector
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
                     continue;
-                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                         " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
             }
             ports = ((Actor)actor).outputPortList().iterator();
@@ -131,7 +131,7 @@ public class SDFDirector
                 IOPort port = (IOPort)ports.next();
                 if (!port.isOutsideConnected())
                     continue;
-                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() + 
+                result.append(_eol + "struct IOPort* " + sanitizedActorName + "_" + port.getName() +
                         " = (struct IOPort*)" + sanitizedActorName + "_get_" + port.getName() + "();");
             }
         }
@@ -162,7 +162,7 @@ public class SDFDirector
                             farPortName = farPort.getName() + "->_localInsideReceivers, ";
                         else
                             farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                        
+
                         int foo = 0;
                         int bar = 0;
                         Receiver[][] farReceiverss;
@@ -171,15 +171,15 @@ public class SDFDirector
                         else
                             farReceiverss = farPort.getReceivers();
                         loops:
-                        for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                        for (foo = 0 ; foo < farReceiverss.length ; foo++)
                             for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                                if (farReceiverss[foo][bar].equals(receiver)) 
+                                if (farReceiverss[foo][bar].equals(receiver))
                                     break loops;
-                        
+
                         if (foo == farReceiverss.length)
                             throw new IllegalActionException(container,
                                     "Receiver not found in port : " + port.getFullName() + "in actor : " + sanitizedActorName);
-                        
+
                         result.append(_eol + "pblListAdd(pblListGet(" + sanitizedActorName + "_" + port.getName() + "->_farReceivers, " + i + ")" +
                                         ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                     }
@@ -204,30 +204,30 @@ public class SDFDirector
                     NamedObj farActor = farPort.getContainer();
                     String sanitizedFarActorName = CodeGeneratorAdapter.generateName(farActor);
                     String farPortName = sanitizedFarActorName + "_" + farPort.getName() + "->_localReceivers, ";
-                    
+
                     int foo = 0;
                     int bar = 0;
                     Receiver[][] farReceiverss;
                     farReceiverss = farPort.getReceivers();
                     loops:
-                    for (foo = 0 ; foo < farReceiverss.length ; foo++) 
+                    for (foo = 0 ; foo < farReceiverss.length ; foo++)
                         for (bar = 0 ; bar < farReceiverss[foo].length ; bar++)
-                            if (farReceiverss[foo][bar].equals(receiver)) 
+                            if (farReceiverss[foo][bar].equals(receiver))
                                 break loops;
-                    
+
                     if (foo == farReceiverss.length)
                         throw new IllegalActionException(container,
                                 "Receiver not found in port : " + port.getFullName() + " in actor : " + sanitizedContainerName);
-                    
+
                     result.append(_eol + "pblListAdd(pblListGet(" + port.getName() + "->_insideReceivers, " + i + ")" +
                                     ", pblListGet(pblListGet(" + farPortName + foo + "), " + bar + "));");
                 }
             }
         }
-        
+
         return result.toString();
     }
-    
+
     /** Generate The functions' declaration code for this director.
     *
     *  @return The functions' declaration function code.
@@ -243,13 +243,13 @@ public class SDFDirector
        code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
-       
+
        code.append(_eol + "void " + _sanitizedDirectorName + "_TransferInputs();");
        code.append(_eol + "void " + _sanitizedDirectorName + "_TransferOutputs();");
-       
+
        return code.toString();
    }
-    
+
     /** Generate the initialize function code for the associated SDF director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the adapter associated with
@@ -262,12 +262,12 @@ public class SDFDirector
         CompositeActor container = ((CompositeActor) _director.getContainer());
         List actorList = container.deepEntityList();
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-       
+
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
         code.append(_eol + _eol
                 + codeGenerator.comment("Initialization of the director"));
-        
+
         if (_director.isEmbedded()) {
             ptolemy.actor.Director executiveDirector = container.getExecutiveDirector();
             // Some composites, such as RunCompositeActor want to be treated
@@ -278,14 +278,14 @@ public class SDFDirector
                     + ((SuperdenseTimeDirector) executiveDirector).getIndex() + ";");
             }
         }
-        
+
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
             String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
             code.append(_eol + sanitizedActorName + "_initialize();");
         }
-        
+
         code.append(_eol + _sanitizedDirectorName + ".containerActor = &" + sanitizedContainerName + ";");
 
         Attribute iterations = _director.getAttribute("iterations");
@@ -293,7 +293,7 @@ public class SDFDirector
                 .intValue();
         code.append(_eol + _sanitizedDirectorName + ".iterations = " + iterationCount + ";");
         code.append(_eol + _sanitizedDirectorName + ".iterationsCount = 0;");
-        
+
         code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".startTime;");
         code.append(_eol + _sanitizedDirectorName + ".exceedStopTime = false;");
 
@@ -301,10 +301,10 @@ public class SDFDirector
         code.append(_eol
                 + codeGenerator
                         .comment("End of the Initialization of the director"));
-        
+
         return code.toString();
     }
-    
+
     /** Generate a main loop for an execution under the control of
      *  this director. If the associated director has a parameter
      *  named <i>iterations</i> with a value greater than zero,
@@ -346,7 +346,7 @@ public class SDFDirector
 //                        + "; iteration ++) {" + _eol);
 //            }
 //        }
-               
+
         code.append(_eol + "void " + _sanitizedDirectorName + "_Preinitialize() {" + _eol);
         code.append(generatePreinitializeMethodBodyCode());
         code.append(_eol + "}" + _eol);
@@ -382,15 +382,15 @@ public class SDFDirector
         code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize() {" + _eol);
         code.append(generateInitializeFunctionCode());
         code.append(_eol + "}" + _eol);
-        
+
         code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
         code.append(generateWrapupCode());
         code.append(_eol + "}" + _eol);
 
         return processCode(code.toString());
     }
-    
-    /** Generate The postfire function code for a SDF director. 
+
+    /** Generate The postfire function code for a SDF director.
      *  @return The postfire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -398,13 +398,13 @@ public class SDFDirector
         StringBuffer code = new StringBuffer();
 
         code.append(_eol + _sanitizedDirectorName + ".iterationsCount++;");
-        
+
         code.append(_eol + "if ("
                 + _sanitizedDirectorName + ".iterationsCount >= " + _sanitizedDirectorName + ".iterations) {");
         code.append(_eol + _sanitizedDirectorName + ".iterationsCount = 0;");
         code.append(_eol + "return false;");
         code.append(_eol + "}");
-        
+
         Attribute period = _director.getAttribute("period");
         if (period != null) {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())
@@ -413,16 +413,16 @@ public class SDFDirector
                 code.append(_sanitizedDirectorName + ".currentModelTime += " + periodValue + ";" + _eol);
             }
         }
-        
+
         code.append(_eol + "return true;");
 
         return code.toString();
     }
-    
+
     /** Generate The prefire function code for a SDF director
      *  Usually we have to check if all the input ports have enough
      *  tokens to fire.
-     *  In here we also update the time of the director with its container 
+     *  In here we also update the time of the director with its container
      *  time.
      *  If it is top level director, there is no need for that.
      *  But in the SDFReceiver we assume that receivers have always
@@ -432,12 +432,12 @@ public class SDFDirector
      */
     public String generatePreFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         if (_director.isEmbedded())
             code.append(_eol + _sanitizedDirectorName + ".currentModelTime = " + _sanitizedDirectorName + ".containerActor->actor.container->director->currentModelTime;");
-        
+
         code.append(_eol + "return true;");
-        
+
         return code.toString();
     }
 
@@ -454,7 +454,7 @@ public class SDFDirector
         //code.append(super.generatePreinitializeCode());
         // We do execute this method without using its result because we need to initialize the offsets
         super.generatePreinitializeCode();
-        
+
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
 
@@ -465,7 +465,7 @@ public class SDFDirector
         _intFlag = false;
         _doubleFlag = false;
         _booleanFlag = false;
-        
+
         code.append(_eol + "" + _sanitizedDirectorName + ".preinitializeFunction = " + _sanitizedDirectorName + "_Preinitialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".initializeFunction = " + _sanitizedDirectorName + "_Initialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = " + _sanitizedDirectorName + "_Prefire;");
@@ -478,7 +478,7 @@ public class SDFDirector
 
         return code.toString();
     }
-    
+
     /** Generate the preinitialize code for this director.
      *  The preinitialize code for the director is generated by appending
      *  the preinitialize code for each actor.
@@ -492,26 +492,26 @@ public class SDFDirector
 
         CompositeActor container = ((CompositeActor) _director.getContainer());
         List actorList = container.deepEntityList();
-        
+
         Attribute period = _director.getAttribute("period");
         if (period != null && _director.getContainer().getContainer() == null) {
             double periodValue = ((DoubleToken) ((Variable) period).getToken())
                     .doubleValue();
             code.append(_eol + _sanitizedDirectorName + "_period = " + periodValue + ";");
         }
-        
-        
-        
+
+
+
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
             String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
             code.append(_eol + sanitizedActorName + "_preinitialize();");
         }
-        
+
         return code.toString();
     }
-    
+
     /** Generate the code representing the schedule statically inferred from the
      *  Ptolemy model.
      *  @return the code representing the schedule.
@@ -519,7 +519,7 @@ public class SDFDirector
      */
     public String generateSchedule() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         // Generate code for one iteration.
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         Schedule schedule = director.getScheduler().getSchedule();
@@ -629,8 +629,8 @@ public class SDFDirector
                     }
                     for (int k = 0; k < rate; k++) {
                         //code.append(_eol + "$put(" + portNameWithChannelNumber + ", ");
-                        String putString = _eol + "ReceiverPut((" + CodeGeneratorAdapter.generateName(container) 
-                                + ".actor).ports[enum_" + CodeGeneratorAdapter.generateName(container) 
+                        String putString = _eol + "ReceiverPut((" + CodeGeneratorAdapter.generateName(container)
+                                + ".actor).ports[enum_" + CodeGeneratorAdapter.generateName(container)
                                 + "_" + inputPort.getName() + "].farReceivers[" + i + "], " + _eol;
                         code.append(_eol + putString);
 //                        code.append(compositeActorAdapter.getReference("@"
@@ -863,20 +863,20 @@ public class SDFDirector
                 if (outputPort.isMultiport()) {
                     portNameWithChannelNumber = portName + '#' + i;
                 }
-                
+
                 // Assign each token to the array of jni objects
                 for (int k = 0; k < rate; k++) {
 //                    String portReference = compositeActorAdapter.getReference(
 //                            "@" + portNameWithChannelNumber + "," + k, false);
                     String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
-                    String hasTokenString = "while (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+                    String hasTokenString = "while (ReceiverHasToken((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName
                             + "_" + outputPort.getName() + "].receivers + " + i + "))" + _eol;
                     code.append(hasTokenString);
-                    
-                    String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName 
+
+                    String getString = "ReceiverGet((" + sanitizedContainerName + ".actor).ports[enum_" + sanitizedContainerName
                             + "_" + outputPort.getName() + "].receivers + " + i + ")";
-                    
-                    if (type == BaseType.INT) 
+
+                    if (type == BaseType.INT)
                         getString += ".payload.Int;";
                     else if (type == BaseType.DOUBLE)
                         getString += ".payload.Double;";
@@ -886,10 +886,10 @@ public class SDFDirector
                         // FIXME: need to deal with other types
                         throw new IllegalActionException(outputPort,
                                 exceptionMessage);
-                        
+
                     code.append(_eol + tokensToOneChannel + "[" + k + "] = " + getString + _eol);
                     //code.append("$get(" + portNameWithChannelNumber + ");" + _eol);
-                    
+
                 }
 
                 String tokensToOneChannelArray = "arr" + portName + i;
@@ -999,7 +999,7 @@ public class SDFDirector
         StringBuffer variableDeclarations = new StringBuffer();
 
         //variableDeclarations.append(super.generateVariableDeclaration());
-        
+
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
 
         Attribute period = _director.getAttribute("period");
@@ -1012,7 +1012,7 @@ public class SDFDirector
                                 "Provide the period attribute as constant."));
                 variableDeclarations.append("double " + _sanitizedDirectorName + "_period;" + _eol);
             }
-            
+
         }
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter.generateName(container);
@@ -1027,9 +1027,9 @@ public class SDFDirector
 //        }
         return variableDeclarations.toString();
     }
-    
 
-    /** Generate The wrapup function code. 
+
+    /** Generate The wrapup function code.
      *  @return The wrapup function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -1056,10 +1056,10 @@ public class SDFDirector
     public CCodeGenerator getCodeGenerator() {
         return (CCodeGenerator) super.getCodeGenerator();
     }
-    
+
     /** Returns the sanitized name of this director
      *  adapter.
-     * 
+     *
      * @return The name of the director
      */
     public String getSanitizedDirectorName() {
@@ -1283,7 +1283,7 @@ public class SDFDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     private int _portNumber = 0;
 
     private boolean _doubleFlag;
