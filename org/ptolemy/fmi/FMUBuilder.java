@@ -40,6 +40,8 @@ import java.io.InputStreamReader;
  * Build a FMU shared object.
  *
  * @author Christopher Brooks
+@version $Id$
+@since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

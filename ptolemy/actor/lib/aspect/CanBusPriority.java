@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  *
  *  @author D. Marciano, P. Derler
  *  @version $Id$
-   @since Ptolemy II 0.2
+   @since Ptolemy II 10.0
 
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)

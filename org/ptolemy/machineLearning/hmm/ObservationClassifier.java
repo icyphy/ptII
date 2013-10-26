@@ -77,7 +77,7 @@ governing the Markovian process representing the hidden state evolution. The <i>
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */

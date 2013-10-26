@@ -44,6 +44,8 @@ import com.sun.jna.NativeLibrary;
  *  _processArgs(args) and them simulate(...).</p>
  *
  *  @author Christopher Brooks
+@version $Id$
+@since Ptolemy II 10.0
  *  @version $Id$
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)

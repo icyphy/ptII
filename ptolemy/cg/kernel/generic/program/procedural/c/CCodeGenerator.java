@@ -97,7 +97,7 @@ import ptolemy.util.StringUtilities;
  *
  *  @author Gang Zhou, William Lucas
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (wlc)
  *  @Pt.AcceptedRating red (wlc)
  */

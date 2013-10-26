@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Jeff C. Jensen
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 10.0
  */
 public class Register extends NamedProgramCodeGeneratorAdapter {
     /**

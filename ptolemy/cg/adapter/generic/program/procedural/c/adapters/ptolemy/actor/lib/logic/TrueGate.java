@@ -34,7 +34,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
  @author Patricia Derler
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Green (derler)
  @Pt.AcceptedRating Green (derler)
  */

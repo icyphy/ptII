@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  *  @author Charles Shelton, Ben Lickly, Elizabeth Latronico
  *  @version $Id$
- *  @since Ptolemy II 9.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */

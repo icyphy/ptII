@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * @author Lyle Holsinger
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
  *

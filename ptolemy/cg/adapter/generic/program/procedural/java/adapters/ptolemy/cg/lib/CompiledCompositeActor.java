@@ -50,7 +50,7 @@ import ptolemy.util.StringBufferExec;
 
  @author Gang Zhou, Christopher Brooks, Contributor: Bert Rodiers
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (zgang)
  */

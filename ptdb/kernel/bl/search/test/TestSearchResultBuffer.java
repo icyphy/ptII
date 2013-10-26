@@ -57,7 +57,7 @@ import ptdb.kernel.bl.search.SearchResultBuffer;
  *
  * @author Alek Wang
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @see SearchResultBuffer
  * @Pt.ProposedRating red (wenjiaow)
  * @Pt.AcceptedRating red (wenjiaow)

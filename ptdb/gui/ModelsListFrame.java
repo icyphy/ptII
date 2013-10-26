@@ -48,7 +48,7 @@ import ptolemy.util.MessageHandler;
 /**
  * Frame to display a list of all models in the database.
  * @author Ashwini Bijwe
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating red (abijwe)
  * @Pt.AcceptedRating red (abijwe)

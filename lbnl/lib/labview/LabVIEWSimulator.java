@@ -79,7 +79,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  * @author Jia Zou
  * @version $Id$
- * @since BCVTB 0.1
+ * @since Ptolemy II 10.0
  *
  */
 public class LabVIEWSimulator extends Simulator {

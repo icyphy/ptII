@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @param <T> Type of Token that the handler handles.
  * @author ahuseyno
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */

@@ -61,7 +61,7 @@ import ptolemy.vergil.icon.TableIcon;
  *
  * @author Bastian Ristau, Yasemin Demir, and Edward A. Lee
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (beth)
  * @Pt.AcceptedRating Red (beth)
  */

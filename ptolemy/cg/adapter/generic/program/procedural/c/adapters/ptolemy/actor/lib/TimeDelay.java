@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Jia Zou, modified by William Lucas
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */

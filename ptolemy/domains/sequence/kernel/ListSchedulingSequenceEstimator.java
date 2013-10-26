@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 *
 * @author Bastian Ristau
 * @version $Id$
-* @since Ptolemy II 8.1
+* @since Ptolemy II 10.0
 * @Pt.ProposedRating Red (ristau)
 * @Pt.AcceptedRating Red (ristau)
 */

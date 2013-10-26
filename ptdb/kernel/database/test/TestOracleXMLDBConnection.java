@@ -92,7 +92,7 @@ import com.sleepycat.dbxml.XmlManager;
  *
  * @version $Id: TestOracleXMLDBConnection.java 58206 2010-06-16 19:54:03Z
  * yalsaeed $
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
  *

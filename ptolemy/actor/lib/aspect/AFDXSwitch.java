@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  *
  *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Yellow (glasnier)
  */

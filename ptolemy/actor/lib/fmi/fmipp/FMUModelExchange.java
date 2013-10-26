@@ -61,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Wolfgang M&uuml;ller
  @version $Id$
- @since Ptolemy II 9.0 devel
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

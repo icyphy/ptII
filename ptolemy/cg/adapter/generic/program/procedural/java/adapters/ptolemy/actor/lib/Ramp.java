@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
  @author Gang Zhou, Bert Rodiers
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)
  */

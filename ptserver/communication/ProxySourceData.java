@@ -40,7 +40,7 @@ import ptserver.data.CommunicationToken;
  * A helper data structure holding a reference to the proxy source and its queue.
  * @author Anar Huseynov
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */

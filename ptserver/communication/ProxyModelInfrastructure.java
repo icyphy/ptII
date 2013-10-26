@@ -78,7 +78,7 @@ import com.ibm.mqtt.MqttException;
  *
  *  @author Anar Huseynov
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */

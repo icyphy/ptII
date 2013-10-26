@@ -51,7 +51,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 
 @author Marc Geilen
 @version $Id$
-@since Ptolemy II 0.2
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
 */

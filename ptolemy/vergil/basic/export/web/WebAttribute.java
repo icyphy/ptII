@@ -52,7 +52,7 @@ import ptolemy.kernel.util.StringAttribute;
  *
  * @author Elizabeth Latronico
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ltrnc)
  * @Pt.AcceptedRating Red (ltrnc)
  */

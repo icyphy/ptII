@@ -82,7 +82,7 @@ import ptolemy.vergil.basic.export.web.WebExportParameters;
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

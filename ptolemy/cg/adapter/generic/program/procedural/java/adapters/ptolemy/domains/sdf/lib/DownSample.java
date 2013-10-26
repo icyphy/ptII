@@ -31,7 +31,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
 
  @author Man-Kit Leung, Dai Bui
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

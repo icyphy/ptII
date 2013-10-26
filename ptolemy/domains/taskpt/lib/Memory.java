@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  * @author Bastian Ristau
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating red (ristau)
  * @Pt.AcceptedRating red (ristau)
  */

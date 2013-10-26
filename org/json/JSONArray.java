@@ -78,6 +78,8 @@ import java.util.Map;
  * </ul>
 
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2009-04-14
  */
 public class JSONArray {

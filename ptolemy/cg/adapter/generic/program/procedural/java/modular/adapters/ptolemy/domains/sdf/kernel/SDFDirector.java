@@ -35,7 +35,7 @@
 
  @author Dai Bui, Bert Rodiers
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
@@ -77,7 +77,7 @@ import ptolemy.kernel.util.NamedObj;
 *
 *  @author Dai Bui, Bert Rodiers
 *  @version $Id$
-*  @since Ptolemy II 8.0
+*  @since Ptolemy II 10.0
 *  @Pt.ProposedRating red (rodiers)
 *  @Pt.AcceptedRating red (daib)
 */

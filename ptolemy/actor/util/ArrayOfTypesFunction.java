@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  with the element type equal to its argument.
  * @author Edward A. Lee, Marten Lohstroh
  * @version $Id: ArrayOfTypesFunction.java$
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (eal)
  * @Pt.AcceptedRating Red (cxh)
  */

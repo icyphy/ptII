@@ -73,7 +73,7 @@ or any domain that respects fireAt() calls.
 @author Edward A. Lee
 @see IOPort#getWidth()
 @version $Id$
-@since Ptolemy II 4.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (eal)
 */

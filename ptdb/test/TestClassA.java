@@ -42,6 +42,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ClassA.class)
+/**
+ * TestClassA class.
+ *
+ * @author cxh
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class TestClassA {
 
     @Test

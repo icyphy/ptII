@@ -34,6 +34,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  A adapter class for CurrentTime.
 
  @author William Lucas
+@version $Id$
+@since Ptolemy II 10.0
  */
 public class CurrentTime
         extends

@@ -31,6 +31,8 @@ package org.json;
 /**
  * The JSONException is thrown by the JSON.org classes when things are amiss.
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2008-09-18
  */
 public class JSONException extends Exception {

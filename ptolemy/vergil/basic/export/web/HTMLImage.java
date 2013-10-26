@@ -65,7 +65,7 @@ import ptolemy.vergil.basic.ExportParameters;
  *
  * @author Beth Latronico
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @see ptolemy.gui.ImageExportable
  * @see ptolemy.vergil.basic.export.web.HTMLText
  * @see ptolemy.vergil.basic.export.web.LinkToOpenTableaux

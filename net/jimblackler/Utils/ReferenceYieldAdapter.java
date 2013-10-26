@@ -9,6 +9,8 @@ import java.util.Iterator;
  * if threading issues are suspected as the cause of problems in the calling code.
  *
  * @author Jim Blackler (jimblackler@gmail.com)
+@version $Id$
+@since Ptolemy II 10.0
  */
 public class ReferenceYieldAdapter<T> implements YieldAdapter<T> {
 

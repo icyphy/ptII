@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * @author Liangpeng Guo
  * @version $Id$
- * @since Ptolemy II 9.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *

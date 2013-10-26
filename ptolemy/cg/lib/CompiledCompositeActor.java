@@ -82,7 +82,7 @@ import ptolemy.util.StringUtilities;
 
  @author Gang Zhou, contributors: Christopher Brooks, Edward A. Lee, Bert Rodiers, Dai Bui
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating red (zgang)
  */

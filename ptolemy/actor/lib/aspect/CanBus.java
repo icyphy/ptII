@@ -111,7 +111,7 @@ import ptolemy.kernel.util.Workspace;
  *
  *  @author D. Marciano, G. Lasnier, P. Derler
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Yellow (glasnier)
  */

@@ -78,7 +78,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @see XMPPGateway
  *  @author Marten Lohstroh and Ben Zhang
  *  @version $Id$
- *  @since Ptolemy II 9.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (marten)
  *  @Pt.AcceptedRating Red (marten)
  */

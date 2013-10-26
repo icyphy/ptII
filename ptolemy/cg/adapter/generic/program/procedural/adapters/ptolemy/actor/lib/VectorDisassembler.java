@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Christopher Brooks, based on codegen VectorDisassembler by Man-Kit Leung
  @version Id: VectorAssembler.java 57046 2010-01-27 23:35:53Z cxh $
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

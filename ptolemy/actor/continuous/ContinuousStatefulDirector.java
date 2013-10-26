@@ -36,7 +36,7 @@ package ptolemy.actor.continuous;
  rolled back.
  @author  Christopher Brooks
  @version $Id$
- @since Ptolemy II 9.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
  */

@@ -28,6 +28,8 @@ SOFTWARE.
  * The XMLTokener extends the JSONTokener to provide additional methods
  * for the parsing of XML texts.
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2010-01-30
  */
 public class XMLTokener extends JSONTokener {

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  * @author Jia Zou, Jeff C. Jensen
  * @version $ld$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating
  *

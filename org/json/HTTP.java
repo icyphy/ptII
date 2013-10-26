@@ -30,6 +30,8 @@ import java.util.Iterator;
 /**
  * Convert an HTTP header to a JSONObject and back.
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2008-09-18
  */
 public class HTTP {

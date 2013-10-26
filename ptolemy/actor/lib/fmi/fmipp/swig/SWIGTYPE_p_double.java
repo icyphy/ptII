@@ -8,6 +8,15 @@
 
 package ptolemy.actor.lib.fmi.fmipp.swig;
 
+/**
+ * SWIGTYPE_p_double class.
+ *
+ * @author cxh
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class SWIGTYPE_p_double {
   private long swigCPtr;
 

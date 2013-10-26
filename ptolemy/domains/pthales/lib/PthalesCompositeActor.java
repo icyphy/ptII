@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @author R&eacute;mi Barr&egrave;re
  @see ptolemy.actor.TypedIOPort
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

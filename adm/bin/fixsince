@@ -12,8 +12,8 @@
 # by running diff between the old release and the new release
 
 oldVersion=8.0.1
-newVersion=9.0.devel
-sinceVersion=9.0
+newVersion=10.0.devel
+sinceVersion=10.0
 
 #diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs
@@ -34,7 +34,7 @@ if [ ! -f $newJavaFiles ]; then
 	sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@'> $newJavaFiles 
     (cd $PTII/adm/dists/ptII$oldVersion; $PTII/adm/bin/ptIItxtfiles) | egrep '.java$' | sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@' | sort > /tmp/fixsince.oldJavaFiles
     (cd $PTII/adm/dists/ptII$newVersion; $PTII/adm/bin/ptIItxtfiles) | egrep '.java$' | sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@' | sort > /tmp/fixsince.newFiles
-    comm -13 /tmp/fixsince.oldjavaFiles /tmp/fixsince.newFiles >> $newJavaFiles
+    comm -13 /tmp/fixsince.oldJavaFiles /tmp/fixsince.newFiles >> $newJavaFiles
     sort $newJavaFiles | uniq | egrep -v "^com" > /tmp/fixsince.newJavaFiles.s
     mv /tmp/fixsince.newJavaFiles.s $newJavaFiles
 fi
@@ -131,12 +131,6 @@ do
        diff $file $tmpfile
 
 #  fi
-  # If everything looks alright, edit /tmp//fixsince.newJavaFiles and
-  # remove the leading adm/dists/ptIIX.Y.devel and then uncomment the
-  # lines below and rerun in $PTII
-   
-  # Uncomment this line to actually update the file.
-  #cp $tmpfile $file
-
-  #cvs commit -m "This file is new since Ptolemy 6.1, so the copyright and @since tag should reflect that." $file
+  # If everything looks alright, then uncomment the cp command below and rerun
+  cp $tmpfile $file
 done

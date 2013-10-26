@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author N. Vinay Krishnan, Edward A. Lee
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @see ptolemy.domains.giotto.cgc.GiottoCEmachineFrameworkGenerator
  @Pt.ProposedRating Red (vkris)
  @Pt.AcceptedRating Red (cxh)

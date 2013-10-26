@@ -33,6 +33,8 @@ package ptolemy.domains.coroutine.kernel;
 
 /**
  * @author shaver
+@version $Id$
+@since Ptolemy II 10.0
  *
  */
 public class ControlExitToken extends ControlToken {

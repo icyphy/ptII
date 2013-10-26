@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
 *
 * @author Bert Rodiers, Chris Shaver
 * @version $Id$
-* @since
+* @since Ptolemy II 10.0
 * @Pt.ProposedRating Red (shaver)
 * @Pt.AcceptedRating Red
 */

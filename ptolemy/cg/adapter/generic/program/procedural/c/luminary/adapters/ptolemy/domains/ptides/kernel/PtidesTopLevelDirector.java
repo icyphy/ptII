@@ -47,7 +47,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolem
 
  @author Jia Zou
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating
  */

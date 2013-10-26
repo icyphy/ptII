@@ -90,7 +90,7 @@ import ptolemy.util.StringUtilities;
  *
  *  @author Christopher Brooks, Contributor: Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (cxh)
  *  @Pt.AcceptedRating red (cxh)
  */

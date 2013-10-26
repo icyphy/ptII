@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * @author Elizabeth Latronico (Bosch), rrs1pal
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (beth)
  * @Pt.AcceptedRating Red (beth)
  */

@@ -66,7 +66,7 @@ import javax.swing.filechooser.FileFilter;
  * @version $Id$
  * @author Jeff Dinkins
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
  */
 public class ExtensionFilenameFilter extends PtFilenameFilter {
     // This is a duplicate of diva.gui.ExtensionFileFilter because

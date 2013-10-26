@@ -167,6 +167,8 @@ import com.sun.jna.ptr.PointerByReference;
  * period, because periods are not allowed in port names.</p>
  *
  * @author Christopher Brooks, Michael Wetter, Edward A. Lee,
+@version $Id$
+@since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

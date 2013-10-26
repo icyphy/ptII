@@ -81,7 +81,7 @@ the least upper bound of the entire collection.</p>
 @see TokenToJSON
 @author  Marten Lohstroh, Contributor: Beth Latronico
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (marten)
 @Pt.AcceptedRating Red (chx)
 */

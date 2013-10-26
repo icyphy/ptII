@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy
 
  @author Jeff C. Jensen
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 10.0
  */
 public class TimeGap
         extends

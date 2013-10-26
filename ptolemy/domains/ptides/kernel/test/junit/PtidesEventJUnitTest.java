@@ -37,7 +37,7 @@ import ptolemy.domains.ptides.kernel.PtidesEvent;
  * Tests for PtidesEvent.
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

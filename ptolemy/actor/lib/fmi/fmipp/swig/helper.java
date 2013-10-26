@@ -8,6 +8,15 @@
 
 package ptolemy.actor.lib.fmi.fmipp.swig;
 
+/**
+ * helper class.
+ *
+ * @author cxh
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class helper {
   public static SWIGTYPE_p_double new_double_array(int nelements) {
     long cPtr = helperJNI.new_double_array(nelements);

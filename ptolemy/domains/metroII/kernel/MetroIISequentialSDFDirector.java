@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * @author Liangpeng Guo
  * @version $Id: MetroSequentialSDFDirector.java 67619 2013-10-02 20:32:10Z glp$
- * @since Ptolemy II 9.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *

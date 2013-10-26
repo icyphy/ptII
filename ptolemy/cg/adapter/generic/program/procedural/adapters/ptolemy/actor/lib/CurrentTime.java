@@ -38,7 +38,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  * @see ptolemy.actor.lib.CurrentTime
  * @author Christopher Brooks, based on CurrentTime by Man-Kit Leung
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  *

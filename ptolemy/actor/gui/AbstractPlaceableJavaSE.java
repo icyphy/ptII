@@ -50,7 +50,7 @@ PortablePlaceable.
 
 @author Edward A. Lee, Ishwinder Singh
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
 */

@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 @author Christopher Brooks
 @version $Id$
-@since Ptolemy II 8.1
+@since Ptolemy II 10.0
  */
 public class Distributor
         extends

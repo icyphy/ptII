@@ -82,7 +82,7 @@ A TypedCompositeActor with Lazy evaluation for Modular code generation.
 
  @author Bert Rodiers, Dai Bui
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */

@@ -120,7 +120,7 @@ import diva.canvas.connector.ManhattanConnector;
  * {@link Location}.</p>
  *
  * @author Hauke Fuhrmann, <kieler@informatik.uni-kiel.de>
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (haf)
  * @Pt.AcceptedRating Red (haf)
  */

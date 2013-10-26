@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** Base class for environment receivers.
  *  @author Jia Zou, Slobodan Matic
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (jiazou)
  *  @Pt.AcceptedRating
  */

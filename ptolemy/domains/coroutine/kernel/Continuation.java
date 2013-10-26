@@ -33,6 +33,15 @@ import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+/**
+ * Continuation class.
+ *
+ * @author shaver
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public interface Continuation {
 
     public ControlExitToken controlEnter(ControlEntryToken entry)

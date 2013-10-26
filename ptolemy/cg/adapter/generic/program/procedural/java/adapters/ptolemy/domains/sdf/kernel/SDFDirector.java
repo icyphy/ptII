@@ -67,7 +67,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
  @author Ye Zhou, Gang Zhou, Contributor: Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
  */

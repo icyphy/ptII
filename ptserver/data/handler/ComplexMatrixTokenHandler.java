@@ -42,7 +42,7 @@ import ptserver.data.TokenParser;
 /** ComplexMatrixTokenHandler converts ComplexMatrixToken to/from byte stream.
  *  @author ishwinde
  *  @version $Id$
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ishwinde)
  *  @Pt.AcceptedRating Red (ishwinde)
  */

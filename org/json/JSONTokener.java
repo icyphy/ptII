@@ -34,6 +34,8 @@ SOFTWARE.
  * it. It is used by the JSONObject and JSONArray constructors to parse
  * JSON source strings.
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2010-02-02
  */
 public class JSONTokener {

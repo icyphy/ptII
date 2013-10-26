@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

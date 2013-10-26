@@ -38,7 +38,7 @@ package ptolemy.moml;
  * @author Christopher Brooks
  * @version $Id: MoMLSimpleTimeoutApplication.java 61755 2011-08-08 20:17:11Z
  *          cxh $
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (eal)
  */

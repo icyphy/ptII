@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
  @see MoMLParser
  @author Christopher Brooks, based on StreamErrorHandler by Edward A. Lee
  @version $Id$
- @since Ptolemy II 9.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

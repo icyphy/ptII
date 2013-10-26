@@ -30,6 +30,8 @@ import java.util.Iterator;
  * This provides static methods to convert an XML text into a JSONObject,
  * and to covert a JSONObject into an XML text.
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2010-04-08
  */
 public class XML {

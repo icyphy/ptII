@@ -63,7 +63,7 @@ import ptdb.common.exception.ModelAlreadyExistException;
  *  @author Ashwini Bijwe, Yousef Alsaeed
  *
  *  @version $Id$
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (abijwe)
  *  @Pt.AcceptedRating Red (abijwe)
  *

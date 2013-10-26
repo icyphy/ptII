@@ -55,7 +55,7 @@ import ptolemy.moml.MoMLParser;
 * It uses the LoadManager to interface with the database to get MoML strings.
 *
 * @author Lyle Holsinger
-* @since Ptolemy II 8.1
+* @since Ptolemy II 10.0
 * @version $Id$
 * @Pt.ProposedRating red (lholsing)
 * @Pt.AcceptedRating red (lholsing)

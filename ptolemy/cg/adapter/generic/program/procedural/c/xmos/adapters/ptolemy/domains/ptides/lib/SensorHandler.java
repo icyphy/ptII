@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * Generate code for the Xmos board for a Ptides SensorHandler.
  * @author Patricia Derler
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */

@@ -32,6 +32,15 @@ package ptdb.test;
 
 import java.io.File;
 
+/**
+ * ClassA class.
+ *
+ * @author cxh
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class ClassA {
 
     public String getSunSign(int date, String monthS) {

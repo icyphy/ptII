@@ -55,7 +55,7 @@ classes.</p>
 
 @author Jianwu Wang, Based on code by James Yeh, Edward A. Lee
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating
 @Pt.AcceptedRating
 */

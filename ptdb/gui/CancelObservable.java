@@ -39,7 +39,7 @@ import java.util.Observable;
  * to require additional action on the part of observers upon cancellation.
  *
  * @author Lyle Holsinger
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)

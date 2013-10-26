@@ -49,7 +49,7 @@ import ptolemy.kernel.util.InternalErrorException;
  * Based on the SDF reciever created by Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
 *  @author Shanna-Shaye Forbes
 *  @version $Id$
-*  @since Ptolemy II 8.1
+*  @since Ptolemy II 10.0
 *  @Pt.ProposedRating Red (sssf)
 *  @Pt.AcceptedRating Red (sssf)
 */

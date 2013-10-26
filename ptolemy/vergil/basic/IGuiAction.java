@@ -40,7 +40,7 @@ to trigger it.
 
 @author  Christian Motika
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (cmot)
 @Pt.AcceptedRating Red (cmot)
 */

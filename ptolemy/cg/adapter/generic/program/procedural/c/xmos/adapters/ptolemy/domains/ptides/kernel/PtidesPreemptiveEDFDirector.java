@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  FIXME: add renesas code
  @author Patricia Derler
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating red (derler)
  @Pt.AcceptedRating red (derler)
  */

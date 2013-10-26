@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  An actor with a private parameter, used to test AutoAdapter.
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
 
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

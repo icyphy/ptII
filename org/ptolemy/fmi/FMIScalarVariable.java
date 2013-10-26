@@ -64,6 +64,8 @@ import com.sun.jna.ptr.PointerByReference;
  * </p>
  *
  * @author Christopher Brooks
+@version $Id$
+@since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

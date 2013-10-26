@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
  @author Bert Rodiers
  @version Id: Const.java 57046 2010-01-27 23:35:53Z cxh $
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */

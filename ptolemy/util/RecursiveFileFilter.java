@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
 
    @author Thomas Huining Feng, Christopher Brooks
    @version $Id$
-   @since Ptolemy II 8.0
+   @since Ptolemy II 10.0
    @Pt.ProposedRating Yellow (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */
@@ -313,7 +313,7 @@ public class RecursiveFileFilter implements FilenameFilter {
 
        @author Thomas Huining Feng
        @version $Id$
-       @since Ptolemy II 8.0
+       @since Ptolemy II 10.0
        @Pt.ProposedRating Yellow (tfeng)
        @Pt.AcceptedRating Red (tfeng)
     */

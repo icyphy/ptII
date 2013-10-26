@@ -46,7 +46,7 @@ This works specifically with {@link ConstraintMonitor}.
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (celaine)
  */

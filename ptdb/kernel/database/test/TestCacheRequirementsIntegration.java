@@ -59,7 +59,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *
  * @author lholsing
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (lholsing)
  * @Pt.AcceptedRating Red (lholsing)
  *

@@ -41,7 +41,7 @@ import java.util.HashSet;
  *
  *   @author Elizabeth Latronico and Edward A. Lee
  *   @version $Id$
- *   @since Ptolemy II 9.0
+ *   @since Ptolemy II 10.0
  *   @Pt.ProposedRating Red (ltrnc)
  *   @Pt.AcceptedRating Red (ltrnc)
  */

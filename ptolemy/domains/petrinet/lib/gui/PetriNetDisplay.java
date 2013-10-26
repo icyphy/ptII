@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author  Zach Ezzell
    @version $Id$
-   @since Ptolemy II 8.1
+   @since Ptolemy II 10.0
    @Pt.ProposedRating Red (yukewang)
    @Pt.AcceptedRating Red (reviewmoderator)
 */

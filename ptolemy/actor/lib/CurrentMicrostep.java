@@ -45,7 +45,7 @@ directors that implement SuperdenseTimeDirector.
 
 @author Jia Zou
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @see SuperdenseTimeDirector
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating Red

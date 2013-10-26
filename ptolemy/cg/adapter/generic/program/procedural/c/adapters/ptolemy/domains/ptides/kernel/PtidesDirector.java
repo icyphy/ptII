@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 *
 *  @author William Lucas based on PtidesDirector.java by Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou
 *  @version $Id$
-*  @since Ptolemy II 9.1
+*  @since Ptolemy II 10.0
 *  @Pt.ProposedRating red (wlc)
 *  @Pt.AcceptedRating red (wlc)
 */

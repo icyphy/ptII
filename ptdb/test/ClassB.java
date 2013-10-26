@@ -30,6 +30,15 @@ package ptdb.test;
 
 // FIXME: clean up style
 
+/**
+ * ClassB class.
+ *
+ * @author cxh
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class ClassB {
 
     public static boolean isValidBDate(int date, String monthS) {

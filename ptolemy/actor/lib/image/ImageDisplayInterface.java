@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 * platform independent parts.
 * @author Jianwu Wang
 * @version $Id$
-* @since Ptolemy II 9.0
+* @since Ptolemy II 10.0
 * @Pt.ProposedRating
 * @Pt.AcceptedRating
 */

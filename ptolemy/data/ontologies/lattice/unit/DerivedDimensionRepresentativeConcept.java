@@ -73,7 +73,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @see BaseUnitConcept
 @author Charles Shelton
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
 */

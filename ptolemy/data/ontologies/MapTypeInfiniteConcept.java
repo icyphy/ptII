@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @author Ben Lickly
  *  @version $Id$
  *  @param <C> The type of the concepts that form the range of this mapping.
- *  @since Ptolemy II 9.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  *

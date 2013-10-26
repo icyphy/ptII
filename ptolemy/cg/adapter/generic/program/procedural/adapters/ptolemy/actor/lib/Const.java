@@ -36,7 +36,7 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib
  *
  * @author Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */

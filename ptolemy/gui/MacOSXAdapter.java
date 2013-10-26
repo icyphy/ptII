@@ -39,7 +39,7 @@ import java.lang.reflect.Proxy;
  *
  *  @author Christopher Brooks, Based on OSXAdapter.java, downloaded from: <a href="http://developer.apple.com/library/mac/#samplecode/OSXAdapter/Listings/src_OSXAdapter_java.html">http://developer.apple.com/library/mac/#samplecode/OSXAdapter/Listings/src_OSXAdapter_java.html</a> on July 26, 2011.
  * @version $Id$
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

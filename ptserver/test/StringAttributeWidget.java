@@ -33,6 +33,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 
+/**
+ * StringAttributeWidget class.
+ *
+ * @author pdf
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class StringAttributeWidget extends TypedAtomicActor {
 
     public StringAttributeWidget(CompositeEntity container, String name,

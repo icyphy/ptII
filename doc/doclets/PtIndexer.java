@@ -61,7 +61,7 @@ import java.util.Set;
  *
  *  @author Christopher Brooks, Contributor: Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 9.0
+ *  @since Ptolemy II 10.0
  */
 public class PtIndexer {
     /** Append all the words to the dictionary.

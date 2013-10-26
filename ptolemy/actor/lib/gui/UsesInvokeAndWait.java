@@ -39,7 +39,7 @@ package ptolemy.actor.lib.gui;
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 1.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */

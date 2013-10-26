@@ -51,7 +51,7 @@ import ptserver.data.ByteArrayToken;
  * them as a temp file and passes absolute path to the file via its output to Matlab.
  * @author Anar Huseynov
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */

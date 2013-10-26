@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (mankit)
  */

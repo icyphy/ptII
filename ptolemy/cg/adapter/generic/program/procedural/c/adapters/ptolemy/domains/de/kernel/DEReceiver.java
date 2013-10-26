@@ -55,7 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author William Lucas, based on SDFReceiver.java by Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 9.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (wlc)
  * @Pt.AcceptedRating Red (wlc)
 */

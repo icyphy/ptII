@@ -95,7 +95,7 @@ import ptolemy.kernel.util.Workspace;
  *  This actor is tested in continuous and DE.
  *  @author Patricia Derler, Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */

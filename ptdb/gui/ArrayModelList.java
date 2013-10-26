@@ -42,7 +42,7 @@ import javax.swing.AbstractListModel;
  *
  * @author Alek Wang
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating red (wenjiaow)
  * @Pt.AcceptedRating red (wenjiaow)
  *

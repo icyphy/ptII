@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @see ptolemy.actor.lib.Publisher
  * @author Christopher Brooks, Contributor: Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (cxh)
  *

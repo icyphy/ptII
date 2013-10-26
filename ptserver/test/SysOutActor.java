@@ -36,6 +36,15 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+/**
+ * SysOutActor class.
+ *
+ * @author ahuseyno
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class SysOutActor extends TypedAtomicActor implements PortablePlaceable {
 
     public interface TokenDelegator {

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 An Expression Actor to be auto code generated.
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
 
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

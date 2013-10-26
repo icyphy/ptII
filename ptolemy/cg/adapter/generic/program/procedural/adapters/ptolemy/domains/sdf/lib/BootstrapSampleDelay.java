@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Martin Schoeberl, Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */

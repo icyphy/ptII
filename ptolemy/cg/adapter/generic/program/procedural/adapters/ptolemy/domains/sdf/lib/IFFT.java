@@ -37,7 +37,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */

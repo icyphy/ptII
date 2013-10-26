@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
 
  @author Martin Schoeberl, Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */

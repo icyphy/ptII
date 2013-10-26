@@ -71,6 +71,8 @@ import com.sun.jna.Pointer;
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
  *
  * @author Christopher Brooks, based on sim_support.c by QTronic GmbH.
+@version $Id$
+@since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

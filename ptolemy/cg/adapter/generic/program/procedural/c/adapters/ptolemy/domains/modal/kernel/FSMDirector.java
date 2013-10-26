@@ -51,7 +51,7 @@ is also associated with a code generator.
 
 @author William Lucas
 @version $Id$
-@since Ptolemy II 8.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)
 */

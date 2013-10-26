@@ -37,7 +37,7 @@ package ptolemy.data.test;
 
  @author  Christopher Brooks
  @version $Id$
- @since Ptolemy II 9.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */

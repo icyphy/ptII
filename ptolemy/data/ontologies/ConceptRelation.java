@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Edward A. Lee, Ben Lickly
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  @see FiniteConcept

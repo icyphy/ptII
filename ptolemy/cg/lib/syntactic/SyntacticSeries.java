@@ -49,7 +49,7 @@ import java.util.LinkedList;
 
 @author Chris Shaver
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (shaver)
 @Pt.AcceptedRating Red
 */

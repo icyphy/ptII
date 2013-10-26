@@ -120,7 +120,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  * @author Shanna-Shaye Forbes. Based on the MonitorReceiverContents.java
  * created by Edward A. Lee and RandomSource.java by Edward A. Lee, Steve Neuendorffer, Elaine Cheong
  * @version $Id$
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (sssf)
  *  @Pt.AcceptedRating Red (sssf)
  */

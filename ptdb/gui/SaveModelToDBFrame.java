@@ -89,7 +89,7 @@ import ptolemy.util.MessageHandler;
  * attributes to those that the user selects for model searches.
  *
  * @author Lyle Holsinger
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)

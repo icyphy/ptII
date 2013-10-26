@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 
  @author Christopher Brooks
  @version Id: TrigFunction.java 57046 2010-01-27 23:35:53Z cxh $
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

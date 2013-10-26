@@ -71,7 +71,7 @@ import ptolemy.util.StringUtilities;
  *
  * @author Ashwini Bijwe
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
  *

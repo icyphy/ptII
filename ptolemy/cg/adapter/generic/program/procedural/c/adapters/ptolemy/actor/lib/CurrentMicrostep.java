@@ -36,6 +36,8 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  A adapter class for CurrentMicrostep.
 
  @author William Lucas
+@version $Id$
+@since Ptolemy II 10.0
  */
 public class CurrentMicrostep
         extends NamedProgramCodeGeneratorAdapter {

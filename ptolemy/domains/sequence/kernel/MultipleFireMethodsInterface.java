@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @see SequencedModelDirector
  *  @see SequenceScheduler
  *  @see SequenceSchedule
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */

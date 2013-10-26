@@ -99,7 +99,7 @@ import ptolemy.math.DoubleMatrixMath;
 
  @author Sarah Packman, Yuhong Xiong, Edward A. Lee
  @version $Id$
- @since Ptolemy II 9.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (yuhong)
  @Pt.AcceptedRating Yellow (yuhong)
  @see ptolemy.math.Interpolation

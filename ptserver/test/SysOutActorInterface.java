@@ -31,6 +31,15 @@ package ptserver.test;
 import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.Token;
 
+/**
+ * SysOutActorInterface class.
+ *
+ * @author ahuseyno
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public interface SysOutActorInterface {
     void printToken(Token token);
 

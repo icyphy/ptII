@@ -48,7 +48,7 @@ concepts in an ontology model based on whether the ontology is a lattice.
 
 @author Charles Shelton
 @version $Id$
-@since Ptolemy II 8.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
 */

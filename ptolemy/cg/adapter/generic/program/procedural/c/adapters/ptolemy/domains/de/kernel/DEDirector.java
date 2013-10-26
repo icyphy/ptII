@@ -76,7 +76,7 @@ import ptolemy.util.StringUtilities;
  *
  *  @author William Lucas based on SDFDirector.java by Ye Zhou, Gang Zhou
  *  @version $Id$
- *  @since Ptolemy II 9.1
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (wlc)
  *  @Pt.AcceptedRating red (wlc)
 */

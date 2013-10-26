@@ -52,7 +52,7 @@ import diva.gui.GUIUtilities;
  *
  *  @author Charles Shelton, Man-Kit Leung
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */

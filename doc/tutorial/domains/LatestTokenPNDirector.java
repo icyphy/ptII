@@ -43,6 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  pay for this flexibility is that models are no longer
  *  determinate.
  *  @author Edward A. Lee
+@version $Id$
+@since Ptolemy II 10.0
  */
 public class LatestTokenPNDirector extends PNDirector {
 

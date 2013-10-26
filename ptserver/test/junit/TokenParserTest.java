@@ -56,6 +56,15 @@ import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
 import ptserver.data.TokenParser;
 
+/**
+ * TokenParserTest class.
+ *
+ * @author ahuseyno
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class TokenParserTest {
 
     @Test

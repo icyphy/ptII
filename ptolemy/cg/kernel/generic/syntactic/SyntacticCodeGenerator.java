@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
  *  </pre>
  *  @author Chris Shaver
  *  @version $Id$
- *  @since
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (shaver)
  *  @Pt.AcceptedRating red
 */

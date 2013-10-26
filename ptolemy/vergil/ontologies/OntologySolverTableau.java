@@ -50,7 +50,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  @see ptolemy.data.ontologies.OntologySolverModel
  @author  Ben Lickly (based on OntologyGraphTableau, which is supposedly by Steve Neuendorffer and Edward A. Lee)
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)
  */

@@ -51,7 +51,7 @@ import ptolemy.actor.gui.Configuration;
 * loading.
 *
 * @author Lyle Holsinger
-* @since Ptolemy II 8.1
+* @since Ptolemy II 10.0
 * @version $Id$
 * @Pt.ProposedRating red (lholsing)
 * @Pt.AcceptedRating red (lholsing)

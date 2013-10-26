@@ -36,7 +36,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  * @see ptolemy.actor.lib.Subscriber
  * @author Man-Kit Leung, Contributor: Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)
  *

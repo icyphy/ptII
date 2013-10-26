@@ -33,7 +33,7 @@ package ptdb.common.dto;
 /**
  * Task to fetch the attributes from database.
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
  * @author abijwe

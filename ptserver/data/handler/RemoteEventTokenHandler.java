@@ -41,7 +41,7 @@ import ptserver.data.RemoteEventToken.EventType;
 /** ServerEventTokenHandler converts ServerEventToken to/from byte form.
  *  @author Justin Killian
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */

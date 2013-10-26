@@ -90,7 +90,7 @@ hierarchy layers by a PtidesDirector. </li>
 @author Patricia Derler
 @author Edward A. Lee
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (derler)
 @Pt.AcceptedRating Red (derler)
  */

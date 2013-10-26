@@ -58,7 +58,7 @@ import javax.sound.sampled.TargetDataLine;
 
  @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer, Edward A. Lee, Contributor: Dennis Geurts, Ishwinder Singh
  @version $Id$
- @since Ptolemy II 9.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ishwinde)
  @Pt.AcceptedRating Red (ishwinde)
  */

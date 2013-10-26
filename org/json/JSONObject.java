@@ -84,6 +84,8 @@ import java.util.TreeSet;
  * <li>Numbers may have the <code>0x-</code> <small>(hex)</small> prefix.</li>
  * </ul>
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2010-05-17
  */
 public class JSONObject {

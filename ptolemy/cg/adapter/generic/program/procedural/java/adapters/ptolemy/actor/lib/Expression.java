@@ -53,7 +53,7 @@ import ptolemy.kernel.util.InternalErrorException;
  *
  * @author Man-Kit Leung, Contributor: Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (mankit) Needs 2nd pass for array children of different types
  * @Pt.AcceptedRating Red (mankit)
  */

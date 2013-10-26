@@ -44,7 +44,7 @@ normally expects a Nameable as an argument.
 
 @author Bert Rodiers
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (rodiers)
 */

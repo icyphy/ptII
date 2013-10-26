@@ -97,7 +97,7 @@ import ptolemy.util.MessageHandler;
  *
  * @author Edward A. Lee
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */

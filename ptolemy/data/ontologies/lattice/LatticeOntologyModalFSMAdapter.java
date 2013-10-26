@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  *  @author Charles Shelton, Man-Kit Leung
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (mankit)
  *  @Pt.AcceptedRating Red (mankit)
  */

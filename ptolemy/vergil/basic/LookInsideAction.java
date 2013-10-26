@@ -86,7 +86,7 @@ import diva.gui.GUIUtilities;
  *
  *  @author Charles Shelton
  *  @version $Id$
- *  @since Ptolemy II 9.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */

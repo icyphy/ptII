@@ -59,6 +59,8 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * @author shaver
+@version $Id$
+@since Ptolemy II 10.0
  *
  */
 public class CoroutineDirector extends Director implements Continuation {

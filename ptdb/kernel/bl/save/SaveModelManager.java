@@ -75,7 +75,7 @@ import ptdb.kernel.database.DBConnection;
  *
  * @author Yousef Alsaeed
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (Yousef)
  * @Pt.AcceptedRating Red (Yousef)
  *

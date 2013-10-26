@@ -82,7 +82,7 @@ perspective.
 
 @author Bert Rodiers, William Lucas
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (wlc)
 @Pt.AcceptedRating Red (wlc)
 */

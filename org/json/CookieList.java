@@ -29,6 +29,8 @@ import java.util.Iterator;
 /**
  * Convert a web browser cookie list string to a JSONObject and back.
  * @author JSON.org
+@version $Id$
+@since Ptolemy II 10.0
  * @version 2008-09-18
  */
 public class CookieList {

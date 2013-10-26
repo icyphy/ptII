@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * Begin Tracking a Trackable object using VRPN.
  * @author Dorsa Sadigh, Steve Bako
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

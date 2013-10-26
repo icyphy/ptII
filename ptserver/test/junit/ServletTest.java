@@ -62,7 +62,7 @@ import com.caucho.hessian.client.HessianProxyFactory;
  *
  *  @author Peter Foldes
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */

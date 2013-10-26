@@ -14,7 +14,7 @@ import org.xml.sax.SAXParseException;
 /** Class to validate xml files.
  *
  * @author Michael Wetter
- * @since BCVTB 0.3
+ * @since Ptolemy II 10.0
  */
 
 public class DTDValidator {

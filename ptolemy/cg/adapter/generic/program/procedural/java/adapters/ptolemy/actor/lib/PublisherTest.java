@@ -42,7 +42,7 @@ and compares the results against a known-good set of results.
  @see ptolemy.actor.lib.PublisherTest
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

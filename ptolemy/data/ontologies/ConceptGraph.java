@@ -49,7 +49,7 @@ import ptolemy.graph.NonLatticeCounterExample;
  *  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee, Ben Lickly, Dai Bui,
  *    Christopher Brooks
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (mankit)
  *  @Pt.AcceptedRating Red (mankit)
  *  @see ptolemy.graph.CPO

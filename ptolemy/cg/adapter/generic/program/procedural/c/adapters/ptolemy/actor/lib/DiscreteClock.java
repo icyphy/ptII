@@ -45,6 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * A adapter class for ptolemy.actor.lib.DiscreteClock.
  *
  * @author Jia Zou, William Lucas
+@version $Id$
+@since Ptolemy II 10.0
  */
 public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
     /**

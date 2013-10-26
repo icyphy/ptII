@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
 
    @author Mana Mirzaei
    @version $Id$
-   @since Ptolemy II 9.1
+   @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
  */

@@ -46,7 +46,7 @@ import ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest.LocationEntry;
  *
  * @author Miro Spoenemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>)
  * @version $Id$
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (msp)
  * @Pt.AcceptedRating Red (msp)
  */

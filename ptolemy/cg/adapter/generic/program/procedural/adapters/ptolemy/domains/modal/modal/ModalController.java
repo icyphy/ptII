@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
 
  @author Shanna-Shaye Forbes, based on Gang Zhou's ptolemy/codegen work.  Contributor: Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating red (sssf)
  @Pt.AcceptedRating red (sssf)
  */

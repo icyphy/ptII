@@ -93,7 +93,7 @@ For more information, please refer to "Manual for Creating Web Pages" in Ptolemy
 
 @author Baobing (Brian) Wang
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (bwang)
 @Pt.AcceptedRating Yellow (bwang)
 */

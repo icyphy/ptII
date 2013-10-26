@@ -100,7 +100,7 @@ converge and is given the option to randomize initial guesses to reiterate.
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */

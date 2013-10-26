@@ -51,7 +51,7 @@ import ptolemy.kernel.util.StringAttribute;
  enabled output ports.
  @author Elizabeth Latronico (Bosch)
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)
  */

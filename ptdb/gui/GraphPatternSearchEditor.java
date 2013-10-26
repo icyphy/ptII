@@ -87,7 +87,7 @@ import diva.gui.GUIUtilities;
  * searching features for PTDB.
  *
  * @author Alek Wang
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating red (wenjiaow)
  * @Pt.AcceptedRating red (wenjiaow)

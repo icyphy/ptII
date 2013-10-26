@@ -47,6 +47,15 @@ import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.kernel.Entity;
 
+/**
+ * TestImportByReferenceRequirementsIntegration class.
+ *
+ * @author lholsing
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class TestImportByReferenceRequirementsIntegration {
 
     /** Set up the actor module by injecting dependencies for

@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
  *  the use of this actor across hierarchies might therefore be problematic.
  *  @author Ilge Akkaya, Patricia Derler, Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */

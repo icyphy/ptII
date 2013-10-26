@@ -45,7 +45,7 @@ Attempts to access the object from Java will raise an IllegalActionException.
 
 @author Teale Fristoe
 @version $Id$
-@since Ptolemy II 8.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (tbf)
 @Pt.AcceptedRating Red
 */

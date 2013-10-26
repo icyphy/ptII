@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  argument is general, then it returns general.  Otherwise, it return unknown.
  * @author Edward A. Lee
  * @version $Id: ArrayElementTypeFunction.java$
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (eal)
  * @Pt.AcceptedRating Red (cxh)
  */

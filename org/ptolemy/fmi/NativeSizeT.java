@@ -32,6 +32,8 @@ import com.sun.jna.Native;
 
 /** A Java representation for a C type size_t, which is 32 or 64 bits.
  * @author Christopher Brooks
+@version $Id$
+@since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

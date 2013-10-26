@@ -60,7 +60,7 @@ import ptolemy.kernel.util.InternalErrorException;
  *
  * @author Jia Zou, Slobodan Matic, Liangpeng Guo
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */

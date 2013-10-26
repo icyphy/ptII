@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 9.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
 

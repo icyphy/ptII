@@ -62,7 +62,7 @@ type, the value of the Token is wrapped into an array of size one.
 @see JSONToToken
 @author  Marten Lohstroh
 @version $Id$
-@since Ptolemy II 9.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (marten)
 @Pt.AcceptedRating Red (chx)
 */

@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  that have tentative state that can be rolled back.
  @author  Haiyang Zheng and Edward A. Lee
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
  */

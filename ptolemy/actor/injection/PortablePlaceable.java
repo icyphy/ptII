@@ -61,7 +61,7 @@ import ptolemy.actor.gui.Placeable;
  * </p>
  * @author Edward A. Lee Contributor: Anar Huseynov
  * @version $Id$
- * @since Ptolemy II 0.3
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  * @see Placeable

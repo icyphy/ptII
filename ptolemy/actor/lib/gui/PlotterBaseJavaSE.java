@@ -59,7 +59,7 @@ import ptolemy.plot.PlotBoxInterface;
  * in order to support portability of the actor.
  * @author Edward A. Lee Contributors: Anar Huseynov
  * @version $Id$
- * @since Ptolemy II 9.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */

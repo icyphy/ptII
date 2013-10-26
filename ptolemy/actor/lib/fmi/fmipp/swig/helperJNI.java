@@ -8,6 +8,15 @@
 
 package ptolemy.actor.lib.fmi.fmipp.swig;
 
+/**
+ * helperJNI class.
+ *
+ * @author cxh
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class helperJNI {
   public final static native long new_double_array(int jarg1);
   public final static native void delete_double_array(long jarg1);

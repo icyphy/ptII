@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  * </pre>
  *  @author Man-Kit Leung, Bert Rodiers
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (rodiers)
  *  @Pt.AcceptedRating red (rodiers)
 */

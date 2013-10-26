@@ -47,7 +47,7 @@ import ptserver.actor.lib.io.RESTGetHandler;
  * @author ltrnc
  * @version $Id$
  * @see ptolemy.apps.graph.MinimumDistanceCalculatorTest
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ltrnc)
  * @Pt.AcceptedRating Red (ltrnc)
  */

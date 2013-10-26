@@ -35,7 +35,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  *
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Green (jiazou)
  * @Pt.AcceptedRating Green (jiazou)
  */
