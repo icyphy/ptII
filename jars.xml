@@ -41,6 +41,7 @@
     <include name="ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/SpaceApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.jar" />
+    <include name="ptolemy/actor/gui/ptjacl/ptjacl.jar" />
     <include name="ptolemy/actor/gui/run/run.jar" />
     <include name="ptolemy/actor/lib/aspect/aspect.jar" />
     <include name="ptolemy/actor/lib/aspect/demo/demo.jar" />
@@ -70,11 +71,13 @@
     <include name="ptolemy/actor/ptalon/gt/demo/demo.jar" />
     <include name="ptolemy/actor/ptalon/gt/gt.jar" />
     <include name="ptolemy/actor/ptalon/ptalon.jar" />
+    <include name="ptolemy/apps/hlacerti/hlacerti.jar" />
     <include name="ptolemy/backtrack/backtrack.jar" />
     <include name="ptolemy/backtrack/demo/demo.jar" />
     <include name="ptolemy/caltrop/caltrop.jar" />
     <include name="ptolemy/caltrop/demo/demo.jar" />
     <include name="ptolemy/cg/cg.jar" />
+    <include name="ptolemy/chic/chic.jar" />
     <include name="ptolemy/copernicus/copernicus.jar" />
     <include name="ptolemy/data/ontologies/ontologies.jar" />
     <include name="ptolemy/data/type/demo/demo.jar" />
@@ -112,6 +115,8 @@
     <include name="ptolemy/domains/hdf/demo/demo.jar" />
     <include name="ptolemy/domains/hdf/doc/doc.jar" />
     <include name="ptolemy/domains/hdf/hdf.jar" />
+    <include name="ptolemy/domains/metroII/metroII.jar" />
+    <include name="ptolemy/domains/metroII/demo/demo.jar" />
     <include name="ptolemy/domains/modal/demo/demo.jar" />
     <include name="ptolemy/domains/modal/doc/doc.jar" />
     <include name="ptolemy/domains/modal/modal.jar" />
@@ -155,11 +160,13 @@
     <include name="ptolemy/domains/wireless/demo/demo.jar" />
     <include name="ptolemy/domains/wireless/doc/doc.jar" />
     <include name="ptolemy/domains/wireless/wireless.jar" />
+    <include name="ptolemy/homer/homer.jar" />
     <include name="ptolemy/matlab/demo/demo.jar" />
     <include name="ptolemy/matlab/matlab.jar" />
     <include name="ptolemy/moml/demo/demo.jar" />
     <include name="ptolemy/plot/plotapplication.jar" />
     <include name="ptolemy/ptsupport.jar" />
+    <include name="ptolemy/util/test/junit/junit.jar" />
     <include name="ptolemy/vergil/basic/export/export.jar" />
     <include name="ptolemy/vergil/basic/export/exportFull.jar" />
     <include name="ptolemy/vergil/basic/export/html/html.jar" />
@@ -180,6 +187,7 @@
     <include name="ptolemy/vergil/vergilApplet.jar" />
     <include name="ptolemy/verification/demo/demo.jar" />
     <include name="ptolemy/verification/verification.jar" />
+    <include name="ptserver/ptserver.jar" />
   </patternset>
 
   <target name="help">
@@ -728,6 +736,18 @@
       </fileset>
     </jar>
 
+
+    <!-- ptolemy/util/test/junit/junit.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/util/test/junit/junit.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/junit-license.htm"/>
+	<include name="lib/JUnitParams-license.htm"/>
+	<include name="ptolemy/util/test/junit/*.class"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/vergil/basic/export/export.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/vergil/basic/export/export.jar"
@@ -801,6 +821,9 @@
 	 destfile="${basedir}/ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="lib/g4ltl-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/imprt/g4ltl/*.class"/>
       </fileset>
     </jar>
@@ -830,6 +853,10 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/layout/img/*.png"/>
+      </fileset>
+      <!-- guava is used by kieler.-->
+      <fileset dir="${basedir}">
+	<include name="lib/guava-license.htm"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/layout/kieler/*.class"/>
@@ -998,6 +1025,19 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/matlab/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/homer/homer.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/homer/homer.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/netbeans-visual-library-license.htm"/>
+	<include name="ptolemy/homer/widgets/ResizableImageWidget-license.htm"/>
+	<include name="ptolemy/homer/*.class"/>
+	<include name="ptolemy/homer/*/*.class"/>
+	<include name="ptolemy/homer/*/*.properties"/>
       </fileset>
     </jar>
 
@@ -1362,6 +1402,27 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/ptalon/gt/demo/Adder/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/apps/hlacerti/hlacerti.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/apps/hlacerti/hlacerti.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/jcerti-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/apps/hlacerti/*.txt"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/apps/hlacerti/demo/*/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/apps/hlacerti/demo/*/*.fed"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/apps/hlacerti/lib/*.class"/>
       </fileset>
     </jar>
 
@@ -2290,6 +2351,24 @@
       </fileset>
     </jar>
 
+    <!-- ptserver/ptserver.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptserver/ptserver.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/jetty-all-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptserver/*.properties.default"/>
+	<include name="ptserver/*.properties"/>
+	<include name="ptserver/*/*.class"/>
+	<include name="ptserver/actor/lib/io/*.class"/>
+	<include name="ptserver/actor/lib/tld/*.class"/>
+	<include name="ptserver/data/handler/*.class"/>
+	<include name="ptserver/demo/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/ptera/ptera.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/ptera/ptera.jar"
@@ -2801,6 +2880,21 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/chic/chic.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/chic/chic.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/chic-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/chic/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/chic/demo/demo/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/data/ontologies/ontologies.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/data/ontologies/ontologies.jar"
@@ -3093,6 +3187,9 @@
 	 destfile="${basedir}/org/ptolemy/fmi/fmi.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="lib/jna-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="org/ptolemy/fmi/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -3110,6 +3207,15 @@
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/ptolemy/ptango/ptango.jar"
 	 >
+      <fileset dir="${basedir}">
+	<include name="lib/javax.servlet-api-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="lib/smack-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="lib/jetty-all-license.htm"/>
+      </fileset>
       <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/lib/*.class"/>
       </fileset>
@@ -3188,6 +3294,16 @@
       </fileset>
       <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/gui/ptjacl/ptjacl.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/ptjacl/ptjacl.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/ptjacl-license.htm"/>
+	<include name="ptolemy/actor/gui/ptjacl/*.class"/>
       </fileset>
     </jar>
 
@@ -3615,6 +3731,27 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/metroII/metroII.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/metroII/metroII.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/protobuf-license.htm"/>
+	<include name="ptolemy/domains/metroII/*.xml"/>
+	<include name="ptolemy/domains/metroII/kernel/*.class"/>
+	<include name="ptolemy/domains/metroII/kernel/util/ProtoBuf/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/metroII/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/metroII/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/metroII/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/modal/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/modal/demo/demo.jar"
@@ -3808,6 +3945,7 @@
 	 destfile="${basedir}/ptolemy/actor/lib/fmi/fmi.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="lib/jna-license.htm"/>
 	<include name="ptolemy/actor/lib/fmi/*.class"/>
 	<include name="ptolemy/actor/lib/fmi/*.xml"/>
       </fileset>
@@ -4800,6 +4938,7 @@
   </path>
 
   <target name="jars.vergil" 
+	  depends="jars"
 	  description="Invoke the Ptolemy II User Interface using just jar files"
 	  >
     <java classname="ptolemy.vergil.VergilApplication"
@@ -4810,6 +4949,7 @@
 	<pathelement path="${ptII.classpath.optional.property}"/>
       </classpath>
       <jvmarg value="-Xmx1024m"/>
+      <arg line="-ptiny"/>
     </java>
   </target>
 
