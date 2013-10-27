@@ -1,0 +1,50 @@
+/* Styling that is independent of theme - e.g. same for Berkeley, CMU, ... 
+   Based in part on "Implementing Responsive Design" by Tim Kadlec */
+
+/* Styling for standard elements */
+html {
+	/* Specify root element size as a percentage due to IE problem with ems. */
+	font-size: 100%; /* Typically 16px */
+}
+
+body {
+	/* Specify body font size as a percentage due to IE problem with ems. */
+	font-size: 100%; /* Typically 16px */
+}
+
+footer {
+	width: 100%;
+}
+
+h1 {
+	/* Remaining fonts specified relative to containing element's font size */
+	font-family: sans-serif;
+	font-size: 1.5em; /* 24px / 16px */
+	padding-left: 2%;
+}
+
+li {
+	padding-left: 2%;
+	padding-right: 2%;
+	display: inline-block;
+}
+
+nav {
+	width: 100%;
+}
+
+.buttoncontainer {
+	width: 45%;
+	float: left;
+	margin-right: 2%;
+}
+
+
+.switchlabel {
+    width: 180px;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
