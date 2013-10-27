@@ -23,7 +23,7 @@
 
   <property name="_classesToRemove" 
             class="ptolemy.data.expr.Parameter"
-            value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;}">
+            value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;,&quot;ptolemy.vergil.basic.export.web.IconLink&quot;,&quot;ptolemy.vergil.basic.export.web.WebExportParameters&quot;}">
 	    <doc>An array of Strings, where each element names a class to be removed by the MoMLFilter.</doc>
   </property>
 
