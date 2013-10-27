@@ -70,13 +70,21 @@
   <property name="timeout.longest" value="14000000" />
 
 
+  <!-- Ant paths to optional jar files set by the configure script. -->
+  <path id="ptII.classpath.optional">
+    @ANT_CLASSPATH@
+  </path>
+
+  <!-- The optional jar files as a property, used in subant. -->
+  <pathconvert property="ptII.classpath.optional.property" refid="ptII.classpath.optional"/>
+
   <!-- Ant paths. Alphabetize, please -->
   <path id="ptII.classpath">
     <pathelement location="${env.HOME}/.ptolemyII" />
     <!-- Java 1.6 and later: * in the classpath matches *.jar files -->
     <pathelement location="${env.HOME}/.ptolemyII/*" />
     <pathelement location="${basedir}" />
-    @ANT_CLASSPATH@
+    <path refid="ptII.classpath.optional"/>
     <!-- Include ptolemy/moml/test so that ptolemy/moml/test/MoMLParserNoPackage.tcl passes -->
     <pathelement location="ptolemy/moml/test"/>
   </path>
@@ -333,6 +341,16 @@ For example:
     <subant antfile="jars.xml"
 	    buildpath="${basedir}"
 	    target="jars.clean" />
+  </target>
+
+  <target name="jars.vergil"
+	  depends="build-pt-modules"
+	  description="Run vergil using jar files." >
+    <subant antfile="jars.xml"
+	    buildpath="${basedir}"
+	    target="jars.vergil">
+      <property name="ptII.classpath.optional.property" value="${ptII.classpath.optional.property}"/>
+    </subant>
   </target>
 
   <target name="javadoc"

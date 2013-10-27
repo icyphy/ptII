@@ -10,7 +10,6 @@
   <patternset id="ptII.jars">
     <include name="com/jgoodies/jgoodies.jar" />
     <include name="contrib/contrib.jar" />
-    <include name="diva/diva.jar" />
     <include name="doc/books/systems/vergil/vergil.jar" />
     <include name="doc/codeDoc.jar" />
     <include name="doc/codeDocBcvtb.jar" />
@@ -25,6 +24,7 @@
     <include name="doc/img/img.jar" />
     <include name="lbnl/demo/demo.jar" />
     <include name="lbnl/lbnl.jar" />
+    <include name="lib/diva.jar" />
     <include name="org/json/json.jar" />
     <include name="org/mlc/mlc.jar" />
     <include name="org/ptolemy/fmi/fmi.jar" />
@@ -165,6 +165,8 @@
     <include name="ptolemy/vergil/basic/export/html/html.jar" />
     <include name="ptolemy/vergil/basic/export/web/web.jar" />
     <include name="ptolemy/vergil/basic/imprt/fmu/fmu.jar" />
+    <include name="ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar" />
+    <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar" />
     <include name="ptolemy/vergil/basic/layout/layout.jar" />
     <include name="ptolemy/vergil/gt/gt.jar" />
     <include name="ptolemy/vergil/kernel/attributes/demo/demo.jar" />
@@ -207,7 +209,7 @@
       </fileset>
     </jar>
 
-    <!-- diva/diva.jar -->
+    <!-- lib/diva.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/lib/diva.jar"
 	 >
@@ -794,14 +796,24 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/vergil/basic/imprt/fmu/fmu.jar -->
+    <!-- ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/vergil/basic/imprt/fmu/fmu.jar"
+	 destfile="${basedir}/ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/imprt/fmu/*.class"/>
+	<include name="ptolemy/vergil/basic/imprt/g4ltl/*.class"/>
       </fileset>
-     </jar>
+    </jar>
+
+    <!-- ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/imprt/g4ltl/demo/*/*.txt"/>
+	<include name="ptolemy/vergil/basic/imprt/g4ltl/demo/*/*.xml"/>
+      </fileset>
+    </jar>
 
     <!-- ptolemy/vergil/basic/layout/layout.jar -->
     <jar defaultexcludes="yes"
@@ -3576,7 +3588,7 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/*.txt"/>
       </fileset>
-     <fileset dir="${basedir}">
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/*.xml"/>
       </fileset>
 
@@ -4779,7 +4791,27 @@
 	<include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.class"/>
       </fileset>
     </jar>
-
-
   </target>
+
+  <path id="ptII.jars.path">
+    <fileset dir="${basedir}" id="ptII.jars.fileset">
+      <patternset refid="ptII.jars"/>    
+    </fileset>
+  </path>
+
+  <target name="jars.vergil" 
+	  description="Invoke the Ptolemy II User Interface using just jar files"
+	  >
+    <java classname="ptolemy.vergil.VergilApplication"
+	  fork="true">
+      <classpath>
+	<path refid="ptII.jars.path"/>
+	<!-- path refid="ptII.classpath.optional"/ -->
+	<pathelement path="${ptII.classpath.optional.property}"/>
+      </classpath>
+      <jvmarg value="-Xmx1024m"/>
+    </java>
+  </target>
+
+
 </project>
