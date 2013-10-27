@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1071, 611]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000003">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000009">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{630.9134736180904, 230.76538944723615}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1902.4101758793972, -104.75235552763809}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
@@ -46,7 +46,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 70.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -89,7 +89,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 90.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -173,7 +173,7 @@
     <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Adjustable thresholds">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, -55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 35.0]">
         </property>
     </property>
     <property name="SamplingRate" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -192,13 +192,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, -10.0]">
         </property>
     </property>
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Used by DiscreteClock&#10;In seconds">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -65.0]">
         </property>
     </property>
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -234,9 +234,9 @@
         </property>
     </property>
     <property name="Annotation19" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Example: Post text">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Example: Send mail to &#10;If This Then That">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1190.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1195.0, 65.0]">
         </property>
     </property>
     <property name="Annotation20" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -272,13 +272,41 @@
     <property name="Annotation25" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The BooleanSwitch passes on the input&#10;if condition is true; otherwise, signal &#10;goes to Discard sink ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[950.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[935.0, 25.0]">
         </property>
     </property>
     <property name="Annotation26" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For demo, replace &#10;Display actors &#10;with HttpPost">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 455.0]">
+        </property>
+    </property>
+    <property name="Annotation27" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace &quot;to&quot; email address with:&#10;trigger@ifttt.com&#10;&#10;Replace &quot;from&quot; email address with&#10;your address registered on If This Then That&#10;&#10;Replace subject and message with content for IFTTT&#10;Should include # to activate recipe&#10;&#10;Replace SMPTUserName with your username&#10;&#10;Create a file containing your password at:&#10;$HOME/.mailPassword.txt&#10;&#10;IMPORTANT!  Right click on SendMail actor -&gt; check &quot;reallySendMail&quot;&#10;Check your SPAM folder for mail&#10;&#10;Note: enableSSL is checked, as Berkeley mail requires this:&#10;https://calmail.berkeley.edu/docs/client.html&#10;&#10;Gmail SMTP info:&#10;http://email.about.com/od/accessinggmail/f/Gmail_SMTP_Settings.htm&#10;&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1605.0, 140.0]">
+        </property>
+    </property>
+    <property name="Annotation28" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: Install library &#10;for SendMail actor first&#10;&#10;Model requires email &#10;password to run, at:&#10;$HOME/.mailPassword.txt&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -185.0]">
+        </property>
+    </property>
+    <property name="Annotation29" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See $PTII/actor/lib/mail/package.html&#10;for instructions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation30" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: SendMail actor stores password value when model runs&#10;If you check in an updated model, be sure to clear your password">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1880.0, -170.0]">
         </property>
     </property>
     <entity name="Elevator1" class="ptolemy.actor.lib.Sequence">
@@ -573,7 +601,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1370.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1995.0, -80.0]">
         </property>
     </entity>
     <entity name="DisplayElevator2" class="ptolemy.actor.lib.gui.Display">
@@ -699,6 +727,141 @@
             </property>
         </port>
     </entity>
+    <entity name="SendMail" class="ptolemy.actor.lib.mail.SendMail">
+        <property name="to" class="ptolemy.actor.parameters.PortParameter" value="beth@berkeley.edu">
+        </property>
+        <property name="cc" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="from" class="ptolemy.actor.parameters.PortParameter" value="beth@berkeley.edu">
+        </property>
+        <property name="subject" class="ptolemy.actor.parameters.PortParameter" value="#alert Elevator1">
+        </property>
+        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="#alert Elevator1">
+        </property>
+        <property name="SMTPHostName" class="ptolemy.actor.parameters.PortParameter" value="calmail.berkeley.edu">
+        </property>
+        <property name="SMTPUserName" class="ptolemy.actor.parameters.PortParameter" value="beth@berkeley.edu">
+        </property>
+        <property name="password" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="SMTPPort" class="ptolemy.actor.parameters.PortParameter" value="465">
+        </property>
+        <property name="enableSSL" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="reallySendMail" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1895.0, -80.0]">
+        </property>
+    </entity>
+    <entity name="To" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;beth@berkeley.edu&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1740.0, -180.0]">
+        </property>
+    </entity>
+    <entity name="From" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;beth@berkeley.edu&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1740.0, -140.0]">
+        </property>
+    </entity>
+    <entity name="Subject" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;#alert Elevator1&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1590.0, -125.0]">
+        </property>
+    </entity>
+    <entity name="Message" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;#alert Elevator1&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1590.0, -85.0]">
+        </property>
+    </entity>
+    <entity name="SMTPHostName" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;calmail.berkeley.edu&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1605.0, -40.0]">
+        </property>
+    </entity>
+    <entity name="SMTPUserName" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;beth@berkeley.edu&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1605.0, 10.0]">
+        </property>
+    </entity>
+    <entity name="SMTPPort" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="465">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1830.0, 75.0]">
+        </property>
+    </entity>
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$HOME/.mailPassword.txt">
+        </property>
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1705.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
+        <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1785.0, 30.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -737,8 +900,6 @@
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
@@ -770,6 +931,30 @@
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[915.0, 370.0]">
         </vertex>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation37" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[1360.0, 115.0]">
+        </vertex>
+    </relation>
+    <relation name="relation38" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation36" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Elevator1.enable" relation="relation9"/>
     <link port="Elevator1.output" relation="relation2"/>
@@ -811,11 +996,11 @@
     <link port="Expression3.output" relation="relation18"/>
     <link port="Expression3.occupied" relation="relation12"/>
     <link port="Expression3.power" relation="relation13"/>
-    <link port="DisplayElevator1.input" relation="relation17"/>
+    <link port="DisplayElevator1.input" relation="relation33"/>
     <link port="DisplayElevator2.input" relation="relation24"/>
     <link port="BooleanSwitch.input" relation="relation16"/>
     <link port="BooleanSwitch.control" relation="relation29"/>
-    <link port="BooleanSwitch.trueOutput" relation="relation17"/>
+    <link port="BooleanSwitch.trueOutput" relation="relation37"/>
     <link port="BooleanSwitch.falseOutput" relation="relation22"/>
     <link port="Const5.output" relation="relation16"/>
     <link port="Const5.trigger" relation="relation29"/>
@@ -840,4 +1025,31 @@
     <link port="BooleanSwitch3.trueOutput" relation="relation26"/>
     <link port="BooleanSwitch3.falseOutput" relation="relation27"/>
     <link port="Discard3.input" relation="relation27"/>
+    <link port="SendMail.to" relation="relation28"/>
+    <link port="SendMail.from" relation="relation30"/>
+    <link port="SendMail.subject" relation="relation31"/>
+    <link port="SendMail.message" relation="relation32"/>
+    <link port="SendMail.SMTPHostName" relation="relation17"/>
+    <link port="SendMail.SMTPUserName" relation="relation34"/>
+    <link port="SendMail.password" relation="relation36"/>
+    <link port="SendMail.SMTPPort" relation="relation35"/>
+    <link port="SendMail.output" relation="relation33"/>
+    <link port="To.output" relation="relation28"/>
+    <link port="To.trigger" relation="relation37"/>
+    <link port="From.output" relation="relation30"/>
+    <link port="From.trigger" relation="relation37"/>
+    <link port="Subject.output" relation="relation31"/>
+    <link port="Subject.trigger" relation="relation37"/>
+    <link port="Message.output" relation="relation32"/>
+    <link port="Message.trigger" relation="relation37"/>
+    <link port="SMTPHostName.output" relation="relation17"/>
+    <link port="SMTPHostName.trigger" relation="relation37"/>
+    <link port="SMTPUserName.output" relation="relation34"/>
+    <link port="SMTPUserName.trigger" relation="relation37"/>
+    <link port="SMTPPort.output" relation="relation35"/>
+    <link port="SMTPPort.trigger" relation="relation37"/>
+    <link port="FileReader.output" relation="relation38"/>
+    <link port="FileReader.trigger" relation="relation37"/>
+    <link port="StringFunction.input" relation="relation38"/>
+    <link port="StringFunction.output" relation="relation36"/>
 </entity>
