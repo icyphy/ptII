@@ -392,6 +392,7 @@ GRAPHTRANSFORMATIONPACKAGES = \
 # PTMATLAB_PACKAGES is set by configure in $PTII/mk/ptII.mk
 BCVTBPACKAGES = \
 	$(PTFMI_PACKAGES) \
+	$(PTJYTHON_PACKAGES) \
 	$(PTLBNL_PACKAGES) \
 	ptolemy.actor.lib.javasound \
 	ptolemy.actor.lib \
