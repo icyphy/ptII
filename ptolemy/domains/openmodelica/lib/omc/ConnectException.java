@@ -1,4 +1,4 @@
-/* Thrown when an error occurred while connecting to the server.
+/* An exception occurred at the time of connecting to the (OpenModelica Compiler)OMC.
  *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
@@ -43,7 +43,7 @@
 package ptolemy.domains.openmodelica.lib.omc;
 
 /**
-  Thrown when there is an error while connecting to the compiler.
+  ConnectException occurred at the time of connecting to the server.
 
   @author Andreas Remar
   @version $Id$
@@ -52,10 +52,9 @@ package ptolemy.domains.openmodelica.lib.omc;
   @Pt.AcceptedRating Red (cxh)
  */
 public class ConnectException extends CompilerException {
-    /**
-     * Constructs a connect exception with the specified detail message
-     * while there is an error at the time of connecting to the compiler.
-     * @param error Specified detail message
+    /** Construct ConnectException with the specified detail message
+     *  while there is an error at the time of connecting to the OMC.
+     *  @param error Specified detail message of the exception.
      */
     public ConnectException(String error) {
         super(error);
@@ -63,6 +62,7 @@ public class ConnectException extends CompilerException {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                 ////
+    // Serial Version UID.
     private static final long serialVersionUID = 5391049301949772469L;
 
 }

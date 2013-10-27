@@ -1,4 +1,4 @@
-/* The interface to the compiler result.
+/* The interface to the CompilerResult.
  *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
@@ -43,7 +43,7 @@
 package ptolemy.domains.openmodelica.lib.omc;
 
 /**
- The interface to the compiler result that should be implemented by CompilerResult.
+ The interface to the CompilerResult.
 
  @author Adrian Pop
  @version $Id$
@@ -56,13 +56,13 @@ public interface ICompilerResult {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fetch the error resulted from calling sendExpression("command") to OpenModelica Compiler(OMC).
-     *  @return The error resulted from calling sendExpression("command") to OMC.
+    /** Fetch the error resulted from sending the Modelica command to OpenModelica Compiler(OMC).
+     *  @return The error resulted from sending the Modelica command to OMC.
      */
     public String getError();
 
-    /** Fetch the first result of calling sendExpression("command") to OpenModelica Compiler(OMC).
-     *  @return The first result of calling sendExpression("command") to OMC.
+    /** Fetch the first result of sending the Modelica command to OMC.
+     *  @return The first result of sending the Modelica command to OMC.
      */
     public String getFirstResult();
 

@@ -43,8 +43,8 @@
 package ptolemy.domains.openmodelica.lib.omc;
 
 /**
-  Super type of all exceptions that can be encountered while communicating
-  with the Modelica compiler.
+  Super type of all exceptions that can be occurred during communication
+  with the OMC.
 
   @author Andreas Remar
   @version $Id$
@@ -62,6 +62,7 @@ abstract public class CompilerException extends Exception {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // Serial Version UID.
     private static final long serialVersionUID = -7881546855664735599L;
 
 }

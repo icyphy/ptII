@@ -1,4 +1,4 @@
-/* Fetch the results and errors of calling sendExpression() to OpenModelica Compiler(OMC) server.
+/* Fetch the results and errors of sending the Modelica command to OpenModelica Compiler(OMC).
  *
  * Copyright (c) 2012-2013,
  * Programming Environment Laboratory (PELAB),
@@ -43,8 +43,8 @@
 package ptolemy.domains.openmodelica.lib.omc;
 
 /**
-  It gets the first and multiple result from calling sendExpression("command") to OpenModelica Compiler(OMC).
-  It also fetches the error resulted from calling sendExpression("command") to OMC as well as trimming the result.
+  It gets the result of sending the Modelica command to OMC
+  and fetches the error resulted from sending these commands.
 
   @author Andreas Remar
   @version $Id$
@@ -53,9 +53,10 @@ package ptolemy.domains.openmodelica.lib.omc;
   @Pt.AcceptedRating Red (cxh)
  */
 public class CompilerResult {
-    /** Construct the compiler result with the result and error of sendExpression("command") to OpenModelica Compiler(OMC).
-     * @param result The result of calling sendExpression("command") to OMC.
-     * @param error The error resulted from calling sendExpression("command") to OMC.
+    /** Construct the compiler result with the result and error of sending the
+     *  Modelica command to OMC.
+     * @param result The result of sending the Modelica command to OMC.
+     * @param error The error resulted from sending the Modelica command to OMC.
      */
     public CompilerResult(String[] result, String error) {
         this._result = result;
@@ -65,24 +66,25 @@ public class CompilerResult {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fetch the error resulted from calling sendExpression("command") to OpenModelica Compiler(OMC).
-     *  @return The error resulted from calling sendExpression("command") to OMC.
+    /** Fetch the error resulted from sending the Modelica command to OMC.
+     *  @return The error resulted from sending the Modelica command to OMC.
      */
     public String getError() {
         return _error;
     }
 
-    /** Fetch the first result of calling sendExpression("command") to OpenModelica Compiler(OMC).
-     *  @return The first result of calling sendExpression("command") to OMC.
+    /** Fetch the first result of the Modelica command to OMC.
+     *  @return The first result of the Modelica command to OMC.
      */
     public String getFirstResult() {
         return _result[0];
     }
 
-    /** Make the compiler result with the result and error of sendExpression("command") to OpenModelica Compiler(OMC).
-     * @param result The result of calling sendExpression("command") to OMC.
-     * @param error The error resulted from calling sendExpression("command") to OMC.
-     * @return The compiler result along with errors if there is any.
+    /** Make CompilerResult with the result and error of sending the Modelica command
+     *  to OMC.
+     * @param result The result of sending the Modelica command to OMC.
+     * @param error The error resulted from sending the Modelica command to OMC.
+     * @return The compiler result and errors.
      */
     public static CompilerResult makeResult(String[] result, String error) {
         return new CompilerResult(result, error);
@@ -90,6 +92,9 @@ public class CompilerResult {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // The error resulted from sending the Modelica command to OMC.
     private String _error;
+    
+    // The first result of sending the Modelica command to OMC.
     private String[] _result;
 }
