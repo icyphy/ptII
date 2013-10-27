@@ -58,14 +58,6 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface IOMCCommand {
 
-    /**  Build the Modelica model by sending buildModel(className) to the OMC.
-     *   @param modelName The Name of the model which should be built.
-     *   @return CompilerResult The result of sending buildModel(className) command to the OMC.
-     *   @exception ConnectException If buildModel command couldn't
-     *   be sent to the OMC.
-     */
-    public CompilerResult buildModel(String modelName) throws ConnectException;
-
     /** Check if the (base-)model inherits from other classes.
      *  @param modelName The (base-)model that should be built.
      *  @return Check Return true, if the number of inherited classes is more than zero.
@@ -82,34 +74,33 @@ public interface IOMCCommand {
      *  @exception ConnectException If we're unable to start communicating with
      *  the server.
      */
-    public void initServer() throws ConnectException;
+    public void initializeServer() throws ConnectException;
 
     /** Check if there is an error in the return value of sendCommand("command") method and
      *  fetch the error-information of current run.
      *  @param retval The string returned by the (OpenModelica Compiler)OMC.
-     *  @return Checks If the string is actually an error.
+     *  @return Check If the string is actually an error.
      */
     public boolean isError(String retval);
 
-    /** load the Modelica file and library.
+    /** load the Modelica file(s) and library.  
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
-     *  @return Checks If Modelica library and model are loaded.
      *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelic Compiler)OMC.
      */
-    public void loadFile(String fileName, String modelName)
+    public void loadModelicaFile(String fileName, String modelName)
             throws ConnectException;
 
     /** Modify parameter(s) and variable(s) of the Modelica model before building the Modelica model.
-     *  @param parameterValues New values to change the components' values.
+     *  @param values New values to change the components' values.
      *  @param modelName The (base-)model that should be built.
      *  @param components The models' components to change.
      *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC.
      *  @exception IllegalActionException
      */
-    public void modifyComponents(String parameterValues, String modelName,
+    public void modifyComponents(String values, String modelName,
             String components) throws IllegalActionException, ConnectException;
 
     /** Plot the plt file by calling PxgraphApplication.main(modelName).

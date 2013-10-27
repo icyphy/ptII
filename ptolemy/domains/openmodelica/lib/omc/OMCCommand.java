@@ -218,19 +218,7 @@ public class OMCCommand implements IOMCCommand {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /**  Build the Modelica model by sending buildModel(className) to the OMC.
-     *   @param modelName The Name of the model which should be built.
-     *   @return CompilerResult The result of sending buildModel(className) command to the OMC.
-     *   @exception ConnectException If buildModel command couldn't
-     *   be sent to the OMC.
-     */
-    public CompilerResult buildModel(String modelName) throws ConnectException {
-        CompilerResult buildModelResult = sendCommand("buildModel(" + modelName
-                + ")");
-        return buildModelResult;
-    }
-
+    
     /** Check if the (base-)model inherits from other classes.
      *  @param modelName The (base-)model that should be built.
      *  @return Check Return true, if the number of inherited classes is more than zero.
@@ -277,12 +265,13 @@ public class OMCCommand implements IOMCCommand {
     public HashMap getModelComponent(String modelName) {
 
         String componentNames = null;
-        String[] individualComponent = null;
+        String[] componentList = null;
         CompilerResult getComponentsResult = null;
-        HashMap<String, String> componentList = null;
+        HashMap<String, String> componentMap = null;
+        String getComponentResultDelimiter = "},";
+        String componentsDelimiter = ",";
 
-        // List all components of the model
-        // e.g. variable, parameter, constant, etc.
+        // List all components of the model.e.g. variable, parameter, discrete and etc.
 
         try {
             getComponentsResult = sendCommand("getComponents(" + modelName
@@ -301,10 +290,10 @@ public class OMCCommand implements IOMCCommand {
             String componentName = null;
             String componentType = null;
             String[] components = null;
-            componentList = new HashMap<String, String>();
+            componentMap = new HashMap<String, String>();
 
             // Split the getComponents result by "}," in order to access each component.
-            components = componentNames.split("},");
+            components = componentNames.split(getComponentResultDelimiter);
 
             for (String component : components) {
 
@@ -312,13 +301,13 @@ public class OMCCommand implements IOMCCommand {
                 componentNames = componentsBuffer.deleteCharAt(0).toString();
 
                 // Split the component by "," in order to access each property of the component.
-                individualComponent = componentNames.split(",");
+                componentList = componentNames.split(componentsDelimiter);
 
                 // The second element is the name of the component.
-                componentName = individualComponent[1];
+                componentName = componentList[1];
 
                 //The 9th element can have four possible values constant, parameter, discrete or unspecified.
-                componentType = individualComponent[8];
+                componentType = componentList[8];
 
                 // Delete the first space and quotation.
                 // Delete the last quotation.
@@ -327,14 +316,14 @@ public class OMCCommand implements IOMCCommand {
                 componentType = componentsBuffer.deleteCharAt(
                         componentsBuffer.length() - 1).toString();
 
-                componentList.put(componentName, componentType);
+                componentMap.put(componentName, componentType);
             }
         } else {
             String loggerInfo = "Error in setting new value for component's of extended class!"
                     + getComponentsResult.getError();
             _omcLogger.getInfo(loggerInfo);
         }
-        return componentList;
+        return componentMap;
     }
 
     /** Fetch the type of Operating System(OS).
@@ -358,7 +347,7 @@ public class OMCCommand implements IOMCCommand {
      *  the server.
      *  @exception InterruptedException
      */
-    public synchronized void initServer() throws ConnectException {
+    public synchronized void initializeServer() throws ConnectException {
 
         _os = getOs();
 
@@ -398,7 +387,7 @@ public class OMCCommand implements IOMCCommand {
      *   be sent to the (OpenModelic Compiler)OMC.
      *  @exception FileNotFoundException If no file found at the selective path for loading.
      */
-    public void loadFile(String fileName, String modelName)
+    public void loadModelicaFile(String fileName, String modelName)
             throws ConnectException {
 
         String loggerInfo = null;
@@ -446,30 +435,29 @@ public class OMCCommand implements IOMCCommand {
     }
 
     /** Modify parameter(s) and variable(s) of the Modelica model before building the Modelica model.
-     *  @param parameterValues New values to change the components' values.
+     *  @param values The new values to change the value of the components.
      *  @param modelName The (base-)model that should be built.
-     *  @param components The models' components to change.
+     *  @param components The name of the components to change.
      *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelica Compiler)OMC.
      *  @exception IllegalActionException
      */
-    public void modifyComponents(String parameterValues, String modelName,
+    public void modifyComponents(String values, String modelName,
             String components) throws IllegalActionException, ConnectException {
 
         String childModel = modelName;
         String childKey = null;
+        String loggerInfo = null;
+        boolean found = false;
         HashMap<String, String> baseIndividualComponent = null;
         HashMap<String, String> childIndividualComponent = null;
+        CompilerResult getComponentModifierNames = null;
         CompilerResult getNthInheritanceClassResult = null;
         String parameterDelimiter = "#";
         String valueDelimiter = ",";
-        String[] parameters = components.split(parameterDelimiter);
-        String[] values = parameterValues.split(valueDelimiter);
-        String loggerInfo = null;
+        String[] parameterList = components.split(parameterDelimiter);
+        String[] valueList = values.split(valueDelimiter);
         String[] variableList = null;
-        String parameterNames = null;
-        boolean found = false;
-        CompilerResult getComponentModifierNames = null;
         //int inheritanceCount = 0;
 
         try {
@@ -477,8 +465,8 @@ public class OMCCommand implements IOMCCommand {
             childIndividualComponent = getModelComponent(childModel);
 
             if (childIndividualComponent != null) {
-                if (parameters.length == values.length) {
-                    for (int i = 0; i < parameters.length; i++) {
+                if (parameterList.length == valueList.length) {
+                    for (int i = 0; i < parameterList.length; i++) {
                         if (getInheritanceCount(childModel)) {
                             for (int j = 1; j <= 2; j++) {
 
@@ -500,7 +488,7 @@ public class OMCCommand implements IOMCCommand {
                                         while (baseIterator.hasNext()) {
                                             String key = baseIterator.next()
                                                     .toString();
-                                            if (parameters[i]
+                                            if (parameterList[i]
                                                     .equalsIgnoreCase(key)) {
                                                 found = true;
 
@@ -514,7 +502,7 @@ public class OMCCommand implements IOMCCommand {
                                                         + ","
                                                         + key
                                                         + ",$Code(="
-                                                        + values[i] + "))");
+                                                        + valueList[i] + "))");
 
                                                 if (extendModifierValueResult
                                                         .getError().isEmpty()
@@ -533,7 +521,7 @@ public class OMCCommand implements IOMCCommand {
                                                                     .trim()
                                                                     .toString()
                                                             + " is set to "
-                                                            + values[i] + ".";
+                                                            + valueList[i] + ".";
                                                     _omcLogger
                                                             .getInfo(loggerInfo);
                                                 } else {
@@ -560,7 +548,7 @@ public class OMCCommand implements IOMCCommand {
 
                         while (childIterator.hasNext()) {
                             childKey = childIterator.next().toString();
-                            if (childKey.equalsIgnoreCase(parameters[i])) {
+                            if (childKey.equalsIgnoreCase(parameterList[i])) {
 
                                 found = true;
 
@@ -590,7 +578,7 @@ public class OMCCommand implements IOMCCommand {
                                                 + ", "
                                                 + childKey
                                                 + ", $Code(="
-                                                + values[i]
+                                                + valueList[i]
                                                 + "))");
 
                                         if (unspecifiedModifier.getError()
@@ -601,7 +589,7 @@ public class OMCCommand implements IOMCCommand {
                                                             + " of "
                                                             + modelName
                                                             + " is set to "
-                                                            + values[i] + ".");
+                                                            + valueList[i] + ".");
                                         }
                                     } else {
                                         StringBuffer componentsBuffer = new StringBuffer(
@@ -610,15 +598,15 @@ public class OMCCommand implements IOMCCommand {
                                                         .trim().toString());
                                         // Delete the first and last "{".
                                         componentsBuffer.deleteCharAt(0);
-                                        parameterNames = componentsBuffer
+                                        String variableNames = componentsBuffer
                                                 .deleteCharAt(
                                                         componentsBuffer
                                                                 .length() - 1)
                                                 .toString();
 
                                         // Split the result by "," in order to have access to each simulation parameter's value.
-                                        variableList = parameterNames
-                                                .split(",");
+                                        variableList = variableNames
+                                                .split(valueDelimiter);
                                         for (String variables : variableList) {
                                             String tempParameter = childKey
                                                     + "." + variables;
@@ -628,7 +616,7 @@ public class OMCCommand implements IOMCCommand {
                                                     + ", "
                                                     + tempParameter
                                                     + ", $Code(="
-                                                    + values[i]
+                                                    + valueList[i]
                                                     + "))");
 
                                             if (setComponentModifierValueResult
@@ -641,7 +629,7 @@ public class OMCCommand implements IOMCCommand {
                                                         + " of "
                                                         + modelName
                                                         + " is set to "
-                                                        + values[i] + ".";
+                                                        + valueList[i] + ".";
                                                 _omcLogger.getInfo(loggerInfo);
                                             } else {
                                                 loggerInfo = "Unspecified : Error in setting new value for component's class!"
@@ -662,13 +650,13 @@ public class OMCCommand implements IOMCCommand {
                                             + ","
                                             + childKey
                                             + ","
-                                            + values[i] + ")");
+                                            + valueList[i] + ")");
 
                                     if (parameterChange.getError().toString()
                                             .isEmpty()) {
                                         loggerInfo = "Parameter : Component "
                                                 + childKey + " of " + modelName
-                                                + " is set to " + values[i]
+                                                + " is set to " + valueList[i]
                                                 + ".";
                                         _omcLogger.getInfo(loggerInfo);
                                     } else {
@@ -765,7 +753,8 @@ public class OMCCommand implements IOMCCommand {
         _omcLogger.getInfo(loggerInfo);
 
         // Build the Modelica model by sending buildModel() to the OMC server.
-        CompilerResult buildModelResult = buildModel(commands);
+        CompilerResult buildModelResult = sendCommand("buildModel(" + commands
+                + ")");
 
         // Check if an error exists in the result of buildModel("command").
         if (!buildModelResult.getFirstResult().isEmpty()
@@ -879,7 +868,7 @@ public class OMCCommand implements IOMCCommand {
         modelicaCommand = modelicaCommand.trim();
 
         if (hasInitialized == false) {
-            initServer();
+            initializeServer();
         }
 
         try {

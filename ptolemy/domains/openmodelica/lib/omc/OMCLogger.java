@@ -69,7 +69,7 @@ public class OMCLogger {
      */
     private OMCLogger() throws IllegalActionException {
 
-        String logPath = createDirectoryForResult();
+        String logPath = createDirectory();
         String logFullPath = logPath + "omcLog.txt";
         try {
             _fileHandler = new FileHandler(logFullPath);
@@ -110,7 +110,7 @@ public class OMCLogger {
      *  and also the log.
      *  @return logPath The path of the directory which contains the result files.
      */
-    public String createDirectoryForResult() {
+    public String createDirectory() {
 
         String logPath = null;
         String username = StringUtilities.getProperty("user.name");
