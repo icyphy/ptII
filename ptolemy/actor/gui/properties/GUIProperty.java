@@ -40,6 +40,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// GUIProperty
@@ -165,6 +166,19 @@ public abstract class GUIProperty extends Attribute {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the property into the specified workspace. 
+     *  @return A new property
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GUIProperty newObject = (GUIProperty) super.clone(workspace);
+        newObject._component = null;
+        newObject._constraint = null;
+
+        return newObject;
     }
 
     /** Return the Swing component.
