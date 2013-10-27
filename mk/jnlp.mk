@@ -253,6 +253,7 @@ BCVTB_MAIN_JAR = \
 BCVTB_JNLP_JARS =	\
 	$(BCVTB_MAIN_JAR) \
 	$(BCVTB_ONLY_JNLP_JARS) \
+	$(JYTHON_JARS) \
 	$(PTFMI_JARS) \
 	$(PTLBNL_JARS) \
 	doc/design/usingVergil/usingVergil.jar \
@@ -339,20 +340,23 @@ PTALON_JARS = \
 	ptolemy/actor/ptalon/demo/demo.jar \
 	ptolemy/actor/ptalon/ptalon.jar
 
+JYTHON_JARS = \
+	lib/jython.jar \
+        ptolemy/actor/lib/python/python.jar \
+        ptolemy/actor/lib/python/demo/demo.jar
+
 #######
 # Ptiny
 #
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
-	lib/jython.jar \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/colt/demo/demo.jar \
-        ptolemy/actor/lib/python/python.jar \
-        ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	$(SDF_DEMO_JARS) \
 	$(PTALON_JARS) \
+	$(JYTHON_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/ddf/doc/doc.jar \
