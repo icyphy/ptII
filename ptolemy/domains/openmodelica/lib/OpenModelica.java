@@ -160,7 +160,7 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public FileParameter dependencies;
 
-    /** The file that the (child-)model should be loaded from.
+    /** The file that the (sub-)model should be loaded from.  
      *  The default value is "dcmotor.mo".
      */
     public FileParameter fileName;
@@ -255,16 +255,15 @@ public class OpenModelica extends TypedAtomicActor {
 
         // Load Modelica library and model(s).
         try {
-            _omcCommand.loadFile(fileName.getExpression(),
+            _omcCommand.loadModelicaFile(fileName.getExpression(),
                     subModel.getExpression());
             // If the model is inherited from a base model,
             // that base model should be loaded in advance to the child model.
             // Otherwise, the child one could not be built.
             if (!(dependencies.getExpression().isEmpty() && baseModel
-                    .getExpression().isEmpty())) {
-                _omcCommand.loadFile(dependencies.getExpression(),
+                    .getExpression().isEmpty()))
+                _omcCommand.loadModelicaFile(dependencies.getExpression(),
                         baseModel.getExpression());
-            }
         } catch (ConnectException e) {
             throw new IllegalActionException(
                     "Unable to load Modelica file/library!" + e.getMessage());
@@ -367,6 +366,9 @@ public class OpenModelica extends TypedAtomicActor {
                     && !(variableFilter.getExpression().isEmpty())) {
                 _omiThread = new OMIThread(variableFilter.getExpression(),
                         simulationStopTime.getExpression(), output);
+                // FIXME: This method explicitly invokes run() on an object.  In general, classes implement the Runnable 
+                // interface because they are going to have their 
+                // run() method invoked in a new thread, in which case Thread.start() is the right method to call.
                 _omiThread.run();
             }
         } catch (UnknownHostException e) {
@@ -389,7 +391,7 @@ public class OpenModelica extends TypedAtomicActor {
         try {
             // Create a unique instance of OMCProxy.
             _omcCommand = OMCCommand.getInstance();
-            _omcCommand.initServer();
+            _omcCommand.initializeServer();
 
             // Create a unique instance of OMCLogger.
             _omcLogger = OMCLogger.getInstance();
