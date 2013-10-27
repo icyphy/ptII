@@ -43,6 +43,7 @@
 	<input source="ptolemy/actor/lib/logic/logic.xml"/>
 	<input source="ptolemy/actor/lib/math.xml"/>
 	<input source="ptolemy/actor/lib/matrix.xml"/>
+        <input source="ptolemy/actor/lib/python/python.xml"/>
 	<input source="ptolemy/actor/lib/randomNoColt.xml"/>
 	<input source="ptolemy/actor/lib/realtime.xml"/>
 	<input source="ptolemy/actor/lib/signalprocessing.xml"/>
