@@ -56,40 +56,6 @@ public class MetroIIEventBuilder {
     ////                         public methods                    ////
 
     /**
-     * Convert a time value from one resolution to another resolution. Note that
-     * this method may result in a loss of precision.
-     *
-     * @param timeValue
-     *            input time value in type 'long'
-     * @param fromResolution
-     *            the resolution associated with timeValue
-     * @param toResolution
-     *            the resolution it's converting to
-     * @return the new time value.
-     */
-    static public long convert(long timeValue, double fromResolution,
-            double toResolution) {
-        if (timeValue == Long.MAX_VALUE) {
-            return Long.MAX_VALUE;
-        }
-
-        double scaler = fromResolution / toResolution;
-
-        assert scaler > 0;
-
-        if (scaler > 1) {
-            assert Math.abs(scaler - (int) scaler) < 0.00001;
-            timeValue = timeValue * ((int) scaler);
-        } else {
-            double iScaler = 1 / scaler;
-            assert Math.abs(iScaler - (int) iScaler) < 0.00001;
-            timeValue = timeValue / ((int) iScaler);
-        }
-
-        return timeValue;
-    }
-
-    /**
      * Create a proposed Metro event.
      *
      * @param eventName

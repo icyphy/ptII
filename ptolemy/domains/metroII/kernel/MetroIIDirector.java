@@ -37,6 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
@@ -74,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
  * NOTIFIED, the process is supposed to resume execution. The resumed execution
  * may depend on the updated events.
  * </p>
- *
+ * 
  * <p>
  * The execution of MetroIIDirector has two phases. In Phase 1, MetroIIDirector
  * repeatedly fires each actor (no particular order should be presumed). As
@@ -95,7 +96,7 @@ import ptolemy.kernel.util.Workspace;
  * created as long as prefire() returns true. The actor with postfire() returns
  * false will not be fired any more.
  * </p>
- *
+ * 
  * <p>
  * An actor that implements GetFirable interface (@see GetFirable) is wrapped by
  * ResumableFire (@see ResumableFire). Otherwise it's wrapped by BlockingFire (@see
@@ -113,21 +114,22 @@ import ptolemy.kernel.util.Workspace;
  * FIRE_END, but also block on the internal events of getfire(MetroII event
  * list).
  * </p>
- *
+ * 
  * <p>
  * In ResumableFire, the 'start', 'block', and 'resume' are realized using
- * YieldAdapter, see <a href="http://jimblackler.net/blog/?p=61">http://jimblackler.net/blog/?p=61</a>.
- * The underlying
- * mechanism is to create, suspend, and resume a java thread. And proposed
- * MetroII events are returned by the parameters of startOrResume().
+ * YieldAdapter, see <a
+ * href="http://jimblackler.net/blog/?p=61">http://jimblackler
+ * .net/blog/?p=61</a>. The underlying mechanism is to create, suspend, and
+ * resume a java thread. And proposed MetroII events are returned by the
+ * parameters of startOrResume().
  * </p>
- *
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class MetroIIDirector extends Director {
     /**
@@ -135,7 +137,7 @@ public class MetroIIDirector extends Director {
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     *
+     * 
      * @param container
      *            Container of the director.
      * @param name
@@ -166,12 +168,12 @@ public class MetroIIDirector extends Director {
      * file is a text file that specifies such constraints. In mapping file,
      * each line is a mapping constraint, which contains two event names
      * separated by a space.
-     *
+     * 
      * <p>
      * _mappingFileName is a string that contains the absolute path of the
      * mapping file.
      * </p>
-     *
+     * 
      * The default value of _mappingFileName is null, which means no mapping
      * constraint is specified.
      */
@@ -182,7 +184,7 @@ public class MetroIIDirector extends Director {
      * before it returns false. If the value is less than or equal to zero, then
      * the execution will never return false in postfire, and thus the execution
      * can continue forever.
-     *
+     * 
      */
     public Parameter iterations;
 
@@ -203,7 +205,7 @@ public class MetroIIDirector extends Director {
      * React to a change in an attribute. If the changed attribute matches a
      * parameter of the director, then the corresponding local copy of the
      * parameter value will be updated.
-     *
+     * 
      * @param attribute
      *            The changed parameter.
      * @exception IllegalActionException
@@ -257,14 +259,14 @@ public class MetroIIDirector extends Director {
      * Initialize the model controlled by this director. Call the initialize()
      * of super class and then wrap each actor that is controlled by this
      * director.
-     *
+     * 
      * This method should typically be invoked once per execution, after the
      * preinitialization phase, but before any iteration. It may be invoked in
      * the middle of an execution, if reinitialization is desired.
-     *
+     * 
      * This method is <i>not</i> synchronized on the workspace, so the caller
      * should be.
-     *
+     * 
      * @exception IllegalActionException
      *                If the initialize() method of one of the associated actors
      *                throws it.
@@ -364,8 +366,10 @@ public class MetroIIDirector extends Director {
             if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                 for (Event.Builder event : globalMetroIIEventList) {
                     if (event.getStatus() == Status.NOTIFIED) {
-                        System.out.println("Time " + event.getTime().getValue()
-                                + ": " + event.getName());
+                        System.out.println("Time "
+                                + event.getTime().getResolution()
+                                * event.getTime().getValue() + " s: "
+                                + event.getName());
                     }
                 }
             }
@@ -376,7 +380,7 @@ public class MetroIIDirector extends Director {
      * Clone the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
-     *
+     * 
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException
@@ -394,16 +398,21 @@ public class MetroIIDirector extends Director {
 
     /**
      * The postfire() counts the number of iterations and returns false when the
-     * number of iteration exceeds the parameter iterations.
-     *
+     * number of iteration exceeds the parameter iterations or the time in
+     * TimeScheduler exceeds stopTime, whichever comes first.
+     * 
+     * 
      * postfire() will always return true if the parameter iterations is less or
      * equal to 0.
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         int iterationsValue = ((IntToken) iterations.getToken()).intValue();
+        double stopTimeValue = ((DoubleToken) stopTime.getToken())
+                .doubleValue();
         if (_stopRequested || iterationsValue >= 0
-                && _iterationCount >= iterationsValue) {
+                && _iterationCount >= iterationsValue || stopTimeValue > 0
+                && _timeScheduler.getTime() > stopTimeValue) {
             _iterationCount = 0;
             for (StartOrResumable actor : _actorList) {
                 actor.reset();
@@ -418,7 +427,7 @@ public class MetroIIDirector extends Director {
 
     /**
      * Initialize parameters. This is called by the constructor.
-     *
+     * 
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
@@ -449,7 +458,7 @@ public class MetroIIDirector extends Director {
 
     /**
      * The constraint solver
-     *
+     * 
      */
     private MappingConstraintSolver _mappingConstraintSolver;
 

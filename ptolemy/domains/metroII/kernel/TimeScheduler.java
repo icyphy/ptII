@@ -30,6 +30,7 @@ package ptolemy.domains.metroII.kernel;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Time;
 
 ///////////////////////////////////////////////////////////////////
 ////MetroIIActorGeneralWrapper
@@ -68,7 +69,8 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
      * Initialize the current time value.
      */
     public void initialize() {
-        current_time = 0;
+        _currentTime = Event.Time.newBuilder();
+        _currentTime.setValue(0); 
     }
 
     /**
@@ -91,16 +93,19 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
      */
     @Override
     public void resolve(Iterable<Builder> metroIIEventList) {
-        _debugger.printTitle("TimeScheduler Begins at Time " + current_time);
+        _debugger.printTitle("TimeScheduler Begins at Time " + getTime());
         _debugger.printMetroEvents(metroIIEventList);
 
-        long time = Long.MAX_VALUE;
+        Event.Time.Builder timeBuilder = Event.Time.newBuilder();
+        timeBuilder.setValue(Long.MAX_VALUE); 
+        
         boolean hasEventWithoutTime = false;
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (event.hasTime()) {
-                    if (event.getTime().getValue() < time) {
-                        time = event.getTime().getValue();
+                    if (EventTimeComparator.compare(event.getTime(), timeBuilder.build()) < 0) {
+                        timeBuilder.setValue(event.getTime().getValue());
+                        timeBuilder.setResolution(event.getTime().getResolution()); 
                     }
                 } else {
                     hasEventWithoutTime = true;
@@ -121,7 +126,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
             for (Builder event : metroIIEventList) {
                 if (event.getStatus() == Status.PROPOSED) {
                     if (event.hasTime()) {
-                        if (event.getTime().getValue() > time) {
+                        if (EventTimeComparator.compare(event.getTime(), timeBuilder.build()) > 0) {
                             event.setStatus(Status.WAITING);
                             //                            Event.Time.Builder builder = Event.Time.newBuilder();
                             //                            builder.setValue(time);
@@ -136,8 +141,9 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (event.hasTime()) {
-                    if (current_time < event.getTime().getValue()) {
-                        current_time = event.getTime().getValue();
+                    if (EventTimeComparator.compare(_currentTime.build(), event.getTime()) < 0) {
+                        _currentTime.setValue(event.getTime().getValue()); 
+                        _currentTime.setResolution(event.getTime().getResolution()); 
                     }
                 }
             }
@@ -146,7 +152,8 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
             if (event.getStatus() == Status.PROPOSED) {
                 if (!event.hasTime()) {
                     Event.Time.Builder builder = Event.Time.newBuilder();
-                    builder.setValue(current_time);
+                    builder.setValue(_currentTime.getValue());
+                    builder.setResolution(_currentTime.getResolution()); 
                     event.setTime(builder);
                 }
             }
@@ -159,7 +166,14 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
         }
 
         _debugger.printMetroEvents(metroIIEventList);
-        _debugger.printTitle("TimeScheduler Ends at Time " + current_time);
+        _debugger.printTitle("TimeScheduler Ends at Time " + getTime());
+    }
+    
+    /**
+     * Get the current time. 
+     */
+    public double getTime() {
+        return _currentTime.getResolution()*_currentTime.getValue(); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -171,8 +185,8 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     private MetroIIDebugger _debugger = new MetroIIDebugger();
 
     /**
-     * Current time value.
+     * Current time.
      */
-    private long current_time;
+    private Event.Time.Builder _currentTime;
 
 }
