@@ -3572,6 +3572,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             probability = new Parameter(this, "probability");
             probability.setToken(new ProbabilityFunctionToken());
             probability.setVisibility(Settable.EXPERT);
+            probability.setPersistent(false);
 
             seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
             seed.setTypeEquals(BaseType.LONG);
@@ -4348,6 +4349,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         public boolean isCongruent(Function function) {
             // TODO Auto-generated method stub
             return function instanceof ProbabilityFunction;
+        }
+        public String toString() {
+            return "function(p:double) boolean";
         }
 
         private double _guardProbability;
