@@ -27,11 +27,14 @@ Copyright (c) 2012-2013 The Regents of the University of California.
  */
 package ptolemy.domains.metroII.kernel;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.Map;
 
 import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.Collector;
@@ -201,51 +204,47 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
-        //        if (!createProcess) {
-        //            new Thread() {
-        //                public void run() {
-        //                    String s = null;
-        //                    try {
-        //                        // using the Runtime exec method:
-        //                        Process p = Runtime.getRuntime().exec(
-        //                                "ptolemy/metroII/single-cpu");
-        //
-        //                        BufferedReader stdInput = new BufferedReader(
-        //                                new InputStreamReader(p.getInputStream()));
-        //
-        //                        BufferedReader stdError = new BufferedReader(
-        //                                new InputStreamReader(p.getErrorStream()));
-        //
-        //                        // read the output from the command
-        //                        System.out
-        //                                .println("Here is the standard output of the command:\n");
-        //                        while ((s = stdInput.readLine()) != null) {
-        //                            System.out.println(s);
-        //                        }
-        //
-        //                        // read any errors from the attempted command
-        //                        System.out
-        //                                .println("Here is the standard error of the command (if any):\n");
-        //                        while ((s = stdError.readLine()) != null) {
-        //                            System.out.println(s);
-        //                        }
-        //
-        //                        // System.exit(0);
-        //                    } catch (IOException e) {
-        //                        System.out
-        //                                .println("exception happened - here's what I know: ");
-        //                        e.printStackTrace();
-        //                        System.exit(-1);
-        //                    }
-        //                }
-        //            }.start();
-        //            createProcess = true;
-        //
-        //        }
-        //
-        //        while (!createProcess) {
-        //
-        //        }
+        if (!createProcess) {
+            new Thread() {
+                public void run() {
+                    String s = null;
+                    try {
+                        try {
+                            // using the Runtime exec method:
+                            process = Runtime.getRuntime().exec(
+                                    "ptolemy/metroII/single-cpu");
+
+                            stdInput = new BufferedReader(
+                                    new InputStreamReader(
+                                            process.getInputStream()));
+
+                            // read the output from the command
+                            System.out
+                                    .println("Here is the standard output of the command:\n");
+                            while ((s = stdInput.readLine()) != null) {
+                                System.out.println(s);
+                            }
+
+                        } finally {
+                            stdInput.close();
+                        }
+                    } catch (IOException e) {
+                        System.out
+                                .println("exception happened - here's what I know: ");
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+
+            //            try {
+            //                Thread.sleep(1000);
+            //            } catch (InterruptedException e) {
+            //                // TODO Auto-generated catch block
+            //                e.printStackTrace();
+            //            }
+            createProcess = true;
+        }
+
         syncEvents(events);
 
         do {
@@ -285,24 +284,72 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             throw new IllegalActionException(
                     "Environment varialble METRO_TEMP is not accessable.");
         }
+
+        m2event_out_pipe_name = path + "m2event_ptolemy_buffer";
+        m2event_in_pipe_name = path + "m2event_metro_buffer";
+
+        try {
+            Runtime.getRuntime().exec("rm -f " + m2event_out_pipe_name);
+            Runtime.getRuntime().exec("mkfifo " + m2event_out_pipe_name);
+            Runtime.getRuntime().exec("rm -f " + m2event_in_pipe_name);
+            Runtime.getRuntime().exec("mkfifo " + m2event_in_pipe_name);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         events = new LinkedList<Event.Builder>();
 
-        //        createProcess = false;
+        createProcess = false;
 
+    }
+
+    /**
+     * Stop firing as soon as possible.
+     */
+    @Override
+    public void stop() {
+        process.destroy();
+        System.out.println("The SystemC model was stopped.");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
     /**
+     * Standard input of the SystemC model.
+     */
+    BufferedReader stdInput;
+
+    /**
+     * Standard error of the SystemC model.
+     */
+    // BufferedReader stdError;
+
+    /**
+     * The full name of the pipe to SystemC model.
+     */
+    String m2event_out_pipe_name;
+
+    /**
+     * The full name of the pipe from SystemC model.
+     */
+    String m2event_in_pipe_name;
+
+    /**
+     * The external process.
+     */
+    Process process;
+
+    /**
      * Current event list
      */
     private LinkedList<Event.Builder> events;
 
-    //    /**
-    //     * Whether a process is created for the wrapped Metro-SystemC model
-    //     */
-    //    private boolean createProcess;
+    /**
+     * Whether a process is created for the wrapped Metro-SystemC model
+     */
+    private boolean createProcess;
 
     /**
      * Path of the pipe
