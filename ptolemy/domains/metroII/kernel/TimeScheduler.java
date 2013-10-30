@@ -32,7 +32,6 @@ import java.math.BigDecimal;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
-import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Time;
 
 ///////////////////////////////////////////////////////////////////
 ////MetroIIActorGeneralWrapper
