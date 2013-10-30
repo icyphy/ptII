@@ -30,6 +30,7 @@ package ptolemy.domains.metroII.kernel;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -367,9 +368,8 @@ public class MetroIIDirector extends Director {
                 for (Event.Builder event : globalMetroIIEventList) {
                     if (event.getStatus() == Status.NOTIFIED) {
                         System.out.println("Time "
-                                + event.getTime().getResolution()
-                                * event.getTime().getValue() + " s: "
-                                + event.getName());
+                                + _timeScheduler.getTime()
+                                + " s: " + event.getName());
                     }
                 }
             }

@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.metroII.kernel;
 
+import java.math.BigDecimal;
+
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
@@ -173,7 +175,9 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
      * Get the current time. 
      */
     public double getTime() {
-        return _currentTime.getResolution()*_currentTime.getValue(); 
+        BigDecimal value = BigDecimal.valueOf(_currentTime.getResolution()); 
+        BigDecimal resolution = BigDecimal.valueOf(_currentTime.getValue()); 
+        return value.multiply(resolution).doubleValue(); 
     }
 
     ///////////////////////////////////////////////////////////////////
