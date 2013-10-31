@@ -3568,10 +3568,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             timeout = new Parameter(this, "timeout");
             timeout.setToken(new TimeoutFunctionToken());
             timeout.setVisibility(Settable.EXPERT);
+            timeout.setPersistent(false);
 
             probability = new Parameter(this, "probability");
             probability.setToken(new ProbabilityFunctionToken());
             probability.setVisibility(Settable.EXPERT);
+            probability.setPersistent(false);
 
             seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
             seed.setTypeEquals(BaseType.LONG);
