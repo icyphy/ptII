@@ -1,10 +1,9 @@
-# Makefile for the interface to Functional Mock-up Units, which implements the Import FMU choice.
+# Makefile for PtolemyII FMI Domain
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Version: $Id: makefile 58200 2010-06-16 17:40:20Z bldmastr $
+# @Author: Christopher Hylands
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2012-2013 The Regents of the University of California.
+# @Copyright (c) 1998-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,53 +28,43 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/fmi
 
-ME =		ptolemy/vergil/basic/imprt/fmu
+DIRS =		kernel lib
 
-DIRS =
-
-# Root of the Java directory
-ROOT =		../../../../..
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	fmu
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	fmi
+PTCLASSJAR =
 
-#PTAUXALLJAR =	fmuFull.jar
-
-#PTCLASSALLJAR = 
 # Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+PTCLASSALLJARS = \
+		kernel/kernel.jar \
+		lib/lib.jar
 
-JSRCS = \
-	ImportFMUAction.java \
-	ImportFMUAsJavaFMUAction.java
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
-
-JCLASS = $(JSRCS:%.java=%.class)
+	demo \
+	doc
 
 all: jclass
 install: jclass jars
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

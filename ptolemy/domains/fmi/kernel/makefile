@@ -1,10 +1,10 @@
-# Makefile for the interface to Functional Mock-up Units, which implements the Import FMU choice.
+# Makefile for the FMI domain kernel
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands
 #
-# @Version: $Id$
+# @Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
 #
-# @Copyright (c) 2012-2013 The Regents of the University of California.
+# @Copyright (c) 1998-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,39 +29,27 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/fmi/kernel
 
-ME =		ptolemy/vergil/basic/imprt/fmu
-
-DIRS =
+DIRS = 		test
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fmu
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-#PTAUXALLJAR =	fmuFull.jar
-
-#PTCLASSALLJAR = 
-# Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+PTPACKAGE = 	kernel
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ImportFMUAction.java \
-	ImportFMUAsJavaFMUAction.java
+	FMIDirector.java
 
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -70,12 +58,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

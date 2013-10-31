@@ -1,4 +1,4 @@
-/* Implement the Import FMU menu choice.
+/* Implement the Import FMU as a Java FMU action.
 
    Copyright (c) 2012-2013 The Regents of the University of California.
    All rights reserved.
@@ -33,7 +33,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.AbstractAction;
 
 import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.actor.lib.fmi.FMUImport;
+import ptolemy.domains.fmi.lib.FMU;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -47,20 +47,28 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
-//// ImportFMUAction
+//// ImportFMUAsJavaFMUAction
 
 /**
-   An Action to Import a Functional Mock-up Unit (FMU).
+   An Action to Import a Functional Mock-up Unit (FMU) as
+   a Java FMU.
+
+   <p>This class is experimental.</p>
+
+   <p>Use ImportFMUAction to import a FMU as a Ptolemy Actor.</p>
+
+   <p>This class imports a FMU for use in a Java implementation
+   of the FMI Master Algorithm.</p>
 
    <p>This package is optional.  To add the "Import FMU" menu choice
    to the GraphEditor, add the following to the configuration:</p>
    <pre>
    &lt;property name="_importFMUClassName"
    class="ptolemy.data.expr.StringParameter"
-   value="ptolemy.vergil.basic.imprt.fmu.ImportFMUAction"/&gt;
+   value="ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction"/&gt;
    </pre>
    <p>{@link ptolemy.vergil.basic.BasicGraphFrame} checks for this
-   parameter and adds the "Import FMU" menu choice if the class named
+   parameter and adds the "Import FMU as Java FMU" menu choice if the class named
    by that parameter exists.</p>
 
    <p>The <code>$PTII/ptolemy/configs/defaultFullConfiguration.xml</code> file
@@ -80,22 +88,22 @@ import diva.graph.GraphController;
    to manage because the ports could change.</p>
 
    @author  Christopher Brooks.  Based on ExportPDFAction by Edward A. Lee
-   @version $Id$
+   @version $Id: ImportFMUAction.java 67792 2013-10-26 19:36:54Z cxh $
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class ImportFMUAction extends AbstractAction {
+public class ImportFMUAsJavaFMUAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
 
     /** Create a new action to import a Functional Mock-up Unit (FMU)
      *  .fmu file.
      *  @param frame The Frame which to which this action is added.
      */
-    public ImportFMUAction(Top frame) {
-        super("Import FMU as a Ptolemy Actor");
+    public ImportFMUAsJavaFMUAction(Top frame) {
+        super("Import FMU as a Java FMU (experimental)");
         _frame = frame;
-        putValue("tooltip", "Import a Functional Mock-up Unit (FMU) file as a Ptolemy actor.");
+        putValue("tooltip", "Import a Functional Mock-up Unit (FMU) file as a Java FMU (experimental).");
         //putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_X));
     }
 
@@ -190,7 +198,7 @@ public class ImportFMUAction extends AbstractAction {
                         fmuFileParameter.setPersistent(false);
                         fmuFileParameter.setVisibility(Settable.EXPERT);
 
-                        FMUImport.importFMU(this, fmuFileParameter, context, x,
+                        FMU.importFMU(this, fmuFileParameter, context, x,
                                 y, _lastModelExchange);
                     } finally {
                         // Avoid leaving a parameter in the model.

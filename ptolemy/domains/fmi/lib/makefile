@@ -1,10 +1,10 @@
-# Makefile for the interface to Functional Mock-up Units, which implements the Import FMU choice.
+# Makefile for Functional Mock-up Interface Java objects
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 67236 2013-08-26 16:46:24Z cxh $
 #
-# @Copyright (c) 2012-2013 The Regents of the University of California.
+# @Copyright (c) 2011-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# This directory contains polymorphic actors.
 
-ME =		ptolemy/vergil/basic/imprt/fmu
+ME =		ptolemy/domains/fmi/lib
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
@@ -44,38 +45,35 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fmu
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	lib
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-#PTAUXALLJAR =	fmuFull.jar
-
-#PTCLASSALLJAR = 
-# Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
-
+# Keep this list alphabetized.
 JSRCS = \
-	ImportFMUAction.java \
-	ImportFMUAsJavaFMUAction.java
+	FMU.java
 
 OTHER_FILES_TO_BE_JARED =
 
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Don't set MISC_FILES to $(DIRS) or else 'make sources' will try to invoke the demos.
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	demo \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+
 all: jclass
 install: jclass jars
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
