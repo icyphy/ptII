@@ -362,8 +362,7 @@ public class OpenModelica extends TypedAtomicActor {
             // client and servers are set up all in the constructor of the thread.
             // Through starting the thread, the simulation result is sent from the server to the
             // Ptolemy II in the string format.
-            if (processingMode.getExpression().equalsIgnoreCase("interactive")
-                    && !(variableFilter.getExpression().isEmpty())) {
+            if (processingMode.getExpression().equalsIgnoreCase("interactive")) {
                 _omiThread = new OMIThread(variableFilter.getExpression(),
                         simulationStopTime.getExpression(), output);
                 // FIXME: This method explicitly invokes run() on an object.  In general, classes implement the Runnable 
