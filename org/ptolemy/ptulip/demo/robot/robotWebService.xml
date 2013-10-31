@@ -69,7 +69,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 115.0]">
         </property>
     </property>
-    <property name="tulipDirectory" class="ptolemy.data.expr.Parameter" value="&quot;tools/tulip_synth.py&quot;">
+    <property name="tulipDirectory" class="ptolemy.data.expr.Parameter" value="&quot;/home/ptbuild/tulip-control&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -88,7 +88,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 140.0]">
         </property>
     </property>
-    <property name="tulipSynth" class="ptolemy.data.expr.Parameter" value="&quot;/home/ptbuild/tulip-control&quot;">
+    <property name="tulipSynth" class="ptolemy.data.expr.Parameter" value="&quot;/home/ptbuild/tulip-control/tools/tulip_synth.py&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -157,7 +157,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Notes for Beth's machine:&#10;pythonCommand: &quot;python&quot;&#10;tulipDirectory: &quot;C:/Users/Beth/git/tulip-control&quot;&#10;tulipSynth: &quot;C:/Users/Beth/git/tulip-control/tools/tulip_synth.py&quot;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 170.0]">
         </property>
     </property>
     <entity name="Run Tulip" class="ptolemy.actor.TypedCompositeActor">
