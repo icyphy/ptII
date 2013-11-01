@@ -1,24 +1,21 @@
 // Create graphics for index.html file
-// Uses map.js
-
-// Interval at which this page samples data - here, 2 seconds (2000 ms)
-var interval = 2000;
+// Uses simulator.js
 
 // The svg element
 var svg;
 
+// Time interval data is sampled at, in milliseconds
+var interval = 2000;
+
 // Create the graphic elements once the DOM is loaded
 $(document).ready(function() {	
 	svg = createSVG();
-	initializeMap(342, 746, 0, 0, interval);
-	addImage(svg);
-	drawRooms(svg);
 	
 	// Update temperature map periodically
 	var counter = 0; 
 	intervalHandler = setInterval(function() {
 		
-		updateMap(svg);
+		getData();
 
 		// Uncomment to stop after 10 iterations
 		/*

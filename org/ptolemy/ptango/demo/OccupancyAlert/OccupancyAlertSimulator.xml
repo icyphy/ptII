@@ -4,13 +4,13 @@
 <entity name="OccupancyAlertSimulator" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 67, 1131, 673}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={190, 23, 1131, 673}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[903, 556]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6283987915407855">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{452.4572981366459, 358.46350931677017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{614.5360576923078, 343.56250000000006}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -62,7 +62,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 45.0]">
         </property>
     </property>
-    <property name="elevator1" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="elevator" class="ptolemy.data.expr.Parameter" value="false">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -81,7 +81,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 25.0}">
         </property>
     </property>
-    <property name="elevator2" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="power" class="ptolemy.data.expr.Parameter" value="false">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -97,45 +97,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 45.0}">
-        </property>
-    </property>
-    <property name="elevator3" class="ptolemy.data.expr.Parameter" value="false">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 65.0]">
-        </property>
-    </property>
-    <property name="power" class="ptolemy.data.expr.Parameter" value="true">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 45.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -189,12 +151,14 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8082">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, -55.0]">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8082">
+        </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/OccupancyAlert">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{670.0, -45.0}">
@@ -263,19 +227,9 @@
         </port>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.84029522613065, 598.9802135678391]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 600.0}">
         </property>
-        <port name="elevator1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="elevator2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="elevator3" class="ptolemy.actor.TypedIOPort">
+        <port name="elevator" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -287,7 +241,7 @@
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="elevator1">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="elevator">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -296,36 +250,10 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.09029522613065, 588.9802135678391]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 600.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="elevator2">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.09029522613065, 623.9802135678391]">
-        </property>
-    </entity>
-    <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="elevator3">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.09029522613065, 658.9802135678391]">
-        </property>
-    </entity>
-    <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="power">
         </property>
         <doc>Create a constant sequence.</doc>
@@ -335,11 +263,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.09029522613065, 698.9802135678391]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 645.0]">
         </property>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.09029522613065, 628.9802135678391]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 635.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
@@ -357,19 +285,9 @@
         </port>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 745.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 690.0]">
         </property>
-        <port name="elevator1" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="elevator2" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="elevator3" class="ptolemy.actor.TypedIOPort">
+        <port name="elevator" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -381,7 +299,7 @@
         </port>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="elevator1">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="elevator">
         </property>
         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -391,38 +309,10 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 760.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 705.0]">
         </property>
     </entity>
-    <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="elevator2">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 815.0]">
-        </property>
-    </entity>
-    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="elevator3">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 895.0]">
-        </property>
-    </entity>
-    <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
+    <entity name="SetVariable1" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="power">
         </property>
         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
@@ -433,7 +323,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 955.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 760.0]">
         </property>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
@@ -474,26 +364,8 @@
             </property>
         </port>
     </entity>
-    <entity name="ExpressionToToken3" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 955.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-            </property>
-        </port>
-    </entity>
-    <entity name="ExpressionToToken2" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 895.0}">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-            </property>
-        </port>
-    </entity>
     <entity name="ExpressionToToken1" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 815.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 760.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -502,7 +374,7 @@
         </port>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 760.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 705.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -523,10 +395,6 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -549,14 +417,6 @@
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -581,41 +441,27 @@
     <link port="MicrostepDelay2.input" relation="relation5"/>
     <link port="MicrostepDelay2.output" relation="relation6"/>
     <link port="RecordAssembler.output" relation="relation12"/>
-    <link port="RecordAssembler.elevator1" relation="relation7"/>
-    <link port="RecordAssembler.elevator2" relation="relation8"/>
-    <link port="RecordAssembler.elevator3" relation="relation9"/>
+    <link port="RecordAssembler.elevator" relation="relation7"/>
     <link port="RecordAssembler.power" relation="relation10"/>
     <link port="Const.output" relation="relation7"/>
     <link port="Const.trigger" relation="relation11"/>
-    <link port="Const2.output" relation="relation8"/>
+    <link port="Const2.output" relation="relation10"/>
     <link port="Const2.trigger" relation="relation11"/>
-    <link port="Const3.output" relation="relation9"/>
-    <link port="Const3.trigger" relation="relation11"/>
-    <link port="Const4.output" relation="relation10"/>
-    <link port="Const4.trigger" relation="relation11"/>
     <link port="TokenToJSON.input" relation="relation12"/>
     <link port="TokenToJSON.output" relation="relation13"/>
     <link port="MicrostepDelay3.input" relation="relation13"/>
     <link port="MicrostepDelay3.output" relation="relation14"/>
     <link port="RecordDisassembler.input" relation="relation21"/>
-    <link port="RecordDisassembler.elevator1" relation="relation25"/>
-    <link port="RecordDisassembler.elevator2" relation="relation24"/>
-    <link port="RecordDisassembler.elevator3" relation="relation23"/>
+    <link port="RecordDisassembler.elevator" relation="relation25"/>
     <link port="RecordDisassembler.power" relation="relation15"/>
     <link port="SetVariable.input" relation="relation19"/>
-    <link port="SetVariable2.input" relation="relation16"/>
-    <link port="SetVariable3.input" relation="relation17"/>
-    <link port="SetVariable4.input" relation="relation18"/>
+    <link port="SetVariable1.input" relation="relation18"/>
     <link port="Const5.output" relation="relation20"/>
     <link port="Const5.trigger" relation="relation21"/>
     <link port="MicrostepDelay4.input" relation="relation20"/>
     <link port="MicrostepDelay4.output" relation="relation22"/>
-    <link port="ExpressionToToken3.input" relation="relation15"/>
-    <link port="ExpressionToToken3.output" relation="relation18"/>
-    <link port="ExpressionToToken2.input" relation="relation23"/>
-    <link port="ExpressionToToken2.output" relation="relation17"/>
-    <link port="ExpressionToToken1.input" relation="relation24"/>
-    <link port="ExpressionToToken1.output" relation="relation16"/>
+    <link port="ExpressionToToken1.input" relation="relation15"/>
+    <link port="ExpressionToToken1.output" relation="relation18"/>
     <link port="ExpressionToToken.input" relation="relation25"/>
     <link port="ExpressionToToken.output" relation="relation19"/>
 </entity>
