@@ -56,6 +56,7 @@ JSRCS = \
 	HttpActor.java \
 	HttpGet.java \
 	HttpPost.java \
+	HttpPut.java \
 	HttpService.java \
 	WebServer.java \
 	WebApplicationInfo.java \
