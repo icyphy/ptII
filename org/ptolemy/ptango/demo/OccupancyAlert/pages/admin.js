@@ -1,7 +1,7 @@
 /* Javascript for Swarm Lab Simulator admin panel */
 
-var elevator = false,
-	power = true;
+var elevator = "false",
+	power = "true";
 
 // Display default flip switch states; register click handlers
 $(document).ready(function() {
@@ -29,9 +29,19 @@ function getSettings(){
 		type: 'GET',
 		dataType: 'json',
 		success: function(result) {
-			// Store state
-			elevator = result.elevator1;
-			power = result.power;
+			// Store state.  For some reason, string is needed 
+			// FIXME:  Figure out when when have time
+			if (result.elevator) {
+				elevator = "true";
+			} else {
+				elevator = "false";
+			}
+			
+			if (result.power) {
+				power = "true";
+			} else {
+				power = "false";
+			}
 			
 			// Update display.  This should be done in the callback to ensure
 			// that the data is received before the display is refreshed

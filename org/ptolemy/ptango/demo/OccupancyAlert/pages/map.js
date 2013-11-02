@@ -6,21 +6,30 @@ var intervalHandler;
 
 // Javascript objects to store data
 var power = true;
+
 var rooms = {
-		"elevator": { 
-		    "vertices" : [ {"x":50, "y":325} , {"x":78, "y":325}, 
-		                   {"x":78, "y":355} , {"x":50, "y":355}, 
-		                   {"x":50, "y":325}],
+		"elevator": {
+		    "vertices" : [ {"x":40, "y":315} , {"x":88, "y":315}, 
+		                   {"x":88, "y":355} , {"x":40, "y":355}, 
+		                   {"x":40, "y":315}],
 		    "occupied" : false
 		},
 };
 
+var sensors = [{"name" : "PM306", "value" : 50.5, "x" : 715.0, "y" : 290.0, 
+					"power" : true}, 
+               {"name" : "PM307", "value" : 22.5, "x" : 870.0, "y" : 350.0,
+					"power" : true}, 
+               {"name" : "PM308", "value" : 72.0, "x" : 890.0, "y" : 270.0,
+					"power" : true}];
+
 // SVG temperature overlay
 var image,
-    roomShapes;
+    roomShapes,
+    sensorMarkers;
 
 // Opacity of overlay.  Between one (opaque) and zero (transparent)
-var opacity = 0.7
+var opacity = 0.7;
 
 // Duration of the room map animated transition, in ms
 var duration = 2000;
@@ -82,8 +91,63 @@ function drawRooms(svg) {
 			.attr("transform", "translate(" + startX + "," + startY + ")");
 }
 
+// Draw markers for sensors and their values
+function drawMarkers(){
+	for (var i = 0; i < sensors.length; i++) {
+		var marker = svg.append("g");	// "g" stands for group
+		
+		marker.append("rect")
+				.attr("class", "sensor") // So we can select by class later, 
+										 // since heat map also uses rectangles,
+										 // can't use selectAll("rect")
+				.attr("width", 70)
+				.attr("height", 40)		
+				.style("fill", "rgb(161, 189, 213)")
+				.style("stroke", "black")
+				.style("stroke-width", 3);
+		
+		// Name label
+		marker.append("text")
+			 	.attr("class", "sensorLabel")
+			 	.attr("x", 11)
+			 	.attr("y", 25)
+			 	.attr("font-family", "sans-serif")
+				.attr("font-weight", "bold");
+		
+		// Sensor reading
+		marker.append("rect")
+			.attr("class", "sensorReadingBox")
+			.attr("width", 66)
+			.attr("height", 40)
+			.attr("x", 70)
+			.attr("y", 0)
+			//.style("fill", "rgb(255, 255, 255)")
+			.style("stroke", "black")
+			.style("stroke-width", 3);
+		
+		marker.append("text")
+			 	.attr("class", "sensorReading")
+			 	.attr("x", 80)
+			 	.attr("y", 25)
+			 	.attr("font-family", "sans-serif")
+				.attr("font-weight", "bold");
+		
+		marker.attr("class", "sensorMarker");
+	}
+	
+	sensorMarkers = 
+		d3.selectAll(".sensorMarker")
+				.data(sensors)
+				.attr("transform", function(d,i) {
+					return "translate(" + [d.x, d.y] + ")"
+				});
+	
+	updateMarkers();
+}
+
 // Get data from Ptolemy and update rooms.  Room-updating must be done in 
 // callback since .ajax is asynchronous - wait for data before drawing
+
 function getData(){
 	$.ajax({
 		url: 'simulator/data',
@@ -98,16 +162,34 @@ function getData(){
 			}
 			
 			// Set power
-			power = result["power"];
+			power = result.power;
+			
+			if (result.hasOwnProperty("power306")) {
+				sensors[0].power = result.power306;
+			} else {
+				sensors[0].power = power;
+			}
+			
+			if (result.hasOwnProperty("power307")) {
+				sensors[1].power = result.power307;
+			} else {
+				sensors[1].power = power;
+			}
+			
+			if (result.hasOwnProperty("power308")) {
+				sensors[2].power = result.power308;
+			} else {
+				sensors[2].power = power;
+			}		
 			
 			// Draw or upate rooms
 			if (firstView) {
 				addImage(svg);
 				drawRooms(svg);
-				firstView = false;
 			} else {
 				updateMap(svg);
 			}
+			getMarkerData();
 		},
 		error: function(e) {
 			// Cancel page refresh if Ptolemy model has stopped running
@@ -115,6 +197,30 @@ function getData(){
 			// alert("Error retrieving data from simulator: " + JSON.stringify(e));
 		}
 	});
+}
+
+//Submit a request to the Ptolemy model to get the marker locations
+function getMarkerData(){
+	$.get('/simulator/markers', function(data) {
+		// TODO:  JSON is being returned from Ptolemy as a string.  In future, 
+		// allow setting response type to application/json so we don't need
+		// $.parseJSON(data)
+		var json = $.parseJSON(data);
+		sensors[0].value = json.reading306;
+		sensors[1].value = json.reading307;
+		sensors[2].value = json.reading308;
+		
+		// If first time, draw markers
+		// Called from this function since the get request is asynchronous
+		// (so caller does not wait for it to complete)
+		if (firstView) {
+			drawMarkers();
+			firstView = false;
+		} else {
+			updateMarkers();
+		}
+	})
+	.fail(function() {alert("Failed to get marker data from server."); });
 }
 
 // Color rooms according to power and occupancy status
@@ -130,6 +236,16 @@ function rgb(occupied, power) {
 		return "rgb(0,200,0)";
 	} else {
 		return "rgb(200,0,0)";
+	}
+}
+
+function rgbLive(power) {
+	// White for operating
+	// Gray for power outage
+	if (power) {
+		return "rgb(255,255,255)";
+	} else {
+		return "rgb(50,50,50)";
 	}
 }
 	
@@ -157,5 +273,25 @@ function updateMap(svg) {
 		// using d3.entries().  This returns "key" : "", "value" : {}
 		.attr("fill", function(d) {return rgb(d.value.occupied, power)});
 }
+
+function updateMarkers(){
+	// Data must be associated to text labels, too, in addition to markers
+	// .text() must be done after .data() 
+	d3.selectAll(".sensorLabel")
+		.data(sensors)
+		.text(function(d) {return d.name});
+	
+	
+	d3.selectAll(".sensorReadingBox")
+		.data(sensors)
+		.transition()
+		.duration(duration)
+		.attr("fill", function(d) {return rgbLive(d.power)});
+	
+	d3.selectAll(".sensorReading")
+		 .data(sensors)
+		 .text(function(d) {return Math.floor(d.value) + " W";});
+}
+
 
 
