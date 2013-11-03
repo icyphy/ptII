@@ -64,7 +64,8 @@ public class FMIRealType extends FMIType {
         if (element.hasAttribute("start")) {
             start = Double.valueOf(element.getAttribute("start"));
         } else {
-            start = null;
+            // If there is no start attribute, then set the value to NaN.
+            start = Double.NaN;
         }
     }
 
