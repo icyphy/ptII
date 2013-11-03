@@ -279,6 +279,9 @@ public class SendMail extends TypedAtomicActor {
         _props = new Properties();
         _props.put("mail.transport.protocol", "smtp");
         _props.put("mail.smtp.auth", "true");
+        
+        // Required by some mail servers 
+        _props.put("mail.smtp.starttls.enable", "true");
     }
 
     /** Update the parameters based on any available inputs
