@@ -830,7 +830,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 Parameter parameter = (Parameter) getAttribute(sanitizedName,
                         Parameter.class);
                 if (parameter != null) {
-                    _setFMUScalarVariable(scalar, parameter.getToken());
+                    try {
+                        _setFMUScalarVariable(scalar, parameter.getToken());
+                    } catch (RuntimeException runtimeException) {
+                        // FIXME: we are reusing supressWarnings here
+                        // because the AMS model throws an exception
+                        // while trying to set hx.hc.
+                        if (!((BooleanToken) suppressWarnings.getToken()).booleanValue()) {
+                            throw runtimeException;
+                        }
+                    }
                 }
             }
         }
