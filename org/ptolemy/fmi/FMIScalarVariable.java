@@ -174,7 +174,8 @@ public class FMIScalarVariable {
                 // and we got:
                 // Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
                 //
-                if (childElement.getNodeName().equals("DirectDependency")) {
+                String nodeName = childElement.getNodeName();
+                if (nodeName.equals("DirectDependency")) {
                     // Iterate over the children of this element to find the
                     // names of the dependents.
                     // FIXME: In FMI 2.0, DirectDependency will be replaced by
@@ -193,8 +194,15 @@ public class FMIScalarVariable {
                             }
                         }
                     }
+                } else if (nodeName.equals("isLinear") 
+                            || nodeName.equals("VariableCategory")) {
+                    if (!_errorElements.contains(_typeName)) {
+                        _errorElements.add(_typeName);
+                        System.out.println(element + ": Child element \""
+                                + nodeName + "\" not implemented yet.");
+                    }
                 } else {
-                    _typeName = childElement.getNodeName();
+                    _typeName = nodeName;
                     if (_typeName.equals("Boolean")) {
                         type = new FMIBooleanType(name, description,
                                 childElement);
@@ -492,6 +500,10 @@ public class FMIScalarVariable {
     private void _getValue(Pointer fmiComponent, Object valueBuffer,
             Class typeClass) {
         if (_fmiGetFunction == null) {
+            if (_typeName.equals("skip")) {
+                System.out.println("Could not process type, it was marked as skip.");
+                return;
+            }
             try {
                 _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet"
                         + _typeName);
@@ -514,6 +526,10 @@ public class FMIScalarVariable {
     private void _setValue(Pointer fmiComponent, Object valueBuffer,
             Class typeClass) {
         if (_fmiSetFunction == null) {
+            if (_typeName.equals("skip")) {
+                System.out.println("Could not process type, it was marked as skip.");
+                return;
+            }
             try {
                 _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet"
                         + _typeName);
