@@ -21,13 +21,21 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 100}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 185.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires contains a FMU generated from a JModelica .mo file.&#10;&#10;The .fmu file has binaries for darwin64 and linux64.  &#10;&#10;Note that under Linux the .fmu file has fairly tight dependencies on the version of Fortran and GLibC. &#10;&#10;Under Mac OS X, the .fmu file depends on Lapack and Blas.  It might be necessary to install&#10;JModelica, see https://svn.jmodelica.org/trunk/INSTALL and&#10;http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JModelica&#10;&#10;The suppressWarnings flag is set because otherwise we get an error when we set hc.hx.&#10;&#10;The output is strange because t7 does not match the value from the plot, but cabin_t does?">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -5.0]">
         </property>
     </property>
     <entity name="AMS_AMSSim" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/AirManagementSystem/AMS_AMSSim.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 265.0]">
+        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 270.0]">
         </property>
         <property name="_block_jacobian_check" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -2076,7 +2084,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 240}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 265.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
