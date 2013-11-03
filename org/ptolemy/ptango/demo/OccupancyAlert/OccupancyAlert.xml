@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7118424044875683">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{114.18106155778912, 112.56422738693465}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{602.9316111809045, 133.36212311557784}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -130,7 +130,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 35.0]">
         </property>
     </property>
-    <property name="power306" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="power306" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -149,7 +149,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -110.0]">
         </property>
     </property>
-    <property name="power307" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="power307" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -168,7 +168,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -85.0]">
         </property>
     </property>
-    <property name="power308" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="power308" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -211,7 +211,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 110.0]">
         </property>
     </property>
-    <property name="elevator" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="elevator" class="ptolemy.data.expr.Parameter" value="false">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -259,8 +259,6 @@
         </property>
         <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/OccupancyAlert/pages">
         </property>
-    </property>
-    <property name="value" class="ptolemy.data.expr.Parameter" value="power">
     </property>
     <property name="power306Live" class="ptolemy.data.expr.Parameter" value="false">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
