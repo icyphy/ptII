@@ -1,10 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SensorAndrewServer" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SensorAndrew" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8076">
+        </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/SensorAndrew/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, -10.0]">
@@ -27,11 +29,11 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a simple&#10;chat service with a RESTful interface at URL&#10;http://localhost:8078/scaife">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a simple&#10;chat service with a RESTful interface at URL&#10;http://localhost:8076/scaife">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -50.0}">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/scaife#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8076/scaife#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
