@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7118424044875683">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{998.0916300251257, 580.516881281407}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1081.2832129396984, 81.36738379396974}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -413,7 +413,7 @@
         </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="terraswarm1">
         </property>
-        <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.ptSensorAndrewPassword.txt">
+        <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.ptOccupancyAlertPassword.txt">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{950.0, 0.0}">
         </property>
@@ -423,7 +423,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="XMPPGateway change to:&#10;Username:  terraswarm1&#10;Password:  enter the terraswarm1 password in &#10;$HOME/.ptSensorAndrewPassword.txt&#10; ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="XMPPGateway change to:&#10;Username:  terraswarm1&#10;Password:  enter the terraswarm1 password in &#10;$HOME/.ptOccupancyAlertPassword.txt&#10; ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, -40.0]">
         </property>
