@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7118424044875683">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{602.9316111809045, 133.36212311557784}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{998.0916300251257, 580.516881281407}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -73,7 +73,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 35.0]">
         </property>
     </property>
-    <property name="reading306" class="ptolemy.data.expr.Parameter" value="&quot;19.799999&quot;">
+    <property name="reading306" class="ptolemy.data.expr.Parameter" value="&quot;23.600000&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -92,7 +92,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{690.0, -15.0}">
         </property>
     </property>
-    <property name="reading307" class="ptolemy.data.expr.Parameter" value="&quot;19.799999&quot;">
+    <property name="reading307" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 10.0]">
         </property>
     </property>
-    <property name="reading308" class="ptolemy.data.expr.Parameter" value="&quot;19.799999&quot;">
+    <property name="reading308" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -411,7 +411,7 @@
     <property name="XMPPGateway" class="org.ptolemy.ptango.lib.xmpp.XMPPGateway">
         <property name="server" class="ptolemy.data.expr.StringParameter" value="sensor.andrew.cmu.edu">
         </property>
-        <property name="userName" class="ptolemy.data.expr.StringParameter" value="scaife_admin">
+        <property name="userName" class="ptolemy.data.expr.StringParameter" value="terraswarm1">
         </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.ptSensorAndrewPassword.txt">
         </property>
@@ -819,19 +819,19 @@
         </property>
     </entity>
     <entity name="PlugMeter308" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
-        <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="679a64b8d78ab1d599fd55b73b8e5cbe_data">
+        <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="3698e3ace2cd483ff2c2a445e8e5c8aa_data">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 995.0]">
         </property>
     </entity>
     <entity name="PlugMeter306" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
-        <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="679a64b8d78ab1d599fd55b73b8e5cbe_data">
+        <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="3b974f56330726b242279eb0fa3eee34_data">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 410.0]">
         </property>
     </entity>
     <entity name="PlugMeter307" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
-        <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="679a64b8d78ab1d599fd55b73b8e5cbe_data">
+        <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="9a408dfed174ff926d71aab1b903841b_data">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 705.0]">
         </property>
@@ -1818,19 +1818,19 @@
     <entity name="SensorAndrewDataExtractor1" class="SensorAndrewDataExtractorClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1110.0, 375.0}">
         </property>
-        <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
+        <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Apparent Power Meter&quot;">
         </property>
     </entity>
     <entity name="SensorAndrewDataExtractor2" class="SensorAndrewDataExtractorClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1100.0, 675.0}">
         </property>
-        <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
+        <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Apparent Power Meter&quot;">
         </property>
     </entity>
     <entity name="SensorAndrewDataExtractor3" class="SensorAndrewDataExtractorClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 985.0]">
         </property>
-        <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
+        <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Apparent Power Meter&quot;">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
