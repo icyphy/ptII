@@ -220,7 +220,7 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     /** Specify whether or not to report errors via the handler that
      *  is registered with the parser. The initial default is to not
-     *  report errors to the registered handler. If this method is not
+     *  report errors to the registered handler. If this method is
      *  called with a true argument, errors will be reported to the
      *  registered handler. Note that in either case, if the handler
      *  returns ErrorHandler.CANCEL, then exceptions will be reported
