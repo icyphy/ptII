@@ -2,30 +2,32 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystemUnitOntologyExample" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 87, 1092, 881}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 87, 1111, 874}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[877, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0940978077572">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{392.366606060145, 347.0333343118343}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{392.366606060145, 347.03333431183427}">
     </property>
     <property name="FuelDimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="FuelUnitDimensionsSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="FuelUnitDimensionsSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 45.0]">
         </property>
@@ -137,9 +139,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="center" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of a domain-specific ontology&#10;to ensure correct composition of components. In particular, this&#10;ontology that a fuel level is not misinterpreted as a fuel flow,&#10;and vice versa.&#10;&#10;Above are three annotations on the model that provide the initial&#10;constraints. A solver infers from these constraints whether signals&#10;are levels, flows, or neither, throughout the model. The results of&#10;the infererence are shown as annotations on the ports (and also&#10;as color-coded highlights). To see the ontology definition,&#10;look inside the solver.">
+        </property>
+        <property name="center" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 450.0]">
         </property>
@@ -179,7 +181,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Tank1, Tank2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 471, 936, 286}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 661, 936, 286}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[936, 242]">
         </property>
@@ -236,6 +238,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -337,9 +341,9 @@
                 </property>
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
@@ -362,9 +366,9 @@
                 </property>
             </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-                </property>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="flowConstant">
+                </property>
+                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
                 </property>
                 <doc>Create a constant sequence.</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -391,9 +395,9 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{189.5, 175.0}">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
                 </property>
@@ -495,13 +499,15 @@
         </property>
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[880, 524]">
         </property>
-        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-            <property name="capacity" class="ptolemy.data.expr.Parameter" value="10.0">
-            </property>
-            <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-5.62500000020616E-5">
+        </property>
+        <entity name="ModalModel_1_2" class="ptolemy.domains.modal.modal.ModalModel">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
+            </entity>
         </entity>
     </entity>
     <entity name="Tank2" class="ptolemy.demo.FuelSystem.ModalTank">
@@ -511,13 +517,15 @@
         </property>
         <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[880, 524]">
         </property>
-        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-            <property name="capacity" class="ptolemy.data.expr.Parameter" value="10.0">
-            </property>
-            <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
+        <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-4.999999999999449E-5">
+        </property>
+        <entity name="ModalModel_1_2" class="ptolemy.domains.modal.modal.ModalModel">
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
+            </entity>
         </entity>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

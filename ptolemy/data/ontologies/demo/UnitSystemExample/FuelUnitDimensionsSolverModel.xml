@@ -123,8 +123,6 @@ Constraints</text></svg></configure>
             </property>
         </property>
     </property>
-    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{DynamicsDimensionsOntology, true}">
-    </property>
     <property name="multiplyFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
         <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.unit.MultiplyOrDivideUnitConcepts">
         </property>
