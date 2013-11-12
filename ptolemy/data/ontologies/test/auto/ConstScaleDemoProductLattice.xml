@@ -1,0 +1,1082 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstScaleDemoProductLattice" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={200, 22, 1148, 1024}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[914, 914]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{437.9492187499999, 417.7812499999999}">
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 15.0}">
+        </property>
+    </property>
+    <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 65.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+        </property>
+    </property>
+    <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+        </property>
+    </property>
+    <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+        </property>
+    </property>
+    <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 60.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+        </property>
+    </property>
+    <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 80.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+        </property>
+    </property>
+    <property name="ConstAbsIntObservableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constObservableProductLattice/ConstAbsIntObservableProductSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale12.factor&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale14.factor&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display8.columnsDisplayed&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale13.factor&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display7.suppressBlankLines&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const2.value&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display.rowsDisplayed&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale11.factor&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale4.factor&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display3.input&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale15.factor&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale.output&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display5.suppressBlankLines&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const.value&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const6.value&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display4.suppressBlankLines&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale3.input&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display.input&quot;}, {Concept = &quot;UnobservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale13.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display3.columnsDisplayed&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const8.value&quot;}, {Concept = &quot;UnobservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale12.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale6.input&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Constant2&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display5.input&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale4.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display7.rowsDisplayed&quot;}, {Concept = &quot;UnobservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale14.input&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const7.value&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale12.output&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display.suppressBlankLines&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale7.input&quot;}, {Concept = &quot;ObservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale13.output&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const4.value&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const13.output&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display4.columnsDisplayed&quot;}, {Concept = &quot;UnobservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale8.output&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const5.output&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale5.output&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Constant5&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display4.input&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display6.suppressBlankLines&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale11.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display6.rowsDisplayed&quot;}, {Concept = &quot;UnobservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale10.output&quot;}, {Concept = &quot;UnobservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const8.output&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Constant1&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const11.output&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale11.output&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const12.value&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const3.value&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const6.output&quot;}, {Concept = &quot;UnobservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const10.output&quot;}, {Concept = &quot;UnobservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale9.output&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale2.factor&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale.factor&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale9.input&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display2.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display6.columnsDisplayed&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const13.value&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale6.factor&quot;}, {Concept = &quot;UnobservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale14.output&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const2.output&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Constant4&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale5.input&quot;}, {Concept = &quot;UnobservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale10.input&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const3.output&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display2.rowsDisplayed&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display2.columnsDisplayed&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale2.output&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale2.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const7.output&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale5.factor&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale9.factor&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale3.output&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display2.suppressBlankLines&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display3.rowsDisplayed&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale15.input&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale10.factor&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale15.output&quot;}, {Concept = &quot;UnobservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale8.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display4.rowsDisplayed&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display7.columnsDisplayed&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display8.input&quot;}, {Concept = &quot;UnobservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale7.output&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale4.output&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const9.value&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale.input&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const11.value&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Constant3&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display.columnsDisplayed&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const10.value&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display6.input&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display5.columnsDisplayed&quot;}, {Concept = &quot;ObservableZero&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale7.factor&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale6.output&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const9.output&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale8.factor&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display8.rowsDisplayed&quot;}, {Concept = &quot;ObservableUnknown&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display7.input&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const5.value&quot;}, {Concept = &quot;UnobservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const12.output&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display8.suppressBlankLines&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const4.output&quot;}, {Concept = &quot;ObservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Const.output&quot;}, {Concept = &quot;UnobservableBooleanFalse&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display3.suppressBlankLines&quot;}, {Concept = &quot;UnobservablePositive&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Display5.rowsDisplayed&quot;}, {Concept = &quot;ObservableNegative&quot;, NamedObj = &quot;.ConstScaleDemoProductLattice.Scale3.factor&quot;}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 15.0}">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.ProductLatticeOntologySolverDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 260.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 265.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 295.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[403.25, 435.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[48.25, 430.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[248.25, 460.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 645.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 655.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale3" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 680.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[822.75, 257.5]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[517.75, 257.5]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale4" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[687.75, 302.5]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 430.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 435.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale5" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 480.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 340.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale6" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 370.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 520.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale7" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 550.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 725.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale8" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 755.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const9" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[517.75, 342.5]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale9" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[692.75, 387.5]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const10" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 530.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale10" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 575.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 645.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const11" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 650.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale11" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 695.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const12" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 745.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale12" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableNegative">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 785.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 850.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale13" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 850.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale14" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 845.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display8" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanFalse">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 145.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const13" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="546.72">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{53.25, 160.0}">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale15" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservableBooleanTrue">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 190.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="UnobservablePositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="ObservableZero">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Scale.input" relation="relation2"/>
+    <link port="Scale.output" relation="relation"/>
+    <link port="Display2.input" relation="relation3"/>
+    <link port="Const2.output" relation="relation4"/>
+    <link port="Scale2.input" relation="relation4"/>
+    <link port="Scale2.output" relation="relation3"/>
+    <link port="Display3.input" relation="relation5"/>
+    <link port="Const3.output" relation="relation6"/>
+    <link port="Scale3.input" relation="relation6"/>
+    <link port="Scale3.output" relation="relation5"/>
+    <link port="Display4.input" relation="relation7"/>
+    <link port="Const4.output" relation="relation8"/>
+    <link port="Scale4.input" relation="relation8"/>
+    <link port="Scale4.output" relation="relation7"/>
+    <link port="Display5.input" relation="relation9"/>
+    <link port="Const5.output" relation="relation10"/>
+    <link port="Scale5.input" relation="relation10"/>
+    <link port="Scale5.output" relation="relation9"/>
+    <link port="Const6.output" relation="relation11"/>
+    <link port="Scale6.input" relation="relation11"/>
+    <link port="Const7.output" relation="relation12"/>
+    <link port="Scale7.input" relation="relation12"/>
+    <link port="Const8.output" relation="relation13"/>
+    <link port="Scale8.input" relation="relation13"/>
+    <link port="Const9.output" relation="relation14"/>
+    <link port="Scale9.input" relation="relation14"/>
+    <link port="Const10.output" relation="relation15"/>
+    <link port="Scale10.input" relation="relation15"/>
+    <link port="Display6.input" relation="relation16"/>
+    <link port="Const11.output" relation="relation17"/>
+    <link port="Scale11.input" relation="relation17"/>
+    <link port="Scale11.output" relation="relation16"/>
+    <link port="Const12.output" relation="relation18"/>
+    <link port="Scale12.input" relation="relation18"/>
+    <link port="Display7.input" relation="relation19"/>
+    <link port="Scale13.output" relation="relation19"/>
+    <link port="Display8.input" relation="relation20"/>
+    <link port="Const13.output" relation="relation21"/>
+    <link port="Scale15.input" relation="relation21"/>
+    <link port="Scale15.output" relation="relation20"/>
+</entity>
