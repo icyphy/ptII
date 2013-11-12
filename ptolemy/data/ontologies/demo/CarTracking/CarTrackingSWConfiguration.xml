@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTrackingSWConfiguration" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={234, 263, 992, 631}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 71, 1189, 755}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[955, 645]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0345767684229996">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.3770517676768, 303.1466224747475}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.70849609375, 305.8887777984458}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -103,13 +103,15 @@
         </property>
     </property>
     <property name="SWConfigurationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/softwareConfiguration/SWConfigurationSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/softwareConfiguration/SWConfigurationSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
         <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 490.0]">
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 405.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
@@ -136,31 +138,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 570.0]">
         </property>
     </property>
-    <property name="DimensionSystemSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates a simple ontology&#10;that distinguishes between features that are&#10;configured and those that are not.">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 545.0]">
-        </property>
-    </property>
-    <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/dimensionSystem/DimensionSystemSolverModel.xml">
-        </property>
-        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 410.0}">
-        </property>
-        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 440.0]">
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
@@ -368,7 +353,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Following Car">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 587, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 587, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -390,7 +375,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>distance (meters)</yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="7424.3787457943945"/>
+<yRange min="0.0" max="12079.516911118508"/>
 </plot>?>
         </configure>
     </entity>
@@ -796,7 +781,7 @@
             </property>
             <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 164, 508, 355}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={953, 94, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -1056,6 +1041,8 @@
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="errorCause" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1121,13 +1108,14 @@
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07820816981519806">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        <display name="default"/>
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1139,13 +1127,14 @@
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.08275466876018">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        <display name="default"/>
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </relation>
                 <link port="normal.incomingPort" relation="relation2"/>
@@ -1358,7 +1347,7 @@
             <link port="faulty.driverDesiredSpeed" relation="driverDesiredSpeedRelation"/>
         </entity>
         <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-            <property name="selector" class="ptolemy.data.expr.Parameter" value="isACCPresent">
+            <property name="selector" class="ptolemy.actor.parameters.PortParameter" value="isACCPresent">
                 <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
             </property>
@@ -1861,6 +1850,8 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="errorCause" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1921,13 +1912,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07820816981519806">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1939,13 +1931,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.08275466876018">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <link port="normal.incomingPort" relation="relation2"/>

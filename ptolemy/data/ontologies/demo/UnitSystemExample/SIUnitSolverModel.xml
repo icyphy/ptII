@@ -9,8 +9,6 @@
 		<entity name="library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/data/ontologies/ontologySolverLibrary.xml"></input></entity>
 	      </configure>
     </property>
-    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{MechanicsUnitsOntology, true}">
-    </property>
     <property name="ScaleActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
         </property>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTrackingUnitsSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={224, 280, 992, 631}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1385, 858}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1151, 748]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2002649212780387">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.3770517676768, 303.1466224747475}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.3117331734841, 306.43212890625}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -102,20 +102,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -5.0]">
         </property>
     </property>
-    <property name="SWConfigurationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/softwareConfiguration/SWConfigurationSolverModel.xml">
-        </property>
-        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
-        </property>
-        <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 490.0]">
-        </property>
-        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
-        </property>
-    </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -133,7 +119,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 570.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 585.0]">
         </property>
     </property>
     <property name="DynamicsDimensionsSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity_mph">
@@ -151,22 +137,32 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 560.0]">
         </property>
     </property>
-    <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemSolver">
-    </property>
     <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
     </property>
     <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
     </property>
     <property name="DynamicsDimensionsSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../UnitSystemExample/DynamicsDimensionsSolver.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="../UnitSystemExample/DynamicsDimensionsSolver.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 415.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates an ontology&#10;that distinguishes dimensions and&#10;units.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 445.0]">
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
@@ -453,6 +449,8 @@
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="microstep" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 235.0]">
         </property>
@@ -1135,13 +1133,14 @@
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07820816981519806">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        <display name="default"/>
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1153,13 +1152,14 @@
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.08275466876018">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        <display name="default"/>
+                    </property>
+                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <link port="normal.incomingPort" relation="relation2"/>
@@ -1372,12 +1372,24 @@
             <link port="faulty.driverDesiredSpeed" relation="driverDesiredSpeedRelation"/>
         </entity>
         <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-            <property name="selector" class="ptolemy.data.expr.Parameter" value="isACCPresent">
+            <property name="selector" class="ptolemy.actor.parameters.PortParameter" value="isACCPresent">
                 <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 225.0]">
             </property>
+            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
         </entity>
         <entity name="ConfigurationSelect" class="ptolemy.actor.lib.ConfigurationSelect">
             <property name="selector" class="ptolemy.data.expr.Parameter" value="isACCPresent">
@@ -1386,6 +1398,18 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 225.0]">
             </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -1599,8 +1623,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 340.0]">
             </property>
-        </property>
-        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
         </property>
         <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1857,13 +1879,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07820816981519806">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1875,13 +1898,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.08275466876018">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="normal.incomingPort" relation="relation2"/>
@@ -2087,6 +2111,8 @@
     </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="microstep" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 390.0]">
         </property>

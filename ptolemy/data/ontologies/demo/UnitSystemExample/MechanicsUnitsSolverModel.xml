@@ -17,8 +17,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.2170138888889, 191.6371527777778}">
     </property>
-    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{FuelUnitDimensionsOntology, true}">
-    </property>
     <property name="IntegratorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
         <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.lib.Integrator">
         </property>
