@@ -134,7 +134,7 @@
         </property>
     </property>
     <property name="ConstAbsIntObservableReachableProductSolver" class="ptolemy.data.ontologies.lattice.ProductLatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="ConstAbsIntObservableReachableProductSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="solvers/ConstAbsIntObservableReachableProductSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>

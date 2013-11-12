@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SIUnitOntologySolverMultiport" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="SIUnitSolverModelMultiport.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="solvers/SIUnitSolverModelMultiport.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
         </property>
