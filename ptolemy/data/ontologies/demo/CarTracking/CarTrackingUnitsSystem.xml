@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1385, 858}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 36, 1109, 631}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1151, 748]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[881, 514]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2002649212780387">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.3117331734841, 306.43212890625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{440.3770517676768, 303.1466224747475}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -102,6 +102,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -5.0]">
         </property>
     </property>
+    <property name="SWConfigurationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/softwareConfiguration/SWConfigurationSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
+        <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
+        </property>
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 490.0}">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -119,23 +135,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 585.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 570.0]">
         </property>
     </property>
-    <property name="DynamicsDimensionsSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed.output &gt;= Velocity_mph">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 560.0]">
-        </property>
+    <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemSolver">
     </property>
     <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
     </property>
@@ -155,14 +158,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 415.0]">
         </property>
     </property>
-    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+    <property name="DynamisDimensionsSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed &gt;= Velocity_mph">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates an ontology&#10;that distinguishes dimensions and&#10;units.">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 445.0]">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 560.0]">
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
@@ -458,7 +466,7 @@
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 320.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 486, 1100, 521}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 95, 1113, 615}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[885, 404]">
         </property>
@@ -469,16 +477,16 @@
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The driverDesiredSpeed is always Configured.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 340.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 350.0]">
             </property>
         </property>
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The outputs acceleration, speed, and position of the FollowingCar are always Configured.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 395.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 405.0]">
             </property>
         </property>
-        <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isACCPresent" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -494,13 +502,13 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 320.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 330.0]">
             </property>
         </property>
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ACCPresent parameter indicates whether or not the adaptive cruise control (ACC) is installed.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 290.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 300.0]">
             </property>
         </property>
         <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -509,7 +517,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 485.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="driverDesiredSpeed &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -521,10 +529,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 375.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 385.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="acceleration &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -536,10 +544,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 430.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 440.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="speed &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="speed &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -551,10 +559,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 445.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 455.0]">
             </property>
         </property>
-        <property name="softwareConfiguration::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="position &gt;= Configured">
+        <property name="SWConfigurationSolver::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="position &gt;= Configured">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -566,7 +574,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 460.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 470.0]">
             </property>
         </property>
         <port name="packetIn" class="ptolemy.actor.TypedIOPort">
@@ -1376,18 +1384,18 @@
                 <property name="style" class="ptolemy.actor.gui.style.LineStyle">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 225.0}">
             </property>
             <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
         </entity>
@@ -1401,13 +1409,13 @@
             <port name="trueInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <port name="falseInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
         </entity>
@@ -1483,7 +1491,7 @@
         <link port="ConfigurationSelect.output" relation="relation11"/>
     </entity>
     <entity name="DriverSimulator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 160.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Driver simulator">
@@ -1491,7 +1499,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={305, 48, 1165, 654}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 48, 1109, 646}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[881, 529]">
         </property>
@@ -1623,6 +1631,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 340.0]">
             </property>
+        </property>
+        <property name="unitSystemOntologySolver" class="ptolemy.data.expr.Parameter" value="UnitSystemOntologyAnalysis">
         </property>
         <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1824,7 +1834,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 341, 815, 517}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={269, 76, 828, 615}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1867,7 +1877,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 195}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 195.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -1886,7 +1896,7 @@
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1905,7 +1915,7 @@
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <link port="normal.incomingPort" relation="relation2"/>
@@ -1945,7 +1955,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 50}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 258, 815, 517}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 251, 828, 615}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -2135,6 +2145,39 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 370.0]">
         </property>
     </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Leading Car, Following Car">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 587, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 330.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Position</title>
+<xLabel>time (seconds)</xLabel>
+<yLabel>distance (meters)</yLabel>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="2288.199811539898"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
@@ -2163,20 +2206,19 @@
         <vertex name="vertex1" value="[255.0, 205.0]">
         </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Car Model.desiredSpeed" relation="relation2"/>
     <link port="Car Model.acceleration" relation="relation"/>
     <link port="Car Model.speed" relation="relation4"/>
     <link port="Car Model.position" relation="relation9"/>
     <link port="TimedPlotter.input" relation="relation9"/>
-    <link port="TimedPlotter.input" relation="relation7"/>
     <link port="DiscreteClock.output" relation="relation10"/>
     <link port="CurrentTime.output" relation="relation6"/>
     <link port="RecordAssembler.output" relation="relation5"/>
@@ -2187,7 +2229,7 @@
     <link port="PeriodicSampler.input" relation="relation5"/>
     <link port="PeriodicSampler.output" relation="relation8"/>
     <link port="FollowingCar.packetIn" relation="relation3"/>
-    <link port="FollowingCar.position" relation="relation7"/>
+    <link port="FollowingCar.position" relation="relation14"/>
     <link port="FollowingCar.driverDesiredSpeed" relation="relation13"/>
     <link port="DriverSimulator.desiredSpeed" relation="relation2"/>
     <link port="NetworkModel.packetIn" relation="relation8"/>
@@ -2198,4 +2240,5 @@
     <link port="PeriodicSampler2.output" relation="relation13"/>
     <link port="UnitsConverter.input" relation="relation12"/>
     <link port="UnitsConverter.output" relation="relation11"/>
+    <link port="TimedPlotter2.input" relation="relation14"/>
 </entity>
