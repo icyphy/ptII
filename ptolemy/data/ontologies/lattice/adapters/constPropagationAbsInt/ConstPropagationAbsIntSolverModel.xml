@@ -550,8 +550,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 270.0]">
         </property>
     </property>
-    <property name="constructorArguments" class="ptolemy.data.expr.Parameter" value="{constPropagation, &quot;+&quot;}">
-    </property>
     <property name="tokenDivideFunction" class="ptolemy.data.ontologies.ClassConceptFunctionDefinitionAttribute">
         <property name="conceptFunctionClassName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.data.ontologies.lattice.adapters.constPropagationAbsInt.ConstPropagationAbsIntMathFunctions">
         </property>
