@@ -1088,7 +1088,10 @@ public class Director extends Attribute implements Executable {
         return new Mailbox();
     }
     
-    
+    /** Notify this director that a token was sent to a communication
+     *  aspect. Some directors need to perform specific actions but the
+     *  base class just sets a boolean flag.
+     */
     public void notifyTokenSentToCommunicationAspect() {
     	_tokenSentToCommunicationAspect = true;
     }
