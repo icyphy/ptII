@@ -1088,7 +1088,7 @@ public class Director extends Attribute implements Executable {
         return new Mailbox();
     }
     
-    protected boolean _tokenSentToCommunicationAspect = false;
+    
     public void notifyTokenSentToCommunicationAspect() {
     	_tokenSentToCommunicationAspect = true;
     }
@@ -1978,10 +1978,23 @@ public class Director extends Attribute implements Executable {
      */
     protected Set _actorsFinishedExecution;
 
-    /** The director's default microstep. */
-    protected int _defaultMicrostep;
+    /** Contains a map of actors and the ExecutionAspect that is specified for the actor. */
+	protected HashMap<Actor, ActorExecutionAspect> _aspectForActor;
 
-    /** Indicator that finish() has been called. */
+	/** True if any of the directed actors specifies a ExecutionAspect
+	 *  in the parameters and this ExecutionAspect exists on this or
+	 *  a hierarchy level above (i.e. has not been deleted).
+	 */
+	protected boolean _aspectsPresent;
+
+	/** The director's default microstep. */
+	protected int _defaultMicrostep;
+
+	/** ExecutionAspects in the container of this director.
+	 */
+	protected List<ActorExecutionAspect> _executionAspects;
+
+	/** Indicator that finish() has been called. */
     protected boolean _finishRequested;
 
     /** Set of objects whose (pre)initialize() and wrapup() methods
@@ -1989,21 +2002,13 @@ public class Director extends Attribute implements Executable {
      */
     protected transient Set<Initializable> _initializables;
 
-    /** True if any of the directed actors specifies a ExecutionAspect
-     *  in the parameters and this ExecutionAspect exists on this or
-     *  a hierarchy level above (i.e. has not been deleted).
-     */
-    protected boolean _aspectsPresent;
-
-    /** ExecutionAspects in the container of this director.
-     */
-    protected List<ActorExecutionAspect> _executionAspects;
-
     /** Next time the aspect wants to be executed. */
     protected HashMap<ActorExecutionAspect, Time> _nextScheduleTime;
 
-    /** Contains a map of actors and the ExecutionAspect that is specified for the actor. */
-    protected HashMap<Actor, ActorExecutionAspect> _aspectForActor;
+    /** Flag set to true if a token has been sent to a communication aspect
+     *  by any port/receiver where the aspect is enabled. 
+     */
+    protected boolean _tokenSentToCommunicationAspect = false;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
