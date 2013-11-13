@@ -876,15 +876,18 @@ public class Director extends Attribute implements Executable {
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
 
-        _resourceScheduling = false;
+        _aspectsPresent = false;
+        
         _executionAspects = new ArrayList<ActorExecutionAspect>();
         _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
-        for (Object entity : getContainer().attributeList(
+        for (Object entity : ((CompositeActor)getContainer()).entityList(
                 ActorExecutionAspect.class)) {
             ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
             _executionAspects.add(aspect);
             ((Actor) aspect).initialize();
         }
+        _aspectsPresent = ((CompositeActor)getContainer()).entityList(CommunicationAspect.class).size() > 0;
+        	
         if (_nextScheduleTime != null) {
             _nextScheduleTime.clear();
         }
@@ -936,7 +939,7 @@ public class Director extends Attribute implements Executable {
 
         actor.initialize();
         if (_getExecutionAspect(actor) != null) {
-            _resourceScheduling = true;
+            _aspectsPresent = true;
         }
     }
 
@@ -1083,6 +1086,11 @@ public class Director extends Attribute implements Executable {
      */
     public Receiver newReceiver() {
         return new Mailbox();
+    }
+    
+    protected boolean _tokenSentToCommunicationAspect = false;
+    public void notifyTokenSentToCommunicationAspect() {
+    	_tokenSentToCommunicationAspect = true;
     }
 
     /** Return true if the director wishes to be scheduled for another
@@ -1985,7 +1993,7 @@ public class Director extends Attribute implements Executable {
      *  in the parameters and this ExecutionAspect exists on this or
      *  a hierarchy level above (i.e. has not been deleted).
      */
-    protected boolean _resourceScheduling;
+    protected boolean _aspectsPresent;
 
     /** ExecutionAspects in the container of this director.
      */

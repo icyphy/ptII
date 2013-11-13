@@ -1482,7 +1482,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 }
 
                 if (prefire
-                        && (!_resourceScheduling || queue != _pureEvents
+                        && (!_aspectsPresent || queue != _pureEvents
                                 && ptidesEvent.actor() instanceof TimeDelay || _schedule(
                                     ptidesEvent.actor(),
                                     ptidesEvent.timeStamp()))) {

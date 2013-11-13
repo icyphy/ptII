@@ -1482,7 +1482,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 if (prefire
                         && (
                         // There are no resource schedulers that need to be asked.
-                        !_resourceScheduling ||
+                        !_aspectsPresent ||
                         // There are resource schedulers that need to be asked. however,
                         // because the timeDelay actor is fired twice, we only schedule
                         // one firing on the resource scheduler: the second firing due to

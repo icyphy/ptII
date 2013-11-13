@@ -710,7 +710,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                                                     + i + ". Refire the actor.");
                                         }
                                         // refire only if can be scheduled.
-                                        if (!_resourceScheduling ||
+                                        if (!_aspectsPresent ||
 
                                         _schedule(actorToFire, getModelTime())) {
                                             refire = true;

@@ -613,7 +613,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         // which can happen when resourceScheduling is enabled,
         // then return true again. Otherwise check prefire
         // conditions.
-        if (_resourceScheduling && _prefire) {
+        if (_aspectsPresent && _prefire) {
             return true;
         }
         _prefire = super.prefire();

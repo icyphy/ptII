@@ -39,6 +39,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -1491,7 +1492,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     if (receivers != null) {
                         for (int m = 0; m < receivers.length; m++) {
                             for (int n = 0; n < receivers[m].length; n++) {
-                                ((SDFReceiver) receivers[m][n])._waitingTokens = 0;
+                            	Receiver r =  receivers[m][n];
+                            	while (r instanceof IntermediateReceiver) {
+                            		r = ((IntermediateReceiver)r)._receiver;
+                            	}
+                                ((SDFReceiver) r)._waitingTokens = 0;
                             }
                         }
                     }
@@ -1505,7 +1510,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (receivers != null) {
                     for (int m = 0; m < receivers.length; m++) {
                         for (int n = 0; n < receivers[m].length; n++) {
-                            ((SDFReceiver) receivers[m][n])._waitingTokens = 0;
+                        	Receiver r =  receivers[m][n];
+                        	while (r instanceof IntermediateReceiver) {
+                        		r = ((IntermediateReceiver)r)._receiver;
+                        	}
+                            ((SDFReceiver) r)._waitingTokens = 0;
                         }
                     }
                 }

@@ -1638,7 +1638,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             microstep = 1;
         }
 
-        if (_resourceScheduling) {
+        if (_aspectsPresent) {
             if (_aspectForActor.get(actor) != null
                     && _aspectForActor.get(actor).isWaitingForResource(actor)) {
                 Object[] eventArray = _eventQueue.toArray();
@@ -1877,7 +1877,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     + ". Refire the actor.");
                         }
                         // refire only if can be scheduled.
-                        if (!_resourceScheduling
+                        if (!_aspectsPresent
                                 || _schedule(actorToFire, getModelTime())) {
                             refire = true;
 
@@ -2321,7 +2321,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     break;
                 }
             }
-            if (actorToFire != null && _resourceScheduling) {
+            if (actorToFire != null && _aspectsPresent) {
                 if (_actorsFinished.contains(actorToFire)) {
                     _actorsFinished.remove(actorToFire);
                 } else if (!_schedule(actorToFire, getModelTime())) {

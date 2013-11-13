@@ -30,6 +30,7 @@ package ptolemy.actor.sched;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.kernel.CompositeEntity;
@@ -320,7 +321,7 @@ public class StaticSchedulingDirector extends Director {
     public boolean prefire() throws IllegalActionException {
         _postfireReturns = true;
         _prefire = super.prefire();
-        if (_resourceScheduling && _prefire) {
+        if (_aspectsPresent && _prefire) {
 
             Iterator firings = null;
             if (_savedSchedule == null) {
@@ -346,7 +347,16 @@ public class StaticSchedulingDirector extends Director {
                 Actor actor = firing.getActor();
 
                 if (!_actorFinished) {
-                    boolean finished = _schedule(actor, getModelTime());
+                	if (_tokenSentToCommunicationAspect) {
+                    	_tokenSentToCommunicationAspect = false;
+                    	if (((CompositeActor)getContainer()).getContainer() != null) {
+                    		((CompositeActor)getContainer()).getExecutiveDirector()
+                    				.fireAtCurrentTime((CompositeActor)getContainer());
+                    	}
+                    	_prefire = false;
+                        return false;
+                    }
+                    boolean finished =  _schedule(actor, getModelTime());
                     if (!finished) {
                         _prefire = false;
                         return false;
