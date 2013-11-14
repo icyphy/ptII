@@ -880,17 +880,20 @@ public class Director extends Attribute implements Executable {
         
         _executionAspects = new ArrayList<ActorExecutionAspect>();
         _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
-        for (Object entity : ((CompositeActor)getContainer()).entityList(
-                ActorExecutionAspect.class)) {
-            ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
-            _executionAspects.add(aspect);
-            ((Actor) aspect).initialize();
+        if (getContainer() instanceof CompositeActor) {
+	        for (Object entity : ((CompositeActor)getContainer()).entityList(
+	                ActorExecutionAspect.class)) {
+	            ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
+	            _executionAspects.add(aspect);
+	            ((Actor) aspect).initialize();
+	        }
+	        _aspectsPresent = ((CompositeActor)getContainer()).entityList(CommunicationAspect.class).size() > 0;
         }
-        _aspectsPresent = ((CompositeActor)getContainer()).entityList(CommunicationAspect.class).size() > 0;
         	
         if (_nextScheduleTime != null) {
             _nextScheduleTime.clear();
         }
+        _tokenSentToCommunicationAspect = false;
 
         // Initialize the contained actors.
         Nameable container = getContainer();
@@ -2011,7 +2014,7 @@ public class Director extends Attribute implements Executable {
     /** Flag set to true if a token has been sent to a communication aspect
      *  by any port/receiver where the aspect is enabled. 
      */
-    protected boolean _tokenSentToCommunicationAspect = false;
+    protected boolean _tokenSentToCommunicationAspect;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
