@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="OpenModelicaPltPlot" class="ptolemy.actor.TypedCompositeActor">
+    <property name="size" class="ptolemy.data.expr.Parameter" value="25">
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1366, 728}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.0941896984924, 280.76692839195977}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1138, 612]">
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Mana Mirzaei">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, 385.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple model generates the simulation result file in plt format&#10;and plots the result by PxgraphApplication. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 140.0]">
+        </property>
+    </property>
+    <property name="OpenModelica Director" class="ptolemy.domains.openmodelica.kernel.OpenModelicaDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 155.0]">
+        </property>
+    </property>
+    <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that OpenModelica be installed (see http://www.openmodelica.org).&#10;In addition,  the OPENMODELICAHOME environment variable must be set and the&#10;PATH must be set to include the OPENMODELICAHOME/bin directory.&#10;Under Mac OS X:&#10;export OPENMODELICAHOME=/opt/openmodelica&#10;export PATH=${OPENMODELICAHOME}/bin:${PATH}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 320.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After running the model,the simulation result file &#10;is generated in $TMPDIR/$USERNAME/OpenModelica/modelName_res.plt.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 260.0]">
+        </property>
+    </property>
+    <entity name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
+            <display name="File name"/>
+        </property>
+        <property name="subModel" class="ptolemy.data.expr.StringParameter" value="dcmotor">
+            <display name="Model name"/>
+        </property>
+        <property name="outputFormat" class="ptolemy.data.expr.StringParameter" value="plt">
+            <display name="Output format"/>
+        </property>
+        <property name="parameter" class="ptolemy.data.expr.StringParameter" value="resistor1">
+            <display name="Initialized model parameter(s), seperate by '#'"/>
+        </property>
+        <property name="initialValue" class="ptolemy.data.expr.StringParameter" value="8">
+            <display name="Initial value(s), seperate by ','"/>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 240.0]">
+        </property>
+    </entity>
+</entity>
