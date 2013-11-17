@@ -312,6 +312,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  expression or output or set action to access the object
      *  that originated an exception on an error transition.
      *  This is an object token that defaults to null.
+     *  This parameter is not persistent. It will not be exported to MoML.
      */
     public Parameter errorCause;
 
@@ -320,6 +321,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  expression or output or set action to access the class of an
      *  exception on an error transition.
      *  This is a string that defaults to the empty string.
+     *  This parameter is not persistent. It will not be exported to MoML.
      */
     public StringParameter errorClass;
 
@@ -328,6 +330,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  expression or output or set action to access the message of an
      *  exception on an error transition.
      *  This is a string that defaults to the empty string.
+     *  This parameter is not persistent. It will not be exported to MoML.
      */
     public StringParameter errorMessage;
 
@@ -3552,10 +3555,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             errorClass = new StringParameter(this, "errorClass");
             errorClass.setVisibility(Settable.EXPERT);
+            errorClass.setPersistent(false);
             errorMessage = new StringParameter(this, "errorMessage");
             errorMessage.setVisibility(Settable.EXPERT);
+            errorMessage.setPersistent(false);
             errorCause = new Parameter(this, "errorCause");
             errorCause.setVisibility(Settable.EXPERT);
+            errorCause.setPersistent(false);
 
             initialStateName = new StringAttribute(this, "initialStateName");
             initialStateName.setExpression("");

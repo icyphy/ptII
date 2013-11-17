@@ -203,8 +203,6 @@
                 </property>
                 <property name="y_acceleration" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <property name="value" class="ptolemy.data.expr.Parameter" value="acceleration">
-                </property>
                 <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                     <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                     </property>

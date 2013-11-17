@@ -195,12 +195,6 @@ test InterfaceAutomaton-8.1 {test generating moml} {
 } {{<entity name="ia" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomaton">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
-    <property name="errorClass" class="ptolemy.data.expr.StringParameter" value="">
-    </property>
-    <property name="errorMessage" class="ptolemy.data.expr.StringParameter" value="">
-    </property>
-    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-    </property>
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="s0">
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
