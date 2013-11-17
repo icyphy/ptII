@@ -235,16 +235,14 @@ public class OMCCommand implements IOMCCommand {
         } catch (ConnectException e) {
             new ConnectException(e.getMessage()).printStackTrace();
         }
-        if (getInheritanceCountResult.getError().isEmpty()) {
+        if (getInheritanceCountResult.getError().isEmpty())
             inheritanceCount = getInheritanceCountResult.getFirstResult()
-                    .toString();
-        }
+            .toString();
 
-        if (!(inheritanceCount.compareTo("0\n") == 0)) {
+        if (!(inheritanceCount.compareTo("0\n") == 0))
             return true;
-        } else {
+        else
             return false;
-        }
     }
 
     /** Create an instance of OMCCommand object in order to provide a global point of access to the instance.
@@ -271,7 +269,7 @@ public class OMCCommand implements IOMCCommand {
         String getComponentResultDelimiter = "},";
         String componentsDelimiter = ",";
 
-        // List all components of the model.e.g. variable, parameter, discrete and etc.
+        // Get all components of the model.e.g. variable, parameter, discrete and etc.
 
         try {
             getComponentsResult = sendCommand("getComponents(" + modelName
@@ -390,7 +388,7 @@ public class OMCCommand implements IOMCCommand {
             throws ConnectException {
 
         String loggerInfo = null;
-        _filePath = _systemPath
+        _filePath = _ptIISystemPath
                 + "/ptolemy/domains/openmodelica/demo/OpenModelica/" + fileName;
 
         File file = new File(_filePath.toString());
@@ -431,7 +429,7 @@ public class OMCCommand implements IOMCCommand {
         }
     }
 
-    /** Modify parameter(s) and variable(s) of the Modelica model before building the Modelica model.
+    /** Modify parameter(s) and variable(s) of the Modelica model before building the model.
      *  @param values The new values to change the value of the components.
      *  @param modelName The (base-)model that should be built.
      *  @param components The name of the components to change.
@@ -560,8 +558,7 @@ public class OMCCommand implements IOMCCommand {
                                             .toString().isEmpty()) {
                                         _omcLogger
                                         .getInfo(getComponentModifierNames
-                                                .getError()
-                                                .toString());
+                                                .getError().toString());
                                     }
 
                                     // The variable does not have any parameters.
@@ -758,8 +755,8 @@ public class OMCCommand implements IOMCCommand {
             _omcLogger.getInfo(loggerInfo);
         }
         // Error occurred while flattening model BouncingBall
-        if (!buildModelResult.getError().isEmpty() && !(buildModelResult
-                .getError().contains("Warning"))) {
+        if (!buildModelResult.getError().isEmpty()
+                && !(buildModelResult.getError().contains("Warning"))) {
             loggerInfo = buildModelResult.getError();
             _omcLogger.getInfo(loggerInfo);
             throw new ConnectException(loggerInfo);
@@ -785,16 +782,19 @@ public class OMCCommand implements IOMCCommand {
 
                 // Run the executable result file of buildModel("command").
                 try {
+                    loggerInfo = "Command " + commands
+                            + " is running in a non-interactive mode ...";
+                    _omcLogger.getInfo(loggerInfo);
+
                     Runtime.getRuntime().exec(commands,
                             _environmentalVariables, _workDir);
+                    loggerInfo = "The executable file runs successfully in non-interactive mode!";
+                    _omcLogger.getInfo(loggerInfo);
                 } catch (IOException e) {
                     System.err
                     .println("Failed to run the command: " + commands);
                     StringUtilities.exit(1);
                 }
-
-                loggerInfo = "The executable file runs successfully in non-interactive mode!";
-                _omcLogger.getInfo(loggerInfo);
 
                 // When users do not select fileNamePrefix for name of executable result file.
                 switch (getOs()) {
@@ -822,22 +822,19 @@ public class OMCCommand implements IOMCCommand {
                 // that runs by -interactive flag.
 
                 commands = commands + " -interactive";
-
                 try {
-                    loggerInfo = "Command " + commands + " running...";
+                    loggerInfo = "Command " + commands
+                            + " is running in an interactive mode ...";
                     _omcLogger.getInfo(loggerInfo);
+
                     Runtime.getRuntime().exec(commands,
                             _environmentalVariables, _workDir);
-                    loggerInfo = "Command " + commands + " runs successfully!";
+                    loggerInfo = "The executable file runs successfully in an interactive mode!";
                     _omcLogger.getInfo(loggerInfo);
                 } catch (IOException e) {
                     new IOException(e.getMessage()).printStackTrace();
                     return;
                 }
-
-                loggerInfo = "The executable file runs successfully in an interactive mode!";
-                _omcLogger.getInfo(loggerInfo);
-
             }
         }
     }
@@ -904,7 +901,6 @@ public class OMCCommand implements IOMCCommand {
             // version discrepancy too i.e. client and server compiled by different java versions.
             // In my case, it was the server code was changed. Classes on server were changed due to re-compilation of code at server.
             // However, client was still having the old version.
-            // I updated it with new version and my application was working fine.
             // COMM_FAILURE is thrown when there is a communication failure.
 
             _numberOfErrors++;
@@ -923,10 +919,7 @@ public class OMCCommand implements IOMCCommand {
             sendCommand("quit()");
 
             _omcCommandInstance = null;
-
-            if (_omcProcess != null) {
-                _omcProcess.destroy();
-            }
+            _omcLogger = null;
         }
     }
 
@@ -937,13 +930,12 @@ public class OMCCommand implements IOMCCommand {
      *  @return File The OMC executable file
      */
     private File _findExecutableOnPath(String executableName) {
-        String systemPath = System.getenv("PATH");
 
         // Try path with small letters.
-        if (systemPath == null) {
-            systemPath = System.getenv("path");
+        if (_openModelicaSystemPath == null) {
+            _openModelicaSystemPath = System.getenv("path");
         }
-        String[] pathDirs = systemPath.split(File.pathSeparator);
+        String[] pathDirs = _openModelicaSystemPath.split(File.pathSeparator);
 
         File fullyQualifiedExecutable = null;
         for (String pathDir : pathDirs) {
@@ -986,8 +978,7 @@ public class OMCCommand implements IOMCCommand {
 
         // Standard path to (OpenModelica Compiler)OMC binary is encoded in OPENMODELICAHOME
         // variable.
-        String openModelicaHome = System.getenv("OPENMODELICAHOME");
-        if (openModelicaHome == null) {
+        if (_openModelicaHome == null) {
             loggerInfo = "OPENMODELICAHOME environmental variable is NULL, trying the PATH variable";
             _omcLogger.getInfo(loggerInfo);
             File omc = _findExecutableOnPath(binaryName);
@@ -996,7 +987,7 @@ public class OMCCommand implements IOMCCommand {
                         + omc.getAbsolutePath();
                 _omcLogger.getInfo(loggerInfo);
 
-                openModelicaHome = omc.getParentFile().getParentFile()
+                _openModelicaHome = omc.getParentFile().getParentFile()
                         .getAbsolutePath();
             } else {
                 final String m = "Environmental variable OPENMODELICAHOME is not set and we could not find: "
@@ -1006,7 +997,7 @@ public class OMCCommand implements IOMCCommand {
             }
         }
 
-        openModelicaHomeDirectory = new File(openModelicaHome);
+        openModelicaHomeDirectory = new File(_openModelicaHome);
 
         // The subdirectories where (OpenModelica Compiler)OMC binary is located.
         // adrpo 2012-06-12 It does not support the old ways! "/omc" and "Compiler/omc".
@@ -1203,13 +1194,6 @@ public class OMCCommand implements IOMCCommand {
             _fOMCThread.start();
             _fOMCThreadHasBeenScheduled = true;
 
-            // FIXME: FindBugs says:
-            // OMCCommand.java:1217, ML_SYNC_ON_UPDATED_FIELD, Priority: Normal
-            // Method synchronizes on an updated field.
-            // This method synchronizes on an object referenced from a
-            // mutable field. This is unlikely to have useful
-            // semantics, since different threads may be synchronizing
-            // on different objects.
             synchronized (_fOMCThread) {
                 try {
                     _fOMCThread.wait(5000);
@@ -1242,6 +1226,9 @@ public class OMCCommand implements IOMCCommand {
     // Flag which indicates whether the server should start or not.
     private boolean _fOMCThreadHasBeenScheduled = false;
 
+    // Initialization of the number of errors.
+    private int _numberOfErrors = 0;
+
     // OMCCommand Object for accessing a unique source of instance.
     private static OMCCommand _omcCommandInstance = null;
 
@@ -1250,6 +1237,12 @@ public class OMCCommand implements IOMCCommand {
 
     // Process that starts OMC.
     private Process _omcProcess = null;
+
+    // Environmental variable OPENMODELICAHOME. 
+    private String _openModelicaHome = System.getenv("OPENMODELICAHOME");
+
+    // The system path of OpenModelica.
+    private String _openModelicaSystemPath = System.getenv("PATH");
 
     // The working directory of the OMC is fetched from sending cd() command to the OMC.
     private String _openModelicaWorkingDirectory = null;
@@ -1262,14 +1255,11 @@ public class OMCCommand implements IOMCCommand {
         UNIX, WINDOWS, MAC
     }
 
-    // Initialization of the number of errors.
-    private int _numberOfErrors = 0;
-
     // Maximum number of compiler errors to display.
     private int _showMaxErrors = 10;
 
     // The system path of PTII.
-    private String _systemPath = StringUtilities
+    private String _ptIISystemPath = StringUtilities
             .getProperty("ptolemy.ptII.dir");
 
     // Temp directory.
