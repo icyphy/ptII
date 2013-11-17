@@ -137,14 +137,14 @@ public class OpenModelica extends TypedAtomicActor {
 
         parameter = new StringParameter(this, "parameter");
         parameter
-                .setDisplayName("Initialized model parameter(s), seperate by '#'");
+        .setDisplayName("Initialized model parameter(s), seperate by '#'");
 
         initialValue = new StringParameter(this, "initialValue");
         initialValue.setDisplayName("Initial value(s), seperate by ','");
 
         variableFilter = new StringParameter(this, "variableFilter");
         variableFilter
-                .setDisplayName("Filter for displaying simulation result, seperate by '#'");
+        .setDisplayName("Filter for displaying simulation result, seperate by '#'");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ public class OpenModelica extends TypedAtomicActor {
     /** The base-model that should be built.
      *  The default value of this parameter is null.
      */
-    public static StringParameter baseModel;
+    public StringParameter baseModel;
 
     /** The file that the base-model should be loaded from.
      *  The default value of this parameter is null.
@@ -185,7 +185,7 @@ public class OpenModelica extends TypedAtomicActor {
     /** Format of the generated result file.
      *  The default value of this parameter is string "csv".
      */
-    public static StringParameter outputFormat;
+    public StringParameter outputFormat;
 
     /** Parameter(s) and variable(s) of the Modelica model.
      *  The default value of this parameter is null.
@@ -210,7 +210,7 @@ public class OpenModelica extends TypedAtomicActor {
     /** The (sub-)model that should be built.
      *  The default value is "dcmotor".
      */
-    public static StringParameter subModel;
+    public StringParameter subModel;
 
     /** Filter for displaying result of simulation.
      *  The default value of this parameter is null.
@@ -258,8 +258,8 @@ public class OpenModelica extends TypedAtomicActor {
             _omcCommand.loadModelicaFile(fileName.getExpression(),
                     subModel.getExpression());
             // If the model is inherited from a base model,
-            // that base model should be loaded in advance to the child model.
-            // Otherwise, the child one could not be built.
+            // that base model should be loaded in advance to the derived model.
+            // Otherwise, the derived one could not be built.
             if (!(dependencies.getExpression().isEmpty() && baseModel
                     .getExpression().isEmpty()))
                 _omcCommand.loadModelicaFile(dependencies.getExpression(),
@@ -288,7 +288,7 @@ public class OpenModelica extends TypedAtomicActor {
                     }
                 } else {
                     _omcLogger
-                            .getInfo("There is no component to modify prior to running the model!");
+                    .getInfo("There is no component to modify prior to running the model!");
                 }
             } catch (ConnectException e) {
                 throw new IllegalActionException(
@@ -319,7 +319,7 @@ public class OpenModelica extends TypedAtomicActor {
                 }
             } else {
                 _omcLogger
-                        .getInfo("There is no components to modify prior to running the model!");
+                .getInfo("There is no components to modify prior to running the model!");
             }
         }
 
@@ -371,13 +371,16 @@ public class OpenModelica extends TypedAtomicActor {
                 _omiThread.run();
             }
         } catch (UnknownHostException e) {
-            throw new IllegalActionException(e.getMessage());
+            e.printStackTrace();
+            throw new IllegalActionException("Host Exception: "
+                    + e.getMessage());
         } catch (IOException e) {
-            throw new IllegalActionException(e.getMessage());
+            e.printStackTrace();
+            throw new IllegalActionException("Socket Connection Error: "
+                    + e.getMessage());
         } catch (ConnectException e) {
-            throw new IllegalActionException(
-                    "ServerError: Commands couldn't be sent to the (OpenModelica Compiler)OMC!"
-                            + e.getMessage());
+            e.printStackTrace();
+            throw new IllegalActionException("ServerError: " + e.getMessage());
         }
     }
 
@@ -409,14 +412,14 @@ public class OpenModelica extends TypedAtomicActor {
         super.wrapup();
         try {
             _omcCommand.stopServer();
-            String loggerInfo = "OpenModelica Server stopped";
+            String loggerInfo = "OpenModelica Server stopped!";
             _omcLogger.getInfo(loggerInfo);
-            _omcLogger.destroy();
         } catch (ConnectException e) {
             // FIXME org.omg.CORBA.COMM_FAILURE:
             // vmcid: SUN  minor code: 211  completed: No : Unable to send quit()
-            new IllegalActionException("ServerError : OMC is unable to start!"
-                    + e.getMessage()).printStackTrace();
+            //new IllegalActionException("ServerError : OMC is unable to stop!"
+            //      + e.getMessage()).printStackTrace();
+            e.printStackTrace();
         }
     }
 
