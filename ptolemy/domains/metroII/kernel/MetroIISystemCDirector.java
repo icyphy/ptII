@@ -28,6 +28,7 @@ Copyright (c) 2012-2013 The Regents of the University of California.
 package ptolemy.domains.metroII.kernel;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -40,11 +41,20 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -55,13 +65,13 @@ import ptolemy.kernel.util.Workspace;
 /**
  * MetroIISystemCDirector wraps a Metro-SystemC model as a Metro actor in
  * Ptolemy.
- *
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class MetroIISystemCDirector extends Director implements GetFirable {
 
@@ -69,7 +79,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * Construct a MetroIISystemCDirector with a name and a container. The
      * container argument must not be null, or a NullPointerException will be
      * thrown.
-     *
+     * 
      * @param container
      *            The container.
      * @param name
@@ -83,17 +93,41 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     public MetroIISystemCDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _initializeParameters();
         initialize();
     }
 
+    public FileParameter modelFileName;
+
+    public FileParameter configFileName;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == modelFileName) {
+            StringToken modelFileNameToken = (StringToken) modelFileName
+                    .getToken();
+            if (modelFileNameToken == null
+                    || modelFileNameToken.stringValue().equals("")) {
+                modelFileName = null;
+            } else {
+                // May check if the executable model is valid.
+            }
+
+        } else if (attribute == configFileName) {
+            //Check if the config is valid.
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /**
      * Clone the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
-     *
+     * 
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException
@@ -110,7 +144,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
     /**
      * Push Metro events into the pipe.
-     *
+     * 
      * @param events
      *            the events to be added into the pipe.
      */
@@ -157,7 +191,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
     /**
      * Synchronize the status of events from the pipe.
-     *
+     * 
      * @param events
      *            the events to be synchronized from the pipe.
      */
@@ -203,59 +237,83 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
-        if (!createProcess) {
-            new Thread() {
-                public void run() {
-                    String s = null;
-                    try {
+        if (modelFileName != null) {
+            if (!createProcess) {
+                _ioThread = new Thread() {
+                    public void run() {
+                        String s = null;
                         try {
-                            // using the Runtime exec method:
-                            process = Runtime.getRuntime().exec(
-                                    "ptolemy/metroII/single-cpu");
+                            try {
+                                StringToken modelFileNameToken;
+                                StringToken configFileNameToken;
+                                try {
+                                    modelFileNameToken = (StringToken) modelFileName
+                                            .getToken();
+                                    configFileNameToken = (StringToken) configFileName
+                                            .getToken();
+                                    System.out
+                                            .println(modelFileNameToken
+                                                    .stringValue()
+                                                    + " "
+                                                    + configFileNameToken
+                                                            .stringValue());
+                                    // using the Runtime exec method:
+                                    process = Runtime.getRuntime().exec(
+                                            modelFileNameToken.stringValue()
+                                                    + " "
+                                                    + configFileNameToken
+                                                            .stringValue());
+                                } catch (IllegalActionException e) {
+                                    e.printStackTrace();
+                                }
 
-                            stdInput = new BufferedReader(
-                                    new InputStreamReader(
-                                            process.getInputStream()));
+                                stdInput = new BufferedReader(
+                                        new InputStreamReader(
+                                                process.getInputStream()));
 
-                            // read the output from the command
-                            System.out
-                                    .println("Here is the standard output of the command:\n");
-                            while ((s = stdInput.readLine()) != null) {
-                                System.out.println(s);
+                                // read the output from the command
+
+                                while ((s = stdInput.readLine()) != null) {
+                                    System.out.println(s);
+                                }
+
+                            } finally {
+                                stdInput.close();
                             }
-
-                        } finally {
-                            stdInput.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        System.out
-                                .println("exception happened - here's what I know: ");
-                        e.printStackTrace();
                     }
-                }
-            }.start();
+                };
+                _ioThread.start();
 
-            //            try {
-            //                Thread.sleep(1000);
-            //            } catch (InterruptedException e) {
-            //                // TODO Auto-generated catch block
-            //                e.printStackTrace();
-            //            }
-            createProcess = true;
+                //                try {
+                //                    Thread.sleep(1000);
+                //                } catch (InterruptedException e) {
+                //                    // TODO Auto-generated catch block
+                //                    e.printStackTrace();
+                //                }
+                createProcess = true;
+            }
         }
-
         syncEvents(events);
 
         do {
             resultHandler.handleResult(events);
-        } while (!MetroIIEventBuilder.atLeastOneNotified(events));
+        } while (!MetroIIEventBuilder.atLeastOneNotified(events) && !isStopRequested());
 
+        if (isStopRequested()) {
+            Event.Builder builder  = MetroIIEventBuilder.newProposedEvent("stop"); 
+            events.add(builder); 
+        }
+        
         pushEvents(events);
+
     }
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire().
      */
     @Override
@@ -301,15 +359,44 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
         createProcess = false;
 
+        Director director = ((CompositeActor) getContainer())
+                .getExecutiveDirector();
+        _modelStopTime = director.getModelStopTime();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
      * Stop firing as soon as possible.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void stop() {
-        process.destroy();
-        System.out.println("The SystemC model was stopped.");
+        _stopRequested = true;
+
+//        if (process != null) {
+//            process.destroy();
+//            System.out.println("The SystemC model was stopped.");
+//        }
+    }
+
+    private void _initializeParameters() throws IllegalActionException,
+            NameDuplicationException {
+        modelFileName = new FileParameter(this, "modelFileName");
+        configFileName = new FileParameter(this, "configFileName");
+
+        //        DoubleToken stopTimeValue = (DoubleToken) stopTime.getToken();
+        //        if (stopTimeValue != null) {
+        //            _stopTime = new Time(this, stopTimeValue.doubleValue());
+        //        } else {
+        //            _stopTime = null;
+        //        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -338,7 +425,17 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     /**
      * The external process.
      */
-    Process process;
+    Process process = null;
+
+    /**
+     * IO thread
+     */
+    Thread _ioThread = null;
+
+    /**
+     * The stop time of SystemC model.
+     */
+    private Time _modelStopTime;
 
     /**
      * Current event list

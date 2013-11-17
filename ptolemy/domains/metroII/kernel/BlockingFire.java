@@ -31,6 +31,7 @@ package ptolemy.domains.metroII.kernel;
 import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * interfaces so that the actor can be seen as a FSM from outside. More
  * specifically, the wrapper implements startOrResume(event_list) function that
  * gives how the FSM reacts to the Metro events.
- *
+ * 
  * <p>
  * The FireMachine has the following states. Each represents a state of the
  * wrapped actor:
@@ -63,11 +64,11 @@ import ptolemy.kernel.util.IllegalActionException;
  * full actor name should be 'Test.Ramp'. The Metro event associated with the
  * state BEGIN of the actor is 'Ramp.FIRE_BEGIN'.
  * </p>
- *
+ * 
  * <p>
  * Neither START nor FINAL is associated with any state event.
  * </p>
- *
+ * 
  * <p>
  * When startOrResume() is called, the wrapper checks if the Metro event
  * associated with the current state is notified. If the event is notified, call
@@ -76,36 +77,36 @@ import ptolemy.kernel.util.IllegalActionException;
  * associated with no state event, simply transition to the next state, and
  * propose the Metro event associated with the next state. The 'next' state is
  * defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
- *
+ * 
  * <pre>
  *       action: propose FIRE_BEGIN
  * START ---------------------------------------> BEGIN
- *
+ * 
  *       guard: FIRE_BEGIN is notified
  *       action: call fire(), propose FIRE_END
  * BEGIN ---------------------------------------> FIRE_END
- *
+ * 
  *       guard: FIRE_BEGIN is not notified
  *       action: propose FIRE_BEGIN
  * BEGIN ---------------------------------------> BEGIN
  * </pre>
- *
+ * 
  * </p>
- *
- *
+ * 
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 
 public class BlockingFire extends FireMachine {
 
     /**
      * Construct a basic wrapper and wrap the input actor.
-     *
+     * 
      * @param actor
      *            the actor to be wrapped.
      */
@@ -124,25 +125,25 @@ public class BlockingFire extends FireMachine {
      * is associated with no state event, simply transition to the next state,
      * and propose the Metro event associated with the next state. The 'next'
      * state is defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
-     *
+     * 
      * <pre>
      *       action: propose FIRE_BEGIN
      * START ---------------------------------------> BEGIN
-     *
+     * 
      *       guard: FIRE_BEGIN is notified
      *       action: call fire(), propose FIRE_END
      * BEGIN ---------------------------------------> FIRE_END
-     *
+     * 
      *       guard: FIRE_BEGIN is not notified
      *       action: propose FIRE_BEGIN
      * BEGIN ---------------------------------------> BEGIN
      * </pre>
-     *
+     * 
      * @param metroIIEventList
      *            a list of MetroII events that are proposed. It is set by
      *            startOrResume() not the caller.
      * @exception IllegalActionException
-     *             If firing is not permitted.
+     *                If firing is not permitted.
      */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -154,7 +155,6 @@ public class BlockingFire extends FireMachine {
         } else if (getState() == State.BEGIN) {
             assert getStateEvent().getName().contains("FIRE_BEGIN");
             if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
-                actor().fire();
                 setState(State.END);
                 metroIIEventList.add(proposeStateEvent());
             } else {
@@ -163,6 +163,17 @@ public class BlockingFire extends FireMachine {
         } else if (getState() == State.END) {
             assert getStateEvent().getName().contains("FIRE_END");
             if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
+                System.out.print(((CompositeActor) actor().getContainer()
+                        .getContainer()).getExecutiveDirector().getName()
+                        + " "
+                        + ((CompositeActor) actor().getContainer()
+                                .getContainer()).getExecutiveDirector()
+                                .getModelTime()
+                        + " "
+                        + ((CompositeActor) actor().getContainer())
+                                .getExecutiveDirector().getModelTime() + " ");
+                System.out.println(actor().getName());
+                actor().fire();
                 setState(State.FINAL);
             } else {
                 metroIIEventList.add(getStateEvent());

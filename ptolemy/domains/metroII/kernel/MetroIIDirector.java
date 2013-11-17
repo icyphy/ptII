@@ -275,7 +275,7 @@ public class MetroIIDirector extends Director {
         super.initialize();
 
         Nameable container = getContainer();
-
+        int numActor = 0;
         // In the actor library, the container might be an moml.EntityLibrary.
         if (container instanceof CompositeActor) {
             Iterator<?> actors = ((CompositeActor) container).deepEntityList()
@@ -289,11 +289,13 @@ public class MetroIIDirector extends Director {
                 } else {
                     _actorList.add(new BlockingFire(actor));
                 }
+                numActor++;
             }
         }
+
         _iterationCount = 0;
 
-        _timeScheduler.initialize();
+        _timeScheduler.initialize(numActor);
     }
 
     /**
@@ -366,8 +368,7 @@ public class MetroIIDirector extends Director {
             if (((BooleanToken) printTrace.getToken()).booleanValue()) {
                 for (Event.Builder event : globalMetroIIEventList) {
                     if (event.getStatus() == Status.NOTIFIED) {
-                        System.out.println("Time "
-                                + _timeScheduler.getTime()
+                        System.out.println("Time " + _timeScheduler.getTime()
                                 + " s: " + event.getName());
                     }
                 }

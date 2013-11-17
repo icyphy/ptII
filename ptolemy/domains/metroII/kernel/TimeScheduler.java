@@ -39,13 +39,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 /**
  * TimeScheduler is a ConstraintSolver that handles the time quantity for
  * MetroIIDirector.
- *
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class TimeScheduler implements ConstraintSolver, Cloneable {
 
@@ -53,7 +53,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
      * Construct a time scheduler.
      */
     public TimeScheduler() {
-        initialize();
+        initialize(0);
     }
 
     /**
@@ -69,9 +69,10 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     /**
      * Initialize the current time value.
      */
-    public void initialize() {
+    public void initialize(int numModel) {
         _currentTime = Event.Time.newBuilder();
-        _currentTime.setValue(0); 
+        _currentTime.setValue(0);
+        _numModel = numModel;
     }
 
     /**
@@ -98,24 +99,27 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
         _debugger.printMetroEvents(metroIIEventList);
 
         Event.Time.Builder timeBuilder = Event.Time.newBuilder();
-        timeBuilder.setValue(Long.MAX_VALUE); 
-        
+        timeBuilder.setValue(Long.MAX_VALUE);
+
         boolean hasEventWithoutTime = false;
+        int numTimedEvent = 0;
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (event.hasTime()) {
-                    if (EventTimeComparator.compare(event.getTime(), timeBuilder.build()) < 0) {
+                    if (EventTimeComparator.compare(event.getTime(),
+                            timeBuilder.build()) < 0) {
                         timeBuilder.setValue(event.getTime().getValue());
-                        timeBuilder.setResolution(event.getTime().getResolution()); 
+                        timeBuilder.setResolution(event.getTime()
+                                .getResolution());
                     }
+                    numTimedEvent++;
                 } else {
                     hasEventWithoutTime = true;
                 }
             }
         }
-        // System.out.println("Time Scheduler: " + (double) current_time
-        //         / Double.valueOf("10000000000"));
-        if (hasEventWithoutTime) {
+
+        if (hasEventWithoutTime || numTimedEvent < _numModel) {
             for (Builder event : metroIIEventList) {
                 if (event.getStatus() == Status.PROPOSED) {
                     if (event.hasTime()) {
@@ -127,34 +131,27 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
             for (Builder event : metroIIEventList) {
                 if (event.getStatus() == Status.PROPOSED) {
                     if (event.hasTime()) {
-                        if (EventTimeComparator.compare(event.getTime(), timeBuilder.build()) > 0) {
-                            event.setStatus(Status.WAITING);
-                            //                            Event.Time.Builder builder = Event.Time.newBuilder();
-                            //                            builder.setValue(time);
-                            //                            event.setTime(builder);
+                        if (EventTimeComparator.compare(event.getTime(),
+                                timeBuilder.build()) > 0) {
+                            // event.setStatus(Status.WAITING);
+                            event.setTime(timeBuilder);
                         }
                     }
                 }
             }
-        }
-
-        // System.out.println("Time Scheduler: "+time);
-        for (Builder event : metroIIEventList) {
-            if (event.getStatus() == Status.PROPOSED) {
-                if (event.hasTime()) {
-                    if (EventTimeComparator.compare(_currentTime.build(), event.getTime()) < 0) {
-                        _currentTime.setValue(event.getTime().getValue()); 
-                        _currentTime.setResolution(event.getTime().getResolution()); 
-                    }
-                }
+            if (EventTimeComparator.compare(_currentTime.build(),
+                    timeBuilder.build()) < 0) {
+                _currentTime.setValue(timeBuilder.getValue());
+                _currentTime.setResolution(timeBuilder.getResolution());
             }
         }
+
         for (Builder event : metroIIEventList) {
             if (event.getStatus() == Status.PROPOSED) {
                 if (!event.hasTime()) {
                     Event.Time.Builder builder = Event.Time.newBuilder();
                     builder.setValue(_currentTime.getValue());
-                    builder.setResolution(_currentTime.getResolution()); 
+                    builder.setResolution(_currentTime.getResolution());
                     event.setTime(builder);
                 }
             }
@@ -169,14 +166,14 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
         _debugger.printMetroEvents(metroIIEventList);
         _debugger.printTitle("TimeScheduler Ends at Time " + getTime());
     }
-    
+
     /**
-     * Get the current time. 
+     * Get the current time.
      */
     public double getTime() {
-        BigDecimal value = BigDecimal.valueOf(_currentTime.getResolution()); 
-        BigDecimal resolution = BigDecimal.valueOf(_currentTime.getValue()); 
-        return value.multiply(resolution).doubleValue(); 
+        BigDecimal value = BigDecimal.valueOf(_currentTime.getResolution());
+        BigDecimal resolution = BigDecimal.valueOf(_currentTime.getValue());
+        return value.multiply(resolution).doubleValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -191,5 +188,10 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
      * Current time.
      */
     private Event.Time.Builder _currentTime;
+
+    /**
+     * Number of model times being resolved.
+     */
+    private int _numModel;
 
 }
