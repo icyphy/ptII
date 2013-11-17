@@ -163,16 +163,16 @@ public class BlockingFire extends FireMachine {
         } else if (getState() == State.END) {
             assert getStateEvent().getName().contains("FIRE_END");
             if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
-                System.out.print(((CompositeActor) actor().getContainer()
-                        .getContainer()).getExecutiveDirector().getName()
-                        + " "
-                        + ((CompositeActor) actor().getContainer()
-                                .getContainer()).getExecutiveDirector()
-                                .getModelTime()
-                        + " "
-                        + ((CompositeActor) actor().getContainer())
-                                .getExecutiveDirector().getModelTime() + " ");
-                System.out.println(actor().getName());
+//                System.out.print(((CompositeActor) actor().getContainer()
+//                        .getContainer()).getExecutiveDirector().getName()
+//                        + " "
+//                        + ((CompositeActor) actor().getContainer()
+//                                .getContainer()).getExecutiveDirector()
+//                                .getModelTime()
+//                        + " "
+//                        + ((CompositeActor) actor().getContainer())
+//                                .getExecutiveDirector().getModelTime() + " ");
+//                System.out.println(actor().getName());
                 actor().fire();
                 setState(State.FINAL);
             } else {
