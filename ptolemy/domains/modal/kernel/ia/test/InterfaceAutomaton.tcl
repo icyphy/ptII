@@ -205,10 +205,6 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
-    <property name="timeout" class="ptolemy.data.expr.Parameter" value="function(t:double):boolean">
-    </property>
-    <property name="probability" class="ptolemy.data.expr.Parameter" value="ptolemy.domains.modal.kernel.FSMActor$ProbabilityFunction@XXXXX">
-    </property>
     <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
     </property>
     <property name="resetSeedOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
