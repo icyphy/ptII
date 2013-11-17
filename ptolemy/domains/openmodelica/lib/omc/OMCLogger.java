@@ -118,7 +118,7 @@ public class OMCLogger {
 
         if (username == null) {
             System.err
-                    .println("Could not get user.name property?  Using 'nobody'.");
+            .println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";
@@ -142,12 +142,6 @@ public class OMCLogger {
         return logPath;
     }
 
-    /** Deallocate OMCLogger object.
-     */
-    public void destroy() {
-        _omcLoggerInstance = null;
-    }
-
     /** Fetch the Info LogLevel and write them in the log.
      *  @param infoMessage The info message.
      */
@@ -164,8 +158,7 @@ public class OMCLogger {
             try {
                 _omcLoggerInstance = new OMCLogger();
             } catch (IllegalActionException e) {
-                new IllegalActionException(
-                        "Unable to get instance of OMCLogger!" + e.getMessage());
+                e.printStackTrace();
             }
         }
         return _omcLoggerInstance;
