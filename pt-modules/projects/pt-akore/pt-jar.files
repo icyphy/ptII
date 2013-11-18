@@ -239,7 +239,6 @@
 /ptolemy/data/expr/PtParserConstants.java
 /ptolemy/data/expr/PtParserTokenManager.java
 /ptolemy/data/expr/PtParserTreeConstants.java
-/ptolemy/data/expr/ScopeExtender.java
 /ptolemy/data/expr/ScopeExtendingAttribute.java
 /ptolemy/data/expr/SimpleCharStream.java
 /ptolemy/data/expr/SimpleNode.java

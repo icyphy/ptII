@@ -53,6 +53,7 @@
 /ptolemy/kernel/util/NoSuchItemException.java
 /ptolemy/kernel/util/PtolemyThread.java
 /ptolemy/kernel/util/RecorderListener.java
+/ptolemy/kernel/util/ScopeExtender.java
 /ptolemy/kernel/util/Settable.java
 /ptolemy/kernel/util/Singleton.java
 /ptolemy/kernel/util/SingletonAttribute.java
