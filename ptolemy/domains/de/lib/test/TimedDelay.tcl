@@ -90,6 +90,7 @@ test TimedDelay-3.2 {test with negative delay} {
 Because:
 Cannot have negative delay: -1.0
   in .top.TimedDelay
+  in .top.TimedDelay.delay
 Because:
 Error evaluating expression: -1.0
   in .top.TimedDelay.delay

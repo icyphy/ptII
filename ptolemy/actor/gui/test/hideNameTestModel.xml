@@ -181,7 +181,7 @@
             </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency*2*PI/samplingFrequency">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency*2*PI">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 185.0]">
             </property>

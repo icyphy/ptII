@@ -37,7 +37,6 @@ import java.util.Set;
 import ptolemy.actor.util.GLBFunction;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
@@ -57,6 +56,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.ScopeExtender;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////

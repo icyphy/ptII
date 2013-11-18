@@ -28,17 +28,17 @@
  @AcceptedRating Red (liuxj)
 
  */
-package ptolemy.data.expr;
+package ptolemy.kernel.util;
 
 import java.util.List;
 
-import ptolemy.kernel.util.Attribute;
+import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ScopeExtender
 
 /**
- A marker interface for attributes that extend their container's scope. Any
+ An interface for attributes that extend their container's scope. Any
  parameter contained by an attribute implementing this interface has the same
  visibility as parameters of the container of the attribute.
 
@@ -53,6 +53,14 @@ public interface ScopeExtender {
      *  @return An unmodifiable list of instances of Attribute.
      */
     public List attributeList();
+    
+    /** Expand the scope of the container by creating any required parameters.
+     *  This should set the expressions of the parameters, but not evaluate
+     *  them (not call validate().
+     *  @throws IllegalActionException If any required attribute cannot be
+     *   created.
+     */
+    public void expand() throws IllegalActionException;
 
     /** Get the attribute with the given name. The name may be compound,
      *  with fields separated by periods, in which case the attribute
@@ -61,4 +69,10 @@ public interface ScopeExtender {
      *  @return The requested attribute if it is found, null otherwise.
      */
     public Attribute getAttribute(String name);
+    
+    /** Evaluate the expressions of all the parameters of the scope extender.
+     *  @throws IllegalActionException If any required attribute cannot be
+     *   created.
+     */
+    public void validate() throws IllegalActionException;
 }

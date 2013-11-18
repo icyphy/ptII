@@ -107,7 +107,6 @@ JSRCS = \
 	ParseTreeVisitor.java \
 	ParseTreeWriter.java \
         ParserScope.java \
-        ScopeExtender.java \
         ScopeExtendingAttribute.java \
         SingletonParameter.java \
 	StringConstantParameter.java \

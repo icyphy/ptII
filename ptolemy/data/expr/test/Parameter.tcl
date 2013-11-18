@@ -519,6 +519,7 @@ test Parameter-15.4 {Changing container of parameter that depends on scope to an
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.
+  in .<Unnamed Object>.p3
 Because:
 Error evaluating expression: p
   in .<Unnamed Object>.p3
@@ -626,6 +627,7 @@ test Parameter-15.8 {Changing container of container of parameter that depends o
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.
+  in .<Unnamed Object>.p3
 Because:
 Error evaluating expression: p
   in .<Unnamed Object>.p3

@@ -81,6 +81,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.ScopeExtender;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.Workspace;
@@ -514,6 +515,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             || _current.getAttribute(oldValue) == null) {
                         // Needed to find Parameters that are up scope.
                         // FIXME: does this check ScopeExtendingAttributes?
+                    	// Should this use ModelScope.getScopedVariable()?
                         Attribute masterAttribute = null;
                         NamedObj searchContainer = _current;
                         while (searchContainer != null
@@ -781,6 +783,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _toplevel.setDeferringChangeRequests(_previousDeferStatus);
                 _toplevel.executeChangeRequests();
             }
+            
+            // Before evaluating parameters, expand all ScopeExtenders.
+            // Scope extenders will create parameters that other parameters may depend
+            // on, and these parameters were not seen during parsing.
+            _expandScopeExtenders();
 
             // Force evaluation of parameters so that any listeners are notified.
             // This will also force evaluation of any parameter that this variable
@@ -1601,6 +1608,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
 
             _paramsToParse.clear();
+            if (_scopeExtenders != null) {
+            	_scopeExtenders.clear();
+            }
             reset();
             if (base != null) {
                 purgeModelRecord(base);
@@ -2135,6 +2145,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public void startDocument() {
         _paramsToParse.clear();
+        if (_scopeExtenders != null) {
+        	_scopeExtenders.clear();
+        }
         _unrecognized = null;
 
         // We assume that the data being parsed is MoML, unless we
@@ -3807,7 +3820,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             NamedObj containedObject = (NamedObj) objects.next();
 
             if (containedObject instanceof Settable) {
-                _paramsToParse.add(containedObject);
+                _paramsToParse.add((Settable)containedObject);
             }
 
             _addParamsToParamsToParse(containedObject);
@@ -4496,6 +4509,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         && arguments[0] == _originalContext) {
                     _topObjectsCreated.add(newEntity);
                 }
+                
+                // If the entity implements ScopeExtender, then add it to the list.
+                if (newEntity instanceof ScopeExtender) {
+                	if (_scopeExtenders == null) {
+                		_scopeExtenders = new LinkedList<ScopeExtender>();
+                	}
+                	_scopeExtenders.add((ScopeExtender)newEntity);
+                }
 
                 return newEntity;
             }
@@ -4990,6 +5011,26 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         return toDelete;
+    }
+    
+    /** Expand all the scope extenders that were encountered during parsing.
+     *  Then, after expanding them all, validate them all.
+     */
+    private void _expandScopeExtenders() throws IllegalActionException {
+    	if (_scopeExtenders != null) {
+    		for (ScopeExtender extender : _scopeExtenders) {
+    			extender.expand();
+    		}
+    		// The above will create the parameters of the scope extender, but
+    		// not evaluate their expressions.
+    		// The following evaluates their expressions.
+    		// This has to be done as a separate pass because a scope extender
+    		// may have parameters whose values depend on parameters in another
+    		// scope extender.
+    		for (ScopeExtender extender : _scopeExtenders) {
+    			extender.validate();
+    		}
+    	}
     }
 
     /** Use the specified parser to parse the file or URL,
@@ -5834,7 +5875,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                         Settable settable = (Settable) property;
                         settable.setExpression(value);
-                        _paramsToParse.add(property);
+                        _paramsToParse.add(settable);
 
                         // Propagate. This has the side effect of marking
                         // the object overridden.
@@ -5881,7 +5922,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // the object overridden.
                     property.propagateValue();
 
-                    _paramsToParse.add(property);
+                    _paramsToParse.add(settable);
                 }
             }
 
@@ -6236,7 +6277,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             containedObject.setDerivedLevel(depth + 1);
 
             if (containedObject instanceof Settable) {
-                _paramsToParse.add(containedObject);
+                _paramsToParse.add((Settable)containedObject);
             }
 
             _markContentsDerived(containedObject, depth + 1);
@@ -6256,7 +6297,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             NamedObj containedObject = (NamedObj) objects.next();
 
             if (containedObject instanceof Settable) {
-                _paramsToParse.add(containedObject);
+                _paramsToParse.add((Settable)containedObject);
             }
 
             _markParametersToParse(containedObject);
@@ -7399,8 +7440,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // The original context set by setContext().
     private NamedObj _originalContext = null;
 
-    // A list of settable parameters specified in property tags.
-    private Set _paramsToParse = new HashSet();
+    // A set of settable parameters specified in property tags.
+    private Set<Settable> _paramsToParse = new HashSet<Settable>();
+    
+    /** A list of scope extenders encoutered while parsing. */
+    private List<ScopeExtender> _scopeExtenders;
 
     /** The XmlParser. */
     private XmlParser _xmlParser;

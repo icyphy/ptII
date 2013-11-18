@@ -89,6 +89,7 @@ JSRCS = \
 	PtolemyThread.java \
 	RecorderListener.java \
 	RelativeLocation.java \
+	ScopeExtender.java \
 	Settable.java \
 	Singleton.java \
 	SingletonAttribute.java \

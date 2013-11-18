@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.LazyComposite;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.ScopeExtender;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelScope

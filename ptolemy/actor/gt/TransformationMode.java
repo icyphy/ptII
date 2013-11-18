@@ -34,7 +34,6 @@ import java.util.Set;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -42,6 +41,8 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.ScopeExtender;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -377,6 +378,14 @@ public class TransformationMode extends ChoiceParameter implements
             return variables;
         }
 
+        /** Expand the scope of the container by creating any required attributes.
+         *  This method does nothing.
+         *  @throws IllegalActionException If any required attribute cannot be
+         *   created.
+         */
+        public void expand() throws IllegalActionException {
+        }
+
         /** Get the attribute with the given name. The name may be compound,
          *  with fields separated by periods, in which case the attribute
          *  returned is contained by a (deeply) contained attribute.
@@ -386,6 +395,17 @@ public class TransformationMode extends ChoiceParameter implements
         public Attribute getAttribute(String name) {
             NamedObj container = _masterRule;
             return ModelScope.getScopedVariable(null, container, name);
+        }
+        
+        /** Validate contained settables.
+         *  @throws IllegalActionException If any required attribute cannot be
+         *   created.
+         */
+        public void validate() throws IllegalActionException {
+        	List<Settable> settables = attributeList(Settable.class);
+        	for (Settable settable : settables) {
+        		settable.validate();
+        	}
         }
 
         /** Construct a scope extender.

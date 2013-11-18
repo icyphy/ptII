@@ -185,6 +185,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             if (!fileOrURL.getExpression().equals(_fileName)) {
                 try {
                     read();
+                    validate();
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(this, throwable,
                             "Failed to read file: " + fileOrURL.getExpression());
@@ -193,6 +194,17 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Expand the scope of the container by creating any required attributes.
+     *  This method reads the specified file if it has not already been read
+     *  or if has changed since it was last read.
+     *  @throws IllegalActionException If any required attribute cannot be
+     *   created.
+     */
+    public void expand() throws IllegalActionException {
+    	_reReadIfNeeded();
+    	// Do not call validate.
     }
 
     /** Do nothing.
@@ -237,7 +249,9 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      */
     public int iterate(int count) throws IllegalActionException {
         if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
-            _reReadIfNeeded();
+            if (_reReadIfNeeded()) {
+            	validate();
+            }
         }
         return Executable.COMPLETED;
     }
@@ -256,7 +270,9 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      */
     public boolean prefire() throws IllegalActionException {
         if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
-            _reReadIfNeeded();
+            if (_reReadIfNeeded()) {
+            	validate();
+            }
         }
         return true;
     }
@@ -274,7 +290,9 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
                 initializable.preinitialize();
             }
         }
-        _reReadIfNeeded();
+        if (_reReadIfNeeded()) {
+        	validate();
+        }
     }
 
     /** Read the contents of the file named by this parameter and create
@@ -359,9 +377,6 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             }
             variable.setExpression(attributeValue);
         }
-        // Validate only after setting all expressions, in case
-        // there are cross dependencies.
-        validateSettables();
     }
 
     /** Remove the specified object from the list of objects whose
@@ -434,7 +449,9 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
                 initializable.wrapup();
             }
         }
-        _reReadIfNeeded();
+        if (_reReadIfNeeded()) {
+        	validate();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -442,15 +459,16 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
 
     /** If either the file name or the date on the file have changed
      *  since the last reading, then re-read the file.
+     *  @return True if re-reading was done.
      *  @exception IllegalActionException If re-reading the file fails.
      */
-    private void _reReadIfNeeded() throws IllegalActionException {
+    private boolean _reReadIfNeeded() throws IllegalActionException {
         try {
             String currentFileName = fileOrURL.getExpression();
             if (!currentFileName.equals(_fileName)) {
                 // File name has changed. Must re-read.
                 read();
-                return;
+                return true;
             }
             URL url = fileOrURL.asURL();
             if (url == null) {
@@ -461,7 +479,9 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             long date = url.openConnection().getDate();
             if (date == 0L || date != _date) {
                 read();
+                return true;
             }
+            return false;
         } catch (NameDuplicationException ex) {
             // Two separate exceptions to get FindBugs to shut up.
             throw new IllegalActionException(this, ex,

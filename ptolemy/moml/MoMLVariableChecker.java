@@ -82,7 +82,7 @@ public class MoMLVariableChecker {
     }
 
     /** Check for problems in the moml to be copied.  If there are
-     *  missing variables references, search for the variables and
+     *  missing variable references, search for the variables and
      *  return MoML definitions for any found variables.
      *  @param momlToBeChecked The MoML string to be checked.
      *  @param container The container in which the string is to be checked.

@@ -177,25 +177,23 @@ public class TimeDelay extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == delay || attribute == minimumDelay) {
-            double oldDelay = _delay;
-            double oldMinimumDelay = _minimumDelay;
+        // NOTE: We used to check whether minimumDelay < delay here.
+    	// This causes a circular dependency. If the value
+        // of minimumDelay is "delay", then when minimumDelay is
+        // evaluated, this could cause delay to be evaluated (if
+        // it needs evaluation), which will cause this attributeChanged()
+        // method to be called, which will then try (again) to evaluate
+        // minimumDelay. This is a circular dependency.
+        if (attribute == delay) {
             _delay = ((DoubleToken) delay.getToken()).doubleValue();
-            _minimumDelay = ((DoubleToken) minimumDelay.getToken())
-                    .doubleValue();
             if (_delay < 0.0) {
-                _minimumDelay = oldMinimumDelay;
-                _delay = oldDelay;
                 throw new IllegalActionException(this,
                         "Cannot have negative delay: " + _delay);
             }
-            if (_minimumDelay > _delay) {
-                _minimumDelay = oldMinimumDelay;
-                _delay = oldDelay;
-                throw new IllegalActionException(this,
-                        "Cannot have minimumDelay > delay"
-                                + ". Consider setting minimumDelay to 0.0.");
-            }
+        }
+        if (attribute == minimumDelay) {
+            _minimumDelay = ((DoubleToken) minimumDelay.getToken())
+                    .doubleValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -276,6 +274,11 @@ public class TimeDelay extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         delay.update();
+        if (_minimumDelay > _delay) {
+            throw new IllegalActionException(this,
+                    "Cannot have minimumDelay > delay"
+                            + ". Consider setting minimumDelay to 0.0.");
+        }
 
         // No point in using the isTime() method here, since we need
         // all the intermediate values.

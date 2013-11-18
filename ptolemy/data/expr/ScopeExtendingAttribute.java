@@ -31,12 +31,15 @@
 package ptolemy.data.expr;
 
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.ScopeExtender;
+import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 //// ScopeExtendingAttribute
@@ -76,6 +79,15 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Expand the scope of the container by creating any required attributes.
+     *  This method does nothing, assuming that the derived classes will
+     *  create the attributes in their constructor.
+     *  @throws IllegalActionException If any required attribute cannot be
+     *   created.
+     */
+    public void expand() throws IllegalActionException {
+    }
+
     /** Specify the container NamedObj, adding this attribute to the
      *  list of attributes in the container.  Notify parameters that
      *  depends on any parameter of this attribute about the change in
@@ -110,17 +122,24 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
 
             // Every variable inside this attribute, and anything that
             // had been depending on them, must still be valid.
-            Iterator vars = attributeList(Variable.class).iterator();
-
-            while (vars.hasNext()) {
-                Variable var = (Variable) vars.next();
-                var.validate();
-            }
+            validate();
         }
+    }
+
+    /** Validate contained settables.
+     *  @throws IllegalActionException If any required attribute cannot be
+     *   created.
+     */
+    public void validate() throws IllegalActionException {
+    	List<Settable> settables = attributeList(Settable.class);
+    	for (Settable settable : settables) {
+    		settable.validate();
+    	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     private void _invalidateShadowedSettables(NamedObj object)
             throws IllegalActionException {
         if (object == null) {

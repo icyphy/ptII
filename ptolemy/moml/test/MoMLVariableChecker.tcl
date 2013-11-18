@@ -134,7 +134,22 @@ test MoMLVariableChecker-1.1 {copy a const that refers another parameter } {
     catch {changeAndGetToken $toplevel1 \
 	       "<group name=\"auto\">$paramCopyConst</group>"} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: myParam
+} {{ptolemy.kernel.util.InternalErrorException: ChangeRequest failed (NOTE: there is no ChangeListener):
+<group name="auto">
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="myParam">
+        </property>
+    </entity>
+</group>
+  in .top
+Because:
+Error evaluating expression: myParam
+  in .top.Const.value
+Because:
+The ID myParam is undefined.
+  in .top.Const.value
+Because:
+Error evaluating expression: myParam
   in .top.Const.value
 Because:
 The ID myParam is undefined.}}
