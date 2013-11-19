@@ -2712,6 +2712,9 @@ else
 	JNA_JAR="$PTII/lib/jna-4.0.0-variadic.jar"
 	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
+	if test -d "$PTII/ptolemy/domains/fmi"; then
+	    PTFMI_PACKAGES="$PTFMI_PACKAGES ptolemy.domains.fmi.kernel ptolemy.domains.fmi.lib"
+        fi
         updateClasspath "$JNA_JAR"
     else
         AC_MSG_WARN([Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
