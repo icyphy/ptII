@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/ptulip/demo/robot
 
-DIRS =	robot
+DIRS =	pages
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
