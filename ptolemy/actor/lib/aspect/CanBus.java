@@ -487,7 +487,12 @@ public class CanBus extends AtomicCommunicationAspect {
      *  @param canPriority The priority attached to the port.
      */
     public void setCanBusPriority(Port port, int canPriority) {
-        _ioPortToCanPriority.put(port, canPriority);
+	if (_ioPortToCanPriority == null) {
+	    // During cloning of the Configuration, setContainer()
+	    // gets called and _ioPortToCanPriority might be null.
+	    _ioPortToCanPriority = new HashMap<Port, Integer>();
+	}
+	_ioPortToCanPriority.put(port, canPriority);
     }
 
     /**
