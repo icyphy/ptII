@@ -102,7 +102,7 @@ public class OpenModelica extends TypedAtomicActor {
         dependencies = new FileParameter(this, "dependencies");
         dependencies.setDisplayName("Dependency(ies)");
 
-        processingMode = new StringParameter(this, "processingType");
+        processingMode = new StringParameter(this, "processingMode");
         processingMode.setDisplayName("Select the processing mode ");
         processingMode.setExpression("non-interactive");
         processingMode.addChoice("non-interactive");
