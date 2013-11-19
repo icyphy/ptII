@@ -56,6 +56,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -359,11 +360,17 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
         createProcess = false;
 
-        Director director = ((CompositeActor) getContainer())
-                .getExecutiveDirector();
-        _modelStopTime = director.getModelStopTime();
-
+	Nameable container = getContainer();
+        // In the actor library, the container might be an moml.EntityLibrary.
+	if (container instanceof CompositeActor) {
+	    Director director = ((CompositeActor) container).getExecutiveDirector();
+	    if (director != null) {
+		_modelStopTime = director.getModelStopTime();
+	    }
+	}
+	// FIXME: Why sleep for one second when creating this object?
         try {
+	    System.out.println("FIXME: MetroIISystemCDirector has a bug where it sleeps for one second while being created.");
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
