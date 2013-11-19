@@ -7,6 +7,8 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/Case/Case.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/DFTSubSet/DFTSubSet.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
+$CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
+$CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
 $CLASSPATH/ptolemy/actor/parameters/demo/SliderParameter/SliderParameter.xml
 $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
 $CLASSPATH/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml
