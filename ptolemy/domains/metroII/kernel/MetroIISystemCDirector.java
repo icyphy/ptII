@@ -288,12 +288,6 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                 };
                 _ioThread.start();
 
-                //                try {
-                //                    Thread.sleep(1000);
-                //                } catch (InterruptedException e) {
-                //                    // TODO Auto-generated catch block
-                //                    e.printStackTrace();
-                //                }
                 createProcess = true;
             }
         }
@@ -339,7 +333,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         path = System.getenv("METRO_TEMP");
         path = path + "/";
         if (path == null) {
-            throw new IllegalActionException(
+            throw new IllegalActionException(this,
                     "Environment varialble METRO_TEMP is not accessable.");
         }
 
@@ -347,13 +341,24 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         m2event_in_pipe_name = path + "m2event_metro_buffer";
 
         try {
+            System.out.println("Waiting for pipes to be created ...");
             Runtime.getRuntime().exec("rm -f " + m2event_out_pipe_name);
-            Runtime.getRuntime().exec("mkfifo " + m2event_out_pipe_name);
+            Process process = Runtime.getRuntime().exec("mkfifo " + m2event_out_pipe_name);
+            process.waitFor();
             Runtime.getRuntime().exec("rm -f " + m2event_in_pipe_name);
-            Runtime.getRuntime().exec("mkfifo " + m2event_in_pipe_name);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            process = Runtime.getRuntime().exec("mkfifo " + m2event_in_pipe_name);
+            process.waitFor();
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex, "Failed to create pipes!"); 
+        } catch (InterruptedException ex) {
+            throw new IllegalActionException(this, ex, "Failed to create pipes!"); 
+        }
+        
+        File pipe1 = new File(m2event_out_pipe_name);
+        File pipe2 = new File(m2event_in_pipe_name);
+        
+        if (!pipe1.exists() || !pipe2.exists()) {
+            throw new IllegalActionException(this, "Failed to create pipes!"); 
         }
 
         events = new LinkedList<Event.Builder>();
@@ -368,14 +373,6 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 		_modelStopTime = director.getModelStopTime();
 	    }
 	}
-	// FIXME: Why sleep for one second when creating this object?
-        try {
-	    System.out.println("FIXME: MetroIISystemCDirector has a bug where it sleeps for one second while being created.");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     /**

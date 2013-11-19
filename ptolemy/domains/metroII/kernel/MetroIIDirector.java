@@ -220,7 +220,6 @@ public class MetroIIDirector extends Director {
                     || mappingFileNameToken.stringValue().equals("")) {
                 mappingFileName = null;
             } else {
-
                 File file = mappingFileName.asFile();
                 if (file != null) {
                     String filename = file.getAbsolutePath();
@@ -273,6 +272,8 @@ public class MetroIIDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
+        // _initializeMapping();
 
         Nameable container = getContainer();
         int numActor = 0;
