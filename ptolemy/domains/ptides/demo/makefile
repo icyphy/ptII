@@ -65,7 +65,6 @@ PTCLASSALLJARS = \
 		Controller/Controller.jar \
 		CoSimulation/CoSimulation.jar \
 		DistributedPowerPlant/DistributedPowerPlant.jar \
-		ErrorHandling/ErrorHandling.jar \
 		LocalSource/LocalSource.jar \
 		MixedSimulator/MixedSimulator.jar \
 		MultiPlatformTDMA/MultiPlatformTDMA.jar \
