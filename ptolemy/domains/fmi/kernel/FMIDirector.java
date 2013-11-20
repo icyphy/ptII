@@ -75,6 +75,16 @@ public class FMIDirector extends Director {
         super.fire();
     }
 
+    /** Return the stop time, which is always 1.0.
+     *  @return 1.0
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public double getStopTime() throws IllegalActionException {
+        System.out.println("FMUDirector: stop time would be "
+                + super.getStopTime() + ", returning 1.0 instead.");
+        return 1.0;
+    }
+
     /** Do nothing except call the super class.
      *  @exception IllegalActionException If thrown by the super class.
      */
@@ -98,7 +108,11 @@ public class FMIDirector extends Director {
         return super.prefire();
     }
 
-    public void preinitialize() {
+    /** Do nothing except call the super class.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
     }
 
     public boolean transferInputs(IOPort port) {

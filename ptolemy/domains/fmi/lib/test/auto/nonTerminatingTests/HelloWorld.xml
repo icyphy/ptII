@@ -29,7 +29,7 @@
         </property>
     </property>
     <entity name="helloWorld" class="ptolemy.domains.fmi.lib.FMU">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/domains/fmi/lib/test/auto/helloWorld.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/fmi/lib/test/auto/nonTerminatingTests/helloWorld.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 262.0">
         </property>

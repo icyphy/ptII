@@ -1239,6 +1239,7 @@ public class FMU extends TypedAtomicActor implements Advanceable,
             ////////////////////////////////////////////
             //// model exchange version
             if (_fmiModelDescription.modelExchange) {
+                System.out.println("preinitialize: modelExchange");
                 try {
                     _fmiCompletedIntegratorStepFunction = _fmiModelDescription
                             .getFmiFunction("fmiCompletedIntegratorStep");
@@ -1279,6 +1280,7 @@ public class FMU extends TypedAtomicActor implements Advanceable,
                         .getFmiFunction("fmiTerminate");
                 _checkFmiModelExchange();
             } else {
+                System.out.println("preinitialize: setting _fmiInitializeSlaveFunction");
                 ////////////////////////////////////////////
                 //// co-simulation version
                 _fmiDoStepFunction = _fmiModelDescription
@@ -1287,6 +1289,7 @@ public class FMU extends TypedAtomicActor implements Advanceable,
                         .getFmiFunction("fmiFreeSlaveInstance");
                 _fmiInitializeSlaveFunction = _fmiModelDescription
                         .getFmiFunction("fmiInitializeSlave");
+                System.out.println("preinitialize: setting _fmiInitializeSlaveFunction: func: " + _fmiInitializeSlaveFunction );
                 _fmiInstantiateSlaveFunction = _fmiModelDescription
                         .getFmiFunction("fmiInstantiateSlave");
                 _fmiTerminateSlaveFunction = _fmiModelDescription
@@ -1955,8 +1958,20 @@ public class FMU extends TypedAtomicActor implements Advanceable,
             Time startTime = director.getModelStartTime();
             Time stopTime = director.getModelStopTime();
 
+            if (startTime == null) {
+                startTime = new Time(director);
+            }
+
+            if (stopTime == null) {
+                stopTime = Time.POSITIVE_INFINITY;
+            }        
+
             int fmiFlag;
             if (_fmiVersion < 2.0) {
+                System.out.println("FMU.java: before _fmiInitializeSlaveFunction");
+                System.out.println("FMU.java: before _fmiInitializeSlaveFunction func: " + _fmiInitializeSlaveFunction);
+                System.out.println("FMU.java: before _fmiInitializeSlaveFunction startTime: " + startTime);
+                System.out.println("FMU.java: before _fmiInitializeSlaveFunction stopTime: " + stopTime);
                 fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent,
