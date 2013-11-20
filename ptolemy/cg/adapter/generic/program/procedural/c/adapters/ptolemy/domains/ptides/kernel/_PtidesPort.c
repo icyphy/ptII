@@ -1,4 +1,7 @@
+// $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/_PtidesPort.c
+// $Id$
 #include "_PtidesPort.h"
+#include "_PtidesDirector.h"
 
 struct PtidesPort* PtidesPort_New() {
         struct PtidesPort* newPtidesPort = malloc(sizeof(struct PtidesPort));
@@ -33,8 +36,8 @@ void PtidesPort_SetAssociatedPort(struct PtidesPort* port, struct PtidesPort* po
         port1->_associatedPort = port;
 }
 
-Time* PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t) {
-        Time times[2];
+void PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t, Time* times ) {
+        //Time times[2];
         Time* result = (Time*)pblMapGet(port->_transmittedTokenTimestamps, &t, sizeof(Token), NULL);
         times[0] = result[0];
         times[1] = result[1];
@@ -45,7 +48,7 @@ Time* PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t) {
                 pblMapGet(port->_transmittedTokenTimestamps, &t, sizeof(Token), NULL);
                 pblMapGet(port->_transmittedTokenCnt, &t, sizeof(Token), NULL);
         }
-        return times;
+        //return times;
 }
 bool PtidesPort_IsActuatorPort(struct PtidesPort* port) {
         return port->isOutput(port) && !port->isNetworkPort;

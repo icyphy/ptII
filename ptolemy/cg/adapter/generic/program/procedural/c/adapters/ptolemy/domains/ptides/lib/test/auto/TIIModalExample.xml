@@ -18,13 +18,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={206, 125, 1122, 649}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={206, 125, 1140, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9134659317181559">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{429.36312499999997, 185.54524069780808}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{429.36312499999997, 186.63997227484583}">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/TIIModalExample">
@@ -345,7 +345,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 69, 916, 651}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-20, 441, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -477,7 +477,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={548, 216, 816, 650}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -580,7 +580,7 @@
                     <link port="state3.incomingPort" relation="relation2"/>
                 </entity>
                 <entity name="state" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={94, 132, 816, 649}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={722, 171, 834, 634}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -590,6 +590,10 @@
                     </property>
                     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 50}">
+                        </property>
+                        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                            </property>
                         </property>
                     </property>
                     <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 1.0, 1.0}">
@@ -623,6 +627,10 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 235.0]">
                         </property>
+                        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
                         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="7.0">
@@ -631,19 +639,40 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 235.0]">
                         </property>
+                        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Test" class="ptolemy.actor.lib.Test">
+                        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 4, 6}">
+                        </property>
+                        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{214.0, 86.0}">
+                        </property>
+                        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                            </property>
+                        </property>
                     </entity>
                     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     </relation>
-                    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                    </relation>
                     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                        </property>
+                        <vertex name="vertex1" value="{185.0, 235.0}">
+                        </vertex>
                     </relation>
                     <link port="sensor" relation="relation3"/>
                     <link port="signalOut" relation="relation4"/>
                     <link port="Scale.input" relation="relation3"/>
-                    <link port="Scale.output" relation="relation2"/>
-                    <link port="TimeDelay.input" relation="relation2"/>
+                    <link port="Scale.output" relation="relation"/>
+                    <link port="TimeDelay.input" relation="relation"/>
                     <link port="TimeDelay.output" relation="relation4"/>
+                    <link port="Test.input" relation="relation"/>
                 </entity>
                 <entity name="state2" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 816, 649}, maximized=false}">
@@ -700,7 +729,7 @@
                     <link port="Scale.output" relation="relation"/>
                 </entity>
                 <entity name="state3" class="ptolemy.domains.modal.modal.Refinement">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 816, 649}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 834, 634}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -710,6 +739,10 @@
                     </property>
                     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 75}">
+                        </property>
+                        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                            </property>
                         </property>
                     </property>
                     <port name="mode" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -740,6 +773,10 @@
                             </property>
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 245.0}">
+                        </property>
+                        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                            </property>
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.actor.TypedIORelation">

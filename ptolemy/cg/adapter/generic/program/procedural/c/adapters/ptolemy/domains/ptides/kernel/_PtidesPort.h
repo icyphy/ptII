@@ -1,5 +1,7 @@
-/* In this file we have defined a struct PtidesPort
+/* In this file we have defined a struct PtidesPort.
  *
+ * Source: $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/_PtidesPort.h
+ * @version: $Id$
  * @author : William Lucas
  */
 
@@ -7,7 +9,15 @@
 #define PTIDESPORT_H_
 
 #include "_TypedIOPort.h"
-#include "_PtidesDirector.h"
+
+/* Don't include _PtidesDirector.h here, this results in circular
+   includes because _PtidesDirector.h includes _PtidesPort.h, which
+   resulted in:
+
+   commons/_PtidesDirector.h:78: warning: ‘struct PtidesPort’ declared inside parameter list
+   commons/_PtidesDirector.h:78: warning: its scope is only this definition or declaration, which is probably not what you want
+*/
+//#include "_PtidesDirector.h"
 
 #define PTIDESPORT 11
 #define IS_PTIDESPORT(p) ((p)->typePort%100 == 11)
@@ -91,7 +101,7 @@ struct PtidesPort {
         bool (*isNetworkReceiverPort)(struct PtidesPort*);
         bool (*isNetworkTransmitterPort)(struct PtidesPort*);
 
-        Time* (*_getTimeStampForToken)(struct PtidesPort*, Token);
+        void (*_getTimeStampForToken)(struct PtidesPort*, Token, Time*);
 };
 
 struct PtidesPort* PtidesPort_New();
@@ -105,7 +115,8 @@ bool PtidesPort_IsNetworkReceiverPort(struct PtidesPort* port);
 bool PtidesPort_IsNetworkTransmitterPort(struct PtidesPort* port);
 void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token token);
 
-Time* PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t);
+//Time* PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t);
+void PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t, Time* timestamps);
 
 
 #endif
