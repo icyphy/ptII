@@ -141,7 +141,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIISystemCDirector newObject = (MetroIISystemCDirector) super
                 .clone(workspace);
-        newObject.events = (LinkedList<Event.Builder>) events.clone();
+        newObject.events = new LinkedList<Event.Builder>();
         return newObject;
     }
 
