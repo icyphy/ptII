@@ -1,0 +1,40 @@
+#!/bin/sh
+# $Id$
+# Fix up common problems in a CVS repository
+# 1. Binary files are not properly -kb
+
+# Generate a list of files
+find . -type f | grep -v /CVS/ | sort > /tmp/fixcvs.files
+
+# Generate a list of all the files that are listed in
+#  ~/.subversion/config that are not text files.
+# That is, all the files that are not native line endings
+egrep -v "(`egrep -v "^#" $HOME/.subversion/config  | grep 'svn:eol-style=native'  | sed 's@^\([^= ]*\).*$@\1@' | sed 's@\*.@\\\\.@' | awk '{if (NR > 1) { printf("|")};printf("%s", $1)}'`)$" /tmp/fixcvs.files | sort > /tmp/fixcvs.nonative
+
+# Generate a list of all files that are mime-types
+egrep "(`egrep -v "^#" $HOME/.subversion/config  | grep 'svn:mime-type'  | sed 's@^\([^= ]*\).*$@\1@' | sed 's@\*.@\\\\.@' | awk '{if (NR > 1) { printf("|")};printf("%s", $1)}'`)$" /tmp/fixcvs.files | sort > /tmp/fixcvs.mime
+
+echo "The extensions of the files below are not listed in ~/.subversion/config:"
+comm -23 /tmp/fixcvs.nonative /tmp/fixcvs.mime
+
+echo "Checking for binary files that are not -kb"
+
+finalResult=0
+
+binaries=`cat /tmp/fixcvs.nonative`
+for binary in $binaries
+do
+	echo -n "."
+	#echo -n $binary
+	cvs status $binary | egrep -e "-kb$" > /dev/null
+	status=$?
+	if [ $status -ne 0 ]; then
+	    echo "$binary is not -kb?"
+	    finalResult=1
+        fi
+done
+
+exit $finalResult
+
+
+
