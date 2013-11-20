@@ -1,7 +1,7 @@
 #include "_Actor.h"
 
 struct Actor* Actor_New() {
-        struct Actor* newActor = malloc(sizeof(struct Actor));
+        struct Actor* newActor = calloc(1, sizeof(struct Actor));
         if (newActor == NULL) {
                 fprintf(stderr, "Allocation error : Actor_New\n");
                 exit(-1);

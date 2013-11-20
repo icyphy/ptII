@@ -37,7 +37,7 @@ if ($hasToken(input)) {
         int microstep = 1;
         if ($actorSymbol(delay) == 0)
                 microstep = (*(((struct DEDirector*)director)->getMicrostep))((struct DEDirector*)director)+1;
-        struct PendingEvent* newEvent = malloc(sizeof(struct PendingEvent));
+        struct PendingEvent* newEvent = calloc(1, sizeof(struct PendingEvent));
         if (newEvent == NULL) {
                 fprintf(stderr, "Allocation problem : TimeDelay_postfire");
                 exit(1);

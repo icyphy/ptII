@@ -1,7 +1,7 @@
 #include "_PtidesPlatformDirector.h"
 
 struct PtidesPlatformDirector* PtidesPlatformDirector_New() {
-        struct PtidesPlatformDirector* newDirector = malloc(sizeof(struct PtidesPlatformDirector));
+        struct PtidesPlatformDirector* newDirector = calloc(1, sizeof(struct PtidesPlatformDirector));
         if (newDirector == NULL) {
                 fprintf(stderr, "Allocation error : PtidesPlatformDirector_New\n");
                 exit(-1);

@@ -1,7 +1,7 @@
 #include "_FSMActor.h"
 
 struct FSMActor* FSMActor_New() {
-        struct FSMActor* newActor = malloc(sizeof(struct FSMActor));
+        struct FSMActor* newActor = calloc(1, sizeof(struct FSMActor));
         if (newActor == NULL) {
                 fprintf(stderr, "Allocation error : FSMActor_New\n");
                 exit(-1);

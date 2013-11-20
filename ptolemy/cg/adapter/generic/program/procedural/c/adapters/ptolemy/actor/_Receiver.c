@@ -2,7 +2,7 @@
 
 // Constructors of the basic receiver
 struct Receiver* Receiver_New() {
-        struct Receiver* newReceiver = malloc(sizeof(struct Receiver));
+        struct Receiver* newReceiver = calloc(1, sizeof(struct Receiver));
         if (newReceiver == NULL) {
                 fprintf(stderr, "Allocation error : Receiver_New ($ModelName()__Receiver.c)\n");
                 exit(-1);

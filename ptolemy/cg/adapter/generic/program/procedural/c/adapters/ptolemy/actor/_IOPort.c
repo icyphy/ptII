@@ -1,7 +1,7 @@
 #include "_IOPort.h"
 
 struct IOPort* IOPort_New() {
-        struct IOPort* newIOPort = malloc(sizeof(struct IOPort));
+        struct IOPort* newIOPort = calloc(1, sizeof(struct IOPort));
         if (newIOPort == NULL) {
                 fprintf(stderr, "Allocation error : IOPort_New\n");
                 exit(-1);

@@ -2,7 +2,7 @@
 
 // Constructors of the basic receiver
 struct DEReceiver* DEReceiver_New() {
-        struct DEReceiver* newReceiver = malloc(sizeof(struct DEReceiver));
+        struct DEReceiver* newReceiver = calloc(1, sizeof(struct DEReceiver));
         if (newReceiver == NULL) {
                 fprintf(stderr, "Allocation error : DEReceiver_New ($ModelName()__DEReceiver.c)\n");
                 exit(-1);
@@ -80,7 +80,7 @@ void DEReceiver_Put(struct DEReceiver* r, Token token) {
         if (director != NULL && IS_DEDIRECTOR(director))
                 (*(director->_enqueueTriggerEvent))(director, r->container,
                         (*(director->getModelTime))((struct Director*) director));
-        Token* dynToken = malloc(sizeof(Token));
+        Token* dynToken = calloc(1, sizeof(Token));
         if (!dynToken) {
                 fprintf(stderr, "Allocation Problem : DEReceiver_Put");
                 exit(-1);

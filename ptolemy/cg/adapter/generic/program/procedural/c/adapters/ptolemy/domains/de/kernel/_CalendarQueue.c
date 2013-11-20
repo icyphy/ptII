@@ -2,7 +2,7 @@
 
 // Functions for a CalendarQueue :
 struct CalendarQueue* CalendarQueue_New() {
-        struct CalendarQueue* newQueue = malloc(sizeof(struct CalendarQueue));
+        struct CalendarQueue* newQueue = calloc(1, sizeof(struct CalendarQueue));
         if (newQueue == NULL) {
                 fprintf(stderr, "Allocation error : CalendarQueue_New\n");
                 exit(-1);
@@ -376,7 +376,7 @@ void* CalendarQueue__TakeFromBucket(struct CalendarQueue* cqueue, int index) {
 // Initialization of a list
 struct CQLinkedList * CQLinkedList_New () {
         struct CQLinkedList * list = NULL;
-        if ((list = malloc(sizeof(struct CQLinkedList))) == NULL) {
+        if ((list = calloc(1, sizeof(struct CQLinkedList))) == NULL) {
                 fprintf(stderr, "Allocation Error (CQLinkedList_New)");
                 exit(-1);
         }
@@ -566,7 +566,7 @@ void CQLinkedList_New_Free(struct CQLinkedList * list) {
 // Functions for CQCell :
 struct CQCell * CQCell_New () {
         struct CQCell* cell = NULL;
-        if ((cell = malloc(sizeof(struct CQCell))) == NULL) {
+        if ((cell = calloc(1, sizeof(struct CQCell))) == NULL) {
                 fprintf(stderr, "Allocation Error (CQCell_New)");
                 exit(-1);
         }

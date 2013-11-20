@@ -18,7 +18,7 @@ return ($hasToken(input1) || $hasToken(input2));
 struct Director* director = (*(actor->getDirector))(actor);
 while ($hasToken(input1)) {
         $get(input1);
-        Time* dynCurrentTime = malloc(sizeof(Time));
+        Time* dynCurrentTime = calloc(1, sizeof(Time));
         if (!dynCurrentTime) {
                 fprintf(stderr, "Allocation Error : TimeCompare_fire");
                 exit(-1);
@@ -29,7 +29,7 @@ while ($hasToken(input1)) {
 
 while ($hasToken(input2)) {
         $get(input2);
-        Time* dynCurrentTime = malloc(sizeof(Time));
+        Time* dynCurrentTime = calloc(1, sizeof(Time));
         if (!dynCurrentTime) {
                 fprintf(stderr, "Allocation Error : TimeCompare_fire");
                 exit(-1);

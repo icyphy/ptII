@@ -8,7 +8,7 @@ void CompositeActor_Preinitialize(struct CompositeActor* actor);
 void CompositeActor_Wrapup(struct CompositeActor* actor);
 
 struct CompositeActor* CompositeActor_New() {
-        struct CompositeActor* newActor = malloc(sizeof(struct CompositeActor));
+        struct CompositeActor* newActor = calloc(1, sizeof(struct CompositeActor));
         if (newActor == NULL) {
                 fprintf(stderr, "Allocation error : CompositeActor_New\n");
                 exit(-1);
@@ -57,11 +57,15 @@ struct Director* CompositeActor_GetDirector(struct CompositeActor* actor) {
         return (*(container->getDirector))(container);
 }
 struct Director* CompositeActor_GetExecutiveDirector(struct CompositeActor* actor) {
+        if (actor == NULL) {
+	    return NULL;
+        }
         struct CompositeActor* container = actor->container;
-        if (actor->container == NULL)
-                return NULL;
-        else
-                return (*(container->getDirector))(container);
+        if (actor->container == NULL) {
+	    return NULL;
+	} else {
+	    return (*(container->getDirector))(container);
+	}
 }
 PblList* CompositeActor_InputPortList(struct CompositeActor* actor) {
         return actor->_inputPorts;

@@ -2,7 +2,7 @@
 
 // Constructors of the basic receiver
 struct PtidesReceiver* PtidesReceiver_New() {
-        struct PtidesReceiver* newReceiver = malloc(sizeof(struct PtidesReceiver));
+        struct PtidesReceiver* newReceiver = calloc(1, sizeof(struct PtidesReceiver));
         if (newReceiver == NULL) {
                 fprintf(stderr, "Allocation error : PtidesReceiverr_New (_PtidesReceiver.c)\n");
                 exit(-1);
@@ -42,7 +42,7 @@ void PtidesReceiver_Put(struct PtidesReceiver* r, Token token) {
 void PtidesReceiver_PutToReceiver(struct PtidesReceiver* r, Token token) {
         // FIXME : it is not a relevant comparison
         if (token.type != -1) {
-                Token* dynToken = malloc(sizeof(Token));
+                Token* dynToken = calloc(1, sizeof(Token));
                 if (!dynToken) {
                         fprintf(stderr, "Allocation error : PtidesReceiver_PutToReceiver");
                         exit(-1);
@@ -55,10 +55,15 @@ void PtidesReceiver_Remove(struct PtidesReceiver* r, Token token) {
         PblIterator* iterator = pblIteratorNew(r->_tokens);
         while (pblIteratorHasNext(iterator)) {
                 Token* dynToken = pblIteratorNext(iterator);
-                if (memcmp(dynToken, &token, sizeof(Token)) == 0) {
+		Token* tokenPtr = malloc(sizeof(Token));
+		*tokenPtr = token;
+                if (memcmp(dynToken, tokenPtr, sizeof(Token)) == 0) {
                         pblListRemoveElement(r->_tokens, dynToken);
                         free(dynToken);
+			free(tokenPtr);
                         break;
-                }
+                } else {
+			free(tokenPtr);
+		}
         }
 }

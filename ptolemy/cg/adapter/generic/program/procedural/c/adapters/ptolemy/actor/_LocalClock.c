@@ -3,7 +3,7 @@
 void _commit(struct LocalClock* clock);
 
 struct LocalClock* LocalClock_New() {
-        struct LocalClock* newLocalClock = malloc(sizeof(struct LocalClock));
+        struct LocalClock* newLocalClock = calloc(1, sizeof(struct LocalClock));
         if (newLocalClock == NULL) {
                 fprintf(stderr, "Allocation error : LocalClock_New\n");
                 exit(-1);

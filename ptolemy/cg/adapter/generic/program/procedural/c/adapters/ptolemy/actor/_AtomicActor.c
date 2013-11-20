@@ -1,7 +1,7 @@
 #include "_AtomicActor.h"
 
 struct AtomicActor* AtomicActor_New() {
-        struct AtomicActor* newActor = malloc(sizeof(struct AtomicActor));
+        struct AtomicActor* newActor = calloc(1, sizeof(struct AtomicActor));
         if (newActor == NULL) {
                 fprintf(stderr, "Allocation error : AtomicActor_New\n");
                 exit(-1);

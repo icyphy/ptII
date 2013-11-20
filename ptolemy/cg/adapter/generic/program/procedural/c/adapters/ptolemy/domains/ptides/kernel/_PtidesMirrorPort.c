@@ -1,7 +1,7 @@
 #include "_PtidesMirrorPort.h"
 
 struct PtidesMirrorPort* PtidesMirrorPort_New() {
-        struct PtidesMirrorPort* newPtidesPort = malloc(sizeof(struct PtidesMirrorPort));
+        struct PtidesMirrorPort* newPtidesPort = calloc(1, sizeof(struct PtidesMirrorPort));
         if (newPtidesPort == NULL) {
                 fprintf(stderr, "Allocation error : PtidesMirrorPort_New\n");
                 exit(-1);

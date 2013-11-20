@@ -2,7 +2,7 @@
 
 // Constructors of the basic receiver
 struct SDFReceiver* SDFReceiver_New() {
-        struct SDFReceiver* newReceiver = malloc(sizeof(struct SDFReceiver));
+        struct SDFReceiver* newReceiver = calloc(1, sizeof(struct SDFReceiver));
         if (newReceiver == NULL) {
                 fprintf(stderr, "Allocation error : SDFReceiver_New (_SDFReceiver.c)\n");
                 exit(-1);
@@ -74,7 +74,7 @@ void SDFReceiver_Put(struct SDFReceiver* r, Token token) {
         if (token.type == -1) {
                 return;
         }
-        Token* dynToken = malloc(sizeof(Token));
+        Token* dynToken = calloc(1, sizeof(Token));
         if (!dynToken) {
                 fprintf(stderr, "Allocation Problem : DEReceiver_Put");
                 exit(-1);

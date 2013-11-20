@@ -31,7 +31,7 @@ struct Director* director = (*(actor->getDirector))(actor);
 if ($hasToken(input)) {
         Time currentTime = (*(director->getModelTime))(director);
         double currentToken = $get(input);
-        $actorSymbol(currentInput) = malloc(sizeof(struct TimedEvent));
+        $actorSymbol(currentInput) = calloc(1, sizeof(struct TimedEvent));
         if ($actorSymbol(currentInput) == NULL) {
                 fprintf(stderr, "Allocation Error : PID_Fire");
                 exit(-1);

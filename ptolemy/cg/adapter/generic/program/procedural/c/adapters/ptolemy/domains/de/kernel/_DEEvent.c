@@ -3,7 +3,7 @@
 
 struct DEEvent* DEEvent_New() {
         struct DEEvent * e = NULL;
-        if ((e = malloc(sizeof(struct DEEvent))) == NULL) {
+        if ((e = calloc(1, sizeof(struct DEEvent))) == NULL) {
                 fprintf(stderr, "Allocation Error (DEEvent_New)");
         }
         e->free = DEEvent_New_Free;

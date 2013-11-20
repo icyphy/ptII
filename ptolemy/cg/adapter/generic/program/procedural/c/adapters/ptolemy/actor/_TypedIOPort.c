@@ -1,7 +1,7 @@
 #include "_TypedIOPort.h"
 
 struct TypedIOPort* TypedIOPort_New() {
-        struct TypedIOPort* newTypedIOPort = malloc(sizeof(struct TypedIOPort));
+        struct TypedIOPort* newTypedIOPort = calloc(1, sizeof(struct TypedIOPort));
         if (newTypedIOPort == NULL) {
                 fprintf(stderr, "Allocation error : TypedIOPort_New\n");
                 exit(-1);

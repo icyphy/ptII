@@ -4,7 +4,7 @@
 #include "_PtidesDirector.h"
 
 struct PtidesPort* PtidesPort_New() {
-        struct PtidesPort* newPtidesPort = malloc(sizeof(struct PtidesPort));
+        struct PtidesPort* newPtidesPort = calloc(1, sizeof(struct PtidesPort));
         if (newPtidesPort == NULL) {
                 fprintf(stderr, "Allocation error : PtidesPort_New\n");
                 exit(-1);
@@ -74,14 +74,27 @@ void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token token) {
                 port->_transmittedTokenTimestamps = pblMapNewHashMap();
                 port->_transmittedTokenCnt = pblMapNewHashMap();
         }
-        if (pblMapGet(port->_transmittedTokenTimestamps, &token, sizeof(Token), NULL) == NULL) {
-                int x = 0;
-                pblMapAdd(port->_transmittedTokenCnt, &token, sizeof(Token), &x, sizeof(int));
+	Token* tokenPtr = calloc(1, sizeof(Token));
+	*tokenPtr = token;
+
+        if (pblMapGet(port->_transmittedTokenTimestamps, tokenPtr, sizeof(Token), NULL) == NULL) {
+    	        int* xPtr = calloc(1, sizeof(int));
+		*xPtr = 0;
+                pblMapAdd(port->_transmittedTokenCnt, tokenPtr, sizeof(Token), xPtr, sizeof(int));
         }
-        Time toPut[2] = {timestamp, sourceTimestamp};
-        pblMapAdd(port->_transmittedTokenTimestamps, &token, sizeof(Token), toPut, sizeof(Time[2]));
-        int cpt = *((int*)pblMapGet(port->_transmittedTokenCnt, &token, sizeof(Token), NULL));
+        //Time toPut[2] = {timestamp, sourceTimestamp};
+	// FIXME: when to free this
+	Time * toPut = calloc(2, sizeof(Time));
+	toPut[0] = timestamp;
+	toPut[1] = sourceTimestamp;
+        pblMapAdd(port->_transmittedTokenTimestamps, tokenPtr, sizeof(Token), toPut, sizeof(Time[2]));
+
+        int cpt = *((int*)pblMapGet(port->_transmittedTokenCnt, tokenPtr, sizeof(Token), NULL));
         cpt++;
-        pblMapAdd(port->_transmittedTokenCnt, &token, sizeof(Token), &cpt, sizeof(int));
+
+	int *cptPtr = calloc(1, sizeof(int));
+	*cptPtr = cpt;
+
+        pblMapAdd(port->_transmittedTokenCnt, tokenPtr, sizeof(Token), cptPtr, sizeof(int));
         IOPort_Send((struct IOPort*)port, channelIndex, token);
 }

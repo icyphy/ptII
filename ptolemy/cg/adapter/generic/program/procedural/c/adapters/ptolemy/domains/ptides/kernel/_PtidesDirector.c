@@ -3,7 +3,7 @@
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
 struct PtidesDirector* PtidesDirector_New() {
-        struct PtidesDirector* newDirector = malloc(sizeof(struct PtidesDirector));
+        struct PtidesDirector* newDirector = calloc(1, sizeof(struct PtidesDirector));
         if (newDirector == NULL) {
                 fprintf(stderr, "Allocation error : PtidesDirector_New\n");
                 exit(-1);

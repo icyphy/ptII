@@ -1,7 +1,7 @@
 #include "_DEDirector.h"
 
 struct DEDirector* DEDirector_New() {
-        struct DEDirector* newDirector = malloc(sizeof(struct DEDirector));
+        struct DEDirector* newDirector = calloc(1, sizeof(struct DEDirector));
         if (newDirector == NULL) {
                 fprintf(stderr, "Allocation error : DEDirector_New\n");
                 exit(-1);

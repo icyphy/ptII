@@ -1,7 +1,7 @@
 #include "_Director.h"
 
 struct Director* Director_New() {
-        struct Director* newDirector = malloc(sizeof(struct Director));
+        struct Director* newDirector = calloc(1, sizeof(struct Director));
         if (newDirector == NULL) {
                 fprintf(stderr, "Allocation error : Director_New\n");
                 exit(-1);
@@ -82,6 +82,10 @@ Time Director_FireContainerAt(struct Director* director, Time time, int microste
         return localClock->getLocalTime(localClock);
 }
 Time Director_GetEnvironmentTime(struct Director* director) {
+        if (director == NULL) {
+	  return -666.0;
+	}
+
         struct Actor* container = (struct Actor*) director->container;
         struct LocalClock* localClock = director->localClock;
         if (container != NULL && container->container != NULL) {

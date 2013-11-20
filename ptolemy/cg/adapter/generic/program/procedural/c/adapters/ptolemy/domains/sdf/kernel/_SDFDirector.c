@@ -1,7 +1,7 @@
 #include "_SDFDirector.h"
 
 struct SDFDirector* SDFDirector_New() {
-        struct SDFDirector* newDirector = malloc(sizeof(struct SDFDirector));
+        struct SDFDirector* newDirector = calloc(1, sizeof(struct SDFDirector));
         if (newDirector == NULL) {
                 fprintf(stderr, "Allocation error : SDFDirector_New\n");
                 exit(-1);

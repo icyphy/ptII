@@ -2,7 +2,7 @@
 
 // Constructors of the basic receiver
 struct FSMReceiver* FSMReceiver_New() {
-        struct FSMReceiver* newReceiver = malloc(sizeof(struct FSMReceiver));
+        struct FSMReceiver* newReceiver = calloc(1, sizeof(struct FSMReceiver));
         if (newReceiver == NULL) {
                 fprintf(stderr, "Allocation error : FSMReceiver_New (_FSMReceiver.c)\n");
                 exit(-1);

@@ -3,7 +3,7 @@
 
 struct PtidesEvent* PtidesEvent_New() {
         struct PtidesEvent * e = NULL;
-        if ((e = malloc(sizeof(struct PtidesEvent))) == NULL) {
+        if ((e = calloc(1, sizeof(struct PtidesEvent))) == NULL) {
                 fprintf(stderr, "Allocation Error (PtidesEvent_New)");
         }
         e->free = PtidesEvent_New_Free;

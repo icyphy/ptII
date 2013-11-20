@@ -1,7 +1,7 @@
 #include "_FSMDirector.h"
 
 struct FSMDirector* FSMDirector_New() {
-        struct FSMDirector* newDirector = malloc(sizeof(struct FSMDirector));
+        struct FSMDirector* newDirector = calloc(1, sizeof(struct FSMDirector));
         if (newDirector == NULL) {
                 fprintf(stderr, "Allocation error : FSMDirector_New\n");
                 exit(-1);
