@@ -528,6 +528,7 @@ test SharedParameter-15.4 {Changing container of parameter that depends on scope
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.
+  in .<Unnamed Object>.p3
 Because:
 Error evaluating expression: p
   in .<Unnamed Object>.p3
@@ -655,6 +656,7 @@ test SharedParameter-15.8 {Changing container of container of parameter that dep
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.
+  in .<Unnamed Object>.p3
 Because:
 Error evaluating expression: p
   in .<Unnamed Object>.p3
