@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ExecutionAspect" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ResourceScheduler" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -233,8 +233,6 @@
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.000000000000001">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.9999999999931, 261.9999999999931}">
-            </property>
-            <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
             </property>
             <port name="SensorPort" class="ptolemy.domains.ptides.lib.PtidesPort">
                 <property name="input"/>
