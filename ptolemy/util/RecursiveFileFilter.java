@@ -138,9 +138,15 @@ public class RecursiveFileFilter implements FilenameFilter {
                 || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
             // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
             // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
-            Matcher match = _pattern.matcher(name);
-            if (match.matches() || match.find()) {
-                _files.add(file);
+            
+            // Avoid a NPE if the pattern is empty.  
+            // See ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml
+            // and https://projects.ecoinformatics.org/ecoinfo/issues/6233
+            if (_pattern != null) {
+                Matcher match = _pattern.matcher(name);
+                if (match.matches() || match.find()) {
+                    _files.add(file);
+                }
             }
         }
         if (_recursive && isDirectory) {
