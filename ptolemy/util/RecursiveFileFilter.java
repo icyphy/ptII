@@ -120,7 +120,11 @@ public class RecursiveFileFilter implements FilenameFilter {
                 // DirectoryListin style, but DirectoryListing calls listFiles()
                 _pattern = Pattern.compile(fileFilter);
             }
+        } else {
+            // Empty pattern for glob, which is .*
+            _pattern = Pattern.compile(".*");
         }
+
     }
 
     /** Return whether the file or directory name in the given directory is
