@@ -1,0 +1,21 @@
+#!/bin/sh
+
+awk -F / '{
+     printf("(cd %s; cvs admin -kb ", $1)
+     for(i=2;i<=NF;i++) {
+        if (i>2) {
+	   printf("/");
+        }
+        printf("%s", $i);
+     }
+     printf(")\n");
+     if ($1 != last) {
+         last = $1
+         print "(cd " last "; cvs commit -m \"Added -kb\"; cvs update)"
+     }
+
+ }
+END {
+         print "(cd " last "; cvs commit -m \"Added -kb\"; cvs update)"
+}
+' /tmp/ufb2

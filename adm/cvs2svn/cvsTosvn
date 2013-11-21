@@ -10,7 +10,7 @@ fi
 cvsrepohome=$1
 cvsrepo=$2
 
-if [ ! -f "$PTII/adm/cvs2svn/cvsTosvn"]; then
+if [ ! -f "$PTII/adm/cvs2svn/cvsTosvn" ]; then
     echo "$0: Could not find $PTII/adm/cvs2svn/cvsTosvn"
     echo "Perhaps $PTII is not set?"
     exit 5
@@ -18,7 +18,7 @@ fi
 
 if [ ! -f $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn ]; then
     echo "Downloading cvs2svn-2.4.0.  Check http://cvs2svn.tigris.org/ to see if this is the most recent version."
-    (cd $PTII/adm/cvs2svn; http://cvs2svn.tigris.org/files/documents/1462/49237/cvs2svn-2.4.0.tar.gz; tar -xf - cvs2svn-2.4.0.tar.gz)
+    (cd $PTII/adm/cvs2svn; wget http://cvs2svn.tigris.org/files/documents/1462/49237/cvs2svn-2.4.0.tar.gz; tar -xf cvs2svn-2.4.0.tar.gz)
 fi
 
 if [ ! -d tmp.cvs/$cvsrepo ]; then
@@ -61,8 +61,12 @@ $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn --default-eol=native --auto-props=/home/
 
 echo "Checking out the $cvsrepo svn repository."
 svnrepo=file:///`pwd`/repos/$cvsrepo
-rm -rf tmp.svn
-mkdir tmp.svn
+
+# rm -rf tmp.svn
+if [ ! -d tmp.svn ]; then
+    mkdir tmp.svn
+fi
+
 cd tmp.svn
 svn co $svnrepo
 cd $cvsrepo
