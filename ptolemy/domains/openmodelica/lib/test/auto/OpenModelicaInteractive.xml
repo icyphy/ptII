@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="OpenModelica" class="ptolemy.actor.TypedCompositeActor">
+<entity name="OpenModelicaInteractive" class="ptolemy.actor.TypedCompositeActor">
     <property name="size" class="ptolemy.data.expr.Parameter" value="25">
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
@@ -82,7 +82,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.125735489760899">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.112256567027, 263.4208092730978}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.11225656702686, 263.4208092730978}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
@@ -128,7 +128,7 @@
             <property name="fileName" class="ptolemy.data.expr.FileParameter" value="dcmotor.mo">
                 <display name="File name"/>
             </property>
-            <property name="processingType" class="ptolemy.data.expr.StringParameter" value="interactive">
+            <property name="processingMode" class="ptolemy.data.expr.StringParameter" value="interactive">
                 <display name="Select the processing mode "/>
             </property>
             <property name="subModel" class="ptolemy.data.expr.StringParameter" value="dcmotor">
@@ -145,6 +145,9 @@
             </property>
             <property name="variableFilter" class="ptolemy.data.expr.StringParameter" value="resistor1.R_actual#load.w">
                 <display name="Filter for displaying simulation result, seperate by '#'"/>
+            </property>
+            <property name="processingType" class="ptolemy.data.expr.StringParameter" value="interactive">
+                <display name="Select the processing mode "/>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
