@@ -21,18 +21,22 @@ echo "Checking for binary files that are not -kb"
 
 finalResult=0
 
+# Handle files with spaces in their names
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
 binaries=`cat /tmp/fixcvs.nonative`
 for binary in $binaries
 do
-	echo -n "."
+	#echo -n "."
 	#echo -n $binary
 	cvs status $binary | egrep -e "-kb$" > /dev/null
 	status=$?
 	if [ $status -ne 0 ]; then
-	    echo "$binary is not -kb?"
+	    echo "`pwd`/$binary is not -kb?"
 	    finalResult=1
         fi
 done
+IFS=$SAVEIFS
 
 exit $finalResult
 
