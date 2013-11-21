@@ -236,8 +236,6 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{281.0, 262.0}">
             </property>
-            <property name="scheduler" class="ptolemy.data.expr.Parameter" value="FCFSScheduler">
-            </property>
             <entity name="EDFScheduler" class="ptolemy.actor.lib.aspect.EDFScheduler">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
                 </property>
