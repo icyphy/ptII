@@ -1,21 +1,25 @@
 #!/bin/sh
 
 awk -F / '{
-     printf("(cd %s; cvs admin -kb ", $1)
-     for(i=2;i<=NF;i++) {
-        if (i>2) {
-	   printf("/");
-        }
-        printf("%s", $i);
-     }
-     printf(")\n");
-     if ($1 != last) {
+     if (last == "") {
          last = $1
-         print "(cd " last "; cvs commit -m \"Added -kb\"; cvs update)"
      }
+     if ($1 != last) {
+         print "(cd " last "; cvs commit -m \"Added -kb\"; cvs update)"
+         last = $1
+
+     }
+     filenames = filenames " " $2 "/"
+     for(i=3;i<NF;i++) {
+        filenames=filenames $i "/"
+     }
+     filenames = filenames $NF
+     print "(cd " last "; cvs admin -kb " filenames ")"
+     filenames=""    
 
  }
 END {
+	 print "(cd " last "; cvs admin -kb " filenames ")"
          print "(cd " last "; cvs commit -m \"Added -kb\"; cvs update)"
 }
 ' /tmp/ufb2

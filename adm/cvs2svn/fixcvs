@@ -29,11 +29,15 @@ for binary in $binaries
 do
 	#echo -n "."
 	#echo -n $binary
-	cvs status $binary | egrep -e "-kb$" > /dev/null
+	cvs status "$binary" | egrep -e "-kb$" > /dev/null
 	status=$?
 	if [ $status -ne 0 ]; then
-	    echo "`pwd`/$binary is not -kb?"
-	    finalResult=1
+	    file $binary | egrep " text" > /dev/null
+	    status=$?
+	    if [ $status -eq 1 -o $status -eq 2 ]; then
+		echo "`pwd`/$binary is not -kb?"
+		finalResult=1
+	    fi
         fi
 done
 IFS=$SAVEIFS

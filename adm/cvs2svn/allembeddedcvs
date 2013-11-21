@@ -1,0 +1,50 @@
+#!/bin/sh
+
+rm -rf repos cvs_embedded tmp.svn
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded abpd
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded apbd
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded asves
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded asvpapers
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded bear
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded blast
+#$PTII/adm/cvs2svn/cvsTosvn cvs_embedded bogusgroup
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded buildmaster
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded caltrop
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded cases
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded compaan
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded compose
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded concurrency
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded cosi
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded dif
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded diva
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded dopcenter
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded dopfpd
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded dopseating
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded dopsysadmin
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded eecsx44
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded elab
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded embeddedwww
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded giotto
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded healtheu
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded hyinfo
+#$PTII/adm/cvs2svn/cvsTosvn cvs_embedded inactive
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded m2t2
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded mescal
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded metropolis
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded mica
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded mobies
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded mocha
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded mocpaper
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded msgadmin
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded murieh
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded mvsis
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded platform
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded recons
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded sec
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded smartnets
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded systems
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded tsrc
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded video
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded webmaster
+$PTII/adm/cvs2svn/cvsTosvn cvs_embedded wow
+

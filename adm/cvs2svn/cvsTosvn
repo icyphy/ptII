@@ -28,22 +28,29 @@ if [ ! -d tmp.cvs/$cvsrepo ]; then
   fi    
   cd tmp.cvs
   cvs -d :ext:source.eecs.berkeley.edu:/home/$cvsrepohome co $cvsrepo
-  cd $cvsrepo
-  echo "Checking for -kb problems."
-  $PTII/adm/cvs2svn/fixcvs
-  status=$?
-  cd ../..
-  if [ $status -ne 0 ]; then
-     echo "fixcvs found some problems with files not being checked in.  Quitting."
-     exit $status
-  fi
+  cd ..
+fi
+
+cd tmp.cvs/$cvsrepo
+cvs update -P -d
+echo "Checking for -kb problems."
+$PTII/adm/cvs2svn/fixcvs
+status=$?
+cd ../..
+if [ $status -ne 0 ]; then
+  echo "fixcvs found some problems with files not being checked in.  Quitting."
+  exit $status
 fi
 
 
+
 if [ ! -d $cvsrepohome/$cvsrepo ]; then
+  if [ ! -d $cvsrepohome/$cvsrepo ]; then
+      mkdir -p $cvsrepohome/$cvsrepo
+  fi
   echo "Creating $cvsrepohome/$cvsrepo from source.eecs."
-  ssh source "cd /home; gtar zcf - --exclude=commitlogs $cvsrepohome/CVSROOT $cvsrepohome/$cvsrepo" > $cvsrepo.tar.gz
-  tar -zxf $cvsrepo.tar.gz
+  ssh source "cd /home; gtar zcf - --exclude=commitlogs $cvsrepohome/CVSROOT $cvsrepohome/$cvsrepo" > $cvsrepohome/$cvsrepo.tar.gz
+  (cd $cvsrepohome/$cvsrepo; tar -zxf ../$cvsrepo.tar.gz)
 fi
 
 if [ ! -d repos ]; then
@@ -56,8 +63,11 @@ if [ ! -f $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn ]; then
     exit 6
 fi
 
-echo "Converting the cvs repository."
-$PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn --default-eol=native --auto-props=/home/cxh/.subversion/config --fallback-encoding=utf8 -s repos/$cvsrepo $cvsrepohome
+echo "Converting the cvs repository `pwd`."
+set -x
+
+$PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn --default-eol=native --auto-props=/home/cxh/.subversion/config --fallback-encoding=utf8 -s repos/$cvsrepo $cvsrepohome/$cvsrepo/$cvsrepohome
+set +x
 
 echo "Checking out the $cvsrepo svn repository."
 svnrepo=file:///`pwd`/repos/$cvsrepo
@@ -75,7 +85,7 @@ svn mv trunk/$cvsrepo/* .
 svn commit -m "After conversion from cvs to svn, moved trunk/$cvsrepo to the toplevel."
 cd ../..
 
-diff -I '\$Id:' -r tmp.cvs/$cvsrepo tmp.svn/$cvsrepo | egrep -v 'Only in.*CVS$'
+diff -w -I '\$Author:' -I '\$Date:' -I '\$Header' -I '\$Revision:' -I '\$Id' -r tmp.cvs/$cvsrepo tmp.svn/$cvsrepo | egrep -v 'Only in.*CVS$'
 
 
 
