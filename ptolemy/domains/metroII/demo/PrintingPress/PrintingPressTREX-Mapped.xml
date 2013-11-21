@@ -4,13 +4,13 @@
 <entity name="PrintingPressTREX-Mapped" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 320, 1041, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 321, 1041, 607}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[827, 516]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{102.39999999999765, 65.40000000000006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{102.39999999999773, 65.40000000000006}">
     </property>
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
@@ -19,7 +19,7 @@
             <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="700">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="660">
         </property>
         <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="PrintingPressTREX-Mapping.csv">
         </property>

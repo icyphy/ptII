@@ -438,6 +438,7 @@ public class MetroIIDirector extends Director {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setExpression("-1");
+        stopTime.setExpression("-1");
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
         printTrace.setExpression("true");
