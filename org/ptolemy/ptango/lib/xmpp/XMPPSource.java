@@ -58,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
  *  @see XMPPGateway
  *  @author Marten Lohstroh
  *  @version $Id$
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 9.0
  *  @Pt.ProposedRating Red (marten)
  *  @Pt.AcceptedRating Red (marten)
  */
@@ -209,12 +209,6 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         // the lock so that initialize may be called.  Further invocations of
         // handlePublishedItems might also be called, but these will also wait
         // for initialize().
-        // Note this implementation does NOT guarantee that items will be
-        // handled in order of receipt.  If multiple handlePublishedItems()
-        // methods are blocked, this.notify() will activate one of them, but
-        // there is no guarantee as to which one.  It's possible that a later
-        // invocation of handlePublishedItems() would obtain the lock before
-        // an earlier invocation.
         while (!_hasInitialized) {
             try {
                 this.wait(0);
@@ -225,7 +219,6 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         }
 
         _handlePublishedItems(items);
-        this.notify(); // Notify other handlePublishedItems methods waiting
     }
 
     /** Set _hasInitialized to false, so that invocations of
@@ -263,18 +256,21 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
         // actor. This lock _is_ released while waiting for the response,
         // allowing the fire method to execute its own synchronized blocks.
         synchronized (lock) {
+            Object o;
+            PayloadItem<?> item = (PayloadItem<?>) items.getItems().get(0);
+
             _hasFired = false;
-            // FIXME: unchecked cast
-            PayloadItem<SimplePayload> item = (PayloadItem<SimplePayload>) items
-                    .getItems().get(0);
-            SimplePayload payload = item.getPayload();
-            _currentValue = payload.toXML();
+
+            if ((o = item.getPayload()) instanceof SimplePayload) {
+                SimplePayload payload = (SimplePayload) o;
+                _currentValue = payload.toXML();
+            } else {
+                return; // published item has no recognized pay load
+            }
 
             try {
                 long elapsedRealTime = System.currentTimeMillis()
                         - _initializeRealTime;
-                // Assume model time is in seconds, not milliseconds.
-                elapsedRealTime = elapsedRealTime / 1000;
                 Time timeOfRequest = _initializeModelTime.add(elapsedRealTime);
                 // Note that fireAt() will modify the requested firing time if it is in the past.
                 getDirector().fireAt(XMPPSource.this, timeOfRequest);
@@ -311,6 +307,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
                     break;
                 }
             }
+
         }
     }
 
