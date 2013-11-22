@@ -2259,8 +2259,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Check the inline value
         boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
         if (inlineValue && director != null && director instanceof DEDirector) {
-            throw new IllegalActionException(
-                    "Inline is not relevant for a DE model !");
+            inline.setExpression("false");
+            System.out.println("inline was set to true, which is not relevant to a DE model, "
+                    + "so it is being reset to false.");
         }
 
         // Create the needed directories
