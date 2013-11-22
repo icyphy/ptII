@@ -129,7 +129,7 @@
                 <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
                 </property>
             </property>
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -147,7 +147,7 @@
     </property>
     <property name="droid_tabs" class="ptolemy.kernel.util.Attribute">
         <property name="tab_" class="ptolemy.kernel.util.StringAttribute" value="Time">
-            <property name="label" class="ptolemy.data.expr.Parameter" value="Time Domain analysis">
+            <property name="label" class="ptolemy.data.expr.StringParameter" value="Time Domain analysis">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
@@ -175,7 +175,7 @@
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -190,7 +190,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 65.0">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;sink&quot;">
         </property>
         <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -227,7 +227,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 135.0">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;sink&quot;">
         </property>
         <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -286,7 +286,7 @@
         <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">

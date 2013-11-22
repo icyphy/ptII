@@ -20,7 +20,7 @@
     </property>
     <property name="Const" class="ptolemy.kernel.util.StringAttribute">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -52,7 +52,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 135.0]">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;sink&quot;">
         </property>
         <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
         </property>

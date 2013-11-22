@@ -46,7 +46,7 @@
     </property>
     <property name="AudioReader" class="ptolemy.kernel.util.StringAttribute">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -112,7 +112,7 @@
             </property>
         </property>
         <property name="transferSize" class="ptolemy.actor.parameters.SharedParameter" value="128">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -125,7 +125,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 190.0">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;sink&quot;">
         </property>
     </entity>
     <entity name="AudioPlayer_remote" class="ptserver.actor.ProxySource">
@@ -169,7 +169,7 @@
             </property>
         </property>
         <property name="transferSize" class="ptolemy.actor.parameters.SharedParameter" value="128">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
         </property>
         <property name="bufferSize" class="ptolemy.actor.parameters.SharedParameter" value="1024">

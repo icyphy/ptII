@@ -20,7 +20,7 @@
     </property>
     <property name="bb" class="ptolemy.kernel.util.StringAttribute">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[126, 66, 205, 122]">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
         </property>
     </property>
@@ -35,13 +35,13 @@
     <entity name="BoundingBox" class="ptserver.actor.lib.tld.BoundingBox">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 155.0]">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;sink&quot;">
         </property>
     </entity>
     <entity name="Video" class="ptserver.actor.lib.tld.Video">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 145.0]">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="source">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;source&quot;">
         </property>
         <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
         </property>

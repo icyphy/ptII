@@ -516,9 +516,9 @@ public class ServerUtility {
 
     /**
      * Attribute value indicating that the parent attribute is a remote attribute -
-     * it's value needs to synchronized between client and server models.
+     * its value needs to synchronized between client and server models.
      */
-    public static final String REMOTE_ATTRIBUTE = "attribute";
+    public static final String REMOTE_ATTRIBUTE = "\"attribute\"";
     /**
      * Attribute name indicating that the named object needs to be handled by the ProxyModelBuilder.
      */
@@ -526,9 +526,9 @@ public class ServerUtility {
     /**
      * Attribute value indicating that the actor is a source.
      */
-    public static final String PROXY_SOURCE_ATTRIBUTE = "source";
+    public static final String PROXY_SOURCE_ATTRIBUTE = "\"source\"";
     /**
      * Attribute value indicating that the actor is a sink.
      */
-    public static final String PROXY_SINK_ATTRIBUTE = "sink";
+    public static final String PROXY_SINK_ATTRIBUTE = "\"sink\"";
 }

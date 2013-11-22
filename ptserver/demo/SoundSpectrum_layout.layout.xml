@@ -123,7 +123,7 @@
     </property>
     <property name="FFT" class="ptolemy.kernel.util.StringAttribute">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -143,7 +143,7 @@
                 <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
                 </property>
             </property>
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -167,7 +167,7 @@
                 <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
                 </property>
             </property>
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -191,7 +191,7 @@
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -214,7 +214,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 65.0">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;sink&quot;">
         </property>
         <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -240,7 +240,7 @@
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -256,7 +256,7 @@
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
             <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -273,7 +273,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 135.0">
         </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;sink&quot;">
         </property>
         <property name="droid_enabled" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -311,7 +311,7 @@
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {508, 378, 508, 348}, maximized = false}">
@@ -330,7 +330,7 @@
 </configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
         </property>
         <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="1">
@@ -355,7 +355,7 @@
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="&quot;attribute&quot;">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 378, 508, 348}, maximized = false}">
