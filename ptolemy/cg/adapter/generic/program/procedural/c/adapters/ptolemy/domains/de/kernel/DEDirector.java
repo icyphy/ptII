@@ -93,7 +93,6 @@ public class DEDirector extends PortDirector {
      */
     public DEDirector(ptolemy.domains.de.kernel.DEDirector deDirector) {
         super(deDirector);
-        ports = new Ports(getComponent(), getCodeGenerator(), this);
     }
 
     ///////////////////////////////////////////////////////////////////

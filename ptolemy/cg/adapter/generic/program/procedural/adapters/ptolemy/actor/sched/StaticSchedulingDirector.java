@@ -91,12 +91,6 @@ public class StaticSchedulingDirector extends PortDirector {
     public StaticSchedulingDirector(
             ptolemy.actor.sched.StaticSchedulingDirector staticSchedulingDirector) {
         super(staticSchedulingDirector);
-        ports = new Ports(getComponent(), getCodeGenerator(), this);
-
-    /** The meta information about the ports in the container. */
-        //public Ports ports = new Ports();
-
-
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -74,17 +74,26 @@ import ptolemy.util.StringUtilities;
  */
 public class Ports {
 
-    public Ports(NamedObj component, GenericCodeGenerator codeGenerator, PortDirector director) {
+    /** Create a Ports instance.
+     *  @param component The component for which we are doing
+     *  extra bookkeeping to generate code.
+     *  @param director The director associated with the ports.
+     */
+    public Ports(NamedObj component, PortDirector director) {
         _component = component;
-        _codeGenerator = codeGenerator;
         _director = director;
     }
+
+    /** Return the code generator associated with the director.
+     *  @return the director.
+     */
     public GenericCodeGenerator getCodeGenerator() {
-        return _codeGenerator;
+        return _director.getCodeGenerator();
     }
 
-    private NamedObj _component;
-
+    /** Return the component associated with the ports.
+     *  @return the component.
+     */
     public NamedObj getComponent() {
         return _component;
     }
@@ -286,7 +295,7 @@ public class Ports {
                 }
             }
             if (info == null) {
-                info = new PortInfo(port, this, _component, _codeGenerator, _director);
+                info = new PortInfo(port, this, _component, _director);
             }
             _portInfo.put(port, info);
         } else {
@@ -298,8 +307,10 @@ public class Ports {
     /** A map from IOPort to PortInfo. */
     protected Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
 
-    private GenericCodeGenerator _codeGenerator;
+    /** The component associated with the ports. */
+    private NamedObj _component;
 
+    /** The director associated with the ports. */
     private PortDirector _director;
 }
 

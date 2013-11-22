@@ -79,17 +79,19 @@ public class PortInfo {
     /** Create a PortInfo instance.
      *  @param port The port for which we are doing
      *  extra bookkeeping to generate code.
+     *  @param component The component for which we are doing
+     *  extra bookkeeping to generate code.
+     *  @param director The director associated with the ports.
      */
-    public PortInfo(IOPort port, Ports ports, NamedObj component, GenericCodeGenerator codeGenerator, PortDirector director) {
+    public PortInfo(IOPort port, Ports ports, NamedObj component, PortDirector director) {
         _port = port;
         _ports = ports;
         _component = component;
-        _codeGenerator = codeGenerator;
         _director = director;
     }
 
     public GenericCodeGenerator getCodeGenerator() {
-        return _codeGenerator;
+        return _director.getCodeGenerator();
     }
 
     /** Get the buffer size of channel of the port.
@@ -353,6 +355,12 @@ public class PortInfo {
 
         //Receiver receiver = _getReceiver(null, 0, _port);
 
+        if (getCodeGenerator() == null) {
+            throw new NullPointerException("getCodeGenerator() returned null?");
+        }
+        if (_director == null) {
+            throw new NullPointerException("_director == null?");
+        }
         StringBuffer code = new StringBuffer(
                 getCodeGenerator()
                 .comment(
@@ -574,8 +582,6 @@ public class PortInfo {
     private Ports _ports;
 
     private NamedObj _component;
-
-    private GenericCodeGenerator _codeGenerator;
 
     protected static final String _eol;
     static {

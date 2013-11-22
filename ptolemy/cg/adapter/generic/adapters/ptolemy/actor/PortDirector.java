@@ -71,6 +71,7 @@ public abstract class PortDirector extends Director {
      */
     public PortDirector(ptolemy.actor.Director director) {
         super(director);
+        ports = new Ports(getComponent(), this);
     }
 
     ///////////////////////////////////////////////////////////////////
