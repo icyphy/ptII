@@ -113,7 +113,7 @@ public class SDFDirector
                 StringBuffer inputCode = new StringBuffer();
                 boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
                 inputCode.append(CodeGeneratorAdapter.generateName(inputPort));
-                int bufferSize = _ports.getBufferSize(inputPort);
+                int bufferSize = ports.getBufferSize(inputPort);
                 if (inputPort.isMultiport()) {
                     inputCode.append("[" + Integer.toString(i) + "]");
                     if (bufferSize > 1 || dynamicReferencesAllowed) {
@@ -211,7 +211,7 @@ public class SDFDirector
                     outputCode.append("[" + Integer.toString(i) + "]");
                 }
 
-                int bufferSize = _ports.getBufferSize(outputPort);
+                int bufferSize = ports.getBufferSize(outputPort);
 
                 if (bufferSize > 1) {
                     throw new InternalErrorException(

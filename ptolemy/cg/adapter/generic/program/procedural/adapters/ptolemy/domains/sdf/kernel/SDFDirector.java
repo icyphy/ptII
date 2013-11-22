@@ -217,7 +217,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             while (inputPorts.hasNext()) {
                 IOPort port = (IOPort) inputPorts.next();
-                resetCode.append(_ports.initializeOffsets(port));
+                resetCode.append(ports.initializeOffsets(port));
             }
 
             if (resetCode.length() > 0) {
@@ -390,7 +390,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
-                _ports.setReadOffset(port, i, channelReadOffset + "[" + i + "]");
+                ports.setReadOffset(port, i, channelReadOffset + "[" + i + "]");
             }
             channelReadOffset += "[" + width + "]";
             code.append("static int " + channelReadOffset + ";\n");
@@ -402,7 +402,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
-                _ports.setWriteOffset(port, i, channelWriteOffset + "[" + i
+                ports.setWriteOffset(port, i, channelWriteOffset + "[" + i
                         + "]");
             }
             channelWriteOffset += "[" + width + "]";
@@ -438,12 +438,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                 for (int i = 0; i < port.getWidth(); i++) {
                     int bufferSize = this
                     /*called on the director*/.getBufferSize(port, i);
-                    _ports.setBufferSize(port, i, bufferSize);
+                    ports.setBufferSize(port, i, bufferSize);
                 }
 
                 for (int i = 0; i < length; i++) {
-                    _ports.setReadOffset(port, i, Integer.valueOf(0));
-                    _ports.setWriteOffset(port, i, Integer.valueOf(0));
+                    ports.setReadOffset(port, i, Integer.valueOf(0));
+                    ports.setWriteOffset(port, i, Integer.valueOf(0));
                 }
             }
         }
@@ -473,7 +473,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         boolean padBuffers = padBuffers();
 
-        int bufferSize = _ports.getBufferSize(port, channelNumber);
+        int bufferSize = ports.getBufferSize(port, channelNumber);
 
         // Increase the buffer size of that channel to the power of two.
         if (bufferSize > 0 && padBuffers) {
@@ -507,7 +507,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 //        + adapter.getReadOffset(port, channelNumber) + ";\n");
                 code.append("static int " + channelReadOffsetVariable + ";\n");
                 // Now replace the concrete offset with the variable.
-                _ports.setReadOffset(port, channelNumber,
+                ports.setReadOffset(port, channelNumber,
                         channelReadOffsetVariable);
             }
 
@@ -525,7 +525,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         .toString();
                 code.append("static int " + channelWriteOffsetVariable + ";\n");
                 // Now replace the concrete offset with the variable.
-                _ports.setWriteOffset(port, channelNumber,
+                ports.setWriteOffset(port, channelNumber,
                         channelWriteOffsetVariable);
             }
         }
@@ -651,9 +651,9 @@ public class SDFDirector extends StaticSchedulingDirector {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 for (int k = 0; k < inputPort.getWidth(); k++) {
                     int newCapacity = getBufferSize(inputPort, k);
-                    int oldCapacity = _ports.getBufferSize(inputPort, k);
+                    int oldCapacity = ports.getBufferSize(inputPort, k);
                     if (newCapacity > oldCapacity) {
-                        _ports.setBufferSize(inputPort, k, newCapacity);
+                        ports.setBufferSize(inputPort, k, newCapacity);
                     }
                 }
             }
@@ -664,9 +664,9 @@ public class SDFDirector extends StaticSchedulingDirector {
             IOPort outputPort = (IOPort) outputPorts.next();
             for (int k = 0; k < outputPort.getWidthInside(); k++) {
                 int newCapacity = getBufferSize(outputPort, k);
-                int oldCapacity = _ports.getBufferSize(outputPort, k);
+                int oldCapacity = ports.getBufferSize(outputPort, k);
                 if (newCapacity > oldCapacity) {
-                    _ports.setBufferSize(outputPort, k, newCapacity);
+                    ports.setBufferSize(outputPort, k, newCapacity);
                 }
             }
         }
@@ -867,12 +867,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // for all possible schedules.
                 int bufferSize = this
                 /*directorAdapter*/.getBufferSize(port, i);
-                _ports.setBufferSize(port, i, bufferSize);
+                ports.setBufferSize(port, i, bufferSize);
             }
 
             for (int i = 0; i < length; i++) {
-                _ports.setReadOffset(port, i, Integer.valueOf(0));
-                _ports.setWriteOffset(port, i, Integer.valueOf(0));
+                ports.setReadOffset(port, i, Integer.valueOf(0));
+                ports.setWriteOffset(port, i, Integer.valueOf(0));
             }
         }
     }
@@ -888,9 +888,9 @@ public class SDFDirector extends StaticSchedulingDirector {
     private int _padBuffer(IOPort port, int channelNumber)
             throws IllegalActionException {
 
-        int bufferSize = _ports.getBufferSize(port, channelNumber);
+        int bufferSize = ports.getBufferSize(port, channelNumber);
         int newBufferSize = _ceilToPowerOfTwo(bufferSize);
-        _ports.setBufferSize(port, channelNumber, newBufferSize);
+        ports.setBufferSize(port, channelNumber, newBufferSize);
 
         return newBufferSize;
     }
@@ -911,19 +911,19 @@ public class SDFDirector extends StaticSchedulingDirector {
             IOPort port = (IOPort) outputPorts.next();
 
             for (int i = 0; i < port.getWidthInside(); i++) {
-                Object readOffset = _ports.getReadOffset(port, i);
+                Object readOffset = ports.getReadOffset(port, i);
                 if (readOffset instanceof Integer) {
                     // Read offset is a number.
-                    _ports.setReadOffset(port, i, Integer.valueOf(0));
+                    ports.setReadOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Read offset is a variable.
                     code.append(CodeStream.indent((String) readOffset + " = 0;"
                             + _eol));
                 }
-                Object writeOffset = _ports.getWriteOffset(port, i);
+                Object writeOffset = ports.getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
                     // Write offset is a number.
-                    _ports.setWriteOffset(port, i, Integer.valueOf(0));
+                    ports.setWriteOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Write offset is a variable.
                     code.append(CodeStream.indent((String) writeOffset

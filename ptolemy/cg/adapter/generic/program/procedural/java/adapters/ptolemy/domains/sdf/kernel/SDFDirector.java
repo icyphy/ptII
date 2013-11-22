@@ -115,13 +115,13 @@ public class SDFDirector
 
             StringBuffer code2 = new StringBuffer();
             // Input ports that are multirate or have a width > 1
-            Iterator<?> ports = container.inputPortList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort) ports.next();
+            Iterator<?> inputPorts = container.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort) inputPorts.next();
                 int rate = DFUtilities.getTokenInitConsumption(port);
                 if (rate > 0) {
 
-                    int bufferSize = _ports.getBufferSize(port);
+                    int bufferSize = ports.getBufferSize(port);
                     code2.append(generatePortName(port)
                             + " = new "
                             + targetType(port.getType())
@@ -140,12 +140,12 @@ public class SDFDirector
             }
 
             // Output ports that are multirate or have a width > 1
-            ports = container.outputPortList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort) ports.next();
+            Iterator<?> outputPorts = container.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort) outputPorts.next();
                 int rate = DFUtilities.getTokenInitProduction(port);
                 if (rate > 0) {
-                    int bufferSize = _ports.getBufferSize(port);
+                    int bufferSize = ports.getBufferSize(port);
                     code2.append(generatePortName(port)
                             + " = new "
                             + targetType(port.getType())
@@ -195,11 +195,11 @@ public class SDFDirector
                                 .comment(
                                         "Java SDFDirector: variablesAsArrays is true initialized elements in ports3"));
                         // Initialize elements in ports3_
-                        ports = actor.outputPortList().iterator();
-                        while (ports.hasNext()) {
-                            TypedIOPort port = (TypedIOPort) ports.next();
+                        outputPorts = actor.outputPortList().iterator();
+                        while (outputPorts.hasNext()) {
+                            TypedIOPort port = (TypedIOPort) outputPorts.next();
                             int rate = DFUtilities.getTokenInitProduction(port);
-                            int bufferSize = _ports.getBufferSize(port);
+                            int bufferSize = ports.getBufferSize(port);
                             if (port.isMultiport() && rate > 0) {
                                 code.append(generatePortName(port)
                                         + " = new "
@@ -724,7 +724,7 @@ public class SDFDirector
         }
         code.append(generatePortName(port));
 
-        int bufferSize = _ports.getBufferSize(port);
+        int bufferSize = ports.getBufferSize(port);
 
         if (port.isMultiport()) {
             if (!variablesAsArrays) {

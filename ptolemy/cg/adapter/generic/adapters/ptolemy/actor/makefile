@@ -57,6 +57,9 @@ PTCLASSALLJARS =
 # Keep this list alphabetized.
 JSRCS = \
 	Director.java \
+	PortDirector.java \
+	Ports.java \
+	PortInfo.java \
 	TypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = 

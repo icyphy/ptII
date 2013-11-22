@@ -733,16 +733,16 @@ public class SDFDirector
                         channelAndOffset[1] = "0";
                     }
 
-                    //                    result.append(_ports.generateOffset(sinkPort,
+                    //                    result.append(ports.generateOffset(sinkPort,
                     //                            channelAndOffset[1], sinkChannelNumber, true));
 
-                    String res = _ports.generateOffset(sinkPort,
+                    String res = ports.generateOffset(sinkPort,
                             channelAndOffset[1], sinkChannelNumber, true);
                     if (res.equals("")) {
                         if (sinkPort.getContainer() instanceof CompositeActor) {
                             SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor) sinkPort
                                     .getContainer()).getDirector());
-                            result.append(directorAdapter._ports
+                            result.append(directorAdapter.ports
                                     .generateOffset(sinkPort,
                                             channelAndOffset[1],
                                             sinkChannelNumber, true));
@@ -775,15 +775,15 @@ public class SDFDirector
 
             //if (port.getContainer() instanceof CompositeActor) {
             //                SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor)port.getContainer()).getDirector());
-            //                result.append(directorAdapter._ports.generateOffset(port,
+            //                result.append(directorAdapter.ports.generateOffset(port,
             //                        channelAndOffset[1], channelNumber, isWrite));
-            result.append(_ports.generateOffset(port, channelAndOffset[1],
+            result.append(ports.generateOffset(port, channelAndOffset[1],
                     channelNumber, isWrite));
             //} else {
-            //result.append(_ports.generateOffset(port, channelAndOffset[1],
+            //result.append(ports.generateOffset(port, channelAndOffset[1],
             //        channelNumber, isWrite));
             //}
-            //            result.append(_ports.generateOffset(port, channelAndOffset[1],
+            //            result.append(ports.generateOffset(port, channelAndOffset[1],
             //                    channelNumber, isWrite));
 
             return result.toString();
@@ -812,9 +812,9 @@ public class SDFDirector
                 IOPort inputPort = (IOPort) inputPorts.next();
                 for (int k = 0; k < inputPort.getWidth(); k++) {
                     int newCapacity = getBufferSize(inputPort, k);
-                    int oldCapacity = _ports.getBufferSize(inputPort, k);
+                    int oldCapacity = ports.getBufferSize(inputPort, k);
                     if (newCapacity > oldCapacity) {
-                        _ports.setBufferSize(inputPort, k, newCapacity);
+                        ports.setBufferSize(inputPort, k, newCapacity);
                     }
                 }
             }
@@ -825,9 +825,9 @@ public class SDFDirector
                     IOPort outputPort = (IOPort) outputPorts.next();
                     for (int k = 0; k < outputPort.getWidth(); k++) {
                         int newCapacity = getBufferSize(outputPort, k);
-                        int oldCapacity = _ports.getBufferSize(outputPort, k);
+                        int oldCapacity = ports.getBufferSize(outputPort, k);
                         if (newCapacity > oldCapacity) {
-                            _ports.setBufferSize(outputPort, k, newCapacity);
+                            ports.setBufferSize(outputPort, k, newCapacity);
                         }
                     }
                 }
@@ -840,9 +840,9 @@ public class SDFDirector
             IOPort outputPort = (IOPort) outputPorts.next();
             for (int k = 0; k < outputPort.getWidthInside(); k++) {
                 int newCapacity = getBufferSize(outputPort, k);
-                int oldCapacity = _ports.getBufferSize(outputPort, k);
+                int oldCapacity = ports.getBufferSize(outputPort, k);
                 if (newCapacity > oldCapacity) {
-                    _ports.setBufferSize(outputPort, k, newCapacity);
+                    ports.setBufferSize(outputPort, k, newCapacity);
                 }
             }
         }
@@ -852,9 +852,9 @@ public class SDFDirector
             IOPort inputPort = (IOPort) inputPorts.next();
             for (int k = 0; k < inputPort.getWidth(); k++) {
                 int newCapacity = getBufferSize(inputPort, k);
-                int oldCapacity = _ports.getBufferSize(inputPort, k);
+                int oldCapacity = ports.getBufferSize(inputPort, k);
                 if (newCapacity > oldCapacity) {
-                    _ports.setBufferSize(inputPort, k, newCapacity);
+                    ports.setBufferSize(inputPort, k, newCapacity);
                 }
             }
         }
