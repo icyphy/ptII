@@ -355,11 +355,11 @@ public class PortInfo {
 
         //Receiver receiver = _getReceiver(null, 0, _port);
 
-        if (getCodeGenerator() == null) {
-            throw new NullPointerException("getCodeGenerator() returned null?");
-        }
         if (_director == null) {
             throw new NullPointerException("_director == null?");
+        }
+        if (getCodeGenerator() == null) {
+            throw new NullPointerException("getCodeGenerator() returned null?");
         }
         StringBuffer code = new StringBuffer(
                 getCodeGenerator()
