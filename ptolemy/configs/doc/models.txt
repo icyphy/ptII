@@ -284,7 +284,7 @@ $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/ThreadB.xml
 $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/ThreadBNotifies.xml
 $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/Trigger.xml
 $CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/UNKNOWN.xml
-$CLASSPATH/ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.xml
+$CLASSPATH/ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelicaInteractive.xml
 $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.xml
 $CLASSPATH/ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.xml
 $CLASSPATH/ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.xml
