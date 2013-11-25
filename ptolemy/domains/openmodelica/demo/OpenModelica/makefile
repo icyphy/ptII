@@ -53,9 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 	dcmotor.mo \
 	OpenModelicaInherit.xml \
 	OpenModelicaInteractive.xml \
-	OpenModelica.jar \
 	OpenModelicaPltPlot.xml \
-	OpenModelica.xml \
 	OpenModelicaXYPlotter.xml
 
 EXTRA_SRCS = \
