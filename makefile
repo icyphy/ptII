@@ -164,15 +164,25 @@ DISTCLEAN_STUFF = \
 
 # The first rule is make fast so that if a user types 'make' they will 
 # get make fast
-default: fast 
+default: antAllMessage fast 
+
+antAllMessage:
+	@echo "----------------"
+	@echo "Warning: Please consider running 'ant' instead of make, it is faster.  See $$PTII/doc/coding/ant.htm.  Then run (cd $$PTII/bin; make)."
+	@echo "----------------"
 
 # Make copyright.txt readonly so that when we open up the text editor
 # we open up a readonly texteditor
-all: mk/ptII.mk suball
+all: mk/ptII.mk antAllMessage suball
 	chmod a-w copyright.txt
 
-install: subinstall $(PTCLASSALLJAR)
 
+install: antInstallMessage subinstall $(PTCLASSALLJAR)
+
+antInstallMessage:
+	@echo "----------------"
+	@echo "Warning: Please consider running 'ant jars' instead of make install, it is faster.  See $$PTII/doc/coding/ant.htm"
+	@echo "----------------"
 # Glimpse is a tool that prepares an index of a directory tree.
 # glimpse is not included with Ptolemy II, see http://glimpse.cs.arizona.edu
 GLIMPSEINDEX =	/usr/local/bin/glimpseindex
