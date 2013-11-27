@@ -1,0 +1,72 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HelloWorldStop" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 287, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="FMIDirector" class="ptolemy.domains.fmi.kernel.FMIDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 90.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The FMIDirector attribute was created by doing &#10;Graph -&gt; Instantiate Attribute&#10;and then entering &#10;ptolemy.domains.fmi.kernel.FMIDirector&#10;&#10;The FMIDirector is based on the DoNothingDirector.&#10;&#10;The FMI Master Algorithm should be implemented&#10;in the fire() method.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The helloWorld FMU was created via &#10;File -&gt; Import -&gt; Import FMU as Java FMU.&#10;&#10;The class that implements the import is &#10;ptolemy/vergil/basic/imprt/fmu/ImportFMUAsJavaFMUAction.java&#10;&#10;ptolemy.domains.fmi.lib.FMU is a copy of ptolemy.actor.lib.fmi.FMUImport&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 300.0]">
+        </property>
+    </property>
+    <entity name="helloWorld" class="ptolemy.domains.fmi.lib.FMU">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/fmi/lib/test/auto/nonTerminatingTests/helloWorld.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 245.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 245.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="helloWorld.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.output" relation="relation"/>
+    <link port="Stop.input" relation="relation"/>
+</entity>
