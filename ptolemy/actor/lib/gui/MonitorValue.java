@@ -91,6 +91,12 @@ public class MonitorValue extends Sink implements PortablePlaceable {
         initial = new Parameter(this, "initial");
 
         value = new Parameter(this, "value");
+
+        // The value parameter should not be persistent so that when
+        // we save and load
+        // doc/books/systems/types/test/auto/ObjectType.xml we avoid
+        // an error because ObjectTokens are not parseable.
+        value.setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
