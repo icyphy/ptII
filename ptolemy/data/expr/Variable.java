@@ -774,7 +774,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @param listener The listener to remove.
      *  @see #addValueListener(ValueListener)
      */
-    public void removeValueListener(ValueListener listener) {
+    public synchronized void removeValueListener(ValueListener listener) {
     	// This does not need to be synchronized because the listener
     	// list is a CopyOnWriteArrayList.
         if (_valueListeners != null) {
