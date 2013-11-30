@@ -287,12 +287,21 @@ public class PortParameter extends AbstractInitializableParameter implements
     public ParameterPort getPort() {
         return _port;
     }
-
+    
     /** Reset the current value to match the persistent value.
      *  @exception IllegalActionException If thrown by a subclass.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        super.setExpression(_persistentExpression);
+        validate();
+    }
+    
+    /** Reset the current value to match the persistent value.
+     *  @exception IllegalActionException If thrown by a subclass.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         super.setExpression(_persistentExpression);
         validate();
     }
