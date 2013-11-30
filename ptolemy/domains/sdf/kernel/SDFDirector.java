@@ -776,6 +776,9 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
         if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
+            if (_debugging) {
+            	_debug("Reached specified number of iterations: " + iterationsValue);
+            }
             return false;
         }
 
