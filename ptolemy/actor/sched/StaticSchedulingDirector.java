@@ -212,6 +212,9 @@ public class StaticSchedulingDirector extends Director {
 
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
+                if (_debugging) {
+                	_debug("Actor requests no more firings: " + actor.getFullName());
+                }
             } else if (returnValue == NOT_READY) {
                 // See de/test/auto/knownFailedTests/DESDFClockTest.xml
                 throw new IllegalActionException(this, actor, "Actor "
