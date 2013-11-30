@@ -316,6 +316,7 @@ public class DFUtilities {
                 }
 
                 rateParameter.setExpression(value);
+                rateParameter.validate();
             } catch (KernelException ex) {
                 throw new InternalErrorException(port, ex, "Should not occur");
             }
