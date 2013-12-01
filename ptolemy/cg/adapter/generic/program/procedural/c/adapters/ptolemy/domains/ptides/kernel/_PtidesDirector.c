@@ -309,7 +309,7 @@ void PtidesDirector_Preinitialize(struct PtidesDirector* director) {
 bool PtidesDirector__CheckForNextEvent(struct PtidesDirector* director) {
         return true;
 }
-void PtidesDirector__EnqueueTriggerEvent(struct PtidesDirector* director, struct IOPort* ioPort, Token token,
+void PtidesDirector__EnqueueTriggerEvent(struct PtidesDirector* director, struct IOPort* ioPort, Token* token,
         struct Receiver* receiver) {
         struct Actor* actor = (struct Actor*) ioPort->container;
 

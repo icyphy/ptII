@@ -81,7 +81,7 @@ struct PtidesDirector {
         Time _nextFireTime;
         PblMap* _superdenseDependencyPair;
 
-        void (*_enqueueTriggerEvent1)(struct PtidesDirector*, struct IOPort*, Token, struct Receiver*);
+        void (*_enqueueTriggerEvent1)(struct PtidesDirector*, struct IOPort*, Token*, struct Receiver*);
         struct Actor* (*_getNextActorFrom)(struct PtidesDirector*, struct CalendarQueue*);
         struct SuperdenseDependency (*_getSuperdenseDependencyPair)(struct PtidesDirector*,
                         struct IOPort*, struct IOPort*);
@@ -113,7 +113,7 @@ bool PtidesDirector_Postfire(struct PtidesDirector* director);
 bool PtidesDirector_Prefire(struct PtidesDirector* director) ;
 void PtidesDirector_Preinitialize(struct PtidesDirector* director);
 bool PtidesDirector__CheckForNextEvent(struct PtidesDirector* director);
-void PtidesDirector__EnqueueTriggerEvent(struct PtidesDirector* director, struct IOPort* ioPort, Token token,
+void PtidesDirector__EnqueueTriggerEvent(struct PtidesDirector* director, struct IOPort* ioPort, Token* token,
         struct Receiver* receiver);
 struct Actor* PtidesDirector__GetNextActorToFire(struct PtidesDirector* director);
 struct Actor* PtidesDirector__GetNextActorFrom(struct PtidesDirector* director, struct CalendarQueue* queue);

@@ -70,11 +70,11 @@ bool PtidesPlatformDirector_TransferInputs(struct PtidesPlatformDirector* direct
 
         for (int channelIndex = 0; channelIndex < port->getWidth(port); channelIndex++) {
                 if (port->hasToken(port, channelIndex)) {
-                        Token t = port->get(port, channelIndex);
+                        Token* t = port->get(port, channelIndex);
 
                         struct PtidesPort* associatedPort = ((struct PtidesPort*) port)->_associatedPort;
                         if (associatedPort->isNetworkReceiverPort(associatedPort)) {
-                                RecordToken r = t.payload.Record;
+                                RecordToken r = t->payload.Record;
                                 Time recordTimestamp = r->timestamp;
                                 int recordMicrostep = r->microstep;
                                 Time sourceTimestamp = director->getModelTime(director);
@@ -89,7 +89,7 @@ bool PtidesPlatformDirector_TransferInputs(struct PtidesPlatformDirector* direct
                                                 newEvent->_timestamp = recordTimestamp;
                                                 newEvent->_microstep = recordMicrostep;
                                                 newEvent->_depth = -1;
-                                                newEvent->_token = *(r->payload);
+                                                newEvent->_token = (r->payload);
                                                 newEvent->_receiver = pblListGet(receivers, i);
                                                 newEvent->_sourceTimestamp = sourceTimestamp;
                                                 ptidesDirector->addInputEvent(ptidesDirector, associatedPort,
@@ -127,7 +127,7 @@ bool PtidesPlatformDirector_TransferOutputs1(struct PtidesPlatformDirector* dire
         bool result = false;
         for (int i = 0; i < port->getWidthInside(port); i++) {
                 while (port->hasTokenInside(port, i)) {
-                        Token t = port->getInside(port, i);
+                        Token* t = port->getInside(port, i);
                         struct PtidesPort* associatedPort = port->_associatedPort;
                                 if (associatedPort->isNetworkTransmitterPort(associatedPort)) {
                                 struct PtidesDirector* ptidesDirector =
@@ -138,7 +138,7 @@ bool PtidesPlatformDirector_TransferOutputs1(struct PtidesPlatformDirector* dire
                                 associatedPort->_getTimeStampForToken(associatedPort, t, timestamps);
                                 Time timestamp = timestamps[0];
                                 //Time sourceTimestamp = timestamps[1];
-                                Token record = Record_new(timestamp, ptidesDirector->getMicrostep(ptidesDirector), t);
+                                Token* record = Record_new(timestamp, ptidesDirector->getMicrostep(ptidesDirector), t);
                                 port->send(port, i, record);
                         } else {
                                 port->send(port, i, t);

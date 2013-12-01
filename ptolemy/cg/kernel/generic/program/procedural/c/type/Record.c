@@ -1,9 +1,9 @@
 /*** Record_add() ***/
-Token* Record_add(Token *thisToken, ...) {
+Token* Record_add(Token* thisToken, ...) {
 //    int i, j;
 //    va_list argp;
-//    Token *result;
-//    Token *otherToken;
+//    Token* result;
+//    Token* otherToken;
 //
 //    va_start(argp, thisToken);
 //    otherToken = va_arg(argp, Token*);
@@ -23,7 +23,7 @@ Token* Record_add(Token *thisToken, ...) {
 /**/
 
 /***Record_convert()***/
-Token* Record_convert(Token token, ...) {
+Token* Record_convert(Token* token, ...) {
         return token;
 //        switch (token->type) {
 //                // FIXME: not finished
@@ -37,8 +37,8 @@ Token* Record_convert(Token token, ...) {
 }
 /**/
 /*** Record_new() ***/
-Token* Record_new(Time time, int microstep, Token t, ...) {
-        Token *result;
+Token* Record_new(Time time, int microstep, Token* t, ...) {
+        Token* result = malloc(sizeof(Token));
 
         result->type = TYPE_Record;
         result->payload.Record = (RecordToken) malloc(sizeof(struct record));
@@ -46,7 +46,8 @@ Token* Record_new(Time time, int microstep, Token t, ...) {
         result->payload.Record->microstep = microstep;
 
         result->payload.Record->payload = malloc(sizeof(Token));
-        *(result->payload.Record->payload) = t;
+        // FIXME: should this be a copy?
+        result->payload.Record->payload = t;
 
         return result;
 }
@@ -63,7 +64,7 @@ typedef struct record* RecordToken;
 /**/
 
 /*** funcDeclareBlock() ***/
-Token* Record_new(double timestamp, int microstep, Token t, ...);
+Token* Record_new(double timestamp, int microstep, Token* t, ...);
 /**/
 
 /*** funcImplementationBlock() ***/

@@ -37,9 +37,9 @@ int PtidesEvent_Channel(struct PtidesEvent* event) {
 bool PtidesEvent_Equals(struct PtidesEvent* event, struct PtidesEvent* event2) {
         bool result = DEEvent_Equals((struct DEEvent*) event, (struct DEEvent*) event2);
         if (!event->isPureEvent(event2)) {
-                Token token1 = event2->token(event2);
-                Token token2 = event->_token;
-                result = result && !memcmp(&token1, &token2, sizeof(Token));
+                Token* token1 = event2->token(event2);
+                Token* token2 = event->_token;
+                result = result && !memcmp(token1, token2, sizeof(Token));
         } else {
                 if (event2->absoluteDeadline(event2) == -DBL_MAX
                                 || event->_absoluteDeadline == -DBL_MAX) {
@@ -79,6 +79,6 @@ struct Receiver* PtidesEvent_Receiver(struct PtidesEvent* event) {
 Time PtidesEvent_SourceTimestamp(struct PtidesEvent* event) {
         return event->_sourceTimestamp;
 }
-Token PtidesEvent_Token(struct PtidesEvent* event) {
+Token* PtidesEvent_Token(struct PtidesEvent* event) {
         return event->_token;
 }

@@ -40,7 +40,7 @@ struct PtidesEvent {
         bool _isPureEvent;
         struct Receiver* _receiver;
         Time _absoluteDeadline;
-        Token _token;
+        Token *_token;
         Time _sourceTimestamp;
 
         Time (*absoluteDeadline)(struct PtidesEvent*);
@@ -48,7 +48,7 @@ struct PtidesEvent {
         bool (*isPureEvent)(struct PtidesEvent*);
         struct Receiver* (*receiver)(struct PtidesEvent*);
         Time (*sourceTimestamp)(struct PtidesEvent*);
-        Token (*token)(struct PtidesEvent*);
+        Token* (*token)(struct PtidesEvent*);
 };
 
 struct PtidesEvent* PtidesEvent_New();
@@ -62,6 +62,6 @@ bool PtidesEvent_HasTheSameTagAs(struct PtidesEvent* event, struct PtidesEvent* 
 bool PtidesEvent_IsPureEvent(struct PtidesEvent* event);
 struct Receiver* PtidesEvent_Receiver(struct PtidesEvent* event);
 Time PtidesEvent_SourceTimestamp(struct PtidesEvent* event);
-Token PtidesEvent_Token(struct PtidesEvent* event);
+Token* PtidesEvent_Token(struct PtidesEvent* event);
 
 #endif

@@ -43,13 +43,13 @@ struct PtidesPort {
 
         void (*free)(struct PtidesPort*);
 
-        void (*broadcast)(struct PtidesPort*, Token);
-        void (*broadcast1)(struct PtidesPort*, Token*, int, int);
+        void (*broadcast)(struct PtidesPort*, Token*);
+        void (*broadcast1)(struct PtidesPort*, Token**, int, int);
         PblList* (*deepGetReceivers)(struct PtidesPort*);
-        Token (*get)(struct PtidesPort*, int);
-        Token* (*get1)(struct PtidesPort*, int, int);
+        Token* (*get)(struct PtidesPort*, int);
+        Token** (*get1)(struct PtidesPort*, int, int);
         int (*getChannelForReceiver)(struct PtidesPort*, struct Receiver*);
-        Token (*getInside)(struct PtidesPort*, int);
+        Token* (*getInside)(struct PtidesPort*, int);
         PblList* (*getInsideReceivers)(struct PtidesPort*);
         Time (*getModelTime)(struct PtidesPort*, int);
         PblList* (*getReceivers)(struct PtidesPort*);
@@ -67,9 +67,9 @@ struct PtidesPort {
         bool (*isOutsideConnected)(struct PtidesPort*);
         int (*numberOfSinks)(struct PtidesPort*);
         int (*numberOfSources)(struct PtidesPort*);
-        void (*send)(struct PtidesPort*, int, Token);
-        void (*send1)(struct PtidesPort*, int, Token*, int);
-        void (*sendInside)(struct PtidesPort*, int, Token);
+        void (*send)(struct PtidesPort*, int, Token*);
+        void (*send1)(struct PtidesPort*, int, Token**, int);
+        void (*sendInside)(struct PtidesPort*, int, Token*);
 
 #ifdef PTIDESDIRECTOR
         double delayOffset;
@@ -101,7 +101,7 @@ struct PtidesPort {
         bool (*isNetworkReceiverPort)(struct PtidesPort*);
         bool (*isNetworkTransmitterPort)(struct PtidesPort*);
 
-        void (*_getTimeStampForToken)(struct PtidesPort*, Token, Time*);
+        void (*_getTimeStampForToken)(struct PtidesPort*, Token*, Time*);
 };
 
 struct PtidesPort* PtidesPort_New();
@@ -113,10 +113,10 @@ bool PtidesPort_IsActuatorPort(struct PtidesPort* port);
 bool PtidesPort_IsSensorPort(struct PtidesPort* port);
 bool PtidesPort_IsNetworkReceiverPort(struct PtidesPort* port);
 bool PtidesPort_IsNetworkTransmitterPort(struct PtidesPort* port);
-void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token token);
+void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token* token);
 
 //Time* PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t);
-void PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t, Time* timestamps);
+void PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token* t, Time* timestamps);
 
 
 #endif

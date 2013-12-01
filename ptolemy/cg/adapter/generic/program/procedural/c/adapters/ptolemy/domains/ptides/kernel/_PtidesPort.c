@@ -36,17 +36,17 @@ void PtidesPort_SetAssociatedPort(struct PtidesPort* port, struct PtidesPort* po
         port1->_associatedPort = port;
 }
 
-void PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token t, Time* times ) {
+void PtidesPort__GetTimeStampForToken(struct PtidesPort* port, Token* t, Time* times ) {
         //Time times[2];
-        Time* result = (Time*)pblMapGet(port->_transmittedTokenTimestamps, &t, sizeof(Token), NULL);
+        Time* result = (Time*)pblMapGet(port->_transmittedTokenTimestamps, t, sizeof(Token), NULL);
         times[0] = result[0];
         times[1] = result[1];
-        int cpt = *((int*)pblMapGet(port->_transmittedTokenCnt, &t, sizeof(Token), NULL));
+        int cpt = *((int*)pblMapGet(port->_transmittedTokenCnt, t, sizeof(Token), NULL));
         cpt--;
-        pblMapPut(port->_transmittedTokenCnt, &t, sizeof(Token), &cpt, sizeof(int), NULL);
+        pblMapPut(port->_transmittedTokenCnt, t, sizeof(Token), &cpt, sizeof(int), NULL);
         if (cpt == 0) {
-                pblMapGet(port->_transmittedTokenTimestamps, &t, sizeof(Token), NULL);
-                pblMapGet(port->_transmittedTokenCnt, &t, sizeof(Token), NULL);
+                pblMapGet(port->_transmittedTokenTimestamps, t, sizeof(Token), NULL);
+                pblMapGet(port->_transmittedTokenCnt, t, sizeof(Token), NULL);
         }
         //return times;
 }
@@ -62,7 +62,7 @@ bool PtidesPort_IsNetworkReceiverPort(struct PtidesPort* port) {
 bool PtidesPort_IsNetworkTransmitterPort(struct PtidesPort* port) {
         return port->isOutput(port) && port->isNetworkPort;
 }
-void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token token) {
+void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token* token) {
         struct CompositeActor* container = (struct CompositeActor*) port->container;
         struct PtidesDirector* director = (struct PtidesDirector*) container->getDirector(container);
         Time timestamp = director->getModelTime(director);
@@ -74,27 +74,28 @@ void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token token) {
                 port->_transmittedTokenTimestamps = pblMapNewHashMap();
                 port->_transmittedTokenCnt = pblMapNewHashMap();
         }
-	Token* tokenPtr = calloc(1, sizeof(Token));
-	*tokenPtr = token;
+	//Token* tokenPtr = calloc(1, sizeof(Token));
+	//*tokenPtr = token;
 
-        if (pblMapGet(port->_transmittedTokenTimestamps, tokenPtr, sizeof(Token), NULL) == NULL) {
+        if (pblMapGet(port->_transmittedTokenTimestamps, token, sizeof(Token), NULL) == NULL) {
+                // FIXME: Leak?
     	        int* xPtr = calloc(1, sizeof(int));
 		*xPtr = 0;
-                pblMapAdd(port->_transmittedTokenCnt, tokenPtr, sizeof(Token), xPtr, sizeof(int));
+                pblMapAdd(port->_transmittedTokenCnt, token, sizeof(Token), xPtr, sizeof(int));
         }
         //Time toPut[2] = {timestamp, sourceTimestamp};
 	// FIXME: when to free this
 	Time * toPut = calloc(2, sizeof(Time));
 	toPut[0] = timestamp;
 	toPut[1] = sourceTimestamp;
-        pblMapAdd(port->_transmittedTokenTimestamps, tokenPtr, sizeof(Token), toPut, sizeof(Time[2]));
+        pblMapAdd(port->_transmittedTokenTimestamps, token, sizeof(Token), toPut, sizeof(Time[2]));
 
-        int cpt = *((int*)pblMapGet(port->_transmittedTokenCnt, tokenPtr, sizeof(Token), NULL));
+        int cpt = *((int*)pblMapGet(port->_transmittedTokenCnt, token, sizeof(Token), NULL));
         cpt++;
 
 	int *cptPtr = calloc(1, sizeof(int));
 	*cptPtr = cpt;
 
-        pblMapAdd(port->_transmittedTokenCnt, tokenPtr, sizeof(Token), cptPtr, sizeof(int));
+        pblMapAdd(port->_transmittedTokenCnt, token, sizeof(Token), cptPtr, sizeof(int));
         IOPort_Send((struct IOPort*)port, channelIndex, token);
 }
