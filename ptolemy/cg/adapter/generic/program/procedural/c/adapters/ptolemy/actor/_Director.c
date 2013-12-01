@@ -195,7 +195,7 @@ bool Director_TransferInputs(struct Director* director, struct IOPort* port) {
         for (int i = 0; i < port->getWidth(port); i++) {
                 if (i < port->getWidthInside(port)) {
                         if (port->hasToken(port, i)) {
-                                Token t = port->get(port, i);
+                                Token* t = port->get(port, i);
 
                                 port->sendInside(port, i, t);
                                 wasTransferred = true;
@@ -227,7 +227,7 @@ bool Director_TransferOutputs1(struct Director* director, struct IOPort* port){
 
         for (int i = 0; i < port->getWidthInside(port); i++) {
                 if (port->hasTokenInside(port, i)) {
-                        Token t = port->getInside(port, i);
+                        Token* t = port->getInside(port, i);
                         port->send(port, i, t);
                         result = true;
                 }

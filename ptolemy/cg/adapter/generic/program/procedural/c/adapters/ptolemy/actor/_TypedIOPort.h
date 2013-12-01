@@ -38,13 +38,13 @@ struct TypedIOPort {
 
         void (*free)(struct TypedIOPort*);
 
-        void (*broadcast)(struct IOPort*, Token);
+        void (*broadcast)(struct IOPort*, Token*);
         void (*broadcast1)(struct IOPort*, Token*, int, int);
         PblList* (*deepGetReceivers)(struct IOPort*);
-        Token (*get)(struct IOPort*, int);
+        Token* (*get)(struct IOPort*, int);
         Token* (*get1)(struct IOPort*, int, int);
         int (*getChannelForReceiver)(struct IOPort*, struct Receiver*);
-        Token (*getInside)(struct IOPort*, int);
+        Token* (*getInside)(struct IOPort*, int);
         PblList* (*getInsideReceivers)(struct IOPort*);
         Time (*getModelTime)(struct IOPort*, int);
         PblList* (*getReceivers)(struct IOPort*);
@@ -62,9 +62,9 @@ struct TypedIOPort {
         bool (*isOutsideConnected)(struct IOPort*);
         int (*numberOfSinks)(struct IOPort*);
         int (*numberOfSources)(struct IOPort*);
-        void (*send)(struct IOPort*, int, Token);
+        void (*send)(struct IOPort*, int, Token*);
         void (*send1)(struct IOPort*, int, Token*, int);
-        void (*sendInside)(struct IOPort*, int, Token);
+        void (*sendInside)(struct IOPort*, int, Token*);
 
 #ifdef PTIDESDIRECTOR
         double delayOffset;

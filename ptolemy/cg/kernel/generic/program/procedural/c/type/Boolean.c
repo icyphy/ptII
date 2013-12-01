@@ -1,28 +1,28 @@
 /*** Boolean_add() ***/
-Token Boolean_add(Token thisToken, ...) {
+Token* Boolean_add(Token* thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);
+    Token* otherToken = va_arg(argp, Token*);
     va_end(argp);
-    return $new(Boolean(thisToken.payload.Boolean || otherToken.payload.Boolean));
+    return $new(Boolean(thisToken->payload.Boolean || otherToken->payload.Boolean));
 }
 /**/
 
 /*** Boolean_clone() ***/
-Token Boolean_clone(Token thisToken, ...) {
+Token* Boolean_clone(Token* thisToken, ...) {
     return thisToken;
 }
 /**/
 
 /*** Boolean_convert() ***/
-Token Boolean_convert(Token token, ...) {
-    switch (token.type) {
+Token* Boolean_convert(Token* token, ...) {
+    switch (token->type) {
         // FIXME: not finished
     default:
-        fprintf(stderr, "Boolean_convert(): Conversion from an unsupported type. (%d)", token.type);
+        fprintf(stderr, "Boolean_convert(): Conversion from an unsupported type. (%d)", token->type);
         break;
     }
-    token.type = TYPE_Boolean;
+    token->type = TYPE_Boolean;
     return token;
 }
 /**/
@@ -36,16 +36,16 @@ Token Boolean_convert(Token token, ...) {
 /**/
 
 /*** Boolean_equals() ***/
-Token Boolean_equals(Token thisToken, ...) {
+Token* Boolean_equals(Token* thisToken, ...) {
     va_list argp;
-    Token otherToken;
+    Token* otherToken;
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
     va_end(argp);
     return $new(Boolean(
-                    ( thisToken.payload.Boolean && otherToken.payload.Boolean ) ||
-                    ( !thisToken.payload.Boolean && !otherToken.payload.Boolean )));
+                    ( thisToken->payload.Boolean && otherToken->payload.Boolean ) ||
+                    ( !thisToken->payload.Boolean && !otherToken->payload.Boolean )));
 }
 /**/
 
@@ -58,31 +58,32 @@ Token Boolean_equals(Token thisToken, ...) {
 /**/
 
 /*** Boolean_negate() ***/
-Token Boolean_negate(Token thisToken, ...) {
-    thisToken.payload.Boolean = !thisToken.payload.Boolean;
+Token* Boolean_negate(Token* thisToken, ...) {
+    thisToken->payload.Boolean = !thisToken->payload.Boolean;
     return thisToken;
 }
 /**/
 
 /*** Boolean_new() ***/
 // make a new integer token from the given value.
-Token Boolean_new(boolean b) {
-    Token result;
-    result.type = TYPE_Boolean;
-    result.payload.Boolean = b;
+Token* Boolean_new(boolean b) {
+    Token* result = malloc(sizeof(Token));
+    result->type = TYPE_Boolean;
+    result->payload.Boolean = b;
     return result;
 }
 /**/
 
 /*** Boolean_one() ***/
-Token Boolean_one(Token token, ...) {
+Token* Boolean_one(Token* token, ...) {
     return $new(Boolean(true));
 }
 /**/
 
 /*** Boolean_print() ***/
-Token Boolean_print(Token thisToken, ...) {
-    printf((thisToken.payload.Boolean) ? "true" : "false");
+Token* Boolean_print(Token* thisToken, ...) {
+    printf((thisToken->payload.Boolean) ? "true" : "false");
+    return emptyToken;
 }
 /**/
 
@@ -91,13 +92,13 @@ Token Boolean_print(Token thisToken, ...) {
 /**/
 
 /*** Boolean_toString() ***/
-Token Boolean_toString(Token thisToken, ...) {
-    return $new(String($toString_Boolean(thisToken.payload.Boolean)));
+Token* Boolean_toString(Token* thisToken, ...) {
+    return $new(String($toString_Boolean(thisToken->payload.Boolean)));
 }
 /**/
 
 /*** Boolean_zero() ***/
-Token Boolean_zero(Token token, ...) {
+Token* Boolean_zero(Token* token, ...) {
     return $new(Boolean(false));
 }
 /**/
@@ -107,6 +108,6 @@ typedef boolean BooleanToken;
 /**/
 
 /*** funcDeclareBlock() ***/
-Token Boolean_new(boolean b);
+Token* Boolean_new(boolean b);
 /**/
 

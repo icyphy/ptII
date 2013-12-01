@@ -3,34 +3,34 @@
 /**/
 
 /*** Pointer_clone() ***/
-Token Pointer_clone(Token thisToken, ...) {
-    return Pointer_new(thisToken.payload.Pointer);
+Token* Pointer_clone(Token *thisToken, ...) {
+    return Pointer_new(thisToken->payload.Pointer);
 }
 /**/
 
 /*** Pointer_convert() ***/
-Token Pointer_convert(Token token, ...) {
-    switch (token.type) {
+Token* Pointer_convert(Token token, ...) {
+    switch (token->type) {
 
 #ifdef TYPE_Object
     case TYPE_Object:
-        token.payload.Pointer = token.payload.Object;
+        token->payload.Pointer = token->payload.Object;
         break;
 #endif
 
         // FIXME: not finished
     default:
-        fprintf(stderr, "Pointer_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        fprintf(stderr, "Pointer_convert(): Conversion from an unsupported type. (%d)\n", token->type);
         break;
     }
-    token.type = TYPE_Pointer;
+    token->type = TYPE_Pointer;
     return token;
 }
 /**/
 
 /*** Pointer_delete() ***/
-Token Pointer_delete(Token thisToken, ...) {
-    free(thisToken.payload.Pointer);
+Token* Pointer_delete(Token *thisToken, ...) {
+    free(thisToken->payload.Pointer);
     return emptyToken;
 }
 /**/
@@ -40,25 +40,25 @@ Token Pointer_delete(Token thisToken, ...) {
 /**/
 
 /*** Pointer_equals() ***/
-Token Pointer_equals(Token thisToken, ...) {
+Token* Pointer_equals(Token *thisToken, ...) {
     va_list argp;
-    Token otherToken;
+    Token *otherToken;
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    if (otherToken.type != TYPE_Pointer) {
+    if (otherToken->type != TYPE_Pointer) {
         otherToken = Pointer_convert(otherToken);
     }
 
     va_end(argp);
 
     return Boolean_new(
-        (int) thisToken.payload.Pointer == (int) otherToken.payload.Pointer);
+        (int) thisToken->payload.Pointer == (int) otherToken->payload.Pointer);
 }
 /**/
 
 /*** Pointer_isCloseTo() ***/
-Token Pointer_isCloseTo(Token thisToken, ...) {
+Token* Pointer_isCloseTo(Token *thisToken, ...) {
     /** Pointers are never close to each other. */
     return Boolean_new(false);
 }
@@ -73,11 +73,11 @@ Token Pointer_isCloseTo(Token thisToken, ...) {
 /**/
 
 /*** Pointer_new() ***/
-Token Pointer_new(void *i) {
-    Token result;
-    result.type = TYPE_Pointer;
-                result.payload.Pointer = (PointerToken) malloc(sizeof(void *));
-    result.payload.Pointer = i;
+Token* Pointer_new(void *i) {
+    Token *result;
+    result->type = TYPE_Pointer;
+                result->payload.Pointer = (PointerToken) malloc(sizeof(void *));
+    result->payload.Pointer = i;
     return result;
 }
 /**/
@@ -87,8 +87,8 @@ Token Pointer_new(void *i) {
 /**/
 
 /*** Pointer_print() ***/
-Token Pointer_print(Token thisToken, ...) {
-    printf("Pointer at %o", (int) thisToken.payload.Pointer);
+Token* Pointer_print(Token *thisToken, ...) {
+    printf("Pointer at %o", (int) thisToken->payload.Pointer);
 }
 /**/
 
@@ -97,8 +97,8 @@ Token Pointer_print(Token thisToken, ...) {
 /**/
 
 /*** Pointer_toString() ***/
-Token Pointer_toString(Token thisToken, ...) {
-    return $new(String($toString_Pointer(thisToken.payload.Pointer)));
+Token* Pointer_toString(Token *thisToken, ...) {
+    return $new(String($toString_Pointer(thisToken->payload.Pointer)));
 }
 /**/
 
@@ -111,6 +111,6 @@ typedef void* PointerToken;
 /**/
 
 /*** funcDeclareBlock() ***/
-Token Pointer_new(void *i);
+Token* Pointer_new(void *i);
 /**/
 

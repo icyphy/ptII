@@ -23,7 +23,7 @@ typedef char* string;
 
 /***funcHeaderBlock ($function)***/
 
-Token $function (Token thisToken, ...);
+Token* $function (Token *thisToken, ...);
 /**/
 
 /***tokenDeclareBlock ($types)***/
@@ -109,28 +109,28 @@ char* UnsignedBytetoString (unsigned char b) {
 /**/
 
 /*** unsupportedTypeFunctionDeclaration ***/
-Token unsupportedTypeFunction(Token token, ...);
+Token* unsupportedTypeFunction(Token* token, ...);
 /**/
 
 /*** unsupportedTypeFunction ***/
 /* We share one method between all types so as to reduce code size. */
-Token unsupportedTypeFunction(Token token, ...) {
+Token* unsupportedTypeFunction(Token* token, ...) {
     fprintf(stderr, "Attempted to call unsupported method on a type.\n");
     exit(1);
-    return emptyToken;
+    return NULL;
 }
 /**/
 
 /*** scalarDeleteFunctionDeclaration ***/
-Token scalarDelete(Token token, ...);
+Token* scalarDelete(Token *token, ...);
 /**/
 
 /*** scalarDeleteFunction ***/
 /* We share one method between all scalar types so as to reduce code size. */
-Token scalarDelete(Token token, ...) {
+Token* scalarDelete(Token *token, ...) {
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */
-    return emptyToken;
+    return NULL;
 }
 /**/

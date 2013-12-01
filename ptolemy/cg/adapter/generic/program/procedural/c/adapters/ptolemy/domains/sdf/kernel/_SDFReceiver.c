@@ -47,15 +47,15 @@ void SDFReceiver_Clear(struct SDFReceiver* r) {
 PblList* SDFReceiver_ElementList(struct SDFReceiver* r) {
         return pblListClone(r->_queue);
 }
-Token SDFReceiver_Get(struct SDFReceiver* r) {
+Token* SDFReceiver_Get(struct SDFReceiver* r) {
         if (pblListIsEmpty(r->_queue)) {
-                return emptyToken;
+            return NULL;
         }
 
         Token* retour = (Token*)(pblListPoll(r->_queue));
-        Token nonDynToken = *retour;
-        free(retour);
-        return nonDynToken;
+        //Token nonDynToken = *retour;
+        //free(retour);
+        return retour;
 }
 bool SDFReceiver_HasRoom(struct SDFReceiver* r) {
         return true;
@@ -69,9 +69,9 @@ bool SDFReceiver_HasToken(struct SDFReceiver* r) {
 bool SDFReceiver_HasToken1(struct SDFReceiver* r, int numberOfTokens) {
         return pblListSize(r->_queue) >= numberOfTokens;
 }
-void SDFReceiver_Put(struct SDFReceiver* r, Token token) {
+void SDFReceiver_Put(struct SDFReceiver* r, Token* token) {
         // FIXME : it is not a relevant comparison
-        if (token.type == -1) {
+        if (token->type == -1) {
                 return;
         }
         Token* dynToken = calloc(1, sizeof(Token));
@@ -79,6 +79,6 @@ void SDFReceiver_Put(struct SDFReceiver* r, Token token) {
                 fprintf(stderr, "Allocation Problem : DEReceiver_Put");
                 exit(-1);
         }
-        *dynToken = convert(token, ((struct TypedIOPort*)r->container)->_type);
+        dynToken = convert(token, ((struct TypedIOPort*)r->container)->_type);
         pblListAdd(r->_queue, dynToken);
 }

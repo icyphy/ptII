@@ -2,21 +2,21 @@
 // IntArray_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token IntArray_add(Token thisToken, ...) {
+Token* IntArray_add(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token *result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.IntArray->size;
-    size2 = otherToken.payload.IntArray->size;
+    size1 = thisToken->payload.IntArray->size;
+    size2 = otherToken->payload.IntArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(IntArray(resultSize, 0));
@@ -39,12 +39,12 @@ Token IntArray_add(Token thisToken, ...) {
 /*** IntArray_clone() ***/
 // IntArray_clone: Return a new array just like the
 // specified array.
-Token IntArray_clone(Token thisToken, ...) {
-    Token result;
+Token* IntArray_clone(Token* thisToken, ...) {
+    Token *result;
     int i;
 
-    result = $new(IntArray(thisToken.payload.IntArray->size, 0));
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    result = $new(IntArray(thisToken->payload.IntArray->size, 0));
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
         IntArray_set(result, i, $clone_Int(IntArray_get(thisToken, i)));
     }
     return result;
@@ -56,29 +56,29 @@ Token IntArray_clone(Token thisToken, ...) {
 // into the type specified by the second argument.
 // @param token The token to be converted.
 // @param targetType The type to convert the elements of the given token to.
-Token IntArray_convert(Token token, ...) {
+Token* IntArray_convert(Token* token, ...) {
 
-        switch (token.type) {
+        switch (token->type) {
 #ifdef TYPE_IntArray
                 case TYPE_IntArray:
                         break;
 #endif
 #ifdef TYPE_Int
             case TYPE_Int:
-                token = $convert_Int_IntArray(token.payload.Int);
+                token = $convert_Int_IntArray(token->payload.Int);
                 break;
 #endif
 
                 // FIXME: not finished
             default:
-                fprintf(stderr, "IntArray_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+                fprintf(stderr, "IntArray_convert(): Conversion from an unsupported type. (%d)\n", token->type);
                 exit(-1);
                 break;
         }
         return token;
 
 //    int i;
-//    Token result;
+//    Token *result;
 //    Token element;
 //    va_list argp;
 //    char targetType;
@@ -87,14 +87,14 @@ Token IntArray_convert(Token token, ...) {
 //    targetType = va_arg(argp, int);
 //
 //    // FIXME: HOW DO WE KNOW WHICH TYPE WE'RE CONVERTING TO?
-//    result = IntArray_new(token.payload.IntArray->size, 0);
+//    result = IntArray_new(token->payload.IntArray->size, 0);
 //
-//    for (i = 0; i < token.payload.IntArray->size; i++) {
+//    for (i = 0; i < token->payload.IntArray->size; i++) {
 //        element = IntArray_get(token, i);
-//        if (targetType != token.payload.IntArray->elementType) {
+//        if (targetType != token->payload.IntArray->elementType) {
 //
 //                IntArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
-//            // result.payload.IntArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
+//            // result->payload.IntArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
 //                IntArray_set(result, i, element);
 //        }
@@ -107,23 +107,22 @@ Token IntArray_convert(Token token, ...) {
 
 /*** IntArray_delete() ***/
 // IntArray_delete: FIXME: What does this do?
-Token IntArray_delete(Token token, ...) {
-    Token emptyToken;
+Token* IntArray_delete(Token* token, ...) {
     //Token element;
     //int i;
     //char elementType;
     // Delete each elements.
-    // for (i = 0; i < token.payload.IntArray->size; i++) {
-    //     elementType = token.payload.IntArray->elementType;
+    // for (i = 0; i < token->payload.IntArray->size; i++) {
+    //     elementType = token->payload.IntArray->elementType;
     //     element = IntArray_get(token, i);
     //     functionTable[(int) elementType][FUNC_delete](element);
     // }
-    free((int *) token.payload.IntArray->elements);
-    free(token.payload.IntArray);
+    free((int *) token->payload.IntArray->elements);
+    free(token->payload.IntArray);
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */
-    return emptyToken;
+    return NULL;
 }
 /**/
 
@@ -132,21 +131,21 @@ Token IntArray_delete(Token token, ...) {
 // by the elements of the second array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token IntArray_divide(Token thisToken, ...) {
+Token* IntArray_divide(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token *result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.IntArray->size;
-    size2 = otherToken.payload.IntArray->size;
+    size1 = thisToken->payload.IntArray->size;
+    size2 = otherToken->payload.IntArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(IntArray(resultSize, 0));
@@ -168,17 +167,17 @@ Token IntArray_divide(Token thisToken, ...) {
 
 /*** IntArray_equals() ***/
 // IntArray_equals: Test an array for equality with a second array.
-Token IntArray_equals(Token thisToken, ...) {
+Token* IntArray_equals(Token* thisToken, ...) {
     int i;
     va_list argp;
-    Token otherToken;
+    Token* otherToken;
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    if (thisToken.payload.IntArray->size != otherToken.payload.IntArray->size) {
+    if (thisToken->payload.IntArray->size != otherToken->payload.IntArray->size) {
         return $new(Boolean(false));
     }
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
             if (IntArray_get(thisToken, i) != IntArray_get(otherToken, i)) {
                     return $new(Boolean(false));
             }
@@ -191,29 +190,29 @@ Token IntArray_equals(Token thisToken, ...) {
 
 /*** IntArray_isCloseTo() ***/
 // IntArray_isCloseTo: Test an array to see whether it is close in value to another.
-Token IntArray_isCloseTo(Token thisToken, ...) {
+Token* IntArray_isCloseTo(Token* thisToken, ...) {
     int i;
     va_list argp;
-    Token otherToken;
-    Token tolerance;
+    Token* otherToken;
+    Token *tolerance;
     va_start(argp, thisToken);
 
 
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
     otherToken = IntArray_convert(otherToken);
 
     int value1, value2;
-    tolerance = va_arg(argp, Token);
+    tolerance = va_arg(argp, Token*);
 
 
-    if (thisToken.payload.IntArray->size != otherToken.payload.IntArray->size) {
+    if (thisToken->payload.IntArray->size != otherToken->payload.IntArray->size) {
         return $new(Boolean(false));
     }
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
         value1 = IntArray_get(thisToken, i);
         value2 = IntArray_get(otherToken, i);
 
-        if (fabs(value1 - value2) > tolerance.payload.Double) {
+        if (fabs(value1 - value2) > tolerance->payload.Double) {
             return $new(Boolean(false));
         }
     }
@@ -227,21 +226,21 @@ Token IntArray_isCloseTo(Token thisToken, ...) {
 // Multiplication is element-wise.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token IntArray_multiply(Token thisToken, ...) {
+Token* IntArray_multiply(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token *result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.IntArray->size;
-    size2 = otherToken.payload.IntArray->size;
+    size1 = thisToken->payload.IntArray->size;
+    size2 = otherToken->payload.IntArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(IntArray(resultSize, 0));
@@ -264,12 +263,12 @@ Token IntArray_multiply(Token thisToken, ...) {
 /*** IntArray_negate() ***/
 // IntArray_negate: Negate each element of an array.
 // Return a new Array token.
-Token IntArray_negate(Token thisToken, ...) {
+Token* IntArray_negate(Token* thisToken, ...) {
     int i;
-    Token result;
-    result = $new(IntArray(thisToken.payload.IntArray->size, 0));
+    Token *result;
+    result = $new(IntArray(thisToken->payload.IntArray->size, 0));
 
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
         IntArray_set(result, i, $negate_Int(IntArray_get(thisToken, i)));
     }
     return result;
@@ -286,24 +285,24 @@ Token IntArray_negate(Token thisToken, ...) {
 // should be of type Token *.
 // If the "given" argument is greater than 0, then the last
 // argument is expected to be the type that of the elements.
-Token IntArray_new(int size, int given, ...) {
+Token* IntArray_new(int size, int given, ...) {
     va_list argp;
     int i;
-    Token result;
-    result.type = TYPE_IntArray;
-    result.payload.IntArray = (IntArrayToken) malloc(sizeof(struct intarray));
-    result.payload.IntArray->size = size;
-    result.payload.IntArray->elementType = TYPE_Int;
+    Token * result = malloc(sizeof(Token));
+    result->type = TYPE_IntArray;
+    result->payload.IntArray = (IntArrayToken) malloc(sizeof(struct intarray));
+    result->payload.IntArray->size = size;
+    result->payload.IntArray->elementType = TYPE_Int;
     // Only call calloc if size > 0.  Otherwise Electric Fence reports
     // an error.
     if (size > 0) {
         // Allocate an new array of Tokens.
-        result.payload.IntArray->elements =
+        result->payload.IntArray->elements =
         (int *) calloc(size, sizeof(int));
         if (given > 0) {
             va_start(argp, given);
             for (i = 0; i < given; i++) {
-                result.payload.IntArray->elements[i] = (int) va_arg(argp, int);
+                result->payload.IntArray->elements[i] = (int) va_arg(argp, int);
             }
             va_end(argp);
         }
@@ -315,13 +314,13 @@ Token IntArray_new(int size, int given, ...) {
 /*** IntArray_one() ***/
 // IntArray_one: Return an array like the specified
 // array but with ones of the same type.
-Token IntArray_one(Token thisToken, ...) {
-    Token result;
+Token* IntArray_one(Token* thisToken, ...) {
+    Token *result;
     Token element;
     int i;
 
-    result = $new(IntArray(thisToken.payload.IntArray->size, 0));
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    result = $new(IntArray(thisToken->payload.IntArray->size, 0));
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
         IntArray_set(result, i, $one_Int());
     }
     return result;
@@ -330,23 +329,24 @@ Token IntArray_one(Token thisToken, ...) {
 
 /*** IntArray_print() ***/
 // IntArray_print: Print the contents of an array to standard out.
-Token IntArray_print(Token thisToken, ...) {
+Token* IntArray_print(Token* thisToken, ...) {
     int i;
     printf("{");
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
         if (i != 0) {
             printf(", ");
         }
         printf("%d", IntArray_get(thisToken, i));
-        // functionTable[(int)thisToken.payload.IntArray->elementType][FUNC_print](IntArray_get(thisToken, i));
+        // functionTable[(int)thisToken->payload.IntArray->elementType][FUNC_print](IntArray_get(thisToken, i));
     }
     printf("}");
+    return emptyToken;
 }
 /**/
 
 /*** IntArray_repeat() ***/
-Token IntArray_repeat(int number, int value) {
-        Token result;
+Token* IntArray_repeat(int number, int value) {
+        Token *result;
         result = $new(IntArray(number, 0));
         int i;
 
@@ -364,21 +364,21 @@ Token IntArray_repeat(int number, int value) {
 // FIXME: Arrays can have scalars subtracted!
 // This will cause a nasty seg fault.
 // Return a new Array token.
-Token IntArray_subtract(Token thisToken, ...) {
+Token* IntArray_subtract(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.IntArray->size;
-    size2 = otherToken.payload.IntArray->size;
+    size1 = thisToken->payload.IntArray->size;
+    size2 = otherToken->payload.IntArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(IntArray(resultSize, 0));
@@ -400,17 +400,17 @@ Token IntArray_subtract(Token thisToken, ...) {
 
 /*** IntArray_sum() ***/
 // FIXME: WHAT DOES THIS FUNCTION DO?
-int IntArray_sum(Token token) {
+int IntArray_sum(Token* token) {
         int result;
         int i;
 
-        if (token.payload.IntArray->size <= 0) {
+        if (token->payload.IntArray->size <= 0) {
                 return 0;
         } else {
                 result = IntArray_get(token, 0);
         }
 
-    for (i = 1; i < token.payload.IntArray->size; i++) {
+    for (i = 1; i < token->payload.IntArray->size; i++) {
             result = $add_Int_Int(result, IntArray_get(token, i));
     }
     return result;
@@ -420,7 +420,7 @@ int IntArray_sum(Token token) {
 /*** IntArray_toString() ***/
 // IntArray_toString: Return a string token with a string representation
 // of the specified array.
-Token IntArray_toString(Token thisToken, ...) {
+Token* IntArray_toString(Token* thisToken, ...) {
         return $new(String($toString_IntArray(thisToken)));
 }
 /**/
@@ -428,12 +428,12 @@ Token IntArray_toString(Token thisToken, ...) {
 /*** IntArray_zero() ***/
 // IntArray_zero: Return an array like the specified
 // array but with zeros of the same type.
-Token IntArray_zero(Token thisToken, ...) {
-    Token result;
+Token* IntArray_zero(Token* thisToken, ...) {
+    Token *result;
     int i;
 
-    result = $new(IntArray(thisToken.payload.IntArray->size, 0));
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    result = $new(IntArray(thisToken->payload.IntArray->size, 0));
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
         IntArray_set(result, i, 0);
     }
     return result;
@@ -441,7 +441,7 @@ Token IntArray_zero(Token thisToken, ...) {
 /**/
 
 /*** declareBlock() ***/
-Token IntArray_new(int size, int given, ...);
+Token* IntArray_new(int size, int given, ...);
 struct intarray {
     int size;                                   // size of the array.
     int* elements;                            // array of Token elements.
@@ -452,46 +452,46 @@ typedef struct intarray* IntArrayToken;
 
 /*** funcDeclareBlock() ***/
 // IntArray_get: get an element of an array.
-#define IntArray_length(array) ((array).payload.IntArray->size)
+#define IntArray_length(array) ((array)->payload.IntArray->size)
 
-int IntArray_get(Token array, int i);
-void IntArray_set(Token array, int i, int element);
-void IntArray_resize(Token array, int size);
-void IntArray_insert(Token array, int token);
+int IntArray_get(Token* array, int i);
+void IntArray_set(Token* array, int i, int element);
+void IntArray_resize(Token* array, int size);
+void IntArray_insert(Token* array, int token);
 
 /**/
 
 /*** funcImplementationBlock() ***/
-int IntArray_get(Token array, int i) {
-        // Token result;
-        // result.type = array.payload.IntArray->elementType;
-        // result.payload.Int = ((int *) array.payload.IntArray->elements)[i];
+int IntArray_get(Token* array, int i) {
+        // Token *result;
+        // result->type = array->payload.IntArray->elementType;
+        // result->payload.Int = ((int *) array->payload.IntArray->elements)[i];
         // return result;
-        return ((int *) array.payload.IntArray->elements)[i];
+        return ((int *) array->payload.IntArray->elements)[i];
 }
 
 // IntArray_set: set an element of an array.
-void IntArray_set(Token array, int i, int element) {
-    ((int *) array.payload.IntArray->elements)[i] = element;
+void IntArray_set(Token* array, int i, int element) {
+    ((int *) array->payload.IntArray->elements)[i] = element;
 }
 
 // IntArray_resize: Change the size of an array,
 // preserving those elements that fit.
-void IntArray_resize(Token array, int size) {
-    if (array.payload.IntArray->size == 0) {
-        array.payload.IntArray->elements = (int *) malloc(size * sizeof(int));
+void IntArray_resize(Token* array, int size) {
+    if (array->payload.IntArray->size == 0) {
+        array->payload.IntArray->elements = (int *) malloc(size * sizeof(int));
     } else {
-        array.payload.IntArray->elements = (int*) realloc(
-                     array.payload.IntArray->elements, size * sizeof(int));
+        array->payload.IntArray->elements = (int*) realloc(
+                     array->payload.IntArray->elements, size * sizeof(int));
     }
-    array.payload.IntArray->size = size;
+    array->payload.IntArray->size = size;
 }
 
 // IntArray_insert: Append the specified element to the end of an array.
-void IntArray_insert(Token array, int token) {
+void IntArray_insert(Token* array, int token) {
      // FIXME: call this append(), not insert().
-    int oldSize = array.payload.IntArray->size;
+    int oldSize = array->payload.IntArray->size;
     IntArray_resize(array, oldSize + 1 );
-    ((int *) array.payload.IntArray->elements)[oldSize] = token;
+    ((int *) array->payload.IntArray->elements)[oldSize] = token;
 }
 /**/

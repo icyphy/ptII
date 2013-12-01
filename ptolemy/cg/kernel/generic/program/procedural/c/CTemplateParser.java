@@ -166,6 +166,18 @@ public class CTemplateParser extends ProceduralTemplateParser {
                 + StringUtilities.getProperty("line.separator");
     }
 
+    /** Return the translated token instance function invocation string.
+     *  @param functionString The string within the $tokenFunc() macro.
+     *  @param isStatic True if the method is static.
+     *  @return The translated type function invocation string.
+     *  @exception IllegalActionException The given function string is
+     *   not well-formed.
+     */
+    public String getFunctionInvocation(String functionString, boolean isStatic)
+            throws IllegalActionException {
+        return super.getFunctionInvocation(functionString, isStatic).replace(".type", "->type");
+    }        
+
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */

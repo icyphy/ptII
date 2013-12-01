@@ -1086,7 +1086,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                                         // FIXME: Why do we have to use equals with BaseType.OBJECT?
                                                         : ptType.equals(BaseType.OBJECT) ? "Object"
                                                                 : ptType == PointerToken.POINTER ? "void*"
-                                                                        : "Token";
+                                                                        : "Token*";
     }
 
     /** Return an updated array of command line options.

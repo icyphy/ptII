@@ -30,16 +30,16 @@ struct Receiver {
         Time (*getModelTime)(struct Receiver*);
         void (*clear)(struct Receiver*);
         PblList* (*elementList)(struct Receiver*);
-        Token (*get)(struct Receiver*);
-        Token* (*getArray)(struct Receiver*, int);
+        Token* (*get)(struct Receiver*);
+        Token** (*getArray)(struct Receiver*, int);
         bool (*hasRoom)(struct Receiver*);
         bool (*hasRoom1)(struct Receiver*, int);
         bool (*hasToken)(struct Receiver*);
         bool (*hasToken1)(struct Receiver*, int);
-        void (*put)(struct Receiver*, Token);
-        void (*putArray)(struct Receiver*, Token*, int);
-        void (*putArrayToAll)(struct Receiver*, Token*, int, PblList*);
-        void (*putToAll)(struct Receiver*, Token , PblList*);
+        void (*put)(struct Receiver*, Token*);
+        void (*putArray)(struct Receiver*, Token**, int);
+        void (*putArrayToAll)(struct Receiver*, Token**, int, PblList*);
+        void (*putToAll)(struct Receiver*, Token* , PblList*);
 };
 
 struct Receiver* Receiver_New();
@@ -47,10 +47,10 @@ void Receiver_Init(struct Receiver*);
 void Receiver_New_Free(struct Receiver* r);
 
 Time Receiver_GetModelTime(struct Receiver* r);
-void Receiver_PutArray(struct Receiver* r, Token* tokenArray, int numberOfTokens);
-void Receiver_PutArrayToAll(struct Receiver* r, Token* tokenArray,
+void Receiver_PutArray(struct Receiver* r, Token** tokenArray, int numberOfTokens);
+void Receiver_PutArrayToAll(struct Receiver* r, Token** tokenArray,
                 int numberOfTokens, PblList* receivers);
-void Receiver_PutToAll(struct Receiver* r, Token token, PblList* receivers);
+void Receiver_PutToAll(struct Receiver* r, Token* token, PblList* receivers);
 
 
 #endif /* RECEIVER_H_ */

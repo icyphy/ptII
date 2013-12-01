@@ -29,13 +29,13 @@ struct SDFReceiver {
         Time (*getModelTime)(struct SDFReceiver*);
         void (*clear)(struct SDFReceiver*);
         PblList* (*elementList)(struct SDFReceiver*);
-        Token (*get)(struct SDFReceiver*);
-        Token* (*getArray)(struct Receiver*, int);
+        Token* (*get)(struct SDFReceiver*);
+        Token** (*getArray)(struct Receiver*, int);
         bool (*hasRoom)(struct SDFReceiver*);
         bool (*hasRoom1)(struct SDFReceiver*, int);
         bool (*hasToken)(struct SDFReceiver*);
         bool (*hasToken1)(struct SDFReceiver*, int);
-        void (*put)(struct SDFReceiver*, Token);
+        void (*put)(struct SDFReceiver*, Token*);
         void (*putArray)(struct Receiver*, Token*, int);
         void (*putArrayToAll)(struct Receiver*, Token*, int, PblList*);
         void (*putToAll)(struct Receiver*, Token , PblList*);
@@ -51,11 +51,11 @@ void SDFReceiver_New_Free(struct SDFReceiver* r);
 
 void SDFReceiver_Clear(struct SDFReceiver* r);
 PblList* SDFReceiver_ElementList(struct SDFReceiver* r);
-Token SDFReceiver_Get(struct SDFReceiver* r);
+Token* SDFReceiver_Get(struct SDFReceiver* r);
 bool SDFReceiver_HasRoom(struct SDFReceiver* r);
 bool SDFReceiver_HasRoom1(struct SDFReceiver* r, int numberOfTokens);
 bool SDFReceiver_HasToken(struct SDFReceiver* r);
 bool SDFReceiver_HasToken1(struct SDFReceiver* r, int numberOfTokens);
-void SDFReceiver_Put(struct SDFReceiver* r, Token token);
+void SDFReceiver_Put(struct SDFReceiver* r, Token* token);
 
 #endif /* SDFRECEIVER_H_ */

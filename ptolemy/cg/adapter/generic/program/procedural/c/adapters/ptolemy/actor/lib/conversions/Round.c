@@ -10,7 +10,7 @@ $put(output, ceil($get(input)));
 /**/
 
 /*** floorBlock() ***/
-$put(output, floor($get(input)));
+$put(output, (double)(floor(($get(input)))));
 /**/
 
 /*** roundBlock() ***/

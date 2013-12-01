@@ -12,14 +12,14 @@ if ($param(scaleOnLeft)) {
 /**/
 
 /***Scale_declareScaleOnLeftBlock***/
-Token Scale_scaleOnLeft(Token input, double factor);
+Token* Scale_scaleOnLeft(Token* input, double factor);
 /**/
 
 /***Scale_scaleOnLeftBlock***/
-Token Scale_scaleOnLeft(Token input, double factor) {
+Token* Scale_scaleOnLeft(Token* input, double factor) {
 #ifdef PTCG_TYPE_Array
-    if (input.type == TYPE_Array) {
-            result = $new(Array(((Array)(input.payload)).size, 0));
+    if (input->type == TYPE_Array) {
+        Token* result = $new(Array(((Array)(input.payload)).size, 0));
 
         for (i = 0; i < ((Array)(input.payload)).size; i++) {
             ((Array)(result.payload)).elements[i] = Scale_scaleOnLeft(Array_get(input, i), factor);
@@ -38,14 +38,15 @@ Token Scale_scaleOnLeft(Token input, double factor) {
 /**/
 
 /***Scale_declareScaleOnRightBlock***/
-Token Scale_scaleOnRight(Token input, double factor);
+Token* Scale_scaleOnRight(Token* input, double factor);
 /**/
 
 /***Scale_scaleOnRightBlock***/
-Token Scale_scaleOnRight(Token input, double factor) {
+Token* Scale_scaleOnRight(Token* input, double factor) {
 #ifdef PTCG_TYPE_Array
     if (input.type == TYPE_Array) {
-            result = $new(Array(((Array)(input.payload)).size, 0));
+
+        Token* result = $new(Array(((Array)(input.payload)).size, 0));
 
         for (i = 0; i < ((Array)(input.payload)).size; i++) {
             ((Array)(result.payload)).elements[i] = Scale_scaleOnRight(Array_get(input, i), factor);

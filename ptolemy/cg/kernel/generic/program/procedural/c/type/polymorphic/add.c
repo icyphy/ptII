@@ -1,35 +1,35 @@
 /*** add_Array_Array() ***/
-Token add_Array_Array(Token a1, Token a2) {
+Token* add_Array_Array(Token *a1, Token *a2) {
     return $Array_add(a1, a2);
 }
 /**/
 
 /*** add_Array_Double() ***/
-Token add_Array_Double(Token a1, double a2) {
+Token* add_Array_Double(Token *a1, double a2) {
     return $add_Double_Array(a2, a1);
 }
 /**/
 
 /*** add_Array_Int() ***/
-Token add_Array_Int(Token a1, int a2) {
+Token* add_Array_Int(Token *a1, int a2) {
     return $add_Int_Array(a2, a1);
 }
 /**/
 
 /*** add_Array_Long() ***/
-Token add_Array_Long(Token a1, long long a2) {
+Token* add_Array_Long(Token *a1, long long a2) {
     return $add_Long_Array(a2, a1);
 }
 /**/
 
 /*** add_Array_Scalar() ***/
-Token add_Array_Scalar(Token a1, Scalar a2) {
+Token* add_Array_Scalar(Token *a1, Scalar a2) {
     return $add_Scalar_Array(a2, a1);
 }
 /**/
 
 /*** add_BooleanArray_BooleanArray() ***/
-Token add_BooleanArray_BooleanArray(Token a1, Token a2) {
+Token* add_BooleanArray_BooleanArray(Token *a1, Token *a2) {
     return $BooleanArray_add(a1, a2);
 }
 /**/
@@ -56,23 +56,23 @@ char* add_Boolean_String(boolean a1, char* a2) {
 /**/
 
 /*** add_DoubleArray_Double() ***/
-Token add_DoubleArray_Double(Token a1, double a2) {
+Token* add_DoubleArray_Double(Token *a1, double a2) {
     return $add_Double_DoubleArray(a2, a1);
 }
 /**/
 
 /*** add_DoubleArray_DoubleArray() ***/
-Token add_DoubleArray_DoubleArray(Token a1, Token a2) {
+Token* add_DoubleArray_DoubleArray(Token *a1, Token *a2) {
     return $DoubleArray_add(a1, a2);
 }
 /**/
 
 /*** add_Double_Array() ***/
-Token add_Double_Array(double a1, Token a2) {
+Token* add_Double_Array(double a1, Token *a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token *result = $new(Array(a2->payload.Array->size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < a2->payload.Array->size; i++) {
         Array_set(result, i, $add_Double_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -86,11 +86,11 @@ double add_Double_Double(double a1, double a2) {
 /**/
 
 /*** add_Double_DoubleArray() ***/
-Token add_Double_DoubleArray(double a1, Token a2) {
+Token* add_Double_DoubleArray(double a1, Token *a2) {
     int i;
-    Token result = $new(DoubleArray(a2.payload.Array->size, 0));
+    Token *result = $new(DoubleArray(a2->payload.Array->size, 0));
 
-    for (i = 0; i < a2.payload.DoubleArray->size; i++) {
+    for (i = 0; i < a2->payload.DoubleArray->size; i++) {
             DoubleArray_set(result, i, $add_Double_Double(a1, DoubleArray_get(a2, i)));
     }
     return result;
@@ -112,14 +112,14 @@ char* add_Double_String(double a1, char* a2) {
 /**/
 
 /*** add_Double_Token() ***/
-Token add_Double_Token(double a1, Token a2) {
-    Token token = $new(Double(a1));
+Token* add_Double_Token(double a1, Token *a2) {
+    Token *token = $new(Double(a1));
     return $add_Token_Token(token, a2);
 }
 /**/
 
 /*** add_IntArray_IntArray() ***/
-Token add_IntArray_IntArray(Token a1, Token a2) {
+Token* add_IntArray_IntArray(Token *a1, Token *a2) {
     return $IntArray_add(a1, a2);
 }
 /**/
@@ -129,11 +129,11 @@ Token add_IntArray_IntArray(Token a1, Token a2) {
 /**/
 
 /*** add_IntArray_Int() ***/
-Token add_IntArray_Int(Token a1, int a2) {
+Token* add_IntArray_Int(Token *a1, int a2) {
     int i;
-    Token result = $new(IntArray(a1.payload.IntArray->size, 0));
+    Token *result = $new(IntArray(a1->payload.IntArray->size, 0));
 
-    for (i = 0; i < a1.payload.IntArray->size; i++) {
+    for (i = 0; i < a1->payload.IntArray->size; i++) {
             IntArray_set(result, i, $add_Int_Int(IntArray_get(a1, i), a2));
     }
     return result;
@@ -141,11 +141,11 @@ Token add_IntArray_Int(Token a1, int a2) {
 /**/
 
 /*** add_Int_Array() ***/
-Token add_Int_Array(int a1, Token a2) {
+Token* add_Int_Array(int a1, Token *a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token *result = $new(Array(a2->payload.Array->size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < a2->payload.Array->size; i++) {
         Array_set(result, i, $add_Int_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -173,18 +173,18 @@ char* add_Int_String(int a1, char* a2) {
 /**/
 
 /*** add_Int_Token() ***/
-int add_Int_Token(int a1, Token a2) {
-    Token token = $new(Int(a1));
+int add_Int_Token(int a1, Token *a2) {
+    Token *token = $new(Int(a1));
     return $typeFunc(TYPE_Int::add(token, a2));
 }
 /**/
 
 /*** add_Long_Array() ***/
-Token add_Long_Array(long long a1, Token a2) {
+Token* add_Long_Array(long long a1, Token *a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token *result = $new(Array(a2->payload.Array->size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < a2->payload.Array->size; i++) {
         Array_set(result, i, $add_Long_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -198,18 +198,18 @@ long long add_Long_Long(long long a1, long long a2) {
 /**/
 
 /*** add_Long_Token() ***/
-Token add_Long_Token(long long a1, Token a2) {
-    Token token = $new(Long(a1));
+Token* add_Long_Token(long long a1, Token *a2) {
+    Token *token = $new(Long(a1));
     return $add_Token_Token(token, a2);
 }
 /**/
 
 /*** add_Scalar_Array() ***/
-Token add_Scalar_Array(Scalar a1, Token a2) {
+Token* add_Scalar_Array(Scalar a1, Token *a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token *result = $new(Array(a2->payload.Array->size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < a2->payload.Array->size; i++) {
         Array_set(result, i, $add_Scalar_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -223,11 +223,11 @@ Scalar add_Scalar_Scalar(Scalar a1, Scalar a2) {
 /**/
 
 /*** add_Scalar_DoubleArray() ***/
-Token add_Scalar_DoubleArray(Scalar a1, Token a2) {
+Token* add_Scalar_DoubleArray(Scalar a1, Token *a2) {
     int i;
-    Token result = $new(DoubleArray(a2.payload.Array->size, 0));
+    Token *result = $new(DoubleArray(a2->payload.Array->size, 0));
 
-    for (i = 0; i < a2.payload.DoubleArray->size; i++) {
+    for (i = 0; i < a2->payload.DoubleArray->size; i++) {
             DoubleArray_set(result, i, $add_Scalar_Double(a1, DoubleArray_get(a2, i)));
     }
     return result;
@@ -249,14 +249,14 @@ char* add_Scalar_String(Scalar a1, char* a2) {
 /**/
 
 /*** add_Scalar_Token() ***/
-Token add_Scalar_Token(Scalar a1, Token a2) {
-    Token token = $new(Scalar(a1));
+Token* add_Scalar_Token(Scalar a1, Token *a2) {
+    Token *token = $new(Scalar(a1));
     return $add_Token_Token(token, a2);
 }
 /**/
 
 /*** add_StringArray_StringArray() ***/
-Token add_StringArray_StringArray(Token a1, Token a2) {
+Token* add_StringArray_StringArray(Token *a1, Token *a2) {
     return $StringArray_add(a1, a2);
 }
 /**/
@@ -296,19 +296,19 @@ char* add_String_String(char* a1, char* a2) {
 /**/
 
 /*** add_Token_Double() ***/
-Token add_Token_Double(Token a1, double a2) {
+Token* add_Token_Double(Token *a1, double a2) {
     return $add_Double_Token(a2, a1);
 }
 /**/
 
 /*** add_Token_Int() ***/
-int add_Token_Int(Token a1, int a2) {
+int add_Token_Int(Token *a1, int a2) {
     return $add_Int_Token(a2, a1);
 }
 /**/
 
 /*** add_Token_Token() ***/
-Token add_Token_Token(Token a1, Token a2) {
+Token* add_Token_Token(Token *a1, Token *a2) {
     return $tokenFunc(a1::add(a2));
 }
 /**/

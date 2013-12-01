@@ -85,7 +85,7 @@ void SDFDirector_Initialize(struct SDFDirector* director) {
                 for (int i = 0; i < (*(port->getWidthInside))(port); i++) {
                         for (int k = 0; k < rate; k++) {
                                 if ((*(port->hasTokenInside))(port, i)) {
-                                        Token t = (*(port->getInside))(port, i);
+                                        Token* t = (*(port->getInside))(port, i);
                                         (*(port->send))(port, i, t);
                                 } else {
                                         fprintf(stderr, "Port should produce 1 token, but there were only no tokens available.");
@@ -157,7 +157,7 @@ bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* por
                 if (i < (*(port->getWidthInside))(port)) {
                         for (int k = 0; k < rate; k++) {
                                 if ((*(port->hasToken))(port, i)) {
-                                        Token t = (*(port->get))(port, i);
+                                        Token* t = (*(port->get))(port, i);
                                         (*(port->sendInside))(port, i, t);
                                         wasTransferred = true;
                                 } else {
@@ -187,8 +187,7 @@ bool SDFDirector_TransferOutputs1(struct SDFDirector* director, struct IOPort* p
         for (int i = 0; i < port->getWidthInside(port); i++) {
                 for (int k = 0; k < rate; k++) {
                         if ((*(port->hasTokenInside))(port, i)) {
-                                Token t = (*(port->getInside))(port, i);
-
+                                Token* t = (*(port->getInside))(port, i);
                                 (*(port->send))(port, i, t);
                                 wasTransferred = true;
                         } else {

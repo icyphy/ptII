@@ -67,7 +67,7 @@ void IOPort_New_Free(struct IOPort* port) {
         }
 }
 
-void IOPort_Broadcast(struct IOPort* port, Token token) {
+void IOPort_Broadcast(struct IOPort* port, Token* token) {
         PblList* farReceivers;
         farReceivers = (*(port->getRemoteReceivers))(port);
 
@@ -89,7 +89,7 @@ void IOPort_Broadcast(struct IOPort* port, Token token) {
         }
         pblIteratorFree(farReceiversIterator);
 }
-void IOPort_Broadcast1(struct IOPort* port, Token* tokenArray, int sizeTokenArray, int vectorLength) {
+void IOPort_Broadcast1(struct IOPort* port, Token** tokenArray, int sizeTokenArray, int vectorLength) {
         PblList* farReceivers;
         farReceivers = (*(port->getRemoteReceivers))(port);
 
@@ -124,7 +124,7 @@ PblList* IOPort_DeepGetReceivers(struct IOPort* port) {
 
         return port->_insideReceivers;
 }
-Token IOPort_Get(struct IOPort* port, int channelIndex) {
+Token* IOPort_Get(struct IOPort* port, int channelIndex) {
         PblList* localReceivers;
         localReceivers = (*(port->getReceivers))(port);
 
@@ -144,28 +144,27 @@ Token IOPort_Get(struct IOPort* port, int channelIndex) {
                 exit(-1);
         }
 
-        Token token = emptyToken;
-        token.type = -1;
+        Token* token = NULL;
 
         PblIterator* receiverIterator = pblIteratorNew(localReceiver);
         while (pblIteratorHasNext(receiverIterator)) {
                 struct Receiver* receiver = pblIteratorNext(receiverIterator);
-                Token localToken = (*(receiver->get))(receiver);
+                Token* localToken = (*(receiver->get))(receiver);
 
-                if (token.type == -1) {
+                if (token == NULL) {
                         token = localToken;
                 }
         }
         //pblIteratorFree(receiverIterator);
 
-        if (token.type == -1) {
+        if (token == NULL) {
                 fprintf(stderr, "No token to return ! : IOPort_Get\n");
                 exit(-1);
         }
 
         return token;
 }
-Token* IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength) {
+Token** IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength) {
         PblList* localReceivers;
         localReceivers = (*(port->getReceivers))(port);
 
@@ -185,7 +184,7 @@ Token* IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength) {
         }
         struct Receiver* receiver = pblListPeek(localReceiver);
 
-        Token* retArray = (*(receiver->getArray))(receiver, vectorLength);
+        Token** retArray = (*(receiver->getArray))(receiver, vectorLength);
 
         if (retArray == NULL) {
                 fprintf(stderr, "No token array to return : IOPort_Get1\n");
@@ -226,7 +225,7 @@ int IOPort_GetChannelForReceiver(struct IOPort* port, struct Receiver* receiver)
                         related to this port : IOPort_GetChannelForReceiver\n");
         exit(-1);
 }
-Token IOPort_GetInside(struct IOPort* port, int channelIndex) {
+Token* IOPort_GetInside(struct IOPort* port, int channelIndex) {
         PblList* localReceivers;
         localReceivers = (*(port->getInsideReceivers))(port);
 
@@ -246,19 +245,19 @@ Token IOPort_GetInside(struct IOPort* port, int channelIndex) {
                 exit(-1);
         }
 
-        Token token = emptyToken;
-        token.type = -1;
+        Token* token = NULL;
 
         for (int j = 0; j < pblListSize(localReceiver); j++) {
                 struct Receiver* receiver = pblListGet(localReceiver, j);
-                Token localToken = (*(receiver->get))(receiver);
+                Token* localToken = (*(receiver->get))(receiver);
 
-                if (token.type == -1) {
+                if (token == NULL) {
                         token = localToken;
                 }
+                break;
         }
 
-        if (token.type == -1) {
+        if (token == NULL) {
                 fprintf(stderr, "No token to return ! : IOPort_GetInside\n");
                 exit(-1);
         }
@@ -453,7 +452,7 @@ int IOPort_NumberOfSinks(struct IOPort* port) {
 int IOPort_NumberOfSources(struct IOPort* port) {
         return port->_numberOfSources;
 }
-void IOPort_Send(struct IOPort* port, int channelIndex, Token token) {
+void IOPort_Send(struct IOPort* port, int channelIndex, Token* token) {
         PblList* farReceivers = (*(port->getRemoteReceivers))(port);
 
         if (farReceivers == NULL || pblListSize(farReceivers) <= channelIndex
@@ -465,7 +464,7 @@ void IOPort_Send(struct IOPort* port, int channelIndex, Token token) {
                 (*(receiver->putToAll))(receiver, token, pblListGet(farReceivers, channelIndex));
         }
 }
-void IOPort_Send1(struct IOPort* port, int channelIndex, Token* tokenArray, int vectorLength) {
+void IOPort_Send1(struct IOPort* port, int channelIndex, Token** tokenArray, int vectorLength) {
         PblList* farReceivers = (*(port->getRemoteReceivers))(port);
 
         if (farReceivers == NULL || pblListSize(farReceivers) <= channelIndex
@@ -477,7 +476,7 @@ void IOPort_Send1(struct IOPort* port, int channelIndex, Token* tokenArray, int 
                 (*(receiver->putArrayToAll))(receiver, tokenArray, vectorLength, pblListGet(farReceivers, channelIndex));
         }
 }
-void IOPort_SendInside(struct IOPort* port, int channelIndex, Token token) {
+void IOPort_SendInside(struct IOPort* port, int channelIndex, Token* token) {
         PblList* farReceivers = (*(port->deepGetReceivers))(port);
 
         if (farReceivers == NULL || pblListSize(farReceivers) <= channelIndex

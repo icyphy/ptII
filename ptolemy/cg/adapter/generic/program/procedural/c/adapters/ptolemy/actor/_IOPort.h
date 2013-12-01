@@ -37,13 +37,13 @@ struct IOPort {
 
         void (*free)(struct IOPort*);
 
-        void (*broadcast)(struct IOPort*, Token);
-        void (*broadcast1)(struct IOPort*, Token*, int, int);
+        void (*broadcast)(struct IOPort*, Token*);
+        void (*broadcast1)(struct IOPort*, Token**, int, int);
         PblList* (*deepGetReceivers)(struct IOPort*);
-        Token (*get)(struct IOPort*, int);
-        Token* (*get1)(struct IOPort*, int, int);
+        Token* (*get)(struct IOPort*, int);
+        Token** (*get1)(struct IOPort*, int, int);
         int (*getChannelForReceiver)(struct IOPort*, struct Receiver*);
-        Token (*getInside)(struct IOPort*, int);
+        Token* (*getInside)(struct IOPort*, int);
         PblList* (*getInsideReceivers)(struct IOPort*);
         Time (*getModelTime)(struct IOPort*, int);
         PblList* (*getReceivers)(struct IOPort*);
@@ -61,9 +61,9 @@ struct IOPort {
         bool (*isOutsideConnected)(struct IOPort*);
         int (*numberOfSinks)(struct IOPort*);
         int (*numberOfSources)(struct IOPort*);
-        void (*send)(struct IOPort*, int, Token);
-        void (*send1)(struct IOPort*, int, Token*, int);
-        void (*sendInside)(struct IOPort*, int, Token);
+        void (*send)(struct IOPort*, int, Token*);
+        void (*send1)(struct IOPort*, int, Token**, int);
+        void (*sendInside)(struct IOPort*, int, Token*);
 
 #ifdef PTIDESDIRECTOR
         double delayOffset;
@@ -74,13 +74,13 @@ struct IOPort* IOPort_New();
 void IOPort_Init(struct IOPort* port);
 void IOPort_New_Free(struct IOPort* port);
 
-void IOPort_Broadcast(struct IOPort* port, Token token);
-void IOPort_Broadcast1(struct IOPort* port, Token* tokenArray, int sizeTokenArray, int vectorLength);
+void IOPort_Broadcast(struct IOPort* port, Token* token);
+void IOPort_Broadcast1(struct IOPort* port, Token** tokenArray, int sizeTokenArray, int vectorLength);
 PblList* IOPort_DeepGetReceivers(struct IOPort* port);
-Token IOPort_Get(struct IOPort* port, int channelIndex);
-Token* IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength);
+Token* IOPort_Get(struct IOPort* port, int channelIndex);
+Token** IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength);
 int IOPort_GetChannelForReceiver(struct IOPort* port, struct Receiver* receiver);
-Token IOPort_GetInside(struct IOPort* port, int channelIndex);
+Token* IOPort_GetInside(struct IOPort* port, int channelIndex);
 PblList* IOPort_GetInsideReceivers(struct IOPort* port);
 Time IOPort_GetModelTime(struct IOPort* port, int channelIndex);
 PblList* IOPort_GetReceivers(struct IOPort* port);
@@ -98,8 +98,8 @@ bool IOPort_IsOutput(struct IOPort* port);
 bool IOPort_IsOutsideConnected(struct IOPort* port);
 int IOPort_NumberOfSinks(struct IOPort* port);
 int IOPort_NumberOfSources(struct IOPort* port);
-void IOPort_Send(struct IOPort* port, int channelIndex, Token token);
-void IOPort_Send1(struct IOPort* port, int channelIndex, Token* tokenArray, int vectorLength);
-void IOPort_SendInside(struct IOPort* port, int channelIndex, Token token);
+void IOPort_Send(struct IOPort* port, int channelIndex, Token* token);
+void IOPort_Send1(struct IOPort* port, int channelIndex, Token** tokenArray, int vectorLength);
+void IOPort_SendInside(struct IOPort* port, int channelIndex, Token* token);
 
 #endif

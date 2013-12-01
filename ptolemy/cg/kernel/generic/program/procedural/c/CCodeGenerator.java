@@ -214,8 +214,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
-                    + "(Token, ...)= {" + _eol);
+            code.append("Token* (*functionTable[NUM_TYPE][NUM_FUNC])"
+                    + "(Token*, ...)= {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
                 if (types[i].endsWith("Structure")) {
@@ -645,10 +645,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // Define the generic convert method
         StringBuffer convertImplementation = new StringBuffer(_eol
-                + "Token convert(Token t, char type) {" + _eol);
-        convertImplementation.append("if (t.type == type)" + _eol + "return t;"
+                + "Token* convert(Token* t, char type) {" + _eol);
+        convertImplementation.append("if (t->type == type)" + _eol + "return t;"
                 + _eol);
-        String convertDeclaration = _eol + "Token convert(Token t, char type);"
+        String convertDeclaration = _eol + "Token* convert(Token* t, char type);"
                 + _eol;
         codeH.append(convertDeclaration);
 
@@ -666,7 +666,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             convertImplementation.append(_eol + "return " + typesArray[i]
                     + "_convert(t);" + _eol + "}");
         }
-        convertImplementation.append(_eol + "return emptyToken;" + _eol + "}"
+        convertImplementation.append(_eol + "return NULL;" + _eol + "}"
                 + _eol);
         codeC.append(convertImplementation.toString());
 
@@ -849,8 +849,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeH.append("#define NUM_TYPE " + typesArray.length + _eol);
         codeH.append("#define NUM_FUNC " + functionsArray.length + _eol);
 
-        codeH.append("extern Token (*functionTable[NUM_TYPE][NUM_FUNC])"
-                + "(Token, ...);" + _eol);
+        codeH.append("extern Token* (*functionTable[NUM_TYPE][NUM_FUNC])"
+                + "(Token*, ...);" + _eol);
 
         // typeFunction contains the set of function:
         // Type_new(), Type_delete(), and etc.

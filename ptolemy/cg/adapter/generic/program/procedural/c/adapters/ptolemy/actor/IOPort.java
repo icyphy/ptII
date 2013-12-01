@@ -102,15 +102,15 @@ public class IOPort
         Type type = port.getType();
         String typeString = getCodeGenerator().codeGenType(type);
         if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
-            return processCode("$new(" + typeString + "(0)).payload."
+            return processCode("$new(" + typeString + "(0))->payload."
                     + typeString);
         }
         String result = "(*(" + port.getName() + "->get))((struct IOPort*) "
                 + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
         if (type instanceof BaseType) {
-            result += ".payload." + typeString;
+            result += "->payload." + typeString;
         } else if (type instanceof RecordType) {
-            result += ".payload.Record";
+            result += "->payload.Record";
         }
 
         return result;

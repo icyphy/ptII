@@ -11,11 +11,11 @@ $actorSymbol(numberOfTokensSeen) = -1;
 /**/
 
 /*** TokenPreinitBlock($channel)***/
-Token $actorSymbol(correctValuesThisFiring_$channel);
+Token* $actorSymbol(correctValuesThisFiring_$channel);
 /**/
 
 /*** toleranceTokenPreinitBlock***/
-static Token $actorSymbol(toleranceToken);
+static Token* $actorSymbol(toleranceToken);
 /**/
 
 /*** toleranceTokenInitBlock***/
@@ -23,10 +23,11 @@ $actorSymbol(toleranceToken) = $new(Double($param(tolerance)));
 /**/
 
 /***ComplexBlock($channel)***/
-if ($hasToken(input#$channel))
-        $actorSymbol(inputToken) = $get(input#$channel);
-else
-        return;
+if ($hasToken(input#$channel)) {
+    $actorSymbol(inputToken) = $get(input#$channel);
+} else {
+    return;
+}
 $actorSymbol(numberOfTokensSeen)++;
 
 /* Complex $actorSymbol(), ComplexBlock($channel) which has only one channel */
@@ -42,10 +43,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 /***ComplexBlockMultiChannel($channel)***/
-if ($hasToken(input#$channel))
+if ($hasToken(input#$channel)) {
         $actorSymbol(inputToken) = $get(input#$channel);
-else
+} else {
         return;
+}
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -54,22 +56,23 @@ if ($channel == 0) {
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && abs($actorSymbol(inputToken)
-                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)->payload)).$lcCgType(input)Value())
         > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
-            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)->payload));
    exit(-1);
 }
 /**/
 
 /***IntBlock($channel)***/
-if ($hasToken(input#$channel))
+if ($hasToken(input#$channel)) {
         $actorSymbol(inputToken) = $get(input#$channel);
-else
+} else {
         return;
+}
 $actorSymbol(numberOfTokensSeen)++;
 
 /* IB $actorSymbol(), intBlock($channel) which has only one channel */
@@ -90,10 +93,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 
 
 /***IntBlockMultiChannel($channel)***/
-if ($hasToken(input#$channel))
+if ($hasToken(input#$channel)) {
         $actorSymbol(inputToken) = $get(input#$channel);
-else
+} else {
         return;
+}
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
@@ -230,7 +234,7 @@ if ($channel == 0) {
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && strcmp($actorSymbol(inputToken), Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)) {
+        && strcmp($actorSymbol(inputToken), Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)->payload)) {
         printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
                     $actorSymbol(numberOfTokensSeen),
                     $actorSymbol(inputToken),
@@ -295,9 +299,9 @@ if (($type(input) != TYPE_Array
     ) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d\n Value was: %s. Should have been within %g of %s\n",
             $actorSymbol(numberOfTokensSeen),
-            $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
+            $tokenFunc($actorSymbol(inputToken)::toString())->payload.String,
             $param(tolerance),
-            $tokenFunc(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))::toString()).payload.String);
+            $tokenFunc(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))::toString())->payload.String);
    exit(-1);
 }
 /**/
@@ -317,8 +321,8 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
       if (!$tokenFunc($actorSymbol(inputToken)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)))) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
             $actorSymbol(numberOfTokensSeen),
-            $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
-            $tokenFunc(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)::toString()).payload.String);
+            $tokenFunc($actorSymbol(inputToken)::toString())->payload.String,
+            $tokenFunc(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)::toString())->payload.String);
    exit(-1);
 }
 /**/
@@ -359,13 +363,13 @@ if ($channel == 0) {
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && abs($actorSymbol(inputToken)
-                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)->payload)).$lcCgType(input)Value())
         > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
-            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)->payload));
    exit(-1);
 }
 /**/

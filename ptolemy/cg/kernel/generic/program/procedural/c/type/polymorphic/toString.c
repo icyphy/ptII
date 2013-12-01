@@ -1,9 +1,9 @@
 /*** toString_Array() ***/
-char* toString_Array(Token thisToken) {
+char* toString_Array(Token* thisToken) {
     int i;
     int currentSize, allocatedSize;
     char* string;
-    Token elementString;
+    Token* elementString;
 
     allocatedSize = 256;
     string = (char*) malloc(allocatedSize);
@@ -13,13 +13,13 @@ char* toString_Array(Token thisToken) {
     // Space for '{', '}', and '\0' characters.
     currentSize = 3;
 
-    for (i = 0; i < thisToken.payload.Array->size; i++) {
+    for (i = 0; i < thisToken->payload.Array->size; i++) {
 
             // Calculate the require storage size.
             elementString = $tokenFunc(Array_get(thisToken, i)::toString());
-                    //functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
+                    //functionTable[(int)(thisToken->payload.Array->elements[i]->type)][FUNC_toString](thisToken.payload.Array->elements[i]);
 
-            currentSize += strlen(elementString.payload.String);
+            currentSize += strlen(elementString->payload.String);
             if (i != 0) {
                     currentSize += 2;
             }
@@ -34,8 +34,8 @@ char* toString_Array(Token thisToken) {
             if (i != 0) {
                     strcat(string, ", ");
             }
-            strcat(string, elementString.payload.String);
-            free(elementString.payload.String);
+            strcat(string, elementString->payload.String);
+            free(elementString->payload.String);
     }
 
     strcat(string, "}");
@@ -59,7 +59,7 @@ char* toString_Boolean(boolean b) {
 /**/
 
 /*** toString_BooleanArray() ***/
-char* toString_BooleanArray(Token thisToken) {
+char* toString_BooleanArray(Token* thisToken) {
         int i;
     int currentSize, allocatedSize;
     char* string;
@@ -72,8 +72,8 @@ char* toString_BooleanArray(Token thisToken) {
     // Space for '{', '}', and '\0' characters.
     currentSize = 3;
 
-    //printf("%d\n", thisToken.payload.BooleanArray->size);
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    //printf("%d\n", thisToken->payload.BooleanArray->size);
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
                 // Calculate the require storage size.
 
             // boolean temp = BooleanArray_get(thisToken, i);
@@ -122,7 +122,7 @@ char* toString_Double(double d) {
 /**/
 
 /*** toString_DoubleArray() ***/
-char* toString_DoubleArray(Token thisToken) {
+char* toString_DoubleArray(Token* thisToken) {
         int i;
     int currentSize, allocatedSize;
     char* string;
@@ -135,8 +135,8 @@ char* toString_DoubleArray(Token thisToken) {
     // Space for '{', '}', and '\0' characters.
     currentSize = 3;
 
-    //printf("%d\n", thisToken.payload.DoubleArray->size);
-    for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
+    //printf("%d\n", thisToken->payload.DoubleArray->size);
+    for (i = 0; i < thisToken->payload.DoubleArray->size; i++) {
                 // Calculate the require storage size.
 
             // double temp = DoubleArray_get(thisToken, i);
@@ -173,7 +173,7 @@ char* toString_Int(int i) {
 /**/
 
 /*** toString_IntArray() ***/
-char* toString_IntArray(Token thisToken) {
+char* toString_IntArray(Token* thisToken) {
         int i;
     int currentSize, allocatedSize;
     char* string;
@@ -186,8 +186,8 @@ char* toString_IntArray(Token thisToken) {
     // Space for '{', '}', and '\0' characters.
     currentSize = 3;
 
-    //printf("%d\n", thisToken.payload.IntArray->size);
-    for (i = 0; i < thisToken.payload.IntArray->size; i++) {
+    //printf("%d\n", thisToken->payload.IntArray->size);
+    for (i = 0; i < thisToken->payload.IntArray->size; i++) {
                 // Calculate the require storage size.
 
             // int temp = IntArray_get(thisToken, i);
@@ -238,7 +238,7 @@ char* toString_String(char* a) {
 /**/
 
 /*** toString_StringArray() ***/
-char* toString_StringArray(Token thisToken) {
+char* toString_StringArray(Token* thisToken) {
     int i;
     int currentSize, allocatedSize;
     char* string;
@@ -257,7 +257,7 @@ char* toString_StringArray(Token thisToken) {
     int charIndex = 1;
     // Space for '{', '}', and '\0' characters.
     currentSize = 3;
-    for (i = 0; i < thisToken.payload.StringArray->size; i++) {
+    for (i = 0; i < thisToken->payload.StringArray->size; i++) {
       // Calculate the require storage size.
       // string temp = StringArray_get(thisToken, i);
       elementString = StringArray_get(thisToken, i);
@@ -286,8 +286,8 @@ char* toString_StringArray(Token thisToken) {
 /**/
 
 /*** toString_Token() ***/
-char* toString_Token(Token a) {
-        return $tokenFunc(a::toString()).payload.String;
+char* toString_Token(Token* a) {
+        return $tokenFunc(a::toString())->payload.String;
 }
 /**/
 

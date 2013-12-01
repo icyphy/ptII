@@ -1,18 +1,18 @@
 /*** Record_add() ***/
-Token Record_add(Token thisToken, ...) {
+Token* Record_add(Token *thisToken, ...) {
 //    int i, j;
 //    va_list argp;
-//    Token result;
-//    Token otherToken;
+//    Token *result;
+//    Token *otherToken;
 //
 //    va_start(argp, thisToken);
-//    otherToken = va_arg(argp, Token);
+//    otherToken = va_arg(argp, Token*);
 //
 //    result = $new(Record());
 //
-//    for (i = 0; i < thisToken.payload.Matrix->column; i++) {
-//        for (j = 0; j < thisToken.payload.Matrix->row; j++) {
-//            Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_add](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
+//    for (i = 0; i < thisToken->payload.Matrix->column; i++) {
+//        for (j = 0; j < thisToken->payload.Matrix->row; j++) {
+//            Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j)->type][FUNC_add](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
 //        }
 //    }
 //
@@ -23,30 +23,30 @@ Token Record_add(Token thisToken, ...) {
 /**/
 
 /***Record_convert()***/
-Token Record_convert(Token token, ...) {
+Token* Record_convert(Token token, ...) {
         return token;
-//        switch (token.type) {
+//        switch (token->type) {
 //                // FIXME: not finished
 //            default:
-//                fprintf(stderr, "Record_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+//                fprintf(stderr, "Record_convert(): Conversion from an unsupported type. (%d)\n", token->type);
 //                exit(-1);
 //                break;
 //        }
-//        token.type = TYPE_Record;
+//        token->type = TYPE_Record;
 //        return token;
 }
 /**/
 /*** Record_new() ***/
-Token Record_new(Time time, int microstep, Token t, ...) {
-        Token result;
+Token* Record_new(Time time, int microstep, Token t, ...) {
+        Token *result;
 
-        result.type = TYPE_Record;
-        result.payload.Record = (RecordToken) malloc(sizeof(struct record));
-        result.payload.Record->timestamp = time;
-        result.payload.Record->microstep = microstep;
+        result->type = TYPE_Record;
+        result->payload.Record = (RecordToken) malloc(sizeof(struct record));
+        result->payload.Record->timestamp = time;
+        result->payload.Record->microstep = microstep;
 
-        result.payload.Record->payload = malloc(sizeof(Token));
-        *(result.payload.Record->payload) = t;
+        result->payload.Record->payload = malloc(sizeof(Token));
+        *(result->payload.Record->payload) = t;
 
         return result;
 }
@@ -63,7 +63,7 @@ typedef struct record* RecordToken;
 /**/
 
 /*** funcDeclareBlock() ***/
-Token Record_new(double timestamp, int microstep, Token t, ...);
+Token* Record_new(double timestamp, int microstep, Token t, ...);
 /**/
 
 /*** funcImplementationBlock() ***/

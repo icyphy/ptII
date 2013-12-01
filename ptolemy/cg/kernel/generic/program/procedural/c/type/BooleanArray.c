@@ -2,21 +2,21 @@
 // BooleanArray_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token BooleanArray_add(Token thisToken, ...) {
+Token* BooleanArray_add(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token *result;
+    Token *otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.BooleanArray->size;
-    size2 = otherToken.payload.BooleanArray->size;
+    size1 = thisToken->payload.BooleanArray->size;
+    size2 = otherToken->payload.BooleanArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(BooleanArray(resultSize, 0));
@@ -39,12 +39,12 @@ Token BooleanArray_add(Token thisToken, ...) {
 /*** BooleanArray_clone() ***/
 // BooleanArray_clone: Return a new array just like the
 // specified array.
-Token BooleanArray_clone(Token thisToken, ...) {
-    Token result;
+Token* BooleanArray_clone(Token* thisToken, ...) {
+    Token* result;
     int i;
 
-    result = $new(BooleanArray(thisToken.payload.BooleanArray->size, 0));
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    result = $new(BooleanArray(thisToken->payload.BooleanArray->size, 0));
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
         BooleanArray_set(result, i, $clone_Boolean(BooleanArray_get(thisToken, i)));
     }
     return result;
@@ -56,9 +56,9 @@ Token BooleanArray_clone(Token thisToken, ...) {
 // into the type specified by the second argument.
 // @param token The token to be converted.
 // @param targetType The type to convert the elements of the given token to.
-Token BooleanArray_convert(Token token, ...) {
+Token* BooleanArray_convert(Token* token, ...) {
 //    int i;
-//    Token result;
+//    Token* result;
 //    Token element;
 //    va_list argp;
 //    char targetType;
@@ -67,14 +67,14 @@ Token BooleanArray_convert(Token token, ...) {
 //    targetType = va_arg(argp, int);
 //
 //    // FIXME: HOW DO WE KNOW WHICH TYPE WE'RE CONVERTING TO?
-//    result = BooleanArray_new(token.payload.BooleanArray->size, 0);
+//    result = BooleanArray_new(token->payload.BooleanArray->size, 0);
 //
-//    for (i = 0; i < token.payload.BooleanArray->size; i++) {
+//    for (i = 0; i < token->payload.BooleanArray->size; i++) {
 //        element = BooleanArray_get(token, i);
-//        if (targetType != token.payload.BooleanArray->elementType) {
+//        if (targetType != token->payload.BooleanArray->elementType) {
 //
 //                BooleanArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
-//            // result.payload.BooleanArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
+//            // result->payload.BooleanArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
 //                BooleanArray_set(result, i, element);
 //        }
@@ -88,24 +88,23 @@ Token BooleanArray_convert(Token token, ...) {
 
 /*** BooleanArray_delete() ***/
 // BooleanArray_delete: FIXME: What does this do?
-Token BooleanArray_delete(Token token, ...) {
+Token* BooleanArray_delete(Token* token, ...) {
         //Revised
-    Token emptyToken;
     //Token element;
     //int i;
     //char elementType;
     // Delete each elements.
-    // for (i = 0; i < token.payload.BooleanArray->size; i++) {
-    //     elementType = token.payload.BooleanArray->elementType;
+    // for (i = 0; i < token->payload.BooleanArray->size; i++) {
+    //     elementType = token->payload.BooleanArray->elementType;
     //     element = BooleanArray_get(token, i);
     //     functionTable[(int) elementType][FUNC_delete](element);
     // }
-    free((boolean *) token.payload.BooleanArray->elements);
-    free(token.payload.BooleanArray);
+    free((boolean *) token->payload.BooleanArray->elements);
+    free(token->payload.BooleanArray);
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */
-    return emptyToken;
+    return NULL;
 }
 /**/
 
@@ -114,21 +113,21 @@ Token BooleanArray_delete(Token token, ...) {
 // by the elements of the second array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token BooleanArray_divide(Token thisToken, ...) {
+Token* BooleanArray_divide(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.BooleanArray->size;
-    size2 = otherToken.payload.BooleanArray->size;
+    size1 = thisToken->payload.BooleanArray->size;
+    size2 = otherToken->payload.BooleanArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(BooleanArray(resultSize, 0));
@@ -152,22 +151,22 @@ Token BooleanArray_divide(Token thisToken, ...) {
 /*** BooleanArray_equals() ***/
 #ifdef TYPE_BooleanArray
 // BooleanArray_equals: Test an array for equality with a second array.
-Token BooleanArray_equals(Token thisToken, ...) {
+Token* BooleanArray_equals(Token* thisToken, ...) {
     int i;
     va_list argp;
-    Token otherToken;
+    Token* otherToken;
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    if (thisToken.payload.BooleanArray->size != otherToken.payload.BooleanArray->size) {
+    if (thisToken->payload.BooleanArray->size != otherToken->payload.BooleanArray->size) {
         return $new(Boolean(false));
     }
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
             if (!$equals_Boolean_Boolean(BooleanArray_get(thisToken, i), BooleanArray_get(otherToken, i))) {
                     return $new(Boolean(false));
             }
-        // if (!functionTable[(int)BooleanArray_get(thisToken, i).type][FUNC_equals]
-        //                 (BooleanArray_get(thisToken, i), BooleanArray_get(otherToken, i)).payload.Boolean) {
+        // if (!functionTable[(int)BooleanArray_get(thisToken, i)->type][FUNC_equals]
+        //                 (BooleanArray_get(thisToken, i), BooleanArray_get(otherToken, i))->payload.Boolean) {
         //     return $new(Boolean(false));
         // }
     }
@@ -181,29 +180,29 @@ Token BooleanArray_equals(Token thisToken, ...) {
 /*** BooleanArray_isCloseTo() ***/
 #ifdef TYPE_BooleanArray
 // BooleanArray_isCloseTo: Test an array to see whether it is close in value to another.
-Token BooleanArray_isCloseTo(Token thisToken, ...) {
+Token* BooleanArray_isCloseTo(Token* thisToken, ...) {
     int i;
     va_list argp;
-    Token otherToken;
-    Token tolerance;
+    Token* otherToken;
+    Token* tolerance;
     va_start(argp, thisToken);
 
 
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
     otherToken = $BooleanArray_convert(otherToken);
 
     boolean value1, value2;
-    tolerance = va_arg(argp, Token);
+    tolerance = va_arg(argp, Token*);
 
 
-    if (thisToken.payload.BooleanArray->size != otherToken.payload.BooleanArray->size) {
+    if (thisToken->payload.BooleanArray->size != otherToken->payload.BooleanArray->size) {
         return $new(Boolean(false));
     }
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
         value1 = BooleanArray_get(thisToken, i);
         value2 = BooleanArray_get(otherToken, i);
 
-        if (fabs(value1 - value2) > tolerance.payload.Double) {
+        if (fabs(value1 - value2) > tolerance->payload.Double) {
             return $new(Boolean(false));
         }
     }
@@ -218,21 +217,21 @@ Token BooleanArray_isCloseTo(Token thisToken, ...) {
 // Multiplication is element-wise.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token BooleanArray_multiply(Token thisToken, ...) {
+Token* BooleanArray_multiply(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.BooleanArray->size;
-    size2 = otherToken.payload.BooleanArray->size;
+    size1 = thisToken->payload.BooleanArray->size;
+    size2 = otherToken->payload.BooleanArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(BooleanArray(resultSize, 0));
@@ -255,12 +254,12 @@ Token BooleanArray_multiply(Token thisToken, ...) {
 /*** BooleanArray_negate() ***/
 // BooleanArray_negate: Negate each element of an array.
 // Return a new Array token.
-Token BooleanArray_negate(Token thisToken, ...) {
+Token* BooleanArray_negate(Token* thisToken, ...) {
     int i;
-    Token result;
-    result = $new(BooleanArray(thisToken.payload.BooleanArray->size, 0));
+    Token* result;
+    result = $new(BooleanArray(thisToken->payload.BooleanArray->size, 0));
 
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
         BooleanArray_set(result, i, $negate_Boolean(BooleanArray_get(thisToken, i)));
     }
     return result;
@@ -274,22 +273,22 @@ Token BooleanArray_negate(Token thisToken, ...) {
 // (which will typically be <= size).
 // The rest of the arguments are the provided elements (there
 // should be "given" of them). The given elements
-// should be of type Token *.
+// should be of type Token* .
 // If the "given" argument is greater than 0, then the last
 // argument is expected to be the type that of the elements.
-Token BooleanArray_new(int size, int given, ...) {
+Token* BooleanArray_new(int size, int given, ...) {
     va_list argp;
     int i;
-    Token result;
-    result.type = TYPE_BooleanArray;
-    result.payload.BooleanArray = (BooleanArrayToken) malloc(sizeof(struct booleanarray));
-    result.payload.BooleanArray->size = size;
-    result.payload.BooleanArray->elementType = TYPE_Boolean;
+    Token* result = malloc(sizeof(Token));
+    result->type = TYPE_BooleanArray;
+    result->payload.BooleanArray = (BooleanArrayToken) malloc(sizeof(struct booleanarray));
+    result->payload.BooleanArray->size = size;
+    result->payload.BooleanArray->elementType = TYPE_Boolean;
     // Only call calloc if size > 0.  Otherwise Electric Fence reports
     // an error.
     if (size > 0) {
         // Allocate an new array of Tokens.
-        result.payload.BooleanArray->elements =
+        result->payload.BooleanArray->elements =
         (boolean *) calloc(size, sizeof(boolean));
         if (given > 0) {
             va_start(argp, given);
@@ -297,7 +296,7 @@ Token BooleanArray_new(int size, int given, ...) {
 
                     // va_arg requires the second argument to be not be unsigned char.
                     // so we'll promote it to int instead.
-                result.payload.BooleanArray->elements[i] = (boolean) va_arg(argp, int);
+                result->payload.BooleanArray->elements[i] = (boolean) va_arg(argp, int);
             }
             va_end(argp);
         }
@@ -309,13 +308,13 @@ Token BooleanArray_new(int size, int given, ...) {
 /*** BooleanArray_one() ***/
 // BooleanArray_one: Return an array like the specified
 // array but with ones of the same type.
-Token BooleanArray_one(Token thisToken, ...) {
-    Token result;
+Token* BooleanArray_one(Token* thisToken, ...) {
+    Token* result;
     Token element;
     int i;
 
-    result = $new(BooleanArray(thisToken.payload.BooleanArray->size, 0));
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    result = $new(BooleanArray(thisToken->payload.BooleanArray->size, 0));
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
         BooleanArray_set(result, i, $one_Boolean());
     }
     return result;
@@ -324,23 +323,23 @@ Token BooleanArray_one(Token thisToken, ...) {
 
 /*** BooleanArray_print() ***/
 // BooleanArray_print: Print the contents of an array to standard out.
-Token BooleanArray_print(Token thisToken, ...) {
+Token* BooleanArray_print(Token* thisToken, ...) {
     int i;
     printf("{");
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
         if (i != 0) {
             printf(", ");
         }
         print_Boolean(BooleanArray_get(thisToken, i));
-        // functionTable[(int)thisToken.payload.BooleanArray->elementType][FUNC_print](BooleanArray_get(thisToken, i));
+        // functionTable[(int)thisToken->payload.BooleanArray->elementType][FUNC_print](BooleanArray_get(thisToken, i));
     }
     printf("}");
 }
 /**/
 
 /*** BooleanArray_repeat() ***/
-Token BooleanArray_repeat(int number, boolean value) {
-        Token result;
+Token* BooleanArray_repeat(int number, boolean value) {
+        Token* result;
         result = $new(BooleanArray(number, 0));
         int i;
 
@@ -358,21 +357,21 @@ Token BooleanArray_repeat(int number, boolean value) {
 // FIXME: Arrays can have scalars subtracted!
 // This will cause a nasty seg fault.
 // Return a new Array token.
-Token BooleanArray_subtract(Token thisToken, ...) {
+Token* BooleanArray_subtract(Token* thisToken, ...) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
     va_list argp;
-    Token result;
-    Token otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = va_arg(argp, Token*);
 
-    size1 = thisToken.payload.BooleanArray->size;
-    size2 = otherToken.payload.BooleanArray->size;
+    size1 = thisToken->payload.BooleanArray->size;
+    size2 = otherToken->payload.BooleanArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = $new(BooleanArray(resultSize, 0));
@@ -394,17 +393,17 @@ Token BooleanArray_subtract(Token thisToken, ...) {
 
 /*** BooleanArray_sum() ***/
 // FIXME: WHAT DOES THIS FUNCTION DO?
-boolean BooleanArray_sum(Token token) {
+boolean BooleanArray_sum(Token* token) {
         boolean result;
         int i;
 
-        if (token.payload.BooleanArray->size <= 0) {
+        if (token->payload.BooleanArray->size <= 0) {
                 return false;
         } else {
                 result = BooleanArray_get(token, 0);
         }
 
-    for (i = 1; i < token.payload.BooleanArray->size; i++) {
+    for (i = 1; i < token->payload.BooleanArray->size; i++) {
             result = $add_Boolean_Boolean(result, BooleanArray_get(token, i));
     }
     return result;
@@ -414,7 +413,7 @@ boolean BooleanArray_sum(Token token) {
 /*** BooleanArray_toString() ***/
 // BooleanArray_toString: Return a string token with a string representation
 // of the specified array.
-Token BooleanArray_toString(Token thisToken, ...) {
+Token* BooleanArray_toString(Token* thisToken, ...) {
         return $new(String($toString_BooleanArray(thisToken)));
 }
 /**/
@@ -422,12 +421,12 @@ Token BooleanArray_toString(Token thisToken, ...) {
 /*** BooleanArray_zero() ***/
 // BooleanArray_zero: Return an array like the specified
 // array but with zeros of the same type.
-Token BooleanArray_zero(Token thisToken, ...) {
-    Token result;
+Token* BooleanArray_zero(Token* thisToken, ...) {
+    Token* result;
     int i;
 
-    result = $new(BooleanArray(thisToken.payload.BooleanArray->size, 0));
-    for (i = 0; i < thisToken.payload.BooleanArray->size; i++) {
+    result = $new(BooleanArray(thisToken->payload.BooleanArray->size, 0));
+    for (i = 0; i < thisToken->payload.BooleanArray->size; i++) {
         BooleanArray_set(result, i, $zero_Boolean());
     }
     return result;
@@ -435,7 +434,7 @@ Token BooleanArray_zero(Token thisToken, ...) {
 /**/
 
 /*** declareBlock() ***/
-Token BooleanArray_new(int size, int given, ...);
+Token* BooleanArray_new(int size, int given, ...);
 struct booleanarray {
     int size;                                   // size of the array.
     boolean* elements;                            // array of Token elements.
@@ -446,46 +445,46 @@ typedef struct booleanarray* BooleanArrayToken;
 
 /*** funcDeclareBlock() ***/
 // BooleanArray_get: get an element of an array.
-#define BooleanArray_length(array) ((array).payload.BooleanArray->size)
+#define BooleanArray_length(array) ((array)->payload.BooleanArray->size)
 
-boolean BooleanArray_get(Token array, int i);
-void BooleanArray_set(Token array, int i, boolean element);
-void BooleanArray_resize(Token array, int size);
-void BooleanArray_insert(Token array, boolean token);
+boolean BooleanArray_get(Token* array, int i);
+void BooleanArray_set(Token* array, int i, boolean element);
+void BooleanArray_resize(Token* array, int size);
+void BooleanArray_insert(Token* array, boolean token);
 
 /**/
 
 /*** funcImplementationBlock() ***/
-boolean BooleanArray_get(Token array, int i) {
-        // Token result;
-        // result.type = array.payload.BooleanArray->elementType;
-        // result.payload.Boolean = ((boolean *) array.payload.BooleanArray->elements)[i];
+boolean BooleanArray_get(Token* array, int i) {
+        // Token* result;
+        // result->type = array->payload.BooleanArray->elementType;
+        // result->payload.Boolean = ((boolean *) array->payload.BooleanArray->elements)[i];
         // return result;
-        return ((boolean *) array.payload.BooleanArray->elements)[i];
+        return ((boolean *) array->payload.BooleanArray->elements)[i];
 }
 
 // BooleanArray_set: set an element of an array.
-void BooleanArray_set(Token array, int i, boolean element) {
-    ((boolean *) array.payload.BooleanArray->elements)[i] = element;
+void BooleanArray_set(Token* array, int i, boolean element) {
+    ((boolean *) array->payload.BooleanArray->elements)[i] = element;
 }
 
 // BooleanArray_resize: Change the size of an array,
 // preserving those elements that fit.
-void BooleanArray_resize(Token array, int size) {
-    if (array.payload.BooleanArray->size == 0) {
-        array.payload.BooleanArray->elements = (boolean *) malloc(size * sizeof(boolean));
+void BooleanArray_resize(Token* array, int size) {
+    if (array->payload.BooleanArray->size == 0) {
+        array->payload.BooleanArray->elements = (boolean *) malloc(size * sizeof(boolean));
     } else {
-        array.payload.BooleanArray->elements = (boolean*) realloc(
-                     array.payload.BooleanArray->elements, size * sizeof(boolean));
+        array->payload.BooleanArray->elements = (boolean*) realloc(
+                     array->payload.BooleanArray->elements, size * sizeof(boolean));
     }
 }
 
 // BooleanArray_insert: Append the specified element to the end of an array.
-void BooleanArray_insert(Token array, boolean token) {
+void BooleanArray_insert(Token* array, boolean token) {
     // FIXME: call this append(), not insert().
-    int oldSize = array.payload.BooleanArray->size;
+    int oldSize = array->payload.BooleanArray->size;
     BooleanArray_resize(array, oldSize + 1 );
-    ((boolean *) array.payload.BooleanArray->elements)[oldSize] = token;
+    ((boolean *) array->payload.BooleanArray->elements)[oldSize] = token;
 
 }
 /**/

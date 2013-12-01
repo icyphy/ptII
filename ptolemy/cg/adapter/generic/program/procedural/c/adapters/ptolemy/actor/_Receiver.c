@@ -44,7 +44,7 @@ Time Receiver_GetModelTime(struct Receiver* r) {
         struct Director* containerDirector = (struct Director*)(containerActor->_director);
         return (*(containerDirector->getModelTime))(containerDirector);
 }
-void Receiver_PutArray(struct Receiver* r, Token* tokenArray, int numberOfTokens) {
+void Receiver_PutArray(struct Receiver* r, Token** tokenArray, int numberOfTokens) {
         // If there is no container, then perform no conversion.
         if (r->container == NULL) {
                 for (int i = 0; i < numberOfTokens; i++) {
@@ -56,7 +56,7 @@ void Receiver_PutArray(struct Receiver* r, Token* tokenArray, int numberOfTokens
                 }
         }
 }
-void Receiver_PutArrayToAll(struct Receiver* r, Token* tokens,
+void Receiver_PutArrayToAll(struct Receiver* r, Token** tokens,
                 int numberOfTokens, PblList* receivers) {
 
         PblIterator* receiversIterator = pblIteratorNew(receivers);
@@ -66,7 +66,7 @@ void Receiver_PutArrayToAll(struct Receiver* r, Token* tokens,
                 (*(receiver->putArray))(receiver, tokens, numberOfTokens);
         }
 }
-void Receiver_PutToAll(struct Receiver* r, Token token, PblList* receivers) {
+void Receiver_PutToAll(struct Receiver* r, Token* token, PblList* receivers) {
         PblIterator* receiversIterator = pblIteratorNew(receivers);
         while (pblIteratorHasNext(receiversIterator)) {
                 struct Receiver* receiver = pblIteratorNext(receiversIterator);
