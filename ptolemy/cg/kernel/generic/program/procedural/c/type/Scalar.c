@@ -1,10 +1,10 @@
 /*** Scalar_add() ***/
 $include(<stdio.h>)
 Token* add_Scalar_Array(Scalar a1, Token a2);
-Token* Scalar_add(Token *thisToken, ...) {
+Token* Scalar_add(Token* thisToken, ...) {
     va_list argp;
-    Token *result;
-    Token *otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -51,13 +51,13 @@ Token* Scalar_add(Token *thisToken, ...) {
 /**/
 
 /*** Scalar_clone() ***/
-Token* Scalar_clone(Token *thisToken, ...) {
+Token* Scalar_clone(Token* thisToken, ...) {
     return thisToken;
 }
 /**/
 
 /*** Scalar_convert() ***/
-Token* Scalar_convert(Token token, ...) {
+Token* Scalar_convert(Token* token, ...) {
     switch (token->type) {
 #ifdef TYPE_Boolean
     case TYPE_Boolean:
@@ -110,9 +110,9 @@ Token* Scalar_convert(Token token, ...) {
 /**/
 
 /*** Scalar_divide() ***/
-Token* Scalar_divide(Token *thisToken, ...) {
+Token* Scalar_divide(Token* thisToken, ...) {
     va_list argp;
-    Token *otherToken;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -123,9 +123,9 @@ Token* Scalar_divide(Token *thisToken, ...) {
 /**/
 
 /***Scalar_equals() ***/
-Token* Scalar_equals(Token *thisToken, ...) {
+Token* Scalar_equals(Token* thisToken, ...) {
     va_list argp;
-    Token *otherToken;
+    Token* otherToken;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
 
@@ -142,10 +142,10 @@ Token* Scalar_equals(Token *thisToken, ...) {
 
 /*** Scalar_isCloseTo() ***/
 $include(<math.h>)
-Token* Scalar_isCloseTo(Token *thisToken, ...) {
+Token* Scalar_isCloseTo(Token* thisToken, ...) {
     va_list argp;
-    Token *otherToken;
-    Token *tolerance;
+    Token* otherToken;
+    Token* tolerance;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
     tolerance = va_arg(argp, Token*);
@@ -158,10 +158,10 @@ Token* Scalar_isCloseTo(Token *thisToken, ...) {
 /*** Scalar_multiply() ***/
 Token* multiply_Scalar_Array(Scalar a1, Token a2);
 
-Token* Scalar_multiply(Token *thisToken, ...) {
+Token* Scalar_multiply(Token* thisToken, ...) {
     va_list argp;
-    Token *result;
-    Token *otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -206,7 +206,7 @@ Token* Scalar_multiply(Token *thisToken, ...) {
 /**/
 
 /*** Scalar_negate() ***/
-Token* Scalar_negate(Token *thisToken, ...) {
+Token* Scalar_negate(Token* thisToken, ...) {
     thisToken->payload.Scalar = -thisToken->payload.Scalar;
     return thisToken;
 }
@@ -215,7 +215,7 @@ Token* Scalar_negate(Token *thisToken, ...) {
 /*** Scalar_new() ***/
 // make a new Scalar token from the given value.
 Token* Scalar_new(Scalar s) {
-    Token *result;
+    Token* result;
     result->type = TYPE_Scalar;
     result->payload.Scalar = s;
     return result;
@@ -223,24 +223,24 @@ Token* Scalar_new(Scalar s) {
 /**/
 
 /*** Scalar_one() ***/
-Token* Scalar_one(Token token, ...) {
+Token* Scalar_one(Token* token, ...) {
     return $new(Scalar(1.0));
 }
 /**/
 
 /*** Scalar_print() ***/
-Token* Scalar_print(Token *thisToken, ...) {
+Token* Scalar_print(Token* thisToken, ...) {
     printf("%g", thisToken->payload.Scalar);
 }
 /**/
 
 /*** Scalar_subtract() ***/
-Token* subtract_Scalar_Array(Scalar a1, Token a2);
+Token* subtract_Scalar_Array(Scalar a1, Token* a2);
 
-Token* Scalar_subtract(Token *thisToken, ...) {
+Token* Scalar_subtract(Token* thisToken, ...) {
     va_list argp;
-    Token *result;
-    Token *otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -269,13 +269,13 @@ Token* Scalar_subtract(Token *thisToken, ...) {
 /**/
 
 /*** Scalar_toString() ***/
-Token* Scalar_toString(Token *thisToken, ...) {
+Token* Scalar_toString(Token* thisToken, ...) {
     return $new(String($toString_Scalar(thisToken->payload.Scalar)));
 }
 /**/
 
 /*** Scalar_zero() ***/
-Token* Scalar_zero(Token token, ...) {
+Token* Scalar_zero(Token* token, ...) {
     return $new(Scalar(0.0));
 }
 /**/

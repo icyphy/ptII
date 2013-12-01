@@ -94,7 +94,7 @@ void SDFDirector_Initialize(struct SDFDirector* director) {
                         }
                 }
         }
-        //pblIteratorFree(outputPorts);
+        pblIteratorFree(outputPorts);
 }
 bool SDFDirector_Postfire(struct SDFDirector* director) {
 

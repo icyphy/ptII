@@ -155,7 +155,7 @@ Token* IOPort_Get(struct IOPort* port, int channelIndex) {
                         token = localToken;
                 }
         }
-        //pblIteratorFree(receiverIterator);
+        pblIteratorFree(receiverIterator);
 
         if (token == NULL) {
                 fprintf(stderr, "No token to return ! : IOPort_Get\n");

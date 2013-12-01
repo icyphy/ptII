@@ -139,7 +139,7 @@ void Director_Initialize(struct Director* director) {
                 struct Actor* actor = pblIteratorNext(actors);
                 director->initialize1(director, actor);
         }
-        //pblIteratorFree(actors);
+        pblIteratorFree(actors);
 }
 void Director_Initialize1(struct Director* director, struct Actor* actor) {
         actor->initialize(actor);
@@ -181,7 +181,7 @@ void Director_Preinitialize(struct Director* director) {
                 struct Actor* actor = pblIteratorNext(actors);
                 director->preinitialize1(director, actor);
         }
-        //pblIteratorFree(actors);
+        pblIteratorFree(actors);
 }
 void Director_Preinitialize1(struct Director* director, struct Actor* actor) {
         actor->preinitialize(actor);
@@ -215,7 +215,7 @@ bool Director_TransferOutputs(struct Director* director) {
                 struct IOPort* port = pblIteratorNext(outports);
                 director->transferOutputs1(director, port);
         }
-        //pblIteratorFree(outports);
+        pblIteratorFree(outports);
         return true;
 }
 bool Director_TransferOutputs1(struct Director* director, struct IOPort* port){
