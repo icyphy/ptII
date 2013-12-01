@@ -81,7 +81,7 @@ bool FSMDirector_TransferInputs(struct FSMDirector* director, struct IOPort* por
         for (int i = 0; i < port->getWidth(port); i++) {
                 if (i < port->getWidthInside(port)) {
                         if (port->hasToken(port, i)) {
-                                Token t = port->get(port, i);
+                                Token* t = port->get(port, i);
                                 port->sendInside(port, i, t);
                                 pblMapAdd(tokensIn, &port, sizeof(struct IOPort*), &t, sizeof(Token));
 
@@ -93,8 +93,9 @@ bool FSMDirector_TransferInputs(struct FSMDirector* director, struct IOPort* por
                         }
                 }
         }
-        if (wasTransferred)
+        if (wasTransferred) {
                 director->transferModalInputs(tokensIn);
+        }
         pblMapFree(tokensIn);
         return wasTransferred;
 }
@@ -108,7 +109,7 @@ bool FSMDirector_TransferOutputs1(struct FSMDirector* director, struct IOPort* p
         PblMap* tokensOut = pblMapNewHashMap();
         for (int i = 0; i < port->getWidthInside(port); i++) {
                 if (port->hasTokenInside(port, i)) {
-                        Token t = port->getInside(port, i);
+                        Token* t = port->getInside(port, i);
                         pblMapAdd(tokensOut, &port, sizeof(struct IOPort*), &t, sizeof(Token));
                         port->send(port, i, t);
                         result = true;

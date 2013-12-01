@@ -27,7 +27,7 @@ void FSMReceiver_Init(struct FSMReceiver* r) {
         r->hasToken1 = FSMReceiver_HasToken1;
         r->put = FSMReceiver_Put;
 
-        r->_token = emptyToken;
+        r->_token = NULL;
 }
 
 // Destructors
@@ -39,22 +39,26 @@ void FSMReceiver_New_Free(struct FSMReceiver* r) {
 
 // Other methods
 void FSMReceiver_Clear(struct FSMReceiver* r) {
-        r->_token = emptyToken;
+        r->_token = NULL;
 }
 PblList* FSMReceiver_ElementList(struct FSMReceiver* r) {
         PblList* list = pblListNewArrayList();
         pblListAdd(list, &(r->_token));
         return list;
 }
-Token FSMReceiver_Get(struct FSMReceiver* r) {
-        if (r->_token.type == -1) {
+Token* FSMReceiver_Get(struct FSMReceiver* r) {
+        if (r->_token->type == -1) {
                 fprintf(stderr, "No Token in the FSM Receiver \
                                 : FSMReceiver_Get (_FSMReceiver.c)\n");
                 exit(-1);
         }
 
-        Token retour = r->_token;
-        r->_token.type = -1;
+        // FIXME: A memory leak.
+        Token* retour = malloc(sizeof(Token));
+        retour->type = r->_token->type;
+        retour->payload = r->_token->payload;
+
+        r->_token->type = -1;
         return retour;
 }
 bool FSMReceiver_HasRoom(struct FSMReceiver* r) {
@@ -64,14 +68,14 @@ bool FSMReceiver_HasRoom1(struct FSMReceiver* r, int numberOfTokens) {
         return numberOfTokens == 1;
 }
 bool FSMReceiver_HasToken(struct FSMReceiver* r) {
-        return r->_token.type != -1;
+        return r->_token->type != -1;
 }
 bool FSMReceiver_HasToken1(struct FSMReceiver* r, int numberOfTokens) {
-        return numberOfTokens == 1 && r->_token.type != -1;
+        return numberOfTokens == 1 && r->_token->type != -1;
 }
-void FSMReceiver_Put(struct FSMReceiver* r, Token token) {
+void FSMReceiver_Put(struct FSMReceiver* r, Token* token) {
         // FIXME : it is not a relevant comparison
-        if (token.type == -1) {
+        if (token->type == -1) {
                 return;
         }
         r->_token = convert(token, ((struct TypedIOPort*)r->container)->_type);

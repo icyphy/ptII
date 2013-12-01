@@ -67,8 +67,8 @@ if ($hasToken(input)) {
                 // discontinuous and we should throw an exception
                 // unless derivative control is disabled (Kd=0).
 
-                if (Double_isCloseTo(timeGap, zeroDoubleToken, epsilonDoubleToken).payload.Boolean) {
-                        if (!Double_isCloseTo($actorSymbol(Kd), zeroDoubleToken, epsilonDoubleToken).payload.Boolean
+                if (Double_isCloseTo(&timeGap, &zeroDoubleToken, &epsilonDoubleToken)->payload.Boolean) {
+                        if (!Double_isCloseTo(&$actorSymbol(Kd), &zeroDoubleToken, &epsilonDoubleToken)->payload.Boolean
                                         && currentToken == lastToken) {
                                 fprintf(stderr, "PID controller recevied discontinuous input.");
                                 exit(-1);
@@ -77,7 +77,7 @@ if ($hasToken(input)) {
                 // Otherwise, the signal is continuous and we add
                 // integral and derivative components.
                 else {
-                        if (!(Double_isCloseTo($actorSymbol(Ki), zeroDoubleToken, epsilonDoubleToken).payload.Boolean)) {
+                        if (!(Double_isCloseTo(&$actorSymbol(Ki), &zeroDoubleToken, &epsilonDoubleToken)->payload.Boolean)) {
                                 //Calculate integral component and accumulate
                                 $actorSymbol(accumulated) = $actorSymbol(accumulated) + ((currentToken + lastToken) * timeGap.payload.Double * 0.5);
 
@@ -86,7 +86,7 @@ if ($hasToken(input)) {
                         }
 
                         // Add derivative component to controller output.
-                        if (!(Double_isCloseTo($actorSymbol(Kd), zeroDoubleToken, epsilonDoubleToken).payload.Boolean)) {
+                        if (!(Double_isCloseTo(&$actorSymbol(Kd), &zeroDoubleToken, &epsilonDoubleToken)->payload.Boolean)) {
                                 currentOutput = currentOutput + $actorSymbol(Kd).payload.Double * (currentToken - lastToken) / timeGap.payload.Double;
                         }
                 }

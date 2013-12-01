@@ -29,19 +29,19 @@ struct FSMReceiver {
         Time (*getModelTime)(struct FSMReceiver*);
         void (*clear)(struct FSMReceiver*);
         PblList* (*elementList)(struct FSMReceiver*);
-        Token (*get)(struct FSMReceiver*);
-        Token* (*getArray)(struct Receiver*, int);
+        Token* (*get)(struct FSMReceiver*);
+        Token** (*getArray)(struct Receiver*, int);
         bool (*hasRoom)(struct FSMReceiver*);
         bool (*hasRoom1)(struct FSMReceiver*, int);
         bool (*hasToken)(struct FSMReceiver*);
         bool (*hasToken1)(struct FSMReceiver*, int);
-        void (*put)(struct FSMReceiver*, Token);
-        void (*putArray)(struct Receiver*, Token*, int);
-        void (*putArrayToAll)(struct Receiver*, Token*, int, PblList*);
-        void (*putToAll)(struct Receiver*, Token , PblList*);
+        void (*put)(struct FSMReceiver*, Token*);
+        void (*putArray)(struct Receiver*, Token**, int);
+        void (*putArrayToAll)(struct Receiver*, Token**, int, PblList*);
+        void (*putToAll)(struct Receiver*, Token* , PblList*);
 
         // New Members
-        Token _token;
+        Token *_token;
 };
 
 struct FSMReceiver* FSMReceiver_New();
@@ -50,11 +50,11 @@ void FSMReceiver_New_Free(struct FSMReceiver* r);
 
 void FSMReceiver_Clear(struct FSMReceiver* r);
 PblList* FSMReceiver_ElementList(struct FSMReceiver* r);
-Token FSMReceiver_Get(struct FSMReceiver* r);
+Token* FSMReceiver_Get(struct FSMReceiver* r);
 bool FSMReceiver_HasRoom(struct FSMReceiver* r);
 bool FSMReceiver_HasRoom1(struct FSMReceiver* r, int numberOfTokens);
 bool FSMReceiver_HasToken(struct FSMReceiver* r);
 bool FSMReceiver_HasToken1(struct FSMReceiver* r, int numberOfTokens);
-void FSMReceiver_Put(struct FSMReceiver* r, Token token);
+void FSMReceiver_Put(struct FSMReceiver* r, Token* token);
 
 #endif /* FSMRECEIVER_H_ */
