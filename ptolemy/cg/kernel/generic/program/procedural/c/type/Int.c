@@ -117,7 +117,7 @@ Token* Int_negate(Token* thisToken, ...) {
 /*** Int_new() ***/
 // make a new integer token from the given value.
 Token* Int_new(int i) {
-    Token* result = malloc(sizeof(Token));
+    Token* result = calloc(1, sizeof(Token));
     result->type = TYPE_Int;
     result->payload.Int = i;
     return result;

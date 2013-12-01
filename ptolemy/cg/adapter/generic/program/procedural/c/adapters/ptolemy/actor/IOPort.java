@@ -408,8 +408,8 @@ public class IOPort
             tokenCode = "$new(" + typeString + "(" + dataToken + "))";
         } else if (type instanceof RecordType) {
             tokenCode = "$new(Record(" + dataToken + "->timestamp, "
-                    + dataToken + "->microstep, *(" + dataToken
-                    + "->payload)))";
+                    + dataToken + "->microstep, " + dataToken
+                    + "->payload))";
         } else {
             tokenCode = dataToken;
         }

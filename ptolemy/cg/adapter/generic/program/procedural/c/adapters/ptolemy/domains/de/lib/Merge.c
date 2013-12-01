@@ -53,12 +53,13 @@ if ($hasToken(input#$channel)) {
                 firstAvailableToken.payload.$cgType(input) = $get(input#$channel);
                 $put(output#0, firstAvailableToken.payload.$cgType(input));
 
+                Token* token = malloc(sizeof(Token));
                 while ($hasToken(input#$channel)) {
-                        Token token;
-                        token.type = TYPE_$cgType(input);
-                        token.payload.$cgType(input) = $get(input#$channel);
-                        $put(output#0, token.payload.$cgType(input));
+                        token->type = TYPE_$cgType(input);
+                        token->payload.$cgType(input) = $get(input#$channel);
+                        $put(output#0, token->payload.$cgType(input));
                 }
+                free(token);
         } else {
                 if ($actorSymbol(discardEvents)) {
                         // this token is not the first available token

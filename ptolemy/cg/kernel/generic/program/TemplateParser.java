@@ -727,14 +727,21 @@ public class TemplateParser {
         int previousPos = 0;
         int currentPos = _getMacroStartIndex(code, 0);
 
+        // Set to true for lots of information about the processing.
+        boolean debug = false;
         if (currentPos < 0) {
             // No "$" in the string
             return code;
         }
-        //System.out.println("processCode: ############ " + code);
+        if (debug) {
+            System.out.println("processCode: ############ " + code);
+        }
         result.append(code.substring(0, currentPos));
-        //System.out.println("processCode: start "
-        //        + "\nresult:\n<<<" + result + "\n>>>");
+        
+        if (debug) {
+            System.out.println("processCode: start "
+                    + "\nresult:\n<<<" + result + "\n>>>");
+        }
 
         int closeParenIndex = -1;
         int nextPos = -1;
@@ -752,7 +759,9 @@ public class TemplateParser {
                 if (currentPos < 0) {
                     // No "$" in the string
                     result.append(code.substring(previousPos));
-                    //System.out.println("processCode: return $nation: " + result);
+                    if (debug) {
+                        System.out.println("processCode: return $nation: " + result);
+                    }
                     return result.toString();
                 }
                 result.append(code.substring(previousPos, currentPos));
@@ -790,7 +799,9 @@ public class TemplateParser {
                         variable.validate();
                         String value = variable.stringValue();
                         variable.setContainer(null);
-                        //System.out.println("processCode: return 0: " + value);
+                        if (debug) {
+                            System.out.println("processCode: return 0: " + value);
+                        }
                         return value;
                     } catch (Throwable throwable) {
                         CGException.throwException(_component, throwable,
@@ -859,7 +870,9 @@ public class TemplateParser {
                     result.append(code.substring(currentPos));
                     // Running $PTII/bin/vergil $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen3.xml
                     // needs the next line
-                    //System.out.println("processCode: return 1: " + result);
+                    if (debug) {
+                        System.out.println("processCode: return 1: " + result);
+                    }
                     return result.toString();
                 }
 
@@ -901,18 +914,23 @@ public class TemplateParser {
                                     + closeParenIndex
                                     + " is out of bounds in \n" + code);
                 }
-                //System.out.println("TemplateParser: name before processCode(): "
-                //        + name + " " + openParenIndex + " " + closeParenIndex);
+                if (debug) {
+                    System.out.println("TemplateParser: name before processCode(): "
+                            + name + " " + openParenIndex + " " + closeParenIndex);
+                }
                 name = processCode(name.trim());
 
                 //List arguments = parseArgumentList(name);
 
                 try {
-                    // This may call processCode() again.
-                    //System.out.println("processCode: about to call _replaceMacro(): " + macro + " " + name + "\nresult:\n<<<" + result + "\n>>>");
-
+                    if (debug) {
+                        // This may call processCode() again.
+                        System.out.println("processCode: about to call _replaceMacro(): " + macro + " " + name + "\nresult:\n<<<" + result + "\n>>>");
+                    }
                     result.append(_replaceMacro(macro, name));
-                    //System.out.println("processCode: called _replaceMacro(): " + macro + " " + name + "\nresult:\n<<<" + result + "\n>>>");
+                    if (debug) {
+                        System.out.println("processCode: called _replaceMacro(): " + macro + " " + name + "\nresult:\n<<<" + result + "\n>>>");
+                    }
                 } catch (Throwable throwable) {
                     CGException.throwException(this, throwable,
                             "Failed to replace the parameter \"" + name
@@ -942,7 +960,9 @@ public class TemplateParser {
         //                 }
         //             }
         //         }
-        //System.out.println("processCode: return bottom: " + result);
+        if (debug) {
+            System.out.println("processCode: return bottom: " + result);
+        }
         return result.toString();
     }
 
