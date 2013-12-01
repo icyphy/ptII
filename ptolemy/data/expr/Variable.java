@@ -2282,57 +2282,38 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
+         *  This method acquires read permission on the workspace.
          *  @param name The name of the attribute.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public synchronized Variable getVariable(String name)
+        public Variable getVariable(String name)
                 throws IllegalActionException {
-            // This method is synchronized to prevent concurrent modification
-            // of the _variablesDependentOn collection.
+        	workspace().getReadAccess();
+        	try {
+        		NamedObj reference = _reference;
+        		if (_reference == null) {
+        			reference = Variable.this.getContainer();
+        		}
+        		Variable result = getScopedVariable(Variable.this, reference, name);
 
-            if (_variablesDependentOn == null) {
-                _variablesDependentOn = new HashMap<String,Variable>();
-            } else {
-                // Variable might be cached.
-                if (_variablesDependentOnVersion == workspace().getVersion()) {
-                    // Cache is valid. Look up the variable.
-                    Variable result = (Variable) _variablesDependentOn
-                            .get(name);
-
-                    if (result != null) {
-                        return result;
-                    }
-                } else {
-                    // Cache is invalid.  Clear it.
-                    _variablesDependentOn.clear();
-                }
-            }
-
-            // Either cache is not valid, or the variable is not in the cache.
-            _variablesDependentOnVersion = workspace().getVersion();
-
-            NamedObj reference = _reference;
-
-            if (_reference == null) {
-                reference = Variable.this.getContainer();
-            }
-
-            Variable result = getScopedVariable(Variable.this, reference, name);
-
-            if (result != null) {
-                // If the variable is not in the cache, then we also
-                // may not be a value listener for it.
-                if (!_variablesDependentOn.containsValue(result)) {
-                    result.addValueListener(Variable.this);
-                    _variablesDependentOn.put(name, result);
-                }
-
-                return result;
-            } else {
-                return null;
-            }
+        		if (result != null) {
+        			// NOTE: The following acquires a lock on result.
+        			result.addValueListener(Variable.this);
+        			// Add the result to the list of variables that we depend on so that
+        			// the dependence can later be broken by invalidate.
+        			synchronized(Variable.this) {
+                		if (_variablesDependentOn == null) {
+                			_variablesDependentOn = new HashMap<String,Variable>();
+                		}
+        				_variablesDependentOn.put(name, result);
+        			}
+        		}
+        		return result;
+        	} finally {
+        		workspace().doneReading();
+        	}
         }
 
         /** Return the set of identifiers within the scope.
@@ -2491,9 +2472,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     /** Stores the variables that are referenced by this variable. */
     private HashMap<String,Variable> _variablesDependentOn = null;
-
-    /** Version of the workspace when _variablesDependentOn was updated. */
-    private transient long _variablesDependentOnVersion = -1;
 
     // The visibility of this variable.
     private Settable.Visibility _visibility = Settable.EXPERT;
