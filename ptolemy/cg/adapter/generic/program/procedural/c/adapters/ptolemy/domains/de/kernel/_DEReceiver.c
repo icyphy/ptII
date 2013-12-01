@@ -46,7 +46,7 @@ void DEReceiver_Clear(struct DEReceiver* r) {
 PblList* DEReceiver_ElementList(struct DEReceiver* r) {
         return pblListClone(r->_tokens);
 }
-Token DEReceiver_Get(struct DEReceiver* r) {
+Token* DEReceiver_Get(struct DEReceiver* r) {
         if (pblListIsEmpty(r->_tokens)) {
                 fprintf(stderr, "No more Tokens in the DE Receiver \
                                 : DEReceiver_Get ($ModelName()__DEReceiver.c)\n");
@@ -54,9 +54,10 @@ Token DEReceiver_Get(struct DEReceiver* r) {
         }
 
         Token* retour = (Token*)(pblListPoll(r->_tokens));
-        Token nonDynToken = *retour;
-        free(retour);
-        return nonDynToken;
+        //Token nonDynToken = *retour;
+        //free(retour);
+        //return nonDynToken;
+        return retour;
 }
 bool DEReceiver_HasRoom(struct DEReceiver* r) {
         return true;
@@ -70,9 +71,9 @@ bool DEReceiver_HasToken(struct DEReceiver* r) {
 bool DEReceiver_HasToken1(struct DEReceiver* r, int numberOfTokens) {
         return pblListSize(r->_tokens) >= numberOfTokens;
 }
-void DEReceiver_Put(struct DEReceiver* r, Token token) {
+void DEReceiver_Put(struct DEReceiver* r, Token* token) {
         // FIXME : it is not a relevant comparison
-        if (token.type == -1) {
+        if (token->type == -1) {
                 return;
         }
         struct DEDirector* director = r->_director;
@@ -85,6 +86,6 @@ void DEReceiver_Put(struct DEReceiver* r, Token token) {
                 fprintf(stderr, "Allocation Problem : DEReceiver_Put");
                 exit(-1);
         }
-        *dynToken = convert(token, ((struct TypedIOPort*)r->container)->_type);
+        dynToken = convert(token, ((struct TypedIOPort*)r->container)->_type);
         pblListAdd(r->_tokens, dynToken);
 }

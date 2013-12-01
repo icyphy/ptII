@@ -25,21 +25,22 @@ $actorSymbol(seed) = 0;
 $actorSymbol(needNew) = true;
 $actorSymbol(randomNumber) = 0.0;
 $actorSymbol(outputProduced) = false;
-// We have to recode the random function to have the same behavior as java Random
-if ($privateSeed == 0 && $seed == 0)
-        $actorSymbol(seed) = time(NULL); // initialisation of rand
-else
-        if ($privateSeed == 0)
-                $actorSymbol(seed) = ($seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
-        else
-                $actorSymbol(seed) = ($privateSeed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
 
-if ($fireAtStart) {
+// We have to recode the random function to have the same behavior as java Random
+if ($privateSeed == 0 && $seed == 0) {
+        $actorSymbol(seed) = time(NULL); // initialisation of rand
+} else {
+    if ($privateSeed == 0) {
+        $actorSymbol(seed) = ($seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
+    } else {
+        $actorSymbol(seed) = ($privateSeed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
+    }
+    if ($fireAtStart) {
         $fireAt(actor, currentTime, 0);
-}
-else {
+    } else {
         $actorSymbol(randomNumber) = -log(1.0 - nextDouble()) * $actorSymbol(meanTime);
         $fireAt(actor, currentTime + $actorSymbol(randomNumber), 0);
+    }
 }
 
 $actorSymbol(phase) = 0;

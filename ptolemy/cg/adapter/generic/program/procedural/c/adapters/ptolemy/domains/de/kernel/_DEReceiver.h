@@ -24,16 +24,16 @@ struct DEReceiver {
         Time (*getModelTime)(struct Receiver*);
         void (*clear)(struct DEReceiver*);
         PblList* (*elementList)(struct DEReceiver*);
-        Token (*get)(struct DEReceiver*);
-        Token* (*getArray)(struct Receiver*, int);
+        Token* (*get)(struct DEReceiver*);
+        Token** (*getArray)(struct Receiver*, int);
         bool (*hasRoom)(struct DEReceiver*);
         bool (*hasRoom1)(struct DEReceiver*, int);
         bool (*hasToken)(struct DEReceiver*);
         bool (*hasToken1)(struct DEReceiver*, int);
-        void (*put)(struct DEReceiver*, Token);
-        void (*putArray)(struct Receiver*, Token*, int);
-        void (*putArrayToAll)(struct Receiver*, Token*, int, PblList*);
-        void (*putToAll)(struct Receiver*, Token , PblList*);
+        void (*put)(struct DEReceiver*, Token*);
+        void (*putArray)(struct Receiver*, Token**, int);
+        void (*putArrayToAll)(struct Receiver*, Token**, int, PblList*);
+        void (*putToAll)(struct Receiver*, Token* , PblList*);
 
         // New Members
         PblList* _tokens;
@@ -46,11 +46,11 @@ void DEReceiver_New_Free(struct DEReceiver* r);
 
 void DEReceiver_Clear(struct DEReceiver* r);
 PblList* DEReceiver_ElementList(struct DEReceiver* r);
-Token DEReceiver_Get(struct DEReceiver* r);
+Token* DEReceiver_Get(struct DEReceiver* r);
 bool DEReceiver_HasRoom(struct DEReceiver* r);
 bool DEReceiver_HasRoom1(struct DEReceiver* r, int numberOfTokens);
 bool DEReceiver_HasToken(struct DEReceiver* r);
 bool DEReceiver_HasToken1(struct DEReceiver* r, int numberOfTokens);
-void DEReceiver_Put(struct DEReceiver* r, Token token);
+void DEReceiver_Put(struct DEReceiver* r, Token* token);
 
 #endif /* DERECEIVER_H_ */

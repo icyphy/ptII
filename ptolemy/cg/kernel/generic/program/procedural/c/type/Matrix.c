@@ -1,11 +1,11 @@
 /*** Matrix_add() ***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token* Matrix_add(Token *thisToken, ...) {
+Token* Matrix_add(Token* thisToken, ...) {
     int i, j;
     va_list argp;
-    Token *result;
-    Token *otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -24,7 +24,7 @@ Token* Matrix_add(Token *thisToken, ...) {
 /**/
 
 /*** Matrix_convert() ***/
-Token* Matrix_convert(Token token, ...) {
+Token* Matrix_convert(Token* token, ...) {
     /* token->payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
        token->payload.Matrix->row = 1;
        token->payload.Matrix->column = 1;
@@ -38,9 +38,9 @@ Token* Matrix_convert(Token token, ...) {
 /**/
 
 /*** Matrix_delete() ***/
-Token* Matrix_delete(Token token, ...) {
+Token* Matrix_delete(Token* token, ...) {
     int i, j;
-        Token element, emptyToken;
+    Token* element;
 
     // Delete each elements.
     for (i = 0; i < token->payload.Matrix->column; i++) {
@@ -52,18 +52,19 @@ Token* Matrix_delete(Token token, ...) {
     free(token->payload.Matrix->elements);
     free(token->payload.Matrix);
 
-    return emptyToken;
+    return NULL;
 }
 /**/
 
 /*** Matrix_divide() ***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token* Matrix_divide(Token *thisToken, ...) {
+Token* Matrix_divide(Token* thisToken, ...) {
     int i, j, index;
     va_list argp;
-    Token *result;
-    Token element, otherToken;
+    Token* result;
+    Token* element;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -105,10 +106,10 @@ Token* Matrix_divide(Token *thisToken, ...) {
 
 /*** Matrix_equals() ***/
 #ifdef TYPE_Matrix
-Token* Matrix_equals(Token *thisToken, ...) {
+Token* Matrix_equals(Token* thisToken, ...) {
     int i, j;
     va_list argp;
-    Token *otherToken;
+    Token* otherToken;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
     va_end(argp);
@@ -131,11 +132,11 @@ Token* Matrix_equals(Token *thisToken, ...) {
 
 /*** Matrix_isCloseTo() ***/
 #ifdef TYPE_Matrix
-Token* Matrix_isCloseTo(Token *thisToken, ...) {
+Token* Matrix_isCloseTo(Token* thisToken, ...) {
     int i, j;
     va_list argp;
-    Token *otherToken;
-    Token *tolerance;
+    Token* otherToken;
+    Token* tolerance;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
     tolerance = va_arg(argp, Token*);
@@ -160,11 +161,12 @@ Token* Matrix_isCloseTo(Token *thisToken, ...) {
 /*** Matrix_multiply() ***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token* Matrix_multiply(Token *thisToken, ...) {
+Token* Matrix_multiply(Token* thisToken, ...) {
     int i, j;
     va_list argp;
-    Token *result;
-    Token element, otherToken;
+    Token* result;
+    Token* element;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -218,11 +220,11 @@ Token* Matrix_multiply(Token *thisToken, ...) {
 // make a new matrix from the given values
 // assume that number of the rest of the arguments == length,
 // and they are in the form of (element, element, ...).
-// The rest of the arguments should be of type Token *.
+// The rest of the arguments should be of type Token* .
 Token* Matrix_new(int row, int column, int given, ...) {
     va_list argp;
     int i;
-    Token *result;
+    Token* result = malloc(sizeof(Token));
     char elementType;
 
     result->type = TYPE_Matrix;
@@ -233,7 +235,7 @@ Token* Matrix_new(int row, int column, int given, ...) {
     // Allocate a new matrix of Tokens.
     if (row > 0 && column > 0) {
         // Allocate an new 2-D array of Tokens.
-        result->payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
+        result->payload.Matrix->elements = (Token**) calloc(row * column, sizeof(Token));
 
         if (given > 0) {
             // Set the first element.
@@ -263,7 +265,7 @@ Token* Matrix_new(int row, int column, int given, ...) {
 /**/
 
 /*** Matrix_print() ***/
-Token* Matrix_print(Token *thisToken, ...) {
+Token* Matrix_print(Token* thisToken, ...) {
     // Token string = Matrix_toString(thisToken);
     // printf(string->payload.String);
     // free(string->payload.String);
@@ -288,11 +290,11 @@ Token* Matrix_print(Token *thisToken, ...) {
 /*** Matrix_subtract() ***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token* Matrix_subtract(Token *thisToken, ...) {
+Token* Matrix_subtract(Token* thisToken, ...) {
     int i, j;
     va_list argp;
-    Token *result;
-    Token *otherToken;
+    Token* result;
+    Token* otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token*);
@@ -311,17 +313,17 @@ Token* Matrix_subtract(Token *thisToken, ...) {
 /**/
 
 /*** Matrix_toExpression() ***/
-Token* Matrix_toExpression(Token *thisToken, ...) {
+Token* Matrix_toExpression(Token* thisToken, ...) {
     return Matrix_toString(thisToken);
 }
 /**/
 
 /*** Matrix_toString() ***/
-Token* Matrix_toString(Token *thisToken, ...) {
+Token* Matrix_toString(Token* thisToken, ...) {
     int i, j;
     int currentSize, allocatedSize;
     char* string;
-    Token elementString;
+    Token* elementString;
 
     allocatedSize = 512;
     string = (char*) malloc(allocatedSize);
@@ -358,7 +360,7 @@ Token* Matrix_toString(Token *thisToken, ...) {
 struct matrix {
     unsigned int row;            // number of rows.
     unsigned int column;         // number of columns.
-    Token *elements;            // matrix of pointers to the elements.
+    Token** elements;            // matrix of pointers to the elements.
     //unsigned char elementsType;  // type of all the elements.
 };
 
@@ -367,25 +369,25 @@ typedef struct matrix* MatrixToken;
 
 /*** funcDeclareBlock() ***/
 Token* Matrix_new(int row, int column, int given, ...);
-Token* Matrix_get(Token token, int row, int column);
-void Matrix_set(Token matrix, int row, int column, Token element);
+Token* Matrix_get(Token* token, int row, int column);
+void Matrix_set(Token* matrix, int row, int column, Token* element);
 /**/
 
 /*** funcImplementationBlock() ***/
-Token* Matrix_get(Token token, int row, int column) {
+Token* Matrix_get(Token* token, int row, int column) {
     return token->payload.Matrix->elements[column * token->payload.Matrix->row + row];
 }
 
-void Matrix_set(Token matrix, int row, int column, Token element) {
+void Matrix_set(Token* matrix, int row, int column, Token* element) {
     matrix->payload.Matrix->elements[column * matrix->payload.Matrix->row + row] = element;
 }
 /**/
 
 /*** matrixToArray() ***/
-Token* matrixToArray(Token *thisToken) {
+Token* matrixToArray(Token* thisToken) {
     int i, j, index;
-    Token *result;
-    Token element;
+    Token* result;
+    Token* element;
 
     // Instantiate the result.
     switch (Matrix_get(thisToken, 0, 0)->type) {
