@@ -172,7 +172,7 @@ Token* Double_negate(Token *thisToken, ...) {
 /*** Double_new() ***/
 // make a new integer token from the given value.
 Token* Double_new(double d) {
-    Token* result = malloc(sizeof(Token));
+    Token* result = calloc(1, sizeof(Token));
     result->type = TYPE_Double;
     result->payload.Double = d;
     return result;

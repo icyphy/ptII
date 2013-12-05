@@ -83,7 +83,7 @@ struct PtidesDirector {
 
         void (*_enqueueTriggerEvent1)(struct PtidesDirector*, struct IOPort*, Token*, struct Receiver*);
         struct Actor* (*_getNextActorFrom)(struct PtidesDirector*, struct CalendarQueue*);
-        struct SuperdenseDependency (*_getSuperdenseDependencyPair)(struct PtidesDirector*,
+        struct SuperdenseDependency* (*_getSuperdenseDependencyPair)(struct PtidesDirector*,
                         struct IOPort*, struct IOPort*);
         bool (*_isSafeToProcess)(struct PtidesDirector*, struct PtidesEvent*);
         PblList* (*_removeEventsFromQueue)(struct PtidesDirector*, struct CalendarQueue*, struct PtidesEvent*);
@@ -117,7 +117,7 @@ void PtidesDirector__EnqueueTriggerEvent(struct PtidesDirector* director, struct
         struct Receiver* receiver);
 struct Actor* PtidesDirector__GetNextActorToFire(struct PtidesDirector* director);
 struct Actor* PtidesDirector__GetNextActorFrom(struct PtidesDirector* director, struct CalendarQueue* queue);
-struct SuperdenseDependency PtidesDirector__GetSuperdenseDependencyPair(struct PtidesDirector* director,
+struct SuperdenseDependency* PtidesDirector__GetSuperdenseDependencyPair(struct PtidesDirector* director,
                 struct IOPort* source, struct IOPort* destination);
 bool PtidesDirector__IsSafeToProcess(struct PtidesDirector* director, struct PtidesEvent* event);
 PblList* PtidesDirector__RemoveEventsFromQueue(struct PtidesDirector* director,

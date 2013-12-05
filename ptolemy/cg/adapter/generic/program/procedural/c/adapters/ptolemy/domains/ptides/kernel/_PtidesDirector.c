@@ -458,19 +458,18 @@ struct Actor* PtidesDirector__GetNextActorFrom(struct PtidesDirector* director, 
         return NULL;
 }
 
-struct SuperdenseDependency PtidesDirector__GetSuperdenseDependencyPair(struct PtidesDirector* director,
+struct SuperdenseDependency* PtidesDirector__GetSuperdenseDependencyPair(struct PtidesDirector* director,
                 struct IOPort* source, struct IOPort* destination) {
-        struct SuperdenseDependency result;
-        if (pblMapContainsKey(director->_superdenseDependencyPair, &source, sizeof(struct IOPort*))) {
-                PblMap* map = pblMapGet(director->_superdenseDependencyPair, &source, sizeof(struct IOPort*), NULL);
-                if (pblMapContainsKey(map, &destination, sizeof(struct IOPort*))) {
-                        return *((struct SuperdenseDependency*)pblMapGet(map, &destination, sizeof(struct IOPort*), NULL));
+        struct SuperdenseDependency* result;
+        if (pblMapContainsKey(director->_superdenseDependencyPair, source, sizeof(struct IOPort*))) {
+                PblMap* map = pblMapGet(director->_superdenseDependencyPair, source, sizeof(struct IOPort*), NULL);
+                if (pblMapContainsKey(map, destination, sizeof(struct IOPort*))) {
+                       result = (struct SuperdenseDependency*)pblMapGet(map, destination, sizeof(struct IOPort*), NULL);
                 }
         } else {
-                struct SuperdenseDependency result;
-                result.time = DBL_MAX;
-                result.microstep = 0;
-                return result;
+            struct SuperdenseDependency* result = calloc(1, sizeof(struct SuperdenseDependency));
+            result->time = DBL_MAX;
+            result->microstep = 0;
         }
         return result;
 }
@@ -484,11 +483,11 @@ bool PtidesDirector__IsSafeToProcess(struct PtidesDirector* director, struct Pti
                 }
                 if (ptidesEvent->actor(ptidesEvent) != event->actor(event)
                                 && ptidesEvent->ioPort(ptidesEvent) != NULL && event->ioPort(event) != NULL) {
-                        struct SuperdenseDependency minDelay = director->_getSuperdenseDependencyPair(
+                        struct SuperdenseDependency* minDelay = director->_getSuperdenseDependencyPair(
                                         director,
                                         ptidesEvent->ioPort(ptidesEvent),
                                         event->ioPort(event));
-                        if (event->timeStamp(event) - ptidesEvent->timeStamp(ptidesEvent) >= minDelay.time) {
+                        if (event->timeStamp(event) - ptidesEvent->timeStamp(ptidesEvent) >= minDelay->time) {
                                 return false;
                         }
                 }

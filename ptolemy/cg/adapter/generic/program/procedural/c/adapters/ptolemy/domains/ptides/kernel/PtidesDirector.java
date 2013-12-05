@@ -84,7 +84,7 @@ public class PtidesDirector extends DEDirector {
         code.append(_eol + _sanitizedDirectorName
                 + "->_superdenseDependencyPair = pblMapNewHashMap();");
         code.append(_eol + "PblMap* tempMap;");
-        code.append(_eol + "struct SuperdenseDependency tempEntry;");
+        code.append(_eol + "struct SuperdenseDependency* tempEntry = calloc(1, sizeof(struct SuperdenseDependency));");
         ptolemy.domains.ptides.kernel.PtidesDirector director = (ptolemy.domains.ptides.kernel.PtidesDirector) getComponent();
         Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> superdenseDependencyPair = director
                 .getSuperdenseDependencyPair();
@@ -95,9 +95,9 @@ public class PtidesDirector extends DEDirector {
             for (TypedIOPort port2 : value.keySet()) {
                 SuperdenseDependency dependency = value.get(port2);
 
-                code.append(_eol + "tempEntry.time = " + dependency.timeValue()
+                code.append(_eol + "tempEntry->time = " + dependency.timeValue()
                         + ";");
-                code.append(_eol + "tempEntry.microstep = "
+                code.append(_eol + "tempEntry->microstep = "
                         + dependency.indexValue() + ";");
                 String port2Name;
                 if (port2.getContainer().equals(director.getContainer())) {
@@ -106,9 +106,9 @@ public class PtidesDirector extends DEDirector {
                     port2Name = CodeGeneratorAdapter.generateName(port2
                             .getContainer()) + "_" + port2.getName();
                 }
-                code.append(_eol + "pblMapAdd(tempMap, &" + port2Name
-                        + ", sizeof(struct TypedIOPort*), &tempEntry"
-                        + ", sizeof(struct SuperdenseDependency));");
+                code.append(_eol + "pblMapAdd(tempMap, " + port2Name
+                        + ", sizeof(struct TypedIOPort*), tempEntry"
+                        + ", sizeof(struct SuperdenseDependency*));");
             }
             String port1Name;
             if (port1.getContainer().equals(director.getContainer())) {
@@ -118,7 +118,7 @@ public class PtidesDirector extends DEDirector {
                         .getContainer()) + "_" + port1.getName();
             }
             code.append(_eol + "pblMapAdd(" + _sanitizedDirectorName
-                    + "->_superdenseDependencyPair, &" + port1Name
+                    + "->_superdenseDependencyPair, " + port1Name
                     + ", sizeof(struct TypedIOPort*), tempMap"
                     + ", sizeof(PblMap));");
         }
