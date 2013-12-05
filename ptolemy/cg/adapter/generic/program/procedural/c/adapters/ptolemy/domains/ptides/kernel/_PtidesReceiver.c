@@ -63,7 +63,9 @@ void PtidesReceiver_Remove(struct PtidesReceiver* r, Token* token) {
 		//*tokenPtr = token;
                 if (memcmp(dynToken, token, sizeof(Token)) == 0) {
                         pblListRemoveElement(r->_tokens, dynToken);
-                        free(dynToken);
+                        // If we free here then valgrind reports that we are reading from freed memory later.
+                        // The test is $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/SensorActuatorModelDelayOnly.xml 
+                        //free(dynToken);
 			//free(tokenPtr);
                         break;
                //} else {
