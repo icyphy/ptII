@@ -143,6 +143,10 @@ void* CalendarQueue_Take(struct CalendarQueue* cqueue) {
         void* event = (*(cqueue->_takeFromBucket))(cqueue, indexOfMinimum);
         return event;
 }
+
+// Used for error messages
+static int _emptyQueueErrorMessageCount = 0;
+
 void** CalendarQueue_ToArray(struct CalendarQueue* cqueue) {
         int size = cqueue->size(cqueue);
         void** result = calloc(size, sizeof(void*));
@@ -199,8 +203,12 @@ void** CalendarQueue_ToArray(struct CalendarQueue* cqueue) {
                 if (currentBucket == nextStartBucket) {
                         if (!foundValue) {
                                 fprintf(stderr,
-                                                "Queue is empty, but size() is not zero! It is: %i",
+                                                "Queue is empty, but size() is not zero! It is: %i.\n",
                                                 cqueue->_queueSize);
+                                if (_emptyQueueErrorMessageCount++ > 50) {
+                                    fprintf(stderr, "Printed 50 Queue empty messages, exiting.\n");
+                                    exit(-1);
+                                }
                         }
                         virtualBucket = minimumNextVirtualBucket;
                         foundValue = false;
