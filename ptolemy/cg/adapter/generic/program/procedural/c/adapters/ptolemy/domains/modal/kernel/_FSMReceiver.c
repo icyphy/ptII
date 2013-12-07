@@ -54,7 +54,7 @@ Token* FSMReceiver_Get(struct FSMReceiver* r) {
         }
 
         // FIXME: A memory leak.
-        Token* retour = malloc(sizeof(Token));
+        Token* retour = calloc(1, sizeof(Token));
         retour->type = r->_token->type;
         retour->payload = r->_token->payload;
 
