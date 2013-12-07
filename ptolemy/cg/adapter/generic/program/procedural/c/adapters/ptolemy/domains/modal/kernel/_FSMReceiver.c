@@ -68,6 +68,14 @@ bool FSMReceiver_HasRoom1(struct FSMReceiver* r, int numberOfTokens) {
         return numberOfTokens == 1;
 }
 bool FSMReceiver_HasToken(struct FSMReceiver* r) {
+        if (r == NULL) {
+            fprintf(stderr, "FSM_Receiver_HasToken: receiver was null?\n");
+            return false;
+        }
+        if (r->_token == NULL) {
+            fprintf(stderr, "FSM_Receiver_HasToken: receiver %p: token was null?\n", (void *)r);
+            return false;
+        }
         return r->_token->type != -1;
 }
 bool FSMReceiver_HasToken1(struct FSMReceiver* r, int numberOfTokens) {
