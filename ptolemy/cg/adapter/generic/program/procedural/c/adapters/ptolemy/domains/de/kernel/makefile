@@ -32,6 +32,9 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel
 
+# configure sets PTCUNIT_DIR to test if CUnit was found
+DIRS = $(PTCUNIT_DIR)
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../../../../../../..
 

@@ -1,5 +1,23 @@
 #include "_CalendarQueue.h"
 
+//#define CQDEBUG 1
+
+static bool _printing = false;
+
+void _print(struct CalendarQueue* cqueue) {
+#ifdef CQDEBUG
+    _printing = true;
+    printf("%p: ", (void *)cqueue);
+    void** out = CalendarQueue_ToArray(cqueue);
+    for (int outIndex = 0;  outIndex < cqueue->_queueSize; outIndex++) {
+        printf("%p ", out[outIndex]);
+    }
+    printf("\n");
+    free(out);
+    _printing = false;
+#endif
+}
+
 // Functions for a CalendarQueue :
 struct CalendarQueue* CalendarQueue_New() {
         struct CalendarQueue* newQueue = calloc(1, sizeof(struct CalendarQueue));
@@ -62,6 +80,9 @@ void CalendarQueue_Clear(struct CalendarQueue* cqueue) {
         cqueue->_queueSize = 0;
         cqueue->_indexOfMinimumBucketValid = false;
         cqueue->_cachedMinimumBucket = NULL;
+#ifdef CQDEBUG
+        printf("CQ_Clear end %p %d\n", (void*) cqueue, cqueue->_queueSize);
+#endif
 }
 void* CalendarQueue_Get(struct CalendarQueue* cqueue) {
         if (cqueue->_indexOfMinimumBucketValid) {
@@ -84,14 +105,22 @@ bool CalendarQueue_IsEmpty(struct CalendarQueue* cqueue) {
         return cqueue->_queueSize == 0;
 }
 bool CalendarQueue_Put(struct CalendarQueue* cqueue, void* entry) {
-        if ((*(cqueue->includes))(cqueue, entry))
-                return false;
+#ifdef CQDEBUG
+         printf("CQ_Put start %p %d %p\n", (void*) cqueue, cqueue->_queueSize, (void *)entry);
+        _print(cqueue);
+#endif
+        if ((*(cqueue->includes))(cqueue, entry)) {
+                    return false;
+        }
 
         if (!cqueue->_initialized) {
                 cqueue->_queueSize = 0;
                 (*(cqueue->_localInit))(cqueue, cqueue->_logMinNumBuckets, entry);
         }
-
+#ifdef CQDEBUG
+        printf("CQ_Put after initialize check\n");
+        _print(cqueue);
+#endif
         int binNumber = (*(cqueue->_getBinIndex))(cqueue, entry);
 
         if (cqueue->_minimumEntry == NULL || cqueue->_queueSize == 0
@@ -99,18 +128,34 @@ bool CalendarQueue_Put(struct CalendarQueue* cqueue, void* entry) {
                 cqueue->_minimumEntry = entry;
                 cqueue->_minVirtualBucket = (*(((struct DEEvent*)entry)->getVirtualBinNumber))(entry, cqueue->_binWidth);
                 cqueue->_minBucket = (*(cqueue->_getBinIndex))(cqueue, entry);
+#ifdef CQDEBUG
+                printf("CQ_Put after minimumEntry\n");
+#endif
         }
-
+#ifdef CQDEBUG
+        printf("CQ_Put after minimumEntry\n");
+        _print(cqueue);
+#endif
         struct CQLinkedList* bucket = pblListGet(cqueue->_bucket, binNumber);
 
         if ((*(bucket->insert))(bucket, entry)) {
                 ++(cqueue->_queueSize);
                 (*(cqueue->_resize))(cqueue, true);
+        } else {
+            printf("CQ_Put: false bucket insert?\n");
         }
 
+#ifdef CQDEBUG
+        printf("CQ_Put end %p %d\n", (void*) cqueue, cqueue->_queueSize);
+        _print(cqueue);
+#endif
         return true;
 }
+
 bool CalendarQueue_Remove(struct CalendarQueue* cqueue, void* entry) {
+#ifdef CQDEBUG
+        printf("CQ_Remove start %p %d %p\n", (void*) cqueue, cqueue->_queueSize, (void *) entry);
+#endif
         if (cqueue->_queueSize == 0) {
                 return false;
         }
@@ -133,9 +178,14 @@ bool CalendarQueue_Remove(struct CalendarQueue* cqueue, void* entry) {
         }
 #endif
 
+#ifdef CQDEBUG
+        printf("CQ_Remove end %p %d\n", (void*) cqueue, cqueue->_queueSize);
+        _print(cqueue);
+#endif
         return result;
 }
 int CalendarQueue_Size(struct CalendarQueue* cqueue) {
+    //printf("CQ_Size %p %d\n", (void*) cqueue, cqueue->_queueSize);
         return cqueue->_queueSize;
 }
 void* CalendarQueue_Take(struct CalendarQueue* cqueue) {
@@ -179,6 +229,7 @@ void** CalendarQueue_ToArray(struct CalendarQueue* cqueue) {
                                 result[index] = nextInBucket;
                                 index++;
                                 if (index == size) {
+                                        free(bucketHead);
                                         return result;
                                 }
                                 bucketHead[currentBucket] = bucketHead[currentBucket]->next;
@@ -203,10 +254,16 @@ void** CalendarQueue_ToArray(struct CalendarQueue* cqueue) {
                 if (currentBucket == nextStartBucket) {
                         if (!foundValue) {
                                 fprintf(stderr,
-                                                "Queue is empty, but size() is not zero! It is: %i.\n",
-                                                cqueue->_queueSize);
-                                if (_emptyQueueErrorMessageCount++ > 50) {
-                                    fprintf(stderr, "Printed 50 Queue empty messages, exiting.\n");
+                                                "CalendarQueue %p: Queue is empty, but size() is not zero! It is: %i.  CurrentBucket: %d, _numberOfBuckets: %d\n",
+                                        (void *) cqueue,
+                                        cqueue->_queueSize, currentBucket, cqueue->_numberOfBuckets);
+                                int maxMessage = 5;
+                                if (_emptyQueueErrorMessageCount++ > maxMessage) {
+                                    fprintf(stderr, "Printed %d Queue empty messages. Queue was:\n", maxMessage);
+                                    if (!_printing) {
+                                        _print(cqueue);
+                                    }
+                                    printf("\nExiting.\n");
                                     exit(-1);
                                 }
                         }
@@ -215,6 +272,7 @@ void** CalendarQueue_ToArray(struct CalendarQueue* cqueue) {
                         minimumNextVirtualBucket = INT_MAX;
                 }
         }
+        free(bucketHead);
         return result;
 }
 
@@ -304,6 +362,9 @@ void CalendarQueue__LocalInit(struct CalendarQueue* cqueue, int logNumberOfBucke
         cqueue->_initialized = true;
 }
 void CalendarQueue__Resize(struct CalendarQueue* cqueue, bool increasing) {
+#ifdef CQDEBUG
+        printf("CQ_Resize start %p %d\n", (void*) cqueue, cqueue->_queueSize);
+#endif
         cqueue->_indexOfMinimumBucketValid = false;
 
         if (!cqueue->_resizeEnabled) {
@@ -363,17 +424,28 @@ void CalendarQueue__Resize(struct CalendarQueue* cqueue, bool increasing) {
         pblListFree(old_bucket);
 
         cqueue->_resizeEnabled = saveResizeEnabled;
+#ifdef CQDEBUG
+        printf("CQ_Resize end %p %d\n", (void*) cqueue, cqueue->_queueSize);
+#endif
 }
 void* CalendarQueue__TakeFromBucket(struct CalendarQueue* cqueue, int index) {
         struct CQLinkedList* bucket = pblListGet(cqueue->_bucket, index);
         struct DEEvent* minEntry = (*(bucket->take))(bucket);
 
+#ifdef CQDEBUG
+        printf("CQ_TakeFromBucket start %p %d\n", (void*) cqueue, cqueue->_queueSize);
+#endif
         cqueue->_minBucket = index;
         cqueue->_minimumEntry = minEntry;
         cqueue->_minVirtualBucket = (*(minEntry->getVirtualBinNumber))(minEntry, cqueue->_binWidth);
         --(cqueue->_queueSize);
 
+
         (*(cqueue->_resize))(cqueue, false);
+
+#ifdef CQDEBUG
+        printf("CQ_TakeFromBucket end %p %d\n", (void*) cqueue, cqueue->_queueSize);
+#endif
 
         return minEntry;
 }
@@ -503,6 +575,7 @@ bool CQLinkedList_Remove(struct CQLinkedList * list, struct DEEvent* item) {
         struct CQCell * previousCell = head;
         struct CQCell * currentCell = previousCell->next;
 
+
         // Case where there is only one item in the queue
         if (currentCell == NULL)
                 return false;
@@ -591,6 +664,7 @@ void CQCell_Init(struct CQCell* cell) {
 // Free cell (not a joke) !
 void CQCell_New_Free (struct CQCell * cell)
 {
-        if (cell)
+        if (cell) {
                 free(cell);
+        }
 }
