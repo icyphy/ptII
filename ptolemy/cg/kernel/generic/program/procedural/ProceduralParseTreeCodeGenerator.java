@@ -498,7 +498,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
             }
 
             // Translate function to c functions.
-            String cFunction = (String) cFunctionMap.get(functionName);
+            String cFunction = (String) _functionMap.get(functionName);
             if (cFunction != null) {
                 functionName = cFunction;
             }
@@ -577,27 +577,6 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
         _childCode = _specializeReturnValue(functionName, node.getType(),
                 result + ")");
-    }
-
-    private String _specializeReturnValue(String function, Type returnType,
-            String returnCode) {
-        if (function.equals("$arraySum") && _isPrimitive(returnType)) {
-
-            returnCode += ".payload." + _codeGenType(returnType);
-        }
-        return returnCode;
-    }
-
-    private String _specializeArgument(String function, int argumentIndex,
-            Type argumentType, String argumentCode) {
-
-        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
-            if (_isPrimitive(argumentType)) {
-                return "$new(" + _codeGenType(argumentType) + "("
-                        + argumentCode + "))";
-            }
-        }
-        return argumentCode;
     }
 
     /** Define a function, where the children specify the argument types
@@ -1809,6 +1788,50 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Temporary storage for the result of evaluating a child node.
+     *  This is protected so that derived classes can access it.
+     */
+    protected ptolemy.data.Token _evaluatedChildToken = null;
+
+    /** The fire() method code. */
+    //protected StringBuffer _fireCode = new StringBuffer();
+    protected String _childCode;
+
+    /** The initialize() method code. */
+    protected StringBuffer _initializeCode = new StringBuffer();
+
+    /** The preinitialize() method code. */
+    protected StringBuffer _preinitializeCode = new StringBuffer();
+
+    /** Shared code code. */
+    protected StringBuffer _sharedCode = new StringBuffer();
+
+    /** The wrapup() method code. */
+    protected StringBuffer _wrapupCode = new StringBuffer();
+
+    /** The scope for evaluation. */
+    protected ParserScope _scope = null;
+
+    /** Used for type checking. */
+    protected ParseTreeTypeInference _typeInference = null;
+
+    /** Used for debugging. */
+    protected StringBuffer _trace = null;
+
+    /** The depth, used for debugging and indenting. */
+    protected int _depth = 0;
+
+    protected static Map _functionMap = new HashMap();
+    static {
+        //_functionMap.put("matrixToArray", "$matrixToArray");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
@@ -1867,6 +1890,27 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
         return _primitiveTypes.contains(_codeGenType(ptType));
     }
 
+    private String _specializeReturnValue(String function, Type returnType,
+            String returnCode) {
+        if (function.equals("$arraySum") && _isPrimitive(returnType)) {
+
+            returnCode += ".payload." + _codeGenType(returnType);
+        }
+        return returnCode;
+    }
+
+    private String _specializeArgument(String function, int argumentIndex,
+            Type argumentType, String argumentCode) {
+
+        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
+            if (_isPrimitive(argumentType)) {
+                return "$new(" + _codeGenType(argumentType) + "("
+                        + argumentCode + "))";
+            }
+        }
+        return argumentCode;
+    }
+
     /**
      * Get the corresponding type in Java from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
@@ -1892,82 +1936,5 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     private static final List _primitiveTypes = Arrays.asList(new String[] {
             "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
             "Pointer", "Complex", "Object" });
-
-    /** Temporary storage for the result of evaluating a child node.
-     *  This is protected so that derived classes can access it.
-     */
-    protected ptolemy.data.Token _evaluatedChildToken = null;
-
-    /** The fire() method code. */
-    //protected StringBuffer _fireCode = new StringBuffer();
-    protected String _childCode;
-
-    /** The initialize() method code. */
-    protected StringBuffer _initializeCode = new StringBuffer();
-
-    /** The preinitialize() method code. */
-    protected StringBuffer _preinitializeCode = new StringBuffer();
-
-    /** Shared code code. */
-    protected StringBuffer _sharedCode = new StringBuffer();
-
-    /** The wrapup() method code. */
-    protected StringBuffer _wrapupCode = new StringBuffer();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The scope for evaluation. */
-    private ParserScope _scope = null;
-
-    /** Used for type checking. */
-    private ParseTreeTypeInference _typeInference = null;
-
-    /** Used for debugging. */
-    private StringBuffer _trace = null;
-
-    /** The depth, used for debugging and indenting. */
-    private int _depth = 0;
-
-    private static Map cFunctionMap = new HashMap();
-    static {
-        cFunctionMap.put("matrixToArray", "$matrixToArray");
-        cFunctionMap.put("roundToInt", "(int)");
-        cFunctionMap.put("repeat", "$arrayRepeat");
-        cFunctionMap.put("sum", "$arraySum");
-
-        // Java Specific functions
-        cFunctionMap.put("NaN", "Double.NaN");
-        cFunctionMap.put("abs", "Math.abs");
-        cFunctionMap.put("acos", "Math.acos");
-        cFunctionMap.put("asin", "Math.asin");
-        cFunctionMap.put("atan", "Math.atan");
-        cFunctionMap.put("cbrt", "Math.cbrt");
-        cFunctionMap.put("ceil", "Math.ceil");
-        cFunctionMap.put("cos", "Math.cos");
-        cFunctionMap.put("cosh", "Math.cosh");
-        cFunctionMap.put("exp", "Math.exp");
-        cFunctionMap.put("expm1", "Math.expm1");
-        cFunctionMap.put("floor", "Math.floor");
-        cFunctionMap.put("iterate",
-                "ptolemy.data.expr.UtilityFunctions.iterate");
-        cFunctionMap.put("log", "Math.log");
-        cFunctionMap.put("log10", "Math.log10");
-        cFunctionMap.put("log1p", "Math.log1p");
-        cFunctionMap.put("max", "Math.max");
-        cFunctionMap.put("min", "Math.min");
-        cFunctionMap.put("pow", "Math.pow");
-        cFunctionMap.put("rint", "Math.rint");
-        cFunctionMap.put("round", "Math.round");
-        cFunctionMap.put("signum", "Math.signum");
-        cFunctionMap.put("sin", "Math.sin");
-        cFunctionMap.put("sinh", "Math.sinh");
-        cFunctionMap.put("sqrt", "Math.sqrt");
-        cFunctionMap.put("tan", "Math.tan");
-        cFunctionMap.put("tanh", "Math.tanh");
-        cFunctionMap.put("toDegrees", "Math.toDegrees");
-        cFunctionMap.put("toRadians", "Math.toRadians");
-        cFunctionMap.put("ulp", "Math.ulp");
-    }
 
 }

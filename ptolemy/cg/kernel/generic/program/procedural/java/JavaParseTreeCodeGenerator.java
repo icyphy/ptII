@@ -360,7 +360,7 @@ public class JavaParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator
             }
 
             // Translate function to c functions.
-            String cFunction = (String) cFunctionMap.get(functionName);
+            String cFunction = (String) _functionMap.get(functionName);
             if (cFunction != null) {
                 functionName = cFunction;
             }
@@ -1622,54 +1622,51 @@ public class JavaParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator
     //         }
     //     }
 
-    /** Add a record to the current trace corresponding to the given message.
-     *  If the trace is null, do nothing.
-     *  @param string The given message.
-     */
-    protected void _trace(String string) {
-        if (_trace != null) {
-            for (int i = 0; i < _depth; i++) {
-                _trace.append("  ");
-            }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-            _trace.append(string);
-            _trace.append("\n");
-        }
+    static {
+        _functionMap.put("matrixToArray", "$matrixToArray");
+        _functionMap.put("roundToInt", "(int)");
+        _functionMap.put("repeat", "$arrayRepeat");
+        _functionMap.put("sum", "$arraySum");
+
+        // Java Specific functions
+        _functionMap.put("NaN", "Double.NaN");
+        _functionMap.put("abs", "Math.abs");
+        _functionMap.put("acos", "Math.acos");
+        _functionMap.put("asin", "Math.asin");
+        _functionMap.put("atan", "Math.atan");
+        _functionMap.put("cbrt", "Math.cbrt");
+        _functionMap.put("ceil", "Math.ceil");
+        _functionMap.put("cos", "Math.cos");
+        _functionMap.put("cosh", "Math.cosh");
+        _functionMap.put("exp", "Math.exp");
+        _functionMap.put("expm1", "Math.expm1");
+        _functionMap.put("floor", "Math.floor");
+        _functionMap.put("iterate",
+                "ptolemy.data.expr.UtilityFunctions.iterate");
+        _functionMap.put("log", "Math.log");
+        _functionMap.put("log10", "Math.log10");
+        _functionMap.put("log1p", "Math.log1p");
+        _functionMap.put("max", "Math.max");
+        _functionMap.put("min", "Math.min");
+        _functionMap.put("pow", "Math.pow");
+        _functionMap.put("rint", "Math.rint");
+        _functionMap.put("round", "Math.round");
+        _functionMap.put("signum", "Math.signum");
+        _functionMap.put("sin", "Math.sin");
+        _functionMap.put("sinh", "Math.sinh");
+        _functionMap.put("sqrt", "Math.sqrt");
+        _functionMap.put("tan", "Math.tan");
+        _functionMap.put("tanh", "Math.tanh");
+        _functionMap.put("toDegrees", "Math.toDegrees");
+        _functionMap.put("toRadians", "Math.toRadians");
+        _functionMap.put("ulp", "Math.ulp");
     }
 
-    /** Add a record to the current trace corresponding to the start
-     *  of the evaluation of the given node.  If the trace is null, then
-     *  do nothing.
-     *  @param node The given node.
-     */
-    protected void _traceEnter(ASTPtRootNode node) {
-        if (_trace != null) {
-            for (int i = 0; i < _depth; i++) {
-                _trace.append("  ");
-            }
-
-            _trace.append("Entering node " + node.getClass().getName() + "\n");
-            _depth++;
-        }
-    }
-
-    /** Add a record to the current trace corresponding to the completion
-     *  of the evaluation of the given node.  If the trace is null, then
-     *  do nothing.
-     *  @param node The given node.
-     */
-    protected void _traceLeave(ASTPtRootNode node) {
-        if (_trace != null) {
-            _depth--;
-
-            for (int i = 0; i < _depth; i++) {
-                _trace.append("  ");
-            }
-
-            _trace.append("Node " + node.getClass().getName()
-                    + " evaluated to " + _evaluatedChildToken + "\n");
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Get the corresponding type in code generation from the given Ptolemy
@@ -1754,58 +1751,4 @@ public class JavaParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator
     private static final List _primitiveTypes = Arrays.asList(new String[] {
             "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
             "Pointer", "Complex", "Object" });
-
-    /** The scope for evaluation. */
-    private ParserScope _scope = null;
-
-    /** Used for type checking. */
-    private ParseTreeTypeInference _typeInference = null;
-
-    /** Used for debugging. */
-    private StringBuffer _trace = null;
-
-    /** The depth, used for debugging and indenting. */
-    private int _depth = 0;
-
-    private static Map cFunctionMap = new HashMap();
-    static {
-        cFunctionMap.put("matrixToArray", "$matrixToArray");
-        cFunctionMap.put("roundToInt", "(int)");
-        cFunctionMap.put("repeat", "$arrayRepeat");
-        cFunctionMap.put("sum", "$arraySum");
-
-        // Java Specific functions
-        cFunctionMap.put("NaN", "Double.NaN");
-        cFunctionMap.put("abs", "Math.abs");
-        cFunctionMap.put("acos", "Math.acos");
-        cFunctionMap.put("asin", "Math.asin");
-        cFunctionMap.put("atan", "Math.atan");
-        cFunctionMap.put("cbrt", "Math.cbrt");
-        cFunctionMap.put("ceil", "Math.ceil");
-        cFunctionMap.put("cos", "Math.cos");
-        cFunctionMap.put("cosh", "Math.cosh");
-        cFunctionMap.put("exp", "Math.exp");
-        cFunctionMap.put("expm1", "Math.expm1");
-        cFunctionMap.put("floor", "Math.floor");
-        cFunctionMap.put("iterate",
-                "ptolemy.data.expr.UtilityFunctions.iterate");
-        cFunctionMap.put("log", "Math.log");
-        cFunctionMap.put("log10", "Math.log10");
-        cFunctionMap.put("log1p", "Math.log1p");
-        cFunctionMap.put("max", "Math.max");
-        cFunctionMap.put("min", "Math.min");
-        cFunctionMap.put("pow", "Math.pow");
-        cFunctionMap.put("rint", "Math.rint");
-        cFunctionMap.put("round", "Math.round");
-        cFunctionMap.put("signum", "Math.signum");
-        cFunctionMap.put("sin", "Math.sin");
-        cFunctionMap.put("sinh", "Math.sinh");
-        cFunctionMap.put("sqrt", "Math.sqrt");
-        cFunctionMap.put("tan", "Math.tan");
-        cFunctionMap.put("tanh", "Math.tanh");
-        cFunctionMap.put("toDegrees", "Math.toDegrees");
-        cFunctionMap.put("toRadians", "Math.toRadians");
-        cFunctionMap.put("ulp", "Math.ulp");
-    }
-
 }

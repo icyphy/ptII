@@ -94,11 +94,11 @@ import ptolemy.util.StringUtilities;
 
  <p>This class has the following limitations:
  <ul>
- <li> It is a copy of ParseTreeCodeGenerator from data/expr and thus
+ <li> It is a copy of ParseTreeEvaluator from data/expr and thus
  has lots of code for evaluating expressions, which we don't need
  <li> It is not properly converting types: We need to add logic to
  convert types.
- <li> The .tcl test has known failures involving nulls
+ <li> The .tcl test has known failures involving nulls.
  <li> It does not evaluate constants.
  </ul>
 
@@ -361,7 +361,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
             }
 
             // Translate function to c functions.
-            String cFunction = (String) cFunctionMap.get(functionName);
+            String cFunction = (String) _functionMap.get(functionName);
             if (cFunction != null) {
                 functionName = cFunction;
             }
@@ -440,7 +440,6 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         }
         _childCode = _specializeReturnValue(functionName, node.getType(),
                 result + ")");
-
     }
 
     /** Define a function, where the children specify the argument types
@@ -1565,6 +1564,19 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
     //         }
     //     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    static {
+        _functionMap.put("matrixToArray", "$matrixToArray");
+        _functionMap.put("roundToInt", "(int)");
+        _functionMap.put("repeat", "$arrayRepeat");
+        _functionMap.put("sum", "$arraySum");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
@@ -1577,58 +1589,6 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         // This method exists because JavaParseTreeCodeGenerator specializes it.
         return _generator.codeGenType(ptType);
     }
-
-    /** Add a record to the current trace corresponding to the given message.
-     *  If the trace is null, do nothing.
-     *  @param string The given message.
-     */
-    protected void _trace(String string) {
-        if (_trace != null) {
-            for (int i = 0; i < _depth; i++) {
-                _trace.append("  ");
-            }
-
-            _trace.append(string);
-            _trace.append("\n");
-        }
-    }
-
-    /** Add a record to the current trace corresponding to the start
-     *  of the evaluation of the given node.  If the trace is null, then
-     *  do nothing.
-     *  @param node The given node.
-     */
-    protected void _traceEnter(ASTPtRootNode node) {
-        if (_trace != null) {
-            for (int i = 0; i < _depth; i++) {
-                _trace.append("  ");
-            }
-
-            _trace.append("Entering node " + node.getClass().getName() + "\n");
-            _depth++;
-        }
-    }
-
-    /** Add a record to the current trace corresponding to the completion
-     *  of the evaluation of the given node.  If the trace is null, then
-     *  do nothing.
-     *  @param node The given node.
-     */
-    protected void _traceLeave(ASTPtRootNode node) {
-        if (_trace != null) {
-            _depth--;
-
-            for (int i = 0; i < _depth; i++) {
-                _trace.append("  ");
-            }
-
-            _trace.append("Node " + node.getClass().getName()
-                    + " evaluated to " + _evaluatedChildToken + "\n");
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
 
     private String _specializeArgument(String function, int argumentIndex,
             Type argumentType, String argumentCode) {
@@ -1661,25 +1621,4 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
     //private static final List _primitiveTypes = Arrays.asList(new String[] {
     //        "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
     //        "Pointer" });
-
-    /** The scope for evaluation. */
-    private ParserScope _scope = null;
-
-    /** Used for type checking. */
-    private ParseTreeTypeInference _typeInference = null;
-
-    /** Used for debugging. */
-    private StringBuffer _trace = null;
-
-    /** The depth, used for debugging and indenting. */
-    private int _depth = 0;
-
-    private static Map cFunctionMap = new HashMap();
-    static {
-        cFunctionMap.put("matrixToArray", "$matrixToArray");
-        cFunctionMap.put("roundToInt", "(int)");
-        cFunctionMap.put("repeat", "$arrayRepeat");
-        cFunctionMap.put("sum", "$arraySum");
-    }
-
 }
