@@ -1151,16 +1151,6 @@ public class SDFDirector
         return (CCodeGenerator) super.getCodeGenerator();
     }
 
-    /** Returns the sanitized name of this director
-     *  adapter.
-     *
-     * @return The name of the director
-     */
-    public String getSanitizedDirectorName() {
-        _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
-        return _sanitizedDirectorName;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1218,14 +1208,6 @@ public class SDFDirector
 
         return processCode(code.toString());
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-    /** The name of the director in a format suitable to be used as a
-     * variable name.
-     */
-    protected String _sanitizedDirectorName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
