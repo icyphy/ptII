@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy aspect oriented demos
+# Makefile for Ptolemy II aspect oriented CanBus demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 67615 2013-10-02 15:18:00Z hudson@moog.eecs.berkeley.edu $
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/qm/demo
+ME =		ptolemy/actor/lib/qm/demo/CarTrackingAttackModeling
 
-DIRS =		AFDX Bus CanBus CarTrackingAttackModeling CompositeQM DE Switch TTE
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,28 +43,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	AFDX/AFDX.jar \
-	Bus/Bus.jar \
-	CanBus/CanBus.jar \
-	CarTrackingAttackModeling/CarTrackingAttackModeling.jar \
-	CompositeQM/CompositeQM.jar \
-	DE/DE.jar \
-	Switch/Switch.jar \
-	TTE/TTE.jar \
-
-
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE =	CanBus
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = 
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	CarTrackingAttackModeling.xml \
+	CarTrackingAttackModelingAllAttacksInOneModel.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -82,7 +73,8 @@ all: jclass
 
 install: jclass jars
 
-demo: subdemo
+demo:
+	vergil CanBus.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
