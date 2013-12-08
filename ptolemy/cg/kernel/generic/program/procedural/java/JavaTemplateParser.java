@@ -63,16 +63,6 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Init the TemplateParser with the associated
-     *  given component and the given adapter.
-     *  @param component The associated component.
-     *  @param adapter The associated adapter.
-     */
-    public void init(Object component, ProgramCodeGeneratorAdapter adapter) {
-        super.init(component, adapter);
-        _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
-    }
-
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
      *  @param isStatic True if the method is static.

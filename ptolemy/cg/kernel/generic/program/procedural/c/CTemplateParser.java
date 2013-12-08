@@ -69,16 +69,6 @@ public class CTemplateParser extends ProceduralTemplateParser {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Init the TemplateParser with the associated
-     *  given component and the given adapter.
-     *  @param component The associated component.
-     *  @param adapter The associated adapter.
-     */
-    public void init(Object component, ProgramCodeGeneratorAdapter adapter) {
-        super.init(component, adapter);
-        _parseTreeCodeGenerator = getParseTreeCodeGenerator();
-    }
-
     /**
      * Generate the type conversion statement for the particular offset of
      * the two given channels. This assumes that the offset is the same for

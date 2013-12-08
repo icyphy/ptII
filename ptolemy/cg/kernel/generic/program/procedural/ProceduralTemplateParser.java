@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -60,6 +61,16 @@ public class ProceduralTemplateParser extends TemplateParser {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Init the TemplateParser with the associated
+     *  given component and the given adapter.
+     *  @param component The associated component.
+     *  @param adapter The associated adapter.
+     */
+    public void init(Object component, ProgramCodeGeneratorAdapter adapter) {
+        super.init(component, adapter);
+        _parseTreeCodeGenerator = getParseTreeCodeGenerator();
+    }
 
     /** Get the files needed by the code generated from this adapter class.
      *  This base class returns an empty set.
