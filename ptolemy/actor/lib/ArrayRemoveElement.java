@@ -120,7 +120,7 @@ public class ArrayRemoveElement extends TypedAtomicActor {
         }
         return newObject;
     }
-
+    
     /** If there is an <i>array</i> input, consume it and create a new
      *  array that contains all elements of the input that are not equal
      *  to the value given by the <i>element</i> port-parameter.
@@ -152,4 +152,12 @@ public class ArrayRemoveElement extends TypedAtomicActor {
             output.broadcast(result);
         }
     }
+
+    /** Clear port parameter value. 
+     */
+	@Override
+	public void wrapup() throws IllegalActionException {
+		super.wrapup();
+		element.setExpression("");
+	}
 }
