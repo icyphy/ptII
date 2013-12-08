@@ -1,5 +1,6 @@
 #include "_CalendarQueue.h"
 
+// Define CQDEBUG to turn on debugging
 //#define CQDEBUG 1
 
 static bool _printing = false;
@@ -129,11 +130,11 @@ bool CalendarQueue_Put(struct CalendarQueue* cqueue, void* entry) {
                 cqueue->_minVirtualBucket = (*(((struct DEEvent*)entry)->getVirtualBinNumber))(entry, cqueue->_binWidth);
                 cqueue->_minBucket = (*(cqueue->_getBinIndex))(cqueue, entry);
 #ifdef CQDEBUG
-                printf("CQ_Put after minimumEntry\n");
+                printf("CQ_Put set minimumEntry\n");
 #endif
         }
 #ifdef CQDEBUG
-        printf("CQ_Put after minimumEntry\n");
+        printf("CQ_Put after minimumEntry check. binNumber: %d\n", binNumber);
         _print(cqueue);
 #endif
         struct CQLinkedList* bucket = pblListGet(cqueue->_bucket, binNumber);
@@ -364,10 +365,14 @@ void CalendarQueue__LocalInit(struct CalendarQueue* cqueue, int logNumberOfBucke
 void CalendarQueue__Resize(struct CalendarQueue* cqueue, bool increasing) {
 #ifdef CQDEBUG
         printf("CQ_Resize start %p %d\n", (void*) cqueue, cqueue->_queueSize);
+        //_print(cqueue);
 #endif
         cqueue->_indexOfMinimumBucketValid = false;
 
         if (!cqueue->_resizeEnabled) {
+#ifdef CQDEBUG
+                printf("CQ_Resize end: resize not enabled %p %d\n", (void*) cqueue, cqueue->_queueSize);
+#endif
                 return;
         }
 
@@ -403,6 +408,10 @@ void CalendarQueue__Resize(struct CalendarQueue* cqueue, bool increasing) {
         }
 
         if (!resize) {
+#ifdef CQDEBUG
+                printf("CQ_Resize end: not resizing %p %d\n", (void*) cqueue, cqueue->_queueSize);
+                _print(cqueue);
+#endif
                 return;
         }
 
@@ -444,14 +453,15 @@ void* CalendarQueue__TakeFromBucket(struct CalendarQueue* cqueue, int index) {
         (*(cqueue->_resize))(cqueue, false);
 
 #ifdef CQDEBUG
-        printf("CQ_TakeFromBucket end %p %d\n", (void*) cqueue, cqueue->_queueSize);
+        printf("CQ_TakeFromBucket end: returning minEntry %p %d\n", (void*) cqueue, cqueue->_queueSize);
 #endif
 
         return minEntry;
 }
 
 
-// Functions for the CQLinkedList :
+// Functions for the CQLinkedList
+// This is a multiset, an entry can appear more than once.
 
 // Initialization of a list
 struct CQLinkedList * CQLinkedList_New () {
@@ -501,46 +511,103 @@ bool CQLinkedList_IsEmpty(struct CQLinkedList * list) {
         return (list == NULL || list-> head == NULL);
 }
 
+void CQLinkedList_Print(struct CQLinkedList * list) {
+        printf("CQLinkedList: %p: head: %p, tail: %p:", (void*)list, (void*)list->head, (void*)list->tail);
+        struct CQCell * p = NULL;
+        boolean sawTail = false;
+        for (p = list->head ; p != NULL; p = p->next)  {
+            if (p == list->tail) {
+                printf("TAIL:");
+                sawTail = true;
+            }
+            printf("(%p: %p), ", (void*)p, (void*)p->content);
+        }
+        if (list->head != NULL && !sawTail) {
+            printf("!!Did not see tail???");
+        }
+        printf("\n");
+}
+
+// Functions for CQCell :
 // Adds item in list
 bool CQLinkedList_Insert(struct CQLinkedList * list, struct DEEvent* item) {
         struct CQCell * newCell = NULL;
-
-        if (list == NULL)
+#ifdef CQDEBUG
+        printf("CQ_LinkedList_Insert start %p %p\n", (void*) list, (void*) item);
+        CQLinkedList_Print(list);
+#endif
+        
+        if (list == NULL) {
+#ifdef CQDEBUG
+                printf("CQ_LinkedList_Insert end: list was null %p %p\n", (void*) list, (void*) item);
+#endif
                 return false;
+        }
 
+        // Special case: linked list is empty.
         if (list->head == NULL) {
                 list->head = CQCell_New();
                 list->head->content = item;
                 list->tail = list->head;
+#ifdef CQDEBUG
+            printf("CQ_LinkedList_Insert end: list head was null %p %p\n", (void*) list, (void*) item);
+#endif
                 return true;
         }
 
+        // LinkedList is not empty.
+        // I assert that by construction, when head != null,
+        // then tail != null as well.
+        // Special case: Check if object is greater than or equal to tail.
         if ((*(item->compareTo))(item, list->tail->content) >= 0) {
-                newCell = CQCell_New();
-                newCell->content = item;
-                list->tail->next = newCell;
-                list->tail = newCell;
+#ifdef CQDEBUG
+                int result = (*(item->compareTo))(item, list->tail->content);
+#endif
+                // object becomes new tail.
+                struct CQCell *newTail = CQCell_New();
+                newTail->content = item;
+                list->tail->next = newTail;
+                list->tail = newTail;
+#ifdef CQDEBUG
+                printf("CQ_LinkedList_Insert end: tail %d >=0. return true. %p %p\n", result, (void*) list, (void*) item);
+                CQLinkedList_Print(list);
+#endif
+
                 return true;
         }
 
-        if ((*(item->compareTo))(item, list->head->content) < 0) {
-                newCell = CQCell_New(item, list->head);
+        // Check if head is strictly greater than object.
+        if ((*(item->compareTo))(list->head->content, item) > 0) {
+                // object becomes the new head
+                newCell = CQCell_New();
                 newCell->content = item;
                 newCell->next = list->head;
                 list->head = newCell;
+#ifdef CQDEBUG
+                int result = (*(item->compareTo))(item, list->tail->content);
+                printf("CQ_LinkedList_Insert end: head %d <0. return true. %p %p\n", result, (void*) list, (void*) item);
+#endif
                 return true;
         }
 
         struct CQCell * previousCell = list->head;
         struct CQCell * currentCell = previousCell->next;
 
+        // Note that this loop will always terminate via the return
+        // statement. This is because tail is assured of being strictly
+        // greater than object.
         do {
-                int comparison = (*(item->compareTo))(item, currentCell->content);
-                if (comparison < 0) {
+                // check if currentCell is strictly greater than object
+                int comparison = (*(item->compareTo))(currentCell->content, item);
+                if (comparison > 0) {
                         newCell = CQCell_New();
                         newCell->content = item;
                         newCell->next = currentCell;
                         previousCell->next = newCell;
+#ifdef CQDEBUG
+            printf("CQ_LinkedList_Insert end: do loop, return true.  %p %p\n", (void*) list, (void*) item);
+#endif
+
                         return true;
                 }
 
@@ -548,41 +615,80 @@ bool CQLinkedList_Insert(struct CQLinkedList * list, struct DEEvent* item) {
                 currentCell = previousCell->next;
         } while (currentCell != NULL);
 
+#ifdef CQDEBUG
+            printf("CQ_LinkedList_Insert end: return false. %p %p\n", (void*) list, (void*) item);
+#endif
         return false;
 }
 
-// Remove a selected item from the list
+// Remove the specified element from the queue, where equals() is used
+// to determine a match.  Only the first matching element that is found
+// is removed. Return true if a matching element is found and removed,
+// and false otherwise.
 bool CQLinkedList_Remove(struct CQLinkedList * list, struct DEEvent* item) {
-        if ((*(list->isEmpty))(list))
+#ifdef CQDEBUG
+        printf("CQ_LinkedList_Remove start %p %p\n", (void*) list, (void*) item);
+        CQLinkedList_Print(list);
+#endif
+        if ((*(list->isEmpty))(list)) {
                 return false;
+        }
 
         struct CQCell * head = list->head;
         struct CQCell * tail = list->tail;
+        // two special cases:
+        // Case 1: list is empty: always return false.
         if (head == NULL) {
+#ifdef CQDEBUG
+                printf("CQ_LinkedList_Remove head was null %p %p\n", (void*) list, (void*) item);
+                CQLinkedList_Print(list);
+#endif
                 return false;
         }
 
+        // Case 2: The element I want is at head of the list.
         if (head->content == item) {
                 if (head != tail) {
+                        // Linked list has at least two cells.
                         list->head = head->next;
                 } else {
+                        // Linked list contains only one cell
                         list->head = NULL;
                         list->tail = NULL;
                 }
+#ifdef CQDEBUG
+        printf("CQ_LinkedList_Remove head was item %p %p\n", (void*) list, (void*) item);
+        CQLinkedList_Print(list);
+#endif
                 return true;
         }
 
+        // Non-special case that requires looping:
         struct CQCell * previousCell = head;
         struct CQCell * currentCell = previousCell->next;
 
 
         // Case where there is only one item in the queue
-        if (currentCell == NULL)
+        if (currentCell == NULL) {
+#ifdef CQDEBUG
+        printf("CQ_LinkedList_Remove only one item in the queue %p %p\n", (void*) list, (void*) item);
+        CQLinkedList_Print(list);
+#endif
                 return false;
+        }
 
         do {
                 if (currentCell->content == item) {
+                        // Found a match.
+                        if (list->tail == currentCell) {
+                            // Removing the tail. Need to update.
+                            list->tail = previousCell;
+                        }
                         previousCell->next = currentCell->next;
+#ifdef CQDEBUG
+        printf("CQ_LinkedList_Remove inside do %p %p\n", (void*) list, (void*) item);
+        CQLinkedList_Print(list);
+#endif
                         return true;
                 }
 
@@ -590,6 +696,10 @@ bool CQLinkedList_Remove(struct CQLinkedList * list, struct DEEvent* item) {
                 currentCell = currentCell->next;
         } while (currentCell != NULL);
 
+#ifdef CQDEBUG
+        printf("CQ_LinkedList_Remove end  %p %p\n", (void*) list, (void*) item);
+        CQLinkedList_Print(list);
+#endif
         return false;
 }
 
@@ -616,14 +726,16 @@ struct DEEvent * CQLinkedList_Get(struct CQLinkedList * list) {
 
 // Clears completely (and properly) the list
 void CQLinkedList_Clear(struct CQLinkedList * list) {
-        if (list == NULL)
+        if (list == NULL) {
                 return;
+        }
 
         struct CQCell* cellTemp;
         struct CQCell* oldCellTemp;
-        if (list->head == NULL)
+        if (list->head == NULL) {
                 return;
 
+        }
         if (list->head == list->tail) {
                 (*(list->head->free))(list->head);
                 return;
@@ -644,6 +756,7 @@ void CQLinkedList_New_Free(struct CQLinkedList * list) {
                 free(list);
         }
 }
+
 // Functions for CQCell :
 struct CQCell * CQCell_New () {
         struct CQCell* cell = NULL;
