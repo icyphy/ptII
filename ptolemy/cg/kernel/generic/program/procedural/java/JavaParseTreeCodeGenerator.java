@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
@@ -111,145 +112,10 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
-        implements ParseTreeCodeGenerator {
+public class JavaParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Evaluate the parse tree with the specified root node.
-     *  @param node The root of the parse tree.
-     *  @return The result of evaluation.
-     *  @exception IllegalActionException If an parse error occurs.
-     */
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
-            throws IllegalActionException {
-        return evaluateParseTree(node, null);
-    }
-
-    /** Evaluate the parse tree with the specified root node using
-     *  the specified scope to resolve the values of variables.
-     *  @param node The root of the parse tree.
-     *  @param scope The scope for evaluation.
-     *  @return The result of evaluation.
-     *  @exception IllegalActionException If an error occurs during
-     *   evaluation.
-     */
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
-            ParserScope scope) throws IllegalActionException {
-
-        // Make a first pass to infer types.
-        ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
-        typeInference.inferTypes(node, scope);
-
-        _scope = scope;
-
-        // Evaluate the value of the root node.
-        node.visit(this);
-
-        // and return it.
-        _scope = null;
-        return _evaluatedChildToken;
-    }
-
-    /** Trace the evaluation of the parse tree with the specified root
-     *  node using the specified scope to resolve the values of
-     *  variables.
-     *  @param node The root of the parse tree.
-     *  @param scope The scope for evaluation.
-     *  @return The trace of the evaluation.
-     *  @exception IllegalActionException If an error occurs during
-     *   evaluation.
-     */
-    public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
-            throws IllegalActionException {
-        _scope = scope;
-        _trace = new StringBuffer();
-        _depth = 0;
-        _traceEnter(node);
-
-        try {
-            // Evaluate the value of the root node.
-            node.visit(this);
-            _traceLeave(node);
-        } catch (Exception ex) {
-            // If an exception occurs, then bind the exception into
-            // the trace and return the trace.
-            _trace(KernelException.stackTraceToString(ex));
-        }
-
-        _scope = null;
-
-        // Return the trace.
-        String trace = _trace.toString();
-        _trace = null;
-        return trace;
-    }
-
-    /** Generate code that corresponds with the fire() method.
-     *  @return The generated code.
-     */
-    public String generateFireCode() {
-        return _childCode;
-    }
-
-    /** Generate code that corresponds with the initialize() method.
-     *  @return The generated code.
-     */
-    public String generateInitializeCode() {
-        return _initializeCode.toString();
-    }
-
-    /** Generate code that corresponds with the preinitialize() method.
-     *  @return The generated code.
-     */
-    public String generatePreinitializeCode() {
-        return _preinitializeCode.toString();
-    }
-
-    /** Generate shared code.
-     *  @return The generated code.
-     */
-    public String generateSharedCode() {
-        return _sharedCode.toString();
-    }
-
-    /** Generate code that corresponds with the wrapup() method.
-     *  @return The generated code.
-     */
-    public String generateWrapupCode() {
-        return _wrapupCode.toString();
-    }
-
-    /** Given a string, escape special characters as necessary.
-     *  For Java, we do:
-     *  <pre>
-     *  \\ becomes \\\\
-     *  which means:
-     *  \{ becomes \\{
-     *  \} becomes \\}
-     *  \( becomes \\(
-     *  \) becomes \\)
-     *  and
-     *  \\" becomes \"
-     *  newline becomes \n
-     *  </pre>
-     *  @param string The string to escape.
-     *  @return A new string with special characters replaced.
-     *  @see ptolemy.util.StringUtilities#escapeForXML(String)
-     */
-    public/*static*/String escapeForTargetLanguage(String string) {
-        string = StringUtilities.substitute(string, "\\", "\\\\");
-        //string = StringUtilities.substitute(string, "\\{", "\\\\{");
-        //string = StringUtilities.substitute(string, "\\}", "\\\\}");
-        //string = StringUtilities.substitute(string, "\\(", "\\\\(");
-        //string = StringUtilities.substitute(string, "\\)", "\\\\)");
-        //string = StringUtilities.substitute(string, "\\\"", "\\\\\"");
-        string = StringUtilities.substitute(string, "\\\\\"", "\\\"");
-        string = StringUtilities.substitute(string, "\n", "\\n");
-
-        return string;
-    }
 
     /** Construct an ArrayToken that contains the tokens from the
      *  children of the specified node.
@@ -1888,30 +1754,6 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
     private static final List _primitiveTypes = Arrays.asList(new String[] {
             "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
             "Pointer", "Complex", "Object" });
-
-    /** Temporary storage for the result of evaluating a child node.
-     *  This is protected so that derived classes can access it.
-     */
-    protected ptolemy.data.Token _evaluatedChildToken = null;
-
-    /** The fire() method code. */
-    //protected StringBuffer _fireCode = new StringBuffer();
-    protected String _childCode;
-
-    /** The initialize() method code. */
-    protected StringBuffer _initializeCode = new StringBuffer();
-
-    /** The preinitialize() method code. */
-    protected StringBuffer _preinitializeCode = new StringBuffer();
-
-    /** Shared code code. */
-    protected StringBuffer _sharedCode = new StringBuffer();
-
-    /** The wrapup() method code. */
-    protected StringBuffer _wrapupCode = new StringBuffer();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
     /** The scope for evaluation. */
     private ParserScope _scope = null;

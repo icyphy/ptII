@@ -1,4 +1,4 @@
-/* A visitor for parse trees of the expression language.
+/* A base class visitor for parse trees of the expression language.
 
  Copyright (c) 2006-2013 The Regents of the University of California
  All rights reserved.
@@ -25,23 +25,23 @@
 
 
  */
-package ptolemy.cg.kernel.generic.program.procedural.c;
+package ptolemy.cg.kernel.generic.program.procedural;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
-import ptolemy.cg.kernel.generic.program.procedural.ProceduralParseTreeCodeGenerator;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
@@ -81,47 +81,179 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.math.Complex;
 import ptolemy.util.StringUtilities;
 
-////ParseTreeEvaluator
+///////////////////////////////////////////////////////////////////
+//// ProceduralParseTreeCodeGenerator
 
 /**
- This class evaluates a parse tree given a reference to its root node.
- It implements a visitor that visits the parse tree in depth-first order,
- evaluating each node and storing the result as a token in the node.
- Two exceptions are logic nodes and the ternary if node (the ? : construct),
- which do not necessarily evaluate all children nodes.
+ A base class visitor for parse trees of the expression language.
+
+ <p> A derived class would Evaluate a parse tree given a reference to
+ its root node and generate C or Java code.  It implements a visitor that
+ visits the parse tree in depth-first order, evaluating each node and
+ storing the result as a token in the node.  Two exceptions are logic
+ nodes and the ternary if node (the ? : construct), which do not
+ necessarily evaluate all children nodes.
 
  <p>This class has the following limitations:
  <ul>
- <li> It is a copy of ParseTreeCodeGenerator from data/expr and thus
+ <li> It is a copy of ParseTreeEvaluator from data/expr and thus
  has lots of code for evaluating expressions, which we don't need
  <li> It is not properly converting types: We need to add logic to
  convert types.
- <li> The .tcl test has known failures involving nulls
+ <li> The .tcl test has known failures involving nulls.
  <li> It does not evaluate constants.
  </ul>
 
  @author Man-Kit Leung
- @version $Id$
+ @version $Id: JavaParseTreeCodeGenerator.java 67792 2013-10-26 19:36:54Z cxh $
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
-
-    /**
-     * Create a CParseTreeCodeGenerator that is used by
-     * the given code generator to generate code for expressions.
-     * @param generator The given C code generator.
-     */
-    public CParseTreeCodeGenerator(ProgramCodeGenerator generator) {
-        _generator = generator;
-    }
+public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
+        implements ParseTreeCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Evaluate the parse tree with the specified root node.
+     *  @param node The root of the parse tree.
+     *  @return The result of evaluation.
+     *  @exception IllegalActionException If an parse error occurs.
+     */
+    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
+            throws IllegalActionException {
+        return evaluateParseTree(node, null);
+    }
+
+    /** Evaluate the parse tree with the specified root node using
+     *  the specified scope to resolve the values of variables.
+     *  @param node The root of the parse tree.
+     *  @param scope The scope for evaluation.
+     *  @return The result of evaluation.
+     *  @exception IllegalActionException If an error occurs during
+     *   evaluation.
+     */
+    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+            ParserScope scope) throws IllegalActionException {
+
+        // Make a first pass to infer types.
+        ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
+        typeInference.inferTypes(node, scope);
+
+        _scope = scope;
+
+        // Evaluate the value of the root node.
+        node.visit(this);
+
+        // and return it.
+        _scope = null;
+        return _evaluatedChildToken;
+    }
+
+    /** Trace the evaluation of the parse tree with the specified root
+     *  node using the specified scope to resolve the values of
+     *  variables.
+     *  @param node The root of the parse tree.
+     *  @param scope The scope for evaluation.
+     *  @return The trace of the evaluation.
+     *  @exception IllegalActionException If an error occurs during
+     *   evaluation.
+     */
+    public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
+            throws IllegalActionException {
+        _scope = scope;
+        _trace = new StringBuffer();
+        _depth = 0;
+        _traceEnter(node);
+
+        try {
+            // Evaluate the value of the root node.
+            node.visit(this);
+            _traceLeave(node);
+        } catch (Exception ex) {
+            // If an exception occurs, then bind the exception into
+            // the trace and return the trace.
+            _trace(KernelException.stackTraceToString(ex));
+        }
+
+        _scope = null;
+
+        // Return the trace.
+        String trace = _trace.toString();
+        _trace = null;
+        return trace;
+    }
+
+    /** Generate code that corresponds with the fire() method.
+     *  @return The generated code.
+     */
+    public String generateFireCode() {
+        return _childCode;
+    }
+
+    /** Generate code that corresponds with the initialize() method.
+     *  @return The generated code.
+     */
+    public String generateInitializeCode() {
+        return _initializeCode.toString();
+    }
+
+    /** Generate code that corresponds with the preinitialize() method.
+     *  @return The generated code.
+     */
+    public String generatePreinitializeCode() {
+        return _preinitializeCode.toString();
+    }
+
+    /** Generate shared code.
+     *  @return The generated code.
+     */
+    public String generateSharedCode() {
+        return _sharedCode.toString();
+    }
+
+    /** Generate code that corresponds with the wrapup() method.
+     *  @return The generated code.
+     */
+    public String generateWrapupCode() {
+        return _wrapupCode.toString();
+    }
+
+    /** Given a string, escape special characters as necessary.
+     *  For C and Java, we do:
+     *  <pre>
+     *  \\ becomes \\\\
+     *  which means:
+     *  \{ becomes \\{
+     *  \} becomes \\}
+     *  \( becomes \\(
+     *  \) becomes \\)
+     *  and
+     *  \\" becomes \"
+     *  newline becomes \n
+     *  </pre>
+     *  @param string The string to escape.
+     *  @return A new string with special characters replaced.
+     *  @see ptolemy.util.StringUtilities#escapeForXML(String)
+     */
+    public/*static*/String escapeForTargetLanguage(String string) {
+        string = StringUtilities.substitute(string, "\\", "\\\\");
+        //string = StringUtilities.substitute(string, "\\{", "\\\\{");
+        //string = StringUtilities.substitute(string, "\\}", "\\\\}");
+        //string = StringUtilities.substitute(string, "\\(", "\\\\(");
+        //string = StringUtilities.substitute(string, "\\)", "\\\\)");
+        //string = StringUtilities.substitute(string, "\\\"", "\\\\\"");
+        string = StringUtilities.substitute(string, "\\\\\"", "\\\"");
+        string = StringUtilities.substitute(string, "\n", "\\n");
+
+        return string;
+    }
+
 
     /** Construct an ArrayToken that contains the tokens from the
      *  children of the specified node.
@@ -138,14 +270,14 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         }
 
         int numChildren = node.jjtGetNumChildren();
-        String[] childCode = new String[numChildren];
 
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         //_fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
         //String[] elements = new String[numChildren];
-        StringBuffer result = new StringBuffer(numChildren + ", " + numChildren);
+        StringBuffer result = new StringBuffer("$new(Array(" + numChildren
+                + ", " + numChildren);
 
         // Convert up to LUB.
         // Assume UNKNOWN is the lower type.
@@ -153,6 +285,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
         for (int i = 0; i < numChildren; i++) {
             //_fireCode.append(", ");
+            result.append(", ");
 
             //int nextIndex = _fireCode.length();
 
@@ -163,37 +296,41 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
             tokens[i] = _evaluateChild(node, i);
 
-            childCode[i] = _childCode;
-
             Type valueType = ((ASTPtRootNode) node.jjtGetChild(i)).getType();
+
+            if (_isPrimitive(valueType)) {
+                //_fireCode.insert(nextIndex, "$new(" + _codeGenType(valueType) + "(");
+                //_fireCode.append("))");
+                result.append("$new(" + _codeGenType(valueType) + "("
+                        + _childCode + "))");
+            } else {
+                result.append(_childCode);
+            }
+
             if (!elementType.equals(valueType)) { // find max type
                 elementType = TypeLattice.leastUpperBound(elementType,
                         valueType);
             }
         }
 
-        for (int i = 0; i < numChildren; i++) {
-            Type valueType = ((ASTPtRootNode) node.jjtGetChild(i)).getType();
+        //for (int i = 0; i < numChildren; i++) {
+        //tokens[i] = elementType.convert(tokens[i]);
+        //}
 
-            //tokens[i] = elementType.convert(tokens[i]);
-            if (valueType.equals(elementType)) {
-                result.append(", " + childCode[i]);
-            } else {
-                result.append(", $convert_" + _codeGenType(valueType) + "_"
-                        + _codeGenType(elementType) + "(" + childCode[i] + ")");
-            }
-        }
-
-        if (elementType instanceof ArrayType) {
-            _childCode = "$new(" + "Array(" + result + "))";
+        // Insert the elementType of the array as the last argument.
+        if (_targetType(elementType).equals("Token")) {
+            //_fireCode.append(", -1");
+            result.append(", TYPE_Token");
         } else {
-            _childCode = "$new(" + _codeGenType(elementType) + "Array("
-                    + result + "))";
-
+            //_fireCode.append(", TYPE_" + _codeGenType(elementType));
+            result.append(", TYPE_" + _codeGenType(elementType));
         }
 
-        // Tests CParseTreeCodeGenerator-16.2 and
-        // CParseTreeCodeGenerator-17.2 require that
+        //_fireCode.append("))");
+        _childCode = result.toString() + "))";
+
+        // Tests JavaParseTreeCodeGenerator-16.2 and
+        // JavaParseTreeCodeGenerator-17.2 require that
         // _evaluatedChildToken be set here, otherwise
         // _evaluatedChildToken will be set to the value
         // of the last token.
@@ -440,7 +577,27 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         }
         _childCode = _specializeReturnValue(functionName, node.getType(),
                 result + ")");
+    }
 
+    private String _specializeReturnValue(String function, Type returnType,
+            String returnCode) {
+        if (function.equals("$arraySum") && _isPrimitive(returnType)) {
+
+            returnCode += ".payload." + _codeGenType(returnType);
+        }
+        return returnCode;
+    }
+
+    private String _specializeArgument(String function, int argumentIndex,
+            Type argumentType, String argumentCode) {
+
+        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
+            if (_isPrimitive(argumentType)) {
+                return "$new(" + _codeGenType(argumentType) + "("
+                        + argumentCode + "))";
+            }
+        }
+        return argumentCode;
     }
 
     /** Define a function, where the children specify the argument types
@@ -470,31 +627,55 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = result;
 
-        String functionCode = "";
+        StringBuffer functionCode = new StringBuffer(
+                "\n/* FIXME: This code does work.*/\n");
 
-        /*
+        // Handle functions like iterate()
+        // FIXME: Needs to be finished.  iterate() takes a Ptolemy Token
+        // as a third argument.
+        // $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/codegen/c/actor/lib/test/auto/knownFailedTests/ExpressionIterate.xml
+
         // FIXME: Generate function declaration in _preinitCode.
-        functionCode += type.getReturnType().toString();
-        functionCode += " $actorSymbol(function) (";
+        //functionCode += type.getReturnType().toString();
+
         List argumentNames = node.getArgumentNameList();
         Type[] argumentTypes = node.getArgumentTypes();
 
-        if (argumentNames.size() > 0) {
-            functionCode += argumentTypes[0] + " ";
-            functionCode += argumentNames.get(0);
-
-            for (int i = 1; i < argumentNames.size(); i++) {
-                functionCode += ", " + argumentTypes[i] + " ";
-                functionCode += argumentNames.get(i);
+        // FIXME: If we are going to use ptolemy classes, we need
+        // to add $PTII to the classpath some how.
+        functionCode.append(" new ptolemy.data.expr.ExpressionFunction(\n"
+                + "java.util.Arrays.asList(new String[]\n{\n");
+        for (int i = 0; i < argumentNames.size(); i++) {
+            functionCode.append("\"" + argumentNames.get(i) + "\"");
+            if (i < argumentNames.size() - 1) {
+                functionCode.append(", ");
             }
         }
-        functionCode += ") {\n";
-        functionCode += "    return ";
-        functionCode += evaluateParseTree(node.getExpressionTree(), _scope);
-        functionCode += ";\n}\n";
-         */
+        functionCode.append("\n}\n),\n new ptolemy.data.type.Type[] \n{\n");
+        for (int i = 0; i < argumentTypes.length; i++) {
+            functionCode.append("ptolemy.data.type.BaseType."
+                    + argumentTypes[i].toString().toUpperCase(
+                            Locale.getDefault()));
+            if (i < argumentTypes.length - 1) {
+                functionCode.append(", ");
+            }
+        }
+        functionCode.append("\n}\n,\n");
 
-        _childCode = functionCode;
+        // FIXME: The problem here is that we need a way to create
+        // a ASTPtRootNode at run time that contains the functionality
+        // required.  One idea would be to create an anonymous class
+        // that extended ExpressionFunction and had an apply() method
+        // that had a body that consisted of the functionality we want.
+        functionCode.append(null + "\n/*" + node.getExpressionTree() + "*/\n)");
+
+        //functionCode += ") {\n";
+        //functionCode += "    return ";
+        // See ExpressionFunction.apply() for how to create a temporary scope.
+        //functionCode += evaluateParseTree(node.getExpressionTree(), _scope);
+        //functionCode += ";\n}\n";
+
+        _childCode = functionCode.toString();
         return;
     }
 
@@ -592,7 +773,12 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            if (_evaluatedChildToken instanceof StringToken) {
+            if (_evaluatedChildToken instanceof ComplexToken) {
+                Complex complex = ((ComplexToken) _evaluatedChildToken)
+                        .complexValue();
+                _childCode = "$Complex_new(" + complex.real + ", "
+                        + complex.imag + ")";
+            } else if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted.
                 // See Test 17.2
 
@@ -604,7 +790,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
             } else if (_evaluatedChildToken instanceof LongToken) {
                 //_fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
                 _childCode = ((LongToken) _evaluatedChildToken).longValue()
-                        + "LL";
+                        + "L";
             } else {
                 //_fireCode.append(_evaluatedChildToken.toString());
                 _childCode = _evaluatedChildToken.toString();
@@ -613,12 +799,6 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         }
 
         String name = node.getName();
-        boolean isPresentMark = false;
-
-        if (name.endsWith("_isPresent")) {
-            isPresentMark = true;
-            name = name.substring(0, name.length() - 10);
-        }
 
         // The node refers to a variable, or something else that is in
         // scope
@@ -626,7 +806,6 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
         if (_scope != null) {
             value = _scope.get(name);
-
         }
 
         // Look up for constants.
@@ -637,27 +816,30 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
         // Set the value, if we found one.
         if (value != null) {
-            if (isPresentMark) {
-                String label2 = value.toString();
-                if (label2.startsWith("object(")) {
-                    label2 = label2.substring(7, label2.length() - 1)
-                            + "_isPresent";
-                } else {
-                    label2 += "_isPresent";
-                }
-                value = new ObjectToken(label2);
-            }
             _evaluatedChildToken = value;
 
             String label = value.toString();
-
             if (label.startsWith("object(")) {
+
                 // If this is an ObjectToken, we only wants the label.
                 //_fireCode.append(label.substring(7, label.length() - 1));
-                _childCode = label.substring(7, label.length() - 1);
+
+                _childCode = label.substring(7, label.length() - 1).trim();
+                //if (_childCode.equals("object(null)")) {
+                //    _childCode = "null";
+                //}
+
             } else {
-                //_fireCode.append(label);
-                _childCode = label;
+                // FIXME: handle the rest of the constants from data.expr.Constants
+                if (label.equals("Infinity")) {
+                    _childCode = "Double.POSITIVE_INFINITY";
+                } else if (label.equals("NaN")) {
+                    // $PTII/bin/ptcg -language java ./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/TestNaN.xml
+                    _childCode = "Double.NaN";
+                } else {
+                    //_fireCode.append(label);
+                    _childCode = label;
+                }
             }
 
             return;
@@ -780,6 +962,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         if (node.getForm() == 1) {
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
+                    //_fireCode.append(", ");
                     result.append(", ");
 
                     int index = i * column + j;
@@ -789,7 +972,9 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
                     Type valueType = tokens[index].getType();
 
-                    if (_generator.isPrimitive(valueType)) {
+                    if (_isPrimitive(valueType)) {
+                        //_fireCode.insert(nextIndex, "$new(" + _codeGenType(valueType) + "(");
+                        //_fireCode.append("))");
                         result.append("$new(" + _codeGenType(valueType) + "("
                                 + _childCode + "))");
                     }
@@ -804,11 +989,14 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
             String codegenType = _codeGenType(elementType);
 
             // Insert the elementType of the array as the last argument.
-            if (_generator.targetType(elementType).equals("Token")) {
+            if (_targetType(elementType).equals("Token")) {
+                //_fireCode.append(", -1");
                 result.append(", -1");
             } else {
+                //_fireCode.append(", TYPE_" + _codeGenType(elementType));
                 result.append(", TYPE_" + codegenType);
             }
+            //_fireCode.append(")))");
             result = new StringBuffer("($new(" + /*codegenType + */"Matrix("
                     + result.toString());
             _childCode = result.toString() + ")))";
@@ -909,6 +1097,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         }
 
         //_fireCode.append("->" + node.getMethodName() + "()");
+        // FIXME: Applying functions to tokens does not work
+        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/xslt/test/auto/XSLTransformerTest.xml
         result.append("->" + node.getMethodName() + "()");
         _childCode = result.toString();
     }
@@ -944,6 +1134,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
         result.append(_childCode);
 
+        Type resultType = ((ASTPtRootNode) node.jjtGetChild(0)).getType();
+
         for (int i = 1; i < numChildren; i++) {
             //int times = 1;
             //_fireCode.insert(startIndex, "pow(");
@@ -952,7 +1144,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
             //ptolemy.data.Token token = tokens[i];
             /*ptolemy.data.Token token =*/_evaluateChild(node, i);
 
-            result = new StringBuffer("pow(" + result.toString() + ", "
+            result = new StringBuffer("(" + _targetType(resultType) + ")"
+                    + "Math.pow((double)" + result.toString() + ", (double)"
                     + _childCode);
 
             // Note that we check for ScalarTokens because anything
@@ -1045,8 +1238,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
                 if (type != null) {
                     result = new StringBuffer("$divide_"
                             + _codeGenType(resultType) + "_"
-                            + _codeGenType(type) + "(" + result + ", "
-                            + _childCode + ")");
+                            + _codeGenType(type) + "(" + result.toString()
+                            + ", " + _childCode + ")");
 
                     resultType = resultType.divide(type);
 
@@ -1181,13 +1374,13 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             //resultToken = leftToken.isEqualTo(rightToken).not();
         } else { /*
-                                     if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
-                                     throw new IllegalActionException("The " + operator.image
-                                     + " operator can only be applied between scalars.");
-                                     }
+                              if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
+                              throw new IllegalActionException("The " + operator.image
+                              + " operator can only be applied between scalars.");
+                              }
 
-                                     ScalarToken leftScalar = (ScalarToken) leftToken;
-                                     ScalarToken rightScalar = (ScalarToken) rightToken;
+                              ScalarToken leftScalar = (ScalarToken) leftToken;
+                              ScalarToken rightScalar = (ScalarToken) rightToken;
                  */
 
             if (operator.kind == PtParserConstants.GTE) {
@@ -1487,11 +1680,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
     protected void _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, Type type) throws IllegalActionException {
 
-        Type elementType = ((ArrayType) type).getElementType();
-
         //_fireCode.append("Array_get(");
-        StringBuffer result = new StringBuffer(_codeGenType(elementType)
-                + "Array_get(");
+        StringBuffer result = new StringBuffer("Array_get(");
 
         String name = value.toString();
         if (name.startsWith("object(")) {
@@ -1501,10 +1691,15 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
         // get the array index
         _evaluateChild(node, 1);
-        result.append(_childCode);
 
         //_fireCode.append(")");
-        _childCode = result.toString() + ")";
+        result.append(_childCode + ")");
+
+        Type elementType = ((ArrayType) type).getElementType();
+
+        //_fireCode.append(".payload." + _codeGenType(elementType));
+        _childCode = result.toString() + ".payload/*jptcg*/."
+                + _codeGenType(elementType);
     }
 
     /** Evaluate the child with the given index of the given node.
@@ -1565,19 +1760,6 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
     //         }
     //     }
 
-    /**
-     * Get the corresponding type in code generation from the given Ptolemy
-     * type.
-     * @param ptType The given Ptolemy type.
-     * @return The code generation type.
-     * @exception IllegalActionException Thrown if the given ptolemy cannot
-     *  be resolved.
-     */
-    private/*static*/String _codeGenType(Type ptType) {
-        // This method exists because JavaParseTreeCodeGenerator specializes it.
-        return _generator.codeGenType(ptType);
-    }
-
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
      *  @param string The given message.
@@ -1627,40 +1809,113 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
+     *  be resolved.
+     */
+    private/*static*/String _codeGenType(Type ptType) {
+        // FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
 
-    private String _specializeArgument(String function, int argumentIndex,
-            Type argumentType, String argumentCode) {
+        // FIXME: We may need to add more types.
+        // FIXME: We have to create separate type for different matrix types.
+        String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.LONG ? "Long"
+                        : ptType == BaseType.STRING ? "String"
+                                : ptType == BaseType.DOUBLE ? "Double"
+                                        : ptType == BaseType.BOOLEAN ? "Boolean"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        //: ptType == PointerToken.POINTER ? "Pointer"
+                                                        : ptType == BaseType.COMPLEX ? "Complex"
+                                                                // FIXME: Why do we have to use equals with BaseType.OBJECT
+                                                                : ptType.equals(BaseType.OBJECT) ? "Object"
+                                                                        //: ptType == BaseType.OBJECT ? "Object"
+                                                                        : null;
 
-        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
-            if (_generator.isPrimitive(argumentType)) {
-                return "$new(" + _codeGenType(argumentType) + "("
-                        + argumentCode + "))";
+        if (result == null) {
+            if (ptType instanceof ArrayType) {
+                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                result = "Array";
+            } else if (ptType instanceof MatrixType) {
+                //result = ptType.getClass().getSimpleName().replace("Type", "");
+                result = "Matrix";
             }
         }
-        return argumentCode;
+
+        //if (result.length() == 0) {
+        //    throw new IllegalActionException(
+        //            "Cannot resolve codegen type from Ptolemy type: " + ptType);
+        //}
+
+        // Java specific changes
+        if (result != null) {
+            return result.replace("Int", "Integer").replace("Array", "Token");
+        }
+        return result;
     }
 
-    private String _specializeReturnValue(String function, Type returnType,
-            String returnCode) {
-        if (function.equals("$arraySum") && _generator.isPrimitive(returnType)) {
+    /**
+     * Determine if the given type is primitive.
+     * @param ptType The given ptolemy type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    private boolean _isPrimitive(Type ptType) {
+        // FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
+        return _primitiveTypes.contains(_codeGenType(ptType));
+    }
 
-            returnCode += ".payload." + _codeGenType(returnType);
-        }
-        return returnCode;
+    /**
+     * Get the corresponding type in Java from the given Ptolemy type.
+     * @param ptType The given Ptolemy type.
+     * @return The Java data type.
+     */
+    private String _targetType(Type ptType) {
+        // FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
+        // FIXME: we may need to add more primitive types.
+        return ptType == BaseType.INT ? "int"
+                : ptType == BaseType.STRING ? "String"
+                        : ptType == BaseType.DOUBLE ? "double"
+                                : ptType == BaseType.BOOLEAN ? "boolean"
+                                        : ptType == BaseType.LONG ? "long"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "byte"
+                                                        //: ptType == PointerToken.POINTER ? "void*"
+                                                        : "Token";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The code generator. */
-    private ProgramCodeGenerator _generator;
-
     /** A static list of the primitive types supported by the code generator. */
-    //private static final List _primitiveTypes = Arrays.asList(new String[] {
-    //        "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-    //        "Pointer" });
+    private static final List _primitiveTypes = Arrays.asList(new String[] {
+            "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
+            "Pointer", "Complex", "Object" });
+
+    /** Temporary storage for the result of evaluating a child node.
+     *  This is protected so that derived classes can access it.
+     */
+    protected ptolemy.data.Token _evaluatedChildToken = null;
+
+    /** The fire() method code. */
+    //protected StringBuffer _fireCode = new StringBuffer();
+    protected String _childCode;
+
+    /** The initialize() method code. */
+    protected StringBuffer _initializeCode = new StringBuffer();
+
+    /** The preinitialize() method code. */
+    protected StringBuffer _preinitializeCode = new StringBuffer();
+
+    /** Shared code code. */
+    protected StringBuffer _sharedCode = new StringBuffer();
+
+    /** The wrapup() method code. */
+    protected StringBuffer _wrapupCode = new StringBuffer();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The scope for evaluation. */
     private ParserScope _scope = null;
@@ -1680,6 +1935,39 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");
         cFunctionMap.put("sum", "$arraySum");
+
+        // Java Specific functions
+        cFunctionMap.put("NaN", "Double.NaN");
+        cFunctionMap.put("abs", "Math.abs");
+        cFunctionMap.put("acos", "Math.acos");
+        cFunctionMap.put("asin", "Math.asin");
+        cFunctionMap.put("atan", "Math.atan");
+        cFunctionMap.put("cbrt", "Math.cbrt");
+        cFunctionMap.put("ceil", "Math.ceil");
+        cFunctionMap.put("cos", "Math.cos");
+        cFunctionMap.put("cosh", "Math.cosh");
+        cFunctionMap.put("exp", "Math.exp");
+        cFunctionMap.put("expm1", "Math.expm1");
+        cFunctionMap.put("floor", "Math.floor");
+        cFunctionMap.put("iterate",
+                "ptolemy.data.expr.UtilityFunctions.iterate");
+        cFunctionMap.put("log", "Math.log");
+        cFunctionMap.put("log10", "Math.log10");
+        cFunctionMap.put("log1p", "Math.log1p");
+        cFunctionMap.put("max", "Math.max");
+        cFunctionMap.put("min", "Math.min");
+        cFunctionMap.put("pow", "Math.pow");
+        cFunctionMap.put("rint", "Math.rint");
+        cFunctionMap.put("round", "Math.round");
+        cFunctionMap.put("signum", "Math.signum");
+        cFunctionMap.put("sin", "Math.sin");
+        cFunctionMap.put("sinh", "Math.sinh");
+        cFunctionMap.put("sqrt", "Math.sqrt");
+        cFunctionMap.put("tan", "Math.tan");
+        cFunctionMap.put("tanh", "Math.tanh");
+        cFunctionMap.put("toDegrees", "Math.toDegrees");
+        cFunctionMap.put("toRadians", "Math.toRadians");
+        cFunctionMap.put("ulp", "Math.ulp");
     }
 
 }
