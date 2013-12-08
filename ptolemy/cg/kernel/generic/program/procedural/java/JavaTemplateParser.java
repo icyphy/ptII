@@ -161,7 +161,8 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
         // if we could use the same JavaParseTreeCodeGenerator over and over.
-        _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+        _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator(
+                _getCodeGenerator());
         return _parseTreeCodeGenerator;
     }
 

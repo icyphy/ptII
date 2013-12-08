@@ -117,8 +117,10 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         code.append(super.generatePreinitializeCode());
 
         if (_javaParseTreeCodeGenerator == null) {
-            // FIXME: why does this need to be done here?
-            _javaParseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+            // FIXME: why does this need to be done here and in getSharedCode?
+            _javaParseTreeCodeGenerator = new JavaParseTreeCodeGenerator(
+                    getCodeGenerator());
+
         }
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
@@ -159,7 +161,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      */
     public Set<String> getSharedCode() throws IllegalActionException {
 
-        _javaParseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+        _javaParseTreeCodeGenerator = new JavaParseTreeCodeGenerator(
+                    getCodeGenerator());
 
         Set<String> codeBlocks = super.getSharedCode();
         codeBlocks.add(processCode(_javaParseTreeCodeGenerator
