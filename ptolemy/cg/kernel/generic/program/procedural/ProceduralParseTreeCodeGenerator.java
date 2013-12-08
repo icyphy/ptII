@@ -1124,8 +1124,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
             /*ptolemy.data.Token token =*/_evaluateChild(node, i);
 
             result = new StringBuffer("(" + _targetType(resultType) + ")"
-                    + "Math.pow((double)" + result.toString() + ", (double)"
-                    + _childCode);
+                    + _powCall(result.toString(), _childCode));
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
@@ -1147,11 +1146,10 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                         + "unsigned byte meet this criterion.\n"
                         + "Use pow(10, 3.5) for non-integer exponents");
             }
-             */
-
+            */
             //childToken = childToken.pow(times);
             //_fireCode.append(")");
-            result.append(")");
+            //result.append(")");
         }
 
         _evaluatedChildToken = childToken;
@@ -1739,6 +1737,50 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     //         }
     //     }
 
+    /** Return the string for the the pow() call.
+     *  @param x The first argument for pow().
+     *  @param y The second argument for pow().
+     *  @return The string to invoke the pow() function.
+     */
+    protected String _powCall(String x, String y) {
+        return "Math.pow((double)" + x + ", (double)" + y + ")";
+    }
+
+    /** Specialize an argument of a function.
+     *  The function "$arrayRepeat" is handled specially here.   
+     *  @param function The function
+     *  @param argumentIndex The index of the argument to be specialized
+     *  @param argumentType The type of the the argument.
+     *  @param argumentCode The code for the argument.
+     *  @return the specialized return value.
+     */   
+    protected String _specializeArgument(String function, int argumentIndex,
+            Type argumentType, String argumentCode) {
+
+        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
+            if (_isPrimitive(argumentType)) {
+                return "$new(" + _codeGenType(argumentType) + "("
+                        + argumentCode + "))";
+            }
+        }
+        return argumentCode;
+    }
+
+    /** Specialize the return value of a function.
+     *  The function "$arraySum" is handled specially here.   
+     *  @param function The function
+     *  @param returnType The return type of the function
+     *  @return the specialized return value.
+     */   
+    protected String _specializeReturnValue(String function, Type returnType,
+            String returnCode) {
+        if (function.equals("$arraySum") && _isPrimitive(returnType)) {
+
+            returnCode += ".payload." + _codeGenType(returnType);
+        }
+        return returnCode;
+    }
+
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
      *  @param string The given message.
@@ -1888,27 +1930,6 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     private boolean _isPrimitive(Type ptType) {
         // FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
         return _primitiveTypes.contains(_codeGenType(ptType));
-    }
-
-    private String _specializeReturnValue(String function, Type returnType,
-            String returnCode) {
-        if (function.equals("$arraySum") && _isPrimitive(returnType)) {
-
-            returnCode += ".payload." + _codeGenType(returnType);
-        }
-        return returnCode;
-    }
-
-    private String _specializeArgument(String function, int argumentIndex,
-            Type argumentType, String argumentCode) {
-
-        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
-            if (_isPrimitive(argumentType)) {
-                return "$new(" + _codeGenType(argumentType) + "("
-                        + argumentCode + "))";
-            }
-        }
-        return argumentCode;
     }
 
     /**
