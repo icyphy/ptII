@@ -383,7 +383,7 @@ public abstract class PortDirector extends Director {
      *  @return A boolean true when the port is local
      *  @exception IllegalActionException
      */
-    static private boolean _checkLocal(boolean forComposite, IOPort port)
+    static protected boolean _checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
         return port.isInput() && !forComposite && port.isOutsideConnected()
                 || port.isOutput() && forComposite;

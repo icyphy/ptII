@@ -860,17 +860,6 @@ public class SDFDirector
         }
     }
 
-    static private boolean _checkLocal(boolean forComposite, IOPort port)
-            throws IllegalActionException {
-        return port.isInput() && !forComposite && port.isOutsideConnected()
-                || port.isOutput() && forComposite;
-    }
-
-    static private boolean _checkRemote(boolean forComposite, IOPort port) {
-        return port.isOutput() && !forComposite || port.isInput()
-                && forComposite;
-    }
-
     /**
      * Generate a string that represents the offset for a dynamically determined
      *  channel of a multiport.
