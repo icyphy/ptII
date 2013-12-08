@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
@@ -116,6 +117,15 @@ import ptolemy.util.StringUtilities;
  */
 public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
         implements ParseTreeCodeGenerator {
+
+    /**
+     * Create a ProceduralParseTreeCodeGenerator that is used by
+     * the given code generator to generate code for expressions.
+     * @param generator The given code generator.
+     */
+    public ProceduralParseTreeCodeGenerator(ProgramCodeGenerator generator) {
+        _generator = generator;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -1841,6 +1851,9 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** The fire() method code. */
     //protected StringBuffer _fireCode = new StringBuffer();
     protected String _childCode;
+
+    /** The code generator. */
+    protected ProgramCodeGenerator _generator;
 
     /** The initialize() method code. */
     protected StringBuffer _initializeCode = new StringBuffer();

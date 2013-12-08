@@ -114,10 +114,10 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
     /**
      * Create a CParseTreeCodeGenerator that is used by
      * the given code generator to generate code for expressions.
-     * @param generator The given C code generator.
+     * @param generator The given code generator.
      */
     public CParseTreeCodeGenerator(ProgramCodeGenerator generator) {
-        _generator = generator;
+        super(generator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1152,9 +1152,6 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The code generator. */
-    private ProgramCodeGenerator _generator;
 
     /** A static list of the primitive types supported by the code generator. */
     //private static final List _primitiveTypes = Arrays.asList(new String[] {
