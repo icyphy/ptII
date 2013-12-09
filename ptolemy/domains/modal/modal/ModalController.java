@@ -409,44 +409,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     /** Indicator that we are processing a newPort request. */
     protected boolean _mirrorDisable = false;
 
-    ///////////////////////////////////////////////////////////////////
-    //// ClassComparator
-
-    /**
-     A comparator to compare classes, which is used to sort the map returned by
-     {@link #_getRefinementClasses()}.
-
-     @author Thomas Huining Feng
-     @version $Id$
-     @since Ptolemy II 8.0
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    private static class ClassComparator implements
-            Comparator<Class<? extends Entity>> {
-
-        /** Compare class1 and class2, and return -1 if class1 is a subclass of
-         *  class2, 1 if class2 is a subclass of class1, and otherwise, the
-         *  result of comparing the names of class1 and class2.
-         *
-         *  @param class1 The first class.
-         *  @param class2 The second class.
-         *  @return -1, 0, or 1 representing whether class1 is less than, equal
-         *   to, or greater than class2.
-         */
-        public int compare(Class<? extends Entity> class1,
-                Class<? extends Entity> class2) {
-            if (!class1.equals(class2)) {
-                if (class1.isAssignableFrom(class2)) {
-                    return 1;
-                } else if (class2.isAssignableFrom(class1)) {
-                    return -1;
-                }
-            }
-            return class1.getName().compareTo(class2.getName());
-        }
-    }
-
     /** Create a refinement for the given state.
      *
      *  @param state The state that will contain the new refinement.
