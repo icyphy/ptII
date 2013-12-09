@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	CompiledCompositeActor.java \
 	EmbeddedCodeActor.java \
+	ModularCodeGenLazyTypedCompositeActor.java \
 	ModularCodeGenTypedCompositeActor.java \
 	ModularCompiledSDFTypedCompositeActor.java \
 	PointerToken.java \

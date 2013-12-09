@@ -172,14 +172,19 @@ will simply result in the expression failing to evaluate.
  */
 
 public class ModularCompiledSDFTypedCompositeActor extends
-        LazyTypedCompositeActor {
+        ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.
      *  Increment the version number of the workspace.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
-    public ModularCompiledSDFTypedCompositeActor() {
+    public ModularCompiledSDFTypedCompositeActor()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -190,8 +195,13 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  use the default workspace. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
-    public ModularCompiledSDFTypedCompositeActor(Workspace workspace) {
+    public ModularCompiledSDFTypedCompositeActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -210,18 +220,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
         super(container, name);
         _init();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor
-     *  and all contained ModularCodeGenTypedCompositeActors.
-     */
-    public Parameter recompileHierarchy;
-
-    /** A boolean parameter to enforce recompilation of this ModularCodeGenTypedCompositeActor.
-     */
-    public Parameter recompileThisLevel;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -270,32 +268,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
             // opening the model since expressions are lazy, and the notification does
             // not happen when you parse the model, but when you read the model.
             //_setRecompileFlag();
-        }
-    }
-
-    /** Generate actor name from its class name.
-     * @param className The class name of the actor
-     * @return a String that declares the actor name
-     */
-    static public String classToActorName(String className) {
-        return className + "_obj";
-    }
-
-    /** Invalidate the schedule and type resolution and create
-     *  new receivers if the specified port is an opaque
-     *  output port.  Also, notify the containers of any ports
-     *  deeply connected on the inside by calling their connectionsChanged()
-     *  methods, since their width may have changed.
-     *  @param port The port that has connection changes.
-     */
-    public void connectionsChanged(Port port) {
-        super.connectionsChanged(port);
-        try {
-            if (!inferringWidths()) {
-                _setRecompileFlag();
-            }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(e);
         }
     }
 
@@ -629,14 +601,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
         } finally {
             _generatingCode = false;
         }
-    }
-
-    /** Always return true (opaque).
-     * @return true if the composite actor is set to opaque, return false otherwise.
-     */
-
-    public boolean isOpaque() {
-        return _isOpaque;
     }
 
     /** Link the subscriberPort with a already registered "published port" coming
@@ -1242,26 +1206,23 @@ public class ModularCompiledSDFTypedCompositeActor extends
         // derived class Java definition. Thus, we force the class name
         // here to be ModularCodeGenTypedCompositeActor.
         setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
-        try {
-            recompileHierarchy = new Parameter(this, "recompileHierarchy");
-            recompileHierarchy.setExpression("False");
-            recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);
-
-            recompileThisLevel = new Parameter(this, "recompileThisLevel");
-            recompileThisLevel.setExpression("False");
-            recompileThisLevel.setTypeEquals(BaseType.BOOLEAN);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex);
-        }
     }
 
-    private boolean _isSubscribedPort(IOPort port) {
+    /** Return true if the port is a is connected to a subscriber.
+     *  @param port The port to look up.
+     *  @return Return true if the port is a is connected to a subscriber.
+     */
+    protected boolean _isSubscribedPort(IOPort port) {
         // FIXME: this method might be slow
         // Note that _subscriberPorts is declared in this file, but _subscribedPorts is declared in CompositeActor.
         return _subscriberPorts != null && _subscriberPorts.containsValue(port);
     }
 
-    private boolean _isPublishedPort(IOPort port) {
+    /** Return true if the port is a is connected to a publisher.
+     *  @param port The port to look up.
+     *  @return Return true if the port is a is connected to a publisher.
+     */
+    protected boolean _isPublishedPort(IOPort port) {
         // FIXME: this method might be slow
 
         // FindBugs reported "ptolemy.actor.IOPort is incompatible
@@ -1332,7 +1293,15 @@ public class ModularCompiledSDFTypedCompositeActor extends
                         .booleanValue();
     }
 
-    private String _pubSubChannelName(IOPort port, boolean publisher,
+    /** Return the name of a Publisher or Subscriber channel name.
+     *  @param port The port.
+     *  @param publisher True if the corresponding Publisher should
+     *  be returned.
+     *  @param subscriber True if the corresponding Subscriber should
+     *  be returned.
+     *  @return the name of the channel.
+     */
+    protected String _pubSubChannelName(IOPort port, boolean publisher,
             boolean subscriber) {
         // FIXME: this method might be slow
         if (subscriber) {
@@ -1353,152 +1322,14 @@ public class ModularCompiledSDFTypedCompositeActor extends
         return "";
     }
 
-    private void _setRecompileFlag() throws IllegalActionException {
-        if (_configureDone && !_populating && !_generatingCode
-                && _creatingPubSub == 0) {
-            recompileThisLevel.setToken(new BooleanToken(true));
-            _profile = null;
-        }
-    }
-
-    private void _transferOutputs(IOPort port, Object outputTokens)
-            throws IllegalActionException {
-
-        int rate = DFUtilities.getTokenProductionRate(port);
-        Type type = ((TypedIOPort) port).getType();
-        if (type == BaseType.INT) {
-
-            int[][] tokens = (int[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new IntToken(tokens[i][k]);
-                    port.send(i, token);
-                }
-            }
-
-        } else if (type == BaseType.DOUBLE) {
-
-            double[][] tokens = (double[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new DoubleToken(tokens[i][k]);
-                    port.send(i, token);
-                }
-            }
-
-            /*} else if (type == PointerToken.POINTER) {
-
-                int[][] tokens = (int[][]) outputTokens;
-                for (int i = 0; i < port.getWidthInside(); i++) {
-                    for (int k = 0; k < rate; k++) {
-                        Token token = new PointerToken(tokens[i][k]);
-                        port.send(i, token);
-                    }
-                }
-            */
-        } else if (type == BaseType.BOOLEAN) {
-
-            boolean[][] tokens = (boolean[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new BooleanToken(tokens[i][k]);
-                    port.send(i, token);
-                }
-            }
-
-        } else if (type instanceof ArrayType) {
-
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    type = ((ArrayType) type).getElementType();
-                    try {
-                        Object[][] tmpOutputTokens = (Object[][]) outputTokens;
-                        Class<?> tokenClass = tmpOutputTokens[i][k].getClass();
-
-                        Method getPayload;
-                        getPayload = tokenClass.getMethod("getPayload",
-                                (Class[]) null);
-
-                        Object payload = null;
-                        payload = getPayload.invoke(tmpOutputTokens[i][k],
-                                (Object[]) null);
-
-                        Field objSize = payload.getClass().getField("size");
-                        int size = objSize.getInt(payload);
-
-                        Field elementsField = payload.getClass().getField(
-                                "elements");
-                        Object[] elements = (Object[]) elementsField
-                                .get(payload);
-
-                        Token[] convertedTokens = new Token[size];
-
-                        for (int j = 0; j < size; j++) {
-                            Object element = getPayload.invoke(elements[j],
-                                    (Object[]) null);
-                            if (type == BaseType.INT) {
-                                convertedTokens[j] = new IntToken(
-                                        Integer.parseInt(element.toString()));
-                            } else if (type == BaseType.DOUBLE) {
-                                convertedTokens[j] = new DoubleToken(
-                                        Double.parseDouble(element.toString()));
-                            } else if (type == BaseType.BOOLEAN) {
-                                convertedTokens[j] = new BooleanToken(
-                                        Boolean.parseBoolean(element.toString()));
-                            } else {
-                                //FIXME: need to deal with other types
-                            }
-                        }
-
-                        Token token = new ArrayToken(type, convertedTokens);
-                        port.send(i, token);
-
-                    } catch (SecurityException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (NoSuchMethodException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (IllegalArgumentException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (IllegalAccessException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (InvocationTargetException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (NoSuchFieldException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    }
-                }
-            }
-        } else {
-            // FIXME: need to deal with other types
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _addedSubscribersFromProfile = false;
-
-    private boolean _generatingCode = false;
-
     private ModularSDFCodeGenerator _codeGenerator = null;
-
-    private transient Method _fireMethod;
-
-    private Object _objectWrapper;
 
     private boolean _isOpaque = true;
 
     private long _receiversVersion;
-
-    private int _creatingPubSub = 0;
-
-    private Profile _profile = null;
 
     private Map<String, IOPort> _subscriberPorts;
 
