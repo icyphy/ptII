@@ -1225,8 +1225,8 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 if (type != null) {
                     result = new StringBuffer("$divide_"
                             + _codeGenType(resultType) + "_"
-                            + _codeGenType(type) + "(" + result.toString()
-                            + ", " + _childCode + ")");
+                            + _codeGenType(type) + "(" + result + ", "
+                            + _childCode + ")");
 
                     resultType = resultType.divide(type);
 
@@ -1637,6 +1637,55 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
+
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
+     *  be resolved.
+     */
+    protected String _codeGenType(Type ptType) {
+        // FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
+
+        // FIXME: We may need to add more types.
+        // FIXME: We have to create separate type for different matrix types.
+        String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.LONG ? "Long"
+                        : ptType == BaseType.STRING ? "String"
+                                : ptType == BaseType.DOUBLE ? "Double"
+                                        : ptType == BaseType.BOOLEAN ? "Boolean"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        //: ptType == PointerToken.POINTER ? "Pointer"
+                                                        : ptType == BaseType.COMPLEX ? "Complex"
+                                                                // FIXME: Why do we have to use equals with BaseType.OBJECT
+                                                                : ptType.equals(BaseType.OBJECT) ? "Object"
+                                                                        //: ptType == BaseType.OBJECT ? "Object"
+                                                                        : null;
+
+        if (result == null) {
+            if (ptType instanceof ArrayType) {
+                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                result = "Array";
+            } else if (ptType instanceof MatrixType) {
+                //result = ptType.getClass().getSimpleName().replace("Type", "");
+                result = "Matrix";
+            }
+        }
+
+        //if (result.length() == 0) {
+        //    throw new IllegalActionException(
+        //            "Cannot resolve codegen type from Ptolemy type: " + ptType);
+        //}
+
+        // Java specific changes
+        if (result != null) {
+            return result.replace("Int", "Integer").replace("Array", "Token");
+        }
+        return result;
+    }
+
     /** Loop through all of the children of this node,
      *  visiting each one of them; this will cause their token
      *  value to be determined.
@@ -1882,57 +1931,6 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     protected static Map _functionMap = new HashMap();
     static {
         //_functionMap.put("matrixToArray", "$matrixToArray");
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**
-     * Get the corresponding type in code generation from the given Ptolemy
-     * type.
-     * @param ptType The given Ptolemy type.
-     * @return The code generation type.
-     * @exception IllegalActionException Thrown if the given ptolemy cannot
-     *  be resolved.
-     */
-    private/*static*/String _codeGenType(Type ptType) {
-        // FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
-
-        // FIXME: We may need to add more types.
-        // FIXME: We have to create separate type for different matrix types.
-        String result = ptType == BaseType.INT ? "Int"
-                : ptType == BaseType.LONG ? "Long"
-                        : ptType == BaseType.STRING ? "String"
-                                : ptType == BaseType.DOUBLE ? "Double"
-                                        : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-                                                        //: ptType == PointerToken.POINTER ? "Pointer"
-                                                        : ptType == BaseType.COMPLEX ? "Complex"
-                                                                // FIXME: Why do we have to use equals with BaseType.OBJECT
-                                                                : ptType.equals(BaseType.OBJECT) ? "Object"
-                                                                        //: ptType == BaseType.OBJECT ? "Object"
-                                                                        : null;
-
-        if (result == null) {
-            if (ptType instanceof ArrayType) {
-                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
-                result = "Array";
-            } else if (ptType instanceof MatrixType) {
-                //result = ptType.getClass().getSimpleName().replace("Type", "");
-                result = "Matrix";
-            }
-        }
-
-        //if (result.length() == 0) {
-        //    throw new IllegalActionException(
-        //            "Cannot resolve codegen type from Ptolemy type: " + ptType);
-        //}
-
-        // Java specific changes
-        if (result != null) {
-            return result.replace("Int", "Integer").replace("Array", "Token");
-        }
-        return result;
     }
 
     /**
