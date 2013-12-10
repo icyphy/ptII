@@ -1518,10 +1518,10 @@ fi
 #	
 #--------------------------------------------------------------------
 # We only need to look for CUnit if this directory is present
-CUNIT_USER_DIR="$PTII/ptolemy/cg/kernle/generic/program/procedural/c/type"
+CUNIT_USER_DIR="$PTII/ptolemy/cg/kernel/generic/program/procedural/c/type"
 
 # PTCUNIT_DIR is set to test and used in 
-# $PTII/ptolemy/cg/kernle/generic/program/procedural/c/type
+# $PTII/ptolemy/cg/kernel/generic/program/procedural/c/type
 # if CUnit is found
 PTCUNIT_DIR=
 
@@ -1556,6 +1556,7 @@ else
     $PTII/vendors/CUnit.
     CUnit is only necessary to test the C templates of the code generation facility])
     	        updateExcludeTests **/ptolemy/cg/kernel/generic/program/procedural/c/type/test/junit/JUnitTclTest.java
+		updateExcludeTests **/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/test/junit/JUnitTclTest.java
             fi
         fi
     fi
