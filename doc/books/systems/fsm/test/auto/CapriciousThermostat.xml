@@ -175,6 +175,8 @@
         <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
             <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
             </property>
+            <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
             <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
             </property>
             <doc>Create a sequence of gaussian random variables</doc>
@@ -217,8 +219,6 @@
         <link port="SampleDelay.output" relation="relation3"/>
     </entity>
     <entity name="FSMActor" class="ptolemy.domains.modal.kernel.FSMActor">
-        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-        </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
