@@ -407,15 +407,32 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
     public void addRefinement(State state, final String name, Entity template,
             String className, final InstanceOpener instanceOpener)
             throws IllegalActionException {
-        Attribute allowRefinement = state.getAttribute("_allowRefinement");
-        if (allowRefinement instanceof Parameter
-                && !((BooleanToken) ((Parameter) allowRefinement).getToken())
-                        .booleanValue()) {
-            throw new IllegalActionException(state, "State does not support "
-                    + "refinement.");
-        }
+        ModalRefinement.addRefinement(state, name, template, className,
+                instanceOpener, (CompositeEntity)getContainer());
+    }
 
-        final CompositeEntity container = (CompositeEntity) getContainer();
+    /** Create a refinement for the given state.
+     *
+     *  @param state The state that will contain the new refinement.
+     *  @param name The name of the composite entity that stores the refinement.
+     *  @param template The template used to create the refinement, or null if
+     *   template is not used.
+     *  @param className The class name for the refinement, which is used when
+     *   template is null.
+     *  @param instanceOpener The instanceOpener, typically a
+     *   Configuration, that is used to open the refinement (as a
+     *   look-inside action) after it is created, or null if it is not
+     *   needed to open the refinement.
+     *  @param container The container.
+     *  @exception IllegalActionException If error occurs while creating the
+     *   refinement.
+     */
+    public static void addRefinement(State state, final String name, Entity template,
+            String className, final InstanceOpener instanceOpener,
+            final CompositeEntity container)  throws IllegalActionException {
+
+        // This method is static so that ModalController can call it
+        // and avoid code duplication.
 
         if (container == null) {
             throw new IllegalActionException(state, "State container has no "
@@ -426,6 +443,15 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
             throw new IllegalActionException(state, "There is already a "
                     + "refinement with name " + name + ".");
         }
+
+        Attribute allowRefinement = state.getAttribute("_allowRefinement");
+        if (allowRefinement instanceof Parameter
+                && !((BooleanToken) ((Parameter) allowRefinement).getToken())
+                        .booleanValue()) {
+            throw new IllegalActionException(state, "State does not support "
+                    + "refinement.");
+        }
+
 
         String currentRefinements = state.refinementName.getExpression();
 

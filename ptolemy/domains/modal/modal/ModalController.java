@@ -403,12 +403,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         return map;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Indicator that we are processing a newPort request. */
-    protected boolean _mirrorDisable = false;
-
     /** Create a refinement for the given state.
      *
      *  @param state The state that will contain the new refinement.
@@ -427,152 +421,14 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     public void addRefinement(State state, final String name, Entity template,
             String className, final InstanceOpener instanceOpener)
             throws IllegalActionException {
-        Attribute allowRefinement = state.getAttribute("_allowRefinement");
-        if (allowRefinement instanceof Parameter
-                && !((BooleanToken) ((Parameter) allowRefinement).getToken())
-                        .booleanValue()) {
-            throw new IllegalActionException(state, "State does not support "
-                    + "refinement.");
-        }
-
-        final CompositeEntity container = (CompositeEntity) getContainer();
-
-        if (container == null) {
-            throw new IllegalActionException(state, "State container has no "
-                    + "container!");
-        }
-
-        if (container.getEntity(name) != null) {
-            throw new IllegalActionException(state, "There is already a "
-                    + "refinement with name " + name + ".");
-        }
-
-        String currentRefinements = state.refinementName.getExpression();
-
-        if (currentRefinements == null || currentRefinements.equals("")) {
-            currentRefinements = name;
-        } else {
-            currentRefinements = currentRefinements.trim() + ", " + name;
-        }
-
-        String moml;
-
-        // The MoML we create depends on whether the configuration
-        // specified a set of prototype refinements.
-        if (template != null) {
-            String templateDescription = template.exportMoML(name);
-            moml = "<group>" + templateDescription + "<entity name=\""
-                    + state.getName(container)
-                    + "\"><property name=\"refinementName\" value=\""
-                    + currentRefinements + "\"/></entity></group>";
-        } else {
-            moml = "<group><entity name=\"" + name + "\" class=\"" + className
-                    + "\"/>" + "<entity name=\"" + state.getName(container)
-                    + "\"><property name=\"refinementName\" value=\""
-                    + currentRefinements + "\"/></entity></group>";
-        }
-
-        MoMLChangeRequest change = new MoMLChangeRequest(state, container, moml) {
-            protected void _execute() throws Exception {
-                super._execute();
-
-                // Mirror the ports of the container in the refinement.
-                // Note that this is done here rather than as part of
-                // the MoML because we have set protected variables
-                // in the refinement to prevent it from trying to again
-                // mirror the changes in the container.
-                // The following entity is the newly created refinement.
-                Entity entity = container.getEntity(name);
-
-                // Get the initial port configuration from the container.
-                Iterator ports = container.portList().iterator();
-
-                while (ports.hasNext()) {
-                    Port port = (Port) ports.next();
-
-                    try {
-                        if (entity instanceof RefinementActor) {
-                            // Prevent the newly created refinement from
-                            // creating a port in its container.
-                            ((RefinementActor) entity).setMirrorDisable(1);
-                        }
-
-                        String name = port.getName();
-                        Port newPort = entity.getPort(name);
-                        if (newPort == null) {
-                            newPort = entity.newPort(port.getName());
-                        }
-
-                        if (newPort instanceof RefinementPort
-                                && port instanceof IOPort) {
-                            try {
-                                ((RefinementPort) newPort)
-                                        .setMirrorDisable(true);
-
-                                if (((IOPort) port).isInput()) {
-                                    ((RefinementPort) newPort).setInput(true);
-                                }
-
-                                if (((IOPort) port).isOutput()) {
-                                    ((RefinementPort) newPort).setOutput(true);
-                                }
-
-                                if (((IOPort) port).isMultiport()) {
-                                    ((RefinementPort) newPort)
-                                            .setMultiport(true);
-                                }
-
-                                /* No longer needed since Yuhong modified
-                                 * the type system to allow UNKNOWN. EAL
-                                 *
-                                 if (port instanceof TypedIOPort
-                                 && newPort instanceof TypedIOPort) {
-                                 ((TypedIOPort)newPort).setTypeSameAs(
-                                 (TypedIOPort)port);
-                                 }
-                                 */
-
-                                // Copy the location to the new port if any.
-                                // (tfeng 08/29/08)
-                                if (container instanceof ModalModel) {
-                                    FSMActor controller = ((ModalModel) container)
-                                            .getController();
-                                    if (controller != null
-                                            && controller != container) {
-                                        Port controllerPort = controller
-                                                .getPort(port.getName());
-                                        if (controllerPort != null) {
-                                            Location location = (Location) controllerPort
-                                                    .getAttribute("_location",
-                                                            Location.class);
-                                            if (location != null) {
-                                                location = (Location) location
-                                                        .clone(newPort
-                                                                .workspace());
-                                                location.setContainer(newPort);
-                                            }
-                                        }
-                                    }
-                                }
-                            } finally {
-                                ((RefinementPort) newPort)
-                                        .setMirrorDisable(false);
-                            }
-                        }
-                    } finally {
-                        if (entity instanceof RefinementActor) {
-                            ((RefinementActor) entity).setMirrorDisable(0);
-                        }
-                    }
-                }
-
-                if (instanceOpener != null) {
-                    // Look inside.
-                    instanceOpener.openAnInstance(entity);
-                }
-            }
-        };
-
-        container.requestChange(change);
+        ModalRefinement.addRefinement(state, name, template, className,
+                instanceOpener, (CompositeEntity)getContainer());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Indicator that we are processing a newPort request. */
+    protected boolean _mirrorDisable = false;
+
 }
