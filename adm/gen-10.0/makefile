@@ -308,7 +308,7 @@ $(PTIIDIST):
 	mv /tmp/cosimulation_tmp.xml \
 		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
-	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml" \
+	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openModelica" \
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
 		> /tmp/defaultFullConfiguration_tmp.xml
 	mv /tmp/defaultFullConfiguration_tmp.xml \
@@ -506,10 +506,14 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
 		ptolemy/component \
 		ptolemy/configs/ptserver \
+		ptolemy/domains/coroutine \
+		ptolemy/domains/fmi \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
+		ptolemy/domains/metroII \
+		ptolemy/domains/openmodelica \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.lib \
 		ptolemy/matlab/ptmatlab.obj \
