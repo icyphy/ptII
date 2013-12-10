@@ -308,11 +308,17 @@ $(PTIIDIST):
 	mv /tmp/cosimulation_tmp.xml \
 		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
-	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openModelica" \
+	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openmodelica" \
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
-		> /tmp/defaultFullConfiguration_tmp.xml
+		> 
 	mv /tmp/defaultFullConfiguration_tmp.xml \
 		$(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml
+	# Remove things that should not be shipped from completeDemos.htm
+	awk -f $(PTII_ADM)/dontship.awk $(PTIIHOME)/ptolemy/configs/doc/completeDemos.htm \
+		> /tmp/completeDemos_tmp.htm
+	mv /tmp/completeDemos_tmp.htm \
+		$(PTIIDIST)/ptolemy/configs/doc/completeDemos.htm
+	(cd $(PTIIDIST)/ptolemy/configs/doc; make)
 
 clean_src:
 	rm -f $(PTII_FULL)
@@ -646,6 +652,7 @@ src_jar: #$(PTII_SRC)
 		> src_jar/ptII$(VERSION)/doc/makefile.tmp
 	mv src_jar/ptII$(VERSION)/doc/makefile.tmp \
 		src_jar/ptII$(VERSION)/doc/makefile
+
 
 ############################################
 # HyVisual
