@@ -224,23 +224,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Convert this Ptolemy port to a port that will be saved in the profile.
-     *  @param port The Ptolemy port.
-     *  @exception IllegalActionException When the width can't be retrieved.
-     *  @return The profile port for an I/O port.
-     */
-    public Profile.Port convertProfilePort(IOPort port)
-            throws IllegalActionException {
-        boolean publisher = _isPublishedPort(port);
-        boolean subscriber = _isSubscribedPort(port);
-        return new Profile.Port(port.getName(), publisher, subscriber,
-                port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
-                JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
-                        .getType()), port.isInput(), port.isOutput(),
-                port.isMultiport(), _pubSubChannelName(port, publisher,
-                        subscriber));
-    }
-
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  This overrides
      *  the base class so that if the attribute is an instance of
@@ -268,6 +251,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
             // opening the model since expressions are lazy, and the notification does
             // not happen when you parse the model, but when you read the model.
             //_setRecompileFlag();
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -310,7 +295,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @return An unmodifiable list of Port objects.
      */
     public List portList() {
-        Profile profile = _getProfile();
+        Profile profile = getProfile();
         if (_USE_PROFILE && profile != null) {
             List<TypedIOPort> ports = new LinkedList<TypedIOPort>(
                     super.portList());
@@ -391,134 +376,14 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
             List<Object> argList = new LinkedList<Object>();
 
-            Iterator<?> inputPorts = inputPortList().iterator();
-            while (inputPorts.hasNext()) {
-                TypedIOPort port = (TypedIOPort) inputPorts.next();
-                int rate = DFUtilities.getTokenConsumptionRate(port);
-                Type type = port.getType();
-                Object tokenHolder = null;
-
-                int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
-                        .getWidth() : port.getWidthInside();
-
-                if (type == BaseType.INT) {
-                    tokenHolder = new int[numberOfChannels][];
-                } else if (type == BaseType.DOUBLE) {
-                    tokenHolder = new double[numberOfChannels][];
-                    /*} else if (type == PointerToken.POINTER) {
-                        tokenHolder = new int[numberOfChannels][];*/
-                } else if (type == BaseType.BOOLEAN) {
-                    tokenHolder = new boolean[numberOfChannels][];
-                } else {
-                    // FIXME: need to deal with other types
-                }
-
-                for (int i = 0; i < port.getWidth(); i++) {
-                    try {
-                        if (i < port.getWidthInside()) {
-
-                            if (port.hasToken(i, rate)) {
-                                Token[] tokens = port.get(i, rate);
-
-                                if (_debugging) {
-                                    _debug(getName(),
-                                            "transferring input from "
-                                                    + port.getName());
-                                }
-
-                                if (type == BaseType.INT) {
-                                    if (rate > 1) {
-                                        int[] intTokens = new int[rate];
-                                        for (int k = 0; k < rate; k++) {
-                                            intTokens[k] = ((IntToken) tokens[k])
-                                                    .intValue();
-                                        }
-                                        tokenHolder = intTokens;
-                                    } else {
-                                        tokenHolder = ((IntToken) tokens[0])
-                                                .intValue();
-                                    }
-                                } else if (type == BaseType.DOUBLE) {
-                                    if (rate > 1) {
-                                        for (int k = 0; k < rate; k++) {
-                                            double[] doubleTokens = new double[rate];
-                                            doubleTokens[k] = ((DoubleToken) tokens[k])
-                                                    .doubleValue();
-                                            tokenHolder = doubleTokens;
-                                        }
-                                    } else {
-                                        tokenHolder = ((DoubleToken) tokens[0])
-                                                .doubleValue();
-                                    }
-                                } else if (type == BaseType.BOOLEAN) {
-                                    if (rate > 1) {
-                                        boolean[] booleanTokens = new boolean[rate];
-                                        for (int k = 0; k < rate; k++) {
-                                            booleanTokens[k] = ((BooleanToken) tokens[k])
-                                                    .booleanValue();
-                                        }
-                                        tokenHolder = booleanTokens;
-                                    } else {
-                                        tokenHolder = ((BooleanToken) tokens[0])
-                                                .booleanValue();
-                                    }
-
-                                } else {
-                                    // FIXME: need to deal with other types
-                                }
-                                argList.add(tokenHolder);
-                            } else {
-                                throw new IllegalActionException(
-                                        this,
-                                        port,
-                                        "Port should consume "
-                                                + rate
-                                                + " tokens, but there were not "
-                                                + " enough tokens available.");
-                            }
-
-                        } else {
-                            // No inside connection to transfer tokens to.
-                            // In this case, consume one input token if there is one.
-                            if (_debugging) {
-                                _debug(getName(), "Dropping single input from "
-                                        + port.getName());
-                            }
-
-                            if (port.hasToken(i)) {
-                                port.get(i);
-                            }
-                        }
-                    } catch (NoTokenException ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
-                    }
-
-                }
-            }
-
-            Object[] tokensToAllOutputPorts;
-            tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(
-                    _objectWrapper, argList.toArray());
-
-            int portNumber = 0;
-            for (Object port : outputPortList()) {
-                IOPort iOPort = (IOPort) port;
-                _transferOutputs(iOPort, tokensToAllOutputPorts[portNumber++]);
-            }
+            _fire(argList);
 
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling fire method of generated code.");
             }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalActionException(this, e,
-                    "Could no execute the generated code.");
-        } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this, e,
-                    "Could no execute the generated code.");
-        } catch (InvocationTargetException e) {
-            throw new IllegalActionException(this, e,
-                    "Could no execute the generated code.");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Could not execute the generated code.");
         }
     }
 
@@ -699,31 +564,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
         }
     }
 
-    /** Create a new relation with the specified name, add it to the
-     *  relation list, and return it. Derived classes can override
-     *  this to create domain-specific subclasses of ComponentRelation.
-     *  This method is write-synchronized on the workspace and increments
-     *  its version number. This overrides the base class to force
-     *  evaluation of any deferred MoML. This is necessary so that
-     *  name collisions are detected deterministically and so that
-     *  order of relations does not change depending on whether
-     *  evaluation has occurred.
-     *  @param name The name of the new relation.
-     *  @return The new relation.
-     *  @exception IllegalActionException If name argument is null.
-     *  @exception NameDuplicationException If name collides with a name
-     *   already in the container.
-     */
-    public ComponentRelation newRelation(String name)
-            throws NameDuplicationException {
-        try {
-            _setRecompileFlag();
-        } catch (IllegalActionException e) {
-            throw new IllegalStateException(e);
-        }
-        return super.newRelation(name);
-    }
-
     /** Create receivers and invoke the
      *  preinitialize() method of the local director. If this actor is
      *  not opaque, throw an exception.  This method also resets
@@ -739,7 +579,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
-        Profile profile = _getProfile();
+        Profile profile = getProfile();
         if (!_USE_PROFILE || profile == null || _modelChanged()) {
             //could not find the profile yet
             //do whatever initialization we need
@@ -1048,6 +888,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
         }
     }
 
+
     /** Return the profile for the composite actor.
      * @return The profile.
      */
@@ -1056,7 +897,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
             String className = CodeGeneratorAdapter.generateName(this)
                     + "_profile";
             Class<?> classInstance = null;
-
+ 
             NamedObj toplevel = toplevel();
             FileParameter path;
             try {
@@ -1097,94 +938,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Add an entity or class definition to this container. This method
-     *  should not be used directly.  Call the setContainer() method of
-     *  the entity instead. This method does not set
-     *  the container of the entity to point to this composite entity.
-     *  It assumes that the entity is in the same workspace as this
-     *  container, but does not check.  The caller should check.
-     *  Derived classes may override this method to constrain the
-     *  the entity to a subclass of ComponentEntity.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.  This overrides the base class
-     *  to first populate the actor, if necessary, by calling populate().
-     *  This ensures that the entity being added now appears in order
-     *  after the ones previously specified and lazily instantiated.
-     *  @param entity Entity to contain.
-     *  @exception IllegalActionException If the entity has no name, or the
-     *   action would result in a recursive containment structure.
-     *  @exception NameDuplicationException If the name collides with a name
-     *  already in the entity.
-     */
-    protected void _addEntity(ComponentEntity entity)
-            throws IllegalActionException, NameDuplicationException {
-        _setRecompileFlag();
-        super._addEntity(entity);
-    }
-
-    /** Add a relation to this container. This method should not be used
-     *  directly.  Call the setContainer() method of the relation instead.
-     *  This method does not set
-     *  the container of the relation to refer to this container.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be. This overrides the base class
-     *  to first populate the actor, if necessary, by calling populate().
-     *  This ensures that the relation being added now appears in order
-     *  after the ones previously specified and lazily instantiated.
-     *  @param relation Relation to contain.
-     *  @exception IllegalActionException If the relation has no name.
-     *  @exception NameDuplicationException If the name collides with a name
-     *   already on the contained relations list.
-     */
-    protected void _addRelation(ComponentRelation relation)
-            throws IllegalActionException, NameDuplicationException {
-        _setRecompileFlag();
-        super._addRelation(relation);
-    }
-
-    /** Remove the specified entity. This method should not be used
-     *  directly.  Call the setContainer() method of the entity instead with
-     *  a null argument.
-     *  The entity is assumed to be contained by this composite (otherwise,
-     *  nothing happens). This does not alter the entity in any way.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be. This overrides the base class
-     *  to first populate the actor, if necessary, by calling populate().
-     *  This ensures that the entity being removed now actually exists.
-     *  @param entity The entity to remove.
-     */
-    protected void _removeEntity(ComponentEntity entity) {
-        try {
-            _setRecompileFlag();
-        } catch (IllegalActionException e) {
-            throw new IllegalStateException(e);
-        }
-        super._removeEntity(entity);
-    }
-
-    /** Remove the specified relation. This method should not be used
-     *  directly.  Call the setContainer() method of the relation instead with
-     *  a null argument.
-     *  The relation is assumed to be contained by this composite (otherwise,
-     *  nothing happens). This does not alter the relation in any way.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be. This overrides the base class
-     *  to first populate the actor, if necessary, by calling populate().
-     *  This ensures that the relation being removed now actually exists.
-     *  @param relation The relation to remove.
-     */
-    protected void _removeRelation(ComponentRelation relation) {
-        try {
-            _setRecompileFlag();
-        } catch (IllegalActionException e) {
-            throw new IllegalStateException(e);
-        }
-        super._removeRelation(relation);
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void _createCodeGenerator() throws IllegalActionException,
@@ -1197,6 +950,12 @@ public class ModularCompiledSDFTypedCompositeActor extends
         }
     }
 
+    /** Set up actor parameters.
+     *  @exception IllegalActionException If a parameter cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the actor already has a
+     *   parameter with this name.
+     */
     private void _init() {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
@@ -1206,16 +965,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
         // derived class Java definition. Thus, we force the class name
         // here to be ModularCodeGenTypedCompositeActor.
         setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
-    }
-
-    /** Return true if the port is a is connected to a subscriber.
-     *  @param port The port to look up.
-     *  @return Return true if the port is a is connected to a subscriber.
-     */
-    protected boolean _isSubscribedPort(IOPort port) {
-        // FIXME: this method might be slow
-        // Note that _subscriberPorts is declared in this file, but _subscribedPorts is declared in CompositeActor.
-        return _subscriberPorts != null && _subscriberPorts.containsValue(port);
     }
 
     /** Return true if the port is a is connected to a publisher.
@@ -1330,8 +1079,6 @@ public class ModularCompiledSDFTypedCompositeActor extends
     private boolean _isOpaque = true;
 
     private long _receiversVersion;
-
-    private Map<String, IOPort> _subscriberPorts;
 
     private Map<String, IORelation> _subscriberRelations;
 

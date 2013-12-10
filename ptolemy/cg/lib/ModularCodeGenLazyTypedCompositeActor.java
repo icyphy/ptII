@@ -261,6 +261,206 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
                         subscriber));
     }
 
+    /** Create a new relation with the specified name, add it to the
+     *  relation list, and return it. Derived classes can override
+     *  this to create domain-specific subclasses of ComponentRelation.
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number. This overrides the base class to force
+     *  evaluation of any deferred MoML. This is necessary so that
+     *  name collisions are detected deterministically and so that
+     *  order of relations does not change depending on whether
+     *  evaluation has occurred.
+     *  @param name The name of the new relation.
+     *  @return The new relation.
+     *  @exception IllegalActionException If name argument is null.
+     *  @exception NameDuplicationException If name collides with a name
+     *   already in the container.
+     */
+    public ComponentRelation newRelation(String name)
+            throws NameDuplicationException {
+        try {
+            _setRecompileFlag();
+        } catch (IllegalActionException e) {
+            throw new IllegalStateException(e);
+        }
+        return super.newRelation(name);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Add an entity or class definition to this container. This method
+     *  should not be used directly.  Call the setContainer() method of
+     *  the entity instead. This method does not set
+     *  the container of the entity to point to this composite entity.
+     *  It assumes that the entity is in the same workspace as this
+     *  container, but does not check.  The caller should check.
+     *  Derived classes may override this method to constrain the
+     *  the entity to a subclass of ComponentEntity.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.  This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the entity being added now appears in order
+     *  after the ones previously specified and lazily instantiated.
+     *  @param entity Entity to contain.
+     *  @exception IllegalActionException If the entity has no name, or the
+     *   action would result in a recursive containment structure.
+     *  @exception NameDuplicationException If the name collides with a name
+     *  already in the entity.
+     */
+    protected void _addEntity(ComponentEntity entity)
+            throws IllegalActionException, NameDuplicationException {
+        _setRecompileFlag();
+        super._addEntity(entity);
+    }
+
+    /** Add a relation to this container. This method should not be used
+     *  directly.  Call the setContainer() method of the relation instead.
+     *  This method does not set
+     *  the container of the relation to refer to this container.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the relation being added now appears in order
+     *  after the ones previously specified and lazily instantiated.
+     *  @param relation Relation to contain.
+     *  @exception IllegalActionException If the relation has no name.
+     *  @exception NameDuplicationException If the name collides with a name
+     *   already on the contained relations list.
+     */
+    protected void _addRelation(ComponentRelation relation)
+            throws IllegalActionException, NameDuplicationException {
+        _setRecompileFlag();
+        super._addRelation(relation);
+    }
+
+    /** Fire the actor.
+     *  @param argList The arguments, true if there are outputs.
+     *  @exception Throwable If things go horrible wrong and the
+     *  time/space continuum is broken.
+     */
+    protected void _fire(List<Object> argList) throws Throwable {
+        // This method exists so as to avoid code duplication.
+        
+            Iterator<?> inputPorts = inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                TypedIOPort port = (TypedIOPort) inputPorts.next();
+                int rate = DFUtilities.getTokenConsumptionRate(port);
+                Type type = port.getType();
+                Object tokenHolder = null;
+
+                int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
+                        .getWidth() : port.getWidthInside();
+
+                if (type == BaseType.INT) {
+                    tokenHolder = new int[numberOfChannels][];
+                } else if (type == BaseType.DOUBLE) {
+                    tokenHolder = new double[numberOfChannels][];
+                    /*} else if (type == PointerToken.POINTER) {
+                        tokenHolder = new int[numberOfChannels][];*/
+                } else if (type == BaseType.BOOLEAN) {
+                    tokenHolder = new boolean[numberOfChannels][];
+                } else {
+                    // FIXME: need to deal with other types
+                }
+
+                for (int i = 0; i < port.getWidth(); i++) {
+                    try {
+                        if (i < port.getWidthInside()) {
+
+                            if (port.hasToken(i, rate)) {
+                                Token[] tokens = port.get(i, rate);
+
+                                if (_debugging) {
+                                    _debug(getName(),
+                                            "transferring input from "
+                                                    + port.getName());
+                                }
+
+                                if (type == BaseType.INT) {
+                                    if (rate > 1) {
+                                        int[] intTokens = new int[rate];
+                                        for (int k = 0; k < rate; k++) {
+                                            intTokens[k] = ((IntToken) tokens[k])
+                                                    .intValue();
+                                        }
+                                        tokenHolder = intTokens;
+                                    } else {
+                                        tokenHolder = ((IntToken) tokens[0])
+                                                .intValue();
+                                    }
+                                } else if (type == BaseType.DOUBLE) {
+                                    if (rate > 1) {
+                                        for (int k = 0; k < rate; k++) {
+                                            double[] doubleTokens = new double[rate];
+                                            doubleTokens[k] = ((DoubleToken) tokens[k])
+                                                    .doubleValue();
+                                            tokenHolder = doubleTokens;
+                                        }
+                                    } else {
+                                        tokenHolder = ((DoubleToken) tokens[0])
+                                                .doubleValue();
+                                    }
+                                } else if (type == BaseType.BOOLEAN) {
+                                    if (rate > 1) {
+                                        boolean[] booleanTokens = new boolean[rate];
+                                        for (int k = 0; k < rate; k++) {
+                                            booleanTokens[k] = ((BooleanToken) tokens[k])
+                                                    .booleanValue();
+                                        }
+                                        tokenHolder = booleanTokens;
+                                    } else {
+                                        tokenHolder = ((BooleanToken) tokens[0])
+                                                .booleanValue();
+                                    }
+
+                                } else {
+                                    // FIXME: need to deal with other types
+                                }
+                                argList.add(tokenHolder);
+                            } else {
+                                throw new IllegalActionException(
+                                        this,
+                                        port,
+                                        "Port should consume "
+                                                + rate
+                                                + " tokens, but there were not "
+                                                + " enough tokens available.");
+                            }
+
+                        } else {
+                            // No inside connection to transfer tokens to.
+                            // In this case, consume one input token if there is one.
+                            if (_debugging) {
+                                _debug(getName(), "Dropping single input from "
+                                        + port.getName());
+                            }
+
+                            if (port.hasToken(i)) {
+                                port.get(i);
+                            }
+                        }
+                    } catch (NoTokenException ex) {
+                        // this shouldn't happen.
+                        throw new InternalErrorException(this, ex, null);
+                    }
+
+                }
+            }
+
+            Object[] tokensToAllOutputPorts;
+            tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(
+                    _objectWrapper, argList.toArray());
+
+            int portNumber = 0;
+            for (Object port : outputPortList()) {
+                IOPort iOPort = (IOPort) port;
+                _transferOutputs(iOPort, tokensToAllOutputPorts[portNumber++]);
+            }
+    }
+
+
     /** Return true if the port is a is connected to a publisher.
      *  @param port The port to look up.
      *  @return Return true if the port is a is connected to a publisher.
@@ -271,7 +471,11 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  @param port The port to look up.
      *  @return Return true if the port is a is connected to a subscriber.
      */
-    abstract protected boolean _isSubscribedPort(IOPort port);
+    protected boolean _isSubscribedPort(IOPort port) {
+        // FIXME: this method might be slow.
+        return _subscriberPorts != null && _subscriberPorts.containsValue(port);
+    }
+
 
     /** Return the name of a Publisher or Subscriber channel name.
      *  @param port The port.
@@ -283,6 +487,46 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      */
     abstract protected String _pubSubChannelName(IOPort port, boolean publisher,
             boolean subscriber);
+
+    /** Remove the specified entity. This method should not be used
+     *  directly.  Call the setContainer() method of the entity instead with
+     *  a null argument.
+     *  The entity is assumed to be contained by this composite (otherwise,
+     *  nothing happens). This does not alter the entity in any way.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the entity being removed now actually exists.
+     *  @param entity The entity to remove.
+     */
+    protected void _removeEntity(ComponentEntity entity) {
+        try {
+            _setRecompileFlag();
+        } catch (IllegalActionException e) {
+            throw new IllegalStateException(e);
+        }
+        super._removeEntity(entity);
+    }
+
+    /** Remove the specified relation. This method should not be used
+     *  directly.  Call the setContainer() method of the relation instead with
+     *  a null argument.
+     *  The relation is assumed to be contained by this composite (otherwise,
+     *  nothing happens). This does not alter the relation in any way.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the relation being removed now actually exists.
+     *  @param relation The relation to remove.
+     */
+    protected void _removeRelation(ComponentRelation relation) {
+        try {
+            _setRecompileFlag();
+        } catch (IllegalActionException e) {
+            throw new IllegalStateException(e);
+        }
+        super._removeRelation(relation);
+    }
 
     /** If configure is done, populating is not occurring,
      *  code is not being generated and Pub/Subs are not being
@@ -297,6 +541,12 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
         }
     }
 
+    /** Transfer the outputs.
+     *  @param port The port on which the tokens are to be transferred.
+     *  @param outputTokens The output tokens to be transferred.
+     *  @exception IllegalActionException If there is a problem
+     *  transferring the tokens.
+     */
     protected void _transferOutputs(IOPort port, Object outputTokens)
             throws IllegalActionException {
 
@@ -418,21 +668,32 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
+    /** True if subscribers were added from the profile. */
     protected boolean _addedSubscribersFromProfile = false;
 
+    /** True if we Publishers or Subscribers are being created. */
     protected int _creatingPubSub = 0;
 
+    /** True if code is being generated. */
     protected boolean _generatingCode = false;
 
+    /** The fire() method. */
     protected transient Method _fireMethod;
 
+    /** The object wrapper. */
+    protected Object _objectWrapper;
+
+    /** The profile. */
     protected Profile _profile = null;
 
-    protected Object _objectWrapper;
+    /** Map of Subscriber ports. This is different thatn _subscribedPorts in CompositeActor.*/
+    protected Map<String, IOPort> _subscriberPorts;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Intialize the parameters. */
     private void _init() throws IllegalActionException, NameDuplicationException {
         recompileHierarchy = new Parameter(this, "recompileHierarchy");
         recompileHierarchy.setExpression("true");
