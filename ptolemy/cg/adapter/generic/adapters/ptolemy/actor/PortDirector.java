@@ -561,7 +561,7 @@ public abstract class PortDirector extends Director {
     /**
      * Generate a string that represents the type of an attribute (only if it
      * is a parameter).
-     * @param The attribute, which is typically a Parameter.
+     * @param attribute The attribute, which is typically a Parameter.
      * @return the code generation type if the attribute
      *  is a parameter, otherwise, null.
      */
