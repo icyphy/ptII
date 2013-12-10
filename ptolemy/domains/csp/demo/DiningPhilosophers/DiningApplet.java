@@ -139,66 +139,8 @@ public class DiningApplet extends Applet implements Runnable,
                 }
             }
 
-            Chopstick f1 = new Chopstick(univ, "Chopstick1");
-            Chopstick f2 = new Chopstick(univ, "Chopstick2");
-            Chopstick f3 = new Chopstick(univ, "Chopstick3");
-            Chopstick f4 = new Chopstick(univ, "Chopstick4");
-            Chopstick f5 = new Chopstick(univ, "Chopstick5");
+            DiningPhilosophers.connect(univ, p1, p2, p3, p4, p5);
 
-            // Now connect up the Actors
-            univ.connect((TypedIOPort) p1.getPort("leftIn"),
-                    (TypedIOPort) f5.getPort("rightOut"));
-            univ.connect((TypedIOPort) p1.getPort("leftOut"),
-                    (TypedIOPort) f5.getPort("rightIn"));
-            univ.connect((TypedIOPort) p1.getPort("rightIn"),
-                    (TypedIOPort) f1.getPort("leftOut"));
-            univ.connect((TypedIOPort) p1.getPort("rightOut"),
-                    (TypedIOPort) f1.getPort("leftIn"));
-
-            univ.connect((TypedIOPort) p2.getPort("leftIn"),
-                    (TypedIOPort) f1.getPort("rightOut"));
-            univ.connect((TypedIOPort) p2.getPort("leftOut"),
-                    (TypedIOPort) f1.getPort("rightIn"));
-            univ.connect((TypedIOPort) p2.getPort("rightIn"),
-                    (TypedIOPort) f2.getPort("leftOut"));
-            univ.connect((TypedIOPort) p2.getPort("rightOut"),
-                    (TypedIOPort) f2.getPort("leftIn"));
-
-            univ.connect((TypedIOPort) p3.getPort("leftIn"),
-                    (TypedIOPort) f2.getPort("rightOut"));
-
-            univ.connect((TypedIOPort) p3.getPort("leftOut"),
-                    (TypedIOPort) f2.getPort("rightIn"));
-
-            univ.connect((TypedIOPort) p3.getPort("rightIn"),
-                    (TypedIOPort) f3.getPort("leftOut"));
-
-            univ.connect((TypedIOPort) p3.getPort("rightOut"),
-                    (TypedIOPort) f3.getPort("leftIn"));
-
-            univ.connect((TypedIOPort) p4.getPort("leftIn"),
-                    (TypedIOPort) f3.getPort("rightOut"));
-
-            univ.connect((TypedIOPort) p4.getPort("leftOut"),
-                    (TypedIOPort) f3.getPort("rightIn"));
-
-            univ.connect((TypedIOPort) p4.getPort("rightIn"),
-                    (TypedIOPort) f4.getPort("leftOut"));
-
-            univ.connect((TypedIOPort) p4.getPort("rightOut"),
-                    (TypedIOPort) f4.getPort("leftIn"));
-
-            univ.connect((TypedIOPort) p5.getPort("leftIn"),
-                    (TypedIOPort) f4.getPort("rightOut"));
-
-            univ.connect((TypedIOPort) p5.getPort("leftOut"),
-                    (TypedIOPort) f4.getPort("rightIn"));
-
-            univ.connect((TypedIOPort) p5.getPort("rightIn"),
-                    (TypedIOPort) f5.getPort("leftOut"));
-
-            univ.connect((TypedIOPort) p5.getPort("rightOut"),
-                    (TypedIOPort) f5.getPort("leftIn"));
         } catch (Throwable throwable) {
             System.err.println("Setup failed: " + throwable.getMessage());
             throwable.printStackTrace();

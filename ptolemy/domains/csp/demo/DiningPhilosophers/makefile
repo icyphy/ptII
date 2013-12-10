@@ -86,5 +86,8 @@ install: all
 demo:
 	CLASSPATH="$(CLASSPATH)" appletviewer DiningPhilosophers.htm
 
+run:
+	java -classpath "$(PTII)" ptolemy.domains.csp.demo.DiningPhilosophers.DiningPhilosophers
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
