@@ -120,6 +120,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
             CloneNotSupportedException {
         this(container, targetEntity.getName()
                 + ServerUtility.REMOTE_OBJECT_TAG);
+        System.out.println("ProxyActor() ctor: " + targetEntity.getName() + ServerUtility.REMOTE_OBJECT_TAG);
         setTargetEntityName(targetEntity.getFullName());
         _targetEntityName.setExpression(getTargetEntityName());
         if (replaceTargetEntity) {

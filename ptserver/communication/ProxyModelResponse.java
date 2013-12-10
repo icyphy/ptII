@@ -111,6 +111,7 @@ public class ProxyModelResponse implements Serializable {
      *  @see #getModelTypes()
      */
     public void setModelTypes(HashMap<String, String> modelTypes) {
+        //new Exception("ProxyModelTypes.setModelTypes(): " + modelTypes).printStackTrace();
         _modelTypes = modelTypes;
     }
 

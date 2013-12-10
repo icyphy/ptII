@@ -528,9 +528,14 @@ public class ProxyModelInfrastructure {
                         port.setTypeEquals(type);
                         port.typeConstraints().clear();
                     } else {
-                        //Not sure if this is possible, but just in case.
+                        // Not sure if this is possible, but just in case.
                         throw new IllegalActionException(port,
-                                "Type constraint for the port was not found");
+                                "Type constraint for the port was not found.\n"
+                                + "The port did not have an attribute named \"targetPortName\", which would be added by ProxyActor "
+                                + "if the port was typed and the full name of the original port saved within an attribute."
+                                + "The port name information is needed for setting port type information when the spliced-up model is recreated from the XML.\n"
+                                + "The _modelTypes map is of size "
+                                + "_modelTypes.size() and modelTypes contains: " + _modelTypes);
                     }
                 }
             }

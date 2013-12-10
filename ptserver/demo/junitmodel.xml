@@ -10,6 +10,7 @@
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
+	<property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0"/>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
     </entity>

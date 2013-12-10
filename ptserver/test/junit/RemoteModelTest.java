@@ -67,7 +67,11 @@ import com.caucho.hessian.client.HessianProxyFactory;
 /** Test the ability to ability of starting the server and receiving
  *  a token in return.
  *
- *  (cd $PTII/ptserver/test/junit/; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/ptserver/lib/hessian-4.0.7.jar:${PTII}/ptserver/lib/jetty-all-7.4.1.v20110513.jar:${PTII}/ptserver/lib/servlet-api-2.5.jar:${PTII}/ptserver/lib/wmqtt.jar org.junit.runner.JUnitCore ptserver.test.junit.RemoteModelTest)
+ *  <p>To run:
+ *  <pre>
+ *  /usr/local/sbin/mosquitto &
+ *  (cd $PTII/ptserver/test/junit/; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/ptserver/lib/hessian-4.0.7.jar:${PTII}/lib/jetty-all-8.1.5-v20120716.jar:${PTII}/lib/javax.servlet-api-3.0.1.jar:${PTII}/ptserver/lib/wmqtt.jar org.junit.runner.JUnitCore ptserver.test.junit.RemoteModelTest)
+ *  </pre>
  *
  *  @author Justin Killian
  *  @version $Id$
@@ -211,7 +215,7 @@ public class RemoteModelTest {
         Ticket ticket = response.getTicket();
         ProxyModelInfrastructure model = new ProxyModelInfrastructure(
                 ProxyModelType.CLIENT, (CompositeActor) ServerUtility
-                        .createMoMLParser().parse(response.getModelXML()),
+                .createMoMLParser().parse(response.getModelXML()),
                 response.getModelTypes());
         model.setUpInfrastructure(ticket, _server.getBrokerUrl());
 

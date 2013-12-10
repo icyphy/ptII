@@ -130,8 +130,9 @@ public class ServerUtility {
             Attribute isRemoteAttribute = attribute
                     .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
             if (isRemoteAttribute instanceof Parameter) {
+                System.out.println("isRemoteAttribute(): " + attribute + " " + isRemoteAttribute);
                 if (((Parameter) isRemoteAttribute).getExpression().equals(
-                        ServerUtility.REMOTE_ATTRIBUTE)) {
+                                ServerUtility.REMOTE_ATTRIBUTE)) {
                     return true;
                 }
             }
@@ -148,11 +149,18 @@ public class ServerUtility {
     public static boolean isTargetProxySink(Attribute targetEntityAttribute) {
         if (targetEntityAttribute instanceof Settable) {
             Settable parameter = (Settable) targetEntityAttribute;
+            System.out.print("isTargetProxySource(): " + targetEntityAttribute + " " + parameter
+                    + " expression: " + parameter.getExpression() + " ==? " + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
+
             if (parameter.getExpression().equals(
                     ServerUtility.PROXY_SINK_ATTRIBUTE)) {
+                System.out.println(" TRUE");
                 return true;
+            } else {
+                System.out.println(" FALSE");
             }
         }
+        System.out.println("isTargetProxySink(): " + targetEntityAttribute +  " FALSE");
         return false;
     }
 
@@ -164,11 +172,18 @@ public class ServerUtility {
     public static boolean isTargetProxySource(Attribute targetEntityAttribute) {
         if (targetEntityAttribute instanceof Settable) {
             Settable parameter = (Settable) targetEntityAttribute;
+            System.out.print("isTargetProxySource(): " + targetEntityAttribute + " " + parameter
+                    + " expression: " + parameter.getExpression() + " ==? " + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
+
             if (parameter.getExpression().equals(
                     ServerUtility.PROXY_SOURCE_ATTRIBUTE)) {
+                System.out.println(" TRUE");
                 return true;
+            } else {
+                System.out.println(" TRUE");
             }
         }
+        System.out.println("isTargetProxySource(): " + targetEntityAttribute +  "FALSE");
         return false;
     }
 
@@ -434,6 +449,7 @@ public class ServerUtility {
             HashSet<Class<? extends Attribute>> classesToMerge,
             HashSet<String> namedObjectsToMerge) throws IllegalActionException,
             CloneNotSupportedException {
+        System.out.println("_mergeElement(" + source.getFullName() + ", " + targetModel.getFullName() + ", " + classesToMerge + ", " + namedObjectsToMerge);
         // Check if source and model is available.
         if (source == null || targetModel == null) {
             return;
@@ -454,12 +470,18 @@ public class ServerUtility {
                 && source.getContainer() != null) {
             return;
         }
+        System.out.println("_mergeElements() at this point ...");
 
         // At this point the source is either an entity that is also in the target model
         // or it's an attribute. In both cases the the merge will add all attributes that are
         // not present in the target model.
         List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
         for (Attribute attribute : attributeList) {
+            System.out.println("_mergeElements() looping " + attribute.getClass() + " " + attribute.getName()
+                    + " "
+                    + (classesToMerge == null ? "null" : classesToMerge.contains(attribute.getClass())) 
+                    + " "
+                    + (namedObjectsToMerge == null ? "null" : namedObjectsToMerge.contains(attribute.getName())));
             if (classesToMerge == null
                     || classesToMerge.contains(attribute.getClass())
                     || namedObjectsToMerge == null
@@ -518,7 +540,7 @@ public class ServerUtility {
      * Attribute value indicating that the parent attribute is a remote attribute -
      * its value needs to synchronized between client and server models.
      */
-    public static final String REMOTE_ATTRIBUTE = "\"attribute\"";
+    public static final String REMOTE_ATTRIBUTE = "attribute";
     /**
      * Attribute name indicating that the named object needs to be handled by the ProxyModelBuilder.
      */
@@ -526,9 +548,9 @@ public class ServerUtility {
     /**
      * Attribute value indicating that the actor is a source.
      */
-    public static final String PROXY_SOURCE_ATTRIBUTE = "\"source\"";
+    public static final String PROXY_SOURCE_ATTRIBUTE = "source";
     /**
      * Attribute value indicating that the actor is a sink.
      */
-    public static final String PROXY_SINK_ATTRIBUTE = "\"sink\"";
+    public static final String PROXY_SINK_ATTRIBUTE = "sink";
 }
