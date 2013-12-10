@@ -627,6 +627,14 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
     }
 
+    /** Generate a label for a state constant.
+     *  @param state The state.
+     *  @return The label.
+     */
+    protected Object _generateStateConstantLabel(State state) {
+        return "STATE_" + generateName(state);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -805,12 +813,5 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
             return ((ptolemy.domains.modal.kernel.FSMActor) getComponent())
                     .getPortScope().identifierSet();
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private Object _generateStateConstantLabel(State state) {
-        return "STATE_" + generateName(state);
     }
 }

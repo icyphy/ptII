@@ -603,32 +603,12 @@ public class FSMActor
         return processCode(code.toString());
     }
 
-    /** Generate code for updating current state of this FSMActor. The
-     *  states are numbered according to the order in the list
-     *  returned by entityList().
-     *
-     *  @param codeBuffer The string buffer that the generated code is
-     *  appended to.
-     *  @param state The current state.
-     * @exception IllegalActionException Thrown if the corresponding code
-     *  block cannot be fetched.
+    /** Generate a label for a state constant.
+     *  @param state The state.
+     *  @return The label.
      */
-    protected void _updateCurrentState(StringBuffer codeBuffer, State state)
-            throws IllegalActionException {
-
-        CodeStream codeStream = _templateParser.getCodeStream();
-
-        ArrayList args = new ArrayList(1);
-        args.add(_generateStateConstantLabel(state));
-        codeStream.appendCodeBlock("updateCurrentState", args);
-        codeBuffer.append(codeStream.toString());
-
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private Object _generateStateConstantLabel(State state) {
+    protected Object _generateStateConstantLabel(State state) {
         return generateName(state);
     }
+
 }
