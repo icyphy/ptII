@@ -27,6 +27,7 @@
 package ptolemy.gui;
 
 import java.awt.EventQueue;
+import java.awt.HeadlessException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -107,7 +108,15 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
             }
         };
 
-        Top.deferIfNecessary(doMessage);
+        try {
+            Top.deferIfNecessary(doMessage);
+        } catch (HeadlessException headless) {
+            System.err.println("HeadlessException: "
+                    + info + "Original Throwable was:\n");
+            throwable.printStackTrace();
+            System.err.println("\n\nHeadlessException was:\n");
+            headless.printStackTrace();
+        }
     }
 
     /** Show the specified message in a modal dialog.
