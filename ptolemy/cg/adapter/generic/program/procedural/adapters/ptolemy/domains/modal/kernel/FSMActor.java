@@ -638,6 +638,12 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    public static class OutgoingRelations implements TransitionRetriever {
+        // Findbugs wants this to be static.
+        public Iterator retrieveTransitions(State state) {
+            return state.outgoingPort.linkedRelationList().iterator();
+        }
+    }
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
      */
@@ -806,12 +812,5 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
     private Object _generateStateConstantLabel(State state) {
         return "STATE_" + generateName(state);
-    }
-
-    private static class OutgoingRelations implements TransitionRetriever {
-        // Findbugs wants this to be static.
-        public Iterator retrieveTransitions(State state) {
-            return state.outgoingPort.linkedRelationList().iterator();
-        }
     }
 }
