@@ -45,6 +45,7 @@ import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.cg.lib.Profile;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -128,12 +129,16 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             if (port.getWidth() > 0) {
                 Profile.Port profilePort = null;
                 try {
-                    profilePort = model.convertProfilePort(port);
-
-                } catch (IllegalActionException ex) {
+                    if (port instanceof TypedIOPort) {
+                        profilePort = model.convertProfilePort((TypedIOPort)port);
+                    } else {
+                        throw new InternalErrorException(port, null,
+                                "Port " + port + " is not a TypedIOPort?");
+                    }
+                } catch (Throwable throwable) {
                     throw new IllegalActionException(
                             port,
-                            ex,
+                            throwable,
                             "Failed to convert profile port \""
                                     + port.getName()
                                     + "\", perhaps the type of the port needs to "

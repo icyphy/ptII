@@ -250,13 +250,13 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  @exception IllegalActionException When the width can't be retrieved.
      *  @return The profile port for an I/O port.
      */
-    public Profile.Port convertProfilePort(IOPort port)
+    public Profile.Port convertProfilePort(TypedIOPort port)
             throws IllegalActionException {
         boolean publisher = _isPublishedPort(port);
         boolean subscriber = _isSubscribedPort(port);
         return new Profile.Port(port.getName(), publisher, subscriber,
                 port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
-                JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
+                JavaCodeGenerator.ptTypeToCodegenType((port)
                         .getType()), port.isInput(), port.isOutput(),
                 port.isMultiport(), _pubSubChannelName(port, publisher,
                         subscriber));

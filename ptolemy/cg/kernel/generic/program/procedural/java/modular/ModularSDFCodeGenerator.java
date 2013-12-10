@@ -56,6 +56,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.sdf.lib.SampleDelay;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -135,25 +136,30 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         ModularCompiledSDFTypedCompositeActor model = (ModularCompiledSDFTypedCompositeActor) _model;
         for (Object object : model.portList()) {
 
-            IOPort port = (IOPort) object;
-            Profile.Port profilePort = model.convertProfilePort(port);
+            if (object instanceof TypedIOPort) {
+                TypedIOPort port = (TypedIOPort) object;
+                Profile.Port profilePort = model.convertProfilePort(port);
 
-            profileCode.append(INDENT2
-                    + "ports.add(new Profile.Port(\""
-                    + profilePort.name()
-                    + "\", "
-                    + profilePort.publisher()
-                    + ", "
-                    + profilePort.subscriber()
-                    + ", "
-                    + profilePort.width()
-                    + ", "
-                    + (port.isInput() ? DFUtilities
-                            .getTokenConsumptionRate(port) : DFUtilities
-                            .getTokenProductionRate(port)) + ", "
-                    + ptTypeToCodegenType(((TypedIOPort) port).getType())
-                    + ", " + port.isInput() + ", " + port.isOutput() + ", \""
-                    + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                profileCode.append(INDENT2
+                        + "ports.add(new Profile.Port(\""
+                        + profilePort.name()
+                        + "\", "
+                        + profilePort.publisher()
+                        + ", "
+                        + profilePort.subscriber()
+                        + ", "
+                        + profilePort.width()
+                        + ", "
+                        + (port.isInput() ? DFUtilities
+                                .getTokenConsumptionRate(port) : DFUtilities
+                                .getTokenProductionRate(port)) + ", "
+                        + ptTypeToCodegenType(port.getType())
+                        + ", " + port.isInput() + ", " + port.isOutput() + ", \""
+                        + profilePort.getPubSubChannelName() + "\"));" + _eol);
+            } else {
+                throw new InternalErrorException(_model, null,
+                        "Port " + object + " is not a TypedIOPort?");
+            }
         }
 
         profileCode.append(INDENT2 + "return ports;" + _eol);
