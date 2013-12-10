@@ -54,8 +54,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJARS =
 
 JSRCS = \
-	ImportFMUAction.java \
-	ImportFMUAsJavaFMUAction.java
+	ImportFMUAsJavaFMUAction.java \
+	ImportFMUAction.java
+
 
 OTHER_FILES_TO_BE_JARED =
 
