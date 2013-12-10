@@ -50,6 +50,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.util.DFUtilities;
@@ -456,7 +457,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
             int portNumber = 0;
             for (Object port : outputPortList()) {
                 IOPort iOPort = (IOPort) port;
-                _transferOutputs(iOPort, tokensToAllOutputPorts[portNumber++]);
+                ModularCodeGenLazyTypedCompositeActor._transferOutputs(this, iOPort, tokensToAllOutputPorts[portNumber++]);
             }
     }
 
@@ -542,12 +543,15 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
     }
 
     /** Transfer the outputs.
-     *  @param port The port on which the tokens are to be transferred.
-     *  @param outputTokens The output tokens to be transferred.
-     *  @exception IllegalActionException If there is a problem
-     *  transferring the tokens.
+     *  @param compositeActor The composite actor transferring the
+     *  outputs.
+     *  @param port The port on which the output is to be transferred
+     *  @param outputTokens The tokens to be transferred.
+     *  @exception IllegalActionException If there are problems
+     *  getting the class or otherwise transferring the tokens.
      */
-    protected void _transferOutputs(IOPort port, Object outputTokens)
+    protected static void _transferOutputs(TypedCompositeActor compositeActor,
+            IOPort port, Object outputTokens)
             throws IllegalActionException {
 
         int rate = DFUtilities.getTokenProductionRate(port);
@@ -639,23 +643,8 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
                         Token token = new ArrayToken(type, convertedTokens);
                         port.send(i, token);
 
-                    } catch (SecurityException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (NoSuchMethodException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (IllegalArgumentException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (IllegalAccessException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (InvocationTargetException e) {
-                        throw new IllegalActionException(this, e,
-                                "Can't generate transfer code.");
-                    } catch (NoSuchFieldException e) {
-                        throw new IllegalActionException(this, e,
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(compositeActor, throwable,
                                 "Can't generate transfer code.");
                     }
                 }

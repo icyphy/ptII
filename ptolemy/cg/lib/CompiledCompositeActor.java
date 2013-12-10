@@ -237,8 +237,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 int portNumber = 0;
                 for (Iterator<?> outputPorts = outputPortList().iterator(); outputPorts
                         .hasNext() && !_stopRequested;) {
-                    IOPort port = (IOPort) outputPorts.next();
-                    _transferOutputs(port, tokensToAllOutputPorts[portNumber++]);
+                    IOPort iOPort = (IOPort) outputPorts.next();
+                    ModularCodeGenLazyTypedCompositeActor._transferOutputs(this, iOPort, tokensToAllOutputPorts[portNumber++]);
                 }
 
             } finally {
@@ -940,125 +940,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         }
         return tokenHolder;
-    }
-
-    private void _transferOutputs(IOPort port, Object outputTokens)
-            throws IllegalActionException {
-
-        int rate = DFUtilities.getTokenProductionRate(port);
-        Type type = ((TypedIOPort) port).getType();
-        if (type == BaseType.INT) {
-
-            int[][] tokens = (int[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new IntToken(tokens[i][k]);
-                    port.send(i, token);
-                }
-            }
-
-        } else if (type == BaseType.DOUBLE) {
-
-            double[][] tokens = (double[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new DoubleToken(tokens[i][k]);
-                    port.send(i, token);
-                }
-            }
-
-            /*} else if (type == PointerToken.POINTER) {
-
-                int[][] tokens = (int[][]) outputTokens;
-                for (int i = 0; i < port.getWidthInside(); i++) {
-                    for (int k = 0; k < rate; k++) {
-                        Token token = new PointerToken(tokens[i][k]);
-                        port.send(i, token);
-                    }
-                }
-            */
-        } else if (type == BaseType.BOOLEAN) {
-
-            boolean[][] tokens = (boolean[][]) outputTokens;
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    Token token = new BooleanToken(tokens[i][k]);
-                    port.send(i, token);
-                }
-            }
-
-        } else if (type instanceof ArrayType) {
-
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                for (int k = 0; k < rate; k++) {
-                    type = ((ArrayType) type).getElementType();
-                    try {
-                        Object[][] tmpOutputTokens = (Object[][]) outputTokens;
-                        Class<?> tokenClass = tmpOutputTokens[i][k].getClass();
-
-                        Method getPayload;
-                        getPayload = tokenClass.getMethod("getPayload",
-                                (Class[]) null);
-
-                        Object payload = null;
-                        payload = getPayload.invoke(tmpOutputTokens[i][k],
-                                (Object[]) null);
-
-                        Field objSize = payload.getClass().getField("size");
-                        int size = objSize.getInt(payload);
-
-                        Field elementsField = payload.getClass().getField(
-                                "elements");
-                        Object[] elements = (Object[]) elementsField
-                                .get(payload);
-
-                        Token[] convertedTokens = new Token[size];
-
-                        for (int j = 0; j < size; j++) {
-                            Object element = getPayload.invoke(elements[j],
-                                    (Object[]) null);
-                            if (type == BaseType.INT) {
-                                convertedTokens[j] = new IntToken(
-                                        Integer.parseInt(element.toString()));
-                            } else if (type == BaseType.DOUBLE) {
-                                convertedTokens[j] = new DoubleToken(
-                                        Double.parseDouble(element.toString()));
-                            } else if (type == BaseType.BOOLEAN) {
-                                convertedTokens[j] = new BooleanToken(
-                                        Boolean.parseBoolean(element.toString()));
-                            } else {
-                                //FIXME: need to deal with other types
-                            }
-                        }
-
-                        Token token = new ArrayToken(type, convertedTokens);
-                        port.send(i, token);
-
-                    } catch (SecurityException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (NoSuchMethodException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IllegalArgumentException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-
-                    } catch (NoSuchFieldException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            // FIXME: need to deal with other types
-        }
     }
 
     /** Update the _sanitizedActorName variable.
