@@ -174,7 +174,7 @@ proc ptjaclPolicy {script} {
 
     puts "# About to run \"make test_policy SCRIPT=$script\""
     #set results [exec -stderrok make test_policy SCRIPT=$script]
-    set results [exec make test_policy SCRIPT=$script]
+    set results [exec make --no-print-directory test_policy SCRIPT=$script]
     regsub -all {^make\[.*$\n*} $results {} results2
     list $results2
 }
@@ -187,7 +187,8 @@ if {[java::call System getProperty "line.separator"] != "\n"} {
 
 test StringUtilities-3.8.1 {getProperty in a sandbox: property not accessible } {
     catch {ptjaclPolicy policy/userName.tcl} error
-    list $error
+    regsub -all {make[^']*'} $error {} error2
+    list  $error2
 } {{java.lang.SecurityException: Could not find 'user.name' System property}}
 
 test StringUtilities-3.8.2 {getProperty in a sandbox: property accessible } {
