@@ -66,6 +66,6 @@ test CUnit-1.1 {Run the CUnit tests} {
 } {Run Summary:    Type  Total    Ran Passed Failed Inactive
               suites      1      1    n/a      0        0
                tests      1      1      1      0        0
-             asserts      1      1      1      0      n/a
+             asserts      4      4      4      0      n/a
 
 }
