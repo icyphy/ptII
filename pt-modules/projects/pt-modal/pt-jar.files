@@ -32,6 +32,7 @@
 /ptolemy/domains/modal/kernel/TransientState.java
 /ptolemy/domains/modal/kernel/Transition.java
 /ptolemy/domains/modal/modal/Case.java
+/ptolemy/domains/modal/modal/ClassComparator.java
 /ptolemy/domains/modal/modal/MirrorCausalityInterface.java
 /ptolemy/domains/modal/modal/ModalController.java
 /ptolemy/domains/modal/modal/ModalModel.java
