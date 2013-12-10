@@ -196,6 +196,7 @@ JSRCS = \
 	NonStrictTest.java \
 	OrderedMerge.java \
 	OrderedRecordAssembler.java \
+	Pause.java \
 	PhaseUnwrap.java \
 	PoissonClock.java \
 	Publisher.java \
