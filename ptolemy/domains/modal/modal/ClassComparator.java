@@ -36,7 +36,7 @@ import ptolemy.kernel.Entity;
 
 /**
    A comparator to compare classes, which is used to sort the map returned by
-   {@link #_getRefinementClasses()}.
+   the _getRefinementClasses() method in ModalRefinement and ModalController.
 
    @author Thomas Huining Feng
    @version $Id: ModalController.java 66458 2013-05-31 00:23:14Z cxh $
