@@ -71,19 +71,6 @@ UI_FILES_TO_BE_JARED = \
 	deployJava.js \
 	deployJavaJNLP.js \
 	expressions.htm \
-	expressionsa2.htm \
-	expressionsa3.htm \
-	expressionsa4.htm \
-	expressionsa5.htm \
-	expressionsa6.htm \
-	expressionsa6_5.htm \
-	expressionsa7.htm \
-	expressionsa8.htm \
-	expressionsa9.htm \
-	expressionsa10.htm \
-	expressionsa11.htm \
-	expressionsa12.htm \
-	expressionsa13.htm \
 	expressions.pdf \
 	openInstanceHelp.htm \
 	release.htm \
