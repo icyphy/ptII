@@ -202,6 +202,10 @@ public class ServletTest {
 
         // Stop the thread and verify that doing so has not altered the thread count.
         _servletProxy.stop(ticket);
+
+        // Wait until the simulation had time to stop iterating.
+        Thread.sleep(1000);
+
         assertEquals(simulations, _ptolemyServer.numberOfSimulations());
         assertEquals(Manager.IDLE, _ptolemyServer.getStateOfSimulation(ticket));
     }
