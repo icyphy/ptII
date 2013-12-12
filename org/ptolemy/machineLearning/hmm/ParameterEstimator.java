@@ -47,6 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -197,7 +198,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                 sum += tempPriors[i];
             }
             // check if priors is a valid probability vector.
-            if (sum != 1.0) {
+            if (! SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this, "Priors sum to " + sum
                         + " . The sum must equal 1.0.");
             } else {
