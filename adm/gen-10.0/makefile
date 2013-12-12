@@ -310,15 +310,40 @@ $(PTIIDIST):
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
 	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openmodelica" \
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
-		> 
-	mv /tmp/defaultFullConfiguration_tmp.xml \
+		> /tmp/defaultFullConfiguration_tmp.xml
+	sed 's/, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;//' \
+		 /tmp/defaultFullConfiguration_tmp.xml \
 		$(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml
 	# Remove things that should not be shipped from completeDemos.htm
-	awk -f $(PTII_ADM)/dontship.awk $(PTIIHOME)/ptolemy/configs/doc/completeDemos.htm \
+	awk -f $(GENDIR)/dontship.awk $(PTIIHOME)/ptolemy/configs/doc/completeDemos.htm \
 		> /tmp/completeDemos_tmp.htm
 	mv /tmp/completeDemos_tmp.htm \
 		$(PTIIDIST)/ptolemy/configs/doc/completeDemos.htm
-	(cd $(PTIIDIST)/ptolemy/configs/doc; make)
+	# Remove metroII and openmodelica from models.txt
+	egrep -v "metroII|openmodelica" \
+		< $(PTIIHOME)/ptolemy/configs/doc/models.txt \
+		> /tmp/models_tmp.txt
+	mv /tmp/models_tmp.txt \
+		$(PTIIDIST)/ptolemy/configs/doc/models.txt
+	# Remove metroII and openmodelica from domains/makefile
+	egrep -v "metroII|openmodelica" \
+		< $(PTIIHOME)/ptolemy/domains/makefile \
+		> /tmp/makefile_domains
+	mv /tmp/makefile_domains \
+		$(PTIIDIST)/ptolemy/domains/makefile
+	# Remove metroII and openmodelica from jars.xml
+	egrep -v "metroII|openmodelica" \
+		< $(PTIIHOME)/jars.xml \
+		> /tmp/jars_tmp.xml
+	mv /tmp/jars_tmp.xml \
+		$(PTIIDIST)/jars.xml
+	# Remove ImportFMUAsJavaFMUAction.java from the makefile
+	egrep -v "ImportFMUAsJavaFMUAction.java" \
+		< $(PTIIHOME)/ptolemy/vergil/basic/imprt/fmu/makefile \
+		> /tmp/makefile_fmu
+	mv /tmp/makefile_fmu \
+		$(PTIIDIST)/ptolemy/vergil/basic/imprt/fmu/makefile
+
 
 clean_src:
 	rm -f $(PTII_FULL)
@@ -514,6 +539,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/ptserver \
 		ptolemy/domains/coroutine \
 		ptolemy/domains/fmi \
+		ptolemy/vergil/basic/imprt/fmu/ImportFMUAsJavaFMUAction.java \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
