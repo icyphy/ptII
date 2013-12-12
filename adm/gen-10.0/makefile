@@ -312,7 +312,7 @@ $(PTIIDIST):
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
 		> /tmp/defaultFullConfiguration_tmp.xml
 	sed 's/, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;//' \
-		 /tmp/defaultFullConfiguration_tmp.xml \
+		 /tmp/defaultFullConfiguration_tmp.xml > \
 		$(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml
 	# Remove things that should not be shipped from completeDemos.htm
 	awk -f $(GENDIR)/dontship.awk $(PTIIHOME)/ptolemy/configs/doc/completeDemos.htm \
@@ -1185,6 +1185,13 @@ hudson_dist:
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup updateDOPCenterImage update_moog 
+
+hudson_update_moog: 
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	update_moog 
 
 # caltrop requires -source 1.4, ptalon -source 1.5
 # Move remote1doc to after rebuild so that the Actor Index tool is built.
