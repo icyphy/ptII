@@ -1288,6 +1288,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         DEEvent event = events.get(0);
         events.remove(event);
         _actorsInExecution.put(actor, events);
+        System.out.println(actor + " " + events.size());
 
         if (event.ioPort() != null) {
             _enqueueTriggerEvent(event.ioPort(), time);
@@ -1884,6 +1885,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                             // Found a channel that has input data,
                             // jump out of the for loop.
                             break;
+                        } else if (_aspectsPresent) {
+                        	if (_actorsInExecution == null) {
+                                _actorsInExecution = new HashMap();
+                            }
+                            List<DEEvent> events = _actorsInExecution.get(actorToFire);
+                            if (events == null) {
+                                events = new ArrayList<DEEvent>();
+                            }
+                            events.add(new DEEvent(actorToFire, getModelTime(), 1, _getDepthOfActor(actorToFire)));
+                            _actorsInExecution.put(actorToFire, events);
                         }
                     }
                 }
@@ -2336,6 +2347,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     }
                     events.add(lastFoundEvent);
                     _actorsInExecution.put(actorToFire, events);
+                    System.out.println(actorToFire + " ** " + events.size());
                     actorToFire = null;
                 }
             }
