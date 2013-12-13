@@ -1288,7 +1288,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         DEEvent event = events.get(0);
         events.remove(event);
         _actorsInExecution.put(actor, events);
-        System.out.println(actor + " " + events.size());
 
         if (event.ioPort() != null) {
             _enqueueTriggerEvent(event.ioPort(), time);
@@ -2347,7 +2346,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     }
                     events.add(lastFoundEvent);
                     _actorsInExecution.put(actorToFire, events);
-                    System.out.println(actorToFire + " ** " + events.size());
                     actorToFire = null;
                 }
             }
