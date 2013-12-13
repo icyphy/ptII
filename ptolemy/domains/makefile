@@ -44,8 +44,10 @@ EXPERIMENTAL_DOMAINS =
 # PTSPACE_DIR is set to space by configure in $PTII/mk/ptII.mk if
 #   ojdbc6.jar was found.
 DOMAINS =	ca ci continuous coroutine csp curriculum \
-	        dde ddf de hdf modal pn sdf dt \
-	        giotto $(PTMETROII_DIR) ontologies openmodelica \
+	        dde ddf de hdf modal pn sdf dt giotto \
+		$(PTMETROII_DIR) \
+		ontologies \
+		openmodelica \
 		petrinet rendezvous sysml \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
