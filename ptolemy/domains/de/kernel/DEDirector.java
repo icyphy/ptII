@@ -1281,10 +1281,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         List<DEEvent> events = _actorsInExecution.get(actor);
         Time time = ((CompositeActor) _getExecutionAspect(actor).getContainer())
                 .getDirector().getModelTime();
-        if (events == null || events.size() == 0) {
-            events = null;
-        }
-
         DEEvent event = events.get(0);
         events.remove(event);
         _actorsInExecution.put(actor, events);
