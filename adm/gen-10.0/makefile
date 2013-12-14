@@ -343,7 +343,12 @@ $(PTIIDIST):
 		> /tmp/makefile_fmu
 	mv /tmp/makefile_fmu \
 		$(PTIIDIST)/ptolemy/vergil/basic/imprt/fmu/makefile
-
+        # Fix up doc/makefile
+	egrep -v "coroutine|giotto.cgc|openmodelica" \
+                < $(PTIIHOME)/doc/makefile \
+                > /tmp/doc_makefile_tmp
+	mv /tmp/doc_makefile_tmp \
+                $(PTIIDIST)/doc/makefile
 
 clean_src:
 	rm -f $(PTII_FULL)
