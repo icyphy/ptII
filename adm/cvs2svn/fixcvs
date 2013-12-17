@@ -20,6 +20,7 @@ comm -23 /tmp/fixcvs.nonative /tmp/fixcvs.mime
 echo "Checking for binary files that are not -kb"
 
 finalResult=0
+rm -f fixme.kb.files
 
 # Handle files with spaces in their names
 SAVEIFS=$IFS
@@ -35,12 +36,19 @@ do
 	    file $binary | egrep " text" > /dev/null
 	    status=$?
 	    if [ $status -eq 1 -o $status -eq 2 ]; then
-		echo "`pwd`/$binary is not -kb?"
-		finalResult=1
+		if [ $binary != "./fixme.kb.files" ]; then
+		    echo "`pwd`/$binary is not -kb?"
+		    echo $binary >> fixme.kb.files
+		    finalResult=1
+                fi
 	    fi
         fi
 done
 IFS=$SAVEIFS
+
+if [ $finalResult -ne 0 ]; then
+    echo "$0: The list of files to be converted to -kb is in `pwd`/fixme.kb.files"
+fi
 
 exit $finalResult
 

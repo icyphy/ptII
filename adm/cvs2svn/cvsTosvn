@@ -33,12 +33,23 @@ fi
 
 cd tmp.cvs/$cvsrepo
 cvs update -P -d
-echo "Checking for -kb problems."
+echo "$0: Checking for -kb problems by invoking $PTII/adm/cvs2svn/fixcvs."
 $PTII/adm/cvs2svn/fixcvs
 status=$?
-cd ../..
+
 if [ $status -ne 0 ]; then
-  echo "fixcvs found some problems with files not being checked in.  Quitting."
+    echo "$0: The list of files to be converted to -kb is in `pwd`/fixme.kb.files"
+    cat fixme.kb.files | $PTII/adm/cvs2svn/kbcvs > /tmp/doit.fixcvs
+    sh /tmp/doit.fixcvs
+    echo "$0: Checking for -kb problems --AGAIN--- by invoking $PTII/adm/cvs2svn/fixcvs."
+    $PTII/adm/cvs2svn/fixcvs
+    status=$?
+fi
+
+cd ../..
+
+if [ $status -ne 0 ]; then
+  echo "$0: fixcvs found some problems with files not being checked in.  Quitting."
   exit $status
 fi
 

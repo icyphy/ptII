@@ -1,0 +1,28 @@
+#!/bin/sh
+
+rm -rf repos cvs_cvs tmp.svn
+
+$PTII/adm/cvs2svn/cvsTosvn cvs ptweb
+$PTII/adm/cvs2svn/cvsTosvn cvs secweb
+$PTII/adm/cvs2svn/cvsTosvn cvs softwallsweb
+$PTII/adm/cvs2svn/cvsTosvn cvs leeseshiaweb
+$PTII/adm/cvs2svn/cvsTosvn cvs leevaraiyaweb
+
+
+$PTII/adm/cvs2svn/cvsTosvn cvs abc
+$PTII/adm/cvs2svn/cvsTosvn cvs asvpapers
+$PTII/adm/cvs2svn/cvsTosvn cvs clif
+$PTII/adm/cvs2svn/cvsTosvn cvs cvsanon
+$PTII/adm/cvs2svn/cvsTosvn cvs hetero
+$PTII/adm/cvs2svn/cvsTosvn cvs hybrid
+$PTII/adm/cvs2svn/cvsTosvn cvs jlctss
+$PTII/adm/cvs2svn/cvsTosvn cvs metro
+$PTII/adm/cvs2svn/cvsTosvn cvs metroII
+$PTII/adm/cvs2svn/cvsTosvn cvs metropolis_ui
+$PTII/adm/cvs2svn/cvsTosvn cvs metroworkspace
+$PTII/adm/cvs2svn/cvsTosvn cvs polis
+$PTII/adm/cvs2svn/cvsTosvn cvs ptIIapps
+$PTII/adm/cvs2svn/cvsTosvn cvs ptIIdoc
+$PTII/adm/cvs2svn/cvsTosvn cvs ptclassic
+$PTII/adm/cvs2svn/cvsTosvn cvs ptesdf
+$PTII/adm/cvs2svn/cvsTosvn cvs tycho
