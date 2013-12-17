@@ -415,6 +415,7 @@ public class MetroIIDirector extends Director {
         if (_stopRequested || iterationsValue >= 0
                 && _iterationCount >= iterationsValue || stopTimeValue > 0
                 && _timeScheduler.getTime() > stopTimeValue) {
+            _stopRequested = true;
             _iterationCount = 0;
             for (StartOrResumable actor : _actorList) {
                 actor.reset();
@@ -434,6 +435,10 @@ public class MetroIIDirector extends Director {
         System.out.println(this.getFullName()+" stops!"); 
     }
     
+    /**
+     * Call stopFire() of the superclass and show a message.
+     */
+    @Override
     public void stopFire() {
         super.stopFire(); 
         System.out.println(this.getFullName()+" stopFire!"); 
@@ -443,7 +448,12 @@ public class MetroIIDirector extends Director {
      * Reset all the StartOrResumable wrapped actors before calling the wrapup() of Director.
      */
     public void wrapup() throws IllegalActionException {
-        // stop(); 
+        if (!_stopRequested) {
+            _iterationCount = 0;
+            for (StartOrResumable actor : _actorList) {
+                actor.reset();
+            }
+        }
         super.wrapup(); 
         System.out.println(this.getFullName()+" wrapups!"); 
     }

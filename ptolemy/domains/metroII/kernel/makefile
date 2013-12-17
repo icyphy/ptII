@@ -51,8 +51,6 @@ PTCLASSALLJARS = \
 	util/util.jar
 
 JSRCS = \
-	ActMachine.java \
-	BlockingActor.java \
 	BlockingFire.java \
 	ConstraintSolver.java \
 	EventDictionary.java \
@@ -81,7 +79,6 @@ JSRCS = \
 	MetroIISequentialSDFDirector.java \
 	NonBlockingFire.java \
 	Pair.java \
-	ResumableActor.java \
 	ResumableFire.java \
 	StartOrResumable.java \
 	TimeScheduler.java
