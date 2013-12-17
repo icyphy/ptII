@@ -179,6 +179,23 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     }
 
     /**
+     * Request the execution of the current iteration to stop. This is similar
+     * to stopFire(), except that the current iteration is not allowed to
+     * complete.
+     * 
+     */
+    @Override
+    public void stop() {
+        for (FireMachine firing : _actorDictionary.values()) {
+            if (firing.getState() == FireMachine.State.PROCESS) {
+                firing.reset();
+            }
+        }
+        // super.stop();
+        System.out.println(this.getFullName()+" stops!"); 
+    }
+
+    /**
      * Pair is a data structure used to store two elements.
      *
      * @author Liangpeng Guo
@@ -534,8 +551,8 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
      *                timestamp is found within the event queue.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
-            throws CollectionAbortedException {
-        try {
+            throws CollectionAbortedException, IllegalActionException {
+        //try {
             if (_debugging) {
                 _debug("========= " + this.getName() + " director fires at "
                         + getModelTime() + "  with microstep as " + _microstep);
@@ -663,9 +680,9 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
             if (_debugging) {
                 _debug("MetroIIDE director fired!");
             }
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
+        //        } catch (IllegalActionException e) {
+        //            throw new CollectionAbortedException(e);
+        //        }
     }
 
     /**

@@ -3,6 +3,8 @@ package net.jimblackler.Utils;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 /**
  * This reference adapter simply invokes the Collector<>, first gathering the results into a list.
  * It is provided to illustrate the simplicity of the function of the adapter, and to aid debugging
@@ -17,8 +19,9 @@ public class ReferenceYieldAdapter<T> implements YieldAdapter<T> {
     /**
      * Convert a method that implements the Collector<> class with a standard Iterable<>, by
      * collecting the results in a list, and returning an iterator to that list.
+     * @throws IllegalActionException 
      */
-    public YieldAdapterIterable<T> adapt(Collector<T> client) {
+    public YieldAdapterIterable<T> adapt(Collector<T> client) throws IllegalActionException {
 
         final ArrayList<T> results = new ArrayList<T>();
 

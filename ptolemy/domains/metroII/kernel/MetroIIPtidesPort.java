@@ -93,9 +93,10 @@ public class MetroIIPtidesPort extends MirrorPort {
         isNetworkPort.setExpression("false");
 
         actuateAtEventTimestamp = new Parameter(this, "actuateAtEventTimestamp");
+        actuateAtEventTimestamp.setVisibility(Settable.NOT_EDITABLE); 
         actuateAtEventTimestamp.setTypeEquals(BaseType.BOOLEAN);
-        actuateAtEventTimestamp.setExpression("true");
-        _actuateAtEventTimestamp = true;
+        actuateAtEventTimestamp.setExpression("false");
+        _actuateAtEventTimestamp = false;
 
         platformDelayBound = new Parameter(this, "platformDelayBound");
         platformDelayBound.setExpression("0.0");
@@ -177,8 +178,12 @@ public class MetroIIPtidesPort extends MirrorPort {
             _setIconAndParameterVisibility();
         }
         if (attribute == actuateAtEventTimestamp) {
-            _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp
-                    .getToken()).booleanValue();
+            /**
+             * the option is disabled in MetroIIPtides
+             */
+            actuateAtEventTimestamp.setVisibility(Settable.NOT_EDITABLE); 
+            // _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp
+            //         .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }

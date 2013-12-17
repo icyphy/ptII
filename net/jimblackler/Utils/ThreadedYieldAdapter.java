@@ -3,6 +3,8 @@ package net.jimblackler.Utils;
 import java.util.NoSuchElementException;
 import java.util.concurrent.SynchronousQueue;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 /**
  * A class to convert methods that implement the Collector<> class into a standard Iterable<>, using
  * a new thread created for the collection process, and a SynchronousQueue<> object.
@@ -26,6 +28,14 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
 
     private class AbortedMessage extends StopMessage {
 
+    }
+    
+    private class IllegalActionMessage extends StopMessage {
+    
+        IllegalActionMessage(IllegalActionException e) {
+            this.value = e; 
+        }
+        final IllegalActionException value;
     }
 
     /**
@@ -68,14 +78,16 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                         // Important .. handling thread (main thread) gets to run first.
                         // This is because the collecting process should be run on demand in response to
                         // iterator access. Each result should be dealt with by the handling process before
-                        // the collecting process is able to modify any resources that may be requred by
+                        // the collecting process is able to modify any resources that may be required by
                         // results.
 
                         try {
                             returnQueue.take();
                         } catch (InterruptedException e) {
-                            throw new RuntimeException(
-                                    "Error with yield adapter", e);
+                            // throw new RuntimeException(
+                            //        "Error with yield adapter", e);
+                            System.out.println("djflksjlfds"); 
+                            return; 
                         }
                         try {
                             try {
@@ -88,6 +100,7 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                                             returnQueue.take(); // wait for permission to continue
                                         } catch (InterruptedException e) {
                                             // this thread has been aborted
+                                             
                                             throw new CollectionAbortedException(
                                                     e);
                                         }
@@ -104,6 +117,9 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                                     // to receive it, and the thread will block.
                                     synchronousQueue.put(new AbortedMessage());
                                 }
+                            } catch (IllegalActionException e) {
+                                // e.printStackTrace();
+                                synchronousQueue.put(new IllegalActionMessage(e));
                             }
 
                         } catch (InterruptedException e) {
@@ -115,10 +131,15 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
 
                 return new YieldAdapterIterator<T>() {
                     private Message messageWaiting = null;
-
+                    
                     public boolean hasNext() {
 
                         readNextMessage();
+                        if (IllegalActionMessage.class
+                        .isAssignableFrom(messageWaiting.getClass())) {
+                            messageIllegalAction = ((IllegalActionMessage) messageWaiting).value;
+                        }
+                        
                         return !StopMessage.class
                                 .isAssignableFrom(messageWaiting.getClass());
                         // instanceof cannot be used because of generics restriction

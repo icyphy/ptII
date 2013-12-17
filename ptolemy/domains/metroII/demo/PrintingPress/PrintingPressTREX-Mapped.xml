@@ -4,13 +4,13 @@
 <entity name="PrintingPressTREX-Mapped" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={159, 405, 1043, 636}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={167, 323, 1041, 605}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[827, 516]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3576477509001472">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{95.05468750000011, 92.11520807833539}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{95.05468750000048, 92.11520807833539}">
     </property>
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
@@ -19,17 +19,17 @@
             <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="115">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="PrintingPressTREX-Mapping.csv">
+        <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="printTrace" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="printTrace" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="printDebug" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
         </property>
     </property>
     <entity name="FunctionalModel" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor">
@@ -149,21 +149,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 4.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 164, 1615, 1026}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 52, 1615, 1024}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1401, 935]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7930036612467432">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{724.045131048388, 314.92867943548447}">
-        </property>
-        <property name="MetroIIDEDirector" class="ptolemy.domains.metroII.kernel.MetroIIDEDirector">
-            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="printTrace" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -140.0]">
-            </property>
         </property>
         <property name="coreRadius" class="ptolemy.data.expr.Parameter" value="0.07">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -296,6 +288,10 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, -35.0]">
+            </property>
+        </property>
+        <property name="MetroIIDEDirector" class="ptolemy.domains.metroII.kernel.MetroIIDEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, -145.0]">
             </property>
         </property>
         <entity name="driveRoller" class="ptolemy.actor.TypedCompositeActor">
@@ -867,7 +863,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{46.68399532710279, 160.53850647016534}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={225, 377, 914, 607}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={225, 293, 916, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
             </property>
@@ -1228,7 +1224,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={177, 313, 914, 615}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={178, 313, 914, 613}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                     </property>
@@ -1288,7 +1284,7 @@
                         </property>
                         <property name="isNetworkPort" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="actuateAtEventTimestamp" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="platformDelayBound" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>

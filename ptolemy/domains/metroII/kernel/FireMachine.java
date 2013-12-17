@@ -165,6 +165,13 @@ public abstract class FireMachine implements StartOrResumable {
     public void reset() {
         setState(State.START);
     }
+    
+    /**
+     * Wrap up the firing
+     */
+    public void wrapup() {
+        reset(); 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -219,6 +226,7 @@ public abstract class FireMachine implements StartOrResumable {
         int pos = name.indexOf(".", 1);
         return name.substring(pos);
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

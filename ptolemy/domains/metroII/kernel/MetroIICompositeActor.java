@@ -44,19 +44,20 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 ///////////////////////////////////////////////////////////////////
 //// MetroCompositeActor
 
 /**
  * MetroIICompositeActor extends the composite actor to support enclosing Metro
  * directors.
- *
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class MetroIICompositeActor extends TypedCompositeActor implements
         GetFirable {
@@ -69,7 +70,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Construct a MetroIICompositeActor based on a given worksapce.
-     *
+     * 
      * @param workspace
      *            The workspace for this object.
      */
@@ -79,7 +80,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Construct a MetroIICompositeActor based on a given container and a name.
-     *
+     * 
      * @param container
      *            container of the director.
      * @param name
@@ -101,7 +102,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Return the iterator for the caller function of getfire().
-     *
+     * 
      * @return iterator the iterator for the caller function of getfire()
      */
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
@@ -109,7 +110,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                 .adapt(new Collector<Iterable<Event.Builder>>() {
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                            throws CollectionAbortedException, IllegalActionException {
                         getfire(resultHandler);
                     }
                 });
@@ -131,82 +132,78 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
      * output data created by calling the local director's transferOutputs
      * method.
      * </p>
+     * @throws IllegalActionException 
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
-            throws CollectionAbortedException {
+            throws CollectionAbortedException, IllegalActionException {
+
+        if (_debugging) {
+            _debug("Calling fire()");
+        }
+
         try {
+            _workspace.getReadAccess();
 
-            if (_debugging) {
-                _debug("Calling fire()");
+            // First invoke piggybacked methods.
+            if (_piggybacks != null) {
+                // Invoke the fire() method of each piggyback.
+                for (Executable piggyback : _piggybacks) {
+                    piggyback.fire();
+                }
+            }
+            if (_derivedPiggybacks != null) {
+                // Invoke the fire() method of each piggyback.
+                for (Executable piggyback : _derivedPiggybacks) {
+                    piggyback.fire();
+                }
             }
 
-            try {
-                _workspace.getReadAccess();
-
-                // First invoke piggybacked methods.
-                if (_piggybacks != null) {
-                    // Invoke the fire() method of each piggyback.
-                    for (Executable piggyback : _piggybacks) {
-                        piggyback.fire();
-                    }
-                }
-                if (_derivedPiggybacks != null) {
-                    // Invoke the fire() method of each piggyback.
-                    for (Executable piggyback : _derivedPiggybacks) {
-                        piggyback.fire();
-                    }
-                }
-
-                if (!isOpaque()) {
-                    throw new IllegalActionException(this,
-                            "Cannot fire a non-opaque actor.");
-                }
-
-                _transferPortParameterInputs();
-
-                Director _director = getDirector();
-                // Use the local director to transfer inputs from
-                // everything that is not a port parameter.
-                // The director will also update the schedule in
-                // the process, if necessary.
-                for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext() && !_stopRequested;) {
-                    IOPort p = (IOPort) inputPorts.next();
-
-                    if (!(p instanceof ParameterPort)) {
-                        _director.transferInputs(p);
-                    }
-                }
-
-                if (_stopRequested) {
-                    return;
-                }
-
-                // _director.fire();
-                if (_director instanceof GetFirable) {
-                    ((GetFirable) _director).getfire(resultHandler);
-                } else {
-                    _director.fire();
-                }
-
-                if (_stopRequested) {
-                    return;
-                }
-
-                // Use the local director to transfer outputs.
-                _director.transferOutputs();
-            } finally {
-                _workspace.doneReading();
+            if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot fire a non-opaque actor.");
             }
 
-            if (_debugging) {
-                _debug("Called fire()");
+            _transferPortParameterInputs();
+
+            Director _director = getDirector();
+            // Use the local director to transfer inputs from
+            // everything that is not a port parameter.
+            // The director will also update the schedule in
+            // the process, if necessary.
+            for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
+                    .hasNext() && !_stopRequested;) {
+                IOPort p = (IOPort) inputPorts.next();
+
+                if (!(p instanceof ParameterPort)) {
+                    _director.transferInputs(p);
+                }
             }
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+            if (_stopRequested) {
+                return;
+            }
+
+            // _director.fire();
+            if (_director instanceof GetFirable) {
+                ((GetFirable) _director).getfire(resultHandler);
+            } else {
+                _director.fire();
+            }
+
+            if (_stopRequested) {
+                return;
+            }
+
+            // Use the local director to transfer outputs.
+            _director.transferOutputs();
+        } finally {
+            _workspace.doneReading();
+        }
+
+        if (_debugging) {
+            _debug("Called fire()");
         }
 
     }
-
+    
 }

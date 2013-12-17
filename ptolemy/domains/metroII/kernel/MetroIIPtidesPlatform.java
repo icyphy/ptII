@@ -963,19 +963,19 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         @Override
         public void getfire(ResultHandler<Iterable<Builder>> resultHandler)
-                throws CollectionAbortedException {
+                throws CollectionAbortedException, IllegalActionException {
 
-            try {
+            // try {
                 Director director = _getEmbeddedPtidesDirector();
                 if (director instanceof GetFirable) {
                     ((GetFirable) director).getfire(resultHandler);
                 } else {
                     director.fire();
                 }
-            } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+//            } catch (IllegalActionException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
 
         }
 

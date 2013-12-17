@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -157,7 +158,7 @@ public class MetroIIDirector extends Director {
         _timeScheduler = new TimeScheduler();
 
         _initializeParameters();
-        initialize();
+        // initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -422,6 +423,30 @@ public class MetroIIDirector extends Director {
         }
         return true;
     }
+    
+    
+    /**
+     * Stop firing as soon as possible. 
+     */
+    @Override
+    public void stop() {
+        _stopRequested = true;
+        System.out.println(this.getFullName()+" stops!"); 
+    }
+    
+    public void stopFire() {
+        super.stopFire(); 
+        System.out.println(this.getFullName()+" stopFire!"); 
+    }
+    
+    /**
+     * Reset all the StartOrResumable wrapped actors before calling the wrapup() of Director.
+     */
+    public void wrapup() throws IllegalActionException {
+        // stop(); 
+        super.wrapup(); 
+        System.out.println(this.getFullName()+" wrapups!"); 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -434,6 +459,8 @@ public class MetroIIDirector extends Director {
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
+        startTime.setVisibility(Settable.NOT_EDITABLE);
+        startTime.setExpression("0.0"); 
         mappingFileName = new FileParameter(this, "mappingFileName");
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);

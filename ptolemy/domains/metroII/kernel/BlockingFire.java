@@ -31,7 +31,6 @@ package ptolemy.domains.metroII.kernel;
 import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;

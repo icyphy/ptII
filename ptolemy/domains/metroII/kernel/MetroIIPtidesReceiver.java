@@ -96,16 +96,17 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      *
      * @param token
      *            The token to be put, or null to not put a token.
+     * @throws IllegalActionException 
      */
-    public void put(Token token) {
+    public void put(Token token) throws IllegalActionException {
         if (token == null) {
             return;
         }
-        try {
+        // try {
             _getDirector()._enqueueTriggerEvent(getContainer(), token, this);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(null, ex, null);
-        }
+        // } catch (IllegalActionException ex) {
+        //     throw new InternalErrorException(null, ex, null);
+        // }
     }
 
     /**

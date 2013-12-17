@@ -158,6 +158,10 @@ public class ResumableFire extends FireMachine {
                     metroIIEventList.add(proposeStateEvent());
                 }
             } else {
+                if (_eventIterator.getMessageIllegalAction() != null) {
+                    // reset(); 
+                    throw _eventIterator.getMessageIllegalAction();
+                }
                 setState(State.END);
                 metroIIEventList.add(proposeStateEvent());
             }
@@ -185,6 +189,7 @@ public class ResumableFire extends FireMachine {
             _eventIterator.dispose();
             actor().stop();
         }
+        // System.out.println(actor().getFullName()+" stops!"); 
         super.reset();
     }
 

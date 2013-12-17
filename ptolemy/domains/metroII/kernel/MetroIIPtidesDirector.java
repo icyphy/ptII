@@ -47,6 +47,7 @@ import net.jimblackler.Utils.ResultHandler;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -575,11 +576,13 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * Before super.getfire() is called, transfer all input events that are
      * ready are transferred. After super.getfire() is called, transfer all
      * output events that are ready are transferred.
+     * @throws IllegalActionException 
+     * @throws  
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
-            throws CollectionAbortedException {
+            throws CollectionAbortedException, IllegalActionException {
 
-        try {
+//        try {
             // Transfer all inputs that are ready.
             List<PtidesEvent> list = _inputEventQueue.get(getModelTime());
             if (list != null) {
@@ -672,10 +675,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 }
             }
 
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        } catch (IllegalActionException e) {
+//            throw new CollectionAbortedException(e);
+//        }
     }
 
     /**
@@ -899,6 +901,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
             Time deliveryTime;
             //            deliveryTime = localClock.getLocalTime();
+            // deliveryTime is the outside physical time
             deliveryTime = ((CompositeActor) this.getContainer().getContainer())
                     .getExecutiveDirector().getModelTime();
             if (((MetroIIPtidesPort) ioPort).isActuatorPort()) {

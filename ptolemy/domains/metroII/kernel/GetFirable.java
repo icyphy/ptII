@@ -32,6 +32,7 @@ import net.jimblackler.Utils.CollectionAbortedException;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// GetFirable
@@ -74,7 +75,8 @@ public interface GetFirable {
      * @param resultHandler
      *            iterable of events 'yield returned'.
      * @exception CollectionAbortedException
+     * @throws IllegalActionException 
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
-            throws CollectionAbortedException;
+            throws CollectionAbortedException, IllegalActionException;
 }

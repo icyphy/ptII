@@ -229,7 +229,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                 firing.reset();
             }
         }
-        super.stop();
+        // super.stop();
+        System.out.println(this.getFullName()+" stops!"); 
     }
 
     /**
@@ -602,8 +603,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      *                timestamp is found within the event queue.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
-            throws CollectionAbortedException {
-        try {
+            throws CollectionAbortedException, IllegalActionException {
+        //        try {
             if (_debugging) {
                 _debug("========= " + this.getName() + " director fires at "
                         + getModelTime() + "  with microstep as " + _microstep);
@@ -870,9 +871,9 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
             if (_debugging) {
                 _debug("MetroIIDE director fired!");
             }
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
+//        } catch (IllegalActionException e) {
+//            throw new CollectionAbortedException(e);
+//        }
     }
 
     /**

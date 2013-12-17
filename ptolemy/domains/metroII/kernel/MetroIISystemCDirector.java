@@ -42,22 +42,16 @@ import net.jimblackler.Utils.Collector;
 import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
+import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.EventVector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringBufferExec;
@@ -176,11 +170,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        //        System.out.println("Pushing events: ");
-        //        for (Builder etb : events) {
-        //            System.out
-        //                    .println(etb.getName() + " " + etb.getStatus().toString());
-        //        }
+        //                System.out.println("Pushing events: ");
+        //                for (Builder etb : events) {
+        //                    System.out
+        //                            .println(etb.getName() + " " + etb.getStatus().toString());
+        //                }
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
@@ -293,20 +287,16 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                 createProcess = true;
             }
         }
-        syncEvents(events);
+        while (!isStopRequested()) {
+            syncEvents(events);
 
-        do {
-            resultHandler.handleResult(events);
-        } while (!MetroIIEventBuilder.atLeastOneNotified(events)
-                && !isStopRequested());
+            do {
+                resultHandler.handleResult(events);
+            } while (!MetroIIEventBuilder.atLeastOneNotified(events)
+                    && !isStopRequested());
 
-        if (isStopRequested()) {
-            Event.Builder builder = MetroIIEventBuilder
-                    .newProposedEvent("stop");
-            events.add(builder);
+            pushEvents(events);
         }
-
-        pushEvents(events);
 
     }
 
@@ -344,38 +334,38 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         m2event_out_pipe_name = path + "m2event_ptolemy_buffer";
         m2event_in_pipe_name = path + "m2event_metro_buffer";
 
-//        System.out
-//                .println("FIXME: MetroIISystemCDirector.initialize(): Not creating the pipe because this breaks the tests.");
+        //        System.out
+        //                .println("FIXME: MetroIISystemCDirector.initialize(): Not creating the pipe because this breaks the tests.");
 
         // try {
-            System.out.println("Waiting for pipes to be created ...");
+        System.out.println("Waiting for pipes to be created ...");
 
-            List execCommands = new LinkedList();
-            execCommands.add("rm -f " + m2event_out_pipe_name);
-            execCommands.add("mkfifo " + m2event_out_pipe_name);
-            execCommands.add("rm -f " + m2event_in_pipe_name);
-            execCommands.add("mkfifo " + m2event_in_pipe_name);
+        List execCommands = new LinkedList();
+        execCommands.add("rm -f " + m2event_out_pipe_name);
+        execCommands.add("mkfifo " + m2event_out_pipe_name);
+        execCommands.add("rm -f " + m2event_in_pipe_name);
+        execCommands.add("mkfifo " + m2event_in_pipe_name);
 
-            final StringBufferExec exec = new StringBufferExec();
-            exec.setCommands(execCommands);
+        final StringBufferExec exec = new StringBufferExec();
+        exec.setCommands(execCommands);
 
-            exec.start(); 
-            
-//            Runtime.getRuntime().exec("rm -f " + m2event_out_pipe_name);
-//            Process process = Runtime.getRuntime().exec(
-//                    "mkfifo " + m2event_out_pipe_name);
-//            process.waitFor();
-//            Runtime.getRuntime().exec("rm -f " + m2event_in_pipe_name);
-//            process = Runtime.getRuntime().exec(
-//                    "mkfifo " + m2event_in_pipe_name);
-//            process.waitFor();
-//        } catch (IOException ex) {
-//            throw new IllegalActionException(this, ex,
-//                    "Failed to create pipes!");
-//        } catch (InterruptedException ex) {
-//            throw new IllegalActionException(this, ex,
-//                    "Failed to create pipes!");
-//        }
+        exec.start();
+
+        //            Runtime.getRuntime().exec("rm -f " + m2event_out_pipe_name);
+        //            Process process = Runtime.getRuntime().exec(
+        //                    "mkfifo " + m2event_out_pipe_name);
+        //            process.waitFor();
+        //            Runtime.getRuntime().exec("rm -f " + m2event_in_pipe_name);
+        //            process = Runtime.getRuntime().exec(
+        //                    "mkfifo " + m2event_in_pipe_name);
+        //            process.waitFor();
+        //        } catch (IOException ex) {
+        //            throw new IllegalActionException(this, ex,
+        //                    "Failed to create pipes!");
+        //        } catch (InterruptedException ex) {
+        //            throw new IllegalActionException(this, ex,
+        //                    "Failed to create pipes!");
+        //        }
 
         File pipe1 = new File(m2event_out_pipe_name);
         File pipe2 = new File(m2event_in_pipe_name);
@@ -392,28 +382,32 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
     /**
      * Stop firing as soon as possible.
+     * 
+     * IMPORTANT: stop() can only be called after getfire() returns. 
+     * 
      */
     @Override
     public void stop() {
         _stopRequested = true;
 
-        //        if (process != null) {
-        //            process.destroy();
-        //            System.out.println("The SystemC model was stopped.");
-        //        }
+        Event.Builder builder = MetroIIEventBuilder.newProposedEvent("stop");
+        builder.setStatus(Status.NOTIFIED);
+        events.add(builder);
+        
+        pushEvents(events);
+        System.out.println(this.getFullName() + " sent stop request to SystemC Model!");
     }
 
+    /**
+     * Initialize parameters. 
+     * 
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
         modelFileName = new FileParameter(this, "modelFileName");
         configFileName = new FileParameter(this, "configFileName");
-
-        //        DoubleToken stopTimeValue = (DoubleToken) stopTime.getToken();
-        //        if (stopTimeValue != null) {
-        //            _stopTime = new Time(this, stopTimeValue.doubleValue());
-        //        } else {
-        //            _stopTime = null;
-        //        }
 
     }
 
