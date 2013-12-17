@@ -1888,7 +1888,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                             if (events == null) {
                                 events = new ArrayList<DEEvent>();
                             }
-                            events.add(new DEEvent(actorToFire, getModelTime(), 1, _getDepthOfActor(actorToFire)));
+                            
+                            events.add(new DEEvent(port, getModelTime(), 1, _getDepthOfActor(actorToFire)));
                             _actorsInExecution.put(actorToFire, events);
                         }
                     }
