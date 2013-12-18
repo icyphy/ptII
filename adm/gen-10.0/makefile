@@ -349,6 +349,8 @@ $(PTIIDIST):
                 > /tmp/doc_makefile_tmp
 	mv /tmp/doc_makefile_tmp \
                 $(PTIIDIST)/doc/makefile
+	# Remove the html generated files, the filenames are too long
+	(cd $(PTIIDIST); rm -rf `(cd $(PTIIHOME); svn status | egrep '\?' | grep /demo/ | awk '{print $$2}')` )
 
 clean_src:
 	rm -f $(PTII_FULL)
