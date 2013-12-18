@@ -95,8 +95,6 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
     doc \
-	'ActMachine$$1.class' \
-	'ActMachine$$State.class' \
 	'FireMachine$$1.class' \
 	'FireMachine$$State.class' \
 	'MappingConstraintSolver$$ConstraintCounter.class' \

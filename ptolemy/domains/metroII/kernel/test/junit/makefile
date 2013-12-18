@@ -45,7 +45,8 @@ include $(CONFIG)
 
 JSRCS = \
 	JUnitTclTest.java \
-    MappingConstraintSolverTest.java
+    MappingConstraintSolverTest.java \
+    BlockingFireTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds

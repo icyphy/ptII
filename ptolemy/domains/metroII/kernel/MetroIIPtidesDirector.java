@@ -47,7 +47,6 @@ import net.jimblackler.Utils.ResultHandler;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -576,108 +575,105 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * Before super.getfire() is called, transfer all input events that are
      * ready are transferred. After super.getfire() is called, transfer all
      * output events that are ready are transferred.
-     * @throws IllegalActionException 
-     * @throws  
+     * 
+     * @throws IllegalActionException If any called method of one
+     *  of the associated actors throws it.
+     *             
+     * @throws CollectionAbortedException If any called method of one
+     *  of the associated actors throws it.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException {
 
-//        try {
-            // Transfer all inputs that are ready.
-            List<PtidesEvent> list = _inputEventQueue.get(getModelTime());
-            if (list != null) {
-                for (PtidesEvent event : list) {
-                    if (event.ioPort() != null) {
-                        _currentLogicalTime = event.timeStamp();
-                        _currentSourceTimestamp = event.sourceTimestamp();
-                        _currentLogicalIndex = event.microstep();
-                        event.receiver().put(event.token());
-
-                        //                        System.out
-                        //                                .println("input: " + event.token().getClass());
-                        //                        System.out.println(this.getFullName());
-                        //                        System.out.println(event.receiver());
-
-                        _currentLogicalTime = null;
-                        if (_debugging) {
-                            _debug("iiiiiiii - transfer inputs from "
-                                    + event.ioPort());
-                        }
-                    }
-                }
-                // System.out.println(getModelTime());
-                _inputEventQueue.remove(getModelTime());
-            }
-
-            super.getfire(resultHandler);
-
-            // Transfer all outputs to the ports that are ready.
-            list = _outputEventQueue.get(getModelTime());
-            if (list != null) {
-                for (PtidesEvent event : list) {
+        // Transfer all inputs that are ready.
+        List<PtidesEvent> list = _inputEventQueue.get(getModelTime());
+        if (list != null) {
+            for (PtidesEvent event : list) {
+                if (event.ioPort() != null) {
                     _currentLogicalTime = event.timeStamp();
                     _currentSourceTimestamp = event.sourceTimestamp();
                     _currentLogicalIndex = event.microstep();
-                    if (event.ioPort() instanceof MetroIIPtidesPort) {
-                        double deviceDelay = _getDoubleParameterValue(
-                                event.ioPort(), "deviceDelay");
+                    event.receiver().put(event.token());
 
-                        Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
-                                .get(event.ioPort());
-                        if (ptidesOutputPortList == null) {
-                            ptidesOutputPortList = new LinkedList<PtidesEvent>();
-                        }
+                    //                        System.out
+                    //                                .println("input: " + event.token().getClass());
+                    //                        System.out.println(this.getFullName());
+                    //                        System.out.println(event.receiver());
 
-                        // modify deadline of event such that it will be output after deviceDelay
-                        PtidesEvent newEvent = new PtidesEvent(event.ioPort(),
-                                event.channel(), event.timeStamp(),
-                                event.microstep(), event.depth(),
-                                event.token(), event.receiver(), localClock
-                                        .getLocalTime().add(deviceDelay),
-                                event.sourceTimestamp());
-
-                        ptidesOutputPortList.add(newEvent);
-
-                        _ptidesOutputPortEventQueue.put(
-                                (MetroIIPtidesPort) event.ioPort(),
-                                ptidesOutputPortList);
-                    }
                     _currentLogicalTime = null;
-                }
-                _outputEventQueue.remove(getModelTime());
-            }
-
-            // Transfer all outputs from ports to the outside
-            for (MetroIIPtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
-                Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
-                        .get(port);
-                if (ptidesOutputPortList != null
-                        && ptidesOutputPortList.size() > 0) {
-                    PtidesEvent event = ptidesOutputPortList.peek();
-                    if (event.absoluteDeadline().equals(
-                            localClock.getLocalTime())) {
-                        _currentLogicalTime = event.timeStamp();
-                        _currentSourceTimestamp = event.sourceTimestamp();
-                        _currentLogicalIndex = event.microstep();
-                        event.ioPort().send(0, event.token());
-
-                        // System.out.println("output:");
-                        // System.out.println(this.getFullName());
-                        // System.out.println(event.receiver());
-
-                        _currentLogicalTime = null;
-                        ptidesOutputPortList.poll();
-                        if (_debugging) {
-                            _debug("iiiiiiii - transfer outputs to "
-                                    + event.ioPort());
-                        }
+                    if (_debugging) {
+                        _debug("iiiiiiii - transfer inputs from "
+                                + event.ioPort());
                     }
                 }
             }
+            // System.out.println(getModelTime());
+            _inputEventQueue.remove(getModelTime());
+        }
 
-//        } catch (IllegalActionException e) {
-//            throw new CollectionAbortedException(e);
-//        }
+        super.getfire(resultHandler);
+
+        // Transfer all outputs to the ports that are ready.
+        list = _outputEventQueue.get(getModelTime());
+        if (list != null) {
+            for (PtidesEvent event : list) {
+                _currentLogicalTime = event.timeStamp();
+                _currentSourceTimestamp = event.sourceTimestamp();
+                _currentLogicalIndex = event.microstep();
+                if (event.ioPort() instanceof MetroIIPtidesPort) {
+                    double deviceDelay = _getDoubleParameterValue(
+                            event.ioPort(), "deviceDelay");
+
+                    Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
+                            .get(event.ioPort());
+                    if (ptidesOutputPortList == null) {
+                        ptidesOutputPortList = new LinkedList<PtidesEvent>();
+                    }
+
+                    // modify deadline of event such that it will be output after deviceDelay
+                    PtidesEvent newEvent = new PtidesEvent(event.ioPort(),
+                            event.channel(), event.timeStamp(),
+                            event.microstep(), event.depth(), event.token(),
+                            event.receiver(), localClock.getLocalTime().add(
+                                    deviceDelay), event.sourceTimestamp());
+
+                    ptidesOutputPortList.add(newEvent);
+
+                    _ptidesOutputPortEventQueue.put(
+                            (MetroIIPtidesPort) event.ioPort(),
+                            ptidesOutputPortList);
+                }
+                _currentLogicalTime = null;
+            }
+            _outputEventQueue.remove(getModelTime());
+        }
+
+        // Transfer all outputs from ports to the outside
+        for (MetroIIPtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
+            Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
+                    .get(port);
+            if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
+                PtidesEvent event = ptidesOutputPortList.peek();
+                if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
+                    _currentLogicalTime = event.timeStamp();
+                    _currentSourceTimestamp = event.sourceTimestamp();
+                    _currentLogicalIndex = event.microstep();
+                    event.ioPort().send(0, event.token());
+
+                    // System.out.println("output:");
+                    // System.out.println(this.getFullName());
+                    // System.out.println(event.receiver());
+
+                    _currentLogicalTime = null;
+                    ptidesOutputPortList.poll();
+                    if (_debugging) {
+                        _debug("iiiiiiii - transfer outputs to "
+                                + event.ioPort());
+                    }
+                }
+            }
+        }
+
     }
 
     /**
@@ -1966,8 +1962,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     ////                         private variables                 ////
 
     /**
+     * 
      *
      */
+    @SuppressWarnings("unused")
     private double _clockSynchronizationErrorBound;
 
     /**

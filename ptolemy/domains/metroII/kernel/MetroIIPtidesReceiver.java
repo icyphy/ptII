@@ -39,7 +39,6 @@ import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.domains.ptides.kernel.Tag;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * Receivers in the Ptides domain use a timed queue to sort events in the

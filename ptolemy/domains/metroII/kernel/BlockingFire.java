@@ -142,7 +142,8 @@ public class BlockingFire extends FireMachine {
      *            a list of MetroII events that are proposed. It is set by
      *            startOrResume() not the caller.
      * @exception IllegalActionException
-     *                If firing is not permitted.
+     *                If the wrapped actor is in an illegal state or any called
+     *                method throws it.
      */
     @Override
     public void startOrResume(LinkedList<Builder> metroIIEventList)
@@ -155,33 +156,30 @@ public class BlockingFire extends FireMachine {
             assert getStateEvent().getName().contains("FIRE_BEGIN");
             if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
                 setState(State.END);
+                metroIIEventList.clear();
                 metroIIEventList.add(proposeStateEvent());
             } else {
+                metroIIEventList.clear();
                 metroIIEventList.add(getStateEvent());
+
             }
         } else if (getState() == State.END) {
             assert getStateEvent().getName().contains("FIRE_END");
             if (getStateEvent().getStatus() == Event.Status.NOTIFIED) {
-//                System.out.print(((CompositeActor) actor().getContainer()
-//                        .getContainer()).getExecutiveDirector().getName()
-//                        + " "
-//                        + ((CompositeActor) actor().getContainer()
-//                                .getContainer()).getExecutiveDirector()
-//                                .getModelTime()
-//                        + " "
-//                        + ((CompositeActor) actor().getContainer())
-//                                .getExecutiveDirector().getModelTime() + " ");
-//                System.out.println(actor().getName());
                 actor().fire();
                 setState(State.FINAL);
+                metroIIEventList.clear();
             } else {
+                metroIIEventList.clear();
                 metroIIEventList.add(getStateEvent());
+
             }
         } else if (getState() == State.FINAL) {
             // do nothing
         } else {
             // unknown state;
-            assert false;
+            throw new IllegalActionException(this.actor(),
+                    " is in an unknown state.");
         }
 
     }

@@ -94,8 +94,14 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         _initializeParameters();
     }
 
+    /**
+     * The executable file name of the MetroII SystemC model. 
+     */
     public FileParameter modelFileName;
 
+    /**
+     * The configuration file name of the MetroII SystemC model.
+     */
     public FileParameter configFileName;
 
     ///////////////////////////////////////////////////////////////////

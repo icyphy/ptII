@@ -167,7 +167,7 @@ public abstract class FireMachine implements StartOrResumable {
     }
     
     /**
-     * Wrap up the firing
+     * Wrap up the firing by reseting.
      */
     public void wrapup() {
         reset(); 

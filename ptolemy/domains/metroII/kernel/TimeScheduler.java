@@ -67,7 +67,9 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Initialize the current time value.
+     * Initialize the current time value and the number of models. 
+     * 
+     * @param numModel the number of models to be synchronized.
      */
     public void initialize(int numModel) {
         _currentTime = Event.Time.newBuilder();
@@ -169,6 +171,8 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
 
     /**
      * Get the current time.
+     * 
+     * @return the double valued current time tag.
      */
     public double getTime() {
         BigDecimal value = BigDecimal.valueOf(_currentTime.getResolution());

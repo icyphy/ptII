@@ -90,8 +90,8 @@ public class ResumableFire extends FireMachine {
     }
 
     /**
-     * The functions prefire(), getfire() and postfire() are wrapped in
-     * startOrResume() as follows:
+     * Fire the wrapped actor in a resumable style. The function getfire() 
+     * of the wrapped actor is called in startOrResume() as follows:
      * <ol>
      * <li>Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for the
      * event being notified</li>

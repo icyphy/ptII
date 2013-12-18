@@ -93,7 +93,11 @@ public class EventTimeComparator {
     }
 
     /**
-     * Compare two event time.
+     * Compare two timetags.
+     * 
+     * @param time1 the first timetag to be compared
+     * @param time2 the second timetag to be compared
+     * @return a negative integer, zero, or a positive integer as the first timetag is less than, equal to, or greater than the second.
      */
     static public int compare(Time time1, Time time2) {
         if (comparator== null) {
