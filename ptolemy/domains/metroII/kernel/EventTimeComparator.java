@@ -25,7 +25,6 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.domains.metroII.kernel;
 
 import java.util.Comparator;

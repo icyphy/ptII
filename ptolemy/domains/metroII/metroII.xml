@@ -6,6 +6,7 @@
     <?moml
       <group>
         <doc>MetroII three-phase semantics, which allows interfacing with SystemC models.</doc>
+		<property name="MappingEditor" class="ptolemy.domains.metroII.kernel.MappingEditor" />
         <entity name="MetroIICompositeActor" class="ptolemy.domains.metroII.kernel.MetroIICompositeActor" />
         <entity name="MetroIIPtidesPlatform" class="ptolemy.domains.metroII.kernel.MetroIIPtidesPlatform">
                 <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">

@@ -25,7 +25,6 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.domains.metroII.kernel;
 
 import java.util.LinkedList;
@@ -100,7 +99,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (glp)
  * 
  */
-
 public class BlockingFire extends FireMachine {
 
     /**
@@ -181,7 +179,5 @@ public class BlockingFire extends FireMachine {
             throw new IllegalActionException(this.actor(),
                     " is in an unknown state.");
         }
-
     }
-
 }

@@ -58,6 +58,7 @@ JSRCS = \
 	GetFirable.java \
 	Graph.java \
 	MappingConstraintSolver.java \
+	MappingEditor.java \
 	MetroIIDebugger.java \
 	MetroIIEventBuilder.java \
 	MetroIIFSMDirector.java \
