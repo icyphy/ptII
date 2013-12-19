@@ -4350,7 +4350,7 @@ else
         PT_MSG_RESULT($PTII/lib/protobuf-java-2.4.1.jar)
 	PTPROTOBUF_JAR="$PTII/lib/protobuf-java-2.4.1.jar"
 	PTMETROII_DIR=metroII
-	PTMETROII_PACKAGES="net.jimblackler.Utils ptolemy.domains.metroII.kernel ptolemy.domains.metroII.kernel.util.ProtoBuf"
+	PTMETROII_PACKAGES="net.jimblackler.Utils ptolemy.domains.metroII.gui ptolemy.domains.metroII.kernel ptolemy.domains.metroII.kernel.util.ProtoBuf"
         updateClasspath "$PTPROTOBUF_JAR"
     else
         AC_MSG_WARN([Failed to find $PTII/lib/protobuf-java-2.4.1.jar. 

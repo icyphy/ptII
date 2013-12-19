@@ -180,6 +180,7 @@
     <exclude name="ptolemy/domains/gr/lib/experimental/" />
     <exclude name="ptolemy/domains/gr/lib/quicktime/" />
     <exclude name="ptolemy/domains/openmodelica/kernel/" />
+    <exclude name="ptolemy/domains/metroII/gui/" />
     <exclude name="ptolemy/domains/metroII/kernel/" />
     <exclude name="ptolemy/domains/metroII/kernel/util/ProtoBuf/" />
     <exclude name="ptolemy/domains/pdf/" />
