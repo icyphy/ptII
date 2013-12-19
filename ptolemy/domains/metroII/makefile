@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/metroII
 
-DIRS =		kernel #lib demo test
+DIRS =		gui kernel #lib demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -48,6 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+		gui/gui.jar \
 		kernel/kernel.jar
 
 #		lib/lib.jar
@@ -63,7 +64,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  kernel #lib test
+MISC_FILES =  gui kernel #lib test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

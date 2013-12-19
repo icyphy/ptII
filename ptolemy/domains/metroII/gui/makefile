@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy Classic style code generation GUI
+# Makefile for the Ptolemy II/Metro II GUI
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005-2012 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,14 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/cg/gui
+ME =		ptolemy/domains/metroII/gui
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPROTOBUF_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -48,7 +48,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	MappingEditorGUI.java \
-	MappingEditorFactory.java
+	MappingEditorGUIFactory.java \
+
 
 EXTRA_SRCS =	$(JSRCS)
 
