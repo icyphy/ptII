@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="producer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -27,7 +27,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={460, 47, 805, 668}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={529, 49, 805, 668}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[571, 558]">
     </property>
@@ -56,22 +56,22 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates data types handled by the&#10;HlaManager for the Ptolemy II - HLA/CERTI &#10;cooperation. Float, Short, Long, Unsigned_Byte &#10;data types are also supported but not have not been&#10;tested yet.&#10;&#10;The CERTI Message Buffer test shows how a basic &#10;types such as Double or Integer can be encapsulate &#10;in a specific structure according to the HLA standard.&#10;This structure facilitates data representation and their&#10;exhanges between heterogeneous execution platform.&#10;&#10;To encapsulate a basic type in a CERTI Message Buffer&#10;double-click on the HLA actors (publisher or susbcriber)&#10;and enable the corresponding option.&#10;&#10;The consumer.xml model of this demo has to be&#10;launched in first.&#10;&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 375.0]">
+        </property>
+    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 290.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates data types handled by the&#10;HlaManager for the Ptolemy II - HLA/CERTI &#10;cooperation. Float, Short, Long, Unsigned_Byte &#10;data types are also supported but not have not been&#10;tested yet.&#10;&#10;The consumer.xml model of this demo has to be&#10;launched in first.&#10;&#10;The CERTI environment defines environment variables&#10;(CERTI_HOME, PATH, LD_LIBRARY_PATH and DYLD_LIBRARY_PATH)&#10;and needs to be set in the terminal which runs Vergil.&#10;&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 355.0]">
         </property>
     </property>
     <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
@@ -79,6 +79,8 @@
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 70.0]">
         </property>
     </entity>
@@ -162,6 +164,26 @@
             </property>
         </port>
     </entity>
+    <entity name="SingleEvent4" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="6.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="val4" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 335.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -182,6 +204,8 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="val.input" relation="relation8"/>
     <link port="SingleEvent.output" relation="relation5"/>
     <link port="StringConst.output" relation="relation8"/>
@@ -196,4 +220,6 @@
     <link port="Const2.output" relation="relation3"/>
     <link port="Const2.trigger" relation="relation6"/>
     <link port="val3.input" relation="relation3"/>
+    <link port="SingleEvent4.output" relation="relation7"/>
+    <link port="val4.input" relation="relation7"/>
 </entity>

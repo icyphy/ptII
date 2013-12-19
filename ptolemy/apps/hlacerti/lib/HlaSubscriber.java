@@ -77,8 +77,8 @@ import ptolemy.kernel.util.Workspace;
  * the Federation. The data type of the output port has to be the same type of 
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
  * attribute object class describes in the FOM. The parameter 
- * <i>asHlaPtidesEvent</i> indicates if we need to handle PTIDES events as
- * RecordToken in HLA events.
+ * <i>useHlaPtidesEvent</i> indicates if we need to handle PTIDES events as
+ * RecordToken for HLA events.
  * </p>
  *  
  *  @author Gilles Lasnier, Contributors: Patricia Derler
@@ -111,14 +111,21 @@ public class HlaSubscriber extends TypedAtomicActor {
         classObjectHandle.setExpression("\"myObjectClass\"");
         attributeChanged(classObjectHandle);
 
-        asHLAPtidesEvent = new Parameter(this, "asHLAPtidesEvent");
-        asHLAPtidesEvent.setTypeEquals(BaseType.BOOLEAN);
-        asHLAPtidesEvent.setExpression("false");
-        asHLAPtidesEvent.setDisplayName("asHLAPtidesEvent ?");
-        attributeChanged(asHLAPtidesEvent);
+        useHLAPtidesEvent = new Parameter(this, "useHLAPtidesEvent");
+        useHLAPtidesEvent.setTypeEquals(BaseType.BOOLEAN);
+        useHLAPtidesEvent.setExpression("false");
+        useHLAPtidesEvent.setDisplayName("use HLA PTIDES event");
+        attributeChanged(useHLAPtidesEvent);
+        
+        useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
+        useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
+        useCertiMessageBuffer.setExpression("false");
+        useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
+        attributeChanged(useCertiMessageBuffer);
 
         _reflectedAttributeValues = new LinkedList<TimedEvent>();
-        _asHLAPtidesEvent = false;
+        _useHLAPtidesEvent = false;
+        _useCertiMessageBuffer = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,8 +134,11 @@ public class HlaSubscriber extends TypedAtomicActor {
     /** The object class of the HLA attribute to subscribe to. */
     public Parameter classObjectHandle;
 
-    /** Indicate if the event is for a Ptides platform. */
-    public Parameter asHLAPtidesEvent;
+    /** Indicate if the event is for a PTIDES platform. */
+    public Parameter useHLAPtidesEvent;
+    
+    /** Indicate if the event is wrapped in a CERTI message buffer. */
+    public Parameter useCertiMessageBuffer;
 
     /** The output port. */
     public TypedIOPort output = null;
@@ -151,15 +161,18 @@ public class HlaSubscriber extends TypedAtomicActor {
                 throw new IllegalActionException(this,
                         "Cannot have empty name !");
             }
-        } else if (attribute == asHLAPtidesEvent) {
-            _asHLAPtidesEvent = ((BooleanToken) asHLAPtidesEvent.getToken())
+        } else if (attribute == useCertiMessageBuffer) {
+            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer.getToken())
+                    .booleanValue();
+        } else if (attribute == useHLAPtidesEvent) {
+            _useHLAPtidesEvent = ((BooleanToken) useHLAPtidesEvent.getToken())
                     .booleanValue();
 
             // If we receive a HLAPtidesEvent then we have to deal with a
             // RecordType.
             // GL: FIXME: PTIDES: this is to avoid an exception when the type
             // is resolved.
-            if (_asHLAPtidesEvent) {
+            if (_useHLAPtidesEvent) {
                 output.setTypeEquals(new RecordType(new String[] { "microstep",
                         "payload", "sourceTimestamp", "timestamp" },
                         new Type[] { BaseType.INT, BaseType.DOUBLE,
@@ -241,8 +254,22 @@ public class HlaSubscriber extends TypedAtomicActor {
         // Add the update value to the queue.
         _reflectedAttributeValues.add(event);
 
-        // Program the next firing time for the update value received.
+        // Program the next firing time for the received update value.
         _fireAt(event.timeStamp);
+    }
+    
+    /** Indicate if the HLA subscriber actor uses the CERTI message
+     *  buffer API.
+     */
+    public boolean useCertiMessageBuffer() throws IllegalActionException {
+    	return _useCertiMessageBuffer;
+    }
+    
+    /** Indicate if the HLA subscriber actor delivers events to a PTIDES
+     *  platform.
+     */
+    public boolean useHLAPtidesEvent() throws IllegalActionException {
+    	return _useHLAPtidesEvent;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -262,7 +289,7 @@ public class HlaSubscriber extends TypedAtomicActor {
         Token value = null;
 
         // GL: FIXME: PTIDES
-        if (_asHLAPtidesEvent) {
+        if (_useHLAPtidesEvent) {
             Token[] values = new Token[] { new DoubleToken((Double) obj[2]),
                     new IntToken((Integer) obj[3]),
                     new DoubleToken((Double) obj[1]),
@@ -275,6 +302,11 @@ public class HlaSubscriber extends TypedAtomicActor {
         }
 
         BaseType type = (BaseType) obj[0];
+        if (!type.equals(output.getType())) {
+        	throw new IllegalActionException(this,
+                    "The type of the token to build doesn't match the output port type of "
+        			+ this.getDisplayName());
+        }
 
         if (type.equals(BaseType.BOOLEAN)) {
             value = new BooleanToken((Boolean) obj[1]);
@@ -308,6 +340,9 @@ public class HlaSubscriber extends TypedAtomicActor {
     /** List of updated values for the HLA attribute. */
     private LinkedList<TimedEvent> _reflectedAttributeValues;
 
-    /** Indicate if the event is for a Ptides platform. */
-    private boolean _asHLAPtidesEvent;
+    /** Indicate if the event is for a PTIDES platform. */
+    private boolean _useHLAPtidesEvent;
+    
+    /** Indicate if the event is wrapped in a CERTI message buffer. */
+    private boolean _useCertiMessageBuffer;
 }

@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="clockTransmitter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={836, 49, 692, 643}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 52, 700, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[466, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0697653107044345">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{230.130859375, 242.4212496573465}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{230.1308593749999, 242.4212496573465}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -48,12 +48,6 @@
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SynchronizeToRealTime.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
-        <property name="useNextEventRequest" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="useNextEventRequest (NER) ?"/>
-        </property>
-        <property name="useTimeAdvancedRequest" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="useTimeAdvancedRequest (TAR) ?"/>
-        </property>
         <property name="isTimeConstrained" class="ptolemy.data.expr.Parameter" value="true">
             <display name="isTimeConstrained ?"/>
         </property>
@@ -89,6 +83,9 @@
     <entity name="clockValue" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;clock&quot;">
             <display name="Object class in FOM"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="use CERTI message buffer"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 140.0]">
         </property>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="prodcons3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 240, 445, 220}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 339, 518, 265}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[211, 110]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[284, 155]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.906483481463121">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{100.86798828125, 83.841796875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.1334765625, 108.66298828125}">
     </property>
     <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
         <display name="prodcons3"/>
@@ -53,18 +53,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 85.0]">
         </property>
     </property>
-    <entity name="val1nw" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 160.0]">
+        </property>
+    </property>
+    <entity name="val3" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 130.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
         </port>
     </entity>
-    <entity name="val3" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 125.0]">
+    <entity name="valnw1" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{40, 130}">
         </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
@@ -74,9 +86,7 @@
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
-    <link port="val1nw.out" relation="relation"/>
-    <link port="val3.in" relation="relation"/>
+    <link port="val3.input" relation="relation"/>
+    <link port="valnw1.output" relation="relation"/>
 </entity>

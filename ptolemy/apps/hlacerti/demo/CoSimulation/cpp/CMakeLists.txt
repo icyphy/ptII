@@ -146,7 +146,7 @@ INSTALL(FILES
 	SimpleProducerConsumer.fed
         DESTINATION share/federations)
 
-configure_file(${CMAKE_SOURCE_DIR}/../SimpleProducerConsumer.fed ${CMAKE_BINARY_DIR}/SimpleProducerConsumer.fed
+configure_file(${CMAKE_SOURCE_DIR}/../CoSimulation.fed ${CMAKE_BINARY_DIR}/CoSimulation.fed
                         COPYONLY)
 
 MESSAGE(STATUS "*** ${CMAKE_PROJECT_NAME} has been successfully configured ***")

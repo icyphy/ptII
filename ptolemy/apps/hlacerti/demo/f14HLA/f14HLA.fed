@@ -1,0 +1,29 @@
+;; f14HLA 
+
+(Fed
+  (Federation f14HLA)
+  (FedVersion v1.3)
+  (Federate "aircraft" "Public")
+  (Federate "stick" "Public")
+  (Federate "autopilot" "Public")
+  (Spaces
+  )
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+	(Class myObjectClass
+		(Attribute stick RELIABLE TIMESTAMP)
+		(Attribute elevCom RELIABLE TIMESTAMP)
+		(Attribute alpha RELIABLE TIMESTAMP)
+        (Attribute q RELIABLE TIMESTAMP)
+		(Attribute nz RELIABLE TIMESTAMP)
+	)
+    )
+  )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+    )
+  )
+)

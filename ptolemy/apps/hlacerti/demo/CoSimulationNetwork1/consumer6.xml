@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="consumer6" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={771, 280, 515, 292}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={579, 27, 468, 269}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[281, 182]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[234, 159]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9738815471307172">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{127.13396387806576, 120.48806788340335}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{166.66649236002536, 296.07410347860076}">
     </property>
     <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
         <display name="consumer6"/>
@@ -53,13 +53,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 85.0]">
         </property>
     </property>
-    <entity name="val3nw" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 225.0]">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="val3nw, val4nw">
         </property>
@@ -82,27 +85,24 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="val4nw" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{16.634864101890763, 194.79449514180672}">
+    <entity name="valnw3" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
+    </entity>
+    <entity name="valnw4" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
+        </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{68.0, 65.0}">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
     </relation>
-    <link port="val3nw.out" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="val4nw.out" relation="relation"/>
+    <link port="valnw3.output" relation="relation"/>
+    <link port="valnw4.output" relation="relation3"/>
 </entity>

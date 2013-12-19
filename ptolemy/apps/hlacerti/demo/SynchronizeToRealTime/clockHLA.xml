@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="clockHLA" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 485, 735, 635}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 261, 743, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 516]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0524997528260225">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.05468749999997, 242.08322895791582}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.05468749999991, 245.8837049098196}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -48,12 +48,6 @@
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SynchronizeToRealTime.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
-        <property name="useNextEventRequest" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="useNextEventRequest (NER) ?"/>
-        </property>
-        <property name="useTimeAdvancedRequest" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="useTimeAdvancedRequest (TAR) ?"/>
-        </property>
         <property name="isTimeConstrained" class="ptolemy.data.expr.Parameter" value="true">
             <display name="isTimeConstrained ?"/>
         </property>
@@ -73,14 +67,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 175.0]">
         </property>
     </property>
-    <property name="SynchronizeToRealTime" class="ptolemy.actor.lib.SynchronizeToRealTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 40.0]">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptolemy HLA/CERTI federate uses the synchronizeToRealTime&#10;attibute to synchronize the HLA Logical time of the Federation with &#10;the clock of the computer.&#10;&#10;No value is published here to the HLA Federation. The discrete clock&#10;is used here to avoid the termination of the simulation if no event&#10;is produced.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptolemy HLA/CERTI federate uses the synchronizeToRealTime&#10;attibute to synchronize the HLA Logical time of the Federation with &#10;the clock of the computer.&#10;&#10;No value is published here to the HLA Federation. The discrete clock&#10;is used here to avoid the termination of the simulation if no event&#10;is produced.&#10;&#10;To observe the &quot;realtime&quot; behavior of the demo, during the simulation&#10;execution remove the attribut &quot;SynchronizeToRealTime&quot;.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 210.0]">
+        </property>
+    </property>
+    <property name="SynchronizeToRealTime" class="ptolemy.actor.lib.SynchronizeToRealTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 40.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -94,7 +88,7 @@
         </property>
     </entity>
     <entity name="clockHla-Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={694, 497, 530, 203}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 122, 522, 196}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 152]">
         </property>

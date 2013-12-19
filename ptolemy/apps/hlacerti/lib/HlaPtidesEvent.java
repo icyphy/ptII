@@ -8,9 +8,9 @@ import java.util.Vector;
 //// HlaPtidesEvent
 
 /** 
-* <p>This class implements a data structure to encapsulate Ptides events sent
-* through a HLA/CERTI Federation. The logical time of the Ptides event and the
-* value are stored in a Vector&lt;Byte&gt;. Only Ptides event from NetworkPort are
+* <p>This class implements a data structure to encapsulate PTIDES events sent
+* through a HLA/CERTI Federation. The logical time of the PTIDES event and the
+* value are stored in a Vector<Byte>. Only PTIDES event from NetworkPort are
 * supported by this implementation.
 * </p><p>
 * This implementation reuses a subset of methods implemented in the 
@@ -31,9 +31,9 @@ import java.util.Vector;
 public class HlaPtidesEvent {
 
     /** Construct a HlaPtidesEvent. The HlaPtidesEvent structure stores
-     *  the Ptides <i>logicalTime</i>, the <i>microStep</i>, the <i>sourceTime</i>
-     *  and the <i>value</i> of the event in a Vector&lt;byte&gt; buffer.
-     *  @param logicalTime The Ptides logical time as double.
+     *  the PTIDES <i>logicalTime</i>, the <i>microStep</i>, the <i>sourceTime</i>
+     *  and the <i>value</i> of the event in a Vector<byte> buffer.
+     *  @param logicalTime The PTIDES logical time as double.
      *  @param microStep The current microstep of the event.
      *  @param sourceTime The souce timestamp of the event.
      *  @param value The value of the event as array of bytes.
@@ -79,8 +79,8 @@ public class HlaPtidesEvent {
         return byteArray;
     }
 
-    /** Return the Ptides logical time of the event, encapsulated in the buffer.
-     * @return The Ptides logical time as Double.
+    /** Return the PTIDES logical time of the event, encapsulated in the buffer.
+     * @return The PTIDES logical time as Double.
      */
     public Double getLogicalTime() {
         _iter = _buffer.iterator();
@@ -267,8 +267,8 @@ public class HlaPtidesEvent {
     /** Constant for the size of a byte in the system. */
     public static final int _BYTE_LENGTH = 8;
 
-    /** Buffer which contains Ptides logical time, microstep, source timestamp
-     *   and the encoded HLA value. */
+    /** Buffer which contains PTIDES logical time, microstep, source timestamp
+     *  and the encoded HLA value. */
     private Vector<Byte> _buffer = null;
 
     /** Iterator uses for the read operations. */

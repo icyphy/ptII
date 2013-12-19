@@ -9,26 +9,23 @@ A) Requirements
  - a C++ compiler
  - the CMake tool
  - the CERTI environment (see http://savannah.nongnu.org/cvs/?group=certi)
-   !!! Don't forget to source the required CERTI's scripts !!!
+   !!! Don't forget to source the required CERTI script myCERTIenv.sh !!!
 
 B) Compilation and installation
- 1. Go to the example folder
- 2. Create the build_example folder
- 3. Go to the build_example folder
- 4. Do "cmake ../"
- 5. Do "make"
+ 1. Go to the example folder 'cpp'
+ 2. Create the 'build_example' folder
+ 3. Go to the 'build_example' folder
+ 4. Do 'cmake ../'
+ 5. Do 'make'
 
 C) Run
- 1. Open three terminals and go to the build_example folder of the example
- 2. In a first one run "rtig"
- 3. In a second one run "./producerFederate"
- 4. In the third one run "./consumerFederate"
+ 1. Open three terminals and go to the 'build_example' folder of the example
+ 2. Source the CERTI script myCERTIenv.sh in the three terminals
+ 3. In a first one run "rtig"
+ 3. In a second one run "./producerCPP"
+ 4. In the third one run "./consumerCPP"
 
 Enjoy!
-
-D) TODO
-Arguments for cmake: debug, install_prefix...
-
 
 
 
