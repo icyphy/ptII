@@ -47,6 +47,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 EXAMPLE_MODELS = \
 	FaultModels.xml \
+	ChannelFaultModel.xml \
 	GaussianMixtureModel.xml \
 	GMMConvergenceAnalysis.xml \
 	HiddenMarkovModel.xml \
