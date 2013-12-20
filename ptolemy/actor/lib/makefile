@@ -162,6 +162,7 @@ JSRCS = \
 	Differential.java \
 	DoubleReader.java \
 	DB.java \
+	Dictionary.java \
 	Discard.java \
 	DiscreteClock.java \
 	DiscreteRandomSource.java \
@@ -341,6 +342,7 @@ OTHER_FILES_TO_BE_JARED = \
 	booleanflowcontrol.xml \
 	busses.xml \
 	communications.xml \
+	datastores.xml \
 	esoteric.xml \
 	executioncontrol.xml \
 	filtering.xml \

@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Dictionary4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 193, 1274, 761}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1040, 651]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.332046332046332">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{403.62318840579707, 257.7888870018116}">
+    </property>
+    <entity name="Dictionary2" class="ptolemy.actor.lib.Dictionary">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{&quot;a&quot;, nil}}, {{&quot;a&quot;, &quot;b&quot;}}, {{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 165}">
+        </property>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[179.375, 211.45751953125]">
+        </property>
+    </entity>
+    <entity name="Sequence2" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="Sequence3" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{1,2}, {1,2}, {1,2,3}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 280.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[415.0, 235.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{125.0, 190.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Dictionary2.value" relation="relation"/>
+    <link port="Dictionary2.writeKey" relation="relation2"/>
+    <link port="Dictionary2.readKeyArray" relation="relation5"/>
+    <link port="Dictionary2.resultArray" relation="relation4"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="Sequence.enable" relation="relation3"/>
+    <link port="Sequence.output" relation="relation2"/>
+    <link port="Sequence2.enable" relation="relation3"/>
+    <link port="Sequence2.output" relation="relation"/>
+    <link port="Sequence3.enable" relation="relation3"/>
+    <link port="Sequence3.output" relation="relation5"/>
+</entity>
