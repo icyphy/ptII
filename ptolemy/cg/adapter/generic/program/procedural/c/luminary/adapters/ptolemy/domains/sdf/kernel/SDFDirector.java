@@ -80,13 +80,13 @@ public class SDFDirector
 
         // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
         // done using instanceof operator"
-        if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                        .getToken()).booleanValue()
-                // Findbugs says that we don't need this instance check
-                // because container is, by definition, a CompositeActor.
-                // thus, we could probably remove this if ().
-                || container instanceof CompositeActor) {
+//         if (container instanceof CompiledCompositeActor
+//                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+//                         .getToken()).booleanValue()
+//                 // Findbugs says that we don't need this instance check
+//                 // because container is, by definition, a CompositeActor.
+//                 // thus, we could probably remove this if ().
+//                 || container instanceof CompositeActor) {
 
             // FindBugs wants this instanceof check.
             if (!(inputPort instanceof TypedIOPort)) {
@@ -140,26 +140,26 @@ public class SDFDirector
                 code.append(";" + _eol);
                 code.append("}" + _eol);
             }
-        } else {
-            for (int i = 0; i < inputPort.getWidth(); i++) {
-                if (i < inputPort.getWidthInside()) {
-                    String name = inputPort.getName();
+//         } else {
+//             for (int i = 0; i < inputPort.getWidth(); i++) {
+//                 if (i < inputPort.getWidthInside()) {
+//                     String name = inputPort.getName();
 
-                    if (inputPort.isMultiport()) {
-                        name = name + '#' + i;
-                    }
+//                     if (inputPort.isMultiport()) {
+//                         name = name + '#' + i;
+//                     }
 
-                    for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorAdapter.getReference("@"
-                                + name + "," + k, false));
-                        code.append(" = " + _eol);
-                        code.append(compositeActorAdapter.getReference(name
-                                + "," + k, true));
-                        code.append(";" + _eol);
-                    }
-                }
-            }
-        }
+//                     for (int k = 0; k < rate; k++) {
+//                         code.append(compositeActorAdapter.getReference("@"
+//                                 + name + "," + k, false));
+//                         code.append(" = " + _eol);
+//                         code.append(compositeActorAdapter.getReference(name
+//                                 + "," + k, true));
+//                         code.append(";" + _eol);
+//                     }
+//                 }
+//             }
+//         }
 
         // Generate the type conversion code before fire code.
         code.append(compositeActorAdapter.generateTypeConvertFireCode(true));
@@ -188,13 +188,13 @@ public class SDFDirector
 
         // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
         // done using instanceof operator"
-        if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                        .getToken()).booleanValue()
-                // Findbugs says that we don't need this instance check
-                // because container is, by definition, a CompositeActor.
-                // thus, we could probably remove this if ().
-                || container instanceof CompositeActor) {
+//         if (container instanceof CompiledCompositeActor
+//                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+//                         .getToken()).booleanValue()
+//                 // Findbugs says that we don't need this instance check
+//                 // because container is, by definition, a CompositeActor.
+//                 // thus, we could probably remove this if ().
+//                 || container instanceof CompositeActor) {
 
             ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
 
@@ -225,26 +225,26 @@ public class SDFDirector
                         offset, outputCode.toString()));
             }
 
-        } else {
-            for (int i = 0; i < outputPort.getWidthInside(); i++) {
-                if (i < outputPort.getWidth()) {
-                    String name = outputPort.getName();
+//         } else {
+//             for (int i = 0; i < outputPort.getWidthInside(); i++) {
+//                 if (i < outputPort.getWidth()) {
+//                     String name = outputPort.getName();
 
-                    if (outputPort.isMultiport()) {
-                        name = name + '#' + i;
-                    }
+//                     if (outputPort.isMultiport()) {
+//                         name = name + '#' + i;
+//                     }
 
-                    for (int k = 0; k < rate; k++) {
-                        code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference(name + "," + k, true)));
-                        code.append(" =" + _eol);
-                        code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference("@" + name + "," + k, false)));
-                        code.append(";" + _eol);
-                    }
-                }
-            }
-        }
+//                     for (int k = 0; k < rate; k++) {
+//                         code.append(CodeStream.indent(compositeActorAdapter
+//                                 .getReference(name + "," + k, true)));
+//                         code.append(" =" + _eol);
+//                         code.append(CodeStream.indent(compositeActorAdapter
+//                                 .getReference("@" + name + "," + k, false)));
+//                         code.append(";" + _eol);
+//                     }
+//                 }
+//             }
+//         }
 
         // The offset of the ports connected to the output port is
         // updated by outside director.
