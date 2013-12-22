@@ -247,7 +247,7 @@ public class Plot extends PlotBox implements PlotInterface {
             String possibleLegend = getLegend(dataset);
 
             if (possibleLegend == null
-                    || (possibleLegend != null && !possibleLegend
+                    || (/*possibleLegend != null &&*/ !possibleLegend
                             .equals(legend))) {
                 super.addLegend(dataset, legend);
             }

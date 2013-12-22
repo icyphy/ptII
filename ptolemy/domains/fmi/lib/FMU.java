@@ -1642,7 +1642,7 @@ public class FMU extends TypedAtomicActor implements Advanceable,
         // invocation by the ContinuousDirector. This invocation yields a spurious zero-step-size
         // fmiDoStep for the FMU.
         if (timeAdvance != 0
-                || (timeAdvance == 0 && newMicrostep > _lastFireMicrostep)) {
+                || (/*timeAdvance == 0 &&*/ newMicrostep > _lastFireMicrostep)) {
             // Time or microstep has advanced or time has declined
             // since the last invocation of fire() or initialize().
             // Even if only the microstep has advanced, we should still call

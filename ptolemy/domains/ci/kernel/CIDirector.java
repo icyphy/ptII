@@ -574,8 +574,8 @@ public class CIDirector extends Director {
             }
         }
 
-        return !hasInput && outputIsPush || !hasOutput && !inputIsPush
-                || !inputIsPush && outputIsPush;
+        return (!hasInput && outputIsPush) || (!hasOutput && !inputIsPush)
+            || (!inputIsPush && outputIsPush);
     }
 
     /** Return true if the given actor has a pending pull request.
