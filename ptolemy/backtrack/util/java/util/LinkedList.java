@@ -600,7 +600,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return this;
         }
 
-        privatetransient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        private transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private transient FieldRecord $RECORD$knownMod = new FieldRecord(0);
 
