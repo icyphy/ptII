@@ -73,13 +73,20 @@ public class RenameDialogAction extends FigureAction {
         }
         //this.parent = parent;
 
-        this.putValue(Action.NAME, DISPLAY_NAME);
-        this.putValue(GUIUtilities.LARGE_ICON, LARGE_ICON);
-        this.putValue("tooltip", TOOLTIP);
-        this.putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
+        putValue(Action.NAME, DISPLAY_NAME);
+        // Findbugs was reporting that the Field was only ever set to null.
+        putValue(GUIUtilities.LARGE_ICON, null /*LARGE_ICON*/);
+        putValue("tooltip", TOOLTIP);
+
+        // Findbugs was reporting that the Field was only ever set to null.
+        //putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
+        putValue(GUIUtilities.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+
 
         DISPLAY_NAME = "Configure";
         TOOLTIP = "Change Settings for Actor";
+
     }
 
     /** Construct a rename dialog action with the specified name,
