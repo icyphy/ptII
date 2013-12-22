@@ -70,7 +70,7 @@ public class JCanvasTest extends TestSuite {
      */
     public void testConstructor1() {
         runTestCase(new TestCase("JCanvas constructor 1") {
-            JCanvas canvas;
+            JCanvas canvas = null;
 
             public void run() throws Exception {
                 canvas = factory.createJCanvas();
@@ -92,7 +92,7 @@ public class JCanvasTest extends TestSuite {
      */
     public void testConstructor2() {
         runTestCase(new TestCase("JCanvas constructor 2") {
-            JCanvas canvas;
+            JCanvas canvas = null;
 
             CanvasPane pane = new BasicCanvasPane();
 

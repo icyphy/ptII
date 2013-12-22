@@ -242,7 +242,7 @@ public class SensorController
      *  sensor object.  (It could, however, have multiple sensors of the same
      *  type - for example, three temperature sensors.)
      */
-    private HashSet<Sensor> sensors;
+    private HashSet<Sensor> sensors = null;
 
     /** 
      * Required by AbstractController, but doesn't do anything in this example.

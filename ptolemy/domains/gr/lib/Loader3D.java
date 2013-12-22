@@ -84,6 +84,9 @@ public class Loader3D extends GRShadedShape {
      */
 
     protected Node _getNodeObject() {
+        if (obj == null) {
+            throw new NullPointerException("Call _createModel() before calling _getNodeObject().");
+        }
         return obj.getSceneGroup();
     }
 
@@ -122,5 +125,5 @@ public class Loader3D extends GRShadedShape {
 
     private double creaseAngle = 60.0;
 
-    private Scene obj;
+    private Scene obj = null;
 }

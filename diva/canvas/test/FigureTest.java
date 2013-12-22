@@ -89,7 +89,7 @@ public class FigureTest extends TestSuite {
      */
     public void testProperties() {
         runTestCase(new TestCase("Figure properties") {
-            Figure figure;
+            Figure figure = null;
 
             Interactor r = new DragInteractor();
 
@@ -146,13 +146,13 @@ public class FigureTest extends TestSuite {
         final Graphics2D g = buffer.createGraphics();
 
         runTestCase(new TestCase("Figure paint") {
-            Figure figure;
+            Figure figure = null;
 
-            AffineTransform at1;
+            AffineTransform at1 = null;
 
-            AffineTransform at2;
+            AffineTransform at2 = null;
 
-            AffineTransform at3;
+            AffineTransform at3 = null;
 
             Rectangle2D region = new Rectangle2D.Double(10, 20, 30, 40);
 
@@ -194,13 +194,13 @@ public class FigureTest extends TestSuite {
      */
     public void testTransform() {
         runTestCase(new TestCase("Figure transform") {
-            Figure figure;
+            Figure figure = null;
 
-            AffineTransform at;
+            AffineTransform at = null;
 
-            Shape shape;
+            Shape shape = null;
 
-            Rectangle2D bounds;
+            Rectangle2D bounds = null;
 
             public void init() throws Exception {
                 figure = factory.createFigure();
@@ -239,11 +239,11 @@ public class FigureTest extends TestSuite {
      */
     public void testTranslate() {
         runTestCase(new TestCase("Figure translate") {
-            Figure figure;
+            Figure figure = null;
 
-            Shape shape;
+            Shape shape = null;
 
-            Rectangle2D bounds;
+            Rectangle2D bounds = null;
 
             public void init() throws Exception {
                 figure = factory.createFigure();
@@ -281,13 +281,13 @@ public class FigureTest extends TestSuite {
      * change that region. The run method must be overridden.
      */
     public abstract class RegionTestCase extends TestCase {
-        Figure figure;
+        Figure figure = null;
 
         //boolean result;
 
-        Rectangle2D region;
+        Rectangle2D region = null;
 
-        Rectangle2D copy;
+        Rectangle2D copy = null;
 
         public RegionTestCase(String str) {
             super(str);

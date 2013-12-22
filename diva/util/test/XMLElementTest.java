@@ -62,7 +62,7 @@ public class XMLElementTest extends TestSuite {
      */
     public void testConstructor() {
         runTestCase(new TestCase("XmlElement constructor") {
-            XmlElement elt;
+            XmlElement elt = null;
 
             public void run() throws Exception {
                 TreeMap attrs = new TreeMap();
@@ -83,7 +83,7 @@ public class XMLElementTest extends TestSuite {
      */
     public void testAttributes() {
         runTestCase(new TestCase("XmlElement attributes") {
-            XmlElement elt;
+            XmlElement elt = null;
 
             public void run() throws Exception {
                 elt = new XmlElement("element");
@@ -117,11 +117,11 @@ public class XMLElementTest extends TestSuite {
      */
     public void testElements() {
         runTestCase(new TestCase("XmlElement children") {
-            XmlElement elt0;
+            XmlElement elt0 = null;
 
-            XmlElement elt1;
+            XmlElement elt1 = null;
 
-            XmlElement elt2;
+            XmlElement elt2 = null;
 
             public void init() throws Exception {
                 elt0 = new XmlElement("element0");

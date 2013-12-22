@@ -299,7 +299,7 @@ class TablePanel extends Panel {
 
         Coordinate[] rightPos = new Coordinate[2];
 
-        Coordinate pos;
+        Coordinate pos = null;
 
         public void setPos(Coordinate p, Coordinate l_1, Coordinate l_2,
                 Coordinate r_1, Coordinate r_2) {

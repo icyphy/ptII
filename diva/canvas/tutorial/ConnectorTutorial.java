@@ -166,30 +166,26 @@ import diva.gui.BasicFrame;
  * @version $Id$
  */
 public class ConnectorTutorial {
-    // The JCanvas
-    private JCanvas canvas;
+    /** The JCanvas. */
+    private JCanvas canvas = null;
 
-    // The GraphicsPane
-    private GraphicsPane graphicsPane;
+    /** The GraphicsPane. */
+    private GraphicsPane graphicsPane = null;
 
-    /** The controller
-     */
-    private BasicController controller;
+    /** The controller.  */
+    private BasicController controller = null;
 
-    /** The two figures
-     */
-    private SitedRectangle figureA;
+    /** The two figures.  */
+    private SitedRectangle figureA = null;
 
-    private SitedRectangle figureB;
+    private SitedRectangle figureB = null;
 
-    /** The two connectors
-     */
-    private StraightConnector connectorA;
+    /** The two connectors. */
+    private StraightConnector connectorA = null;
 
-    private ManhattanConnector connectorB;
+    private ManhattanConnector connectorB = null;
 
-    /** Create a JCanvas and put it into a window.
-     */
+    /** Create a JCanvas and put it into a window. */
     public ConnectorTutorial() {
         canvas = new JCanvas();
 

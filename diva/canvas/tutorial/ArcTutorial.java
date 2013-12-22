@@ -122,37 +122,36 @@ import diva.gui.BasicFrame;
  * @author John Reekie
  * @version $Id$ */
 public class ArcTutorial {
-    // The JCanvas
-    private JCanvas canvas;
+    /** The JCanvas. */
+    private JCanvas canvas = null;
 
-    // The GraphicsPane
-    private GraphicsPane graphicsPane;
+    /** The GraphicsPane. */
+    private GraphicsPane graphicsPane = null;
 
-    /** The controller
-     */
-    private BasicController controller;
+    /** The controller. */
+    private BasicController controller = null;
 
-    /** The two figures
-     */
-    private Figure figureA;
+    /** The first figure. */
+    private Figure figureA = null;
 
-    private Figure figureB;
+    /** The second figure. */
+    private Figure figureB = null;
 
-    private Figure figureC;
+    /** The third figure. */
+    private Figure figureC = null;
 
-    /** The connectors
-     */
-    private StraightConnector connectorA;
+    /** The connectors. */
+    private StraightConnector connectorA = null;
 
-    private ArcConnector connectorB;
+    private ArcConnector connectorB = null;
 
-    private ArcConnector connectorC;
+    private ArcConnector connectorC = null;
 
-    private ArcConnector connectorD;
+    private ArcConnector connectorD = null;
 
     /** The target that finds sites on the figures
      */
-    private ConnectorTarget target;
+    private ConnectorTarget target = null;
 
     /** Create a JCanvas and put it into a window.
      */

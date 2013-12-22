@@ -270,15 +270,15 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         _priorIn = _priors; // set to the original priors
     }
 
-    private double[] _mu;
-    private double[] _mu0;
-    private double[] _sigma;
-    private double[] _sigma0;
+    private double[] _mu = null;
+    private double[] _mu0 = null;
+    private double[] _sigma = null;
+    private double[] _sigma0 = null;
 
     // EM Specific Parameters
-    private double[][] A_new;
-    private double[] m_new;
-    private double[] s_new;
-    private double[] prior_new;
+    private double[][] A_new = null;
+    private double[] m_new = null;
+    private double[] s_new = null;
+    private double[] prior_new = null;
 
 }
