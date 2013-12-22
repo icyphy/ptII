@@ -1,28 +1,28 @@
 /*  Adapter for the SDFDirector, targeted to the Luminary platform.
 
- Copyright (c) 2009-2013 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+    Copyright (c) 2009-2013 The Regents of the University of California.
+    All rights reserved.
+    Permission is hereby granted, without written agreement and without
+    license or royalty fees, to use, copy, modify, and distribute this
+    software and its documentation for any purpose, provided that the above
+    copyright notice and the following two paragraphs appear in all copies
+    of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+    IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+    FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+    ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+    THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+    THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+    PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+    CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+    ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+    PT_COPYRIGHT_VERSION_2
+    COPYRIGHTENDKEY
 
 */
 package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel;
@@ -40,16 +40,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 /**
-  Adapter for the SDFDirector, targeted to the Luminary platform.
+   Adapter for the SDFDirector, targeted to the Luminary platform.
 
-  @author Jia Zou
-  @version $Id$
-  @since Ptolemy II 10.0
-  @Pt.ProposedRating Red (tfeng)
-  @Pt.AcceptedRating Red (tfeng)
- */
+   @author Jia Zou
+   @version $Id$
+   @since Ptolemy II 10.0
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class SDFDirector
-        extends
+    extends
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
@@ -70,96 +70,66 @@ public class SDFDirector
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the inside.")));
+                                "SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
-                .getContainer();
+            .getContainer();
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
-        // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
-        // done using instanceof operator"
-//         if (container instanceof CompiledCompositeActor
-//                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-//                         .getToken()).booleanValue()
-//                 // Findbugs says that we don't need this instance check
-//                 // because container is, by definition, a CompositeActor.
-//                 // thus, we could probably remove this if ().
-//                 || container instanceof CompositeActor) {
+        // FindBugs wants this instanceof check.
+        if (!(inputPort instanceof TypedIOPort)) {
+            throw new InternalErrorException(inputPort, null,
+                    " is not an instance of TypedIOPort.");
+        }
 
-            // FindBugs wants this instanceof check.
-            if (!(inputPort instanceof TypedIOPort)) {
-                throw new InternalErrorException(inputPort, null,
-                        " is not an instance of TypedIOPort.");
-            }
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(inputPort);
 
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(inputPort);
+        // FIXME: not sure what to do with this offset here.
+        String offset = "";
 
-            // FIXME: not sure what to do with this offset here.
-            String offset = "";
+        for (int i = 0; i < inputPort.getWidth(); i++) {
+            // the following code is of the form:
+            // if ($hasToken(i)) {
+            //     input = Event_Head->data;
+            // }
+            code.append("if (");
+            code.append(portAdapter.generateHasTokenCode(
+                            Integer.toString(i), offset));
+            code.append(") {" + _eol);
 
-            for (int i = 0; i < inputPort.getWidth(); i++) {
-                // the following code is of the form:
-                // if ($hasToken(i)) {
-                //     input = Event_Head->data;
-                // }
-                code.append("if (");
-                code.append(portAdapter.generateHasTokenCode(
-                        Integer.toString(i), offset));
-                code.append(") {" + _eol);
-
-                // the input port to transfer the data to was declared earlier, and is of this name:
-                StringBuffer inputCode = new StringBuffer();
-                boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
-                inputCode.append(CodeGeneratorAdapter.generateName(inputPort));
-                int bufferSize = ports.getBufferSize(inputPort);
-                if (inputPort.isMultiport()) {
-                    inputCode.append("[" + Integer.toString(i) + "]");
-                    if (bufferSize > 1 || dynamicReferencesAllowed) {
-                        throw new InternalErrorException(
-                                "Generation of input transfer code"
-                                        + "requires the knowledge of offset in the buffer, this"
-                                        + "is not yet supported.");
-                        //                        inputCode.append("[" + bufferSize + "]");
-                    }
-                } else {
-                    if (bufferSize > 1) {
-                        throw new InternalErrorException(
-                                "Generation of input transfer code"
-                                        + "requires the knowledge of offset in the buffer, this"
-                                        + "is not yet supported.");
-                        //                        inputCode.append("[" + bufferSize + "]");
-                    }
+            // the input port to transfer the data to was declared earlier, and is of this name:
+            StringBuffer inputCode = new StringBuffer();
+            boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
+            inputCode.append(CodeGeneratorAdapter.generateName(inputPort));
+            int bufferSize = ports.getBufferSize(inputPort);
+            if (inputPort.isMultiport()) {
+                inputCode.append("[" + Integer.toString(i) + "]");
+                if (bufferSize > 1 || dynamicReferencesAllowed) {
+                    throw new InternalErrorException(
+                            "Generation of input transfer code"
+                            + "requires the knowledge of offset in the buffer, this"
+                            + "is not yet supported.");
+                    //                        inputCode.append("[" + bufferSize + "]");
                 }
-
-                code.append(inputCode);
-                code.append(" = ");
-                code.append(portAdapter.generateGetCode(Integer.toString(i),
-                        offset));
-                code.append(";" + _eol);
-                code.append("}" + _eol);
+            } else {
+                if (bufferSize > 1) {
+                    throw new InternalErrorException(
+                            "Generation of input transfer code"
+                            + "requires the knowledge of offset in the buffer, this"
+                            + "is not yet supported.");
+                    //                        inputCode.append("[" + bufferSize + "]");
+                }
             }
-//         } else {
-//             for (int i = 0; i < inputPort.getWidth(); i++) {
-//                 if (i < inputPort.getWidthInside()) {
-//                     String name = inputPort.getName();
 
-//                     if (inputPort.isMultiport()) {
-//                         name = name + '#' + i;
-//                     }
-
-//                     for (int k = 0; k < rate; k++) {
-//                         code.append(compositeActorAdapter.getReference("@"
-//                                 + name + "," + k, false));
-//                         code.append(" = " + _eol);
-//                         code.append(compositeActorAdapter.getReference(name
-//                                 + "," + k, true));
-//                         code.append(";" + _eol);
-//                     }
-//                 }
-//             }
-//         }
+            code.append(inputCode);
+            code.append(" = ");
+            code.append(portAdapter.generateGetCode(Integer.toString(i),
+                            offset));
+            code.append(";" + _eol);
+            code.append("}" + _eol);
+        }
 
         // Generate the type conversion code before fire code.
         code.append(compositeActorAdapter.generateTypeConvertFireCode(true));
@@ -177,74 +147,43 @@ public class SDFDirector
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the outside.")));
+                                "SDFDirector: " + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
-                .getContainer();
+            .getContainer();
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
-                .getAdapter(container);
+            .getAdapter(container);
 
-        // FindBugs 1.3.8 incorrectly warns "Unnecessary type check
-        // done using instanceof operator"
-//         if (container instanceof CompiledCompositeActor
-//                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-//                         .getToken()).booleanValue()
-//                 // Findbugs says that we don't need this instance check
-//                 // because container is, by definition, a CompositeActor.
-//                 // thus, we could probably remove this if ().
-//                 || container instanceof CompositeActor) {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
 
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
+        // FIXME: not sure what to do with this offset here.
+        String offset = "";
 
-            // FIXME: not sure what to do with this offset here.
-            String offset = "";
+        for (int i = 0; i < outputPort.getWidth(); i++) {
 
-            for (int i = 0; i < outputPort.getWidth(); i++) {
+            StringBuffer outputCode = new StringBuffer();
+            outputCode
+                .append(CodeGeneratorAdapter.generateName(outputPort));
 
-                StringBuffer outputCode = new StringBuffer();
-                outputCode
-                        .append(CodeGeneratorAdapter.generateName(outputPort));
-
-                if (outputPort.isMultiport()) {
-                    outputCode.append("[" + Integer.toString(i) + "]");
-                }
-
-                int bufferSize = ports.getBufferSize(outputPort);
-
-                if (bufferSize > 1) {
-                    throw new InternalErrorException(
-                            "Generation of input transfer code"
-                                    + "requires the knowledge of offset in the buffer, this"
-                                    + "is not yet supported.");
-                    //                    outputCode.append("[" + bufferSize + "]");
-                }
-
-                code.append(portAdapter.generatePutCode(Integer.toString(i),
-                        offset, outputCode.toString()));
+            if (outputPort.isMultiport()) {
+                outputCode.append("[" + Integer.toString(i) + "]");
             }
 
-//         } else {
-//             for (int i = 0; i < outputPort.getWidthInside(); i++) {
-//                 if (i < outputPort.getWidth()) {
-//                     String name = outputPort.getName();
+            int bufferSize = ports.getBufferSize(outputPort);
 
-//                     if (outputPort.isMultiport()) {
-//                         name = name + '#' + i;
-//                     }
+            if (bufferSize > 1) {
+                throw new InternalErrorException(
+                        "Generation of input transfer code"
+                        + "requires the knowledge of offset in the buffer, this"
+                        + "is not yet supported.");
+                //                    outputCode.append("[" + bufferSize + "]");
+            }
 
-//                     for (int k = 0; k < rate; k++) {
-//                         code.append(CodeStream.indent(compositeActorAdapter
-//                                 .getReference(name + "," + k, true)));
-//                         code.append(" =" + _eol);
-//                         code.append(CodeStream.indent(compositeActorAdapter
-//                                 .getReference("@" + name + "," + k, false)));
-//                         code.append(";" + _eol);
-//                     }
-//                 }
-//             }
-//         }
+            code.append(portAdapter.generatePutCode(Integer.toString(i),
+                            offset, outputCode.toString()));
+        }
 
         // The offset of the ports connected to the output port is
         // updated by outside director.
