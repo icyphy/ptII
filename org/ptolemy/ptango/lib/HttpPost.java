@@ -204,20 +204,28 @@ public class HttpPost extends TypedAtomicActor {
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "postfire() failed");
             } finally {
+                // Findbugs can't detect having the reader.close
+                // inside a second finally block, so we save the
+                // exception if the writer can't be closed.
+                Exception throwWriterException = null;
                 if (writer != null) {
                     try {
                         writer.close();
                     } catch (IOException ex) {
-                        throw new IllegalActionException(this, ex, "Failed to close the writer of \"" + urlValue + "\".");
-                    } finally {
-                        if (reader != null) {
-                            try {
-                                reader.close();
-                            } catch (IOException ex) {
-                                throw new IllegalActionException(this, ex, "Failed to close the reader of \"" + urlValue + "\".");
-                            }
-                        }
+                        throwWriterException = ex;
+                    } 
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to close the reader of \"" + urlValue + "\".");
                     }
+                }
+                if (throwWriterException != null) {
+                    throw new IllegalActionException(this, throwWriterException,
+                            "Failed to close the writer of \"" + urlValue + "\".");
                 }
             }
             
