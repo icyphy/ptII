@@ -58,8 +58,9 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         // class.  Should this be left to derived classes?
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // Ignore exceptions, which only result in the wrong look and feel.
+            System.err.println("Failed to set the look and feel? Exception was: " + ex);
         }
     }
 

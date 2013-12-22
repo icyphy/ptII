@@ -263,8 +263,10 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
     /** Create the view screen component.  If place() was called with
      * a container, then use the container.  Otherwise, create a new
      * frame and use that.
+     *  @exception IllegalActionException If there is a problem reading
+     *  a parameter.
      */
-    protected void _createViewScreen() {
+    protected void _createViewScreen() throws IllegalActionException {
         super._createViewScreen();
 
         GraphicsConfiguration config = SimpleUniverse

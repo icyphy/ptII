@@ -1406,14 +1406,17 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 try {
                     workspace.getReadAccess();
                     for (Object entityObject : actorLibrary.entityList()) {
+                        ComponentEntity entity = null;
                         try {
                             ComponentEntity libraryEntity = (ComponentEntity) entityObject;
-                            ComponentEntity entity = (ComponentEntity) libraryEntity
+                            entity = (ComponentEntity) libraryEntity
                                     .clone(library.workspace());
                             entity.setContainer(library);
-                        } catch (Exception e) {
-                            // Ignore this entity in the actor library because
-                            // we don't know how to import it.
+                        } catch (Exception ex) {
+                            System.err.println("TransformationEditor: Ignoring clone of "
+                                    + (entity != null ? entity.getFullName() : "null")
+                                    + " beause we don't known "
+                                    + "how to import it. Exception was: " + ex);
                         }
                     }
                 } finally {

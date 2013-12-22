@@ -727,6 +727,8 @@ public class PythonScript extends TypedAtomicActor {
             }
         } catch (Exception ex) {
             // Ignore, we are probably under an an applet
+            System.err.println("Warning: PythonScript threw an exception.  Perhaps we are under an applet?");
+            ex.printStackTrace();
         }
 
         try {
@@ -759,7 +761,9 @@ public class PythonScript extends TypedAtomicActor {
             //        + "/ptolemy/actor/lib/python/test/')");
 
         } catch (Exception ex) {
-            // Ignore this, $PTII//ptolemy/actor/lib/python/test/ might not exist.
+            ExceptionInInitializerError error = new ExceptionInInitializerError("The python command \"import sys\" failed.");
+            error.initCause(ex);
+            throw error;
         }
 
         String className = "ptolemy.kernel.util.NamedObj";

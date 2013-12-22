@@ -61,6 +61,7 @@ import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -427,7 +428,12 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             _frame = null;
         }
 
-        _createViewScreen();
+        try {
+            _createViewScreen();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to create ViewScreen3D.");
+        }
     }
 
     public boolean postfire() throws IllegalActionException {
@@ -481,8 +487,10 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     /** Create the view screen component.  If place() was called with
      * a container, then use the container.  Otherwise, create a new
      * frame and use that.
+     *  @exception IllegalActionException If there is a problem reading
+     *  a parameter.
      */
-    protected void _createViewScreen() {
+    protected void _createViewScreen() throws IllegalActionException {
         GraphicsConfiguration config = SimpleUniverse
                 .getPreferredConfiguration();
 
@@ -492,8 +500,10 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         try {
             horizontalDimension = _getHorizontalPixels();
             verticalDimension = _getVerticalPixels();
-        } catch (Exception e) {
-            // FIXME handle this
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to get horizontal "
+                    + "or vertical pixels");
         }
 
         // Create a frame, if placeable was not called.

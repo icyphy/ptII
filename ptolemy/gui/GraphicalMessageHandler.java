@@ -361,6 +361,8 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
                 SwingUtilities.invokeAndWait(doYesNoCancel);
             } catch (Exception ex) {
                 // do nothing.
+                System.out.println("Internal warning:? GraphicalMessageHandler modal threw an exception: "
+                        + ex);
             }
 
             if (results[1] != null && results[1].booleanValue()) {

@@ -171,7 +171,7 @@ public class ActiveActorManager extends PtolemyThread {
             try {
                 _period = ((IntToken) p.getToken()).intValue();
             } catch (Exception ex) {
-                // ignore, so period will have default value 0
+                System.err.println("ActiveActorManager, failed to parse the period parameter: " + ex);
             }
         } else {
             _period = (int) _director._interval;

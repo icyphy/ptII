@@ -236,7 +236,7 @@ public class OracleXMLDBConnection implements DBConnection {
                     _environment.close();
                 }
             } catch (Exception e) {
-
+                throw new DBConnectionException("Failed to close the environment?", e);
             }
 
             _environment = new Environment(dbFile, config);

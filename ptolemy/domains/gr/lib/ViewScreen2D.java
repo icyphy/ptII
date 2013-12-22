@@ -50,6 +50,7 @@ import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
@@ -324,7 +325,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         try {
             _createViewScreen2D();
         } catch (IllegalActionException ex) {
-            // Ignore;
+            throw new InternalErrorException(this, ex,
+                    "Failed to create ViewScreen2D.");
         }
     }
 
@@ -374,8 +376,10 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         try {
             horizontalDimension = _getHorizontalPixels();
             verticalDimension = _getVerticalPixels();
-        } catch (Exception e) {
-            // FIXME handle this
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to get horizontal "
+                    + "or vertical pixels");
         }
 
         // Create a frame, if placeable was not called.

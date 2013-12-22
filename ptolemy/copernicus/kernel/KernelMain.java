@@ -159,9 +159,9 @@ public abstract class KernelMain {
         try {
             _toplevel.getManager().wrapup();
         } catch (Exception exception) {
-            // Ignore until we get NonStrictTest figured out...
-            //   throw new KernelRuntimeException(exception,
-            //                     "Could not wrapup composite actor");
+            // This could be a problem with NonStrictTest.
+            throw new KernelRuntimeException(exception,
+                                 "Could not wrapup composite actor");
         }
 
         // Print out memory usage info

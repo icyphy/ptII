@@ -1202,6 +1202,8 @@ public class FmvAutomaton extends FSMActor {
                                                 } catch (Exception exInner) {
                                                     // Return the format is not
                                                     // supported by the system.
+                                                    System.err.println("FmvAutomaton: failed to parse \""
+                                                            + offset + "\": " + exInner);
                                                 }
 
                                             }
@@ -1257,10 +1259,10 @@ public class FmvAutomaton extends FSMActor {
                                                 } catch (Exception exInner) {
                                                     // Return the format is not
                                                     // supported by the system.
+                                                    System.err.println("FmvAutomaton: failed to parse \""
+                                                            + offset + "\": " + exInner);
                                                 }
-
                                             }
-
                                         }
                                         // set up all possible transitions
                                         // regarding to this assignment.
@@ -1279,10 +1281,8 @@ public class FmvAutomaton extends FSMActor {
                                                         .getDisplayName(), "S");
 
                                     }
-
                                 }
                             }
-
                         }
                     } else {
                         // Note that there may be no setActions in the
