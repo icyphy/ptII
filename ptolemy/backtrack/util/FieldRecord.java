@@ -1366,7 +1366,9 @@ public class FieldRecord {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    protected class RecordList {
+    protected static class RecordList {
+        // FindBugs suggests that this should be a static inner class.
+
         /** Get the record list next to this one.
          *
          *  @return The next record list.

@@ -178,7 +178,9 @@ public class CheckpointRecord {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class Record {
+    private static class Record {
+        // FindBugs suggests that this should a static class.
+
         /** Construct a record with a checkpoint object and the timestamp
          *  associated with it.
          *
