@@ -1001,40 +1001,40 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
     }
 
-    private Profile _getProfile() {
-        try {
-            if (_profile != null || _modelChanged()) {
-                // if _modelChanged => _profile == null
-                return _profile;
-            } else {
-                String className = CodeGeneratorAdapter.generateName(this)
-                        + "_profile";
-                Class<?> classInstance = null;
+//     private Profile _getProfile() {
+//         try {
+//             if (_profile != null || _modelChanged()) {
+//                 // if _modelChanged => _profile == null
+//                 return _profile;
+//             } else {
+//                 String className = CodeGeneratorAdapter.generateName(this)
+//                         + "_profile";
+//                 Class<?> classInstance = null;
 
-                NamedObj toplevel = toplevel();
-                FileParameter path = new FileParameter(toplevel,
-                        toplevel.uniqueName("dummyParam"));
-                path.setExpression("$HOME/cg/");
-                URL url = path.asFile().toURI().toURL();
-                path.setContainer(null); //Remove the parameter again.
-                URL[] urls = new URL[] { url };
+//                 NamedObj toplevel = toplevel();
+//                 FileParameter path = new FileParameter(toplevel,
+//                         toplevel.uniqueName("dummyParam"));
+//                 path.setExpression("$HOME/cg/");
+//                 URL url = path.asFile().toURI().toURL();
+//                 path.setContainer(null); //Remove the parameter again.
+//                 URL[] urls = new URL[] { url };
 
-                ClassLoader classLoader = new URLClassLoader(urls);
-                classInstance = classLoader.loadClass(className);
-                _profile = (Profile) classInstance.newInstance();
-            }
-        } catch (Throwable throwable) {
-            try {
-                if (_USE_PROFILE) {
-                    _setRecompileFlag();
-                }
-                _profile = null;
-            } catch (IllegalActionException e1) {
-                throw new IllegalStateException(e1);
-            }
-        }
-        return _profile;
-    }
+//                 ClassLoader classLoader = new URLClassLoader(urls);
+//                 classInstance = classLoader.loadClass(className);
+//                 _profile = (Profile) classInstance.newInstance();
+//             }
+//         } catch (Throwable throwable) {
+//             try {
+//                 if (_USE_PROFILE) {
+//                     _setRecompileFlag();
+//                 }
+//                 _profile = null;
+//             } catch (IllegalActionException e1) {
+//                 throw new IllegalStateException(e1);
+//             }
+//         }
+//         return _profile;
+//     }
 
     private boolean _modelChanged() throws IllegalActionException {
         return ((BooleanToken) recompileThisLevel.getToken()).booleanValue()
