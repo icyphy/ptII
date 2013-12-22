@@ -309,7 +309,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      */
     private final class HashIterator implements Iterator, Rollbackable {
 
-        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+        private transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         /**
          * The type of this Iterator: {
@@ -540,7 +540,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             return this;
         }
 
-        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        private transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private transient FieldRecord $RECORD$knownMod = new FieldRecord(0);
 
@@ -573,7 +573,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      */
     private final class Enumerator implements Enumeration, Rollbackable {
 
-        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+        private transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         /**
          * The type of this Iterator: {
@@ -724,7 +724,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             return this;
         }
 
-        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        private transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private transient FieldRecord $RECORD$count = new FieldRecord(0);
 

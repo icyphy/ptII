@@ -105,7 +105,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      */
     private static final class Entry implements Rollbackable {
 
-        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+        private transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         /**
          * The element in the list.
@@ -220,7 +220,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return this;
         }
 
-        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        private transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private transient FieldRecord $RECORD$data = new FieldRecord(0);
 
@@ -255,7 +255,7 @@ public class LinkedList extends AbstractSequentialList implements List,
      */
     private final class LinkedListItr implements ListIterator, Rollbackable {
 
-        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+        private transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         /**
          * Number of modifications we know about.
@@ -600,7 +600,7 @@ public class LinkedList extends AbstractSequentialList implements List,
             return this;
         }
 
-        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        privatetransient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private transient FieldRecord $RECORD$knownMod = new FieldRecord(0);
 

@@ -389,7 +389,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      */
     private final class TreeIterator implements Iterator, Rollbackable {
 
-        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+        private transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         /**
          * The type of this Iterator: {
@@ -607,7 +607,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             return this;
         }
 
-        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        private transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private transient FieldRecord $RECORD$type = new FieldRecord(0);
 

@@ -757,7 +757,8 @@ public class Collections implements Rollbackable {
     private static final class ReverseComparator implements Comparator,
             Serializable, Rollbackable {
 
-        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+        // FindBugs: Class is final but declares protected field.
+        private transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         /**
          * Compatible with JDK 1.4.
@@ -814,7 +815,7 @@ public class Collections implements Rollbackable {
             return this;
         }
 
-        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        private transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private transient FieldRecord[] $RECORDS = new FieldRecord[] {};
 
