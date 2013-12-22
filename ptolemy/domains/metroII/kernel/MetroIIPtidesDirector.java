@@ -1947,7 +1947,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         Parameter parameter = (Parameter) port.getAttribute("relativeDeadline");
         if (parameter == null) {
             try {
-                parameter = new Parameter(port, "relativeDeadline", token);
+                new Parameter(port, "relativeDeadline", token);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(port,
                         "relativeDeadline parameter already exists at "

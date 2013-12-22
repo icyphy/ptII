@@ -71,7 +71,7 @@ public class CommunicationRequestPort extends Const {
         super(container, name);
         Parameter hide = (Parameter) trigger.getAttribute("_hide");
         if (hide == null) {
-            hide = new Parameter(trigger, "_hide", new BooleanToken(true));
+            new Parameter(trigger, "_hide", new BooleanToken(true));
         } else {
             hide.setToken(new BooleanToken(true));
         }
