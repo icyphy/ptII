@@ -169,11 +169,13 @@ public class HttpPost extends TypedAtomicActor {
             if (urlValue == null || urlValue.isEmpty()) {
                 throw new IllegalActionException("No URL provided.");
             }
+            OutputStreamWriter writer = null;
+            BufferedReader reader = null;
             try {
                 URL url = new URL(urlValue);
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
-                OutputStreamWriter writer = new OutputStreamWriter(
+                writer = new OutputStreamWriter(
                         connection.getOutputStream());
                 writer.write(data.toString());
                 writer.flush();
@@ -184,7 +186,7 @@ public class HttpPost extends TypedAtomicActor {
                     _debug("Waiting for response.");
                 }
 
-                BufferedReader reader = new BufferedReader(
+                reader = new BufferedReader(
                         new InputStreamReader(connection.getInputStream()));
                 StringBuffer response = new StringBuffer();
                 String line;
@@ -198,13 +200,27 @@ public class HttpPost extends TypedAtomicActor {
                 if (_debugging) {
                     _debug("Received response: " + response.toString());
                 }
-                writer.close();
-                reader.close();
-
                 output.send(0, new StringToken(response.toString()));
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "postfire() failed");
+            } finally {
+                if (writer != null) {
+                    try {
+                        writer.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex, "Failed to close the writer of \"" + urlValue + "\".");
+                    } finally {
+                        if (reader != null) {
+                            try {
+                                reader.close();
+                            } catch (IOException ex) {
+                                throw new IllegalActionException(this, ex, "Failed to close the reader of \"" + urlValue + "\".");
+                            }
+                        }
+                    }
+                }
             }
+            
         } else if (_debugging) {
             _debug("No input token.");
         }

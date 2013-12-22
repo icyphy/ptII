@@ -152,37 +152,49 @@ public class HttpPut extends TypedAtomicActor {
             if (urlValue == null || urlValue.isEmpty()) {
                 throw new IllegalActionException("No URL provided.");
             }
+            OutputStreamWriter writer = null;
+
             try {
                 URL url = new URL(urlValue);
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
                 connection.setRequestProperty("Content-Type", contentType.getExpression());
                 connection.setRequestMethod("PUT");
                 connection.setDoOutput(true);
-                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-                writer.write(body);
-                writer.flush();
-                
+                try {
+                    writer = new OutputStreamWriter(connection.getOutputStream());
+                    writer.write(body);
+                    writer.flush();
+                } finally {
+                    if (writer != null) {
+                        writer.close();
+                    }
+                }
                 
                 _debug("Put: " + body);
                 _debug("To URL: " + url.toString());
                 _debug("Waiting for response.");
                 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                BufferedReader reader = null;
                 StringBuffer response = new StringBuffer();
-                String line;
-                // FIXME: Need a timeout here!
-                while ((line = reader.readLine()) != null) {
+                try {
+                    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+                    String line;
+                    // FIXME: Need a timeout here!
+                    while ((line = reader.readLine()) != null) {
                     response.append(line);
                     if (!line.endsWith("\n")) {
                         response.append("\n");
                     }
+                    }
+                    if (_debugging) {
+                        _debug("Received response: " + response.toString());
+                    }
+                } finally {
+                    if (reader != null) {
+                        reader.close();
+                    }
                 }
-                if (_debugging) {
-                    _debug("Received response: " + response.toString());
-                }
-                writer.close();
-                reader.close();
-                
                 output.send(0, new StringToken(response.toString()));
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "postfire() failed");
