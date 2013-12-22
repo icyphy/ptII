@@ -104,6 +104,7 @@ public class AFDXVlink {
 
     /** Get the name of the virtual link object.
      * @return The name.
+     * @see #setName(String)
      */
     public String getName() {
         return _name;
@@ -112,6 +113,7 @@ public class AFDXVlink {
     /**
      * Set the name of the virtual link object.
      * @param name The name.
+     * @see #getName()
      */
     public void setName(String name) {
         _name = name;
@@ -119,6 +121,7 @@ public class AFDXVlink {
 
     /** Get the value of the bag.
      * @return The value.
+     * @see #setBag(Double)
      */
     public Double getBag() {
         return _bag;
@@ -127,6 +130,7 @@ public class AFDXVlink {
     /**
      * Set the value of the bag.
      * @param bag The value.
+     * @see #getBag()
      */
     public void setBag(Double bag) {
         _bag = bag;
@@ -134,6 +138,7 @@ public class AFDXVlink {
 
     /** Get the frame size.
      * @return The size.
+     * @see #setFrameSize(int)
      */
     public int getFrameSize() {
         return _frameSize;
@@ -141,6 +146,7 @@ public class AFDXVlink {
 
     /** Set the frame size.
      * @param size The size.
+     * @see #getFrameSize()
      */
     public void setFrameSize(int size) {
         _frameSize = size;
@@ -148,6 +154,7 @@ public class AFDXVlink {
 
     /** Get the source actor.
      * @return The actor.
+     * @see #setSource(Actor)
      */
     public Actor getSource() {
         return _source;
@@ -155,6 +162,7 @@ public class AFDXVlink {
 
     /** Set the source actor.
      * @param source The actor.
+     * @see #getSource()
      */
     public void setSource(Actor source) {
         _source = source;
@@ -162,6 +170,7 @@ public class AFDXVlink {
 
     /** Get the name of the scheduler multiplexor.
      * @return The name.
+     * @see #setSchedulerMux(String)
      */
     public String getSchedulerMux() {
         return _schedulerMux;
@@ -169,6 +178,7 @@ public class AFDXVlink {
 
     /** Set the name of the scheduler multiplexor.
      * @param name The name.
+     * @see #getSchedulerMux()
      */
     public void setSchedulerMux(String name) {
         _schedulerMux = name;

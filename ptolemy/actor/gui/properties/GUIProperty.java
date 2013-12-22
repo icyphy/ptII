@@ -169,6 +169,7 @@ public abstract class GUIProperty extends Attribute {
     }
 
     /** Clone the property into the specified workspace. 
+     *  @param workspace The workspace in to which the object is cloned.
      *  @return A new property
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.

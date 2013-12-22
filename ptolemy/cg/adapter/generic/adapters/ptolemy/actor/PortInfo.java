@@ -79,6 +79,7 @@ public class PortInfo {
     /** Create a PortInfo instance.
      *  @param port The port for which we are doing
      *  extra bookkeeping to generate code.
+     *  @para ports The ports the ports
      *  @param component The component for which we are doing
      *  extra bookkeeping to generate code.
      *  @param director The director associated with the ports.
@@ -90,6 +91,9 @@ public class PortInfo {
         _director = director;
     }
 
+    /** Return the code generator of the director.
+     *  @return the code generator.
+     */
     public GenericCodeGenerator getCodeGenerator() {
         return _director.getCodeGenerator();
     }
@@ -378,6 +382,19 @@ public class PortInfo {
         return code.toString();
     }
 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+    /** The value of the line.separator property. */
+    protected static final String _eol;
+
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private ProgramCodeGeneratorAdapter.Channel _getChannel(
             int channelNumber) {
         return new ProgramCodeGeneratorAdapter.Channel(_port, channelNumber);
@@ -559,6 +576,9 @@ public class PortInfo {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
     /** A HashMap that keeps track of the bufferSizes of each channel
      *  of the actor.
      */
@@ -583,10 +603,6 @@ public class PortInfo {
 
     private NamedObj _component;
 
-    protected static final String _eol;
-    static {
-        _eol = StringUtilities.getProperty("line.separator");
-    }
     private PortDirector _director;
 }
 

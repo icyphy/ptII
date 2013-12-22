@@ -49,18 +49,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- *
  *  This actor receives RecordTokens from a network input port and decomposes the
  *  packet into several tokens that are contained within the packet.
  *  This actor should used with a PTIDES director and in pairswith the {@link TCPPacketReceiver},
  *  typically with a network fabric model in between.
  *
- *  {@link TCPPacketReceiver} decomposes TCP packets containing PTIDES events
+ *  <p>{@link TCPPacketReceiver} decomposes TCP packets containing PTIDES events.</p>
  *
- *  </p><p>
+ *  <p>
  *  This actor consumes one input token and creates a stream of output tokens, each with
- *  the timestamp specified as a part of the token.
- *
+ *  the timestamp specified as a part of the token.>/p?
  *
  *  @author Ilge Akkaya
  *  @version $Id$
@@ -70,6 +68,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class TCPPacketReceiver extends InputDevice {
 
+    /** Construct a TCPPacketReceiver.
+     *  @param container the container of the TCPPacketReceiver.
+     *  @param name the name of the TCPPacketReceiver.
+     *  @exception IllegalActionException If the TCPPacketReceiver cannot be constructed.
+     *  @exception NameDuplicationException If there is a name collision.
+     */
     public TCPPacketReceiver(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -80,20 +84,23 @@ public class TCPPacketReceiver extends InputDevice {
         //output.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /* public parameters */
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port, which is a record type. */
     public TypedIOPort input;
 
+    /** The output port. */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Decompose RecordToken into its components.
-     *
-     *
+     *  @exception IllegalActionException If thrown by the super cass or
+     *  if there are problems decomposing the record.
      */
-
     public void fire() throws IllegalActionException {
-
         super.fire();
         Director director = getDirector();
 

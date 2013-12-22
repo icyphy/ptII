@@ -73,13 +73,9 @@ import ptolemy.util.MessageHandler;
  */
 public class MappingEditorGUI extends PtolemyFrame {
 
-    /** Construct a frame to control code generation for the specified
-     *  Ptolemy II model.  After constructing this, it is necessary to
-     *  call setVisible(true) to make the frame appear.  This is
-     *  typically accomplished by calling show() on enclosing tableau.
+    /** Construct a frame for the MappingEditor.
      *
-     *  @param codeGenerator The codeGenerator to put in this frame,
-     *  or null if none.
+     *  @param container The container
      *  @param tableau The tableau responsible for this frame.
      *  @exception IllegalActionException If the model rejects the
      *   configuration attribute.

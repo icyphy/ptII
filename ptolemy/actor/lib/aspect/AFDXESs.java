@@ -531,8 +531,9 @@ public class AFDXESs extends AtomicCommunicationAspect {
     /** Set the name of the scheduler that is parameterized on a port..
      * @param port The port.
      * @param name The name.
+     * @exception IllegalActionException Not thrown in this base class
      */
-    public void setSchedulerMultiplexorName(IOPort port, String name)
+    public void setSchedulerMultiplexorName(IOPort port, String name) 
             throws IllegalActionException {
         AFDXVlink vl;
 

@@ -380,7 +380,9 @@ public abstract class PortDirector extends Director {
     ////                         protected methods                 ////
 
     /** Return true if the port is a local port.
-     *  @return A boolean true when the port is local
+     *  @param forComposite True if we are checking for a composite
+     *  @param port The port to be checked.
+     *  @return A boolean true when the port is local.
      *  @exception IllegalActionException
      */
     static protected boolean _checkLocal(boolean forComposite, IOPort port)
@@ -410,6 +412,7 @@ public abstract class PortDirector extends Director {
      * @param channelString The string that will determine the channel.
      * @return The expression that represents the offset for a channel determined
      *  dynamically in the generated code.
+     * @exception IllegalActionException If thrown while generating the port name.
      */
     protected /*static*/ String _generateChannelOffset(TypedIOPort port,
             boolean isWrite, String channelString)
@@ -427,11 +430,13 @@ public abstract class PortDirector extends Director {
     }
 
     /**
-     * Generate a string that represents the reference for an IOPort
+     * Generate a string that represents the reference for an IOPort.
      * @param port The port to get the reference.
      * @param isWrite Whether to generate the write or read offset.
      * @param channelAndOffset The string[] that will determine the channel and the offset.
      * @return The expression that represents the reference for the port
+     * @exception IllegalActionException If thrown while generating
+     * the channel offsite or generating the port name.
      */
     protected String _generatePortReference(TypedIOPort port,
             String[] channelAndOffset, boolean isWrite)
@@ -525,7 +530,7 @@ public abstract class PortDirector extends Director {
 
     /**
      * Generate a string that represents the reference to a parameter or a port
-     * named "name"
+     * named "name".
      * @param name The name.
      * @return The string which represents the reference
      * @exception IllegalActionException If the reference cannot

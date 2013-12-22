@@ -62,6 +62,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class VariableDelaySwitch extends BasicSwitch {
 
+    /** Construct a VariableDelaySwitch.
+     *  @param container the container.
+     *  @param name the name.
+     *  @exception IllegalActionException If there is a problem with
+     *  construction.
+     *  @exception NameDuplicationException If there is a name collision.
+     */
     public VariableDelaySwitch(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -99,21 +106,33 @@ public class VariableDelaySwitch extends BasicSwitch {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /* channel bandwidth in bits/second */
-    public Parameter channelBandwidth;
 
-    /* size of one data token in bits */
-    public Parameter unitTokenSize;
-
-    /* boolean to enable/disable packet-length dependent input delay */
+    /** A Boolean to enable/disable packet-length dependent input delay.
+     *  The initial default value is true.   
+     */
     public Parameter allowPDV;
 
-    /* boolean to enable/disable priority dependent input delay */
+    /** A Boolean to enable/disable priority dependent input delay.
+     *  The initial default value is false.   
+     */
     public Parameter allowPriority;
+
+    /** The channel bandwidth in bits/second.  The initial default
+     *  value is the integer 1000000, signifying 1Mbps.   
+     */
+    public Parameter channelBandwidth;
+
+    /** The size of one data token in bits. The initial default value
+     *  is an integer with the value 1000.   
+     */
+    public Parameter unitTokenSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Process the attributes.
+     *  @exception IllegalActionException If value is inappropriate.
+     */   
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == channelBandwidth) {
@@ -228,19 +247,18 @@ public class VariableDelaySwitch extends BasicSwitch {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    //channel bandwidth that will be used to determine the delay (in bits/sec)
+    /** The channel bandwidth that will be used to determine the delay (in bits/sec). */
     protected int _channelBandwidth;
 
-    //unit token size in bits
+    /** The unit token size in bits. */
     protected int _unitTokenSize;
 
-    //allow or disallow input buffer packet delay variation
+    /** Aallow or disallow input buffer packet delay variation. */
     protected boolean _allowPDV;
 
-    //allow or disallow priority switching
+    /** Allow or disallow priority switching. */
     protected boolean _allowPriority;
 
-    //default header size for TCP
+    /** The default header size for TCP. */
     protected static final int TCPHeaderSize = 160;
-
 }

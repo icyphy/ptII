@@ -646,8 +646,15 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** The outgoing releations. */
     public static class OutgoingRelations implements TransitionRetriever {
         // Findbugs wants this to be static.
+        
+        /** Retrieve an iterator for the transitions of a State.
+         *  @param State the state for which transitions are to be
+         *  retrieved.
+         *  @return An iterator for the retrieved states.
+         */   
         public Iterator retrieveTransitions(State state) {
             return state.outgoingPort.linkedRelationList().iterator();
         }

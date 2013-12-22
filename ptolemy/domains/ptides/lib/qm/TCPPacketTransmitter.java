@@ -54,25 +54,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** Build a TCP Packet containing a user-defined number of PTIDES events.
  *
+ *  <p>This actor should be directly connected to a network output port and be
+ *  used with a PTIDES director.</p>
  *
- *  This actor should be directly connected to a network output port and be
- *  used with a PTIDES director.
+ *  <p>This actor is expected to be used in pairs with the {@link
+ *  TCPPacketReceiver}.</p>
  *
- *  This actor is expected to be used in pairs with the {@link TCPPacketReceiver}.
- *
- *  {@link TCPPacketTransmitter} builds TCP packets containing PTIDES events,
+ *  <p>{@link TCPPacketTransmitter} builds TCP packets containing PTIDES events,
  *  where each PTIDES event itself is assigned a data length in bits by the user.
  *  The bits/event parameter is constant right now and is an actor Parameter.
  *  At the destination platform, {@link TCPPacketReceiver} consumes packages produced
- *  by this actor and releases PTIDES events into its enclosing director.
+ *  by this actor and releases PTIDES events into its enclosing director.</p>
  *
- *  </p><p>
- *  This actor consumes <i>frameSize</i> number of input tokens and creates a
+ *  <p>This actor consumes <i>frameSize</i> number of input tokens and creates a
  *  RecordToken with two fields labeled as TCPlabel and tokens. Here, tokens itself is
  *  an array of RecordTokens, where each of the entries is a PTIDES RecordToken with
  *  labels: timestamp, microstep and payload. Once the number of received tokens equals
  *  frameSize, the RecordToken simulating the TCP Packet is sent to output port. During
- *  wrapup, the remaining tokens(if any) are sent to the output.
+ *  wrapup, the remaining tokens(if any) are sent to the output.</p>
  *
  *  @author Ilge Akkaya
  *  @version $Id$
@@ -82,6 +81,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class TCPPacketTransmitter extends OutputDevice {
 
+    /** Construct a TCPPacketTransmitter.
+     *  @param container the container of the TCPPacketTransmitter.
+     *  @param name the name of the TCPPacketTransmitter.
+     *  @exception IllegalActionException If the TCPPacketTransmitter cannot be constructed.
+     *  @exception NameDuplicationException If there is a name collision.
+     */
     public TCPPacketTransmitter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -109,6 +114,10 @@ public class TCPPacketTransmitter extends OutputDevice {
         _packetLength = 0;
     }
 
+    /** If the argument is the <i>defaultFrameSize</i> or
+     *  <i>priority</p>, then set the specified values.
+     *  @exception IllegalActionException If value is less than zero.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == defaultFrameSize) {
@@ -122,7 +131,7 @@ public class TCPPacketTransmitter extends OutputDevice {
             int value = ((IntToken) priority.getToken()).intValue();
             if (value <= 0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative or zero frame size: " + value);
+                        "Cannot have negative or zero priority: " + value);
             }
             _priority = value;
         }
@@ -132,25 +141,36 @@ public class TCPPacketTransmitter extends OutputDevice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
-    /* The data input port. */
+    /** The data input port. */
     public TypedIOPort input;
 
-    /* The data output port. */
+    /** The data output port, which is a RecordToken. */
     public TypedIOPort output;
 
-    /* Default TCP Packet size parameter. */
+    /** The default TCP Packet size parameter. The initial default
+     *  value is an integer with the value 5. 
+     */
     public Parameter defaultFrameSize;
 
-    /* Default TCP Packet priority parameter. */
+    /** Default TCP Packet priority parameter. The initial default
+     *  value is an integer with the value 1. 
+     */
     public Parameter priority;
 
-    /* User-Defined frame size port parameter. */
+    /** User-Defined frame size port parameter.  The initial default
+     *  value is an integer with the value 5.  The type is integer.
+     */
     public PortParameter frameSize;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Fill-in and return fields of the TCP header as a RecordToken
-     *
+     *  @return a record token
+     *  @exception IllegalActionException If the RecordToken cannot be
+     *  created.
      */
     public RecordToken getTCPHeader() throws IllegalActionException {
         String[] TCPHeaderLabels = new String[] { sourcePort, destinationPort,
