@@ -217,8 +217,8 @@ public class PtolemyFormEditor extends JPanel {
         setFormComponent(null);
 
         LayoutConstraintsManager layoutConstraintsManager = LayoutConstraintsManager
-                .getLayoutConstraintsManager(this.getClass()
-                        .getResourceAsStream("editableLayoutConstraints.xml"));
+            .getLayoutConstraintsManager(this.getClass().getClassLoader()
+                    .getResourceAsStream("/ptolemy/actor/gui/run/editableLayoutConstraints.xml"));
 
         JPanel insetsPanel = new JPanel();
         JPanel contentPanel = new JPanel();

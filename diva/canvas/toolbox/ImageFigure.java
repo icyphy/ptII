@@ -171,7 +171,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
 
         if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
             // Create a default error image.
-            URL url = getClass().getResource(
+            URL url = getClass().getClassLoader().getResource(
                     "/diva/canvas/toolbox/errorImage.gif");
             Toolkit tk = Toolkit.getDefaultToolkit();
             _image = tk.getImage(url);

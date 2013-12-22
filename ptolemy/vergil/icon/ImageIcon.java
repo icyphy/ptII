@@ -200,7 +200,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         }
 
         if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
-            URL url = getClass().getResource(
+            URL url = getClass().getClassLoader().getResource(
                     "/diva/canvas/toolbox/errorImage.gif");
             Toolkit tk = Toolkit.getDefaultToolkit();
             Image errorImage = tk.getImage(url);
