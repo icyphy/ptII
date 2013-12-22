@@ -483,7 +483,7 @@ public class FMUModelExchange extends Transformer {
         _fmu.defineInputs(foo, _inputVariables.length);
         //_fmu.setInputs(foo, _inputVariables.length);
 
-        if (outputNames.getExpression() != "") {
+        if (!outputNames.getExpression().equals("")) {
             _outputVariables = outputNames.getExpression().split(",");
             _outputVector = new double[_outputVariables.length];
 
