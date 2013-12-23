@@ -932,6 +932,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="**/*.png" />
 <exclude name="**/*.tcl" />
 <exclude name="**/*.xml" />
+<exclude name="adm/cvs2svn/"/>
 <exclude name="build/"/>
 <exclude name="config/"/>
 <exclude name="doc/coding/templates/"/>
