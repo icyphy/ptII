@@ -107,10 +107,15 @@ public class WebElement extends StringAttribute {
         }
 
         webElement = (WebElement) container.getAttribute(id, WebElement.class);
-        webElement.setWebName(webName);
-        webElement.setPersistent(false);
-        webElement.setVisibility(NONE);
-        return webElement;
+        if (webElement == null) {
+            throw new NullPointerException("Could not get the WebElement attribute \""
+                    + id + "\" from \"" + container.getFullName() + "\"");
+        } else {
+            webElement.setWebName(webName);
+            webElement.setPersistent(false);
+            webElement.setVisibility(NONE);
+            return webElement;
+        }
     }
 
     /** Return the name of the desired parent element, or the empty string if

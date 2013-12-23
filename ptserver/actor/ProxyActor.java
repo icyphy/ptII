@@ -251,10 +251,14 @@ public abstract class ProxyActor extends TypedAtomicActor {
                         // Set the type information of the port.
                         Type type = TypeParser.parse(portTypes.get(port
                                 .getFullName()));
-                        ((TypedIOPort) remotePort).setTypeEquals(type);
-                        StringAttribute targetPortName = new StringAttribute(
-                                remotePort, "targetPortName");
-                        targetPortName.setExpression(port.getFullName());
+                        if (type == null) {
+                            throw new NullPointerException("Could not get parse the type of \"" + port.getFullName());
+                        } else {
+                            ((TypedIOPort) remotePort).setTypeEquals(type);
+                            StringAttribute targetPortName = new StringAttribute(
+                                    remotePort, "targetPortName");
+                            targetPortName.setExpression(port.getFullName());
+                        }
                     }
                     // Remove all links of the port and connect the remote and
                     // current port via the relation.
@@ -309,10 +313,14 @@ public abstract class ProxyActor extends TypedAtomicActor {
             if (remotePort instanceof TypedIOPort) {
                 // Set the type information.
                 Type type = TypeParser.parse(portTypes.get(port.getFullName()));
-                ((TypedIOPort) remotePort).setTypeEquals(type);
-                StringAttribute targetPortName = new StringAttribute(
-                        remotePort, "targetPortName");
-                targetPortName.setExpression(port.getFullName());
+                if (type == null) {
+                    throw new NullPointerException("Could not parse type for " + port.getFullName());
+                }  else {
+                    ((TypedIOPort) remotePort).setTypeEquals(type);
+                    StringAttribute targetPortName = new StringAttribute(
+                            remotePort, "targetPortName");
+                    targetPortName.setExpression(port.getFullName());
+                }
             }
             // Disconnect the port from all relationships and connect the remote copy instead.
             for (Object relationObject : port.linkedRelationList()) {

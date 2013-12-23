@@ -237,7 +237,7 @@ public class LineWriter extends Sink {
 
                         // Don't ask for confirmation in append mode, since there
                         // will be no loss of data.
-                        if (file.exists() && !appendValue
+                        if (file != null && file.exists() && !appendValue
                                 && confirmOverwriteValue) {
                             // Query for overwrite.
                             // FIXME: This should be called in the event thread!

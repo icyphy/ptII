@@ -81,6 +81,9 @@ public final class KielerGraphUtil {
      */
     protected static KNode _getParent(KEdge edge) {
         KNode source = edge.getSource();
+        if (source == null) {
+            return null;
+        }
         if (KimlUtil.isDescendant(edge.getTarget(), source)) {
             return source;
         }
@@ -159,8 +162,8 @@ public final class KielerGraphUtil {
     protected static String _toString(KEdge edge) {
         StringBuffer string = new StringBuffer();
         string.append("[E:");
-        string.append("Source:" + edge.getSource().hashCode());
-        string.append(" Target:" + edge.getTarget().hashCode() + " Bends:");
+        string.append("Source:" + (edge.getSource() == null ? "null" : edge.getSource().hashCode()));
+        string.append(" Target:" +(edge.getSource() == null ? "null" : edge.getTarget().hashCode()) + " Bends:");
         KEdgeLayout layout = edge.getData(KEdgeLayout.class);
         for (KPoint point : layout.getBendPoints()) {
             string.append(point.getX() + "," + point.getY() + " ");
@@ -240,10 +243,15 @@ public final class KielerGraphUtil {
             // Demand load the resource for this file.
             Resource resource = resourceSet.createResource(fileURI);
 
-            resource.getContents().add(kgraph);
+            if (resource == null) {
+                throw new NullPointerException("Could not create a resource for \""
+                        + fileURI + "\"");
+            } else {
+                resource.getContents().add(kgraph);
 
-            // Print the contents of the resource to System.out.
-            resource.save(Collections.EMPTY_MAP);
+                // Print the contents of the resource to System.out.
+                resource.save(Collections.EMPTY_MAP);
+            }
         } catch (IOException e) {
         }
     }

@@ -267,11 +267,16 @@ public class DependencyHighlighter extends NodeControllerFactory {
             try {
                 BasicGraphFrame frame = BasicGraphFrame
                         .getBasicGraphFrame(actor.toplevel());
-                frame.report("Preinitializing");
-                long startTime = new Date().getTime();
-                Manager.preinitializeThenWrapup((Actor) actor);
-                frame.report("Done Preinitializing: "
-                        + Manager.timeAndMemory(startTime));
+                if (frame == null) {
+                    throw new NullPointerException("The frame for " + actor.toplevel().getName() 
+                            + " was null?");
+                } else {
+                    frame.report("Preinitializing");
+                    long startTime = new Date().getTime();
+                    Manager.preinitializeThenWrapup((Actor) actor);
+                    frame.report("Done Preinitializing: "
+                            + Manager.timeAndMemory(startTime));
+                }
             } catch (KernelException ex) {
                 MessageHandler.error("Preinitialize failed.", ex);
                 return;

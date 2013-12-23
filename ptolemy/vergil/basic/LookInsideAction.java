@@ -178,32 +178,37 @@ public class LookInsideAction extends FigureAction {
                 final Effigy containerEffigy = _configuration
                         .getEffigy(momlModelAttribute.getContainer());
 
-                // Second, the effigy returned above returns the wrong value in its
-                // masterEffigy() method. That method returns the effigy associated
-                // with the toplevel, which is the same as effigy. We want it to
-                // return whatever the masterEffigy of containerEffigy is.
-                // We accomplish this by substituting a new effigy.
-                // This technique is borrowed from what is done in
-                // PtolemyFrame.getEffigy().
-                PtolemyEffigy newEffigy = new PtolemyEffigy(containerEffigy,
-                        containerEffigy.uniqueName(model.getName())) {
-                    public Effigy masterEffigy() {
-                        return containerEffigy.masterEffigy();
-                    }
-                };
+                if (containerEffigy == null) {
+                    throw new InternalErrorException(momlModelAttribute,
+                            "Could not get the effigy for " + momlModelAttribute);
+                } else {
+                    // Second, the effigy returned above returns the wrong value in its
+                    // masterEffigy() method. That method returns the effigy associated
+                    // with the toplevel, which is the same as effigy. We want it to
+                    // return whatever the masterEffigy of containerEffigy is.
+                    // We accomplish this by substituting a new effigy.
+                    // This technique is borrowed from what is done in
+                    // PtolemyFrame.getEffigy().
+                    PtolemyEffigy newEffigy = new PtolemyEffigy(containerEffigy,
+                            containerEffigy.uniqueName(model.getName())) {
+                            public Effigy masterEffigy() {
+                                return containerEffigy.masterEffigy();
+                            }
+                        };
 
-                // Third, the uri attribute and file properties
-                // of the effigy are not set to
-                // refer to the file that will actually save the model.
-                // This could be an external file if the modelURL parameter
-                // of the MoMLModelAttribute is set.
-                newEffigy.setModified(effigy.isModified());
-                URI uri = containerEffigy.uri.getURI();
-                newEffigy.uri.setURI(uri);
-                tableau.setContainer(newEffigy);
-                effigy.setContainer(null);
+                    // Third, the uri attribute and file properties
+                    // of the effigy are not set to
+                    // refer to the file that will actually save the model.
+                    // This could be an external file if the modelURL parameter
+                    // of the MoMLModelAttribute is set.
+                    newEffigy.setModified(effigy.isModified());
+                    URI uri = containerEffigy.uri.getURI();
+                    newEffigy.uri.setURI(uri);
+                    tableau.setContainer(newEffigy);
+                    effigy.setContainer(null);
 
-                newEffigy.setModel(model);
+                    newEffigy.setModel(model);
+                }
             }
         } catch (Exception ex) {
             MessageHandler.error("Unable to open the model contained by "
