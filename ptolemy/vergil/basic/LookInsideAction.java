@@ -42,6 +42,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLModelAttribute;
 import ptolemy.util.MessageHandler;
@@ -179,7 +180,7 @@ public class LookInsideAction extends FigureAction {
                         .getEffigy(momlModelAttribute.getContainer());
 
                 if (containerEffigy == null) {
-                    throw new InternalErrorException(momlModelAttribute,
+                    throw new InternalErrorException(momlModelAttribute, null,
                             "Could not get the effigy for " + momlModelAttribute);
                 } else {
                     // Second, the effigy returned above returns the wrong value in its
