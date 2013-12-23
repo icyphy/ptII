@@ -7,14 +7,11 @@ This directory is _not_ shipped with the public releases.
 To save space and make for faster check outs, the ptIIapps cvs
 repository was set up and the following apps moved to it:
 
-agilent        kurt           pendulum       soot           wireless
-ant            kvm            rijndael       superb
-crazyboard     lego           robot          video
-etherealSting  lejos          saveasjava     waba
-jmf            midp           security       webstart
-
-anytimecontrol cacheAwareScheduler charon dpn engine flexo jacquard
-manet mobileCoding softwalls unionType vergil xsl zaurus
+agilent              charon      engine         jacquard  lego   mobileCoding  ptalon    security   soot       vergil    xsl
+anytimecontrol       crazyboard  etherealSting  jmf       lejos  naomi         ptinyos   sensor     superb     waba      zaurus
+apes                 dpn         fullscreen     kurt      manet  p1000         rijndael  sobel      tini       webstart
+cacheAwareScheduler  ecsl_dp     giotto         kvm       midp   pendulum      robot     softwalls  unionType  wireless
 
 To checkout ptIIapps, use:
-cvs -d :ext:source.eecs.berkeley.edu:/home/cvs co ptIIapps
+svn co https://repo.eecs.berkeley.edu/svn/projects/chess/ptIIapps
+
