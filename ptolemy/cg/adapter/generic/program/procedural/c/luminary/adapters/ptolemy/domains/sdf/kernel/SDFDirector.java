@@ -153,8 +153,8 @@ public class SDFDirector
 
         CompositeActor container = (CompositeActor) getComponent()
             .getContainer();
-        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
-            .getAdapter(container);
+        //TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
+        //    .getAdapter(container);
 
         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
 
