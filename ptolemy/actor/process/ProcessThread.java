@@ -344,7 +344,8 @@ public class ProcessThread extends PtolemyThread {
             if (firingsRecordable != null) {
                 firingsRecordable.recordFiring(FiringEvent.AFTER_POSTFIRE);
             }
-        } else if (firingsRecordable != null) {
+        } else {
+            // Dereference before null check.
             firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
         }
         return result;

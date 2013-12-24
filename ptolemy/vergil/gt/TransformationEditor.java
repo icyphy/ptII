@@ -1166,7 +1166,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             public Figure render(Object node) {
                 Figure nf = super.render(node);
 
-                if (node != null && !_hide(node)) {
+                // Coverity says that node cannot be null here.
+                if (!_hide(node)) {
                     GraphModel model = getController().getGraphModel();
                     Object object = model.getSemanticObject(node);
                     CompositeFigure cf = _getCompositeFigure(nf);

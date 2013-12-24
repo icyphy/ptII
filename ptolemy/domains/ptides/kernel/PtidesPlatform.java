@@ -229,7 +229,8 @@ public class PtidesPlatform extends MirrorComposite {
                 PortParameter associatedParameter = associatedPort
                         .getParameter();
 
-                if (port != null && port.isOutsideConnected()
+                // Coverity says that port cannot be null here.
+                if (port.isOutsideConnected()
                         && port.hasToken(0)) {
                     Token token = port.get(0);
                     associatedParameter.setCurrentValue(token);

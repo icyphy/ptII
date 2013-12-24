@@ -1061,11 +1061,11 @@ public class TemplateParser {
 
         if (isStatic) {
             // Record the referenced type function in the infoTable.
-            if (_codeGenerator == null) {
-                throw new NullPointerException(
-                        "Call TemplateParser.setCodeGenerator() "
-                                + "before calling getFunctionInvocation()");
-            }
+            //if (_codeGenerator == null) {
+            //    throw new NullPointerException(
+            //            "Call TemplateParser.setCodeGenerator() "
+            //                    + "before calling getFunctionInvocation()");
+            //}
             //_codeGenerator._typeFuncUsed.add(functionName);
 
             if (argumentList.length() == 0) {

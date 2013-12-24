@@ -538,8 +538,7 @@ public class Configuration extends CompositeEntity implements
                             NamedObj greaterNamedObj = (NamedObj) greaterAssociatedObject;
                             NamedObj lesserNamedObj = (NamedObj) lesserAssociatedObject;
                             greaterNamedObj.getContainer().getClass().getName();
-                            if (greaterNamedObj != null
-                                    && lesserNamedObj != null
+                            if (lesserNamedObj != null
                                     && greaterNamedObj.getContainer() != lesserNamedObj
                                             .getContainer()
                                     // actor.lib.qm.CompositeQM was causing false

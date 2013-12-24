@@ -1020,10 +1020,11 @@ public class AssignmentTransformer extends AbstractTransformer implements
         record.modifiers().add(
                 ast.newModifier(Modifier.ModifierKeyword.TRANSIENT_KEYWORD));
 
-        if (parent != null) {
-            addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
-                    record, null));
-        }
+        // Coverity suggests that parent cannot be null because isFieldDuplicated() dereferences it.
+        //if (parent != null) {
+        addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
+                        record, null));
+            //}
 
         return record;
     }

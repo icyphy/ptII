@@ -190,8 +190,8 @@ public class PackageRule extends TransformRule {
         AST ast = name.getAST();
         Name newName = null;
 
-        while ((name != null)
-                && name instanceof QualifiedName
+        // Coverity scan suggests that name cannot be null.
+        while (name instanceof QualifiedName
                 && !(((QualifiedName) name).getQualifier() instanceof SimpleName)) {
             name = ((QualifiedName) name).getQualifier();
         }
