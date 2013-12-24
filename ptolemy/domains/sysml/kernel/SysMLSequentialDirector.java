@@ -742,7 +742,8 @@ public class SysMLSequentialDirector extends Director implements
             if (firingsRecordable != null) {
                 firingsRecordable.recordFiring(FiringEvent.AFTER_POSTFIRE);
             }
-        } else if (firingsRecordable != null) {
+        } else {
+            // Coverity suggests that firingsRecordable will not be null.
             firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
         }
         if (!result) {
