@@ -63,20 +63,25 @@ public class RemoveIconAction extends FigureAction {
 
         NamedObj object = getTarget();
 
-        // In theory, there should be only one.
-        // But just in case, we remove all.
-        Iterator icons = object.attributeList(EditorIcon.class).iterator();
+        // If the source of the event was a button, then super.actionPerformed(e)
+        // will return null.  There are other reasons super.actionPerformed(e)
+        // will return null as well.
+        if (object != null) {
+            // In theory, there should be only one.
+            // But just in case, we remove all.
+            Iterator icons = object.attributeList(EditorIcon.class).iterator();
 
-        while (icons.hasNext()) {
-            EditorIcon icon = (EditorIcon) icons.next();
+            while (icons.hasNext()) {
+                EditorIcon icon = (EditorIcon) icons.next();
 
-            // An XMLIcon is not a custom icon, so don't remove it.
-            if (!(icon instanceof XMLIcon)) {
-                String moml = "<deleteProperty name=\"" + icon.getName()
+                // An XMLIcon is not a custom icon, so don't remove it.
+                if (!(icon instanceof XMLIcon)) {
+                    String moml = "<deleteProperty name=\"" + icon.getName()
                         + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, object,
-                        moml);
-                object.requestChange(request);
+                    MoMLChangeRequest request = new MoMLChangeRequest(this, object,
+                            moml);
+                    object.requestChange(request);
+                }
             }
         }
     }
