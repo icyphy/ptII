@@ -140,14 +140,16 @@ public class PtalonMatcher extends TypedCompositeActor implements
                     _currentActor.getAttribute(_IGNORING_ATTRIBUTE_NAME)
                             .setContainer(null);
                 }
-                Attribute ignoringAttribute = _currentActor
+                if (_currentActor != null) {
+                    Attribute ignoringAttribute = _currentActor
                         .getAttribute(_IGNORING_ATTRIBUTE_NAME);
-                if (ignoringAttribute != null) {
-                    ignoringAttribute.setContainer(null);
+                    if (ignoringAttribute != null) {
+                        ignoringAttribute.setContainer(null);
+                    }
+                    _mirrorPtalonActor();
+                    _createParameters();
+                    _rearrangePtalonActors();
                 }
-                _mirrorPtalonActor();
-                _createParameters();
-                _rearrangePtalonActors();
             } catch (Throwable throwable) {
                 throw new IllegalActionException(null, throwable, "Unable to "
                         + "create Ptalon actor inside.");

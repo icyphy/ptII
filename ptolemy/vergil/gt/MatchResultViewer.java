@@ -533,8 +533,8 @@ public class MatchResultViewer extends GTFrame {
                     if (effigy != null) {
                         effigy.setModified(false);
                     }
-                }
                 subviewer.close();
+                }
             }
         }
     }

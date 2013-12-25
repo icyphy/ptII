@@ -140,12 +140,17 @@ public class TextEditorConfigureFactory extends EditorFactory implements
                 MessageHandler.error(
                         "Cannot get specified string attribute to edit.", ex);
             }
-            // Can't just call show() here because after calling pack() and
-            // before making visible we need to call adjustFileMenu().
-            // Also, can't do this if the editor has already been created.
-            _editor.pack();
-            _editor.adjustFileMenu();
-            _editor.centerOnScreen();
+            if (_editor == null) {
+                throw new NullPointerException("Could not create editor for "
+                        + object.getFullName() + " in frame " + parent);
+            } else {
+                // Can't just call show() here because after calling pack() and
+                // before making visible we need to call adjustFileMenu().
+                // Also, can't do this if the editor has already been created.
+                _editor.pack();
+                _editor.adjustFileMenu();
+                _editor.centerOnScreen();
+            }
         }
         _editor.setVisible(true);
     }
