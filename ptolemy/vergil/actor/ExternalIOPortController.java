@@ -628,16 +628,26 @@ public class ExternalIOPortController extends AttributeController {
                             endY = startY
                                     - extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
-                            // Coverity: Logically dead code: direction can only be EAST, WEST or NORTH.
-//                         } else {
-//                             startX = x + width / 2;
-//                             startY = y + height;
-//                             endX = startX
-//                                     + extent
-//                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
-//                             endY = startY
-//                                     + extent
-//                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                        } else {
+                            // Coverity: Logically dead code:
+                            // direction can only be EAST, WEST or
+                            // NORTH.
+
+                            // However, if we don't have this else
+                            // clause, then the compiler indicates
+                            // that startX, startY, endX and endY are
+                            // not initialized.  One fix would be to
+                            // set them when we declare them, but then
+                            // set them again in the clauses above.
+
+                            startX = x + width / 2;
+                            startY = y + height;
+                            endX = startX
+                                    + extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                            endY = startY
+                                    + extent
+                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         }
 
                         Line2D line = new Line2D.Double(startX, startY, endX,
