@@ -99,14 +99,14 @@ public interface Dependency extends Comparable<Dependency> {
     ////                         public fields                     ////
 
     /** Return value of compareTo() if this is equal to the argument. */
-    public static int EQUALS = 0;
+    public static final int EQUALS = 0;
 
     /** Return value of compareTo() if this is greater than the argument. */
-    public static int GREATER_THAN = 1;
+    public static final int GREATER_THAN = 1;
 
     /** Return value of compareTo() if this is incomparable to the argument. */
-    public static int INCOMPARABLE = 2;
+    public static final int INCOMPARABLE = 2;
 
     /** Return value of compareTo() if this is less than the argument. */
-    public static int LESS_THAN = -1;
+    public static final int LESS_THAN = -1;
 }
