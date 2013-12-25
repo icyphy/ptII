@@ -156,7 +156,7 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                             // Coverity and FindBugs report: RV: Bad use of return value
                             // the results of Comparator.compareTo(Object) should not be compared
                             // with a specific value such as -1 or 1.
-`                            if (dependency.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
+                            if (dependency.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
                                 minimumDelay = dependency;
                             }
                         }
