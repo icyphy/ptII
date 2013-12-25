@@ -585,9 +585,22 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     protected void _implementDeferredConfigurations() {
         if (_configureSources != null) {
-            Iterator<String> sources = _configureSources.iterator();
-            Iterator<String> texts = _configureTexts.iterator();
-            Iterator<URL> bases = _configureBases.iterator();
+
+            // Coverity indicates that configure() can modify
+            // _configureSources, _configureTexts and _configureBases,
+            // which would invalidate the iterators because the
+            // underlying list would be modified.  However, the logic
+            // of this program is such that configure() would only add
+            // to these lists if plot was not yet a PlotInterface.
+            // However, place() sets plot to a plotter and then calls
+            // this method, so logically, the underlying lists cannot
+            // be moderated.  However, derived classes could do
+            // something different, so copying the lists is a good
+            // idea.
+
+            Iterator<String> sources = new LinkedList<String>(_configureSources).iterator();
+            Iterator<String> texts = new LinkedList<String>(_configureTexts).iterator();
+            Iterator<URL> bases = new LinkedList<URL>(_configureBases).iterator();
 
             while (sources.hasNext()) {
                 URL base = bases.next();
