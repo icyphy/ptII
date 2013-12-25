@@ -153,7 +153,10 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                         for (IOPort sourcePort : sourcePorts) {
                             Dependency dependency = _getMinimumDelay(
                                     sourcePort, visitedPorts);
-                            if (dependency.compareTo(minimumDelay) == Dependency.LESS_THAN) {
+                            // Coverity and FindBugs report: RV: Bad use of return value
+                            // the results of Comparator.compareTo(Object) should not be compared
+                            // with a specific value such as -1 or 1.
+`                            if (dependency.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
                                 minimumDelay = dependency;
                             }
                         }
