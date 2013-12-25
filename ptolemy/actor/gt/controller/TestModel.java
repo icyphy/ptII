@@ -325,7 +325,8 @@ public class TestModel extends GTEvent {
             int width = 1;
             Token[] newTokens = new Token[newValues.length];
 
-            if (width == 1) {
+            // Coverity points out that bufferSize is 1, so the if will never be false.
+//             if (width == 1) {
                 for (int i = 0; i < newValues.length; i++) {
                     if (newValues[i] instanceof Token[]) {
                         // Handle width of 1, ArrayToken
@@ -334,29 +335,29 @@ public class TestModel extends GTEvent {
                         newTokens[i] = (Token) newValues[i];
                     }
                 }
-            } else {
-                for (int i = 0; i < newValues.length; i++) {
-                    ArrayList entry = (ArrayList) newValues[i];
+//             } else {
+//                 for (int i = 0; i < newValues.length; i++) {
+//                     ArrayList entry = (ArrayList) newValues[i];
 
-                    // Entry may be an empty array, in which case,
-                    // we cannot do the update, so we return.
-                    if (entry.size() < 1) {
-                        System.err.println("Warning: '" + getFullName()
-                                + "': Unable to train. "
-                                + "Zero tokens received in iteration " + i);
-                        return;
-                    }
+//                     // Entry may be an empty array, in which case,
+//                     // we cannot do the update, so we return.
+//                     if (entry.size() < 1) {
+//                         System.err.println("Warning: '" + getFullName()
+//                                 + "': Unable to train. "
+//                                 + "Zero tokens received in iteration " + i);
+//                         return;
+//                     }
 
-                    Object[] entries = entry.toArray();
-                    Token[] newEntry = new Token[entries.length];
+//                     Object[] entries = entry.toArray();
+//                     Token[] newEntry = new Token[entries.length];
 
-                    for (int j = 0; j < entries.length; j++) {
-                        newEntry[j] = (Token) entries[j];
-                    }
+//                     for (int j = 0; j < entries.length; j++) {
+//                         newEntry[j] = (Token) entries[j];
+//                     }
 
-                    newTokens[i] = new ArrayToken(newEntry);
-                }
-            }
+//                     newTokens[i] = new ArrayToken(newEntry);
+//                 }
+//             }
 
             correctValues.setToken(new ArrayToken(newTokens));
             correctValues.setPersistent(true);

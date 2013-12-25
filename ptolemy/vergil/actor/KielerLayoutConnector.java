@@ -145,9 +145,10 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             for (int i = 1; i <= bendPointList.size() - 1; i++) {
                 int i1 = i;
                 int i0 = i - 1;
-                if (i0 < 0) {
-                    i0 = 0;
-                }
+                // Coverity points out that i0 can never be less than 0.
+                //if (i0 < 0) {
+                //    i0 = 0;
+                //}
                 if (i0 > bendPointList.size() - 1) {
                     i0 = bendPointList.size() - 1;
                 }

@@ -628,15 +628,16 @@ public class ExternalIOPortController extends AttributeController {
                             endY = startY
                                     - extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
-                        } else {
-                            startX = x + width / 2;
-                            startY = y + height;
-                            endX = startX
-                                    + extent
-                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
-                            endY = startY
-                                    + extent
-                                    * IOPortController.MULTIPORT_CONNECTION_SPACING;
+                            // Coverity: Logically dead code: direction can only be EAST, WEST or NORTH.
+//                         } else {
+//                             startX = x + width / 2;
+//                             startY = y + height;
+//                             endX = startX
+//                                     + extent
+//                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
+//                             endY = startY
+//                                     + extent
+//                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         }
 
                         Line2D line = new Line2D.Double(startX, startY, endX,

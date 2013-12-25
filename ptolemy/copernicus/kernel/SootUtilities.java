@@ -1411,7 +1411,7 @@ public class SootUtilities {
      */
     public static SootMethod getMatchingMethod(SootClass theClass, String name,
             List args) {
-        boolean found = false;
+        //        boolean found = false;
         SootMethod foundMethod = null;
 
         Iterator methods = theClass.getMethods().iterator();
@@ -1443,13 +1443,14 @@ public class SootUtilities {
                     }
                 }
 
-                if (isEqual && found) {
-                    throw new RuntimeException("ambiguous method");
-                } else {
-                    found = true;
+                // Coverity: Logically dead code.  found cannot be true.
+//                 if (isEqual && found) {
+//                     throw new RuntimeException("ambiguous method");
+//                 } else {
+//                     found = true;
                     foundMethod = method;
                     break;
-                }
+//                }
             }
         }
 

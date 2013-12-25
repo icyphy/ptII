@@ -162,15 +162,16 @@ public class MultiCompositeActor extends TypedCompositeActor {
                 }
             }
             code.append(" = new " + targetType(port.getType()));
-        } else {
-            if (bufferSize > 1) {
-                if (!variablesAsArrays) {
-                    code.append("[]");
-                }
-                code.append(" = new " + targetType(port.getType()));
-            } else {
-                //code.append(" = ");
-            }
+            // Coverity points out that bufferSize is 1, so the if will never be new.
+//         } else {
+//             if (bufferSize > 1) {
+//                 if (!variablesAsArrays) {
+//                     code.append("[]");
+//                 }
+//                 code.append(" = new " + targetType(port.getType()));
+//             } else {
+//                 //code.append(" = ");
+//             }
         }
 
         if (port.isMultiport()) {
