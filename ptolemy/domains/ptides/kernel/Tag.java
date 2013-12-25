@@ -75,9 +75,13 @@ public class Tag implements Comparable {
      */
     public int compareTo(Object other) {
         Tag tag2 = (Tag) other;
-        if (timestamp.compareTo(tag2.timestamp) == 1) {
+        // Call compareTo() only once for performance reasons.
+        final int compareToResult = timestamp.compareTo(tag2.timestamp);
+        // FindBugs: RV: Bad use of return value.  Be sure not to compare
+        // against -1 or 1.
+        if (compareToResult > 0) {
             return 1;
-        } else if (timestamp.compareTo(tag2.timestamp) == -1) {
+        } else if (compareToResult  < 0) {
             return -1;
         } else {
             if (microstep > tag2.microstep) {
