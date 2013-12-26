@@ -915,6 +915,14 @@ public class ContinuousDirector extends FixedPointDirector implements
             _debug("-- Refined step size suggested by the actors: "
                     + refinedStep);
         }
+        if (refinedStep >= _currentStepSize) {
+        	// Actors suggestion is not useful.
+        	// Choose instead half the current step size.
+        	refinedStep = _currentStepSize*0.5;
+            if (_debugging) {
+                _debug("-- Adjusting step size to: " + refinedStep);
+            }
+        }
 
         if (!_breakpoints.isEmpty()) {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
