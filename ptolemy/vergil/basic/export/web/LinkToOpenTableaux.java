@@ -226,7 +226,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                             if (effigy != null) {
                                 // _linkTo() recursively calls writeHTML();
                                 _linkTo(exporter, effigy,
-                                        (NamedObj) refinements[0],
+                                        (NamedObj) object,
                                         (NamedObj) refinements[0],
                                         exporter.getExportParameters());
                             }
