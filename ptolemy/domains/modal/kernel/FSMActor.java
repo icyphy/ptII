@@ -1646,7 +1646,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _randomValue = _randomToken.nextDouble();
 
         if (_debugging) {
-            _debug("** Random Number is :" + _randomValue);
+            _debug("** Finished postfire. New random number is :" + _randomValue);
         }
 
         return !_reachedFinalState && !_stopRequested;
