@@ -137,7 +137,6 @@ public class Inhibit extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        // FIXME: non-strict version would be preferred in SR
         boolean hasInhibit = false;
         for (int i = 0; i < inhibit.getWidth(); i++) {
             if (inhibit.hasToken(i)) {
@@ -149,7 +148,7 @@ public class Inhibit extends Transformer {
         // Consume the inputs.
         int outputWidth = output.getWidth();
         for (int i = 0; i < input.getWidth(); i++) {
-            while (input.hasToken(i)) {
+            if (input.hasToken(i)) {
                 Token token = input.get(i);
                 if (!hasInhibit && i < outputWidth) {
                     output.send(i, token);
