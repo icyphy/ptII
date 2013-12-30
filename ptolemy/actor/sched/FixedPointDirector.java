@@ -643,6 +643,15 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                         port.send(i, null);
                     }
                 }
+            } else if (i < outsideWidth){
+            	// Output is not known. To ensure that this fact propagate
+            	// outside, find the remote receivers and reset them.
+            	// This was causing a monotonicity failure in certain
+            	// modal models.
+            	Receiver[][] remoteReceivers = port.getRemoteReceivers();
+            	for (Receiver remoteReceiver : remoteReceivers[i]) {
+            		remoteReceiver.reset();
+            	}
             }
         }
         // If the outside is wider than the inside, send clear on the outside.
