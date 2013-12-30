@@ -483,7 +483,10 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // _transferInputsToInside() because if we are redoing
                     // the solver iteration then there are inputs available,
                     // but they should not be consumed yet.
-                    _assertAbsentInside();
+                    // FIXME: Shouldn't this be done only if enclosingContinousDirector is null?
+                    if (enclosingContinuousDirector == null) {
+                    	_assertAbsentInside();
+                    }
 
                     super.fire();
                     // Outputs should only be produced on the first iteration of
@@ -525,6 +528,9 @@ public class ContinuousDirector extends FixedPointDirector implements
                         _debug("-- Setting current time for the next ODE solver round: "
                                 + getModelTime() + " and index to 0.");
                     }
+                    if (getModelTime().equals(new Time(this, 0.2689322444))) {
+                    	System.out.println("FIXME");
+                    }
 
                     _ODESolver._setRound(_ODESolver._getRound() + 1);
 
@@ -556,7 +562,17 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // There is some step size control actor that is
                     // unsatisfied with the current step size, refine the
                     // step size to a smaller one.
-                    _setCurrentStepSize(refinedStepSize());
+                	double refinedStep = refinedStepSize();
+                	// Make sure the result is actually a change.
+                    if (refinedStep >= _currentStepSize) {
+                    	// Actors suggestion is not useful.
+                    	// Choose instead half the current step size.
+                    	refinedStep = _currentStepSize*0.5;
+                        if (_debugging) {
+                            _debug("-- Adjusting step size to: " + refinedStep);
+                        }
+                    }
+                    _setCurrentStepSize(refinedStep);
                 }
 
                 if (_debugging) {
@@ -914,14 +930,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_debugging) {
             _debug("-- Refined step size suggested by the actors: "
                     + refinedStep);
-        }
-        if (refinedStep >= _currentStepSize) {
-        	// Actors suggestion is not useful.
-        	// Choose instead half the current step size.
-        	refinedStep = _currentStepSize*0.5;
-            if (_debugging) {
-                _debug("-- Adjusting step size to: " + refinedStep);
-            }
         }
 
         if (!_breakpoints.isEmpty()) {
