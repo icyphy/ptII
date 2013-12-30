@@ -528,10 +528,6 @@ public class ContinuousDirector extends FixedPointDirector implements
                         _debug("-- Setting current time for the next ODE solver round: "
                                 + getModelTime() + " and index to 0.");
                     }
-                    if (getModelTime().equals(new Time(this, 0.2689322444))) {
-                    	System.out.println("FIXME");
-                    }
-
                     _ODESolver._setRound(_ODESolver._getRound() + 1);
 
                     if (_debugging) {
