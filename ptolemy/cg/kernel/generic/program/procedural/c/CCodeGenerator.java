@@ -3325,11 +3325,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
         } else if (platform.equals("Mac OS X")) {
-            // Why does Apple insist on changing the names of things?
-            jvmLoaderDirective = "-ljvmlinkage";
             if (javaHome != null) {
                 libjvmAbsoluteDirectory = javaHome + "/../Libraries";
             }
+            // Why do people who work at Apple insist on changing the
+            // names of things?  Why is jvmlinkage necessary?  
+
+	    // We also need to adjust the rpath here so that this works:
+	    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml 
+	    
+            jvmLoaderDirective = "-Wl,-rpath," + libjvmAbsoluteDirectory + " -ljvmlinkage";
+
         } else {
             // Solaris, Linux etc.
             addInclude("-I\"" + javaHome + "/include/" + platform + "\"");
