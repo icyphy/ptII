@@ -77,7 +77,7 @@ public class ValueIcon extends XMLIcon {
         super(container, name);
 
         displayWidth = new Parameter(this, "displayWidth");
-        displayWidth.setExpression("60");
+        displayWidth.setExpression("80");
         displayWidth.setTypeEquals(BaseType.INT);
     }
 
