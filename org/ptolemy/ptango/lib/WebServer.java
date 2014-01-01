@@ -52,6 +52,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Settable.Visibility;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -117,6 +119,19 @@ public class WebServer extends AbstractInitializableAttribute {
         // will look for a WebServer in the model to determine the directory
         // to write to
         resourceLocation = new FileParameter(this, "resourceLocation");
+        
+        // Want resourceLocation to correspond to a directory
+        // Add parameters to specify that only directories are allowed
+        Parameter allowDirectories 
+            = new Parameter(resourceLocation, "allowDirectories");
+        allowDirectories.setToken("true");
+        allowDirectories.setVisibility(Settable.NONE);
+        
+        Parameter allowFiles 
+            = new Parameter(resourceLocation, "allowFiles");
+        allowFiles.setToken("false");
+        allowFiles.setVisibility(Settable.NONE);
+        
         URI modelURI = URIAttribute.getModelURI(this);
         // Get the directory excluding the model's name
         // This may be null for newly created models that have not been saved
