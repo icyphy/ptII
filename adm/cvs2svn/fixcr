@@ -1,0 +1,18 @@
+#!/bin/sh
+# $Id$
+
+# fixcr - A script that detects and fixes CR problems.
+
+# The issue is that .tex files are checked in with CRLF, CR and/or LF
+#  line terminators.  This script detects the problem and fixes it.
+
+files=`find . -type f | xargs file | grep ASCII | grep "line terminators" | egrep '( CRLF,*| CR,* | LF,* )' | awk -F : '{print $1}'`
+for file in $files
+do
+	echo $file
+	cp $file /tmp/fixcr.tmp
+	dos2unix /tmp/fixcr.tmp
+	sed 's/\r/\n/g' < /tmp/fixcr.tmp > /tmp/fixcr2.tmp
+	diff -wb $file /tmp/fixcr2.tmp
+	cp /tmp/fixcr2.tmp $file 
+done

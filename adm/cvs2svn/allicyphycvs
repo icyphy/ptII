@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#rm -rf repos cvs_icyph tmp.svn
+
+$PTII/adm/cvs2svn/cvsTosvn cvs_icyphy execboard
+$PTII/adm/cvs2svn/cvsTosvn cvs_icyphy icyphy
+$PTII/adm/cvs2svn/cvsTosvn cvs_icyphy icyphywww
+$PTII/adm/cvs2svn/cvsTosvn cvs_icyphy mocs
+

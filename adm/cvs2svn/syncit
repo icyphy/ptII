@@ -1,0 +1,27 @@
+#!/bin/sh
+# $Id:$
+#
+# Copy a repository to source and sync the tree
+
+if [ $# -ne 2 ]; then
+  echo "$0: Usage: $0 repohome rep"
+  echo "For example $0 cvs_terraswarm esweek13"
+  exit 4
+fi
+
+repohome=$1
+repo=$2
+
+cvsrepodir=$PTII/adm/cvs2svn/repos/$repo
+if [ ! -d $cvsrepohome ]; then
+   echo "$0: $cvsrepohome does not exist, run cvsTosvn first."
+   exit 5
+fi
+
+#svn co https://repo.eecs.berkeley.edu/svn/projects/chess/$repo
+set -x
+svnsync initialize --disable-locking  https://repo.eecs.berkeley.edu/svn/projects/$repohome/$repo file://$cvsrepodir
+
+svnsync sync --disable-locking https://repo.eecs.berkeley.edu/svn/projects/$repohome/$repo
+
+

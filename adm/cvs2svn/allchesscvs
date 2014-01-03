@@ -93,8 +93,8 @@ $PTII/adm/cvs2svn/cvsTosvn cvs_chess superb
 $PTII/adm/cvs2svn/cvsTosvn cvs_chess swisp
 $PTII/adm/cvs2svn/cvsTosvn cvs_chess tbd
 $PTII/adm/cvs2svn/cvsTosvn cvs_chess tcl
-$PTII/adm/cvs2svn/cvsTosvn cvs_chess tmp
-$PTII/adm/cvs2svn/cvsTosvn cvs_chess tobesaved
+#$PTII/adm/cvs2svn/cvsTosvn cvs_chess tmp
+#$PTII/adm/cvs2svn/cvsTosvn cvs_chess tobesaved
 $PTII/adm/cvs2svn/cvsTosvn cvs_chess triq
 $PTII/adm/cvs2svn/cvsTosvn cvs_chess trust
 $PTII/adm/cvs2svn/cvsTosvn cvs_chess vw

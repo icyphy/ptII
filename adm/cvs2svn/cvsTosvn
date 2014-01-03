@@ -10,6 +10,7 @@ fi
 cvsrepohome=$1
 cvsrepo=$2
 
+echo "$0 $cvsrepohome $cvsrep: START"
 if [ ! -f "$PTII/adm/cvs2svn/cvsTosvn" ]; then
     echo "$0: Could not find $PTII/adm/cvs2svn/cvsTosvn"
     echo "Perhaps $PTII is not set?"
@@ -33,15 +34,15 @@ fi
 
 cd tmp.cvs/$cvsrepo
 cvs update -P -d
-echo "$0: Checking for -kb problems by invoking $PTII/adm/cvs2svn/fixcvs."
+echo "$0 $cvsrepohome $cvsrep: Checking for -kb problems by invoking $PTII/adm/cvs2svn/fixcvs."
 $PTII/adm/cvs2svn/fixcvs
 status=$?
 
 if [ $status -ne 0 ]; then
-    echo "$0: The list of files to be converted to -kb is in `pwd`/fixme.kb.files"
+    echo "$0$cvsrepohome $cvsrep: The list of files to be converted to -kb is in `pwd`/fixme.kb.files"
     cat fixme.kb.files | $PTII/adm/cvs2svn/kbcvs > /tmp/doit.fixcvs
     sh /tmp/doit.fixcvs
-    echo "$0: Checking for -kb problems --AGAIN--- by invoking $PTII/adm/cvs2svn/fixcvs."
+    echo "$0 $cvsrepohome $cvsrep: Checking for -kb problems --AGAIN--- by invoking $PTII/adm/cvs2svn/fixcvs."
     $PTII/adm/cvs2svn/fixcvs
     status=$?
 fi
@@ -49,7 +50,7 @@ fi
 cd ../..
 
 if [ $status -ne 0 ]; then
-  echo "$0: fixcvs found some problems with files not being checked in.  Quitting."
+  echo "$0 $cvsrepohome $cvsrep: Warning: fixcvs found some problems with files not being checked in.  Quitting."
   exit $status
 fi
 
@@ -70,7 +71,7 @@ fi
 
 
 if [ ! -f $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn ]; then
-    echo "$0: could not find $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn?  see http://cvs2svn.tigris.org/"
+    echo "$0 $cvsrepohome $cvsrep: Warning: could not find $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn?  see http://cvs2svn.tigris.org/. Quitting."
     exit 6
 fi
 
@@ -90,13 +91,17 @@ fi
 
 cd tmp.svn
 svn co $svnrepo
-cd $cvsrepo
-pwd
-svn mv trunk/$cvsrepo/* .
-svn commit -m "After conversion from cvs to svn, moved trunk/$cvsrepo to the toplevel."
-cd ../..
+cd ..
+#cd $cvsrepo
+#pwd
+#svn mv trunk/$cvsrepo/* .
+#svn commit -m "After conversion from cvs to svn, moved trunk/$cvsrepo to the toplevel."
+#cd ../..
 
-diff -w -I '\$Author:' -I '\$Date:' -I '\$Header' -I '\$Revision:' -I '\$Id' -r tmp.cvs/$cvsrepo tmp.svn/$cvsrepo | egrep -v 'Only in.*CVS$'
+diff -w -I '\$Author:' -I '\$Date:' -I '\$Header' -I '\$Log' -I '\$Revision:' -I '\$Id' -r tmp.cvs/$cvsrepo tmp.svn/$cvsrepo/trunk/$cvsrepo | egrep -v 'Only in.*CVS$'
 
+echo "$0: If everything looks good, then the next step is to run"
+echo "$PTII/adm/cvs2svn/syncit $cvsrepohome $cvsrepo"
+echo "$0 $cvsrepohome $cvsrep: END"
 
 

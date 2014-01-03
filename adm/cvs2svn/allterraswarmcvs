@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#rm -rf repos cvs_icyph tmp.svn
+
+
+#$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm execboard
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm esweek13
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm maraudersmap
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm platforms
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm reportauthors
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm seminar
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm services
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm smartcities
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm terraswarm
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm terraswarmadmin
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm terraswarmwww
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm tools
+$PTII/adm/cvs2svn/cvsTosvn cvs_terraswarm xcomm
+
+
+
