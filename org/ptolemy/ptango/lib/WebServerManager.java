@@ -198,7 +198,7 @@ public final class WebServerManager {
 
         if (server == null) {
             throw new Exception("Application " + appInfo.getModelName()
-                    + "attempted to unregister itself for port number "
+                    + " attempted to unregister itself for port number "
                     + portNumber
                     + ", but there is no server associated with this port.");
         }

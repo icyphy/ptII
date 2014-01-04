@@ -342,7 +342,7 @@ public class WebServer extends AbstractInitializableAttribute {
     public void initialize() throws IllegalActionException {
 
         super.initialize();
-
+        
         if (_debugging) {
             _debug("Initializing web server.");
         }
@@ -476,8 +476,8 @@ public class WebServer extends AbstractInitializableAttribute {
             }
         }
 
-        // Throw an exception if resource path is not a valid URI or if a
-        // duplicate path is requested
+        // Throw an exception if resource path is not a valid URI, if a
+        // duplicate path is requested or if the directory does not exist
         try {
             _appInfo.addResourceInfo(new URI(resourcePath.stringValue()),
                     resourceLocations);
@@ -504,15 +504,16 @@ public class WebServer extends AbstractInitializableAttribute {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_debugging) {
-            _debug("Unregistering web server.");
+            _debug("Unregistering web application.");
         }
-        try {
-            _serverManager.unregister(_appInfo, _portNumber);
-        } catch (Exception e) {
-            // Do not throw an exception here, because it will mask an exception
-            // that occurred during trying to register the server.
-            System.err.println("Warning: Failed to unregister web server.\n"
-                    + e);
+        // Only attempt to unregister application if registration was successful
+        if (_serverManager.isRegistered(_appInfo.getModelName(), _portNumber)) {
+            try {
+                _serverManager.unregister(_appInfo, _portNumber);
+            } catch (Exception e) {
+                throw new IllegalActionException(this, e,
+                        "Failed to stop web application.");
+            }
         }
     }
 
@@ -529,5 +530,4 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** The manager for this web application. */
     private WebServerManager _serverManager;
-
 }

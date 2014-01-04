@@ -150,7 +150,7 @@ public class WebApplicationInfo {
      * @param resourcePath  The new resource path to add.  May not be null.
      * @param resourceLocations The non-empty set of resource locations to add
      * @exception If this path is a duplicate of a path already requested by
-     * a servlet
+     * a servlet, or if the resource does not exist
      */
     public void addResourceInfo(URI resourcePath,
             Set<FileResource> resourceLocations) throws Exception {
@@ -161,6 +161,14 @@ public class WebApplicationInfo {
                     + " . Please check servlet paths for matches.");
         }
 
+        for (FileResource resource: resourceLocations) {
+            if (!resource.exists()) {
+                throw new Exception("Resource " + resource.getName() + 
+                        " does not exist. Please check the path and " +
+                        "read permission.");
+            }
+        }
+        
         if (_resourceInfo.containsKey(resourcePath)) {
             _resourceInfo.get(resourcePath).addAll(resourceLocations);
         } else {
