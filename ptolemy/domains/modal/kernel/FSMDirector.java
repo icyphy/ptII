@@ -941,6 +941,17 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // just make the input data available to all refinements, whether
         // they run or not.
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
+        
+        // If the port is not connected, then the input is known to be absent
+        // and we can safely send a clear to the inside.
+        if (port.numberOfSources() == 0) {
+        	// No viable sources of data for this port.
+        	for (Receiver[] receivers : insideReceivers) {
+        		for (Receiver receiver : receivers) {
+        			receiver.clear();
+        		}
+        	}
+        }
 
         for (int i = 0; i < port.getWidth(); i++) {
             try {
