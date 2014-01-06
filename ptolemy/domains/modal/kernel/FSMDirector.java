@@ -944,10 +944,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         
         // If the port is not connected, then the input is known to be absent
         // and we can safely send a clear to the inside.
-        if (port.numberOfSources() == 0) {
-        	// No viable sources of data for this port.
-        	for (Receiver[] receivers : insideReceivers) {
-        		for (Receiver receiver : receivers) {
+        int numberOfSources = port.numberOfSources();
+        if (numberOfSources < insideReceivers.length) {
+        	// At least one inside channel has no viable sources.
+        	for (int i = numberOfSources; i < insideReceivers.length; i++) {
+        		for (Receiver receiver : insideReceivers[i]) {
         			receiver.clear();
         		}
         	}
@@ -959,6 +960,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     if (port.hasToken(i)) {
                         Token t = port.get(i);
                         if (insideReceivers != null
+                        		&& i < insideReceivers.length
                                 && insideReceivers[i] != null) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 insideReceivers[i][j].put(t);
