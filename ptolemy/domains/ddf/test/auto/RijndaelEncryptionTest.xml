@@ -2,100 +2,100 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RijndaelEncryptionTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 502]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A model of the rijndael encryption system, operating in ECB mode.
-This model makes heavy use of the class mechanism in Ptolemy II
-to describe components that are instantiated multiple times in the model.
-
-The algorithm is parameterized to run on 128 bits of data at a time.
-Executing the model displays two windows of data in hex format.
-One window shows 128 bits of encrypted data, while the other displays 
-intermediate results in the encryption process after each 'round'.
-
-For more information about the algorithm, see:
-http://www.esat.kuleuven.ac.be/~rijmen/rijndael/index.html
-http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 240.0}">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of the rijndael encryption system, operating in ECB mode.&#10;This model makes heavy use of the class mechanism in Ptolemy II&#10;to describe components that are instantiated multiple times in the model.&#10;&#10;The algorithm is parameterized to run on 128 bits of data at a time.&#10;Executing the model displays two windows of data in hex format.&#10;One window shows 128 bits of encrypted data, while the other displays &#10;intermediate results in the encryption process after each 'round'">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 21, 761, 619}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 22, 780, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.0, 251.0}">
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The convertToString algorithm (with blue halo)
-is defined here as a single model that is 
-instantiated multiple times.  This class definition 
-is local to the model and stored in the same 
-XML file.  Modifications to this class will propagate
-to all instances.</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The convertToString algorithm (with blue halo)&#10;is defined here as a single model that is &#10;instantiated multiple times.  This class definition &#10;is local to the model and stored in the same &#10;XML file.  Modifications to this class will propagate&#10;to all instances.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 15.0}">
         </property>
     </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Stephen Neuendorffer</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 460.0]">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Stephen Neuendorffer">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 460.0}">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 45.0}">
         </property>
     </property>
     <class name="convertToStringClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -106,9 +106,9 @@ to all instances.</text></svg></configure>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 60.0">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 60.0">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {30, 138, 921, 600}, maximized = false}">
@@ -306,36 +306,33 @@ to all instances.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 305.0]">
             </property>
         </property>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model implements the rijndael block encryption algorithm.
-It consumes a block of 128 bits, encrypts it, and then outputs 128 encrypted bits.
-The 128 bit key to be used is specified by the key parameter (an array of unsigned bytes)
-The roundCount parameter gives the number of cipher rounds that should be performed,
-and should be 10 for 128 bit data and 128 bit key.
-
-Note that this model contains another instance of the convertToString class defined
-at the toplevel, as well as three more class definitions that are used by various
-internal models.
-</text></svg></configure>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, -100.0">
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model implements the rijndael block encryption algorithm.&#10;It consumes a block of 128 bits, encrypts it, and then outputs 128 encrypted bits.&#10;The 128 bit key to be used is specified by the key parameter (an array of unsigned bytes)&#10;The roundCount parameter gives the number of cipher rounds that should be performed,&#10;and should be 10 for 128 bit data and 128 bit key.&#10;&#10;Note that this model contains another instance of the convertToString class defined&#10;at the toplevel, as well as three more class definitions that are used by various&#10;internal models.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, -100.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 996, 684}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1015, 677}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -380,9 +377,9 @@ internal models.
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 220.0">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 220.0">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -494,9 +491,9 @@ internal models.
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 110.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 110.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 83, 1022, 673}, maximized = false}">
@@ -712,11 +709,6 @@ internal models.
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 320.0]">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
-                    </property>
-                </port>
             </entity>
             <entity name="InstanceOfMulTwo" class="MulTwo">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 115.0">
@@ -851,34 +843,38 @@ internal models.
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 175.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-            </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This block implements the key expansion and key selection.
-It basically implements a random number generator that uses
-the 128 bit user key as a seed.</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 420.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 175.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 90, 894, 519}, maximized=false}">
+            <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This block implements the key expansion and key selection.&#10;It basically implements a random number generator that uses&#10;the 128 bit user key as a seed.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 420.0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 90, 894, 509}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -897,9 +893,9 @@ the 128 bit user key as a seed.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 110.0">
-                    </property>
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 110.0">
                     </property>
                 </property>
                 <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -944,12 +940,12 @@ the 128 bit user key as a seed.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 90.0">
-                    </property>
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 90.0">
+                    </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {270, 154, 661, 459}, maximized = false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 154, 661, 457}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -990,29 +986,32 @@ the 128 bit user key as a seed.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 195.0">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
-                        </property>
-                    </port>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <vertex name="vertex1" value="235.0, 160.0">
                     </vertex>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" value="235.0, 190.0">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <vertex name="vertex1" value="{235.0, 190.0}">
                     </vertex>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <vertex name="vertex1" value="235.0, 220.0">
                     </vertex>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                     <vertex name="vertex1" value="235.0, 250.0">
                     </vertex>
                 </relation>
@@ -1096,7 +1095,7 @@ the 128 bit user key as a seed.</text></svg></configure>
                 </property>
             </entity>
             <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
-                <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+                <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 260.0]">
                 </property>
@@ -1112,19 +1111,30 @@ the 128 bit user key as a seed.</text></svg></configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
                     </property>
-                    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
+                        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 65.0">
+                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                         </property>
-                        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                        </property>
+                        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a state machine here (and ports, if needed) and&#10;create refinements for the states. Each refinement needs a director.&#10;For hybrid system models, use the CTEmbeddedDirector.">
+                            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                                </property>
+                                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                                </property>
+                            </property>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 65.0}">
                         </property>
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[536, 350]">
@@ -1133,9 +1143,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="wordsInKey" class="ptolemy.data.expr.Parameter" value="4">
                     </property>
-                    <property name="cycle" class="ptolemy.data.expr.Parameter" value="3">
+                    <property name="cycle" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 150, 751, 467}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 154, 751, 459}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -1155,11 +1165,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <entity name="DoNothing" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="DoNothing">
                         </property>
-                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 225.0">
                         </property>
@@ -1167,11 +1177,11 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <entity name="SubRotWord" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="SubRotWord">
                         </property>
-                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 225.0">
                         </property>
@@ -1185,9 +1195,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.11840474385028849">
                         </property>
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
                     <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1197,9 +1207,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.0231879097395042">
                         </property>
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
                     <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -1211,9 +1221,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.783911495102464">
                         </property>
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
                     <link port="DoNothing.incomingPort" relation="relation"/>
@@ -1229,12 +1239,12 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
+                        </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {50, 147, 849, 459}, maximized = false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 147, 849, 457}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -1277,11 +1287,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 145.0">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="Const" class="ptolemy.actor.lib.Const">
                         <property name="value" class="ptolemy.data.expr.Parameter" value="0ub">
@@ -1343,7 +1348,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                     </entity>
                     <entity name="InstanceOfrotate bytes" class="rotate bytes">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 210.0">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 210.0}">
                         </property>
                     </entity>
                     <entity name="InstanceOfMulTwo" class="MulTwo">
@@ -1404,9 +1409,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 85.0">
-                        </property>
                         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 85.0">
                         </property>
                     </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {270, 154, 582, 459}, maximized = false}">
@@ -1496,7 +1501,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="RoundSequence" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.MultirateFSMDirector">
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 190.0]">
             </property>
@@ -1527,19 +1532,30 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 15.0">
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                    </property>
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a state machine here (and ports, if needed) and&#10;create refinements for the states. Each refinement needs a director.&#10;For hybrid system models, use the CTEmbeddedDirector.">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 15.0}">
                     </property>
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[510, 350]">
@@ -1548,7 +1564,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="round" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 150, 725, 467}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 207, 744, 635}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -1588,7 +1604,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 235.0]">
                     </property>
@@ -1598,7 +1614,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 225.0">
                     </property>
@@ -1610,7 +1626,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="249.49999999999994, 149.78725609151581">
                     </property>
@@ -1624,9 +1640,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07882926725254799">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1638,9 +1654,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.7619274809085654">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -1652,9 +1668,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3263063851542727">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -1666,9 +1682,9 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6516593965849368">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <link port="regular.incomingPort" relation="relation3"/>
@@ -1686,31 +1702,37 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 65.0">
                     </property>
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A normal encryption round.</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 305.0">
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A normal encryption round.">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 305.0}">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {72, 150, 882, 459}, maximized = false}">
@@ -1807,33 +1829,37 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
                     </property>
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The final encryption round, which is similar to a normal encryption round, 
-except that it lacks the MixColumn operation.
-This makes encryption and decryption more symmetric.</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 320.0">
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The final encryption round, which is similar to a normal encryption round, &#10;except that it lacks the MixColumn operation.&#10;This makes encryption and decryption more symmetric.">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 320.0}">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 909, 496}, maximized = false}">
@@ -1922,31 +1948,37 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
                 <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="16">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 60.0">
                     </property>
-                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The 'first' encryption round, which just XORs the key</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 305.0">
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The 'first' encryption round, which just XORs the key">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 305.0}">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 261, 763, 468}, maximized=false}">
@@ -2052,11 +2084,9 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;00000000000000000000000000000000&quot;, &quot;b5c9179eb1cc1199b9c51b92b5c8159d&quot;, &quot;2b65f6374c427c5b2fe3a9256896755b&quot;, &quot;d1015fcbb4ef65679688462076b9d6ad&quot;, &quot;8e17064a2a35a183729fe59ff3a591f1&quot;, &quot;d7557dd55999db3259e2183d558dcdd2&quot;, &quot;73a96a5d7799a5f3111d2b63684b1f7f&quot;, &quot;1b6b853069eefc749afefd7b57a04cd1&quot;, &quot;107eeadfb6f77933b5457a6f08f046b2&quot;, &quot;8ec166481a677aa96a14ff6ece88c010&quot;, &quot;9e04a98f7994e79c869f4c1bcfb078da&quot;, &quot;cd459f42601077318700dd2edaf17d12&quot;, &quot;20033eb56f275e3558d98f3da914815f&quot;, &quot;6b6c88b08206c2b938fdabf8e3638e65&quot;, &quot;b05e6fcfbb6608a6c8d93fa858249d90&quot;, &quot;8096d245ce11e5bbd588503de838f3d5&quot;, &quot;567c7e9da9c0766f0849684c06ed0f19&quot;, &quot;3981b6714c84279608b382804dbb495e&quot;, &quot;c3a2f908a49b77bb8eb4af396fe55f1c&quot;, &quot;d0a0f6a26d052baca8d4b407dc6852c8&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;00000000000000000000000000000000&quot;, &quot;6f6f6f6f6b6a6968636363630d0d0e0f&quot;, &quot;a2aebc9681b741f10883c388446692b0&quot;, &quot;2f958e12f096cde9832b4251d80c0cf7&quot;, &quot;29dfaf73c850084c5bb8a3bf0b9448e7&quot;, &quot;0dc885d461fdb81701ed21062e95dcc7&quot;, &quot;bc25e212f9a8b628a97c18c7d5b1ca5f&quot;, &quot;acc9075df0c849044efd740aca54c129&quot;, &quot;717f2951c3e90fb01de278bc3d2b4884&quot;, &quot;35e69a00cdd22c68ac958bc87dc926e2&quot;, &quot;a8f5c77de956a017152672cb34eb8ea1&quot;, &quot;b55be018b56e32f9c45fb73f4809f77e&quot;, &quot;7713bb1175e463ec6870aa8384cfde99&quot;, &quot;13292c271d34f4a050c00809fd23711a&quot;, &quot;88ccb36f7124d8bdbed039885588a74b&quot;, &quot;1708633edef7277903b404a536db90fb&quot;, &quot;6cd1bfe25105fb385afdb224b8b0d065&quot;, &quot;9dfd27c16215151da45fdfde7b70f4c8&quot;, &quot;039544382fc10cc91a67775fa697d408&quot;, &quot;c57fd1ea6257feda9ab28ca3b380c7ac&quot;}">
             </property>
-            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 230.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 235.0]">
             </property>
         </entity>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -2071,9 +2101,7 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="text" relation="relation2"/>
         <link port="cipher" relation="relation"/>
@@ -2084,11 +2112,11 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         <link port="RoundSequence.last cipher" relation="relation8"/>
         <link port="RoundSequence.intermediate cipher" relation="relation8"/>
         <link port="convertToString.port" relation="relation8"/>
-        <link port="convertToString.port2" relation="relation4"/>
-        <link port="Test.input" relation="relation4"/>
+        <link port="convertToString.port2" relation="relation3"/>
+        <link port="Test.input" relation="relation3"/>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0x0ub">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0x0ub">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0x1ub">
         </property>
@@ -2101,9 +2129,11 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0a940bb5416ef045f1c39458c653ea5a&quot;, &quot;881fb6c4480b01432f383b4b553f8fdf&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;72e2089ff88d940d61a16695a33d9181&quot;, &quot;6cbd738af35d26ba614c3206d40a0eae&quot;}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{460, 205}">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 205.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -2112,14 +2142,12 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="rijndael.text" relation="relation"/>
     <link port="rijndael.cipher" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="convertToString.port" relation="relation2"/>
-    <link port="convertToString.port2" relation="relation4"/>
-    <link port="Test.input" relation="relation4"/>
+    <link port="convertToString.port2" relation="relation3"/>
+    <link port="Test.input" relation="relation3"/>
 </entity>
