@@ -7,9 +7,20 @@ Requirements: we assume that you have a
 - JDK1.5 or newer
 - the ant tool
 
+Note that $PTII/lib/jcerti.jar contains a recent version of JCERTI
+that was by following the instructions below.
+
+You can use $PTII/lib/jcerti.jar or you can recreate it using the steps below.
+
+As of Jan. 6, 2014, the last significant changes in the JCERTI cvs tree were:
+
+2376571        8 -rw-r--r--    1 cxh              staff                1806 Oct 16  2012 ./src/certi/logging/StreamListener.java
+2376631      352 -rw-r--r--    1 cxh              staff              180063 Oct 16  2012 ./src/certi/rti/impl/CertiRtiAmbassador.java
+2377729        8 -rw-r--r--    1 cxh              staff                  16 Oct  2 04:43 ./src_test/certi/certi.properties
+
 ###################################
 1) Installation process (summary):
-
+https://savannah.nongnu.org/bugs/?40977
 	1.	Get the last JCERTI cvs source
 	2.	cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/certi co jcerti
 	3.	Go to the JCERTI cvs folder downloaded

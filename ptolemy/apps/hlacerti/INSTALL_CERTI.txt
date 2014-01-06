@@ -13,13 +13,24 @@ Requirements: we assume that you have a
 	1.	Get the last CERTI cvs source using the command: 
 	
 	      cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/certi co certi
-	
+	      
+	      Note: 2014-12-20, the CVS head was broken,
+	      see https://savannah.nongnu.org/bugs/?40977
+	      
+	      Instead, try:
+	      wget  http://download.savannah.gnu.org/releases/certi/CERTI-3.4.2-Source.tar.gz
+	      tar -zxf CERTI-3.4.2-Source.tar.gz
+
 	2.	Go to the CERTI cvs folder downloaded
+	           cd CERTI-3.4.2-Source
 	3.	Create the folder 'build_certi' and go to this folder
-	4.	Run 'cmake -DCMAKE_INSTALL_PREFIX=<path_for_scripts_and_binaries> -DCERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL=ON ../'. 
+	           mkdir build_certi
+		   cd build_certi
+   	4.	Run cmake:
+	           cmake -DCMAKE_INSTALL_PREFIX=<path_for_scripts_and_binaries> -DCERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL=ON ../
 		All  files required to build CERTI are stored in the 'build_certi' folder.
-	5.	Run 'make'
-	6.	Run 'make install'
+	5.	Run make
+	6.	Run make install
 
 Note: In your current terminal, you'll see  information about the (correct) build 
 of CERTI and where are stored the different environment scripts used to set the 
