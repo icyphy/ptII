@@ -12,7 +12,9 @@
 
 # The cvsTosvn script created a fixme.kb.files file
 
-awk '{print $1}' |
+# fixme.kb.files might have spaces in the file names.
+#awk '{print $1}' |
+
 awk -F / ' NF > 1  {
      if (last == "") {
          last = $1
@@ -30,7 +32,7 @@ awk -F / ' NF > 1  {
      }
      filenames = filenames $NF
      if (length(filenames) > 0 && filenames !~ /fixme.kb.files/ ) {
-         if ( filenames ~/^.\//) {
+         if ( filenames ~/^.\// || filenames ~ /^ /) {
              filenames = substr(filenames, 2, length(filenames) - 1);
          }
          print "(cd " last "; cvs admin -kb \"" filenames  "\")"

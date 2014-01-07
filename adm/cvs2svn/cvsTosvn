@@ -10,7 +10,7 @@ fi
 cvsrepohome=$1
 cvsrepo=$2
 
-echo "$0 $cvsrepohome $cvsrep: START"
+echo "$0 $cvsrepohome $cvsrepo: START"
 if [ ! -f "$PTII/adm/cvs2svn/cvsTosvn" ]; then
     echo "$0: Could not find $PTII/adm/cvs2svn/cvsTosvn"
     echo "Perhaps $PTII is not set?"
@@ -32,17 +32,22 @@ if [ ! -d tmp.cvs/$cvsrepo ]; then
   cd ..
 fi
 
+if [ ! -d tmp.cvs/$cvsrepo ]; then
+    echo "$0 $cvsrepohome $cvsrepo: Error: `pwd` tmp.cvs/$cvsrepo does not exist! Quitting."
+    exit 55
+fi
+
 cd tmp.cvs/$cvsrepo
 cvs update -P -d
-echo "$0 $cvsrepohome $cvsrep: Checking for -kb problems by invoking $PTII/adm/cvs2svn/fixcvs."
+echo "$0 $cvsrepohome $cvsrepo: Checking for -kb problems by invoking $PTII/adm/cvs2svn/fixcvs."
 $PTII/adm/cvs2svn/fixcvs
 status=$?
 
 if [ $status -ne 0 ]; then
-    echo "$0$cvsrepohome $cvsrep: The list of files to be converted to -kb is in `pwd`/fixme.kb.files"
+    echo "$0$cvsrepohome $cvsrepo: The list of files to be converted to -kb is in `pwd`/fixme.kb.files"
     cat fixme.kb.files | $PTII/adm/cvs2svn/kbcvs > /tmp/doit.fixcvs
     sh /tmp/doit.fixcvs
-    echo "$0 $cvsrepohome $cvsrep: Checking for -kb problems --AGAIN--- by invoking $PTII/adm/cvs2svn/fixcvs."
+    echo "$0 $cvsrepohome $cvsrepo: Checking for -kb problems --AGAIN--- by invoking $PTII/adm/cvs2svn/fixcvs."
     $PTII/adm/cvs2svn/fixcvs
     status=$?
 fi
@@ -50,7 +55,7 @@ fi
 cd ../..
 
 if [ $status -ne 0 ]; then
-  echo "$0 $cvsrepohome $cvsrep: Warning: fixcvs found some problems with files not being checked in.  Quitting."
+  echo "$0 $cvsrepohome $cvsrepo: Warning: fixcvs found some problems with files not being checked in.  Quitting."
   exit $status
 fi
 
@@ -71,14 +76,14 @@ fi
 
 
 if [ ! -f $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn ]; then
-    echo "$0 $cvsrepohome $cvsrep: Warning: could not find $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn?  see http://cvs2svn.tigris.org/. Quitting."
+    echo "$0 $cvsrepohome $cvsrepo: Warning: could not find $PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn?  see http://cvs2svn.tigris.org/. Quitting."
     exit 6
 fi
 
 echo "Converting the cvs repository `pwd`."
 set -x
 
-$PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn --default-eol=native --auto-props=/home/cxh/.subversion/config --fallback-encoding=utf8 -s repos/$cvsrepo $cvsrepohome/$cvsrepo/$cvsrepohome
+$PTII/adm/cvs2svn/cvs2svn-2.4.0/cvs2svn --default-eol=native --auto-props=/home/cxh/.subversion/config --encoding=ascii --encoding=utf8 --encoding=iso-8859-1 --fallback-encoding=utf8 -s repos/$cvsrepo $cvsrepohome/$cvsrepo/$cvsrepohome
 set +x
 
 echo "Checking out the $cvsrepo svn repository."
@@ -102,6 +107,6 @@ diff -w -I '\$Author:' -I '\$Date:' -I '\$Header' -I '\$Log' -I '\$Revision:' -I
 
 echo "$0: If everything looks good, then the next step is to run"
 echo "$PTII/adm/cvs2svn/syncit $cvsrepohome $cvsrepo"
-echo "$0 $cvsrepohome $cvsrep: END"
+echo "$0 $cvsrepohome $cvsrepo: END"
 
 

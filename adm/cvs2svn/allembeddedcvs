@@ -13,7 +13,7 @@
 # Done$PTII/adm/cvs2svn/cvsTosvn cvs_embedded cases
 # Done Almost empty $PTII/adm/cvs2svn/cvsTosvn cvs_embedded compaan
 # Done Had a release/ directory $PTII/adm/cvs2svn/cvsTosvn cvs_embedded compose
-$PTII/adm/cvs2svn/cvsTosvn cvs_embedded concurrency
+# Done, though there were some missing files. $PTII/adm/cvs2svn/cvsTosvn cvs_embedded concurrency
 # Done $PTII/adm/cvs2svn/cvsTosvn cvs_embedded cosi
 # Done $PTII/adm/cvs2svn/cvsTosvn cvs_embedded dif
 # Done $PTII/adm/cvs2svn/cvsTosvn cvs_embedded diva
