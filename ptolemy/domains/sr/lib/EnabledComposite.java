@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// EnabledComposite
@@ -82,7 +83,28 @@ import ptolemy.kernel.util.StringAttribute;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class EnabledComposite extends TypedCompositeActor {
-    /** Construct an actor in the specified container with the specified
+
+    // NOTE: this might be non-strict because it may
+    // contain actors that are non-strict.
+
+	/** Construct an actor in the specified workspace.
+	 *  This constructor is provided so that this can be a top-level.
+	 *  Making it a top level only makes sense if it is a class definition,
+	 *  however.
+     *  @param workspace The workspace.
+     *  @exception IllegalActionException If constructing the ports and
+     *   inside director throws it.
+     *  @exception NameDuplicationException If constructing the ports and
+     *   inside director throws it.
+     */
+    public EnabledComposite(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+
+        _init();
+    }
+
+	/** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
      *  @param name The name of this actor within the container.
@@ -95,23 +117,7 @@ public class EnabledComposite extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // NOTE: this might be non-strict because it may
-        // contain actors that are non-strict.
-
-        enable = new TypedIOPort(this, "enable", true, false);
-        enable.setTypeEquals(BaseType.BOOLEAN);
-
-        StringAttribute controlCardinal = new StringAttribute(enable,
-                "_cardinal");
-        controlCardinal.setExpression("SOUTH");
-
-        Location location = new Location(enable, "_location");
-        location.setExpression("[140.0, 35.0]");
-
-        // Create an inside director.
-        SRDirector director = new SRDirector(this, "SRDirector");
-        location = new Location(director, "_location");
-        location.setExpression("[65.0, 35.0]");
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -162,6 +168,31 @@ public class EnabledComposite extends TypedCompositeActor {
         }
         return prefireReturnValue;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+	/** Create the enable port and inside director.
+	 *  @throws IllegalActionException If creating these things throws it.
+	 *  @throws NameDuplicationException If creating these things throws it.
+	 */
+	private void _init() throws IllegalActionException,
+			NameDuplicationException {
+		enable = new TypedIOPort(this, "enable", true, false);
+        enable.setTypeEquals(BaseType.BOOLEAN);
+
+        StringAttribute controlCardinal = new StringAttribute(enable,
+                "_cardinal");
+        controlCardinal.setExpression("SOUTH");
+
+        Location location = new Location(enable, "_location");
+        location.setExpression("[140.0, 35.0]");
+
+        // Create an inside director.
+        SRDirector director = new SRDirector(this, "SRDirector");
+        location = new Location(director, "_location");
+        location.setExpression("[65.0, 35.0]");
+	}
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
