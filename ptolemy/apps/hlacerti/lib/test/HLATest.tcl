@@ -64,6 +64,8 @@ proc runModel {modelFileName outputStream} {
     return $model
 }
 
+puts "HLATest.tcl: Be sure to source certi/share/scripts/myCERTI_env.sh"
+
 ######################################################################
 #### Run two HLA models
 #
