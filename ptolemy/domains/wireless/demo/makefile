@@ -51,7 +51,6 @@ DIRS = \
 # NOTE: If you add these to DIRS above, add them in alphabetical order
 #       and add an entry to PTCLASSALLJARS below.
 OTHER_DIRS = \
-	MACProtocolModel \
 	PersonalAreaNetwork
 
 # Root of Ptolemy II directory
