@@ -293,7 +293,11 @@ For example:
 	   includeAntRuntime="false"
 	   fork="true"
 	   memoryinitialsize="256m"
-	   memorymaximumsize="1500m"
+
+	   <!-- Try memorymaximumsize="1400m" so that we don't have
+	   problems under 32-bit Windows.  See
+	   http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
+	   memorymaximumsize="1400m"
 	   source="${source}"
 	   target="${target}">
       <src path="${basedir}" />
@@ -530,7 +534,11 @@ For example:
 	   includeAntRuntime="false"
 	   fork="true"
 	   memoryinitialsize="256m"
-	   memorymaximumsize="1500m"
+
+	   <!-- Try memorymaximumsize="1400m" so that we don't have
+	   problems under 32-bit Windows.  See
+	   http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
+	   memorymaximumsize="1400m"
 	   source="${source}"
 	   target="${target}">
       <src path="${basedir}/doc/doclets" />
