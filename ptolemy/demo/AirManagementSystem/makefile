@@ -55,6 +55,9 @@ EXAMPLE_MODELS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
+	AMS_AMSSim.fmu \
+	AMS_AMSSim.xml \
+	AMS.mo \
 	FlowChart.pdf \
 	NEWamsStateSpaceModel.pdf
 

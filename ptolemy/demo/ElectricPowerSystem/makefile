@@ -64,6 +64,8 @@ OTHER_FILES_TO_BE_JARED = \
 	GeneratorTest.mo \
 	InformalDiagram.pdf \
 	Overview.xml \
+	OverviewEvenSimpler.xml \
+	OverviewSimpler.xml \
 	Specification.txt \
 	TimingConstraint.txt \
 	onOffSupervisor.fmu \

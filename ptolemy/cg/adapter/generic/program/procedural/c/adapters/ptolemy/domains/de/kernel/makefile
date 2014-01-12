@@ -79,6 +79,7 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	test \
 	demo \
 	'DEDirector$$1.class' \
 	'DEDirector$$PortInfo.class' \

@@ -82,6 +82,7 @@ OPTIONAL_FILES = \
 	'ThreadedYieldAdapter$$1$$2.class' \
 	'ThreadedYieldAdapter$$1.class' \
 	'ThreadedYieldAdapter$$AbortedMessage.class' \
+	'ThreadedYieldAdapter$$IllegalActionMessage.class' \
 	'ThreadedYieldAdapter$$EndMessage.class' \
 	'ThreadedYieldAdapter$$Message.class' \
 	'ThreadedYieldAdapter$$StopMessage.class' \
