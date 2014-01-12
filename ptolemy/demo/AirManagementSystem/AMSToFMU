@@ -1,0 +1,10 @@
+#!/bin/sh
+# $Id$
+# Export the AMS.mo model as a fmu using jmodelica
+
+/usr/local/jmodelica/bin/jm_python.sh <<EoF
+from pymodelica import compile_fmu
+model_name = 'AMS'
+mo_file ='AMS.mo'
+my_fmu =compile_fmu(model_name, mo_file, target='cs')
+EoF
