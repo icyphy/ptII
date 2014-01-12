@@ -2603,6 +2603,41 @@ if test -z "$PTJAVAMAIL_DIR"; then
 fi 
 
 #--------------------------------------------------------------------
+#       Ptolemy includes one or more FMUs that use JModelica
+#       
+#--------------------------------------------------------------------
+
+# PTJMODELICA_DIR is set to jmodelica if JModelica was found
+# $PTII/ptolemy/actor/lib/fmi/fmus/makefile uses PTJMODELICA_DIR
+PTJMODELICA_DIR=
+
+# Directory that contains JModelica.
+JMODELICA_HOME=
+
+# PTJMODELICA_PACKAGES is used in doc/makefile
+PTJMODELICA_PACKAGES=
+
+# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+JMODELICA_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica"
+if test ! -d "$JMODELICA_USER_DIR"; then
+    PT_MSG_STATUS([$JMODELICA_USER_DIR is not present,
+    so we need not find JModelica.])
+else
+    AC_MSG_CHECKING([for JModelica])
+    if test -f "/usr/local/jmodelica/include/jmi.h"; then
+        PT_MSG_RESULT([/usr/local/jmodelica/include/jmi.h])
+	JMODELICA_HOME="/usr/local/jmodelica"
+	PTJMODELICA_DIR=jmodelica
+	PTJMODELICA_PACKAGES=""
+    else
+        AC_MSG_WARN([Failed to find /usr/local/jmodelica/include/jmi.h
+    which is part of JModelica.    	
+    Ptolemy optionally includes one or more FMUs that use JModelica.
+    To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL])
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information, 
 #       see http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html
@@ -5638,6 +5673,9 @@ AC_SUBST(JVERSION)
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 AC_SUBST(JMF_JARS)
 
+# Directory that contains JModelica.
+AC_SUBST(JMODELICA_HOME)
+
 # Java Native Access jar file (jna.jar).  See
 # https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
 AC_SUBST(JNA_JAR)
@@ -5974,6 +6012,13 @@ AC_SUBST(PTJMF_DIR)
 # Ptolemy II packages that use Java Media Framwork
 # PTJMF_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJMF_PACKAGES)
+
+# PTJMODELICA_DIR is set to jmodelica if JModelica was found
+# $PTII/ptolemy/actor/lib/fmi/fmus/makefile uses PTJMODELICA_DIR
+AC_SUBST(PTJMODELICA_DIR)
+
+# PTJMODELICA_PACKAGES is used in doc/makefile
+AC_SUBST(PTJMODELICA_PACKAGES)
 
 # JNI architecture, used to compile C files
 AC_SUBST(PTJNI_ARCHITECTURE)

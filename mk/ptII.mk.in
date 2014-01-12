@@ -302,6 +302,10 @@ JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-e
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 JMF_JARS =	@JMF_JARS@
 
+# Directory that contains JModelica.
+JMODELICA_HOME =	@JMODELICA_HOME@
+
+
 # Java Native Access jar file (jna.jar).  See
 # https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
 JNA_JAR =	@JNA_JAR@
@@ -640,6 +644,13 @@ PTJMF_DIR =     @PTJMF_DIR@
 # Ptolemy II packages that use Java Media Framwork
 # PTJMF_PACKAGES is used in ptII/doc/makefile
 PTJMF_PACKAGES =	@PTJMF_PACKAGES@
+
+# PTJMODELICA_DIR is set to jmodelica if JModelica was found
+# $PTII/ptolemy/actor/lib/fmi/fmus/makefile uses PTJMODELICA_DIR
+PTJMODELICA_DIR =	@PTJMODELICA_DIR@
+
+# PTJMODELICA_PACKAGES is used in doc/makefile
+PTJMODELICA_PACKAGES =	@PTJMODELICA_PACKAGES@
 
 # JNI architecture, used to compile C files
 PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
