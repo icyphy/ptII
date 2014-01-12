@@ -18,6 +18,18 @@
   <!-- Location of findbugs, which does static analysis on the code.  findbugs-1.3.9 does not terminate, so use 1.3.8, which takes 5 minutes.  findbugs-2.0.1 takes 35 minutes. -->
   <property name="findbugs.home" value="${basedir}/vendors/findbugs-1.3.8" />
 
+  <!-- The value of the memorymaximumsize javac and maxmemorysize and java parameter 
+       We use 1400m so that we don't have problems under 32-bit
+       Windows.  See
+       http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
+  <property name="java.maxmemory" value="1400m" />
+
+  <!-- The value of the maxmemorysize and java parameter for tests
+       that consume a lot of memory.  This will probably not work
+       under 32-bit Windows.  See
+       http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
+  <property name="java.maxmemory.large" value="3500m" />
+
   <!-- Packages to exclude from targets that call javadoc.
        Unfortunately, <fileset> results in a command line that is too long.
        Grab the packages from ptII.excludes, put them in a file called /tmp/e and run
@@ -293,11 +305,7 @@ For example:
 	   includeAntRuntime="false"
 	   fork="true"
 	   memoryinitialsize="256m"
-
-	   <!-- Try memorymaximumsize="1400m" so that we don't have
-	   problems under 32-bit Windows.  See
-	   http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
-	   memorymaximumsize="1400m"
+	   memorymaximumsize="${java.maxmemory}"
 	   source="${source}"
 	   target="${target}">
       <src path="${basedir}" />
@@ -353,7 +361,7 @@ For example:
     <javadoc destdir="${ptII.reports}/doccheck"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
-	     maxmemory="1000m"
+	     maxmemory="${java.maxmemory}"
 	     useexternalfile="true">
       <classpath>
 	<path refid="ptII.classpath" />
@@ -469,7 +477,7 @@ For example:
     <javadoc destdir="doc/codeDoc"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
-	     maxmemory="1000m"
+	     maxmemory="${java.maxmemory}"
 	     sourcepath="${basedir}">
       <classpath>
 	<path refid="ptII.classpath" />
@@ -489,7 +497,7 @@ For example:
     </echo>
     <java classname="ptolemy.moml.filter.ActorIndex"
 	  fork="true"
-	  maxmemory="1000m"
+	  maxmemory="${java.maxmemory}"
 	  >
       <arg line="doc/codeDoc/allNamedObjs.txt ptolemy/configs/doc/models.txt doc/codeDoc"/>
       <classpath>
@@ -506,7 +514,7 @@ For example:
 	     additionalparam="-tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
-	     maxmemory="1000m"
+	     maxmemory="${java.maxmemory}"
 	     sourcepath="${basedir}">
       <classpath>
 	<path refid="ptII.classpath" />
@@ -534,11 +542,7 @@ For example:
 	   includeAntRuntime="false"
 	   fork="true"
 	   memoryinitialsize="256m"
-
-	   <!-- Try memorymaximumsize="1400m" so that we don't have
-	   problems under 32-bit Windows.  See
-	   http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
-	   memorymaximumsize="1400m"
+	   memorymaximumsize="${java.maxmemory}"
 	   source="${source}"
 	   target="${target}">
       <src path="${basedir}/doc/doclets" />
@@ -560,7 +564,7 @@ For example:
     <javadoc additionalparam="-xhtml -file ${ptII.reports}/ojdcheck/ojdcheck.htm"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
-	     maxmemory="1000m"
+	     maxmemory="${java.maxmemory}"
 	     sourcepath="${basedir}">
       <classpath>
 	<path refid="ptII.classpath" />
@@ -728,7 +732,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="1500m"
+	   maxmemory="${java.maxmemory}"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
 	   timeout="${timeout}">
@@ -761,7 +765,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir32"
-	   maxmemory="1500m"
+	   maxmemory="${java.maxmemory}"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
 	   timeout="${timeout}">
@@ -793,7 +797,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="3500m"
+	   maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
 	   timeout="${timeout.long}">
@@ -823,7 +827,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="3500m"
+	   maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.longest}">
