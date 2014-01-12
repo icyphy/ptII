@@ -3238,6 +3238,9 @@
         <include name="org/ptolemy/ptango/lib/xmpp/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/lib/xmpp/img/*.gif"/>
+      </fileset>
+      <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/lib/xmpp/*.xml"/>
       </fileset>
     </jar>
