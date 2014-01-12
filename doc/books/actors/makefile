@@ -1,9 +1,9 @@
-# Makefile for the Ptolemy II books
+# Makefile for the Ptolemy II Actors book
 #
 # Version: $Id$
 # Makefile Author: Christopher Brooks
 #
-# Copyright (c) 2009-2012 The Regents of the University of California.
+# Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,22 +29,30 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books
+ME =		doc/books/actors
 
 # Sub directories to run make in.
-DIRS =		actors embedded systems
+DIRS =		continuous
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	books
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	actors
+PTCLASSJAR =
 
-OTHER_FILES_TO_BE_JARED =
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	continuous/continuous.jar
+
+OTHER_FILES_TO_BE_JARED = \
+	chapter.mk \
+	index.html.in \
+	toc.htm \
+	updateModels
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
@@ -61,5 +69,17 @@ OPTIONAL_FILES =
 all: suball
 install: all jars
 
+allJnlps:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making all in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) CHAPTER=$$x JNLP_MODEL_DIRECTORY=$(ME)/$$x jnlps ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk

@@ -1,9 +1,9 @@
-# Makefile for the Ptolemy II books
+# Makefile fragment for the Ptolemy II Actor book to be included by each chapter.
 #
 # Version: $Id$
 # Makefile Author: Christopher Brooks
 #
-# Copyright (c) 2009-2012 The Regents of the University of California.
+# Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,26 +29,37 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books
+# Directories that contain models should have a makefile that contains:
+# CHAPTER=architecture
+# EXAMPLE_MODELS = \
+# 	model1.xml \
+#	model2.xml      
+# include ../chapter.mk
+
+ME =		doc/books/actors/$(CHAPTER)
 
 # Sub directories to run make in.
-DIRS =		actors embedded systems
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	books
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	$(CHAPTER)
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+# Used to build jar files
+PTPACKAGE = 	$(CHAPTER)
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
+OTHER_FILES_TO_BE_JARED = \
+	$(CHAPTER_FILES_TO_BE_JARED)
 
-KRUFT =
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) $(EXAMPLE_MODELS) $(EXAMPLE_SUBMODELS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -56,10 +67,20 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	index.html.in
 
-all: suball
-install: all jars
+KRUFT = *.jar *.jnlp *.jnlp.fixed *.htm doc
 
-# We don't include common.mk since we don't use the compiler here
+all: jclass
+install: jclass jars
+
+echo_models:
+	@echo "$(EXAMPLE_MODELS) $(EXAMPLE_SUBMODELS)" | awk '{for(i=1;i<=NF;i++) {print $$i}}' | sort
+
+# The main target for this file is "jnlps", which is defined in $PTII/mk/ptcommon.mk
+# For how to call this for the Ptolemy book, see ptbook/workspace/makefile.
+# For an example that is in the ptII repo, see the $PTII/mk/jnlp.mk file.
+
+# We don't include common.mk since we don't use the compiler here.
 include $(ROOT)/mk/ptno-compile.mk
