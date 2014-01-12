@@ -1395,7 +1395,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         System.out.println("CCodeGenerator._generateCode(): Deleting " + directory);
         if (!FileUtilities.deleteDirectory(directory)) {
-            throw new IllegalActionException(this, ex, "Failed to delete \""
+            throw new IllegalActionException(this, "Failed to delete \""
                     + directory + "\"");                
         }
 
