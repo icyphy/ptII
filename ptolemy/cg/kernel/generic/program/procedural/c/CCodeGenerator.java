@@ -1393,12 +1393,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         String directoryCommons = directory + "commons/";
 
-        try {
-            _deleteDirectory(directory);
-        } catch (IOException ex) {
+        System.out.println("CCodeGenerator._generateCode(): Deleting " + directory);
+        if (!FileUtilities.deleteDirectory(directory)) {
             throw new IllegalActionException(this, ex, "Failed to delete \""
-                    + directory + "\"");
+                    + directory + "\"");                
         }
+
         // add the includes to the makefile
         if (!_includes.contains("-I " + directoryCommons)) {
             _includes.add("-I " + directoryCommons);
@@ -3421,25 +3421,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         types.addAll(_newTypesUsed);
         //System.out.println("CCodeGenerator: all referenced types: " + types);
         return types;
-    }
-
-    /** Delete a directory.
-     *  @exception IOException Thrown if a subdiretory cannot be deleted.
-     */
-    static private void _deleteDirectory(String emplacement) throws IOException {
-        File path = new File(emplacement);
-        if (path.exists()) {
-            File[] files = path.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    _deleteDirectory(files[i].getAbsolutePath());
-                }
-                if (!files[i].delete()) {
-                    throw new IOException("Failed to delete \"" + files[i]
-                            + "\"");
-                }
-            }
-        }
     }
 
     /** Return true if include/jni.h is found. */
