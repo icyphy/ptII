@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/ptango/lib/xmpp
 
-DIRS =	test
+DIRS =		img test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -46,7 +46,8 @@ include $(CONFIG)
 PTPACKAGE = 	xmpp
 PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
-# PTCLASSALLJARS =
+# PTCLASSALLJARS = \
+	img/img.jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
@@ -57,13 +58,16 @@ JSRCS = \
 	XMPPSubscriber.java
 
 OTHER_FILES_TO_BE_JARED = \
+	XMPPGatewayIcon.xml \
+	XMPPSinkIcon.xml \
+	XMPPSourceIcon.xml \
 	xmpp.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Non-source files such as README files and subdirectories
-MISC_FILES =
+MISC_FILES = img
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="XMPPSourceIcon" class="ptolemy.vergil.icon.EditorIcon">
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/lib/xmpp/img/xmpp-source.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/lib/xmpp/img/XMPPSourceIcon.gif">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-38.0, -32.0]">
         </property>

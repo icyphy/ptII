@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/ptolemy/ptango/lib/img
+ME =		org/ptolemy/ptango/lib/xmpp/img
 
 DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
@@ -44,10 +44,12 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	img
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	trapdoorfemale.gif
+	XMPPGatewayIcon.gif \
+	XMPPSinkIcon.gif \
+	XMPPSourceIcon.gif
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

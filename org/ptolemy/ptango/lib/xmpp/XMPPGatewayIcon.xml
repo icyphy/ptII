@@ -5,7 +5,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/lib/xmpp/img/xmpp-logo.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/lib/xmpp/img/XMPPGatewayIcon.gif">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.0, -43.0]">
         </property>
