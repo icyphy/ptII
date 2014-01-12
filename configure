@@ -706,6 +706,8 @@ PTJNI_LIB_ARCHITECTURE
 PTJNI_DL_LIBRARY
 PTJNI_INCLUDE
 PTJNI_ARCHITECTURE
+PTJMODELICA_PACKAGES
+PTJMODELICA_DIR
 PTJMF_PACKAGES
 PTJMF_DIR
 PTJETTY_JAR
@@ -799,6 +801,7 @@ JYTHON_DIR
 JUNIT_JARS
 JODE_CLASSES
 JNA_JAR
+JMODELICA_HOME
 JMF_JARS
 JVERSION
 JJTREE_OPTIONS
@@ -8211,6 +8214,50 @@ if test -z "$PTJAVAMAIL_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       Ptolemy includes one or more FMUs that use JModelica
+#
+#--------------------------------------------------------------------
+
+# PTJMODELICA_DIR is set to jmodelica if JModelica was found
+# $PTII/ptolemy/actor/lib/fmi/fmus/makefile uses PTJMODELICA_DIR
+PTJMODELICA_DIR=
+
+# Directory that contains JModelica.
+JMODELICA_HOME=
+
+# PTJMODELICA_PACKAGES is used in doc/makefile
+PTJMODELICA_PACKAGES=
+
+# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+JMODELICA_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica"
+if test ! -d "$JMODELICA_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JMODELICA_USER_DIR is not present,
+    so we need not find JModelica." >&5
+$as_echo "$JMODELICA_USER_DIR is not present,
+    so we need not find JModelica." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JModelica" >&5
+$as_echo_n "checking for JModelica... " >&6; }
+    if test -f "/usr/local/jmodelica/include/jmi.h"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: /usr/local/jmodelica/include/jmi.h" >&5
+$as_echo "/usr/local/jmodelica/include/jmi.h" >&6; }; fi
+	JMODELICA_HOME="/usr/local/jmodelica"
+	PTJMODELICA_DIR=jmodelica
+	PTJMODELICA_PACKAGES=""
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+    which is part of JModelica.
+    Ptolemy optionally includes one or more FMUs that use JModelica.
+    To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL" >&5
+$as_echo "$as_me: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+    which is part of JModelica.
+    Ptolemy optionally includes one or more FMUs that use JModelica.
+    To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL" >&2;}
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information,
 #       see http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html
@@ -12667,6 +12714,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 
 
+# Directory that contains JModelica.
+
+
 # Java Native Access jar file (jna.jar).  See
 # https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
 
@@ -13002,6 +13052,13 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Ptolemy II packages that use Java Media Framwork
 # PTJMF_PACKAGES is used in ptII/doc/makefile
+
+
+# PTJMODELICA_DIR is set to jmodelica if JModelica was found
+# $PTII/ptolemy/actor/lib/fmi/fmus/makefile uses PTJMODELICA_DIR
+
+
+# PTJMODELICA_PACKAGES is used in doc/makefile
 
 
 # JNI architecture, used to compile C files
