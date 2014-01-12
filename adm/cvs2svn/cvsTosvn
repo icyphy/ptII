@@ -66,7 +66,15 @@ if [ ! -d $cvsrepohome/$cvsrepo ]; then
       mkdir -p $cvsrepohome/$cvsrepo
   fi
   echo "Creating $cvsrepohome/$cvsrepo from source.eecs."
-  ssh source "cd /home; gtar zcf - --exclude=commitlogs $cvsrepohome/CVSROOT $cvsrepohome/$cvsrepo" > $cvsrepohome/$cvsrepo.tar.gz
+  cvsdir=/home
+  if [ $cvsrepohome = "cvs_trust" ]; then
+      cvsdir=/export/home2
+      echo "$0: cvsrepohome = $cvsrepohome, so we are using $cvsdir"
+  fi
+
+
+  ssh source "cd $cvsdir; gtar zcf - --exclude=commitlogs $cvsrepohome/CVSROOT $cvsrepohome/$cvsrepo" > $cvsrepohome/$cvsrepo.tar.gz
+
   (cd $cvsrepohome/$cvsrepo; tar -zxf ../$cvsrepo.tar.gz)
 fi
 

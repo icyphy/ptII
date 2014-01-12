@@ -5,8 +5,10 @@
 
 # Redo ActorBook, there were permissions problems.
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess ActorBook
-#$PTII/adm/cvs2svn/cvsTosvn cvs_chess StreaMorph
-#$PTII/adm/cvs2svn/cvsTosvn cvs_chess StreamMapping
+# StreaMorph is Empty
+##$PTII/adm/cvs2svn/cvsTosvn cvs_chess StreaMorph
+# StreamMapping is Empty
+##$PTII/adm/cvs2svn/cvsTosvn cvs_chess StreamMapping
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess actionwebs
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess agv
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess apesless
@@ -52,7 +54,8 @@
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess eecs149lab
 # Diff issues
 # Redoing now
-$PTII/adm/cvs2svn/cvsTosvn cvs_chess eecs20
+# Some diffs in eps, move on.
+#$PTII/adm/cvs2svn/cvsTosvn cvs_chess eecs20
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess escher
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess gsoc
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess handsimdroid
@@ -60,7 +63,8 @@ $PTII/adm/cvs2svn/cvsTosvn cvs_chess eecs20
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess hcssas
 # Redo hilv because of encoding
 # Redo because of -kb
-$PTII/adm/cvs2svn/cvsTosvn cvs_chess hilv
+# Still one file, but move on
+#$PTII/adm/cvs2svn/cvsTosvn cvs_chess hilv
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess hsbc
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess hybrid
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess hyper
@@ -90,7 +94,7 @@ $PTII/adm/cvs2svn/cvsTosvn cvs_chess hilv
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess ptango
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess ptdb
 # Redo ptesdf because of lock file
-$PTII/adm/cvs2svn/cvsTosvn cvs_chess ptesdf
+#$PTII/adm/cvs2svn/cvsTosvn cvs_chess ptesdf
 # Redo ptexternal because of lock file
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess ptexternal
 # Redo pthomas because of lock file
@@ -123,3 +127,10 @@ $PTII/adm/cvs2svn/cvsTosvn cvs_chess ptesdf
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess vw
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess webmaster
 #$PTII/adm/cvs2svn/cvsTosvn cvs_chess western_jup
+
+# To generate a script to create update the repos on repo.eecs
+# egrep '^#\$PTII' allchesscvs | awk '{print "$PTII/adm/cvs2svn/syncit cvs_chess " $NF}' > /tmp/doit
+
+# To generate a script that will check out the repos on moog.
+# Run this as the vc user
+# egrep '^#\$PTII' allchesscvs | awk '{print "svn co https://repo.eecs.berkeley.edu/svn/projects/chess/" $NF "/trunk/" $NF}'

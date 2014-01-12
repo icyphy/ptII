@@ -5,7 +5,7 @@
 
 if [ $# -ne 2 ]; then
   echo "$0: Usage: $0 repohome rep"
-  echo "For example $0 cvs_terraswarm esweek13"
+  echo "For example $0 terraswarm esweek13"
   exit 4
 fi
 

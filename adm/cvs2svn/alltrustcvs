@@ -1,0 +1,45 @@
+#!/bin/sh
+
+#rm -rf repos cvs_chess tmp.svn
+
+echo "Change cvsTosvn to cd to /export/home2 instead of /home"
+
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust cps-forceswww
+
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust diversity
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust education
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust euus
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust execboard
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust financial
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust health
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust hi-conswww
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust hsn
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust iacb
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust icast
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust icastucb
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust ncsresearch
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust pdfellowship
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust physical
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust policy
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust reu
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust reu11gold
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust reu2009
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust reu2010
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust reu2011
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust reu2013wagner
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust scada
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust securit
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust superb
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust superb2008
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust trustadmin
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust trustwww
+##$PTII/adm/cvs2svn/cvsTosvn cvs_trust trustwww.old
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust wagnerreu2012
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust wise
+$PTII/adm/cvs2svn/cvsTosvn cvs_trust wise2006
+
+# To generate a script to create update the repos on repo.eecs
+# egrep '^#\$PTII' allchesscvs | awk '{print "$PTII/adm/cvs2svn/syncit cvs_chess " $NF}' > /tmp/doit
+
+# To generate a script that will check out the repos on moog.
+# egrep '^#\$PTII' allchesscvs | awk '{print "svn co https://repo.eecs.berkeley.edu/svn/projects/chess/" $NF "/trunk/" $NF}'

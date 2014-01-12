@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#rm -rf repos cvs_chess tmp.svn
+
+#$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter 2013
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter e3s
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter e3sadmin
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter e3scenterwww
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter e3sconf
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter industry
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter nanoelectronics
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter nanomagnetics
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter nanomechanics
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter nanophotonics
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter nsfstcwww
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter seminar
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter sitevisit2012
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter sitevisit2013
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter sitevisit2014
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter students
+$PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter systems
+
+
+# To generate a script to create update the repos on repo.eecs
+# egrep '^#\$PTII' alle3scvs | awk '{print "$PTII/adm/cvs2svn/syncit cvs_e3s " $NF}' > /tmp/doit
+
+# To generate a script that will check out the repos on moog.
+# egrep '^#\$PTII' alle3scvs | awk '{print "svn co https://repo.eecs.berkeley.edu/svn/projects/e3s/" $NF "/trunk/" $NF}'
