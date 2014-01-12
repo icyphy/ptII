@@ -816,6 +816,15 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/vergil/basic/imprt/fmu/fmu.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/imprt/fmu/fmu.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/imprt/fmu/*.class"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar"
