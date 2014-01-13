@@ -378,7 +378,7 @@ changequote([, ])dnl
     # The default location that we look for the JDK.  This should probably
     # be a list that includes /usr/local/jdk and /opt/jdk
     if test ! -d "$PTJAVA_DIR"; then
-	DEFAULT_JDK=/opt/jdk1.3
+	DEFAULT_JDK=/opt/jdk1.7
 	if test -d "$DEFAULT_JDK"; then
 	    PTJAVA_DIR=`cd "$DEFAULT_JDK"; pwd`
 	    AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
@@ -396,13 +396,13 @@ Typically, under Windows, this directory might be c:\jdk1.3.1\bin
 For instructions about adding to a directory to your path permanently,
 consult your user documentation.
 Under bash, you may temporarily add a directory with something like:
-  PATH=/cygdrive/c/jdk1.3.1/bin:\$PATH
+  PATH=/cygdrive/c/Program\ Files/Java/jdk1.7.0/bin:\$PATH
   export PATH
   rm config.*; ./configure
 You may also try --with-java=DIR, or set the PTJAVA_DIR environment variable
 to the directory where your jdk is located:
-  PTJAVA_DIR=/cygdrive/c/jdk1.3.1
-  export PATH
+  PTJAVA_DIR=/cygdrive/c/Program\ Files/Java/jdk1.7.0
+  export PTJAVA_DIR
   rm config.*; ./configure
 but adding the directory to your path is likely to work best.])
 	    fi
@@ -685,6 +685,18 @@ case "$JVERSION" in
 	1.3.*) UPGRADE_JVM=yes;;
 	1.4.*) UPGRADE_JVM=yes;;
 	1.5.*) UPGRADE_JVM=yes;;
+	1.6.*) case "`uname -s`" in
+	           Darwin) AC_MSG_WARN([Java 1.6.x is the first JVM in your path.
+    Ptolemy II can be built and run with Java 1.6, but under Mac OS X, the Java 1.6 JVM
+    from Apple has bugs including occaisionally crashing when closing a window.
+    A possible solution is to download Java 1.7 or later for Oracle and be sure that
+    the path to the Oracle JDK is in your path before the path to the Apple JDK.
+    Typically, the Oracle JDK is installed at
+    /Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home.
+    To adjust the path in Bash, use
+    export PATH=/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/bin:\${PATH}])
+               esac;;
+
 	*)      
 	        # -breakiterator is only present in jdk1.4 and later
 		JDOCBREAKITERATOR=-breakiterator
@@ -698,8 +710,8 @@ esac
 if test "$UPGRADE_JVM" = "yes"; then
     case "`uname -s`" in
         Darwin) 
-     	    upgradeMessage="Under Mac OS X, to change the version of Java,
-    use the 'Java Preferences' program under /Applications/Utilities.";;
+     	    upgradeMessage="Mac OS X, ships with Java 1.6 from Apple, but 
+    later versions of Java are available from Oracle";;
         *)
 	    upgradeMessage="";;
     esac
