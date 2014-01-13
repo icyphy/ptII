@@ -78,6 +78,8 @@ public class Sampler extends Transformer {
         input.setMultiport(true);
         output.setMultiport(true);
         output.setWidthEquals(input, true);
+        
+        output.setTypeSameAs(input);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
