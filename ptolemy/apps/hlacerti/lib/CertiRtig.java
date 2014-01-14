@@ -184,7 +184,6 @@ public class CertiRtig extends NamedObj {
         _commandArray = commandList.toArray(new String[commandList.size()]);
 
         // Set the environment variables.
-        _environmentArray = null;
         _environmentArray = new String[3];
         _environmentArray[0] = "DYLD_LIBRARY_PATH=" + certiHome + "/lib";
         _environmentArray[1] = "LD_LIBRARY_PATH=" + certiHome + "/lib";
