@@ -1248,8 +1248,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 while (targetContainer != null
                         && (locationAttribute = (Location) targetContainer
                                 .getAttribute("_location", Location.class)) == null) {
-                    if (locationAttribute != null
-                            || targetContainer.equals(container)) {
+                    // FindBugs: Load of known null value.  locationAttribute is always null here.
+                    // The break is unnecessary as if locationAttribute is non-null, then 
+                    // the body of the while loop is not executed.
+                    //if (locationAttribute != null
+                    if (targetContainer.equals(container)) {
                         break;
                     }
                     targetContainer = targetContainer.getContainer();
