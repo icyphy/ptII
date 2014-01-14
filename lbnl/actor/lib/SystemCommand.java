@@ -398,7 +398,7 @@ public class SystemCommand extends TypedAtomicActor {
             }
             fin = "$iteration";
             while (comIte.contains(fin)) {
-                comIte = comIte.replace(fin, Integer.valueOf(_iterationCount)
+                comIte = comIte.replace(fin, Integer.toString(_iterationCount)
                         .toString());
             }
             com.add(comIte);
