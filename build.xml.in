@@ -297,9 +297,15 @@ For example:
       mv findbugs-3.0.0-dev-20131204-e3cbbd5 findbugs-3.0.0-dev
       cd findbugs-3.0.0-dev/src/antTask/edu/umd/cs/findbugs/anttask/
       wget --no-check-certificate https://sourceforge.net/p/findbugs/feature-requests/295/attachment/FindBugsAntTaskNested.patch
-      patch &lt; FindBugsAntTaskNested.patch
+      cat  FindBugsAntTaskNested.patch | patch -n -p0 
+      # The file to patch is FindBugsTask.java
+
+      # Build the changed file:
       cd ../../../../../../..
       ant
+
+      # Determine where the findbugs-ant.jar file is in your ant directory.  
+      # Find the ant directory with "which ant" and copy the findbugs-ant.jar file:
       sudo cp lib/findbugs-ant.jar /usr/share/ant/lib/
 
       FindBugs takes 4-5 minutes to run . . .
