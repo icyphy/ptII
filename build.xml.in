@@ -16,8 +16,11 @@
 
   <property name="debuglevel" value="source,lines,vars" />
 
-  <!-- Location of findbugs, which does static analysis on the code.  findbugs-1.3.9 does not terminate, so use 1.3.8, which takes 5 minutes.  findbugs-2.0.1 takes 35 minutes. -->
-  <property name="findbugs.home" value="${basedir}/vendors/findbugs-1.3.8" />
+  <!-- Location of findbugs, which does static analysis on the code.  
+       We use a patched version of findbugs that supports the -nested:false command line argument,
+       see https://sourceforge.net/p/findbugs/feature-requests/295/
+    -->
+  <property name="findbugs.home" value="${basedir}/vendors/findbugs-3.0.0-dev" />
 
   <!-- The value of the memorymaximumsize javac and maxmemorysize and java parameter 
        We use 1400m so that we don't have problems under 32-bit
@@ -282,12 +285,22 @@ For example:
 	  depends="build, initReports"
 	  description="Run FindBugs (http://findbugs.sourceforge.net/)">
     <echo>
-      FindBugs can be found at http://findbugs.sourceforge.net
-      findbugs-1.3.8 cannot handle .ptolemyII/* in the classpath, which is supported in JDK 1.6.
-      findbugs-1.3.9 does not terminate.
-      findbugs-2.0.1 takes 35 minutes.
-      Don't run findbugs-2.0.1-rc4 with effort="max", it takes too long.
-      Install FindBugs in ptII/vendors/ and update the findbugs.home property above.
+      We use a patched version of findbugs that supports the -nested:false command line argument,
+      see https://sourceforge.net/p/findbugs/feature-requests/295/
+
+      Install the patched FindBugs in ptII/vendors/ and update the findbugs.home property above.
+
+      Below are the steps necessary to patch 3.0.0 from 2013-12-04
+
+      cd $PTII/vendors
+      unzip ~/Downloads/findbugs-3.0.0-dev-20131204-e3cbbd5-source.zip
+      mv findbugs-3.0.0-dev-20131204-e3cbbd5 findbugs-3.0.0-dev
+      cd findbugs-3.0.0-dev/src/antTask/edu/umd/cs/findbugs/anttask/
+      wget --no-check-certificate https://sourceforge.net/p/findbugs/feature-requests/295/attachment/FindBugsAntTaskNested.patch
+      patch &lt; FindBugsAntTaskNested.patch
+      cd ../../../../../../..
+      ant
+      sudo cp lib/findbugs-ant.jar /usr/share/ant/lib/
 
       FindBugs takes 4-5 minutes to run . . .
     </echo>
@@ -297,6 +310,7 @@ For example:
        home="${findbugs.home}"
        includefilter="${basedir}/doc/findbugs-include.xml"
        jvmargs="-Xms256m -Xmx2000m"
+       nested="false"
        output="xml"
        outputFile="${ptII.reports}/ptII-findbugs.xml"
        timeout="${timeout}"
