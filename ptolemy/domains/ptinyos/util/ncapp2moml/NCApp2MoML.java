@@ -394,10 +394,9 @@ public class NCApp2MoML {
         }
 
         // Output the moml code to a file.
+        FileOutputStream out = null;
         try {
             // Open the file.
-            FileOutputStream out = null;
-
             if (outputFile != null) {
                 out = new FileOutputStream(outputFile);
             }
@@ -412,14 +411,21 @@ public class NCApp2MoML {
             // Write, flush, and close the file.
             if (out != null) {
                 serializer.output(doc, out);
-                out.flush();
-                out.close();
             } else {
                 // If a file was not specified, write to stdout.
                 serializer.output(doc, System.out);
             }
-        } catch (IOException e) {
-            System.err.println(e);
+        } catch (IOException ex) {
+            System.err.println(ex);
+        } finally {
+            if (out != null) {
+                try {
+                    out.flush();
+                    out.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
