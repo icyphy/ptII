@@ -1392,9 +1392,14 @@ public class GraphMatcher extends GraphAnalyzer {
             return false;
         }
 
-        if (patternDirector == null && hostDirector == null) {
-            return true;
-        } else if (patternDirector == null || hostDirector == null) {
+        // FindBugs says that patternDirector cannot be null because it
+        // has been dereferenced. Thus, if hostDirector is null, return false.
+        //if (patternDirector == null && hostDirector == null) {
+        //    return true;
+        //} else if (patternDirector == null || hostDirector == null) {
+        //    return false;
+        //}
+        if (hostDirector == null) {
             return false;
         }
 
