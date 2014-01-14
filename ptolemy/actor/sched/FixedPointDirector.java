@@ -37,6 +37,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -549,9 +550,20 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     public boolean prefire() throws IllegalActionException {
         _synchronizeToRealTime();
         _postfireReturns = true;
+        
+        boolean result = true;
+        List<IOPort> ports = ((CompositeEntity)getContainer()).portList();
+        for (IOPort port : ports) {
+        	if (port instanceof ParameterPort) {
+        		if (!port.isKnown()) {
+        			result = false;
+        			break;
+        		}
+        	}
+        }
         // The following synchronizes to environment time, making
         // any necessary adjustments for drift or offset of the local clock.
-        return super.prefire();
+        return super.prefire() && result;
     }
 
     /** Set the superdense time index. This should only be
