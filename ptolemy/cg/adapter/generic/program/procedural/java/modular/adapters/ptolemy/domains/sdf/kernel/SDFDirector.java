@@ -613,7 +613,6 @@ public class SDFDirector
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
 
         int channelNumber = 0;
-        boolean isChannelNumberInt = true;
         if (!channelAndOffset[0].equals("")) {
             // If dynamic multiport references are allowed, catch errors
             // when the channel specification is not an integer.
@@ -622,23 +621,20 @@ public class SDFDirector
                     channelNumber = Integer.valueOf(channelAndOffset[0])
                             .intValue();
                 } catch (NumberFormatException ex) {
-                    isChannelNumberInt = false;
+                    // Variable channel reference.
+                    if (port.isOutput()) {
+                        throw new IllegalActionException(
+                                "Variable channel reference not supported"
+                                + " for output ports");
+                    } else {
+                        return _generatePortReference(port, channelAndOffset, isWrite);
+                    }
                 }
             } else {
                 channelNumber = Integer.valueOf(channelAndOffset[0]).intValue();
             }
         }
 
-        if (!isChannelNumberInt) { // variable channel reference.
-            if (port.isOutput()) {
-                throw new IllegalActionException(
-                        "Variable channel reference not supported"
-                                + " for output ports");
-            } else {
-
-                return _generatePortReference(port, channelAndOffset, isWrite);
-            }
-        }
 
         // To support modal model, we need to check the following condition
         // first because an output port of a modal controller should be
