@@ -216,7 +216,7 @@ public class MobileModel extends TypedCompositeActor {
                 }
             } catch (Exception ex) {
                 if (_debugging) {
-                    _debug("Problem parsing " + str.stringValue());
+                    _debug("Problem parsing " + (str == null ? "null" : str.stringValue()));
                 }
 
                 throw new IllegalActionException(this, ex, "Problem parsing "
