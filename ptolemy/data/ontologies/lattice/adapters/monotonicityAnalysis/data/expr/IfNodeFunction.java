@@ -184,9 +184,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 new LinkedList<String>(), new LinkedList<Concept>(), null,
                 _domainOntologies, _outputRangeOntology);
         Token rhsToken = evaluator.evaluateParseTree(rhs);
-        if (!(rhsToken instanceof ConceptToken)) {
-            return false;
-        }
+        // FindBugs states that we don't need to check the instance here.
+        // evaluateParseTree returns a ConceptToken.
+        //if (!(rhsToken instanceof ConceptToken)) {
+        //    return false;
+        //}
         return true;
     }
 
