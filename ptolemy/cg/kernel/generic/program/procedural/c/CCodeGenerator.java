@@ -2309,14 +2309,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         CCode.append(portsDefinition.toString());
 
-        String actorType;
-        if (container instanceof CompositeActor) {
-            actorType = "CompositeActor";
-        } else {
-            throw new IllegalActionException(container,
-                    "CompositeEntity non supported yet :"
-                            + container.getClassName());
-        }
+        // FindBugs says that we don't have to check the instance here
+        // because we do it earlier.
+        String actorType = "CompositeActor";
+        //String actorType;
+        //if (container instanceof CompositeActor) {
+        //actorType = "CompositeActor";
+        //} else {
+        //throw new IllegalActionException(container,
+        //           "CompositeEntity non supported yet :"
+        //+ container.getClassName());
+        //}
 
         CCode.append(_eol + "struct " + actorType + "* "
                 + sanitizedContainerName + "_New() {" + _eol);
