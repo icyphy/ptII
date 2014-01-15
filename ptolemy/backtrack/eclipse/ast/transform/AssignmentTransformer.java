@@ -2459,7 +2459,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         // Do not handle anonymous class declarations in a static method.
         boolean ignore = !_isInStatic.isEmpty()
-                && (_isInStatic.peek() == Boolean.TRUE) && isAnonymous;
+            && (_isInStatic.peek().equals(Boolean.TRUE)) && isAnonymous;
 
         // Add an array of all the records.
         if (!isInterface && !ignore) {
