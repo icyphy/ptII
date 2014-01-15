@@ -93,7 +93,14 @@ public class LoopTest2 extends TypedAtomicActor {
 
         if (counter.getWidth() > 0 && counter.hasToken(0)) {
             String counterStr = ((StringToken) counter.get(0)).stringValue();
-            int counterInt = new Integer(counterStr).intValue();
+            int counterInt = -1;
+            try {
+                counterInt = Integer.parseInt(counterStr);
+            } catch (NumberFormatException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Could not convert \"" + counterStr
+                        + "\" to an integer.");
+            }
             System.out.println("counter input  is " + counterInt);
 
             // if (xmlResults.getWidth() <= 0) { }
