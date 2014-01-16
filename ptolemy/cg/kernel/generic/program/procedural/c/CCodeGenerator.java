@@ -2338,6 +2338,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         HCode.append("#include \"_" + actorType + ".h\"" + _eol);
         HCode.append("#include \"_AtomicActor.h\"" + _eol);
+        if (director == null) {
+            throw new IllegalActionException(container, "The container \""
+                    + container.getFullName() + "\" does not have a director.");
+        }
         String directorType = director.getClass().getSimpleName();
         HCode.append("#include \"_" + directorType + ".h\"" + _eol);
         if (((CompositeActor) container).getExecutiveDirector() != null) {
