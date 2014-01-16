@@ -189,6 +189,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         //if (!(rhsToken instanceof ConceptToken)) {
         //    return false;
         //}
+        if (rhsToken == null) {
+            return false;
+        }
         return true;
     }
 
