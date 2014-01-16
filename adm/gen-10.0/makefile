@@ -931,18 +931,18 @@ update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
-		bennett:$(PTII_FTP)
+		moog:$(PTII_FTP)
 untar:
-	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
+	ssh moog "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
 # Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
-	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
+	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip moog:$(PTII_FTP)
 
 PTSETUP_MAC=ptII$(VERSION).setup.mac
 update_mac: $(PTSETUP_MAC).dmg
-	scp -p $(PTSETUP_MAC).dmg bennett:$(PTII_FTP)
+	scp -p $(PTSETUP_MAC).dmg moog:$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -2102,7 +2102,7 @@ remotealldone:
 # except for the deep codegen
 
 # Host to run on
-REMOTE4HOST = bennett
+REMOTE4HOST = moog
 
 # Remote location of Ptolemy II tree for testing
 #REMOTE4HOME = /vol/$(REMOTE4HOST)/$(REMOTE4HOST)2/ptII
@@ -2219,7 +2219,7 @@ remote4javatest:
 # except for the shallow codegen
 
 # Host to run on
-REMOTE5HOST = bennett
+REMOTE5HOST = moog
 
 # Directory to build in
 #REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptIIsrc
@@ -2801,8 +2801,8 @@ $(JNLPS_TAR): $(TARGET_JNLP)
 	(cd $(JNLPDIST); tar -cf ../../$(JNLPS_TAR) `find . -name "*.jnlp"` `find . -name "signed_*.jar"` signed doc/deployJava.js doc/deployJavaApplet.js)
 
 updateJNLPs: $(JNLPS_TAR)
-	scp $(JNLPS_TAR) bennett:$(PTII_FTP)
-	ssh bennett "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
+	scp $(JNLPS_TAR) moog:$(PTII_FTP)
+	ssh moog "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
 
 ###################################################################
 # Update moog
