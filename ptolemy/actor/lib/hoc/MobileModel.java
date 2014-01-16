@@ -220,7 +220,7 @@ public class MobileModel extends TypedCompositeActor {
                 }
 
                 throw new IllegalActionException(this, ex, "Problem parsing "
-                        + str.stringValue());
+                        + (str == null ? "null": str.stringValue()));
             }
         }
 
