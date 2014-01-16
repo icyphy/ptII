@@ -1255,7 +1255,7 @@ jnlp_dist_1:
 WEBSERVER_USER=$(USER)
 
 # We use a non-fully qualified domain name to avoid people accidentally hitting our webserver
-WEBSERVER=bennett
+WEBSERVER=moog
 
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
@@ -1678,9 +1678,9 @@ osgi_demo_test:
 # * you need access to the password, which /users/ptII/adm/certs/.pw on $(WEBSERVER) 
 #
 # 1. To build all the jars and copy them to the webserver:
-#   First: create the directory on bennett.  You must have an ssh account on bennett
+#   First: create the directory on moog.  You must have an ssh account on moog
 #   and be in the ptolemy group:
-#     ssh bennett "mkdir ~ptII/ptweb/ptolemyII/ptII9.0/jnlp-modularSemantics"
+#     ssh moog "mkdir ~ptII/ptweb/ptolemyII/ptII9.0/jnlp-modularSemantics"
 #   Then, run these commands:
 #     cd $PTII
 #     ant build javadoc
