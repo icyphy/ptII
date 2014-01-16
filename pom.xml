@@ -20,9 +20,9 @@ See $PTII/doc/coding/maven.htm
     <url>http://chess.eecs.berkeley.edu/bugzilla</url>
   </issueManagement>
   <inceptionYear>1997</inceptionYear>
-  <!-- <siteAddress>bennett.eecs.berkeley.edu</siteAddress> -->
+  <!-- <siteAddress>moog.eecs.berkeley.edu</siteAddress> -->
   <!-- <siteDirectory>~ptII/ptweb/ptolemyII/ptII7.1</siteDirectory> -->
-  <!-- <distributionSite>bennett.eecs.berkeley.edu</distributionSite> -->
+  <!-- <distributionSite>moog.eecs.berkeley.edu</distributionSite> -->
   <!-- <distributionDirectory>~ptII/ptweb/ptolemyII/ptII7.1/dist</distributionDirectory> -->
   <!-- <mailingList>
     <name>Ptolemy-hackers</name>

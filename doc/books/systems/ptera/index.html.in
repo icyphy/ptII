@@ -4,7 +4,7 @@
     <meta charset=utf-8>
     <!-- doc/books/systems/ptera/index.html.in $Id$ 
 	 This gets copied to the website.
-	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/ptera/index.html
+	 scp index.html.in moog:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/ptera/index.html
       -->
     <title>Chapter 11: Ptera: An Event-Oriented Model of Computation2: Building Graphical Models</title>
   </head>

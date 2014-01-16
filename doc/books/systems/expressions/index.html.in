@@ -4,7 +4,7 @@
     <meta charset=utf-8>
     <!-- doc/books/systems/expressions/index.html.in $Id$ 
 	 This gets copied to the website.
-	 scp index.html.in bennett:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/expressions/index.html
+	 scp index.html.in moog:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/expressions/index.html
       -->
     <title>Chapter 13: Expressions</title>
   </head>

@@ -152,7 +152,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  <P>
      *  The parameters should be constructed in one line of String.
      *  For example:<BR>
-     *  <code> -ORBInitialHost bennett.eecs.berkeley.edu -ORBInitialPort
+     *  <code> -ORBInitialHost moog.eecs.berkeley.edu -ORBInitialPort
      *  1005 </code><BR>
      */
     public Parameter ORBInitProperties;

@@ -22,7 +22,7 @@ This page describes how we release software.
 <li>Look for auto directories that don't have corresponding junit/ directories.
 <pre>
 cd $PTII
-ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`o
+ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`
 </pre>
 
 <li>Check that each demo has a test:
@@ -522,7 +522,7 @@ java -version
 make clean fast install &gt;&amp; make.out
 
 <I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
-need access to the ptII account on bennett </I>
+need access to the ptII account on moog </I>
 
 make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 </pre>
@@ -581,7 +581,7 @@ make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
     </pre>
   <li>Copy the jnlp files:
     <pre>
-scp /home/cxh/src/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2/{*.jar,*.jnlp,BouncingBallX2JNLP.htm} bennett:~ptII/ptweb/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2
+scp /home/cxh/src/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2/{*.jar,*.jnlp,BouncingBallX2JNLP.htm} moog:~ptII/ptweb/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2
     </pre>
   <li>Try the Web Start application:
     <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.jnlp"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.jnlp</code>
