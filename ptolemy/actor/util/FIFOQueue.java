@@ -104,10 +104,34 @@ public class FIFOQueue implements Cloneable {
     /** Clone this queue. The cloned queue has no container. The
      *  objects in the queue themselves are not cloned.
      *  @return A clone of this queue.
+     *  @exception CloneNotSupportedException If thrown by object.clone().F
      */
-    public Object clone() {
-        // FIXME: Note that we do not call super.clone() here.  Is that right?
-        return new FIFOQueue(this);
+    public Object clone() throws CloneNotSupportedException {
+        // This method used to not call super.clone() and return "new FIFOQueue(this)"
+        // FindBugs reports this as:
+        // "clone method does not call super.clone()"
+
+        //  "This non-final class defines a clone() method that does
+        //  not call super.clone(). If this class ("A") is extended by
+        //  a subclass ("B"), and the subclass B calls super.clone(),
+        //  then it is likely that B's clone() method will return an
+        //  object of type A, which violates the standard contract for
+        //  clone()."
+
+        // "If all clone() methods call super.clone(), then they are
+        // guaranteed to use Object.clone(), which always returns an
+        // object of the correct type."
+
+        // Instead we call super.clone() and then adjust the fields of the clone.
+
+        FIFOQueue returnValue = (FIFOQueue)super.clone();
+        returnValue._queueList = new LinkedList();
+        returnValue._historyList = new LinkedList();
+        synchronized (this) {
+            returnValue._queueList.addAll(this.elementList());
+            returnValue._historyList.addAll(this.historyElementList());
+        }
+        return returnValue;
     }
 
     /** List the objects in the queue, beginning with the oldest.

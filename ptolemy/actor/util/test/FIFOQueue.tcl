@@ -244,3 +244,30 @@ test FIFOQueue-6.2 {Test clear history queue} {
     catch {[$queue get -1]} msg2
     list [_testEnums historyElements $newqueue] $msg1 $msg2
 } {{{n1 n2}} {java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue contained by .QueueContainer} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue contained by .QueueContainer}}
+
+######################################################################
+####
+#
+test FIFOQueue-7.0 {Test that clone returns the proper class} {
+    # This method used to not call super.clone() and return "new FIFOQueue(this)"
+    # FindBugs reports this as:
+    # "clone method does not call super.clone()"
+
+    #  "This non-final class defines a clone() method that does
+    #  not call super.clone(). If this class ("A") is extended by
+    #  a subclass ("B"), and the subclass B calls super.clone(),
+    #  then it is likely that B's clone() method will return an
+    #  object of type A, which violates the standard contract for
+    #  clone()."
+
+    # "If all clone() methods call super.clone(), then they are
+    # guaranteed to use Object.clone(), which always returns an
+    # object of the correct type."
+    
+    set fifoTest [java::new ptolemy.actor.util.test.FIFOQueueTest]
+    set clone [$fifoTest clone]
+    # If FIFOQueue.clone does not call super.clone(), then
+    # the class of the clone will be ptolemy.actor.util.FIFOQueue
+    # instead of ptolemy.actor.util.test.FIFOQueueTest
+    [$clone getClass] getName
+} {ptolemy.actor.util.test.FIFOQueueTest}
