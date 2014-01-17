@@ -151,8 +151,8 @@ public class SDFDirector
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
-        CompositeActor container = (CompositeActor) getComponent()
-            .getContainer();
+        //CompositeActor container = (CompositeActor) getComponent()
+        /    .getContainer();
         //TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
         //    .getAdapter(container);
 
