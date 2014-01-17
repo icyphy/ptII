@@ -449,7 +449,9 @@ public abstract class GraphAnalyzer {
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    public static class Path extends IndexedLists implements Cloneable {
+    public static final class Path extends IndexedLists implements Cloneable {
+        // This class is final so as to fix a warning by FindBugs:
+        // "clone method does not call super.clone()"
 
         /** Clone this path and return a new path containing the same entries
          *  between the same pair of ports.

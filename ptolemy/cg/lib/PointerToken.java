@@ -115,7 +115,10 @@ public class PointerToken extends Token {
 
     /** The pointer type.
      */
-    public static class PointerType implements Cloneable, Type, Serializable {
+    public static final class PointerType implements Cloneable, Type, Serializable {
+        // This class is final so as to fix a warning by FindBugs:
+        // "clone method does not call super.clone()"
+
         ///////////////////////////////////////////////////////////////////
         ////                         constructors                      ////
         // The constructor is private to make a type safe enumeration.
