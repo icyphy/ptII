@@ -618,8 +618,7 @@ public class SDFDirector
             // when the channel specification is not an integer.
             if (dynamicReferencesAllowed) {
                 try {
-                    channelNumber = Integer.valueOf(channelAndOffset[0])
-                            .intValue();
+                    channelNumber = Integer.parseInt(channelAndOffset[0]);
                 } catch (NumberFormatException ex) {
                     // Variable channel reference.
                     if (port.isOutput()) {
