@@ -619,7 +619,7 @@ public final class PtolemyServer implements IServerManager {
 
     /** The ResourceBundle containing configuration parameters.
      */
-    public static ResourceBundle CONFIG = null;
+    public static final ResourceBundle CONFIG = ResourceBundle.getBundle("ptserver.PtolemyServerConfig");
 
     /** The logger that will record Ptolemy errors to the log file.
      */
@@ -656,7 +656,7 @@ public final class PtolemyServer implements IServerManager {
             exception.initCause(ex);
             throw exception;
         }
-        CONFIG = ResourceBundle.getBundle("ptserver.PtolemyServerConfig");
+        //CONFIG = ResourceBundle.getBundle("ptserver.PtolemyServerConfig");
 
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
