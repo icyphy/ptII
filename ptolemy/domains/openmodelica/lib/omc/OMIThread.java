@@ -182,6 +182,7 @@ public class OMIThread extends Thread {
      *  simulation is shut down.</p>
      */
     public void run() {
+        // FIXME: this method should throw an exception.
 
         String lineDelimiter = "end";
         String timeDelimiter = "#";
@@ -193,15 +194,16 @@ public class OMIThread extends Thread {
         char[] transferServerBuffer = new char[1024];
         char[] controlServerBuffer = new char[124];
         try {
-            _inFromControlServer.read(controlServerBuffer);
-            String statusMessage = new String(controlServerBuffer).trim();
-            if (statusMessage != null) {
-                String loggerInfo = "Confirmation Message from Control Server : "
+            if (_inFromControlServer.read(controlServerBuffer) != -1) {
+                String statusMessage = new String(controlServerBuffer).trim();
+                if (statusMessage != null) {
+                    String loggerInfo = "Confirmation Message from Control Server : "
                         + statusMessage;
-                _omcLogger.getInfo(loggerInfo);
+                    _omcLogger.getInfo(loggerInfo);
+                }
             }
         } catch (IOException e) {
-            new IOException(e.getLocalizedMessage()).printStackTrace();
+            new Exception(e.getLocalizedMessage()).printStackTrace();
         }
 
         // Checking the status of Transfer socket, connection and stream.
