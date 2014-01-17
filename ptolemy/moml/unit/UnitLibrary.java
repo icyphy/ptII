@@ -276,8 +276,7 @@ public class UnitLibrary {
             } else if (oldStyleUnit instanceof Parameter) {
                 String name = ((Parameter) oldStyleUnit).getName();
                 String expr = ((Parameter) oldStyleUnit).getExpression();
-                UnitNameExprPair pair = enclosingObject.new UnitNameExprPair(
-                        name, expr);
+                UnitNameExprPair pair = new UnitNameExprPair(name, expr);
                 pairs.add(pair);
             }
         }
@@ -326,13 +325,9 @@ public class UnitLibrary {
      * @Pt.AcceptedRating Red (cxh)
      *
      */
-    private/*static*/class UnitNameExprPair {
+    private static class UnitNameExprPair {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
-        // However, if this inner class is static, then when we compile:
-        // UnitNameExprPair pair = enclosingObject.new UnitNameExprPair(
-        // we get an error.
-
         public UnitNameExprPair(String n, String ue) {
             _name = n;
             _uExpr = ue;
