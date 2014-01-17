@@ -156,13 +156,26 @@ public class MostRecent extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+    	
         if (attribute == initialValue) {
             if (initialValue.getToken() != null) {
-                _lastInputs = new Token[input.getWidth()];
-
-                for (int i = 0; i < input.getWidth(); i++) {
+            	int width = 1;
+            	// Calling input.getWidth() when the model is not being 
+            	// executed can cause Exceptions because the width cannot
+            	// be resolved. This method is called also, for instance, when a
+            	// class containing a MostRecent actor is saved. In this case,
+            	// the model is not executed and the width is irrelevant.
+            	if (_initializeDone) {
+            		width = input.getWidth();
+            	}
+        		if (width < 1) {
+        			width = 1;
+        		}
+            	_lastInputs = new Token[width];
+            	for (int i = 0; i < width; i++) {
                     _lastInputs[i] = initialValue.getToken();
                 }
+            	
             } else {
                 _lastInputs = null;
             }
@@ -256,8 +269,16 @@ public class MostRecent extends Transformer {
         } else {
             _lastInputs = null;
         }
-
+        _initializeDone = true;
         super.initialize();
+    }
+    
+    /** Wrapup and reset variables.
+     */
+    @Override
+    public void wrapup() throws IllegalActionException {
+    	super.wrapup();
+    	_initializeDone = false;
     }
 
     /** Override the method in the base class so that the type
@@ -377,4 +398,6 @@ public class MostRecent extends Transformer {
             }
         }
     }
+
+	private boolean _initializeDone = false;
 }
