@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SCR" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>SCR Model</doc>
+  
+	<entity name="SCRModel"
+        class="ptolemy.domains.scr.SCRModel">
+	  <property name="_tableauFactory" class="ptolemy.vergil.scr.SCRTableauFactory">
+	  </property>
+	</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

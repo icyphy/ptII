@@ -1,4 +1,4 @@
-/* An FSM graph view for Ptolemy models.
+/* An SCR view for Ptolemy models.
 
  Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
@@ -25,16 +25,17 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.vergil.modal;
+package ptolemy.vergil.scr;
 
 import java.awt.Color;
 
+import javax.swing.JTabbedPane;
+
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,20 +43,21 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.scr.SCRGraphTableau;
+import ptolemy.vergil.modal.FSMGraphFrame;
+import ptolemy.vergil.modal.FSMGraphTableau;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMGraphTableau
 
-/** An editor tableau for finite state machines.
+/** An editor tableau for SCR.
 
- @author  Steve Neuendorffer and Edward A. Lee
- @version $Id$
+ @author Patricia Derler
+ @version $Id: FSMGraphTableau.java 65763 2013-03-07 01:54:37Z cxh $
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */
-public class FSMGraphTableau extends Tableau {
+public class SCRGraphTableau extends Tableau {
 
     /** Create a new FSM editor tableau with the specified container
      *  and name, with no default library.
@@ -66,7 +68,7 @@ public class FSMGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public FSMGraphTableau(PtolemyEffigy container, String name)
+    public SCRGraphTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
@@ -81,7 +83,7 @@ public class FSMGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public FSMGraphTableau(PtolemyEffigy container, String name,
+    public SCRGraphTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
@@ -120,9 +122,11 @@ public class FSMGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
+        //FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
 
-        try {
+    	SCRTableFrame frame = new SCRTableFrame(model, this);
+    	
+    	try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
@@ -133,7 +137,7 @@ public class FSMGraphTableau extends Tableau {
         frame.centerOnScreen();
         frame.setVisible(true);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                           public fields                   ////
 
@@ -180,15 +184,8 @@ public class FSMGraphTableau extends Tableau {
             }
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
-            
 
-            if (model.getContainer() != null &&
-            		model.getContainer().getAttribute("openAsSCRActor") != null && 
-            		((BooleanToken)(((Parameter)model.getContainer()
-            				.getAttribute("openAsSCRActor"))
-            				.getToken())).booleanValue()) {
-            	tableau = new SCRGraphTableau((PtolemyEffigy) effigy, "SCRTables");
-            } else if (model instanceof FSMActor) {
+            if (model instanceof FSMActor) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
@@ -196,10 +193,10 @@ public class FSMGraphTableau extends Tableau {
 
                 tableau = new FSMGraphTableau((PtolemyEffigy) effigy,
                         "fsmGraphTableau", library);
+                return tableau;
             } else {
                 return null;
             }
-            return tableau;
         }
     }
 }
