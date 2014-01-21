@@ -602,6 +602,7 @@ ALLPACKAGES = \
 	ptolemy.domains.pthales.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
+	ptolemy.domains.scr \
 	ptolemy.domains.sequence.kernel \
 	ptolemy.domains.sequence.gui \
 	ptolemy.domains.sequence.lib \
@@ -620,6 +621,7 @@ ALLPACKAGES = \
 	ptolemy.vergil.ontologies \
 	ptolemy.vergil.pdfrenderer \
 	ptolemy.vergil.ptera \
+	ptolemy.vergil.scr \
 	ptolemy.vergil.tdl \
 	ptolemy.verification.gui \
 	ptolemy.verification.kernel \

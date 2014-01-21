@@ -140,6 +140,8 @@
     <include name="ptolemy/domains/rendezvous/rendezvous.jar" />
     <include name="ptolemy/domains/rendezvous/demo/demo.jar" />
     <include name="ptolemy/domains/rendezvous/doc/doc.jar" />
+    <include name="ptolemy/domains/scr/scr.jar" />
+    <include name="ptolemy/domains/scr/demo/demo.jar" />
     <include name="ptolemy/domains/sdf/demo/demo.jar" />
     <include name="ptolemy/domains/sdf/doc/doc.jar" />
     <include name="ptolemy/domains/sdf/kernel/kernel.jar" />
@@ -182,6 +184,7 @@
     <include name="ptolemy/vergil/ontologies/ontologies.jar" />
     <include name="ptolemy/vergil/pdfrenderer/pdfrenderer.jar" />
     <include name="ptolemy/vergil/ptera/ptera.jar" />
+    <include name="ptolemy/vergil/scr/scr.jar" />
     <include name="ptolemy/vergil/tdl/tdl.jar" />
     <include name="ptolemy/vergil/vergil.jar" />
     <include name="ptolemy/vergil/vergilApplet.jar" />
@@ -2483,6 +2486,15 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/vergil/scr/scr.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/scr/scr.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/scr/*.class"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/vergil/tdl/tdl.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/vergil/tdl/tdl.jar"
@@ -3803,6 +3815,27 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/modal/demo/SystemLevelType/fmv/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/scr/scr.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/scr/scr.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/scr/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/scr/*.xml"/>
+      </fileset>
+    </jar>
+ 
+    <!-- ptolemy/domains/scr/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/scr/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/scr/demo/*/*.xml"/>
       </fileset>
     </jar>
 

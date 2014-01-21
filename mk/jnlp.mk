@@ -522,6 +522,8 @@ FULL_ONLY_JNLP_JARS = \
 	lib/mapss.jar \
 	ptolemy/domains/ptides/ptides.jar \
 	ptolemy/domains/ptides/demo/demo.jar \
+	ptolemy/domains/scr/scr.jar \
+	ptolemy/domains/scr/demo/demo.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tdl/tdl.jar \
@@ -536,6 +538,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/vergil/basic/export/exportFull.jar \
 	ptolemy/vergil/modal/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
+	ptolemy/vergil/scr/scr.jar \
 	ptolemy/vergil/tdl/tdl.jar \
 	$(FULL_8_1_JARS) \
 	$(PTDATABASE_JNLP_JARS) \
