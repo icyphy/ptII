@@ -3,13 +3,13 @@
 <fmiModelDescription
   description="Model of a staircase as a Mealy machine."
   fmiVersion="2.0"
-  guid="{0e634258-412b-4602-a29d-e7882503fd59}"
-  modelName="stairs_b"
+  guid="{819c3449-171c-4765-9335-bf0f1ea1c8ff}"
+  modelName="stairsB"
   numberOfEventIndicators="42"
    >
     
   <CoSimulation
-    modelIdentifier="stairs_b"
+    modelIdentifier="stairsB"
     canHandleVariableCommunicationStepSize="true"
     canHandleEvents="true"
     canProvideMaxStepSize="true"/>

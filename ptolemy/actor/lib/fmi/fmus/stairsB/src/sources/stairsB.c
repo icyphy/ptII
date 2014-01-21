@@ -22,13 +22,13 @@
 #include <string.h>
 
 // The model identifier string.
-#define MODEL_IDENTIFIER stairs_b
+#define MODEL_IDENTIFIER stairsB
 // Globally unique ID used to make sure the XML file and the DLL match.
 // The following was generated at http://guid.us
-#define MODEL_GUID "{0e634258-412b-4602-a29d-e7882503fd59}"
+#define MODEL_GUID "{819c3449-171c-4765-9335-bf0f1ea1c8ff}"
 
 // Used by FMI 2.0.  See FMIFuctions.h
-#define FMIAPI_FUNCTION_PREFIX stairs_b_
+#define FMIAPI_FUNCTION_PREFIX stairsB_
 #define FMIAPI
 
 // include fmu header files, typedefs and macros

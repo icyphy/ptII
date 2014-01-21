@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) stepCounterExtendedFMI
+# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) stairsB
 #
 # @Author: Christopher Brooks (makefile only)
 #
 # @Version: $Id: makefile 66549 2013-06-03 00:35:18Z eal $
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/fmus/stepCounterExtendedFMI
+ME =		ptolemy/actor/lib/fmi/fmus/stairsB
 
 DIRS =
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	stepCounterExtendedFMI
+PTPACKAGE = 	stairsB
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
@@ -54,11 +54,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	stepCounterExtendedFMI.fmu
+	$(PTPACKAGE).fmu
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-KRUFT = stepCounterExtendedFMI.fmu
+KRUFT = $(PTPACKAGE).fmu
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -79,19 +79,19 @@ FMU_SRCS = \
 	src/model.png \
 	src/sources/* \
 
-all: jclass stepCounterExtendedFMI.fmu
+all: jclass $(PTPACKAGE).fmu
 
 
-install: jclass stepCounterExtendedFMI.fmu jars
+install: jclass $(PTPACKAGE).fmu
 	@echo "Optionally run 'make update' to update the test/auto directory."
 
-stepCounterExtendedFMI.fmu: $(FMU_SRCS)
+$(PTPACKAGE).fmu:: $(FMU_SRCS)
 	(cd src/sources; $(MAKE))
 
-# We don't check in stepCounterExtendedFMI.fmu because it will be different on each platform
+# We don't check in $(PTPACKAGE).fmu because it will be different on each platform
 # Instead, run make update to update the test directory.
-update: stepCounterExtendedFMI.fmu
-	cp stepCounterExtendedFMI.fmu ../../test/auto/stepCounterExtendedFMI2.fmu 
+update: $(PTPACKAGE).fmu
+	cp $(PTPACKAGE).fmu ../../test/auto/$(PTPACKAGE).fmu
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

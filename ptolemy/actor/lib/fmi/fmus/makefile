@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/fmi/fmus
 
 # Co-Simulation FMUS.
-FMUS_CS =	helloWorld onOffSupervisor stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName
+FMUS_CS =	helloWorld onOffSupervisor stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
 
 # Model Exchange FMUS.
 FMUS_ME = 	bouncingBallME1 dqME1 incME1 valuesME1 vanDerPolME1
@@ -64,6 +64,8 @@ PTCLASSALLJARS = \
 	helloWorld/helloWorld.jar \
 	incME1/incME1.jar \
 	onOffSupervisor/onOffSupervisor.jar \
+	stairsA/stairsA.jar \
+	stairsB/stairsB.jar \
 	stepCounter/stepCounter.jar \
 	stepCounter1/stepCounter1.jar \
 	stepCounterExtendedFMI/stepCounterExtendedFMI.jar \
