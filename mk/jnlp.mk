@@ -1263,7 +1263,7 @@ WEBSERVER=moog
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvpf -"
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 jnlp_dist_nightly:
@@ -1286,7 +1286,7 @@ APPLET_FILES_TO_BE_UPDATED = \
 	ptolemy/gui/demo/*.class
 
 update_applet_files:
-	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR); /usr/sfw/bin/gtar -xvf -"
+	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR); tar -xvf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
 
 #make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
@@ -1823,13 +1823,13 @@ update_html_model: html_model
 book_dist_applet_update: $(JNLP_FILE_FIXED)
 	APPLET_JARS=`grep jar $(JNLP_FILE_FIXED) | awk -F \" '{print $$2}' | grep -v signed_ | sed  's@signed/@@'`; \
 	tar -cf - $$APPLET_JARS | \
-		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvpf -"
 
 # Set #2: Update jnlp jar files.  Usually don't need to run this as make ... jnlp_dist will do it.
 book_dist_jnlp_update: $(JNLP_FILE_FIXED)
 	JNLP_JARS=`grep jar $(JNLP_FILE_FIXED) | awk -F \" '{print $$2}' | grep -v signed_`; \
 	tar -cf - $$JNLP_JARS | \
-		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvpf -"
 
 # Update the website.
 
@@ -1848,10 +1848,10 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 	@echo "# mk/jnlp.mk:  book_dist_update target."
 	@echo "#"
 	pwd
-	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xpf -"
+	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xpf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
 	# Copy over the model and submodel files
-	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - `make --no-print-directory --silent echo_models` | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR)/$(JNLP_MODEL_DIRECTORY); /usr/sfw/bin/gtar -xpf -")
+	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - `make --no-print-directory --silent echo_models` | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR)/$(JNLP_MODEL_DIRECTORY); tar -xpf -")
 	# Replace link to applet with link to image.  Some files have a .htm file that link to the applet
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); sed -e 's@$(JNLP_MODEL)Vergil.htm@$(JNLP_MODEL)/index.html@' -e 's@>applet</a>@>HTML Version</a> - browsable only, not executable@' $(JNLP_HTML) > $(JNLP_HTML).tmp"
 	#-ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); diff $(JNLP_HTML).tmp $(JNLP_HTML)"
