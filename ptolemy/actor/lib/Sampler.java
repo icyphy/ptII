@@ -131,6 +131,7 @@ public class Sampler extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sampler newObject = (Sampler) super.clone(workspace);
+        newObject.output.setTypeSameAs(newObject.input);
         newObject.output.setWidthEquals(newObject.input, true);
 
         return newObject;
