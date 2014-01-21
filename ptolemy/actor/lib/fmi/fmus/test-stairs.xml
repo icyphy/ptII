@@ -1,33 +1,35 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="test-stairs" class="ptolemy.actor.TypedCompositeActor">
+<entity name="test" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1436, 878}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={255, 129, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1202, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000009">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000024">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{590.9999999999995, 374.0000000000003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.00000000000017, 251.99999999999983}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 40.0}">
         </property>
     </property>
-    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="FMU model of a staircase using a Mealy machine.">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 70.0]">
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="FMU model of a staircase.">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 75.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates how a Mealy machine can be &#10;implemented as an FMU. The model contains two &#10;different FMUs, both implementing a staircase. The &#10;difference is that the FMU stairs_a is using an open &#10;interval to model the stairs, thus do not indicate to the&#10;master algorithm any points directly before transition. &#10;The second FMU stairs_b implements superdense time, &#10;where each transition have a left and a right-sided limit. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates how a Mealy machine can be implemented as an FMU. &#10;The model contains two different FMUs, both implementing a staircase. The&#10;difference is that the FMU stairs_a is using an open interval to model the stairs, &#10;thus do not indicate to the master algorithm any points directly before &#10;transition. The second FMU stairs_b implements super-dense time;&#10;each transition have a left and a right-sided limit.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 110.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -39,12 +41,11 @@
         </property>
     </property>
     <entity name="TimedPlotter_stairs_b" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <display name="TimedPlotter Stairs B"/>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={714, 476, 622, 393}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={507, 332, 852, 487}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 349]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[852, 443]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 365.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -53,16 +54,16 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="4.0"/>
+<xRange min="0.0" max="6.0"/>
 <yRange min="0.0" max="2.0"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="stairs_a" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/stairs_a/stairs_a.fmu">
+    <entity name="stairs_b" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/stairs_b/stairs_b.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 365.0]">
         </property>
         <port name="level" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -79,12 +80,12 @@
         </port>
     </entity>
     <entity name="TimedPlotter_stairs_a" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <display name="TimedPlotter Stairs A"/>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={717, 58, 614, 405}, maximized=false}">
+        <display name="TimedPlotter_stairs_"/>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 22, 852, 487}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[614, 361]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[852, 443]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 275.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -93,16 +94,16 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="4.0"/>
+<xRange min="0.0" max="6.0"/>
 <yRange min="0.0" max="2.0"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="stairs_b" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/stairs_b/stairs_b.fmu">
+    <entity name="stairs_a" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/stairs_a/stairs_a.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 275.0]">
         </property>
         <port name="level" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -118,12 +119,12 @@
             </property>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="TimedPlotter_stairs_b.input" relation="relation"/>
-    <link port="stairs_a.level" relation="relation3"/>
-    <link port="TimedPlotter_stairs_a.input" relation="relation3"/>
     <link port="stairs_b.level" relation="relation"/>
+    <link port="TimedPlotter_stairs_a.input" relation="relation2"/>
+    <link port="stairs_a.level" relation="relation2"/>
 </entity>
