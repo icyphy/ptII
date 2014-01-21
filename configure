@@ -3813,18 +3813,9 @@ $as_echo "$as_me: WARNING: Java 1.6.x is the first JVM in your path.
     /Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home.
     To adjust the path in Bash, use
     export PATH=/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/bin:\${PATH}" >&2;}
-               esac;;
-
-	*)
-	        # -breakiterator is only present in jdk1.4 and later
-		JDOCBREAKITERATOR=-breakiterator
-                # Ptalon uses generics, assume 1.5 or greater here
-                HAS_GENERICS=yes
-		JAVA1_6_OR_LATER=yes
-		if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok, you are running $JVERSION" >&5
-$as_echo "ok, you are running $JVERSION" >&6; }; fi
-	;;
+               esac
+	       ;;
+       	*)     ;;
 esac
 
 if test "$UPGRADE_JVM" = "yes"; then
@@ -3851,6 +3842,14 @@ if test "$UPGRADE_JVM" = "yes"; then
     JDK 1.6 or later is needed for ptdb to use javax.swing.GroupLayout.
     Please upgrade your JDK to 1.6 or later and try again.
     $upgradeMessage" "$LINENO" 5
+else
+   # -breakiterator is only present in jdk1.4 and later
+   JDOCBREAKITERATOR=-breakiterator
+   # Ptalon uses generics, assume 1.5 or greater here
+   HAS_GENERICS=yes
+   if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok, you are running $JVERSION" >&5
+$as_echo "ok, you are running $JVERSION" >&6; }; fi
 fi
 
 
@@ -5724,6 +5723,16 @@ $as_echo "$as_me: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml) in
     For further instructions, see $PTII/ptdb/doc " >&2;}
     else
         PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
+    fi
+
+    if test ! "$HAS_GENERICS" = "yes"; then
+        #ptdb.gui.GraphPatternSearchEditor import ptalon.gt.PtalonMatcher
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: You are running Java $JVERSION, which does not
+    support generics.  Thus, ptdb, which depends on ptolemy/actor/ptalon will not compile." >&5
+$as_echo "$as_me: WARNING: You are running Java $JVERSION, which does not
+    support generics.  Thus, ptdb, which depends on ptolemy/actor/ptalon will not compile." >&2;}
+        PTDBXML_JAR=""
+	PTDB_JAR=""
     fi
 fi
 
