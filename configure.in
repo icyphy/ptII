@@ -695,16 +695,9 @@ case "$JVERSION" in
     /Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home.
     To adjust the path in Bash, use
     export PATH=/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/bin:\${PATH}])
-               esac;;
-
-	*)      
-	        # -breakiterator is only present in jdk1.4 and later
-		JDOCBREAKITERATOR=-breakiterator
-                # Ptalon uses generics, assume 1.5 or greater here
-                HAS_GENERICS=yes
-		JAVA1_6_OR_LATER=yes
-		PT_MSG_RESULT([ok, you are running $JVERSION])
-	;;
+               esac
+	       ;;
+       	*)     ;;
 esac
 
 if test "$UPGRADE_JVM" = "yes"; then
@@ -731,6 +724,12 @@ if test "$UPGRADE_JVM" = "yes"; then
     JDK 1.6 or later is needed for ptdb to use javax.swing.GroupLayout.
     Please upgrade your JDK to 1.6 or later and try again.
     $upgradeMessage]) 	
+else
+   # -breakiterator is only present in jdk1.4 and later
+   JDOCBREAKITERATOR=-breakiterator
+   # Ptalon uses generics, assume 1.5 or greater here
+   HAS_GENERICS=yes
+   PT_MSG_RESULT([ok, you are running $JVERSION])
 fi
 
 
@@ -1979,6 +1978,14 @@ else
     For further instructions, see $PTII/ptdb/doc] )
     else
         PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
+    fi
+
+    if test ! "$HAS_GENERICS" = "yes"; then 
+        #ptdb.gui.GraphPatternSearchEditor import ptalon.gt.PtalonMatcher
+        AC_MSG_WARN([You are running Java $JVERSION, which does not
+    support generics.  Thus, ptdb, which depends on ptolemy/actor/ptalon will not compile.])
+        PTDBXML_JAR=""
+	PTDB_JAR=""
     fi
 fi
 
