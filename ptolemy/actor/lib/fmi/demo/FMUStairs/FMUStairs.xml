@@ -27,7 +27,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates how a Mealy machine can be implemented as an FMU. &#10;The model contains two different FMUs, both implementing a staircase. The&#10;difference is that the FMU stairs_a is using an open interval to model the stairs, &#10;thus do not indicate to the master algorithm any points directly before &#10;transition. The second FMU stairs_b implements super-dense time;&#10;each transition have a left and a right-sided limit.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates how a Mealy machine can be implemented as an FMU. &#10;The model contains two different FMUs, both implementing a staircase. The&#10;difference is that the FMU stairsA is using an open interval to model the stairs, &#10;thus do not indicate to the master algorithm any points directly before &#10;transition. The second FMU stairsB implements super-dense time;&#10;each transition have a left and a right-sided limit.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 110.0]">
         </property>
@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 30.0]">
         </property>
     </property>
-    <entity name="TimedPlotter_stairs_b" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter_stairsB" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={507, 332, 852, 487}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[852, 443]">
@@ -60,8 +60,8 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="stairs_b" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/stairs_b/stairs_b.fmu">
+    <entity name="stairsB" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stairsB.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 365.0]">
         </property>
@@ -79,7 +79,7 @@
             </property>
         </port>
     </entity>
-    <entity name="TimedPlotter_stairs_a" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TimedPlotter_stairsA" class="ptolemy.actor.lib.gui.TimedPlotter">
         <display name="TimedPlotter_stairs_"/>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 22, 852, 487}, maximized=false}">
         </property>
@@ -100,8 +100,8 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="stairs_a" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/stairs_a/stairs_a.fmu">
+    <entity name="stairsA" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stairsA.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 275.0]">
         </property>
@@ -123,8 +123,8 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="TimedPlotter_stairs_b.input" relation="relation"/>
-    <link port="stairs_b.level" relation="relation"/>
-    <link port="TimedPlotter_stairs_a.input" relation="relation2"/>
-    <link port="stairs_a.level" relation="relation2"/>
+    <link port="TimedPlotter_stairsB.input" relation="relation"/>
+    <link port="stairsB.level" relation="relation"/>
+    <link port="TimedPlotter_stairsA.input" relation="relation2"/>
+    <link port="stairsA.level" relation="relation2"/>
 </entity>

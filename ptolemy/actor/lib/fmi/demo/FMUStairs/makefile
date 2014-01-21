@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy II Functional Mock-up Interface (FMI) demonstrations
+# Makefile for Ptolemy II Framework Mock-up Unit Stairs demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 62637 2011-12-23 19:50:57Z cxh $
 #
-# @Copyright (c) 2011-2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/demo
+ME =		ptolemy/actor/lib/fmi/demo/FMUStairs
 
-DIRS =		FMUBouncingBall FMUModelicaSin FMUSimulationX FMUStairs
-
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+# Root of the Java directory
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,39 +41,53 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	FMUStairs
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	FMUBouncingBall/FMUBouncingBall.jar \
-	FMUModelicaSin/FMUModelicaSin.jar \
-	FMUStairs/FMUStairs.xml
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	FMUStairs.xml
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Make clean removes $(KRUFT)
+KRUFT =
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run the demos, run 'make demo'"
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer FMUStairs.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer FMUStairsVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" FMUStairs.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" FMUStairs.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
