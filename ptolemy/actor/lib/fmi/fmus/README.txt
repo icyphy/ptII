@@ -1,0 +1,118 @@
+ptolemy/actor/lib/fmi/fmus/README.txt
+$Id$
+
+This directory contains a the source code for Functional Mockup Units (FMUs)
+used by Ptolemy II.
+
+An FMU is a zip file that contains a modelDescription.xml file and one
+or more platform-dependent library files.
+
+
+File Locations
+--------------
+In general, the .fmu file and the shared libraries are *not* checked
+in to version control.  Instead, the .fmu file is checked in at
+$PTII/ptolemy/actor/lib/fmi/test/auto/.
+
+To update the .fmu file, cd into the fmu directory and run 'make update'.
+This will create the .fmu file and *merge* it in with the .fmu file in
+$PTII/ptolemy/actor/lib/fmi/test/auto/.
+
+Tests are also checked into $PTII/ptolemy/actor/lib/fmi/test/auto/.
+
+Demos are checked in to subdirectories of $PTII/ptolemy/actor/lib/fmi/demo/.
+
+The reason that .fmu files in the $PTII/ptolemy/actor/lib/fmus/*
+directories are not checked in is because if a user runs make at the
+top level, these .fmu files will be created and will typically differ
+from .fmu files created by other users.  Then, if the user does a svn
+commit, the version control system will note the difference and check
+in the change, which is unnecessary.  Checking in these .fmu files is
+like checking in .o files.
+
+We have a 'make update' rule, which intentionally updates the .fmu in
+test/auto, which the user invokes to signify that they *intend* to
+update the fmu and commit it.  This is like checking a library or jar
+file.
+
+
+Naming conventions
+------------------
+Note that fmu files, tests and demos should all follow the Ptolemy II
+naming convention.  Specifically, camelCase should be used:
+
+Right:
+stairStep.fmu
+stairStep.xml
+
+Wrong:
+stair-step.fmu  
+stair_step.xml
+
+Currently, demo names seem to start with "FMU", it would be good to stick with this.
+
+Also, FMI-1.0 FMUS and models typically end with a "1": dqME1.fmu is a FMI-1.0 FMU.
+
+
+Creating a new FMU
+------------------
+The high level steps are:
+* Create the fmu 
+* Create a demo that uses it
+* Create a test
+
+1) Create the fmu
+
+2) The easiest thing to do is to copy the files from an existing fmu and
+change them.  
+
+3) The .c file that defines the fmu-specific methods of your FMU should
+be renamed to match the name of the FMU.  For example
+ptolemy/actor/lib/fmi/fmu/stairsA/ has 
+ptolemy/actor/lib/fmi/fmus/stairsA/src/sources/stairsA.c
+
+4) For each FMU, be sure to get a new guid from http://guid.us
+ - change guid in the modelDescription.xml file
+ - and in the .c file that defines fmu-specific methods of
+   your FMU. (stairsA.c)
+
+5) Update the MODEL_IDENTIFIER and FMIAPI_FUNCTION_PREFIX values in the 
+.c file:
+--start--
+// The model identifier string.
+#define MODEL_IDENTIFIER stairsA
+// Globally unique ID used to make sure the XML file and the DLL match.
+// The following was generated at http://guid.us
+#define MODEL_GUID "{0e634258-412b-4602-a29d-e7882503fd59}"
+
+// Used by FMI 2.0.  See FMIFuctions.h
+#define FMIAPI_FUNCTION_PREFIX stairsA_
+--end--
+
+6) Update FMU_NAME in fmi/fmus/stairsA/src/sources/makefile
+
+7) cd to the top level directory of the fmu and run make update
+  cd $PTII/ptolemy/actor/lib/fmi/fmus/stairsA
+  make update
+Your .fmu file should appear $PTII/ptolemy/actor/lib/fmi/fmus/test/auto/stairsA.fmu
+
+8) Create a demo directory and a demo model with a name that matches
+the directory name.  For example, the demo directory is 
+ptolemy/actor/lib/fmi/demo/FMUStairs so the demo is
+ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs.xml
+
+Each demo directory *must* have a model that matches the name so that
+users know where to start.
+
+9) Copy a makefile from an adjacent demo directory and update it.
+
+10) Add the demo to $PTII/ptolemy/configs/doc/completeDemos.htm Each
+demo has a top level director, for FMUs, it is typically the
+Continuous director.  Thus, FMU models typically go into the
+continuous section of completeDemos.htm.
+
+11) Add a test to $PTII/ptolemy/actor/lib/fmi/test/auto/.  Typically,
+the name of the test matches the name of the demo.  The test has any
+plotter actor replaced with Test actors.
+
+
