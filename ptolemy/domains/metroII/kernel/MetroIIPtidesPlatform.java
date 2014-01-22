@@ -105,7 +105,7 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
     /**
-     * Create an actor with a name and a container. The container argument must
+     * Creates an actor with a name and a container. The container argument must
      * not be null, or a NullPointerException will be thrown. This actor will
      * use the workspace of the container for synchronization and version
      * counts. If the name argument is null, then the name is set to the empty
@@ -131,7 +131,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     }
 
     /**
-     * Construct an PtidesPlatform in the specified workspace with no container
+     * Constructs an PtidesPlatform in the specified workspace with no container
      * and an empty string as a name. You can then change the name with
      * setName(). If the workspace argument is null, then use the default
      * workspace. You should set the local director or executive director before
@@ -156,7 +156,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ////                         public methods                    ////
 
     /**
-     * Clone the object into the specified workspace. This overrides the base
+     * Clones the object into the specified workspace. This overrides the base
      * class to set the association with iterationCount.
      *
      * @param workspace
@@ -231,7 +231,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     }
 
     /**
-     * Read inputs from ParameterPorts and update the paramter of the
+     * Reads inputs from ParameterPorts and update the paramter of the
      * associatedPort.
      *
      * @exception IllegalActionException
@@ -270,7 +270,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     }
 
     /**
-     * Check types from a source port to a group of destination ports, assuming
+     * Checks types from a source port to a group of destination ports, assuming
      * the source port is connected to all the ports in the group of destination
      * ports. Return a list of instances of Inequality that have type conflicts.
      * This overrides the base class so that if one of the ports belongs to this
@@ -350,7 +350,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     }
 
     /**
-     * Return the type constraints on all connections starting from the
+     * Returns the type constraints on all connections starting from the
      * specified source port to all the ports in a group of destination ports.
      * This overrides the base class to ensure that if the source port or the
      * destination port is a port of this composite, then the port is forced to
@@ -449,7 +449,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the class. */
+    /** Initializes the class. */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         setClassName("ptolemy.domains.ptides.kernel.PtidesPlatform");
@@ -462,7 +462,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     }
 
     /**
-     * Check if given MirrorPort is associated with a NetworkReceiverPort.
+     * Checks if given MirrorPort is associated with a NetworkReceiverPort.
      *
      * @param port
      *            The MirrorPort.
@@ -474,7 +474,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     }
 
     /**
-     * Check if given MirrorPort is associated with a NetworkTransmitterPort.
+     * Checks if given MirrorPort is associated with a NetworkTransmitterPort.
      *
      * @param port
      *            The MirrorPort.
@@ -541,7 +541,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         // instantiate it.
 
         /**
-         * Construct an actor with a name and a container.
+         * Constructs an actor with a name and a container.
          *
          * @param container
          *            The container.
@@ -559,7 +559,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Override the base class to return a specialized port.
+         * Overrides the base class to return a specialized port.
          *
          * @param name
          *            The name of the port to create.
@@ -578,7 +578,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Return a specialized ParameterPort.
+         * Returns a specialized ParameterPort.
          *
          * @param name
          *            The name of the port to create.
@@ -611,7 +611,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     private class PtidesPlatformDirector extends Director implements GetFirable {
 
         /**
-         * Construct an PtidesPlatformDirector in the specified workspace with
+         * Constructs an PtidesPlatformDirector in the specified workspace with
          * no container and an empty string as a name. You can then change the
          * name with setName(). If the workspace argument is null, then use the
          * default workspace. You should set the local director or executive
@@ -634,7 +634,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Invoke fire of the embedded PtidesDirector.
+         * Invokes fire of the embedded PtidesDirector.
          *
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
@@ -644,7 +644,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Forward this call to the director that governs this PtidesPlatform
+         * Forwards this call to the director that governs this PtidesPlatform
          * actor.
          *
          * @exception IllegalActionException
@@ -669,7 +669,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Get current environment time from the director that contains this
+         * Gets current environment time from the director that contains this
          * PtidesPlatform actor.
          *
          * @return Environment time.
@@ -691,7 +691,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Invoke initialize of the embedded PtidesDirector.
+         * Invokes initialize of the embedded PtidesDirector.
          *
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
@@ -702,7 +702,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Return a new instance of QueueReceiver.
+         * Returns a new instance of QueueReceiver.
          *
          * @return A new instance of QueueReceiver.
          * @see QueueReceiver
@@ -712,7 +712,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Call prefire of super class to update local time and invoke prefire
+         * Calls prefire of super class to update local time and invoke prefire
          * of the embedded PtidesDirector.
          *
          * @exception IllegalActionException
@@ -724,7 +724,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Invoke postfire of the embedded PtidesDirector.
+         * Invokes postfire of the embedded PtidesDirector.
          *
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
@@ -734,7 +734,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Transfer data from an input port of the container to the ports it is
+         * Transfers data from an input port of the container to the ports it is
          * connected to on the inside. This method extracts tokens from a record
          * token if the associated port is a network port.
          *
@@ -857,7 +857,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Transfer data from the inside receivers of an output port of the
+         * Transfers data from the inside receivers of an output port of the
          * container to the ports it is connected to on the outside. Create a
          * RecordToken if the associated port is a NetworkTransmitterPort.
          *
@@ -923,7 +923,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         ////                   private methods                    ////
 
         /**
-         * Get the PtidesDirector that is contained by the PtidesComposite.
+         * Gets the PtidesDirector that is contained by the PtidesComposite.
          *
          * @return The PtidesDirector.
          * @exception IllegalActionException
@@ -992,7 +992,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      */
     public static class PtidesMirrorPort extends MirrorPort {
         /**
-         * Construct a port in the specified workspace with an empty string as a
+         * Constructs a port in the specified workspace with an empty string as a
          * name. You can then change the name with setName(). If the workspace
          * argument is null, then use the default workspace. The object is added
          * to the workspace directory. Increment the version number of the
@@ -1014,7 +1014,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         // these ports.
 
         /**
-         * Create a new instance of a port for PtidesPlatform.
+         * Creates a new instance of a port for PtidesPlatform.
          *
          * @param container
          *            The container for the port.
@@ -1039,7 +1039,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
         }
 
         /**
-         * Override the base class to not convert the token if it is a
+         * Overrides the base class to not convert the token if it is a
          * PtidesPlatform. FIXME: correct?
          *
          * @param token

@@ -1,4 +1,4 @@
-/* BlockingFire is a wrapper for Ptolemy actors to adapt to Metro semantics.
+/* BlockingFire is a wrapper for Ptolemy actors to adapt to MetroII semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -35,21 +35,21 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * BlockingFire is a wrapper for Ptolemy actors to adapt to Metro semantics. It
+ * BlockingFire is a wrapper for Ptolemy actors to adapt to MetroII semantics. It
  * provides an implementation of the state transitions for the abstract wrapper
  * FireMachine (@see FireMachine), which wraps an actor with a set of FSM
- * interfaces so that the actor can be seen as a FSM from outside. More
- * specifically, the wrapper implements startOrResume(event_list) function that
- * gives how the FSM reacts to the Metro events.
+ * interfaces so that the actor can be seen as a FSM from outside. In
+ * particular, startOrResume(event_list) is the function that reacts to the
+ * MetroII events that trigger the FSM.
  * 
  * <p>
  * The FireMachine has the following states. Each represents a state of the
  * wrapped actor:
  * <ol>
- * <li>START: initial state</li>
- * <li>BEGIN: prefire() is called and returns true. getfire() will be called.</li>
- * <li>END: getfire() is called and returns properly.</li>
- * <li>FINAL: final state</li>
+ * <li>START: initial state.</li>
+ * <li>BEGIN: the actor is not fired.</li>
+ * <li>END: the actor is fired.</li>
+ * <li>FINAL: final state.</li>
  * </ol>
  * And each of the states BEGIN and END is associated with a 'state event',
  * which is the full name of the actor without model name plus one of the
@@ -59,36 +59,17 @@ import ptolemy.kernel.util.IllegalActionException;
  * <li>FIRE_END</li>
  * </ol>
  * For example, 'Ramp' is the name of a top level actor in a model 'Test'. The
- * full actor name should be 'Test.Ramp'. The Metro event associated with the
+ * full actor name is 'Test.Ramp'. The MetroII state event associated with the
  * state BEGIN of the actor is 'Ramp.FIRE_BEGIN'.
- * </p>
+ * </p>Ptolemy
  * 
  * <p>
  * Neither START nor FINAL is associated with any state event.
  * </p>
  * 
  * <p>
- * When startOrResume() is called, the wrapper checks if the Metro event
- * associated with the current state is notified. If the event is notified, call
- * related function of the wrapped actor, transition to the next state, and
- * propose the Metro event associated with the next state. If the state is
- * associated with no state event, simply transition to the next state, and
- * propose the Metro event associated with the next state. The 'next' state is
- * defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
- * 
- * <pre>
- *       action: propose FIRE_BEGIN
- * START ---------------------------------------> BEGIN
- * 
- *       guard: FIRE_BEGIN is notified
- *       action: call fire(), propose FIRE_END
- * BEGIN ---------------------------------------> FIRE_END
- * 
- *       guard: FIRE_BEGIN is not notified
- *       action: propose FIRE_BEGIN
- * BEGIN ---------------------------------------> BEGIN
- * </pre>
- * 
+ * To understand the transition table of the FSM, @see
+ * #startOrResume(LinkedList)
  * </p>
  * 
  * 
@@ -115,12 +96,13 @@ public class BlockingFire extends FireMachine {
     ////                         public methods                    ////
 
     /**
-     * When startOrResume() is called, the wrapper checks if the Metro event
-     * associated with the current state is notified. If the event is notified,
-     * call related function of the wrapped actor, transition to the next state,
-     * and propose the Metro event associated with the next state. If the state
-     * is associated with no state event, simply transition to the next state,
-     * and propose the Metro event associated with the next state. The 'next'
+     * 
+     * When startOrResume(eventList) is called, the wrapper checks if the MetroII
+     * event associated with the current state is changed to NOTIFIED. If the
+     * event is notified, call related function of the wrapped actor, transition
+     * to the next state, clear eventList and add the MetroII event associated
+     * with the state to eventList (referred to as propose events). If the state
+     * is associated with no state event, eventList is an empty list. The 'next'
      * state is defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
      * 
      * <pre>
@@ -135,6 +117,8 @@ public class BlockingFire extends FireMachine {
      *       action: propose FIRE_BEGIN
      * BEGIN ---------------------------------------> BEGIN
      * </pre>
+     * 
+     * 
      * 
      * @param metroIIEventList
      *            a list of MetroII events that are proposed. It is set by

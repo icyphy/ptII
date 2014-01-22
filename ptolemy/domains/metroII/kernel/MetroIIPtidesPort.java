@@ -65,7 +65,7 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 public class MetroIIPtidesPort extends MirrorPort {
 
     /**
-     * Create a new PtidesPort with a given container and a name.
+     * Creates a new PtidesPort with a given container and a name.
      *
      * @param container
      *            The container of the port.

@@ -77,9 +77,10 @@ import ptolemy.kernel.util.Workspace;
  * <ol>
  * <li>If the actor is a normal Ptolemy actor, the execution of the event
  * instantly triggers fire() of the actor.</li>
- * <li>If the actor is a MetroII actor, the execution of the event will trigger
- * a MetroII event to be PROPOSED. The firing will not be executed until the
- * MetroII event is NOTIFIED.</li>
+ * <li>If the actor is an actor with a MetroII wrapper (@see BlockingFire or @see
+ * ResumableFire), the execution of the event will trigger a MetroII event to be
+ * PROPOSED. The firing will not be executed until the MetroII event is
+ * NOTIFIED.</li>
  * </ol>
  * A MetroII actor is a Ptolemy actor that implements GetFirable interface,
  * which includes MetroIICompositeActor. To understand MetroII event and its
@@ -97,7 +98,7 @@ import ptolemy.kernel.util.Workspace;
  * </p>
  * 
  * <p>
- * It's highly recommend no to place MetroIIDEDirector in a
+ * It's highly recommend not to place MetroIIDEDirector in a
  * MetroIICompositeActor under another MetroIIDEDirector because there would be
  * a semantic conflict if the enclosed MetroIIDEDirector directs a normal
  * Ptolemy actor.
@@ -113,7 +114,7 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
     /**
-     * Construct a director in the given container with the given name. The
+     * Constructs a director in the given container with the given name. The
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
@@ -141,7 +142,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     ////                         public methods                    ////
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      * 
@@ -169,7 +170,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Initialize the model controlled by this director. Call the initialize()
+     * Initializes the model controlled by this director. Call the initialize()
      * of super class and then wrap each actor that is controlled by this
      * director.
      * 
@@ -217,7 +218,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Request the execution of the current iteration to stop. This is similar
+     * Requests the execution of the current iteration to stop. This is similar
      * to stopFire(), except that the current iteration is not allowed to
      * complete.
      * 
@@ -230,7 +231,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
             }
         }
         // super.stop();
-        System.out.println(this.getFullName()+" stops!"); 
+        System.out.println(this.getFullName() + " stops!");
     }
 
     /**
@@ -239,7 +240,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     public Parameter printTrace;
 
     /**
-     * Return the actor that is about to fire and its state.
+     * Returns the actor that is about to fire and its state.
      * 
      * @return 0 if firing can be executed, and the next event in event queue
      *         should be checked for processing; -1 if there's no actor to fire,
@@ -517,7 +518,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Process the mappable actors. The assumption is that a mappable actor has
+     * Processes the mappable actors. The assumption is that a mappable actor has
      * a delay strictly greater than zero.
      * 
      * @exception IllegalActionException
@@ -585,7 +586,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Fire actors according to events in the event queue. Whether the actual
+     * Fires actors according to events in the event queue. Whether the actual
      * firing of an actor can be done also depend on the MetroII events
      * associated with the actor if the actor is a MetroII actor. Only when the
      * associated MetroII event is NOTIFIED, the firing can be executed.
@@ -605,275 +606,266 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException {
         //        try {
-            if (_debugging) {
-                _debug("========= " + this.getName() + " director fires at "
-                        + getModelTime() + "  with microstep as " + _microstep);
-            }
+        if (_debugging) {
+            _debug("========= " + this.getName() + " director fires at "
+                    + getModelTime() + "  with microstep as " + _microstep);
+        }
+        if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+            System.out.println("========= " + this.getName()
+                    + " director fires at " + getModelTime()
+                    + "  with microstep as " + _microstep);
+        }
+
+        Event.Builder idleEvent = MetroIIEventBuilder.newProposedEvent(
+                getFullName() + ".Idle", Long.MAX_VALUE, getTimeResolution());
+
+        Event.Builder beforeFunctionEvent = MetroIIEventBuilder
+                .newProposedEvent(getFullName() + ".beforeFunctionEvent",
+                        getModelTime().getLongValue(), getTimeResolution());
+
+        processMappableActorEventsUntil(resultHandler, beforeFunctionEvent);
+
+        // NOTE: This fire method does not call super.fire()
+        // because this method is very different from that of the super class.
+        // A while loop that handles all events with the same tag.
+        while (_checkForNextEvent()) {
             if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                System.out.println("========= " + this.getName()
-                        + " director fires at " + getModelTime()
-                        + "  with microstep as " + _microstep);
+                System.out.println("Before checking actor Time: "
+                        + this.getModelTime() + " " + this.getMicrostep());
             }
+            Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
+            if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                System.out.println("After checking actor Time: "
+                        + this.getModelTime() + " " + this.getMicrostep());
+            }
+            // System.out.println(_eventQueue);
+            int result = actorAndState.getSecond();
 
-            Event.Builder idleEvent = MetroIIEventBuilder.newProposedEvent(
-                    getFullName() + ".Idle", Long.MAX_VALUE,
-                    getTimeResolution());
+            if (actorAndState.getFirst() != null
+                    && !(actorAndState.getFirst() instanceof GetFirable)) {
 
-            Event.Builder beforeFunctionEvent = MetroIIEventBuilder
-                    .newProposedEvent(getFullName() + ".beforeFunctionEvent",
-                            getModelTime().getLongValue(), getTimeResolution());
+                Actor actorToFire = actorAndState.getFirst();
+                boolean refire;
 
-            processMappableActorEventsUntil(resultHandler, beforeFunctionEvent);
+                do {
+                    refire = false;
 
-            // NOTE: This fire method does not call super.fire()
-            // because this method is very different from that of the super class.
-            // A while loop that handles all events with the same tag.
-            while (_checkForNextEvent()) {
-                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                    System.out.println("Before checking actor Time: "
-                            + this.getModelTime() + " " + this.getMicrostep());
-                }
-                Pair<Actor, Integer> actorAndState = _checkNextActorToFire();
-                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                    System.out.println("After checking actor Time: "
-                            + this.getModelTime() + " " + this.getMicrostep());
-                }
-                // System.out.println(_eventQueue);
-                int result = actorAndState.getSecond();
-
-                if (actorAndState.getFirst() != null
-                        && !(actorAndState.getFirst() instanceof GetFirable)) {
-
-                    Actor actorToFire = actorAndState.getFirst();
-                    boolean refire;
-
-                    do {
-                        refire = false;
-
-                        // NOTE: There are enough tests here against the
-                        // _debugging variable that it makes sense to split
-                        // into two duplicate versions.
-                        if (_debugging) {
-                            // Debugging. Report everything.
-                            // If the actor to be fired is not contained by the container,
-                            // it may just be deleted. Put this actor to the
-                            // list of disabled actors.
-                            if (!((CompositeEntity) getContainer())
-                                    .deepContains((NamedObj) actorToFire)) {
-                                _debug("Actor no longer under the control of this director. Disabling actor.");
-                                _disableActor(actorToFire);
-                                break;
-                            }
-
-                            _debug(new FiringEvent(this, actorToFire,
-                                    FiringEvent.BEFORE_PREFIRE));
-
-                            //
-                            //                                if (!actorToFire.prefire()) {
-                            //                                    _debug("*** Prefire returned false.");
-                            //                                    break;
-                            //                                }
-
-                            _debug(new FiringEvent(this, actorToFire,
-                                    FiringEvent.AFTER_PREFIRE));
-
-                            _debug(new FiringEvent(this, actorToFire,
-                                    FiringEvent.BEFORE_FIRE));
-                            actorToFire.fire();
-                            _debug(new FiringEvent(this, actorToFire,
-                                    FiringEvent.AFTER_FIRE));
-
-                            _debug(new FiringEvent(this, actorToFire,
-                                    FiringEvent.BEFORE_POSTFIRE));
-
-                            if (!actorToFire.postfire()) {
-
-                                _debug("*** Postfire returned false:",
-                                        ((Nameable) actorToFire).getName());
-
-                                // This actor requests not to be fired again.
-                                _disableActor(actorToFire);
-                                break;
-                            }
-
-                            _debug(new FiringEvent(this, actorToFire,
-                                    FiringEvent.AFTER_POSTFIRE));
-                        } else {
-                            // No debugging.
-                            // If the actor to be fired is not contained by the container,
-                            // it may just be deleted. Put this actor to the
-                            // list of disabled actors.
-                            if (!((CompositeEntity) getContainer())
-                                    .deepContains((NamedObj) actorToFire)) {
-
-                                _disableActor(actorToFire);
-                                break;
-                            }
-
-                            //                                if (!actorToFire.prefire()) {
-                            //                                    break;
-                            //                                }
-
-                            if (((BooleanToken) printTrace.getToken())
-                                    .booleanValue()) {
-                                System.out.println("Fire actor: "
-                                        + actorAndState.getFirst()
-                                                .getFullName() + " "
-                                        + this.getModelTime() + " "
-                                        + this.getMicrostep());
-                            }
-                            actorToFire.fire();
-
-                            // NOTE: It is the fact that we postfire actors now that makes
-                            // this director not comply with the actor abstract semantics.
-
-                            // However, it's quite a redesign to make it comply, and the
-                            // semantics would not be backward compatible. It really needs
-                            // to be a new director to comply.
-                            if (!actorToFire.postfire()) {
-                                // This actor requests not to be fired again.
-                                _disableActor(actorToFire);
-                                break;
-                            }
+                    // NOTE: There are enough tests here against the
+                    // _debugging variable that it makes sense to split
+                    // into two duplicate versions.
+                    if (_debugging) {
+                        // Debugging. Report everything.
+                        // If the actor to be fired is not contained by the container,
+                        // it may just be deleted. Put this actor to the
+                        // list of disabled actors.
+                        if (!((CompositeEntity) getContainer())
+                                .deepContains((NamedObj) actorToFire)) {
+                            _debug("Actor no longer under the control of this director. Disabling actor.");
+                            _disableActor(actorToFire);
+                            break;
                         }
 
-                        // Check all the input ports of the actor to see whether there
-                        // are more input tokens to be processed.
-                        // FIXME: This particular situation can only occur if either the
-                        // actor failed to consume a token, or multiple
-                        // events with the same destination were queued with the same tag.
-                        // In theory, both are errors. One possible fix for the latter
-                        // case would be to requeue the token with a larger microstep.
-                        // A possible fix for the former (if we can detect it) would
+                        _debug(new FiringEvent(this, actorToFire,
+                                FiringEvent.BEFORE_PREFIRE));
 
-                        // be to throw an exception. This would be far better than
-                        // going into an infinite loop.
-                        Iterator<?> inputPorts = actorToFire.inputPortList()
-                                .iterator();
+                        //
+                        //                                if (!actorToFire.prefire()) {
+                        //                                    _debug("*** Prefire returned false.");
+                        //                                    break;
+                        //                                }
 
-                        while (inputPorts.hasNext() && !refire) {
-                            IOPort port = (IOPort) inputPorts.next();
+                        _debug(new FiringEvent(this, actorToFire,
+                                FiringEvent.AFTER_PREFIRE));
 
-                            // iterate all the channels of the current input port.
-                            for (int i = 0; i < port.getWidth(); i++) {
-                                if (port.hasToken(i)) {
-                                    if (_debugging) {
-                                        _debug("Port named "
-                                                + port.getName()
-                                                + " still has input on channel "
-                                                + i + ". Refire the actor.");
-                                    }
-                                    // refire only if can be scheduled.
-                                    if (!_aspectsPresent
-                                            || _schedule(actorToFire,
-                                                    getModelTime())) {
-                                        refire = true;
+                        _debug(new FiringEvent(this, actorToFire,
+                                FiringEvent.BEFORE_FIRE));
+                        actorToFire.fire();
+                        _debug(new FiringEvent(this, actorToFire,
+                                FiringEvent.AFTER_FIRE));
 
-                                        // Found a channel that has input data,
-                                        // jump out of the for loop.
-                                        break;
-                                    }
+                        _debug(new FiringEvent(this, actorToFire,
+                                FiringEvent.BEFORE_POSTFIRE));
+
+                        if (!actorToFire.postfire()) {
+
+                            _debug("*** Postfire returned false:",
+                                    ((Nameable) actorToFire).getName());
+
+                            // This actor requests not to be fired again.
+                            _disableActor(actorToFire);
+                            break;
+                        }
+
+                        _debug(new FiringEvent(this, actorToFire,
+                                FiringEvent.AFTER_POSTFIRE));
+                    } else {
+                        // No debugging.
+                        // If the actor to be fired is not contained by the container,
+                        // it may just be deleted. Put this actor to the
+                        // list of disabled actors.
+                        if (!((CompositeEntity) getContainer())
+                                .deepContains((NamedObj) actorToFire)) {
+
+                            _disableActor(actorToFire);
+                            break;
+                        }
+
+                        //                                if (!actorToFire.prefire()) {
+                        //                                    break;
+                        //                                }
+
+                        if (((BooleanToken) printTrace.getToken())
+                                .booleanValue()) {
+                            System.out.println("Fire actor: "
+                                    + actorAndState.getFirst().getFullName()
+                                    + " " + this.getModelTime() + " "
+                                    + this.getMicrostep());
+                        }
+                        actorToFire.fire();
+
+                        // NOTE: It is the fact that we postfire actors now that makes
+                        // this director not comply with the actor abstract semantics.
+
+                        // However, it's quite a redesign to make it comply, and the
+                        // semantics would not be backward compatible. It really needs
+                        // to be a new director to comply.
+                        if (!actorToFire.postfire()) {
+                            // This actor requests not to be fired again.
+                            _disableActor(actorToFire);
+                            break;
+                        }
+                    }
+
+                    // Check all the input ports of the actor to see whether there
+                    // are more input tokens to be processed.
+                    // FIXME: This particular situation can only occur if either the
+                    // actor failed to consume a token, or multiple
+                    // events with the same destination were queued with the same tag.
+                    // In theory, both are errors. One possible fix for the latter
+                    // case would be to requeue the token with a larger microstep.
+                    // A possible fix for the former (if we can detect it) would
+
+                    // be to throw an exception. This would be far better than
+                    // going into an infinite loop.
+                    Iterator<?> inputPorts = actorToFire.inputPortList()
+                            .iterator();
+
+                    while (inputPorts.hasNext() && !refire) {
+                        IOPort port = (IOPort) inputPorts.next();
+
+                        // iterate all the channels of the current input port.
+                        for (int i = 0; i < port.getWidth(); i++) {
+                            if (port.hasToken(i)) {
+                                if (_debugging) {
+                                    _debug("Port named " + port.getName()
+                                            + " still has input on channel "
+                                            + i + ". Refire the actor.");
+                                }
+                                // refire only if can be scheduled.
+                                if (!_aspectsPresent
+                                        || _schedule(actorToFire,
+                                                getModelTime())) {
+                                    refire = true;
+
+                                    // Found a channel that has input data,
+                                    // jump out of the for loop.
+                                    break;
                                 }
                             }
                         }
-                    } while (refire); // close the do {...} while () loop
+                    }
+                } while (refire); // close the do {...} while () loop
 
-                    //                        actorAndState.getFirst().fire();
-                    //                        actorAndState.getFirst().postfire();
-                    continue;
-                }
+                //                        actorAndState.getFirst().fire();
+                //                        actorAndState.getFirst().postfire();
+                continue;
+            }
 
-                assert result <= 1 && result >= -1;
-                if (result == 1) {
-                    continue;
-                } else if (result == -1) {
-                    _noActorToFire();
-                    break;
-                    // return;
-                } // else if 0, keep executing
-                  //if (!actorList.contains(actorAndState.first)) {
-                if (actorAndState.getFirst() != null) {
-                    // System.out.println(_eventQueue);
-                    Actor actor = actorAndState.getFirst();
-                    FireMachine firing = _actorDictionary.get(actor
-                            .getFullName());
-                    if (firing.getState() != FireMachine.State.START) {
-                        //                            _pendingIteration
-                        //                                    .put(actor.getFullName(), _pendingIteration
-                        //                                            .get(actor.getFullName()) + 1);
-                    } else {
-                        actorList.add(actorAndState.getFirst());
+            assert result <= 1 && result >= -1;
+            if (result == 1) {
+                continue;
+            } else if (result == -1) {
+                _noActorToFire();
+                break;
+                // return;
+            } // else if 0, keep executing
+              //if (!actorList.contains(actorAndState.first)) {
+            if (actorAndState.getFirst() != null) {
+                // System.out.println(_eventQueue);
+                Actor actor = actorAndState.getFirst();
+                FireMachine firing = _actorDictionary.get(actor.getFullName());
+                if (firing.getState() != FireMachine.State.START) {
+                    //                            _pendingIteration
+                    //                                    .put(actor.getFullName(), _pendingIteration
+                    //                                            .get(actor.getFullName()) + 1);
+                } else {
+                    actorList.add(actorAndState.getFirst());
 
-                        if (((BooleanToken) printTrace.getToken())
-                                .booleanValue()) {
-                            System.out.println(actorAndState.getFirst()
-                                    .getFullName() + " is added");
-                        }
+                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                        System.out.println(actorAndState.getFirst()
+                                .getFullName() + " is added");
+                    }
 
-                        if (((BooleanToken) printTrace.getToken())
-                                .booleanValue()) {
-                            System.out
-                                    .println("Before firing Time: "
-                                            + this.getModelTime()
-                                            + this.getMicrostep());
-                        }
+                    if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                        System.out.println("Before firing Time: "
+                                + this.getModelTime() + this.getMicrostep());
                     }
                 }
-                //}
-                // after actor firing, the subclass may wish to perform some book keeping
-                // procedures. However in this class the following method does nothing.
-                _actorFired();
-                if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                    System.out.println("After firing Time: "
-                            + this.getModelTime() + this.getMicrostep());
-                }
-
+            }
+            //}
+            // after actor firing, the subclass may wish to perform some book keeping
+            // procedures. However in this class the following method does nothing.
+            _actorFired();
+            if (((BooleanToken) printTrace.getToken()).booleanValue()) {
+                System.out.println("After firing Time: " + this.getModelTime()
+                        + this.getMicrostep());
             }
 
-            Event.Builder afterFunctionEvent = MetroIIEventBuilder
-                    .newProposedEvent(getFullName() + ".afterFunctionEvent",
-                            getModelTime().getLongValue(), getTimeResolution());
+        }
 
-            processMappableActorEventsUntil(resultHandler, afterFunctionEvent);
+        Event.Builder afterFunctionEvent = MetroIIEventBuilder
+                .newProposedEvent(getFullName() + ".afterFunctionEvent",
+                        getModelTime().getLongValue(), getTimeResolution());
 
-            long idleEventTimeStamp = Long.MAX_VALUE;
+        processMappableActorEventsUntil(resultHandler, afterFunctionEvent);
 
-            if (!_eventQueue.isEmpty()
-                    && !_eventQueue.get().timeStamp().isNegative()) {
-                idleEventTimeStamp = _eventQueue.get().timeStamp()
-                        .getLongValue();
-            }
+        long idleEventTimeStamp = Long.MAX_VALUE;
 
-            idleEvent = MetroIIEventBuilder.newProposedEvent(getFullName()
-                    + ".Idle", idleEventTimeStamp, getTimeResolution());
+        if (!_eventQueue.isEmpty()
+                && !_eventQueue.get().timeStamp().isNegative()) {
+            idleEventTimeStamp = _eventQueue.get().timeStamp().getLongValue();
+        }
 
-            _events.clear();
-            _events.add(idleEvent);
+        idleEvent = MetroIIEventBuilder.newProposedEvent(getFullName()
+                + ".Idle", idleEventTimeStamp, getTimeResolution());
 
-            while (idleEvent.getStatus() != Event.Status.NOTIFIED) {
-                // System.out.println(idleEvent.getTime().getValue());
-                resultHandler.handleResult(_events);
-            }
+        _events.clear();
+        _events.add(idleEvent);
 
-            long timeValue = EventTimeComparator.convert(idleEvent.getTime()
-                    .getValue(), idleEvent.getTime().getResolution(), this
-                    .getTimeResolution());
+        while (idleEvent.getStatus() != Event.Status.NOTIFIED) {
+            // System.out.println(idleEvent.getTime().getValue());
+            resultHandler.handleResult(_events);
+        }
 
-            Time tmpTime = new Time(this, timeValue);
-            if (tmpTime.compareTo(this.getModelTime()) > 0) {
-                // increase timeValue
-                this.setModelTime(tmpTime);
-                this.setIndex(0);
-            } else {
-                assert false;
-            }
+        long timeValue = EventTimeComparator.convert(idleEvent.getTime()
+                .getValue(), idleEvent.getTime().getResolution(), this
+                .getTimeResolution());
 
-            if (_debugging) {
-                _debug("MetroIIDE director fired!");
-            }
-//        } catch (IllegalActionException e) {
-//            throw new CollectionAbortedException(e);
-//        }
+        Time tmpTime = new Time(this, timeValue);
+        if (tmpTime.compareTo(this.getModelTime()) > 0) {
+            // increase timeValue
+            this.setModelTime(tmpTime);
+            this.setIndex(0);
+        } else {
+            assert false;
+        }
+
+        if (_debugging) {
+            _debug("MetroIIDE director fired!");
+        }
+        //        } catch (IllegalActionException e) {
+        //            throw new CollectionAbortedException(e);
+        //        }
     }
 
     /**
@@ -894,7 +886,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     ////                         private methods                   ////
 
     /**
-     * Initialize parameters. This is called by the constructor.
+     * Initializes parameters. This is called by the constructor.
      * 
      * @exception IllegalActionException
      * @exception NameDuplicationException

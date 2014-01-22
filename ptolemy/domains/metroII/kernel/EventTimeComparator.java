@@ -1,4 +1,4 @@
-/* EventTimeComparator is for comparing time tags of MetroII events.
+/* EventTimeComparator compares time tags of MetroII events.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -36,19 +36,19 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Time;
 //// EventTimeComparator
 
 /**
-* EventTimeComparator is for comparing time tags of MetroII events.
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+ * EventTimeComparator compares time tags of MetroII events.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
 public class EventTimeComparator {
-    
+
     /**
-     * EventTimeComparator is a singleton. 
+     * EventTimeComparator is a singleton.
      */
     protected EventTimeComparator() {
         // Exists only to defeat instantiation.
@@ -94,12 +94,15 @@ public class EventTimeComparator {
     /**
      * Compare two timetags.
      * 
-     * @param time1 the first timetag to be compared
-     * @param time2 the second timetag to be compared
-     * @return a negative integer, zero, or a positive integer as the first timetag is less than, equal to, or greater than the second.
+     * @param time1
+     *            the first timetag to be compared
+     * @param time2
+     *            the second timetag to be compared
+     * @return a negative integer, zero, or a positive integer as the first
+     *         timetag is less than, equal to, or greater than the second.
      */
     static public int compare(Time time1, Time time2) {
-        if (comparator== null) {
+        if (comparator == null) {
             comparator = new Comparator<Event.Time>() {
                 public int compare(Time time1, Time time2) {
                     long greater = time1.getValue()
@@ -115,15 +118,15 @@ public class EventTimeComparator {
                 }
             };
         }
-        
-        return comparator.compare(time1, time2); 
+
+        return comparator.compare(time1, time2);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
     /**
      * Comparator for time tags of MetroII events.
      */
-    private static Comparator<Event.Time> comparator = null; 
+    private static Comparator<Event.Time> comparator = null;
 }

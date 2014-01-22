@@ -1,5 +1,4 @@
-/* ConstraintSolver is an interface used to let the subclass schedule Metro events
- * via updating the Metro event passed to resolve() method.
+/* ConstraintSolver is an interface used to let the subclass schedule Metro events.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -36,21 +35,22 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 
 /**
  * ConstraintSolver is an interface used to let the subclass schedule MetroII
- * events via updating the MetroII event passed to resolve() method. An MetroII
- * event status is updated to NOTIFIED when it satisfies all the constraints.
- * Otherwise the event status should be updated to WAITING.
- *
+ * events. The scheduling is via updating the MetroII events passed to resolve()
+ * method. An MetroII event status is updated to NOTIFIED when it satisfies the
+ * constraints in the subclass. Otherwise the event status should be updated to
+ * WAITING.
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public interface ConstraintSolver {
     /**
      * Update the MetroII events in the specified list.
-     *
+     * 
      * @param metroIIEventList
      *            a list of MetroII events to be updated.
      */

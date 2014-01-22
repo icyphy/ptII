@@ -33,20 +33,21 @@ import java.util.ArrayList;
 //// Graph
 
 /**
-*
-* Graph is an adjacency list data structure for representing mapping constraints.
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+ * 
+ * Graph is an adjacency list data structure for representing mapping
+ * constraints.
+ * 
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ * 
+ */
 public class Graph implements Cloneable {
 
     /**
-     * Construct a linked list.
+     * Constructs a linked list.
      */
     public Graph() {
         _nodeConnection = new ArrayList<ArrayList<Integer>>();
@@ -57,9 +58,11 @@ public class Graph implements Cloneable {
     ////                         public methods                    ////
 
     /**
-     * Clone the linked list.
-     *
-     * @exception CloneNotSupportedException the object's class does not implement the Cloneable interface.
+     * Clones the linked list.
+     * 
+     * @exception CloneNotSupportedException
+     *                the object's class does not implement the Cloneable
+     *                interface.
      */
     @Override
     public Graph clone() throws CloneNotSupportedException {
@@ -71,7 +74,8 @@ public class Graph implements Cloneable {
     }
 
     /**
-     * Clear the linked list to the initial state. Remove all the mapping constraints.
+     * Clears the linked list to the initial state. Remove all the mapping
+     * constraints.
      */
     public void clear() {
         _nodeConnection.clear();
@@ -79,10 +83,13 @@ public class Graph implements Cloneable {
     }
 
     /**
-     * Check if there is a mapping constraint constraining event id1 and event id2.
-     *
-     * @param id1 ID of the first event.
-     * @param id2 ID of the second event.
+     * Checks if there is a mapping constraint constraining event id1 and event
+     * id2.
+     * 
+     * @param id1
+     *            ID of the first event.
+     * @param id2
+     *            ID of the second event.
      * @return true if there is a mapping constraint.
      */
     public boolean contains(int id1, int id2) {
@@ -100,11 +107,14 @@ public class Graph implements Cloneable {
         return false;
     }
 
-    /** Add a mapping constraint (A, B). Event A and B are given by id1 and id2.
-    *
-    * @param id1 ID of event A in the constraint
-    * @param id2 ID of event B in the constraint
-    */
+    /**
+     * Adds a mapping constraint (A, B). Event A and B are given by id1 and id2.
+     * 
+     * @param id1
+     *            ID of event A in the constraint
+     * @param id2
+     *            ID of event B in the constraint
+     */
     public void add(int id1, int id2) {
         if (contains(id1, id2)) {
             return;
@@ -123,8 +133,10 @@ public class Graph implements Cloneable {
     }
 
     /**
-     * Get the iterator of the edges associated with nodeId.
-     * @param nodeId ID of the node
+     * Gets the iterator of the edges associated with nodeId.
+     * 
+     * @param nodeId
+     *            ID of the node
      * @return An iterator of the edges connected to nodeId.
      */
     public Iterable<Integer> getEdges(int nodeId) {
@@ -133,6 +145,7 @@ public class Graph implements Cloneable {
 
     /**
      * Return the size of nodes.
+     * 
      * @return the size of nodes.
      */
     public int nodeSize() {
@@ -140,7 +153,8 @@ public class Graph implements Cloneable {
     }
 
     /**
-     * Return the size of edges.
+     * Returns the size of edges.
+     * 
      * @return the size of edges.
      */
     public int edgeSize() {
@@ -148,8 +162,10 @@ public class Graph implements Cloneable {
     }
 
     /**
-     * Get the edge with the given edge ID.
-     * @param edgeId the edge Id.
+     * Gets the edge with the given edge ID.
+     * 
+     * @param edgeId
+     *            the edge Id.
      * @return the edge.
      */
     public Pair<Integer, Integer> getEdge(int edgeId) {
@@ -159,9 +175,9 @@ public class Graph implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
-    /** The adjacency list that represents the mapping constraints
-     *  (event pairs). _nodeConnection.get(id) gives a list of edges connected with
-     *  node ID id.
+    /**
+     * The adjacency list that represents the mapping constraints (event pairs).
+     * _nodeConnection.get(id) gives a list of edges connected with node ID id.
      */
     private ArrayList<ArrayList<Integer>> _nodeConnection;
 

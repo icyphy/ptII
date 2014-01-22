@@ -80,7 +80,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ResumableFire extends FireMachine {
 
     /**
-     * Construct a ResumableFire by wrapping the actor.
+     * Constructs a ResumableFire by wrapping the actor.
      *
      * @param actor
      *            Actor to be wrapped
@@ -90,7 +90,7 @@ public class ResumableFire extends FireMachine {
     }
 
     /**
-     * Fire the wrapped actor in a resumable style. The function getfire() 
+     * Fires the wrapped actor in a resumable style. The function getfire() 
      * of the wrapped actor is called in startOrResume() as follows:
      * <ol>
      * <li>Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for the
@@ -181,7 +181,7 @@ public class ResumableFire extends FireMachine {
     }
 
     /**
-     * Stop and dispose any associated thread.
+     * Stops and dispose any associated thread.
      */
     @Override
     public void reset() {

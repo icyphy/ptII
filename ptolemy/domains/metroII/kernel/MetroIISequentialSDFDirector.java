@@ -69,7 +69,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
         GetFirable {
 
     /**
-     * Construct a director in the default workspace with an empty string as its
+     * Constructs a director in the default workspace with an empty string as its
      * name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
      *
@@ -85,7 +85,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
     }
 
     /**
-     * Construct a director in the given workspace with an empty name. The
+     * Constructs a director in the given workspace with an empty name. The
      * director is added to the list of objects in the workspace. Increment the
      * version number of the workspace.
      *
@@ -104,7 +104,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
     }
 
     /**
-     * Construct a director in the given container with the given name. The
+     * Constructs a director in the given container with the given name. The
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
@@ -125,7 +125,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
     }
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      *
@@ -150,7 +150,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
     ////                         public methods                    ////
 
     /**
-     * Initialize the list of actors. The actors implementing MetroEventHandler
+     * Initializes the list of actors. The actors implementing MetroEventHandler
      * are wrapped by ResumableFire, otherwise are wrapped by BlockingFire.
      */
     public void initialize() throws IllegalActionException {
@@ -179,7 +179,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
     }
 
     /**
-     * Return the iterator for the caller function of getfire().
+     * Returns the iterator for the caller function of getfire().
      *
      * @return iterator the iterator for the caller function of getfire().
      */

@@ -134,7 +134,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class MetroIIDirector extends Director {
     /**
-     * Construct a director in the given container with the given name. The
+     * Constructs a director in the given container with the given name. The
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
@@ -203,7 +203,7 @@ public class MetroIIDirector extends Director {
     ////                         public methods                    ////
 
     /**
-     * React to a change in an attribute. If the changed attribute matches a
+     * Reacts to a change in an attribute. If the changed attribute matches a
      * parameter of the director, then the corresponding local copy of the
      * parameter value will be updated.
      * 
@@ -256,7 +256,7 @@ public class MetroIIDirector extends Director {
     }
 
     /**
-     * Initialize the model controlled by this director. Call the initialize()
+     * Initializes the model controlled by this director. Call the initialize()
      * of super class and then wrap each actor that is controlled by this
      * director.
      * 
@@ -379,7 +379,7 @@ public class MetroIIDirector extends Director {
     }
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      * 
@@ -427,7 +427,7 @@ public class MetroIIDirector extends Director {
     
     
     /**
-     * Stop firing as soon as possible. 
+     * Stops firing as soon as possible. 
      */
     @Override
     public void stop() {
@@ -436,7 +436,7 @@ public class MetroIIDirector extends Director {
     }
     
     /**
-     * Call stopFire() of the superclass and show a message.
+     * Calls stopFire() of the superclass and show a message.
      */
     @Override
     public void stopFire() {
@@ -445,7 +445,7 @@ public class MetroIIDirector extends Director {
     }
     
     /**
-     * Reset all the StartOrResumable wrapped actors before calling the wrapup() of Director.
+     * Resets all the StartOrResumable wrapped actors before calling the wrapup() of Director.
      */
     public void wrapup() throws IllegalActionException {
         if (!_stopRequested) {
@@ -462,7 +462,7 @@ public class MetroIIDirector extends Director {
     ////                         private methods                   ////
 
     /**
-     * Initialize parameters. This is called by the constructor.
+     * Initializes parameters. This is called by the constructor.
      * 
      * @exception IllegalActionException
      * @exception NameDuplicationException

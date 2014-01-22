@@ -56,7 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class NonBlockingFire extends FireMachine {
 
     /**
-     * Construct a NonBlockingfire by wrapping the actor.
+     * Constructs a NonBlockingfire by wrapping the actor.
      *
      * @param actor
      *            actor to be wrapped.

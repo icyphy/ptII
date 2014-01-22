@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
 
     /**
-     * Construct a MetroFSMDirector.
+     * Constructs a MetroFSMDirector.
      *
      * @exception IllegalActionException
      * @exception NameDuplicationException
@@ -70,7 +70,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
     }
 
     /**
-     * Construct a MetroFSMDirector based on a given container and a name.
+     * Constructs a MetroFSMDirector based on a given container and a name.
      *
      * @param container
      *            Container of the director.
@@ -92,7 +92,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
     ////                         public methods                    ////
 
     /**
-     * Return the iterator for the caller function of getfire().
+     * Returns the iterator for the caller function of getfire().
      *
      * @return iterator the iterator for the caller function of getfire()
      */
@@ -108,7 +108,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
     }
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      *
@@ -126,7 +126,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
     }
 
     /**
-     * Keep proposing the event associated with the current state until it's
+     * Keeps proposing the event associated with the current state until it's
      * notified. Then call fire()
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)

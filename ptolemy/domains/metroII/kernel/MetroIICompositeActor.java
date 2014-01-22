@@ -1,4 +1,4 @@
-/* MetroIICompositeActor extends the composite actor to support enclosing Metro directors.
+/* MetroIICompositeActor extends the composite actor to support enclosing MetroII directors.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 //// MetroCompositeActor
 
 /**
- * MetroIICompositeActor extends the composite actor to support enclosing Metro
+ * MetroIICompositeActor extends the composite actor to support enclosing MetroII
  * directors.
  * 
  * @author Liangpeng Guo
@@ -63,13 +63,13 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
         GetFirable {
 
     /**
-     * Construct a MetroIICompositeActor.
+     * Constructs a MetroIICompositeActor.
      */
     public MetroIICompositeActor() {
     }
 
     /**
-     * Construct a MetroIICompositeActor based on a given worksapce.
+     * Constructs a MetroIICompositeActor based on a given worksapce.
      * 
      * @param workspace
      *            The workspace for this object.
@@ -79,7 +79,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     }
 
     /**
-     * Construct a MetroIICompositeActor based on a given container and a name.
+     * Constructs a MetroIICompositeActor based on a given container and a name.
      * 
      * @param container
      *            container of the director.
@@ -101,7 +101,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     ////                         public methods                    ////
 
     /**
-     * Return the iterator for the caller function of getfire().
+     * Returns the iterator for the caller function of getfire().
      * 
      * @return iterator the iterator for the caller function of getfire()
      */
@@ -119,7 +119,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     /**
      * getfire() should be identical to fire() except it calls the getfire() of
      * enclosed director instead of fire(). When getfire() is called, the
-     * enclosed director should be a Metro director.
+     * enclosed director should be a MetroII director.
      * <p>
      * If this actor is opaque, transfer any data from the input ports of this
      * composite to the ports connected on the inside, and then invoke the

@@ -84,7 +84,7 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIISRDirector extends SRDirector implements GetFirable {
 
     /**
-     * Construct a director in the default workspace with an empty string as its
+     * Constructs a director in the default workspace with an empty string as its
      * name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
      *
@@ -102,7 +102,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
     }
 
     /**
-     * Construct a director in the given workspace with an empty name. The
+     * Constructs a director in the given workspace with an empty name. The
      * director is added to the list of objects in the workspace. Increment the
      * version number of the workspace.
      *
@@ -122,7 +122,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
     }
 
     /**
-     * Construct a director in the given container with the given name. The
+     * Constructs a director in the given container with the given name. The
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
@@ -144,7 +144,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
     }
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      *
@@ -167,7 +167,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
     ////                         public methods                    ////
 
     /**
-     * Return the iterator for the caller function of getfire().
+     * Returns the iterator for the caller function of getfire().
      *
      * @return iterator the iterator for the caller function of getfire().
      */
@@ -270,7 +270,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
     ////                         private methods                   ////
 
     /**
-     * Initialize the object.
+     * Initializes the object.
      */
     public void _init() {
         _nameToActor = new Hashtable();
@@ -278,7 +278,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
     }
 
     /**
-     * Create a MetroII event.
+     * Creates a MetroII event.
      *
      * @param name
      *            MetroII event name

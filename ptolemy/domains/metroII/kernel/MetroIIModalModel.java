@@ -61,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIModalModel extends ModalModel implements GetFirable {
 
     /**
-     * Construct a modal model in the specified workspace with no container and
+     * Constructs a modal model in the specified workspace with no container and
      * an empty string as a name. You can then change the name with setName().
      * If the workspace argument is null, then use the default workspace.
      *
@@ -80,7 +80,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
     }
 
     /**
-     * Construct a modal model with a name and a container. The container
+     * Constructs a modal model with a name and a container. The container
      * argument must not be null, or a NullPointerException will be thrown.
      *
      * @param container
@@ -100,7 +100,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
     }
 
     /**
-     * Return the iterator for the caller function of getfire().
+     * Returns the iterator for the caller function of getfire().
      *
      * @return iterator the iterator for the caller function of getfire().
      */
@@ -211,7 +211,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
     ////                         private methods                   ////
 
     /**
-     * Update the expression with 'MetroIIFSMDirector' instead of 'FSMDirector'
+     * Updates the expression with 'MetroIIFSMDirector' instead of 'FSMDirector'
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {

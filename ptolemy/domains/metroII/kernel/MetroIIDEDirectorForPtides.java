@@ -87,7 +87,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         GetFirable {
 
     /**
-     * Construct a director in the given container with the given name. The
+     * Constructs a director in the given container with the given name. The
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
@@ -110,7 +110,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     }
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      *
@@ -135,7 +135,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     ////                    public fields                         ////
 
     /**
-     * Initialize the model controlled by this director. Call the initialize()
+     * Initializes the model controlled by this director. Call the initialize()
      * of super class and then wrap each actor that is controlled by this
      * director.
      *
@@ -179,7 +179,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     }
 
     /**
-     * Request the execution of the current iteration to stop. This is similar
+     * Requests the execution of the current iteration to stop. This is similar
      * to stopFire(), except that the current iteration is not allowed to
      * complete.
      * 
@@ -207,7 +207,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
      */
     public static class Pair<F, S> {
         /**
-         * Construct a pair of elements.
+         * Constructs a pair of elements.
          *
          * @param first
          *            the first element.
@@ -223,7 +223,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         ////                         public methods                    ////
 
         /**
-         * Set the first element in the pair.
+         * Sets the first element in the pair.
          *
          * @param first
          *            the element to be set.
@@ -234,7 +234,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         }
 
         /**
-         * Set the second element in the pair.
+         * Sets the second element in the pair.
          *
          * @param second
          *            the element to be set.
@@ -245,7 +245,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         }
 
         /**
-         * Get the first element in the pair.
+         * Gets the first element in the pair.
          *
          * @return the first element.
          * @see #setFirst
@@ -255,7 +255,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
         }
 
         /**
-         * Get the second element in the pair.
+         * Gets the second element in the pair.
          *
          * @return the second element.
          * @see #setSecond
@@ -529,7 +529,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
     }
 
     /**
-     * Fire actors according to Ptides events in the event queue. Whether the
+     * Fires actors according to Ptides events in the event queue. Whether the
      * actual firing of an actor can be done also depend on the MetroII events
      * associated with the actor if the actor is a MetroII actor. Only when the
      * associated MetroII event is NOTIFIED, the firing can be executed. Once a
@@ -671,7 +671,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
                 }
                 _eventList = firingEventList;
                 resultHandler.handleResult(_events);
-
+ 
                 // FIXME: break the loop only when no more actors can be fired and no event is being fired.
             } while (!stable);
             // Since we are now actually stopping the firing, we can set this false.

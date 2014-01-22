@@ -102,7 +102,7 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
     /**
-     * Construct a director in the given container with the given name. The
+     * Constructs a director in the given container with the given name. The
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
@@ -131,7 +131,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      * 
@@ -153,7 +153,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     ////                         public parameters                 ////
 
     /**
-     * Bound on clock synchronization error across all platforms. FIXME:
+     * Bounds on clock synchronization error across all platforms. FIXME:
      * eventually set parameter per platform or for some platforms.
      */
     public SharedParameter clockSynchronizationErrorBound;
@@ -162,7 +162,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     ////                         public methods                    ////
 
     /**
-     * Add a new event to the input queue. Compute the time when this input can
+     * Adds a new event to the input queue. Compute the time when this input can
      * be consumed and store in queue. The time depends on the device delay.
      * 
      * @param sourcePort
@@ -212,7 +212,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Update the director parameters when attributes are changed.
+     * Updates the director parameters when attributes are changed.
      * 
      * @param attribute
      *            The changed parameter.
@@ -231,7 +231,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the default dependency between input and output ports, which for
+     * Returns the default dependency between input and output ports, which for
      * the Ptides domain is a {@link SuperdenseDependency}.
      * 
      * @return The default dependency that describes a time delay of 0.0, and a
@@ -327,7 +327,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Add a pure event to the queue of pure events.
+     * Adds a pure event to the queue of pure events.
      * 
      * @param actor
      *            Actor to fire.
@@ -374,7 +374,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the source timestamp of the event that is currently being
+     * Returns the source timestamp of the event that is currently being
      * processed. If no event is being processed, (i.e. event is analyzed for
      * safe to process, actor is fired, ...) this method can return null or the
      * timestamp of the previous event. This method should not be called if no
@@ -387,7 +387,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return a superdense time index for the current time, where the index is
+     * Returns a superdense time index for the current time, where the index is
      * equal to the microstep.
      * 
      * @return A superdense time index.
@@ -399,7 +399,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the local time or, (i) if an actor is executing or (ii) an input
+     * Returns the local time or, (i) if an actor is executing or (ii) an input
      * token is read, (i) the timestamp of the event that caused the actor
      * execution or (ii) the timestamp of the input event.
      * 
@@ -414,7 +414,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the current microstep or the microstep of the event, if an actor
+     * Returns the current microstep or the microstep of the event, if an actor
      * is currently executing.
      */
     @Override
@@ -426,7 +426,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate the minimal delay in logical time between two ports.
+     * Calculates the minimal delay in logical time between two ports.
      * 
      * @param ports1
      *            The source port.
@@ -449,7 +449,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate whether Ptides event e1 could possibly affect Ptides event e2.
+     * Calculates whether Ptides event e1 could possibly affect Ptides event e2.
      * 
      * @param e1
      *            The first Ptides event.
@@ -506,7 +506,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate whether any Ptides event in eventArray could causally affect
+     * Calculates whether any Ptides event in eventArray could causally affect
      * event.
      * 
      * @param eventArray
@@ -529,7 +529,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate whether any Ptides event currently being processed could
+     * Calculates whether any Ptides event currently being processed could
      * causally affect event.
      * 
      * @param event
@@ -545,7 +545,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Calculate whether any Ptides event pending could causally affect event.
+     * Calculates whether any Ptides event pending could causally affect event.
      * 
      * @param event
      *            A Ptides event
@@ -677,7 +677,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Initialize all the actors and variables. Perform static analysis on
+     * Initializes all the actors and variables. Perform static analysis on
      * superdense dependencies between input ports in the topology.
      * 
      * @exception IllegalActionException
@@ -695,7 +695,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return a new receiver of the type {@link PtidesReceiver}.
+     * Returns a new receiver of the type {@link PtidesReceiver}.
      * 
      * @return A new PtidesReceiver.
      */
@@ -708,7 +708,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return false if there are no more actors to be fired or the stop() method
+     * Returns false if there are no more actors to be fired or the stop() method
      * has been called.
      * 
      * @return True If this director will be fired again.
@@ -800,7 +800,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Override the base class to not set model time to that of the enclosing
+     * Overrides the base class to not set model time to that of the enclosing
      * director. This method always returns true, deferring the decision about
      * whether to fire an actor to the fire() method.
      * 
@@ -818,7 +818,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Call the preinitialize of the super class and create new event Queue.
+     * Calls the preinitialize of the super class and create new event Queue.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -844,7 +844,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Put a trigger event into the event queue.
+     * Puts a trigger event into the event queue.
      * <p>
      * The trigger event has the same timestamp as that of the director. The
      * microstep of this event is always equal to the current microstep of this
@@ -959,7 +959,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Compute the deadline for an actor that requests a firing at time
+     * Computes the deadline for an actor that requests a firing at time
      * <i>timestamp</i>.
      * 
      * @param actor
@@ -989,7 +989,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the value stored in a parameter associated with the NamedObj.
+     * Returns the value stored in a parameter associated with the NamedObj.
      * 
      * @param object
      *            The object that has the parameter.
@@ -1011,7 +1011,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the value stored in a parameter associated with the NamedObj.
+     * Returns the value stored in a parameter associated with the NamedObj.
      * 
      * @param object
      *            The object that has the parameter.
@@ -1033,7 +1033,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the actor to fire in this iteration, or null if no actor should be
+     * Returns the actor to fire in this iteration, or null if no actor should be
      * fired. Since _checkForNextEvent() always returns true, this method will
      * keep being called until it returns null.
      * 
@@ -1052,7 +1052,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Return the actor to fire in this iteration, or null if no actor should be
+     * Returns the actor to fire in this iteration, or null if no actor should be
      * fired. Since _checkForNextEvent() always returns true, this method will
      * keep being called until it returns null.
      * 
@@ -1069,7 +1069,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Set logical time to that of the ptidesEvent.
+     * Sets logical time to that of the ptidesEvent.
      */
     protected void _setLogicalTime(PtidesEvent ptidesEvent) {
         _currentLogicalTime = ptidesEvent.timeStamp();
@@ -1078,7 +1078,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * reset logical time to null.
+     * resets logical time to null.
      */
     protected void _resetLogicalTime() {
         _currentLogicalTime = null;

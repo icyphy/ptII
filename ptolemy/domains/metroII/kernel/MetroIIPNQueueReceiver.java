@@ -64,7 +64,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
     ////                         public methods                    ////
 
     /**
-     * Return the director in charge.
+     * Returns the director in charge.
      *
      * @return the director in charge.
      */
@@ -73,7 +73,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
     }
 
     /**
-     * Get a token from this receiver. If the receiver is empty then block until
+     * Gets a token from this receiver. If the receiver is empty then block until
      * a token becomes available. If this receiver is terminated during the
      * execution of this method, then throw a TerminateProcessException.
      *
@@ -97,7 +97,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
     }
 
     /**
-     * Put a token on the queue contained in this receiver. The 'put' will not
+     * Puts a token on the queue contained in this receiver. The 'put' will not
      * occur until the associated MetroII event '*.put.begin' is NOTIFIED.
      *
      * @param token
@@ -122,7 +122,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
     }
 
     /**
-     * Set the container. This overrides the base class to record the director.
+     * Sets the container. This overrides the base class to record the director.
      *
      * @param port
      *            The container.

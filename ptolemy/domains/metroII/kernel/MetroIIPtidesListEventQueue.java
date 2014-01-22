@@ -61,7 +61,7 @@ import ptolemy.kernel.util.InvalidStateException;
 public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
     /**
-     * Construct an empty event queue.
+     * Constructs an empty event queue.
      */
     public MetroIIPtidesListEventQueue() {
         // Construct a calendar queue _cQueue with its default parameters:
@@ -70,14 +70,14 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Clear the event queue.
+     * Clears the event queue.
      */
     public void clear() {
         _listQueue.clear();
     }
 
     /**
-     * Get the smallest event from the event queue.
+     * Gets the smallest event from the event queue.
      *
      * @return a PtidesEvent object.
      * @exception InvalidStateException
@@ -92,7 +92,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Get the event from the event queue that is pointed by the index.
+     * Gets the event from the event queue that is pointed by the index.
      *
      * @param index
      *            an int specifying the index.
@@ -109,14 +109,14 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Check if the event queue is empty.
+     * Checks if the event queue is empty.
      */
     public boolean isEmpty() {
         return _listQueue.isEmpty();
     }
 
     /**
-     * Put the event queue into the event queue, and then sort it by timestamp
+     * Puts the event queue into the event queue, and then sort it by timestamp
      * order.
      *
      * @param event
@@ -166,7 +166,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Take this event and remove it from the event queue. If the event is a
+     * Takes this event and remove it from the event queue. If the event is a
      * DEEvent, then put the token of this event into the receiver.
      *
      * <p>
@@ -199,7 +199,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Return an array representation of this event queue.
+     * Returns an array representation of this event queue.
      *
      * @return an array of Objects in the list.
      */
@@ -208,7 +208,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Add a debugger listen for this event queue.
+     * Adds a debugger listen for this event queue.
      *
      * @see #removeDebugListener
      */
@@ -226,7 +226,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Remove the debugger listen for this event queue.
+     * Removes the debugger listen for this event queue.
      *
      * @see #addDebugListener
      */
@@ -246,7 +246,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     }
 
     /**
-     * Send a debug message to all debug listeners that have registered. By
+     * Sends a debug message to all debug listeners that have registered. By
      * convention, messages should not include a newline at the end. The newline
      * will be added by the listener, if appropriate.
      *

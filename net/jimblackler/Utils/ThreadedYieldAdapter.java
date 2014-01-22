@@ -86,7 +86,7 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                         } catch (InterruptedException e) {
                             // throw new RuntimeException(
                             //        "Error with yield adapter", e);
-                            System.out.println("djflksjlfds"); 
+                            // System.out.println("djflksjlfds"); 
                             return; 
                         }
                         try {

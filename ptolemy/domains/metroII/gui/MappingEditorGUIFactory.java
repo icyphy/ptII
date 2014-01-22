@@ -33,9 +33,6 @@ import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.domains.metroII.kernel.MappingEditor;
-import ptolemy.domains.metroII.kernel.MetroIIDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -53,8 +50,8 @@ import ptolemy.kernel.util.NamedObj;
  @author Liangpeng Guo
  @version $Id$
  @since Ptolemy II 10.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Red (glp)
+ @Pt.AcceptedRating Red (glp)
  */
 public class MappingEditorGUIFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.

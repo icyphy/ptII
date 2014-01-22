@@ -74,7 +74,7 @@ import ptolemy.util.StringBufferExec;
 public class MetroIISystemCDirector extends Director implements GetFirable {
 
     /**
-     * Construct a MetroIISystemCDirector with a name and a container. The
+     * Constructs a MetroIISystemCDirector with a name and a container. The
      * container argument must not be null, or a NullPointerException will be
      * thrown.
      * 
@@ -127,7 +127,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * Clone the object into the specified workspace. The new object is
+     * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      * 
@@ -146,7 +146,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * Push Metro events into the pipe.
+     * Pushes Metro events into the pipe.
      * 
      * @param events
      *            the events to be added into the pipe.
@@ -193,7 +193,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * Synchronize the status of events from the pipe.
+     * Synchronizes the status of events from the pipe.
      * 
      * @param events
      *            the events to be synchronized from the pipe.
@@ -236,7 +236,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * Fire the wrapped Metro-SystemC model.
+     * Fires the wrapped Metro-SystemC model.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
@@ -307,7 +307,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * Return the iterator for the caller function of getfire().
+     * Returns the iterator for the caller function of getfire().
      * 
      * @return iterator the iterator for the caller function of getfire().
      */
@@ -324,7 +324,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * Initialize the pipe connecting to Metro-SystemC.
+     * Initializes the pipe connecting to Metro-SystemC.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -405,7 +405,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * Initialize parameters. 
+     * Initializes parameters. 
      * 
      * @throws IllegalActionException
      * @throws NameDuplicationException

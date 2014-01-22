@@ -1,4 +1,4 @@
-/* Constraint Solver for Modified MetroII semantics.
+/* Mapping Constraint Solver for Modified MetroII semantics.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -43,14 +43,14 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 
 /**
  * The constraint solver is used to enforce the user defined constraints on the
- * scheduling via updating the event status. The mapping constraint solver is
- * used to update the event status based on mapping constraints. The mapping
- * constraint is a type of rendezvous constraint. Each mapping constraint is a
- * event pair, which requires the events are scheduled at the same time. More
- * precisely, the mapping constraint is satisfied when both events are in
- * presence. An event status is updated to NOTIFIED when it satisfies all the
- * constraints. Otherwise the event status is updated to WAITING. The mapping
- * constraint resolution has three steps:
+ * scheduling via updating the event status. The mapping constraint solver
+ * updates the event status based on mapping constraints. The mapping constraint
+ * is a type of rendezvous constraint. Each mapping constraint is a event pair,
+ * which requires the events are scheduled at the same time. More precisely, the
+ * mapping constraint is satisfied when both events are in presence. An event
+ * status is updated to NOTIFIED when it satisfies the constraints.
+ * Otherwise the event status is updated to WAITING. The mapping constraint
+ * resolution has three steps:
  * <ol>
  * <li>Step 1: reset() is called to initialize the solver.</li>
  * <li>Step 2: presentMetroIIEvent(event id) is called for each PROPOSED or
@@ -58,29 +58,29 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * <li>Step 3: isSatisfied(event id) is called for each event. It returns true
  * if the event satisfies all the mapping constraints.</li>
  * </ol>
- *
- *
+ * 
+ * 
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- *
+ * 
  */
 public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
-     * Construct a mapping constraint solver.
+     * Constructs a mapping constraint solver.
      */
     public MappingConstraintSolver() {
     }
 
     /**
-     * Clone MappingConstraintSolver.
-     *
+     * Clones MappingConstraintSolver.
+     * 
      * @exception CloneNotSupportedException
-     *             the object's class does not implement the Cloneable
-     *             interface.
+     *                the object's class does not implement the Cloneable
+     *                interface.
      */
     @Override
     public MappingConstraintSolver clone() throws CloneNotSupportedException {
@@ -103,8 +103,8 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     ////                         public methods                    ////
 
     /**
-     * Return the adjacency matrix of mapping constraints as a string.
-     *
+     * Returns the adjacency matrix of mapping constraints as a string.
+     * 
      * @return the adjacency matrix.
      */
     public String toString() {
@@ -112,8 +112,8 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Check if the debugging option is checked.
-     *
+     * Checks if the debugging option is checked.
+     * 
      * @return the state of debugging option
      */
     public boolean debugging() {
@@ -121,26 +121,26 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Turn on debugging option.
+     * Turns on debugging option.
      */
     public void turnOnDebugging() {
         _debugging = true;
     }
 
     /**
-     * Turn off debugging option.
+     * Turns off debugging option.
      */
     public void turnOffDebugging() {
         _debugging = false;
     }
 
     /**
-     * Resolve the MetroII event list, updating the event status based on the
+     * Resolves the MetroII event list, updating the event status based on the
      * mapping constraints. The mapping constraint is a type of rendezvous
      * constraint. Each mapping constraint is a event pair, which requires the
      * events are scheduled at the same time. More precisely, the mapping
      * constraint is satisfied when both events are in presence. An event status
-     * is updated to NOTIFIED when it satisfies all the constraints. Otherwise
+     * is updated to NOTIFIED when it satisfies the constraints. Otherwise
      * the event status is updated to WAITING.
      */
     @Override
@@ -200,13 +200,12 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
                     _counter.decreaseCount(edges2);
                 }
             }
-            // System.out.println(_counter);
         }
     }
 
     /**
-     * Return the number of mapping constraints.
-     *
+     * Returns the number of mapping constraints.
+     * 
      * @return the number of mapping constraints.
      */
     public int numConstraints() {
@@ -214,15 +213,32 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Initialize the constraint solver.
+     * Initializes the constraint solver.
      **/
     public void reset() {
         _counter = new ConstraintCounter(numConstraints());
     }
 
     /**
-     * Read mapping constraints from a file.
-     *
+     * Adds a mapping constraint.
+     * 
+     * @param eventName1
+     *            first event in the mapping.
+     * @param eventName2
+     *            second event in the mapping.
+     */
+    public void addMapping(String eventName1, String eventName2) {
+        _eventIDDictionary.add(eventName1);
+        _eventIDDictionary.add(eventName2);
+        int id1 = _eventIDDictionary.getID(eventName1);
+        int id2 = _eventIDDictionary.getID(eventName2);
+        // System.out.println(id1+" "+id2);
+        _mapping.add(id1, id2);
+    }
+
+    /**
+     * Reads mapping constraints from a file.
+     * 
      * @param filename
      *            Filename of the mapping constraint file.
      * @exception IOException
@@ -244,23 +260,6 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
     }
 
-    /**
-     * Add a mapping constraint.
-     *
-     * @param eventName1
-     *            first event in the mapping.
-     * @param eventName2
-     *            second event in the mapping.
-     */
-    public void addMapping(String eventName1, String eventName2) {
-        _eventIDDictionary.add(eventName1);
-        _eventIDDictionary.add(eventName2);
-        int id1 = _eventIDDictionary.getID(eventName1);
-        int id2 = _eventIDDictionary.getID(eventName2);
-        // System.out.println(id1+" "+id2);
-        _mapping.add(id1, id2);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -272,15 +271,15 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      * increaseCount(Iterable<Integer> ids) is called, the counter of the
      * constraint whose id is in ids is increased by the number of appearances
      * in ids.
-     *
+     * 
      * @author glp
-     *
+     * 
      */
     private static class ConstraintCounter implements Cloneable {
 
         /**
-         * Construct and initialize the counter for each constraint.
-         *
+         * Constructs and initialize the counter for each constraint.
+         * 
          * @param size
          *            the largest possible id of the constraints + 1.
          */
@@ -291,7 +290,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
 
         /**
-         * Clone the ConstraintCounter
+         * Clones the ConstraintCounter
          */
         public ConstraintCounter clone() throws CloneNotSupportedException {
             ConstraintCounter newObject = (ConstraintCounter) super.clone();
@@ -300,15 +299,15 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
 
         /**
-         * Convert the ConstraintCounter to string
+         * Converts the ConstraintCounter to string
          */
         public String toString() {
             return Arrays.toString(_count);
         }
 
         /**
-         * return the first id in ids whose counter is greater than 1.
-         *
+         * Returns the first id in ids whose counter is greater than 1.
+         * 
          * @param ids
          *            a vector of ids
          * @return the first id in ids whose counter is greater than 1.
@@ -323,7 +322,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         }
 
         /**
-         * Reset the counters
+         * Resets the counters
          */
         public void reset() {
             for (int i = 0; i < _size; i++) {
@@ -334,7 +333,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * The counter of the constraint whose id is in ids is increased by the
          * number of appearances in ids.
-         *
+         * 
          * @param ids
          *            the vector of ids
          */
@@ -347,7 +346,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * The counter of the constraint whose id is in ids is decreased by the
          * number of appearances in ids.
-         *
+         * 
          * @param ids
          *            the vector of ids
          */
@@ -363,7 +362,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         private int _size;
 
         /**
-         * the counters
+         * The counters
          */
         private int[] _count;
     }

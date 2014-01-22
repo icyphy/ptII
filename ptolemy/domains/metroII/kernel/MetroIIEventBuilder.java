@@ -47,7 +47,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 public class MetroIIEventBuilder {
 
     /**
-     * Construct an event builder.
+     * Constructs an event builder.
      */
     public MetroIIEventBuilder() {
     }
@@ -56,7 +56,7 @@ public class MetroIIEventBuilder {
     ////                         public methods                    ////
 
     /**
-     * Create a proposed Metro event.
+     * Creates a proposed Metro event.
      *
      * @param eventName
      *            The name of the event
@@ -90,7 +90,7 @@ public class MetroIIEventBuilder {
     }
 
     /**
-     * Create a proposed Metro event.
+     * Creates a proposed Metro event.
      *
      * @param eventName
      *            The name of the event
@@ -106,7 +106,7 @@ public class MetroIIEventBuilder {
     }
 
     /**
-     * Trim the substring from the beginning to the first delimiter '.' from a
+     * Trims the substring from the beginning to the first delimiter '.' from a
      * given string. Example: XXX.YYY.ZZZ -> YYY.ZZZ
      *
      * @param name
@@ -120,7 +120,7 @@ public class MetroIIEventBuilder {
     }
 
     /**
-     * Check if at least one event is notified in the event vector.
+     * Checks if at least one event is notified in the event vector.
      *
      * @param events
      *            event vector to be checked.

@@ -40,7 +40,7 @@ package ptolemy.domains.metroII.kernel;
  */
 public class Pair<F, S> {
     /**
-     * Construct a Pair with two values.
+     * Constructs a Pair with two values.
      *
      * @param first
      *            First value
@@ -53,7 +53,7 @@ public class Pair<F, S> {
     }
 
     /**
-     * Set the first element.
+     * Sets the first element.
      *
      * @param first
      *            Value to be assigned to the first element.
@@ -65,7 +65,7 @@ public class Pair<F, S> {
     }
 
     /**
-     * Set the second element.
+     * Sets the second element.
      *
      * @param second
      *            Value to be assigned to the second element.
@@ -77,7 +77,7 @@ public class Pair<F, S> {
     }
 
     /**
-     * Get the first element.
+     * Gets the first element.
      *
      * @return The first element in the pair.
      *
@@ -88,7 +88,7 @@ public class Pair<F, S> {
     }
 
     /**
-     * Get the second element.
+     * Gets the second element.
      *
      * @return The second element in the pair.
      *

@@ -1,4 +1,4 @@
-/* MetroDebugger is a debugging facility for Metro directors.
+/* MetroDebugger is a debugging facility for MetroII directors.
 
  Copyright (c) 2012-2013 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 //// MetroDebugger
 
 /**
- * MetroDebugger is a debugging facility for Metro directors. It enables
+ * MetroDebugger is a debugging facility for MetroII directors. It enables
  * printing information in a customized format.
  *
  * @author Liangpeng Guo
@@ -47,7 +47,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 public class MetroIIDebugger implements Cloneable {
 
     /**
-     * Construct a MetroDebugger with no info printed by default.
+     * Constructs a MetroDebugger with no info printed by default.
      */
     public MetroIIDebugger() {
         turnOffDebugging();
@@ -57,7 +57,7 @@ public class MetroIIDebugger implements Cloneable {
     ////                         public methods                    ////
 
     /**
-     * Clone a MetroDebugger.
+     * Clones a MetroDebugger.
      *
      * @exception CloneNotSupportedException
      *             the object's class does not implement the Cloneable
@@ -70,7 +70,7 @@ public class MetroIIDebugger implements Cloneable {
     }
 
     /**
-     * Set the string to be printed out at the beginning of each line.
+     * Sets the string to be printed out at the beginning of each line.
      *
      * @param prefix
      *            prefix string of each line .
@@ -80,7 +80,7 @@ public class MetroIIDebugger implements Cloneable {
     }
 
     /**
-     * Return whether debugging info is being printed.
+     * Returns whether debugging info is being printed.
      *
      * @return whether debugging info is being printed.
      */
@@ -89,21 +89,21 @@ public class MetroIIDebugger implements Cloneable {
     }
 
     /**
-     * Turn on printing debugging info.
+     * Turns on printing debugging info.
      */
     public void turnOnDebugging() {
         _debugging = true;
     }
 
     /**
-     * Turn off printing debugging info.
+     * Turns off printing debugging info.
      */
     public void turnOffDebugging() {
         _debugging = false;
     }
 
     /**
-     * Print out a title.
+     * Prints out a title.
      *
      * @param title
      *            the title to be printed out.
@@ -116,7 +116,7 @@ public class MetroIIDebugger implements Cloneable {
     }
 
     /**
-     * Print out text.
+     * Prints out text.
      *
      * @param text
      *            the text to be printed out.
@@ -129,7 +129,7 @@ public class MetroIIDebugger implements Cloneable {
     }
 
     /**
-     * Print out the details of a MetroII event.
+     * Prints out the details of a MetroII event.
      *
      * @param event
      *            the event to be printed out.
@@ -152,7 +152,7 @@ public class MetroIIDebugger implements Cloneable {
     }
 
     /**
-     * Print out the details of a list of MetroII events.
+     * Prints out the details of a list of MetroII events.
      *
      * @param metroIIEventList
      *            the event list.
@@ -169,7 +169,7 @@ public class MetroIIDebugger implements Cloneable {
     }
 
     /**
-     * Print out the details of notified events in a list.
+     * Prints out the details of notified events in a list.
      *
      * @param metroIIEventList
      *            the event list.
