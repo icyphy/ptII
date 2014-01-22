@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-//// MappingConstraintSolver
+//// MappingEditor
 
 /**
  * MappingEditor is an attribute used to edit the mapping constraints.
