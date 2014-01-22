@@ -147,8 +147,8 @@ public class EventTableModel extends AbstractTableModel {
 	
 	public void saveModel() throws IllegalActionException {
 		for (int i = 0; i < getRowCount() - 1; i++) {
-			String selfTransitionExpression = ""; 
-			String enterModeExpression = "";
+			StringBuffer selfTransitionExpression = new StringBuffer();
+			StringBuffer enterModeExpression = new StringBuffer();
 			String guard = "";
 			String value = "";
 			State state = (State) _model.getEntity((String) getValueAt(i, 0));
@@ -175,16 +175,16 @@ public class EventTableModel extends AbstractTableModel {
 				if (enterModeCondition.equals("")) {
 					enterModeCondition = "false";
 				}
-				selfTransitionExpression = selfTransitionExpression + "(" + condition + " ? " + value + " : ";
-				enterModeExpression = enterModeExpression + "(" + enterModeCondition + " ? " + value + " : ";
+				selfTransitionExpression = selfTransitionExpression.append("(" + condition + " ? " + value + " : ");
+				enterModeExpression = enterModeExpression.append("(" + enterModeCondition + " ? " + value + " : ");
 			}
 			// insert the last value as the dummy
-			selfTransitionExpression = selfTransitionExpression + " " + value;
-			enterModeExpression = enterModeExpression + " " + value;
+			selfTransitionExpression = selfTransitionExpression.append(" " + value);
+			enterModeExpression = enterModeExpression.append(" " + value);
 			// close brackets
 			for (int j = 0; j < getColumnCount() - 1; j++) {
-				selfTransitionExpression = selfTransitionExpression + ")";
-				enterModeExpression = enterModeExpression + ")"; 
+				selfTransitionExpression = selfTransitionExpression.append(")");
+				enterModeExpression = enterModeExpression.append(")"); 
 			}
 			
 			Transition transition = SCRTableHelper.getSelfTransition(state, _parameter);
@@ -274,7 +274,7 @@ public class EventTableModel extends AbstractTableModel {
 			String value = "";
 			for (int i = 1; i < getColumnCount(); i++) {
 				// (condition ? value : (...
-				expression = expression.substring(expression.indexOf("(") + 1);expression.trim();
+				expression = expression.substring(expression.indexOf("(") + 1).trim();
 				// condition ? value : (...
 				
 				int endOfCondition = expression.indexOf("?");
@@ -355,12 +355,9 @@ public class EventTableModel extends AbstractTableModel {
 								expression = "";
 							}
 						} catch (IllegalActionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							expression = "";
 						}
 						if (!expression.equals("")) {
-							//String value = expression.substring(expression.indexOf("= ")).trim();
-							
 							if (state.outgoingPort.linkedRelationList().contains(transition)) {
 								// self transition
 								_parseExpression(expression, rowIndex, false);
@@ -378,7 +375,7 @@ public class EventTableModel extends AbstractTableModel {
 	}
 
 	private String[] _handleInmodeExpression(String expression, String value, State state) {
-		String inmodeExpression = "";
+		StringBuffer inmodeExpression = new StringBuffer();
 		if (expression.contains("@T(Inmode)")) {
 			// everything that is connected to inmode with an & goes onto 
 			// the transition
@@ -387,13 +384,13 @@ public class EventTableModel extends AbstractTableModel {
 			before = before.trim();
 			after = after.trim();
 			while (before.endsWith("&")) {
-				before.substring(0, before.length() - 1).trim();
+				before = before.substring(0, before.length() - 1).trim();
 				if (before.endsWith(")")) {
 					int index = SCRTableHelper.indexOfMatchingOpenBracket(before, before.length());
 					if (!inmodeExpression.equals("")) {
-						inmodeExpression = inmodeExpression + " & ";
+						inmodeExpression = inmodeExpression.append(" & ");
 					}
-					inmodeExpression = inmodeExpression + " " +  before.substring(index);
+					inmodeExpression = inmodeExpression.append(" " +  before.substring(index));
 					before = before.substring(0, index - 1).trim();
 				}
 			}
@@ -403,21 +400,21 @@ public class EventTableModel extends AbstractTableModel {
 				if (after.startsWith("(")) {
 					int index = SCRTableHelper.indexOfMatchingCloseBracket(after, 0);
 					if (!inmodeExpression.equals("")) {
-						inmodeExpression = inmodeExpression + " & ";
+						inmodeExpression = inmodeExpression.append(" & ");
 					}
-					inmodeExpression = inmodeExpression + " " + after.substring(0, index);
+					inmodeExpression = inmodeExpression.append(" " + after.substring(0, index));
 					after = after.substring(index + 1).trim();
 				}
 			}
 			if (!inmodeExpression.equals("")) {
 				// if inmodeExpression then value
-				inmodeExpression = inmodeExpression + " ? " + value;
+				inmodeExpression = inmodeExpression.append(" ? " + value);
 			}
 			
 			expression = before + after; 
 			
 		}
-		return new String[]{expression, inmodeExpression};
+		return new String[]{expression, inmodeExpression.toString()};
 	}
 
 	private int _columnCount;

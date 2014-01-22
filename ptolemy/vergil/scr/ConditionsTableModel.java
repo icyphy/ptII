@@ -139,7 +139,7 @@ public class ConditionsTableModel extends AbstractTableModel {
 
 	public void saveModel() throws NameDuplicationException {
 		for (int i = 0; i < getRowCount() - 1; i++) {
-			String expression = ""; // = _port.getName() + " = ";
+			StringBuffer expression = new StringBuffer();
 			State state = (State) _model.getEntity((String) getValueAt(i, 0));
 			String condition = "";
 			String value = "";
@@ -147,12 +147,12 @@ public class ConditionsTableModel extends AbstractTableModel {
 				int contentIndex = SCRTableHelper.getContentIndex(i, j, getColumnCount());
 				condition = (String) getValueAt(i, j + 1);
 				value = (String) getValueAt(getRowCount() - 1, j + 1);
-				expression = expression + "(" + condition + " ? " + value  + " : ";
+				expression = expression.append("(" + condition + " ? " + value  + " : ");
 			}
 			// insert the last value as the dummy
-			expression = expression + " " + value;
+			expression = expression.append(" " + value);
 			for (int j = 0; j < getColumnCount() - 1; j++) {
-				expression = expression + ")";
+				expression = expression.append(expression + ")");
 			}
 			try {
 				if (state.getRefinement() == null) {
@@ -179,7 +179,7 @@ public class ConditionsTableModel extends AbstractTableModel {
 
 				}
 				Expression expressionActor = (Expression) expressionActorObject;
-				expressionActor.expression.setExpression(expression);
+				expressionActor.expression.setExpression(expression.toString());
 
 				if (relation != null) {
 					expressionActor.output.link(relation);
@@ -243,36 +243,36 @@ public class ConditionsTableModel extends AbstractTableModel {
 		 * @param concatenation
 		 */
 		private void _parseExpression(String expression, int rowIndex) {
-			if (expression != "") {
+			if (!expression.equals("")) {
 				String condition = "";
 				String value = "";
 				for (int i = 1; i < getColumnCount(); i++) {
 					// (condition ? value : (...
-					expression = expression.substring(expression.indexOf("(") + 1);expression.trim();
+					expression = expression.substring(expression.indexOf("(") + 1).trim();
 					// condition ? value : (...
 					
 					int endOfCondition = expression.indexOf("?");
 					if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf("?"))) {
 						endOfCondition = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
 					}
-					condition = expression.substring(0, endOfCondition);condition = condition.trim();
+					condition = expression.substring(0, endOfCondition).trim();
 					
-					expression = expression.substring(endOfCondition);expression = expression.trim();
+					expression = expression.substring(endOfCondition).trim();
 					// ? value : (...
 					
-					expression = expression.substring(expression.indexOf("?") + 1);expression = expression.trim();
+					expression = expression.substring(expression.indexOf("?") + 1).trim();
 					// value : (...
 					
 					int endOfValue = expression.indexOf(":");
 					if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf(":"))) {
 						endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
 					}
-					value = expression.substring(0, endOfValue);value = value.trim();
+					value = expression.substring(0, endOfValue).trim();
 					
-					expression = expression.substring(expression.indexOf(":") + 1);expression = expression.trim();
+					expression = expression.substring(expression.indexOf(":") + 1).trim();
 					// (...
 					
-					expression = expression.substring(expression.indexOf("(") + 1);expression = expression.trim();
+					expression = expression.substring(expression.indexOf("(") + 1).trim();
 					// ...
 					
 					int valueIndex = SCRTableHelper.getContentIndex(getRowCount() - 1, i, getColumnCount());

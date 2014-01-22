@@ -77,7 +77,11 @@ public class SCRTableFrame extends PtolemyFrame {
 	 */
 	public SCRTableFrame(NamedObj model) {
 		this(model, null);
-		_model = (FSMActor) model;
+		if (model instanceof FSMActor) {
+			_model = (FSMActor) model;
+		} else {
+			MessageHandler.error("Cannot initialize SCRTableFrame with a " + model.getClassName());
+		}
 		_init();
 	}
 
@@ -87,7 +91,11 @@ public class SCRTableFrame extends PtolemyFrame {
 	 */
 	public SCRTableFrame(NamedObj model, Tableau tableau) {
 		super(tableau);
-		_model = (FSMActor) model;
+		if (model instanceof FSMActor) {
+			_model = (FSMActor) model;
+		} else {
+			MessageHandler.error("Cannot initialize SCRTableFrame with a " + model.getClassName());
+		}
 		_init();
 	}
 
@@ -118,7 +126,7 @@ public class SCRTableFrame extends PtolemyFrame {
 		addModeButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Vector vector = new Vector<String>();
+				Vector<String> vector = new Vector<String>();
 				vector.add("");
 				vector.add("");
 				vector.add("");
@@ -165,8 +173,7 @@ public class SCRTableFrame extends PtolemyFrame {
 				}
 			}
 		}
-
-		final JPanel tabPanel = new JPanel(new BorderLayout());
+ 
 		JButton addParameter = new JButton("Add Parameter");
 		addParameter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -222,9 +229,6 @@ public class SCRTableFrame extends PtolemyFrame {
 				inputbox.setLocation(x, y);
 				inputbox.setSize(250, 150);
 				inputbox.setVisible(true);
-				JDialog dialog = new JDialog();
-
-				
 			}
 		});
 
@@ -388,7 +392,7 @@ public class SCRTableFrame extends PtolemyFrame {
 	@Pt.ProposedRating Red (pd)
 	@Pt.AcceptedRating Red (pd)
 	*/
-	private class SCRTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
+	private static class SCRTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
 	
 	    @Override
 	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

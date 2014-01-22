@@ -81,7 +81,15 @@ public class SCRTableauFactory extends TableauFactory {
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
         Configuration configuration = (Configuration) effigy.toplevel();
-        SCRModel model = (SCRModel) ((PtolemyEffigy) effigy).getModel();
+        SCRModel model = null;
+        if (effigy instanceof PtolemyEffigy) {
+        	PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) effigy;
+        	if (ptolemyEffigy.getModel() instanceof SCRModel) {
+        		model = (SCRModel) ptolemyEffigy.getModel();
+        	} else {
+        		throw new IllegalActionException("SCRTableau cannot be created for models other than SCRModels");
+        	}
+        }
         FSMActor controller = ((FSMDirector) model.getDirector())
                 .getController();
        
