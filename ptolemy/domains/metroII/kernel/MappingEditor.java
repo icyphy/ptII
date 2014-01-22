@@ -25,17 +25,10 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.domains.metroII.kernel;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -89,6 +82,9 @@ public class MappingEditor extends Attribute {
         new MappingEditorGUIFactory(this, "_mappingEditorGUIFactory");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Gets mapping file name.
      */
@@ -123,7 +119,6 @@ public class MappingEditor extends Attribute {
      * @throws IllegalActionException
      */
     public String readMapping() throws IllegalActionException {
-
         String buffer = null;
 
         File file = getMappingFile();
@@ -131,7 +126,7 @@ public class MappingEditor extends Attribute {
             String filename = file.getAbsolutePath();
             if (!filename.equals("")) {
                 try {
-                    buffer = readMappingFile(filename);
+                    buffer = MappingConstraintReaderWriter.readMappingFile(filename);
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to open mapping file \"" + filename + "\".");
@@ -140,31 +135,6 @@ public class MappingEditor extends Attribute {
         }
 
         return buffer;
-    }
-
-    /**
-     * Reads mapping constraints from a file. MappingConstraintSolver
-     * 
-     * @param filename
-     *            Filename of the mapping constraint file.
-     * @exception IOException
-     *                a failed or interrupted I/O operations has occurred.
-     */
-    public String readMappingFile(String filename) throws IOException {
-        FileInputStream stream = new FileInputStream(filename);
-        DataInputStream in = new DataInputStream(stream);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String line;
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append('\n');
-            }
-            return stringBuilder.toString();
-        } finally {
-            reader.close();
-        }
     }
 
     /**
@@ -181,12 +151,7 @@ public class MappingEditor extends Attribute {
             String filename = file.getAbsolutePath();
             if (!filename.equals("")) {
                 try {
-                    FileWriter fileWriter = new FileWriter(
-                            file.getAbsoluteFile());
-                    BufferedWriter bufferedWriter = new BufferedWriter(
-                            fileWriter);
-                    bufferedWriter.write(content);
-                    bufferedWriter.close();
+                    MappingConstraintReaderWriter.writeMappingFile(file, content);
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to save to mapping file \"" + filename

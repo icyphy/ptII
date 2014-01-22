@@ -28,11 +28,7 @@
 
 package ptolemy.domains.metroII.kernel;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Hashtable;
 
@@ -245,18 +241,12 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      *                a failed or interrupted I/O operations has occurred.
      */
     public void readMapping(String filename) throws IOException {
-        FileInputStream stream = new FileInputStream(filename);
-        DataInputStream in = new DataInputStream(stream);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                String[] actorNames = line.split(",");
-                assert actorNames.length == 2;
-                addMapping(actorNames[0], actorNames[1]);
-            }
-        } finally {
-            reader.close();
+        String buffer = MappingConstraintReaderWriter.readMappingFile(filename);
+        String[] constraints = buffer.split("/n"); 
+        for (String line : constraints) {
+            String[] actorNames = line.split(",");
+            assert actorNames.length == 2;
+            addMapping(actorNames[0], actorNames[1]);
         }
     }
 
