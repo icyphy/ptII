@@ -122,6 +122,9 @@ public class MappingEditorGUI extends PtolemyFrame {
 
     }
 
+    /**
+     * The text area for mapping constraints. 
+     */
     JTextArea textArea;
 
 }
