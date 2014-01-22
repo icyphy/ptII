@@ -244,9 +244,11 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         String buffer = MappingConstraintReaderWriter.readMappingFile(filename);
         String[] constraints = buffer.split("/n"); 
         for (String line : constraints) {
-            String[] actorNames = line.split(",");
-            assert actorNames.length == 2;
-            addMapping(actorNames[0], actorNames[1]);
+            String[] eventNames = line.split(",");
+            assert eventNames.length == 2;
+            eventNames[0] = eventNames[0].trim();
+            eventNames[1] = eventNames[1].trim();
+            addMapping(eventNames[0], eventNames[1]);
         }
     }
 
