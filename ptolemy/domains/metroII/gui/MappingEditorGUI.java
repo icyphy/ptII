@@ -66,6 +66,8 @@ public class MappingEditorGUI extends PtolemyFrame {
     /**
      * Construct a frame for the MappingEditor.
      * 
+     * @param container
+     *            The mapping editor associated with the GUI.
      * @param tableau
      *            The tableau responsible for this frame.
      * @exception IllegalActionException
@@ -77,18 +79,23 @@ public class MappingEditorGUI extends PtolemyFrame {
             throws IllegalActionException, NameDuplicationException {
         super(container, tableau);
 
-        File mappingFile = ((MappingEditor) container).getMappingFile();
+        if (!(container instanceof MappingEditor)) {
+            throw new IllegalActionException(
+                    "Can't create a CodeGeneratorGUI without a MappingEditor!");
+        }
+
+        final MappingEditor editor = (MappingEditor) container;
+
+        File mappingFile = editor.getMappingFile();
         this.setTitle(mappingFile.getAbsolutePath());
 
         JPanel buttonPanel = new JPanel();
-        JButton commitButton = new JButton("Save");
-        commitButton.setToolTipText("Save constraints");
+        JButton commitButton = new JButton("Commit");
+        commitButton.setToolTipText("Commit constraints");
         commitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ((MappingEditor) container).saveMapping(textArea.getText());
-                    // JFrame frame = (JButton) e.getSource();
-                    // frame.dispose();
+                    editor.saveMapping(textArea.getText());
                     dispose();
                 } catch (IllegalActionException e1) {
                     MessageHandler.error(e1.getMessage());
@@ -106,8 +113,7 @@ public class MappingEditorGUI extends PtolemyFrame {
         });
         buttonPanel.add(cancelButton);
 
-        textArea = new JTextArea(((MappingEditor) container).readMapping(), 30,
-                80);
+        textArea = new JTextArea(editor.readMapping(), 30, 80);
         textArea.setEditable(true);
         textArea.setBorder(BorderFactory.createEtchedBorder());
 
@@ -122,8 +128,11 @@ public class MappingEditorGUI extends PtolemyFrame {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
     /**
-     * The text area for mapping constraints. 
+     * The text area for mapping constraints.
      */
     JTextArea textArea;
 

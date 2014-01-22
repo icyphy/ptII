@@ -99,6 +99,15 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     ////                         public methods                    ////
 
     /**
+     * Clears all the mapping constraints. 
+     */
+    public void clear() {
+        _mapping.clear(); 
+        _eventIDDictionary.clear(); 
+        _counter = null; 
+    }
+    
+    /**
      * Returns the adjacency matrix of mapping constraints as a string.
      * 
      * @return the adjacency matrix.
@@ -244,6 +253,9 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         String buffer = MappingConstraintReaderWriter.readMappingFile(filename);
         String[] constraints = buffer.split("/n"); 
         for (String line : constraints) {
+            if (line.startsWith("#")) {
+                continue; 
+            }
             String[] eventNames = line.split(",");
             assert eventNames.length == 2;
             eventNames[0] = eventNames[0].trim();

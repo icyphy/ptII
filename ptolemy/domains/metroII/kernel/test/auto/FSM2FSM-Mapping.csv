@@ -1,0 +1,6 @@
+# mapping for FSM2FSM
+#
+MetroIIModalModel2._Controller.state,	.MetroIIModalModel._Controller.state
+.MetroIIModalModel2._Controller.state3,	.MetroIIModalModel._Controller.state2
+.Display.POSTFIRE_BEGIN,		.MetroIIModalModel.POSTFIRE_BEGIN
+.Display.POSTFIRE_BEGIN,		.MetroIIModalModel2.POSTFIRE_BEGIN

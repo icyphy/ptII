@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="fsm2fsm" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+<entity name="FSM2FSM" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={183, 235, 1306, 686}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 152, 1306, 684}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1092, 595]">
     </property>
@@ -15,38 +15,42 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mapping: &#10;MetroModalModel2.state1 &lt;-&gt;  MetroModalModel.state1&#10;MetroModalModel2.state3 &lt;-&gt;  MetroModalModel.state2&#10;Effect:&#10;MetroModalModel2.state1 and MetroModalModel.state1 are synchronized&#10;MetroModalModel2.state3 and MetroModalModel.state2 are synchronized&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 80.0]">
         </property>
     </property>
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
     </property>
     <property name="MetroIIDirector" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
-        <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="fsm2fsmMapping.txt">
+        <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="FSM2FSM-Mapping.csv">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="printTrace" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 40.0]">
         </property>
     </property>
+    <property name="MappingEditor" class="ptolemy.domains.metroII.kernel.MappingEditor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 40.0]">
+        </property>
+    </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1125, 608, 326, 209}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1127, 664, 326, 207}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 245.0]">
         </property>
     </entity>
     <entity name="MetroModalModel" class="ptolemy.domains.metroII.kernel.MetroIIModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 295.0]">
         </property>
         <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -197,14 +201,12 @@ Then delete this annotation.</text>
     <entity name="MetroModalModel2" class="ptolemy.domains.metroII.kernel.MetroIIModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 190.0]">
         </property>
         <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>

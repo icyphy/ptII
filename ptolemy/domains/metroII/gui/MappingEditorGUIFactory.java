@@ -82,17 +82,17 @@ public class MappingEditorGUIFactory extends EditorFactory {
 
         if (!(parent instanceof TableauFrame)) {
             throw new InternalErrorException(
-                    "Can't create a CodeGeneratorGUI without a tableau!");
+                    "Can't create a MappingEditorGUI without a tableau!");
         }
 
         Effigy effigy = ((TableauFrame) parent).getEffigy();
 
         // FIXME: Is the cast safe?
-        Tableau tableau = (Tableau) effigy.getEntity("codeGeneratorGUI");
+        Tableau tableau = (Tableau) effigy.getEntity("MappingEditorGUI");
 
         if (tableau == null) {
             try {
-                tableau = new Tableau(effigy, "codeGeneratorGUI");
+                tableau = new Tableau(effigy, "MappingEditorGUI");
             } catch (KernelException e) {
                 throw new InternalErrorException(e);
             }

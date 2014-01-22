@@ -77,6 +77,14 @@ public class EventDictionary implements Cloneable {
     ////                         public methods                    ////
 
     /**
+     * Clears all the event ID mapping. 
+     */
+    public void clear() {
+        _nextAvailableID = 0; 
+        _eventName2ID.clear(); 
+    }
+    
+    /**
      * Return the event ID associated with the event name. If the event name is
      * not in the dictionary, return -1;
      * 

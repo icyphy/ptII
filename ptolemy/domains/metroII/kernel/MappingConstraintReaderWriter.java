@@ -44,7 +44,8 @@ import java.io.InputStreamReader;
  * constraints from or to a csv file.
  * 
  * @author Liangpeng Guo
- * @version $Id$
+ * @version $Id: MappingConstraintReaderWriter.java 68172 2014-01-22 02:03:40Z
+ *          glp $
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
@@ -87,10 +88,17 @@ public class MappingConstraintReaderWriter {
      */
     public static void writeMappingFile(File file, String content)
             throws IOException {
-        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write(content);
-        bufferedWriter.close();
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter(file.getAbsoluteFile());
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(content);
+        } finally {
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+        }
     }
-    
+
 }
