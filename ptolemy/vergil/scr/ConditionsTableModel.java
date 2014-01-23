@@ -205,29 +205,40 @@ public class ConditionsTableModel extends AbstractTableModel {
 			}
 			for (int rowIndex = 0; rowIndex < getRowCount() - 1; rowIndex++) {
 				
-					State state = (State) _model.getEntity((String) getValueAt(
-							rowIndex, 0));
-					try {
-						if (state.getRefinement() != null) {
-							CompositeEntity composite = (CompositeEntity) state
-									.getRefinement()[0];
-							Expression expressionActor = (Expression) composite
-									.getEntity(((IOPort) _port).getName()
-											+ "_out");
-							String expression = null;
-							if (expressionActor != null) {
-								expression = expressionActor.expression
-										.getExpression();
-							} else {
-								expression = "";
-							}
-							
-							_parseExpression(expression, rowIndex);
+				State state = (State) _model.getEntity((String) getValueAt(
+						rowIndex, 0));
+				try {
+					if (state.getRefinement() != null) {
+						CompositeEntity composite = (CompositeEntity) state
+								.getRefinement()[0];
+//						if parsing existing ModalModels use following code as a start. For now, do not attempt that as there 
+//						might be too many ways of interpreting existing ModalModels.
+//						for (Object insidePortObject : ((IOPort)((CompositeActor) state.getRefinement()[0]).getPort(_port.getName())).insidePortList()) {
+//							IOPort insidePort = (IOPort) insidePortObject;
+//							Actor actor = (Actor) insidePort.getContainer();
+//							if (actor instanceof Const) {
+//								String value = ((Const)actor).value.getToken().toString();
+//							}
+//						}
+						
+						Expression expressionActor = (Expression) composite
+								.getEntity(((IOPort) _port).getName()
+										+ "_out");
+						String expression = null;
+						if (expressionActor != null) {
+							expression = expressionActor.expression
+									.getExpression();
+						} else {
+							expression = "";
 						}
-					} catch (IllegalActionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						_parseExpression(expression, rowIndex);
+						
+						//if (_port.c)
 					}
+				} catch (IllegalActionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}

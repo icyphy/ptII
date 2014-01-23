@@ -35,11 +35,14 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -47,6 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -54,8 +58,10 @@ import javax.swing.table.TableColumn;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -109,7 +115,8 @@ public class SCRTableFrame extends PtolemyFrame {
 		pane.addTab("Condition Table", _getConditionTablePanel());
 
 		getContentPane().add(pane, BorderLayout.CENTER);
-		this.setMinimumSize(new Dimension(700, 400));
+		this.setSize(new Dimension(700, 400));
+		
 		super.show();
 	}
 
@@ -122,8 +129,8 @@ public class SCRTableFrame extends PtolemyFrame {
 		final JTable table = new JTable(tableModel);
 		table.setGridColor(Color.black);
 
-		JButton addModeButton = new JButton("Add Row");
-		addModeButton.addActionListener(new ActionListener() {
+		JButton addRowButton = new JButton("Add Row");
+		addRowButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				Vector<String> vector = new Vector<String>();
@@ -148,14 +155,116 @@ public class SCRTableFrame extends PtolemyFrame {
 				}
 			}
 		});
+		
+		final JComboBox box = new JComboBox();
+		box.setPrototypeDisplayValue("text here");
+		box.setModel(new ComboBoxModel() {
+
+			List<String> _states;
+			State _initialState;
+			
+			@Override
+			public void addListDataListener(ListDataListener arg0) {
+				
+			}
+
+			@Override
+			public Object getElementAt(int arg0) {
+				if (_states == null) {
+					_initializeStates();
+				}
+				if (arg0 >= 0 && _states.size() > arg0) {
+					System.out.println(arg0);
+					return _states.get(arg0);
+				} else {
+					return "";
+				}	
+			}
+			
+			private void _initializeStates() {
+				_states = new ArrayList<String>();
+				for (Object o : _model.entityList()) {
+					if (o instanceof State) {
+						State state = (State) o;
+						_states.add(state.getName());
+						try {
+							if (((BooleanToken)state.isInitialState.getToken()).booleanValue()) {
+								_initialState = state;
+							}
+						} catch (IllegalActionException e) {
+							MessageHandler.error("Error retrieving initial state", e);
+						}
+					}
+				}
+			}
+
+			@Override
+			public int getSize() {
+				if (_states == null) {
+					_initializeStates();
+				}
+				return _states.size();
+			}
+
+			@Override
+			public void removeListDataListener(ListDataListener arg0) {
+			}
+
+			@Override
+			public Object getSelectedItem() {
+				if (_states == null) {
+					_initializeStates();
+				} 
+				if (_initialState != null) {
+					return _initialState.getName();
+				} else {
+					return null;
+				}
+			}
+
+			@Override
+			public void setSelectedItem(Object arg0) {
+				if (_states == null) {
+					_initializeStates();
+				}
+				String stateName = (String) arg0;
+				State state = (State) _model.getEntity(stateName);
+				try {
+					_initialState = state;
+					state.isInitialState.setToken("true");
+				} catch (IllegalActionException e1) {
+					MessageHandler.error("Could not set initial state", e1);
+				}
+			}
+			
+		});
+		box.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (box.getSelectedItem() instanceof State) {
+					State state = (State) box.getSelectedItem();
+					try {
+						state.isInitialState.setToken("true");
+					} catch (IllegalActionException e1) {
+						MessageHandler.error("Could not set initial state", e1);
+					}
+				}
+			}
+		});
+		
+		
+		
 
 		modeTransitionTablePanel.add(table.getTableHeader(),
 				BorderLayout.PAGE_START);
 		modeTransitionTablePanel.add(table, BorderLayout.CENTER);
 
 		JPanel buttons = new JPanel();
-		buttons.add(addModeButton);
+		buttons.add(addRowButton);
+		buttons.add(new JLabel("Initial State:"));
+		buttons.add(box);
 		buttons.add(saveButton);
+		
 
 		modeTransitionTablePanel.add(buttons, BorderLayout.SOUTH);
 
