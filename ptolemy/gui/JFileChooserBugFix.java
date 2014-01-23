@@ -30,6 +30,7 @@ import java.awt.Color;
 
 import javax.swing.UIManager;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
@@ -112,16 +113,21 @@ public class JFileChooserBugFix {
 
         try {
             // Get the background color of the HTML widget.
-            AttributeSet bodyAttribute = (AttributeSet) styleSheet.getStyle(
-                    "body").getAttribute(
-                    javax.swing.text.StyleConstants.ResolveAttribute);
-            background = styleSheet.getBackground(bodyAttribute);
+            Style style = styleSheet.getStyle("body");
+            if (style != null) {
+                AttributeSet bodyAttribute = (AttributeSet) style.getAttribute(
+                javax.swing.text.StyleConstants.ResolveAttribute);
+                if (bodyAttribute != null) {
+                    background = styleSheet.getBackground(bodyAttribute);
+                }
+            }
         } catch (Exception ex) {
             if (!_printedMessage) {
                 _printedMessage = true;
                 System.out
                         .println("Failed to set the background of the file dialog:"
                                 + ex);
+                
             }
         }
 
