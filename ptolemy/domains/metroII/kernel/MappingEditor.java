@@ -29,7 +29,10 @@ package ptolemy.domains.metroII.kernel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.data.StringToken;
@@ -38,6 +41,7 @@ import ptolemy.domains.metroII.gui.MappingEditorGUIFactory;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
@@ -120,13 +124,13 @@ public class MappingEditor extends Attribute {
      */
     public String readMapping() throws IllegalActionException {
         String buffer = null;
-
         File file = getMappingFile();
         if (file != null) {
             String filename = file.getAbsolutePath();
             if (!filename.equals("")) {
                 try {
-                    buffer = MappingConstraintReaderWriter.readMappingFile(filename);
+                    buffer = MappingConstraintReaderWriter
+                            .readMappingFile(filename);
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to open mapping file \"" + filename + "\".");
@@ -151,7 +155,8 @@ public class MappingEditor extends Attribute {
             String filename = file.getAbsolutePath();
             if (!filename.equals("")) {
                 try {
-                    MappingConstraintReaderWriter.writeMappingFile(file, content);
+                    MappingConstraintReaderWriter.writeMappingFile(file,
+                            content);
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to save to mapping file \"" + filename
@@ -159,7 +164,50 @@ public class MappingEditor extends Attribute {
                 }
             }
         }
+    }
 
+    /**
+     * Returns actors names on all hierarchies.
+     * 
+     * @return actors names on all hierarchies.
+     * @throws IllegalActionException
+     */
+    public String actorNames() throws IllegalActionException {
+        Nameable container = getContainer();
+
+        LinkedList<String> _completeActorNameList = new LinkedList<String>();
+
+        if (container instanceof CompositeActor) {
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                    .iterator();
+            LinkedList<Actor> queue = new LinkedList<Actor>();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                queue.add(actor);
+            }
+
+            while (!queue.isEmpty()) {
+                Actor actor = queue.poll();
+                if (actor instanceof CompositeActor) {
+                    Iterator<?> actorList = ((CompositeActor) actor)
+                            .deepEntityList().iterator();
+                    while (actorList.hasNext()) {
+                        Actor actorNextLevel = (Actor) actorList.next();
+                        queue.add(actorNextLevel);
+                    }
+                } else {
+                    _completeActorNameList.add(MetroIIEventBuilder
+                            .trimModelName(actor.getFullName()));
+                }
+            }
+        }
+
+        StringBuilder actorNameText = new StringBuilder();
+        for (String actorName : _completeActorNameList) {
+            actorNameText.append(actorName + "\n");
+        }
+
+        return actorNameText.toString();
     }
 
 }

@@ -30,8 +30,10 @@ package ptolemy.domains.metroII.kernel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -298,6 +300,8 @@ public class MetroIIDirector extends Director {
         _iterationCount = 0;
 
         _timeScheduler.initialize(numActor);
+
+
     }
 
     /**
@@ -424,28 +428,28 @@ public class MetroIIDirector extends Director {
         }
         return true;
     }
-    
-    
+
     /**
-     * Stops firing as soon as possible. 
+     * Stops firing as soon as possible.
      */
     @Override
     public void stop() {
         _stopRequested = true;
-        System.out.println(this.getFullName()+" stops!"); 
+        System.out.println(this.getFullName() + " stops!");
     }
-    
+
     /**
      * Calls stopFire() of the superclass and show a message.
      */
     @Override
     public void stopFire() {
-        super.stopFire(); 
-        System.out.println(this.getFullName()+" stopFire!"); 
+        super.stopFire();
+        System.out.println(this.getFullName() + " stopFire!");
     }
-    
+
     /**
-     * Resets all the StartOrResumable wrapped actors before calling the wrapup() of Director.
+     * Resets all the StartOrResumable wrapped actors before calling the
+     * wrapup() of Director.
      */
     public void wrapup() throws IllegalActionException {
         if (!_stopRequested) {
@@ -454,8 +458,8 @@ public class MetroIIDirector extends Director {
                 actor.reset();
             }
         }
-        super.wrapup(); 
-        System.out.println(this.getFullName()+" wrapups!"); 
+        super.wrapup();
+        System.out.println(this.getFullName() + " wrapups!");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -470,7 +474,7 @@ public class MetroIIDirector extends Director {
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
         startTime.setVisibility(Settable.NOT_EDITABLE);
-        startTime.setExpression("0.0"); 
+        startTime.setExpression("0.0");
         mappingFileName = new FileParameter(this, "mappingFileName");
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
@@ -507,7 +511,8 @@ public class MetroIIDirector extends Director {
     private TimeScheduler _timeScheduler;
 
     /**
-     * The list of actors governed by MetroIIDirector
+     * The list of actors governed by MetroIIDirector.
      */
     private LinkedList<FireMachine> _actorList;
+    
 }

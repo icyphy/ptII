@@ -35,6 +35,7 @@ import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -88,7 +89,19 @@ public class MappingEditorGUI extends PtolemyFrame {
 
         File mappingFile = editor.getMappingFile();
         this.setTitle(mappingFile.getAbsolutePath());
+        
+        JLabel label1 = new JLabel("ActorNames:");
+        
+        JTextArea actorNameTextArea = new JTextArea(editor.actorNames(), 15, 80);
+        actorNameTextArea.setEditable(false);
+        actorNameTextArea.setBorder(BorderFactory.createEtchedBorder());
 
+        JScrollPane actorNameTextPane = new JScrollPane(actorNameTextArea);
+
+        JPanel upper = new JPanel();
+        upper.setLayout(new BorderLayout());
+        upper.add(actorNameTextPane); 
+        
         JPanel buttonPanel = new JPanel();
         JButton commitButton = new JButton("Commit");
         commitButton.setToolTipText("Commit constraints");
@@ -113,7 +126,9 @@ public class MappingEditorGUI extends PtolemyFrame {
         });
         buttonPanel.add(cancelButton);
 
-        textArea = new JTextArea(editor.readMapping(), 30, 80);
+        JLabel label2 = new JLabel("Constraints:");
+        
+        textArea = new JTextArea(editor.readMapping(), 20, 80);
         textArea.setEditable(true);
         textArea.setBorder(BorderFactory.createEtchedBorder());
 
@@ -124,8 +139,14 @@ public class MappingEditorGUI extends PtolemyFrame {
         middle.add(buttonPanel);
         middle.setLayout(new BoxLayout(middle, BoxLayout.Y_AXIS));
 
-        getContentPane().add(middle, BorderLayout.CENTER);
-
+        JPanel complete = new JPanel();
+        complete.add(label1); 
+        complete.add(upper);
+        complete.add(label2);
+        complete.add(middle); 
+        complete.setLayout(new BoxLayout(complete, BoxLayout.Y_AXIS));
+      
+        getContentPane().add(complete, BorderLayout.CENTER);
     }
 
     ///////////////////////////////////////////////////////////////////

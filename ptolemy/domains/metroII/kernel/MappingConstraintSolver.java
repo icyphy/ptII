@@ -240,7 +240,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         // System.out.println(id1+" "+id2);
         _mapping.add(id1, id2);
     }
-
+    
     /**
      * Reads mapping constraints from a file.
      * 
@@ -251,7 +251,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      */
     public void readMapping(String filename) throws IOException {
         String buffer = MappingConstraintReaderWriter.readMappingFile(filename);
-        String[] constraints = buffer.split("/n"); 
+        String[] constraints = buffer.split("\n"); 
         for (String line : constraints) {
             if (line.startsWith("#")) {
                 continue; 

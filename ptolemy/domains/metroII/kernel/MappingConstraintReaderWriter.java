@@ -35,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 
 ///////////////////////////////////////////////////////////////////
 //// MappingConstraintReaderWriter
@@ -58,6 +59,7 @@ public class MappingConstraintReaderWriter {
      * 
      * @param filename
      *            Filename of the mapping constraint file.
+     * @return the constraint file in a string.
      * @exception IOException
      *                a failed or interrupted I/O operations has occurred.
      */
@@ -76,6 +78,29 @@ public class MappingConstraintReaderWriter {
         } finally {
             reader.close();
         }
+    }
+
+    /**
+     * Returns a list of mapping constraints. 
+     * 
+     * @param buffer constraints in a string.
+     * @return a list of mapping constraints. 
+     */
+    public static LinkedList<Pair<String, String>> readConstraints(String buffer) {
+        LinkedList<Pair<String, String>> constraintList = new LinkedList<Pair<String, String>>();
+        String[] constraints = buffer.split("\n");
+        for (String line : constraints) {
+            if (line.startsWith("#")) {
+                continue;
+            }
+            String[] eventNames = line.split(",");
+            assert eventNames.length == 2;
+            eventNames[0] = eventNames[0].trim();
+            eventNames[1] = eventNames[1].trim();
+
+            constraintList.add(new Pair(eventNames[0], eventNames[1]));
+        }
+        return constraintList;
     }
 
     /**
