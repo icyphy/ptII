@@ -35,6 +35,7 @@ $CLASSPATH/ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall.xml
+$CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/Case/Case.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/DFTSubSet/DFTSubSet.xml
