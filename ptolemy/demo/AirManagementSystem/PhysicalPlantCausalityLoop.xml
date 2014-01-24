@@ -294,6 +294,11 @@
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
+    <port name="Wa" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, 135.0]">
+        </property>
+    </port>
     <entity name="Fork" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, -30.0]">
         </property>
@@ -797,6 +802,8 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="C1" relation="relation8"/>
     <link port="Pe" relation="relation6"/>
     <link port="Pc" relation="relation7"/>
@@ -804,6 +811,7 @@
     <link port="Ta" relation="relation"/>
     <link port="C2" relation="relation12"/>
     <link port="Th" relation="relation13"/>
+    <link port="Wa" relation="relation4"/>
     <link port="Fork.Wi" relation="relation10"/>
     <link port="Fork.Wv" relation="relation11"/>
     <link port="Fork.Pc" relation="relation7"/>
@@ -825,5 +833,6 @@
     <link port="HeatExchanger.Ta" relation="relation"/>
     <link port="HeatExchanger.Wh" relation="relation2"/>
     <link port="HeatExchanger.Th" relation="relation13"/>
+    <link port="HeatExchanger.Wa" relation="relation4"/>
     <link relation1="relation3" relation2="relation9"/>
 </class>

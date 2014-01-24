@@ -14,7 +14,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3809116174349474">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.8349609375, 235.10894191576085}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{323.83496093749994, 235.1089419157608}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double click on this comment to see the document on which this model is based.">
@@ -160,11 +160,34 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1032, 187, 500, 344}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{585, 280}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <display name="Cold Air Flow Rate"/>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[124.6273193359375, 402.63427734375]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -181,6 +204,8 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Const.output" relation="relation"/>
     <link port="Const2.output" relation="relation2"/>
     <link port="Const3.output" relation="relation3"/>
@@ -194,5 +219,7 @@
     <link port="PhysicalPlantCausalityLoop.Ta" relation="relation4"/>
     <link port="PhysicalPlantCausalityLoop.C2" relation="relation6"/>
     <link port="PhysicalPlantCausalityLoop.Th" relation="relation7"/>
+    <link port="PhysicalPlantCausalityLoop.Wa" relation="relation8"/>
     <link port="TimedPlotter.input" relation="relation7"/>
+    <link port="Const7.output" relation="relation8"/>
 </entity>

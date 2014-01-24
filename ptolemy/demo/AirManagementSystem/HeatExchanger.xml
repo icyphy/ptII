@@ -753,7 +753,7 @@
         <display name="LinearMap for ha*Aa"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 465.0}">
         </property>
-        <property name="fudge" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="fudge" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
     </entity>
     <entity name="InstanceOfLinearMap2" class="LinearMap">
