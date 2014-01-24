@@ -32,6 +32,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.AbstractInitializableParameter;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -429,6 +430,22 @@ public class PortParameter extends AbstractInitializableParameter implements
             _persistentExpression = "";
         }
         super.setToken(newValue);
+    }
+
+    
+    /** Declare the type of this parameter to by equal the specified value. 
+     *  In addition, declare the type of the associated port to be equal
+     *  to this value.
+     *  To undo, call this method with the argument BaseType.UNKNOWN.
+     *  @see ParameterPort
+     *  @param type A Type.
+     *  @exception IllegalActionException If the currently contained
+     *   token cannot be converted losslessly to the specified type.
+     */
+    @Override
+    public void setTypeEquals(Type type) throws IllegalActionException {
+        super.setTypeEquals(type);
+        _port.setTypeEquals(type);
     }
 
     /** Check to see whether a token has arrived at the
