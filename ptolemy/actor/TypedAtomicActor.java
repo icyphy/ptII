@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
@@ -268,7 +269,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
             // validate cached type constraints
             _typeConstraintsVersion = _workspace.getVersion();
             _typesValid = true;
-
+                       
             return _cachedTypeConstraints;
         } finally {
             _workspace.doneReading();
@@ -335,9 +336,11 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
                 Set<Inequality> outPortConstraints = output.typeConstraints();
 
                 // 1) no default constraint if input port is output port, or
-                //    if one of both ports have a declared type
+                //    if one of both ports have a declared type (for parameters
+                //    this is always the case, since they have a default value)
                 if (input == output || !input.getTypeTerm().isSettable()
-                        || !output.getTypeTerm().isSettable()) {
+                        || !output.getTypeTerm().isSettable() 
+                        || input instanceof ParameterPort) {
                     continue;
                 }
                 // 2) only set default constraint of none are set already
