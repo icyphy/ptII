@@ -61,6 +61,20 @@ import javax.swing.text.html.StyleSheet;
   }
  </pre>
 
+ <p>Note that Java under Mac OS X has a much better
+ implementation of the file chooser that uses java.awt.FileDialog
+ instead of javax.swing.JFileChooser.  Thus, under Mac OS X,
+ this class is typically <b>not</b> invoked.  Under Mac OS X,
+ to invoke this class, either 
+ {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} or
+ {@link ptolemy.gui.PtGUIUtilities#macOSLookAndFeel()} should
+ return false.  To do this, set either the
+ ptolemy.ptII.useFileDialog property to false or 
+ set the ptolemy.ptII.MacOS property to false. See 
+ {@link ptolemy.gui.PtGUIUtilities} for how to set these properties.
+ </p>
+
+
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.0
@@ -75,6 +89,8 @@ public class JFileChooserBugFix {
     }
 
     /** Restore the background.
+     *  <p>This method is not typically called on the Mac, see
+     *  the class comment.</p>
      *  @param background The background to be restored.
      *  @see #saveBackground()
      */
@@ -102,6 +118,8 @@ public class JFileChooserBugFix {
      *  because the background is set to white.
      *  http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801
      *  <p>Call this method before instantiating a JFileChooser.
+     *  <p>This method is not typically called on the Mac, see
+     *  the class comment.</p>
      *  @return the value of the previous background.
      */
     public Color saveBackground() {
