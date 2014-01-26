@@ -1049,6 +1049,10 @@ public class Plot extends PlotBox implements PlotInterface {
             defaults.append(" connected=\"no\"");
         }
 
+        if (_lineStyles) {
+            defaults.append(" lineStyles=\"yes\"");
+        }
+
         switch (_marks) {
         case 0:
             // Ignore, marks = none.

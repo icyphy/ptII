@@ -196,6 +196,16 @@ public class PlotMLParser extends PlotBoxMLParser {
                     _connected = false;
                 }
 
+                String lineStyles = (String) _attributes.get("lineStyles");
+
+                if (lineStyles != null) {
+                    if (lineStyles.equals("yes")) {
+                        ((PlotInterface) _plot).setLineStyles(true);
+                    } else {
+                        ((PlotInterface) _plot).setLineStyles(false);
+                    }
+                }
+
                 String marks = (String) _attributes.get("marks");
 
                 if (marks != null) {
