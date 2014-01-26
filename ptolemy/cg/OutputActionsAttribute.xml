@@ -1,0 +1,140 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="OutputActionsAttribute" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[202, 47]">
+    </property>
+    <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 33.0">
+        </property>
+    </property>
+    <entity name="fsm actor0" class="ptolemy.domains.modal.kernel.FSMActor">
+        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State 0">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.modal.kernel.State"></entity></entity>
+          </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="152.0, 111.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+        </property>
+        <property name="lastState" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 169.0">
+            </property>
+        </port>
+        <entity name="State 0" class="ptolemy.domains.modal.kernel.State">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="116.0, 214.5">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <entity name="State 1" class="ptolemy.domains.modal.kernel.State">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 204.5">
+            </property>
+            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output(0)=0; output(1)=1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="lastState=1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output(0)= 1; output(1)=0">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="lastState=0">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
+        <link port="State 0.incomingPort" relation="relation3"/>
+        <link port="State 0.outgoingPort" relation="relation2"/>
+        <link port="State 1.incomingPort" relation="relation2"/>
+        <link port="State 1.outgoingPort" relation="relation3"/>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="294.0, 158.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="8:Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 0, 1, 0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="297.0, 71.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="fsm actor0.output" relation="relation0"/>
+    <link port="fsm actor0.output" relation="relation1"/>
+    <link port="Test2.input" relation="relation1"/>
+    <link port="8:Test2.input" relation="relation0"/>
+</entity>
