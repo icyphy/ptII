@@ -306,7 +306,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                             //codeBuffer.append("$ref(" + destinationName + "#"
                             //        + channel + ") = ");
                             codeBuffer.append("$put(" + destinationName + "#"
-                                    + channel + ") = ");
+                                    + channel + ", ");
 
                             // During choice action, an output port
                             // receives token sent by itself when it
@@ -326,7 +326,10 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                 StringBuffer containerReference = new StringBuffer();
 
                                 codeBuffer.append("System.out.println(\"B\");");
-                                containerReference.append("$ref("
+                                //containerReference.append("$ref("
+                                //        + generateSimpleName(destination));
+
+                                containerReference.append("$get("
                                         + generateSimpleName(destination));
 
                                 if (((IOPort) destination).isMultiport()) {
@@ -457,8 +460,10 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                             if (channel >= 0) {
                                 //codeBuffer.append("$ref(" + destinationName
                                 //        + "#" + channel + ") = ");
+
+                                // Test: $PTII/bin/ptcg -language c /Users/cxh/ptII/ptolemy/domains/modal/kernel/test/auto/CommitActionsAttribute.xml
                                 codeBuffer.append("$put(" + destinationName
-                                        + "#" + channel + ") = "
+                                        + "#" + channel + ", "
                                         + scopeFireCode + ");");
                             } else { // broadcast
 
