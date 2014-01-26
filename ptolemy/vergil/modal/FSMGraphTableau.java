@@ -180,13 +180,14 @@ public class FSMGraphTableau extends Tableau {
             }
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
-            
 
-            if (model.getContainer() != null &&
-            		model.getContainer().getAttribute("openAsSCRActor") != null && 
-            		((BooleanToken)(((Parameter)model.getContainer()
-            				.getAttribute("openAsSCRActor"))
-            				.getToken())).booleanValue()) {
+            // If we save a plot, then the model of the effigy will be null.
+            if (model != null
+                    && model.getContainer() != null
+                    && model.getContainer().getAttribute("openAsSCRActor") != null
+                    && ((BooleanToken)(((Parameter)model.getContainer()
+                                            .getAttribute("openAsSCRActor"))
+                                    .getToken())).booleanValue()) {
             	tableau = new SCRGraphTableau((PtolemyEffigy) effigy, "SCRTables");
             } else if (model instanceof FSMActor) {
                 // Check to see whether this factory contains a
