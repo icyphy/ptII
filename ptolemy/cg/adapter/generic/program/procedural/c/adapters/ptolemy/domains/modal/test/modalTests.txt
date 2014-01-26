@@ -1,0 +1,201 @@
+# This file contains modal tests that use the SDF director.
+
+# The tests are sorted by size and have comments about whether they work.
+
+# To generate the file, I did:
+
+# grep domains `ls -l $PTII/ptolemy/domains/modal/kernel/test/auto/*.xml /Users/cxh/ptII/ptolemy/domains/modal/test/auto/*.xml | awk '{print $5, $NF}' | sort -n |  awk '{print $NF}'` |grep -v 'domains\.modal' | grep SDF | awk -F : '{print $1}' | sort | uniq | awk '{print "$PTII/bin/ptcg -language c " $1}'
+
+#  grep domains `ls -l $PTII/doc/books/systems/fsm/test/auto/*.xml | awk '{print $5, $NF}' | sort -n |  awk '{print $NF}'` |grep -v 'domains\.modal' | grep SDF | awk -F : '{print $1}' | sort | uniq | awk '{print "$PTII/bin/ptcg -language c " $1}'
+
+
+# Here are the tests.
+
+# There are different classes of tests, below is the order in which we should fix them
+
+# 0) Done: These tests work and have been copied to
+#     ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto
+
+# 1) Result is non-zero, but wrong.   This one would be a good first test to look at
+
+# 2) Missing actors.  Writing the Gaussian cg actor would help us
+#  diagnose these failures.  There is also one model that uses
+#  Bernoulli.  See the colt actors at
+#  $PTII/ptolemy/cg/./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/colt
+#  I would hold off on writing a NonStrictTest cg actor, try Gaussian
+#  first.  The models that are missing FileWriter have other problems, maybe wait on those.
+
+# 3) Result was 0 when it should have been something else.  These
+#  failures could be harder.  I've seen this failure elsewhere.
+
+# 4) Fails to compile.  The modal model failures are not generate code, wait on those.
+#  Looking over the simple failures could be interesting.
+
+
+
+################
+# Done. This works and has been added to the tests Error was: Failed to replace the parameter "output#0" in the macro "put".
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/CommitActionsAttribute.xml
+
+# Generates code, but fails to compile.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/IOPortAsBothInputAndOutput.xml
+
+# Done.  Was failing with: "output#0" is not acceptable by $put(). $put could be used in the following ways: $put(output#channel, token); or, $put(output, token); or,$put(input#channel, offset, token); or, $put(input, offset, token)
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/OutputActionsAttribute.xml
+
+# Generates code, but fails to compile.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/OutputActionsAttributeForNewDesign.xml
+
+# Results was 0 when it should have been -1
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/changingParams.xml
+
+# Wait: Skip these for now, these two run forever!
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/finalState.xml
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/finalState2.xml
+
+# Wait: Probably wait on this one, it is a corner case involving matrix syntax.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/matrixSimple.xml
+
+# This is a DE model that requires a cg version of the Clock actor.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/multirate.xml
+
+# Need NonStrictTest C actor
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/typePropagationTest.xml
+
+# Done. This works and has been added to the tests
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/verySimple.xml
+
+# Result is non-zero, but wrong.  Results is off by 1: was 5 instead of 7.  This one should be fairly straightforward
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/verySimple2.xml
+
+# Results was 0 when it should have been 1.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/AMICoderExample.xml
+
+# Fails to compile
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Blending.xml
+
+# Needs NonStrictTest
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Case.xml
+
+# Fails to compile.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Case1.xml
+
+# Fails to compile.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Case2.xml
+
+# Done. This works and has been added to the tests
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal1.xml
+# Done. This works and has been added to the tests
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal2.xml
+
+# Fails to compile.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal3.xml
+
+# Fails to compile.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal4.xml
+
+# Wait on this one, it is a test that expects an Exception.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Default3.xml
+
+# Needs NonStrictTest
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Default4.xml
+
+
+# Wait on these, it uses ptolemy.actor.lib.ThrowException.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition1.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition10.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition2.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition3.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition4.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition5.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition6.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition7.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition8.xml
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition9.xml
+
+# Results was 0 when it should have been 1.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ExtendedFSM.xml
+
+# Results was 0 when it should have been 1.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/FinalStates.xml
+
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Hysteresis.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/HysteresisWithDefault.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/HysteresisWithDefault2.xml
+
+
+# Possibly ok, it prints "No token to return ! : IOPort_Get"?
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/InitialOutputs.xml
+
+
+# Needs cg version of actor.lib.Bernoulli
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ModalBSC.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ModalModelFromMemo.xml
+
+# Fails to compile in a big way.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ModalModelWithMultirateTransient.xml
+
+# Fails to compile in a big way.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ModalModelWithReset.xml
+
+# Skip this, it uses PN
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/NonStrictFSM_FeedbackLoop_Refinement.xml
+# Skip this, it uses PN
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/NonStrictFSM_FeedbackLoop_preemptive.xml
+
+
+# Fails to compile: missing symbols.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/SDF-FSMComposite.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Thermostat_NoHysteresis.xml
+
+# Needs cg version of actor.lib.FileWriter, but if we remove the FileWriter, then it fails to properly generate code
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/modalChangingParams.xml
+
+
+# Fails to compile: files not generated.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/modalModel.xml
+
+# Fails to compile: files not generated.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/modalModel2.xml
+
+# Needs cg version of actor.lib.FileWriter. Probably will fail to compile because files are not generated.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/modalModel3.xml
+
+# Fails to compile
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/model1.xml
+
+# Fails to generate code: Receiver not found in port.
+$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/test-direct-in-out.xml
+
+########### SDF models from the book
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
+
+# Results was 0 when it should have been -1
+$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
+
+# Results was 0 when it should have been -1
+$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/FinalStates.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/Hysteresis.xml
+
+# Needs cg version of actor.lib.Gaussian
+$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml
