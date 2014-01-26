@@ -33,14 +33,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 110.0}">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 648, 496, 244}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[496, 200]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 110.0]">
-        </property>
-    </entity>
     <entity name="FSMActor" class="ptolemy.domains.modal.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
@@ -155,12 +147,20 @@
         <link port="counting.outgoingPort" relation="relation3"/>
         <link port="final.incomingPort" relation="relation2"/>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.703125, 107.20703125]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation3"/>
-    <link port="Display.input" relation="relation"/>
     <link port="FSMActor.in" relation="relation3"/>
     <link port="FSMActor.out" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
 </entity>
