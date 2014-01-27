@@ -131,6 +131,20 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
             args.set(1, Integer.toString(index++));
             codeStream.appendCodeBlock("defineState", args);
         }
+
+//         // Add input ports.
+//         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
+//             .iterator();
+//         while (inputPorts.hasNext()) {
+//             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+
+//             codeStream.append(_eol + inputPort.getType() + " "
+//                     + generateName(inputPort));
+//             if (inputPort.isMultiport()) {
+//                 codeStream.append("[" + inputPort.getWidth() + "]");
+//             }
+//             codeStream.append(";");
+//         }
         return processCode(codeStream.toString());
     }
 
@@ -154,10 +168,19 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
+        // Remove _Controller_ from the model name.  Required by:
+        //$PTII/bin/ptcg -language c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple01.xml 
+        String name = fsmActor.getFullName().substring(1);
+        String modalName = name.replace("_Controller", "");
+        name = name.replace('.', '_').replace(' ', '_');
+        modalName = modalName.replace('.', '_').replace(' ', '_');
+
         // The default value 1 of transitionFlag means the transition
         // will be taken. If no transition is actually taken, it will be
         // set to value 0.
-        codeBuffer.append("$actorSymbol(transitionFlag) = 1;" + _eol);
+
+        //codeBuffer.append("$actorSymbol(transitionFlag) = 1;" + _eol);
+        codeBuffer.append(_eol + modalName + "__transitionFlag = 1;" + _eol);
 
         // States are numbered according to the order they are created,
         // i.e., the same order as in list returned by the method entityList().
@@ -530,7 +553,10 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 }
 
                 // indicates no transition is taken.
-                codeBuffer.append("$actorSymbol(transitionFlag) = 0;" + _eol);
+                //codeBuffer.append("$actorSymbol(transitionFlag) = 0;" + _eol);
+                codeBuffer.append(_eol + modalName + "__transitionFlag = 0;"
+                        + _eol);
+
 
                 // Generate code for updating configuration number of this
                 // FSMActor's container.  Note we need this because the
@@ -588,8 +614,29 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateFireCode() throws IllegalActionException {
 
+//         StringBuffer code = new StringBuffer();
+//         code.append(super._generateFireCode());
+//         code.append(getCodeGenerator().comment("FSMActor._generateFireCode()"));
+
+//         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+
+//         //         // FIXME: not handling multirate inputs yet.
+//         //         // FIXME: how should we handle in-out ports?
+//         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
+//             for (int channel = 0; !input.isOutput()
+//                      && channel < input.getWidth(); channel++) {
+//                 code.append("$get(" + generateSimpleName(input) + ", "
+//                         + channel + ");" + _eol);
+//             }
+//         }
+
+//         generateTransitionCode(code, new OutgoingRelations());
+
+//         return processCode(code.toString());
+
+
         StringBuffer code = new StringBuffer();
-        code.append(super._generateFireCode());
+        //code.append(super._generateFireCode());
         code.append(getCodeGenerator().comment("FSMActor._generateFireCode()"));
 
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
@@ -597,19 +644,20 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         //         // FIXME: not handling multirate inputs yet.
         //         // FIXME: how should we handle in-out ports?
         System.out.println("FSMActor()._generateFireCode(): about to get inputs");
+        code.append(getCodeGenerator().comment("generateFireCode(): generating ports"));
         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-            code.append("FSMActor()._generateFireCode(): input " + input.getFullName());
             for (int channel = 0; !input.isOutput()
                      && channel < input.getWidth(); channel++) {
-                code.append("FSMActor()._generateFireCode(): input " + input.getFullName() + " " + channel);
-                code.append("$get(" + generateSimpleName(input) + ", "
+                code.append(generateName(input) + " = $get("
+                        + generateSimpleName(input) + ", "
                         + channel + ");" + _eol);
             }
         }
-
-        generateTransitionCode(code, new OutgoingRelations());
+        code.append(getCodeGenerator().comment("generateFireCode(): done generating ports"));
+        this.generateTransitionCode(code, new OutgoingRelations());
 
         return processCode(code.toString());
+
     }
 
     /** Generate code for updating current state of this FSMActor. The

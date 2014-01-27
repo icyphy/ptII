@@ -153,427 +153,427 @@ public class FSMActor
         return processCode(codeStream.toString());
     }
 
-    /** Generate code for making transition. It generates code for both choice
-     *  action and commit action.
-     *
-     *  @param code The string buffer that the generated code is appended to.
-     *  @param transitionRetriever An instance of a class implementing
-     *  a method.
-     *   which returns an iterator of all, preemptive or non-preemptive
-     *   transitions of the current state.
-     *  @exception IllegalActionException If thrown while generating
-     *  transition code.
-     */
-    @Override
-    public void generateTransitionCode(StringBuffer code,
-            TransitionRetriever transitionRetriever)
-            throws IllegalActionException {
-        StringBuffer codeBuffer = new StringBuffer();
-        codeBuffer.append(getCodeGenerator().comment(
-                "Generate Transition Code -c-."));
-
-        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
-
-        String name = fsmActor.getFullName().substring(1);
-        String modalName = name.replace("_Controller", "");
-        name = name.replace('.', '_').replace(' ', '_');
-        modalName = modalName.replace('.', '_').replace(' ', '_');
-
-        // The default value 1 of transitionFlag means the transition
-        // will be taken. If no transition is actually taken, it will be
-        // set to value 0.
-        codeBuffer.append(_eol + modalName + "__transitionFlag = 1;" + _eol);
-
-        code.append(getCodeGenerator().comment("generateTransitionCode(): generating ports"));
-        Iterator inputPorts = ((Actor) getComponent()).inputPortList()
-                .iterator();
-        // add input ports
-        while (inputPorts.hasNext()) {
-            if (getComponent() instanceof ModalController) {
-                break;
-            }
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-            for (int i = 0; i < inputPort.getWidth(); i++) {
-                codeBuffer.append(_eol + "if ($hasToken("
-                        + generateSimpleName(inputPort));
-                if (inputPort.isMultiport()) {
-                    codeBuffer.append("#" + i);
-                }
-                codeBuffer.append(")) {" + _eol);
-
-                codeBuffer.append(_eol + generateName(inputPort));
-                if (inputPort.isMultiport()) {
-                    // FIXME: Probably a better way to handle channels.
-                    codeBuffer.append("[" + i + "]");
-                }
-                codeBuffer.append(" = $get("
-                        + generateSimpleName(inputPort));
-                if (inputPort.isMultiport()) {
-                    codeBuffer.append("#" + i);
-                }
-                codeBuffer.append(");" + _eol);
-                codeBuffer.append("}" + _eol);
-            }
-        }
-        code.append(getCodeGenerator().comment("generateTransitionCode(): done generating ports"));
-
-        // States are numbered according to the order they are created,
-        // i.e., the same order as in list returned by the method entityList().
-        codeBuffer.append("switch (" + name + "__currentState" + ")" + _eol
-                + "{" + _eol);
-
-        for (State state : (List<State>) fsmActor.entityList()) {
-            // For each state...
-            codeBuffer.append("case "
-                    + CodeGeneratorAdapter.generateName(state) + ":" + _eol);
-
-            // The transitions (all, preemptive or non-preemptive
-            // depending on the instance of TransitionRetriever given)
-            // that need to be tried.
-            Iterator transitions = transitionRetriever
-                    .retrieveTransitions(state);
-            // Reorder transitions so that default transitions are at
-            // the end of the list.
-            List reOrderedTransitions = new LinkedList();
-            List defaultTransitions = new LinkedList();
-            while (transitions.hasNext()) {
-                Transition transition = (Transition) transitions.next();
-                if (generateSimpleName(transition).equals("default")) {
-                    defaultTransitions.add(transition);
-                } else {
-                    reOrderedTransitions.add(transition);
-                }
-            }
-            reOrderedTransitions.addAll(defaultTransitions);
-            transitions = reOrderedTransitions.iterator();
-
-            int transitionCount = 0;
-
-            boolean hasDefaultCase = false;
-            while (!hasDefaultCase && transitions.hasNext()) {
-
-                Transition transition = (Transition) transitions.next();
-
-                String guard = transition.getGuardExpression();
-
-                if (transition.isDefault()
-                        || guard.toLowerCase(Locale.getDefault())
-                                .equals("true")) {
-
-                    // We don't need to generate if-predicate for this,
-                    // and we can skip the rest of the transitions.
-                    // FIXME: Need to handle nondeterministic transitions.
-                    hasDefaultCase = true;
-
-                } else {
-                    // generate code for guard expression
-                    if (transitionCount == 0) {
-                        codeBuffer.append("if (");
-                    } else {
-                        codeBuffer.append("else if (");
-                    }
-                    transitionCount++;
-
-                    if (guard.compareTo("") == 0) {
-                        codeBuffer.append("true) ");
-                    } else {
-
-                        PtParser parser = new PtParser();
-
-                        //int index = guard.indexOf("==");
-                        ASTPtRootNode guardParseTree = parser
-                                .generateParseTree(guard);
-
-                        if (getTemplateParser() == null) {
-                            if (getCodeGenerator() == null) {
-                                // The code generator was not being found.
-                                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
-                                throw new InternalErrorException(
-                                        this,
-                                        null,
-                                        "Can't find a code generator?, be sure to call setCodeGenerator() after instantiating FSMActor.");
-                            }
-                            getCodeGenerator().getAdapter(fsmActor);
-                        }
-
-                        ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
-                                .getParseTreeCodeGenerator();
-
-                        parseTreeCodeGenerator.evaluateParseTree(
-                                guardParseTree, _scope);
-
-                        codeBuffer.append(parseTreeCodeGenerator
-                                .generateFireCode());
-
-                        codeBuffer.append(") ");
-                    }
-                }
-                codeBuffer.append(_eol + "{" + _eol);
-
-                // generate code for choice action
-                for (AbstractActionsAttribute action : (List<AbstractActionsAttribute>) transition
-                        .choiceActionList()) {
-
-                    Iterator channelNumberList = action.getChannelNumberList()
-                            .iterator();
-                    Iterator parseTreeList = action.getParseTreeList()
-                            .iterator();
-
-                    for (String destinationName : (List<String>) action
-                            .getDestinationNameList()) {
-
-                        Integer channelNumber = (Integer) channelNumberList
-                                .next();
-                        ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
-                                .next();
-                        NamedObj destination = action
-                                .getDestination(destinationName);
-
-                        int channel = -1;
-                        if (channelNumber != null) {
-                            channel = channelNumber.intValue();
-                        }
-
-                        StringBuffer sendCode = new StringBuffer();
-
-                        // Note in choice action only output can be generated
-                        // and no parameter be changed.
-                        if (channel >= 0) {
-                            //codeBuffer.append("$ref(" + destinationName + "#"
-                            //        + channel + ") = ");
-                            codeBuffer.append("$put(" + destinationName + "#"
-                                    + channel + ", ");
-
-                            // During choice action, an output port
-                            // receives token sent by itself when it
-                            // is also an input port, i.e., when this
-                            // FSMActor is used as a modal controller.
-
-                            if (((IOPort) destination).isInput()) {
-                                //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
-                                //      .getContainer().getContainer());
-
-                                NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                                        .getAdapter(
-                                                ((IOPort) destination)
-                                                        .getContainer()
-                                                        .getContainer());
-
-                                StringBuffer containerReference = new StringBuffer();
-
-                                //containerReference.append("$ref("
-                                //        + generateSimpleName(destination));
-                                containerReference.append("$get("
-                                        + generateSimpleName(destination));
-
-                                if (((IOPort) destination).isMultiport()) {
-                                    containerReference.append("#" + channel);
-                                }
-
-                                containerReference.append(",");
-
-                                codeBuffer.append(containerHelper
-                                        .processCode(containerReference
-                                                .toString())
-                                        + ")");
-
-                                sendCode.append("$send(" + destinationName
-                                        + ", " + channel + ")" + _eol);
-                            }
-                        } else { // broadcast
-
-                            int width = ((IOPort) action
-                                    .getDestination(destinationName))
-                                    .getWidth();
-
-                            for (int i = 0; i < width; i++) {
-                                codeBuffer.append("$put(" + destinationName
-                                        + "#" + i + ", ");
-
-                                // During choice action, an output
-                                // port receives token sent by itself
-                                // when it is also an input port,
-                                // i.e., when this FSMActor is used as
-                                // a modal controller.
-
-                                if (((IOPort) destination).isInput()) {
-                                    //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
-                                    //      .getContainer().getContainer());
-
-                                    //                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                                    //                                            .getAdapter(
-                                    //                                                    ((IOPort) destination)
-                                    //                                                            .getContainer()
-                                    //                                                            .getContainer());
-
-                                    //                                    StringBuffer containerReference = new StringBuffer();
-                                    //
-                                    //                                    //containerReference.append("$ref("
-                                    //                                    //        + generateSimpleName(destination));
-                                    //                                    containerReference.append("$new("
-                                    //                                            + generateSimpleName(destination));
-                                    //
-                                    //                                    if (((IOPort) destination).isMultiport()) {
-                                    //                                        containerReference.append("#" + i);
-                                    //                                    }
-                                    //
-                                    //                                    containerReference.append(")");
-                                    //
-                                    //                                    codeBuffer.append(containerHelper
-                                    //                                            .processCode(containerReference
-                                    //                                                    .toString())
-                                    //                                            + " = ");
-
-                                    //sendCode.append("$send("
-                                    //        + generateSimpleName(destination)
-                                    //        + ", " + i + ")" + _eol);
-                                }
-                            }
-                        }
-                        ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
-                                .getParseTreeCodeGenerator();
-                        parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                                _scope);
-                        codeBuffer.append(parseTreeCodeGenerator
-                                .generateFireCode());
-
-                        codeBuffer.append(");" + _eol);
-                        //codeBuffer.append(sendCode);
-                    }
-                }
-
-                // generate code for transition refinement
-                Actor[] actors = transition.getRefinement();
-
-                if (actors != null) {
-                    for (Actor actor : actors) {
-                        NamedProgramCodeGeneratorAdapter helper = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
-                        // fire the actor
-                        codeBuffer.append(helper.generateFireCode());
-                    }
-                }
-
-                // generate code for commit action
-                for (AbstractActionsAttribute action : (List<AbstractActionsAttribute>) transition
-                        .commitActionList()) {
-
-                    Iterator channelNumberList = action.getChannelNumberList()
-                            .iterator();
-                    Iterator parseTreeList = action.getParseTreeList()
-                            .iterator();
-
-                    for (String destinationName : (List<String>) action
-                            .getDestinationNameList()) {
-
-                        Integer channelNumber = (Integer) channelNumberList
-                                .next();
-                        ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
-                                .next();
-                        NamedObj destination = action
-                                .getDestination(destinationName);
-
-                        int channel = -1;
-                        if (channelNumber != null) {
-                            channel = channelNumber.intValue();
-                        }
-
-                        ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
-                                .getParseTreeCodeGenerator();
-                        parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                                _scope);
-                        String scopeFireCode = parseTreeCodeGenerator
-                                .generateFireCode();
-
-                        if (destination instanceof IOPort) {
-                            if (channel >= 0) {
-                                //codeBuffer.append("$ref(" + destinationName
-                                //        + "#" + channel + ") = ");
-                                codeBuffer.append("$put(" + destinationName
-                                        + "#" + channel + ", "
-                                        + scopeFireCode + ");");
-                            } else { // broadcast
-
-                                int width = ((IOPort) action
-                                        .getDestination(destinationName))
-                                        .getWidth();
-
-                                for (int i = 0; i < width; i++) {
-                                    //codeBuffer.append("$ref(" + destinationName
-                                    //        + "#" + i + ") = ");
-                                    codeBuffer.append("$put(" + destinationName
-                                            + "#" + i + ", " + scopeFireCode
-                                            + ");");
-                                }
-                            }
-                        } else if (destination instanceof Variable) {
-                            codeBuffer.append(getCodeGenerator()
-                                    .generateVariableName(destination)
-                                    + " = "
-                                    + scopeFireCode + ";");
-                        }
-                    }
-                }
-
-                // generate code for updating current state
-                State destinationState = transition.destinationState();
-                _updateCurrentState(codeBuffer, destinationState);
-
-                // generate code for reinitialization if history is
-                // false.  we assume the value of history itself cannot
-                // be changed dynamically
-
-                if (!transition.isHistory()) {
-                    actors = destinationState.getRefinement();
-
-                    if (actors != null) {
-                        for (int i = 0; i < actors.length; ++i) {
-                            NamedProgramCodeGeneratorAdapter helper = (NamedProgramCodeGeneratorAdapter) getAdapter(actors[i]);
-
-                            codeBuffer.append(helper.generateInitializeCode());
-                        }
-                    }
-                }
-
-                codeBuffer.append(_eol + "}" + _eol);
-            }
-
-            if (!hasDefaultCase) {
-                if (transitionCount > 0) {
-                    codeBuffer.append("else" + _eol + "{" + _eol);
-                } else {
-                    codeBuffer.append(_eol);
-                }
-
-                // indicates no transition is taken.
-                codeBuffer.append(_eol + modalName + "__transitionFlag = 0;"
-                        + _eol);
-
-                // Generate code for updating configuration number of this
-                // FSMActor's container.  Note we need this because the
-                // configuration of the current refinement may have been
-                // changed even when there is no state transition.  The
-                // code is generated only when this FSMActor is used as a
-                // modal controller for an instance of
-                // MultirateFSMDirector.
-
-                //Director director = fsmActor.getExecutiveDirector();
-                //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
-                //     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
-                //   directorHelper
-                //         ._updateConfigurationNumber(codeBuffer, state);
-                //}
-
-                if (transitionCount > 0) {
-                    codeBuffer.append(_eol + "}" + _eol); // end of if statement
-                }
-            }
-            codeBuffer.append(_eol + "break;" + _eol); // end of case statement
-        }
-
-        codeBuffer.append(_eol + "}" + _eol); // end of switch statement
-        code.append(TemplateParser.unescapeName(processCode(codeBuffer
-                .toString()))); // was initially enclosed with processCode()
-    }
+//     /** Generate code for making transition. It generates code for both choice
+//      *  action and commit action.
+//      *
+//      *  @param code The string buffer that the generated code is appended to.
+//      *  @param transitionRetriever An instance of a class implementing
+//      *  a method.
+//      *   which returns an iterator of all, preemptive or non-preemptive
+//      *   transitions of the current state.
+//      *  @exception IllegalActionException If thrown while generating
+//      *  transition code.
+//      */
+//     @Override
+//     public void generateTransitionCode(StringBuffer code,
+//             TransitionRetriever transitionRetriever)
+//             throws IllegalActionException {
+//         StringBuffer codeBuffer = new StringBuffer();
+//         codeBuffer.append(getCodeGenerator().comment(
+//                 "Generate Transition Code -c-."));
+
+//         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+
+//         String name = fsmActor.getFullName().substring(1);
+//         String modalName = name.replace("_Controller", "");
+//         name = name.replace('.', '_').replace(' ', '_');
+//         modalName = modalName.replace('.', '_').replace(' ', '_');
+
+//         // The default value 1 of transitionFlag means the transition
+//         // will be taken. If no transition is actually taken, it will be
+//         // set to value 0.
+//         codeBuffer.append(_eol + modalName + "__transitionFlag = 1;" + _eol);
+
+//         code.append(getCodeGenerator().comment("generateTransitionCode(): generating ports"));
+//         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
+//                 .iterator();
+//         // add input ports
+//         while (inputPorts.hasNext()) {
+//             if (getComponent() instanceof ModalController) {
+//                 break;
+//             }
+//             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+//             for (int i = 0; i < inputPort.getWidth(); i++) {
+//                 codeBuffer.append(_eol + "if ($hasToken("
+//                         + generateSimpleName(inputPort));
+//                 if (inputPort.isMultiport()) {
+//                     codeBuffer.append("#" + i);
+//                 }
+//                 codeBuffer.append(")) {" + _eol);
+
+//                 codeBuffer.append(_eol + generateName(inputPort));
+//                 if (inputPort.isMultiport()) {
+//                     // FIXME: Probably a better way to handle channels.
+//                     codeBuffer.append("[" + i + "]");
+//                 }
+//                 codeBuffer.append(" = $get("
+//                         + generateSimpleName(inputPort));
+//                 if (inputPort.isMultiport()) {
+//                     codeBuffer.append("#" + i);
+//                 }
+//                 codeBuffer.append(");" + _eol);
+//                 codeBuffer.append("}" + _eol);
+//             }
+//         }
+//         code.append(getCodeGenerator().comment("generateTransitionCode(): done generating ports"));
+
+//         // States are numbered according to the order they are created,
+//         // i.e., the same order as in list returned by the method entityList().
+//         codeBuffer.append("switch (" + name + "__currentState" + ")" + _eol
+//                 + "{" + _eol);
+
+//         for (State state : (List<State>) fsmActor.entityList()) {
+//             // For each state...
+//             codeBuffer.append("case "
+//                     + CodeGeneratorAdapter.generateName(state) + ":" + _eol);
+
+//             // The transitions (all, preemptive or non-preemptive
+//             // depending on the instance of TransitionRetriever given)
+//             // that need to be tried.
+//             Iterator transitions = transitionRetriever
+//                     .retrieveTransitions(state);
+//             // Reorder transitions so that default transitions are at
+//             // the end of the list.
+//             List reOrderedTransitions = new LinkedList();
+//             List defaultTransitions = new LinkedList();
+//             while (transitions.hasNext()) {
+//                 Transition transition = (Transition) transitions.next();
+//                 if (generateSimpleName(transition).equals("default")) {
+//                     defaultTransitions.add(transition);
+//                 } else {
+//                     reOrderedTransitions.add(transition);
+//                 }
+//             }
+//             reOrderedTransitions.addAll(defaultTransitions);
+//             transitions = reOrderedTransitions.iterator();
+
+//             int transitionCount = 0;
+
+//             boolean hasDefaultCase = false;
+//             while (!hasDefaultCase && transitions.hasNext()) {
+
+//                 Transition transition = (Transition) transitions.next();
+
+//                 String guard = transition.getGuardExpression();
+
+//                 if (transition.isDefault()
+//                         || guard.toLowerCase(Locale.getDefault())
+//                                 .equals("true")) {
+
+//                     // We don't need to generate if-predicate for this,
+//                     // and we can skip the rest of the transitions.
+//                     // FIXME: Need to handle nondeterministic transitions.
+//                     hasDefaultCase = true;
+
+//                 } else {
+//                     // generate code for guard expression
+//                     if (transitionCount == 0) {
+//                         codeBuffer.append("if (");
+//                     } else {
+//                         codeBuffer.append("else if (");
+//                     }
+//                     transitionCount++;
+
+//                     if (guard.compareTo("") == 0) {
+//                         codeBuffer.append("true) ");
+//                     } else {
+
+//                         PtParser parser = new PtParser();
+
+//                         //int index = guard.indexOf("==");
+//                         ASTPtRootNode guardParseTree = parser
+//                                 .generateParseTree(guard);
+
+//                         if (getTemplateParser() == null) {
+//                             if (getCodeGenerator() == null) {
+//                                 // The code generator was not being found.
+//                                 // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
+//                                 throw new InternalErrorException(
+//                                         this,
+//                                         null,
+//                                         "Can't find a code generator?, be sure to call setCodeGenerator() after instantiating FSMActor.");
+//                             }
+//                             getCodeGenerator().getAdapter(fsmActor);
+//                         }
+
+//                         ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
+//                                 .getParseTreeCodeGenerator();
+
+//                         parseTreeCodeGenerator.evaluateParseTree(
+//                                 guardParseTree, _scope);
+
+//                         codeBuffer.append(parseTreeCodeGenerator
+//                                 .generateFireCode());
+
+//                         codeBuffer.append(") ");
+//                     }
+//                 }
+//                 codeBuffer.append(_eol + "{" + _eol);
+
+//                 // generate code for choice action
+//                 for (AbstractActionsAttribute action : (List<AbstractActionsAttribute>) transition
+//                         .choiceActionList()) {
+
+//                     Iterator channelNumberList = action.getChannelNumberList()
+//                             .iterator();
+//                     Iterator parseTreeList = action.getParseTreeList()
+//                             .iterator();
+
+//                     for (String destinationName : (List<String>) action
+//                             .getDestinationNameList()) {
+
+//                         Integer channelNumber = (Integer) channelNumberList
+//                                 .next();
+//                         ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
+//                                 .next();
+//                         NamedObj destination = action
+//                                 .getDestination(destinationName);
+
+//                         int channel = -1;
+//                         if (channelNumber != null) {
+//                             channel = channelNumber.intValue();
+//                         }
+
+//                         StringBuffer sendCode = new StringBuffer();
+
+//                         // Note in choice action only output can be generated
+//                         // and no parameter be changed.
+//                         if (channel >= 0) {
+//                             //codeBuffer.append("$ref(" + destinationName + "#"
+//                             //        + channel + ") = ");
+//                             codeBuffer.append("$put(" + destinationName + "#"
+//                                     + channel + ", ");
+
+//                             // During choice action, an output port
+//                             // receives token sent by itself when it
+//                             // is also an input port, i.e., when this
+//                             // FSMActor is used as a modal controller.
+
+//                             if (((IOPort) destination).isInput()) {
+//                                 //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
+//                                 //      .getContainer().getContainer());
+
+//                                 NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+//                                         .getAdapter(
+//                                                 ((IOPort) destination)
+//                                                         .getContainer()
+//                                                         .getContainer());
+
+//                                 StringBuffer containerReference = new StringBuffer();
+
+//                                 //containerReference.append("$ref("
+//                                 //        + generateSimpleName(destination));
+//                                 containerReference.append("$get("
+//                                         + generateSimpleName(destination));
+
+//                                 if (((IOPort) destination).isMultiport()) {
+//                                     containerReference.append("#" + channel);
+//                                 }
+
+//                                 containerReference.append(",");
+
+//                                 codeBuffer.append(containerHelper
+//                                         .processCode(containerReference
+//                                                 .toString())
+//                                         + ")");
+
+//                                 sendCode.append("$send(" + destinationName
+//                                         + ", " + channel + ")" + _eol);
+//                             }
+//                         } else { // broadcast
+
+//                             int width = ((IOPort) action
+//                                     .getDestination(destinationName))
+//                                     .getWidth();
+
+//                             for (int i = 0; i < width; i++) {
+//                                 codeBuffer.append("$put(" + destinationName
+//                                         + "#" + i + ", ");
+
+//                                 // During choice action, an output
+//                                 // port receives token sent by itself
+//                                 // when it is also an input port,
+//                                 // i.e., when this FSMActor is used as
+//                                 // a modal controller.
+
+//                                 if (((IOPort) destination).isInput()) {
+//                                     //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
+//                                     //      .getContainer().getContainer());
+
+//                                     //                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+//                                     //                                            .getAdapter(
+//                                     //                                                    ((IOPort) destination)
+//                                     //                                                            .getContainer()
+//                                     //                                                            .getContainer());
+
+//                                     //                                    StringBuffer containerReference = new StringBuffer();
+//                                     //
+//                                     //                                    //containerReference.append("$ref("
+//                                     //                                    //        + generateSimpleName(destination));
+//                                     //                                    containerReference.append("$new("
+//                                     //                                            + generateSimpleName(destination));
+//                                     //
+//                                     //                                    if (((IOPort) destination).isMultiport()) {
+//                                     //                                        containerReference.append("#" + i);
+//                                     //                                    }
+//                                     //
+//                                     //                                    containerReference.append(")");
+//                                     //
+//                                     //                                    codeBuffer.append(containerHelper
+//                                     //                                            .processCode(containerReference
+//                                     //                                                    .toString())
+//                                     //                                            + " = ");
+
+//                                     //sendCode.append("$send("
+//                                     //        + generateSimpleName(destination)
+//                                     //        + ", " + i + ")" + _eol);
+//                                 }
+//                             }
+//                         }
+//                         ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
+//                                 .getParseTreeCodeGenerator();
+//                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
+//                                 _scope);
+//                         codeBuffer.append(parseTreeCodeGenerator
+//                                 .generateFireCode());
+
+//                         codeBuffer.append(");" + _eol);
+//                         //codeBuffer.append(sendCode);
+//                     }
+//                 }
+
+//                 // generate code for transition refinement
+//                 Actor[] actors = transition.getRefinement();
+
+//                 if (actors != null) {
+//                     for (Actor actor : actors) {
+//                         NamedProgramCodeGeneratorAdapter helper = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
+//                         // fire the actor
+//                         codeBuffer.append(helper.generateFireCode());
+//                     }
+//                 }
+
+//                 // generate code for commit action
+//                 for (AbstractActionsAttribute action : (List<AbstractActionsAttribute>) transition
+//                         .commitActionList()) {
+
+//                     Iterator channelNumberList = action.getChannelNumberList()
+//                             .iterator();
+//                     Iterator parseTreeList = action.getParseTreeList()
+//                             .iterator();
+
+//                     for (String destinationName : (List<String>) action
+//                             .getDestinationNameList()) {
+
+//                         Integer channelNumber = (Integer) channelNumberList
+//                                 .next();
+//                         ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
+//                                 .next();
+//                         NamedObj destination = action
+//                                 .getDestination(destinationName);
+
+//                         int channel = -1;
+//                         if (channelNumber != null) {
+//                             channel = channelNumber.intValue();
+//                         }
+
+//                         ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
+//                                 .getParseTreeCodeGenerator();
+//                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
+//                                 _scope);
+//                         String scopeFireCode = parseTreeCodeGenerator
+//                                 .generateFireCode();
+
+//                         if (destination instanceof IOPort) {
+//                             if (channel >= 0) {
+//                                 //codeBuffer.append("$ref(" + destinationName
+//                                 //        + "#" + channel + ") = ");
+//                                 codeBuffer.append("$put(" + destinationName
+//                                         + "#" + channel + ", "
+//                                         + scopeFireCode + ");");
+//                             } else { // broadcast
+
+//                                 int width = ((IOPort) action
+//                                         .getDestination(destinationName))
+//                                         .getWidth();
+
+//                                 for (int i = 0; i < width; i++) {
+//                                     //codeBuffer.append("$ref(" + destinationName
+//                                     //        + "#" + i + ") = ");
+//                                     codeBuffer.append("$put(" + destinationName
+//                                             + "#" + i + ", " + scopeFireCode
+//                                             + ");");
+//                                 }
+//                             }
+//                         } else if (destination instanceof Variable) {
+//                             codeBuffer.append(getCodeGenerator()
+//                                     .generateVariableName(destination)
+//                                     + " = "
+//                                     + scopeFireCode + ";");
+//                         }
+//                     }
+//                 }
+
+//                 // generate code for updating current state
+//                 State destinationState = transition.destinationState();
+//                 _updateCurrentState(codeBuffer, destinationState);
+
+//                 // generate code for reinitialization if history is
+//                 // false.  we assume the value of history itself cannot
+//                 // be changed dynamically
+
+//                 if (!transition.isHistory()) {
+//                     actors = destinationState.getRefinement();
+
+//                     if (actors != null) {
+//                         for (int i = 0; i < actors.length; ++i) {
+//                             NamedProgramCodeGeneratorAdapter helper = (NamedProgramCodeGeneratorAdapter) getAdapter(actors[i]);
+
+//                             codeBuffer.append(helper.generateInitializeCode());
+//                         }
+//                     }
+//                 }
+
+//                 codeBuffer.append(_eol + "}" + _eol);
+//             }
+
+//             if (!hasDefaultCase) {
+//                 if (transitionCount > 0) {
+//                     codeBuffer.append("else" + _eol + "{" + _eol);
+//                 } else {
+//                     codeBuffer.append(_eol);
+//                 }
+
+//                 // indicates no transition is taken.
+//                 codeBuffer.append(_eol + modalName + "__transitionFlag = 0;"
+//                         + _eol);
+
+//                 // Generate code for updating configuration number of this
+//                 // FSMActor's container.  Note we need this because the
+//                 // configuration of the current refinement may have been
+//                 // changed even when there is no state transition.  The
+//                 // code is generated only when this FSMActor is used as a
+//                 // modal controller for an instance of
+//                 // MultirateFSMDirector.
+
+//                 //Director director = fsmActor.getExecutiveDirector();
+//                 //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
+//                 //     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
+//                 //   directorHelper
+//                 //         ._updateConfigurationNumber(codeBuffer, state);
+//                 //}
+
+//                 if (transitionCount > 0) {
+//                     codeBuffer.append(_eol + "}" + _eol); // end of if statement
+//                 }
+//             }
+//             codeBuffer.append(_eol + "break;" + _eol); // end of case statement
+//         }
+
+//         codeBuffer.append(_eol + "}" + _eol); // end of switch statement
+//         code.append(TemplateParser.unescapeName(processCode(codeBuffer
+//                 .toString()))); // was initially enclosed with processCode()
+//     }
 
 //     /** A class implementing this interface implements a method to
 //      *  retrieve transitions of a given state. Depending on
@@ -594,40 +594,40 @@ public class FSMActor
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate the fire code of the associated FSMActor.  It provides
-     *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
-     *  anonymous class implementing a method which returns an iterator of
-     *  all outgoing transitions of the current state.
-     *
-     *  @return The generated fire code.
-     *  @exception IllegalActionException If thrown while generating
-     *  firing code.
-     */
-    protected String _generateFireCode() throws IllegalActionException {
+//     /** Generate the fire code of the associated FSMActor.  It provides
+//      *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
+//      *  anonymous class implementing a method which returns an iterator of
+//      *  all outgoing transitions of the current state.
+//      *
+//      *  @return The generated fire code.
+//      *  @exception IllegalActionException If thrown while generating
+//      *  firing code.
+//      */
+//     protected String _generateFireCode() throws IllegalActionException {
 
-        StringBuffer code = new StringBuffer();
-        //code.append(super._generateFireCode());
-        code.append(getCodeGenerator().comment("FSMActor._generateFireCode()"));
+//         StringBuffer code = new StringBuffer();
+//         //code.append(super._generateFireCode());
+//         code.append(getCodeGenerator().comment("FSMActor._generateFireCode()"));
 
-        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+//         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
-        //         // FIXME: not handling multirate inputs yet.
-        //         // FIXME: how should we handle in-out ports?
-        System.out.println("FSMActor()._generateFireCode(): about to get inputs");
-        code.append(getCodeGenerator().comment("generateFireCode(): generating ports"));
-        for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-            for (int channel = 0; !input.isOutput()
-                     && channel < input.getWidth(); channel++) {
-                code.append(generateName(input) + " = $get("
-                        + generateSimpleName(input) + ", "
-                        + channel + ");" + _eol);
-            }
-        }
-        code.append(getCodeGenerator().comment("generateFireCode(): done generating ports"));
-        this.generateTransitionCode(code, new OutgoingRelations());
+//         //         // FIXME: not handling multirate inputs yet.
+//         //         // FIXME: how should we handle in-out ports?
+//         System.out.println("FSMActor()._generateFireCode(): about to get inputs");
+//         code.append(getCodeGenerator().comment("generateFireCode(): generating ports"));
+//         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
+//             for (int channel = 0; !input.isOutput()
+//                      && channel < input.getWidth(); channel++) {
+//                 code.append(generateName(input) + " = $get("
+//                         + generateSimpleName(input) + ", "
+//                         + channel + ");" + _eol);
+//             }
+//         }
+//         code.append(getCodeGenerator().comment("generateFireCode(): done generating ports"));
+//         this.generateTransitionCode(code, new OutgoingRelations());
 
-        return processCode(code.toString());
-    }
+//         return processCode(code.toString());
+//     }
 
     /** Generate a label for a state constant.
      *  @param state The state.

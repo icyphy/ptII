@@ -27,6 +27,8 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// ModalController
 
@@ -51,4 +53,24 @@ public class ModalController
         super(component);
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         Public methods                    ////
+    /** Generate the variable declaration for the transition flag.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    @Override
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer code = new StringBuffer(super.generateVariableDeclaration());
+
+        String name = _myController.getFullName().substring(1);
+        String modalName = name.replace("_Controller", "");
+        name = name.replace('.', '_');
+        modalName = modalName.replace('.', '_');
+
+        code.append("public static int " + modalName + "__transitionFlag;" + _eol);
+        return code.toString();
+    }
 }
