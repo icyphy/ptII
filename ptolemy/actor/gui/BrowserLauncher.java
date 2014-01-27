@@ -321,7 +321,7 @@ public class BrowserLauncher {
 
             if (result == 0) {
                 int[] selectionStart = new int[] { 0 };
-                byte[] urlBytes = url.getBytes();
+                byte[] urlBytes = url.getBytes("UTF-8");
                 int[] selectionEnd = new int[] { urlBytes.length };
                 result = ICLaunchURL(instance[0], new byte[] { 0 }, urlBytes,
                         urlBytes.length, selectionStart, selectionEnd);

@@ -127,19 +127,20 @@ public class FSMActor
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         CodeStream codeStream = _templateParser.getCodeStream();
-        ArrayList args = new ArrayList(2);
-        int index = 0;
-        args.add("");
-        args.add("");
-        for (State state : (List<State>) fsmActor.entityList()) {
-            args.set(0, _generateStateConstantLabel(state));
-            args.set(1, Integer.toString(index++));
-            codeStream.appendCodeBlock("defineState", args);
-        }
-        Iterator inputPorts = ((Actor) getComponent()).inputPortList()
-                .iterator();
+//         ArrayList args = new ArrayList(2);
+//         int index = 0;
+//         args.add("");
+//         args.add("");
+//         for (State state : (List<State>) fsmActor.entityList()) {
+//             args.set(0, _generateStateConstantLabel(state));
+//             args.set(1, Integer.toString(index++));
+//             codeStream.appendCodeBlock("defineState", args);
+//         }
 
-        // add input ports
+        // Add input ports
+        Iterator inputPorts = ((Actor) getComponent()).inputPortList()
+            .iterator();
+
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 

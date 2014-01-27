@@ -143,7 +143,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 //             if (inputPort.isMultiport()) {
 //                 codeStream.append("[" + inputPort.getWidth() + "]");
 //             }
-//             codeStream.append(";");
+//             codeStream.append(";" + _eol);
 //         }
         return processCode(codeStream.toString());
     }
@@ -646,11 +646,26 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         System.out.println("FSMActor()._generateFireCode(): about to get inputs");
         code.append(getCodeGenerator().comment("generateFireCode(): generating ports"));
         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-            for (int channel = 0; !input.isOutput()
-                     && channel < input.getWidth(); channel++) {
-                code.append(generateName(input) + " = $get("
-                        + generateSimpleName(input) + ", "
-                        + channel + ");" + _eol);
+            if (input instanceof TypedIOPort) {
+                TypedIOPort inputPort = (TypedIOPort)input;
+                for (int channel = 0; !inputPort.isOutput()
+                         && channel < inputPort.getWidth(); channel++) {
+
+                    // If we are generating Java code that uses arrays
+                    // for ports, then we need to generate the proper
+                    // port name.  The tests are:
+
+                    // $PTII/bin/ptcg -language java -variablesAsArrays true $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml
+
+                    // $PTII/bin/ptcg -language java -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml
+
+                    code.append(getCodeGenerator().generatePortName(inputPort,
+                            StringUtilities.sanitizeName(
+                                    inputPort.getFullName().substring(1)), input.getWidth())
+                            + " = $get("
+                            + generateSimpleName(inputPort) + ", "
+                            + channel + ");" + _eol);
+                }
             }
         }
         code.append(getCodeGenerator().comment("generateFireCode(): done generating ports"));
