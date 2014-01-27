@@ -218,6 +218,9 @@ public class EnabledComposite extends TypedCompositeActor {
             // First, the equivalence classes. All inputs are equivalent
             // because of the common dependency on the enable port.
             Set<IOPort> allInputs = new HashSet<IOPort>(_actor.inputPortList());
+            // Make sure the dependencies are up to date.
+            // This can be an issue if the model has changed.
+            getDependency(enable, null);
             for (IOPort input : _equivalenceClasses.keySet()) {
                 _equivalenceClasses.put(input, allInputs);
             }
