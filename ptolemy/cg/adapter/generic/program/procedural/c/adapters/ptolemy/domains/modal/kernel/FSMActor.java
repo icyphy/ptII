@@ -164,25 +164,27 @@ public class FSMActor
      *  @exception IllegalActionException If thrown while generating
      *  transition code.
      */
+    @Override
     public void generateTransitionCode(StringBuffer code,
             TransitionRetriever transitionRetriever)
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append(getCodeGenerator().comment(
-                "Generate Transition Code."));
+                "Generate Transition Code -c-."));
 
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         String name = fsmActor.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
-        name = name.replace('.', '_');
-        modalName = modalName.replace('.', '_');
+        name = name.replace('.', '_').replace(' ', '_');
+        modalName = modalName.replace('.', '_').replace(' ', '_');
 
         // The default value 1 of transitionFlag means the transition
         // will be taken. If no transition is actually taken, it will be
         // set to value 0.
         codeBuffer.append(_eol + modalName + "__transitionFlag = 1;" + _eol);
 
+        code.append(getCodeGenerator().comment("generateTransitionCode(): generating ports"));
         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
                 .iterator();
         // add input ports
@@ -197,16 +199,23 @@ public class FSMActor
                 if (inputPort.isMultiport()) {
                     codeBuffer.append("#" + i);
                 }
-                codeBuffer.append("))" + _eol);
+                codeBuffer.append(")) {" + _eol);
 
-                codeBuffer.append(_eol + generateName(inputPort) + " = $get("
+                codeBuffer.append(_eol + generateName(inputPort));
+                if (inputPort.isMultiport()) {
+                    // FIXME: Probably a better way to handle channels.
+                    codeBuffer.append("[" + i + "]");
+                }
+                codeBuffer.append(" = $get("
                         + generateSimpleName(inputPort));
                 if (inputPort.isMultiport()) {
                     codeBuffer.append("#" + i);
                 }
                 codeBuffer.append(");" + _eol);
+                codeBuffer.append("}" + _eol);
             }
         }
+        code.append(getCodeGenerator().comment("generateTransitionCode(): done generating ports"));
 
         // States are numbered according to the order they are created,
         // i.e., the same order as in list returned by the method entityList().
@@ -333,7 +342,7 @@ public class FSMActor
                             //codeBuffer.append("$ref(" + destinationName + "#"
                             //        + channel + ") = ");
                             codeBuffer.append("$put(" + destinationName + "#"
-                                    + channel + ") = ");
+                                    + channel + ", ");
 
                             // During choice action, an output port
                             // receives token sent by itself when it
@@ -352,19 +361,21 @@ public class FSMActor
 
                                 StringBuffer containerReference = new StringBuffer();
 
-                                containerReference.append("$ref("
+                                //containerReference.append("$ref("
+                                //        + generateSimpleName(destination));
+                                containerReference.append("$get("
                                         + generateSimpleName(destination));
 
                                 if (((IOPort) destination).isMultiport()) {
                                     containerReference.append("#" + channel);
                                 }
 
-                                containerReference.append(")");
+                                containerReference.append(",");
 
                                 codeBuffer.append(containerHelper
                                         .processCode(containerReference
                                                 .toString())
-                                        + " = ");
+                                        + ")");
 
                                 sendCode.append("$send(" + destinationName
                                         + ", " + channel + ")" + _eol);
@@ -478,7 +489,7 @@ public class FSMActor
                                 //codeBuffer.append("$ref(" + destinationName
                                 //        + "#" + channel + ") = ");
                                 codeBuffer.append("$put(" + destinationName
-                                        + "#" + channel + ") = "
+                                        + "#" + channel + ", "
                                         + scopeFireCode + ");");
                             } else { // broadcast
 
@@ -564,21 +575,21 @@ public class FSMActor
                 .toString()))); // was initially enclosed with processCode()
     }
 
-    /** A class implementing this interface implements a method to
-     *  retrieve transitions of a given state. Depending on
-     *  implementation, it could return all transitions, only
-     *  preemptive transitions or only non-preemptive transitions.
-     */
-    public static interface TransitionRetriever {
+//     /** A class implementing this interface implements a method to
+//      *  retrieve transitions of a given state. Depending on
+//      *  implementation, it could return all transitions, only
+//      *  preemptive transitions or only non-preemptive transitions.
+//      */
+//     public static interface TransitionRetriever {
 
-        /** Returns an iterator of (some or all) transitions from the
-         * given state.
-         *  @param state The given state.
-         *  @return An iterator of (some or all) transitions from the
-         *  given state.
-         */
-        public Iterator retrieveTransitions(State state);
-    }
+//         /** Returns an iterator of (some or all) transitions from the
+//          * given state.
+//          *  @param state The given state.
+//          *  @return An iterator of (some or all) transitions from the
+//          *  given state.
+//          */
+//         public Iterator retrieveTransitions(State state);
+//     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -598,6 +609,21 @@ public class FSMActor
         //code.append(super._generateFireCode());
         code.append(getCodeGenerator().comment("FSMActor._generateFireCode()"));
 
+        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+
+        //         // FIXME: not handling multirate inputs yet.
+        //         // FIXME: how should we handle in-out ports?
+        System.out.println("FSMActor()._generateFireCode(): about to get inputs");
+        code.append(getCodeGenerator().comment("generateFireCode(): generating ports"));
+        for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
+            for (int channel = 0; !input.isOutput()
+                     && channel < input.getWidth(); channel++) {
+                code.append(generateName(input) + " = $get("
+                        + generateSimpleName(input) + ", "
+                        + channel + ");" + _eol);
+            }
+        }
+        code.append(getCodeGenerator().comment("generateFireCode(): done generating ports"));
         this.generateTransitionCode(code, new OutgoingRelations());
 
         return processCode(code.toString());

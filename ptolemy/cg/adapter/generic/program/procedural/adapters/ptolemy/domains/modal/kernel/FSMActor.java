@@ -150,7 +150,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append(getCodeGenerator().comment(
-                "Generate Transition Code."));
+                "Generate Transition Code. -adapter-"));
 
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
@@ -592,18 +592,20 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         code.append(super._generateFireCode());
         code.append(getCodeGenerator().comment("FSMActor._generateFireCode()"));
 
-        //        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         //         // FIXME: not handling multirate inputs yet.
         //         // FIXME: how should we handle in-out ports?
-        //         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-        //             for (int channel = 0; !input.isOutput()
-        //                     && channel < input.getWidth(); channel++) {
-
-        //                 code.append("$get(" + generateSimpleName(input) + ", "
-        //                         + channel + ")" + _eol);
-        //             }
-        //         }
+        System.out.println("FSMActor()._generateFireCode(): about to get inputs");
+        for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
+            code.append("FSMActor()._generateFireCode(): input " + input.getFullName());
+            for (int channel = 0; !input.isOutput()
+                     && channel < input.getWidth(); channel++) {
+                code.append("FSMActor()._generateFireCode(): input " + input.getFullName() + " " + channel);
+                code.append("$get(" + generateSimpleName(input) + ", "
+                        + channel + ");" + _eol);
+            }
+        }
 
         generateTransitionCode(code, new OutgoingRelations());
 

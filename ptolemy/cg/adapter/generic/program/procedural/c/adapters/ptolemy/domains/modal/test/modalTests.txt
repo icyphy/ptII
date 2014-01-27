@@ -41,13 +41,13 @@
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/IOPortAsBothInputAndOutput.xml
 
 # Done.  Was failing with: "output#0" is not acceptable by $put(). $put could be used in the following ways: $put(output#channel, token); or, $put(output, token); or,$put(input#channel, offset, token); or, $put(input, offset, token)
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/OutputActionsAttribute.xml
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/OutputActionsAttribute.xml
 
 # Generates code, but fails to compile.
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/OutputActionsAttributeForNewDesign.xml
 
-# Results was 0 when it should have been -1
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/changingParams.xml
+# Done.  Was Results was 0 when it should have been -1
+# $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/changingParams.xml .
 
 # Wait: Skip these for now, these two run forever!
 #$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/finalState.xml
@@ -65,11 +65,11 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/typeProp
 # Done. This works and has been added to the tests
 #$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/verySimple.xml
 
-# Result is non-zero, but wrong.  Results is off by 1: was 5 instead of 7.  This one should be fairly straightforward
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/verySimple2.xml
+# Done. Was: Result is non-zero, but wrong.  Results is off by 1: was 5 instead of 7.  This one should be fairly straightforward
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/verySimple2.xml
 
-# Results was 0 when it should have been 1.
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/AMICoderExample.xml
+# Done. Was: Results was 0 when it should have been 1.
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/AMICoderExample.xml
 
 # Fails to compile
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Blending.xml
@@ -88,7 +88,7 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Case2.xml
 # Done. This works and has been added to the tests
 #$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal2.xml
 
-# Fails to compile.
+# Fails to compile, could be easy.
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal3.xml
 
 # Fails to compile.
@@ -113,12 +113,11 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition8.xml
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition9.xml
 
-# Results was 0 when it should have been 1.
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ExtendedFSM.xml
+# Done: Results was 0 when it should have been 1.
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ExtendedFSM.xml
 
-# Results was 0 when it should have been 1.
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/FinalStates.xml
-
+# Done: Was: Results was 0 when it should have been 1.
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/FinalStates.xml
 
 # Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Hysteresis.xml
@@ -182,11 +181,11 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/test-direct-in-
 # Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
 
-# Results was 0 when it should have been -1
-$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
+# Done: Results was 0 when it should have been -1
+# $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
 
-# Results was 0 when it should have been -1
-$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/FinalStates.xml
+# Done: Results was 0 when it should have been -1
+#$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/FinalStates.xml
 
 # Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
