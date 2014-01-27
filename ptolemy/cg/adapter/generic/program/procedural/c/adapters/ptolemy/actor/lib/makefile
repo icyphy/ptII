@@ -74,12 +74,14 @@ JSRCS = \
 	DiscreteClock.java \
 	Distributor.java \
 	Expression.java \
+	Gaussian.java \
 	Maximum.java \
 	MultiplyDivide.java \
 	PoissonClock.java \
 	Publisher.java \
 	Pulse.java \
 	Ramp.java \
+	RandomSource.java \
 	Remainder.java \
 	Scale.java \
 	Sequence.java \

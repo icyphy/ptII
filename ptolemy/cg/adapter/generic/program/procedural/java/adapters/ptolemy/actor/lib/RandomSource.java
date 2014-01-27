@@ -55,4 +55,15 @@ public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.pr
     public RandomSource(ptolemy.actor.lib.RandomSource actor) {
         super(actor);
     }
+
+    /** Get the files needed by the code generated for the RandomSource actor.
+     *  @return A set of strings that are names of the files
+     *  needed by the code generated for the RandomSource actor.
+     *  @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = super.getHeaderFiles();
+        files.add("java.util.Random;");
+        return files;
+    }
 }
