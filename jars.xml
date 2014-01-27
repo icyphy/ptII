@@ -2798,6 +2798,8 @@
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/cg/lib/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernell/*.class"/>
+      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/modal/*.class"/>
       </fileset>
       <fileset dir="${basedir}">

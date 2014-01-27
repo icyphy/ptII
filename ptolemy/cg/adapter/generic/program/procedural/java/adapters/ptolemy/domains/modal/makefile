@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal
 
-DIRS =		modal test
+DIRS =		kernel modal test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -53,6 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	kernel/kernel.jar \
 	modal/modal.jar
 
 # Keep this list alphabetized.
