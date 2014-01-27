@@ -1,6 +1,6 @@
 /* An adapter class for actor.lib.Gaussian
 
- @Copyright (c) 2010 The Regents of the University of California.
+ @Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * An adapter class for ptolemy.actor.lib.Gaussian.
  *
  * @author Christopher Brooks, based on Uniform.java by Man-Kit Leung
- * @version $Id$
+ * @version $Id: Gaussian.java 67784 2013-10-26 16:53:27Z cxh $
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Green (cxh)
@@ -60,5 +60,4 @@ public class Gaussian extends RandomSource {
         ArrayList<String> args = new ArrayList<String>();
         return getTemplateParser().generateBlockCode("randomBlock", args);
     }
-
 }

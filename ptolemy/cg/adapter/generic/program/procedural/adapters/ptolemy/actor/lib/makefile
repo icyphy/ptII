@@ -73,6 +73,7 @@ JSRCS = \
 	Differential.java \
 	Discard.java \
 	Distributor.java \
+	Gaussian.java \
 	LimitedFiringSource.java \
 	Limiter.java \
 	Minimum.java \
@@ -81,6 +82,7 @@ JSRCS = \
 	Publisher.java \
 	Pulse.java \
 	Ramp.java \
+	RandomSource.java \
 	Recorder.java \
 	Scale.java \
 	Sequence.java \
