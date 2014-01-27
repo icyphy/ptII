@@ -158,10 +158,12 @@ public class MicrostepDelay extends Transformer {
         Director director = getDirector();
         if (input.hasToken(0)) {
             int microstep = ((SuperdenseTimeDirector) director).getIndex();
+            /* Do not enforce this. It is useful sometimes.
             if (microstep == 0) {
                 throw new IllegalActionException(this,
                         "Input is not purely discrete.");
             }
+            */
             _pendingOutput = input.get(0);
             director.fireAtCurrentTime(this);
             if (_debugging) {
