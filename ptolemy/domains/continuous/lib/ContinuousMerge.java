@@ -27,7 +27,14 @@
  */
 package ptolemy.domains.continuous.lib;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -44,9 +51,17 @@ import ptolemy.kernel.util.NameDuplicationException;
  or it runs out of input channels. In the latter case, the output
  will be absent.
  <p>
+ By default, this actor discards data on all channels after
+ the first channel that has present data. If you set the <i>discard</i>
+ parameter to false, however, then it will collect all present
+ data in queue and output it in the next microstep until all
+ present inputs have been produced on the output.
+ Note that setting this to false creates a risk of a chattering
+ Zeno system if a continuous signal is provided as input.
+ <p>
  Note that this actor can merge continuous signals with discrete
- ones, but the resulting signal will not be piecewise continuous.
- This will be a bit odd. It most useful to merge discrete signals
+ ones, but the resulting signal may not be piecewise continuous.
+ This will be a bit odd. It is most useful to merge discrete signals
  or signals that are piecewise continuous.
 
  @author Edward A. Lee
@@ -73,8 +88,20 @@ public class ContinuousMerge extends Transformer {
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:green\"/>\n" + "</svg>\n");
+        
+        discard = new Parameter(this, "discard");
+        discard.setExpression("true");
+        discard.setTypeEquals(BaseType.BOOLEAN);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** Indicator of whether to discard present inputs on channel numbers
+     *  higher than the first one. This is a boolean that defaults to true.
+     */
+    public Parameter discard;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -87,11 +114,55 @@ public class ContinuousMerge extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        boolean discardValue = ((BooleanToken)discard.getToken()).booleanValue();
+        boolean outputProduced = false;
+        if (_pending != null && _pending.size() > 0) {
+        	output.send(0, _pending.remove(0));
+        	outputProduced = true;
+        }
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                output.send(0, input.get(i));
-                return;
+            	if (!outputProduced) {
+            		output.send(0, input.get(i));
+            		outputProduced = true;
+            	}
+                if (discardValue) {
+                	return;
+                } else {
+                	if (_pending == null) {
+                		_pending = new LinkedList<Token>();
+                	}
+                	_pending.add(input.get(i));
+                }
             }
         }
     }
+    
+    /** Initialize this actor by clearing memory of any pending outputs.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+    	super.initialize();
+    	if (_pending != null) {
+    		_pending.clear();
+    	}
+    }
+    
+    /** If there are any pending outputs, then request a refiring at the
+     *  current time.
+     *  @return True if execution can continue into the next iteration.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (_pending != null && _pending.size() > 0) {
+        	getDirector().fireAtCurrentTime(this);
+        }
+        return super.postfire();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Queue of pending output events. */
+    private List<Token> _pending;
 }
