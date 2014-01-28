@@ -119,24 +119,23 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ErrorTransition
 # Done: Was: Results was 0 when it should have been 1.
 #$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/FinalStates.xml
 
-# Needs cg version of actor.lib.Gaussian
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Hysteresis.xml
+# Done: Was: Needs cg version of actor.lib.Gaussian
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Hysteresis.xml
 
-# Needs cg version of actor.lib.Gaussian
+# Need NonStrictTest.  Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/HysteresisWithDefault.xml
 
-# Needs cg version of actor.lib.Gaussian
+# Need NonStrictTest.  Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/HysteresisWithDefault2.xml
 
 
 # Possibly ok, it prints "No token to return ! : IOPort_Get"?
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/InitialOutputs.xml
 
-
-# Needs cg version of actor.lib.Bernoulli
+# Needs cg version of BooleanToAnything. Was: Needs cg version of actor.lib.Bernoulli
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ModalBSC.xml
 
-# Needs cg version of actor.lib.Gaussian
+# Receiver no found in port: Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ModalModelFromMemo.xml
 
 # Fails to compile in a big way.
@@ -154,8 +153,8 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/ModalModelWithR
 # Fails to compile: missing symbols.
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/SDF-FSMComposite.xml
 
-# Needs cg version of actor.lib.Gaussian
-$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Thermostat_NoHysteresis.xml
+# Done. Was: Needs cg version of actor.lib.Gaussian
+#$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Thermostat_NoHysteresis.xml
 
 # Needs cg version of actor.lib.FileWriter, but if we remove the FileWriter, then it fails to properly generate code
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/modalChangingParams.xml
@@ -178,8 +177,8 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/test-direct-in-
 
 ########### SDF models from the book
 
-# Needs cg version of actor.lib.Gaussian
-$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
+# Done: Was: Needs cg version of actor.lib.Gaussian
+#$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
 
 # Done: Results was 0 when it should have been -1
 # $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
@@ -187,14 +186,14 @@ $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/CapriciousTherm
 # Done: Results was 0 when it should have been -1
 #$PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/FinalStates.xml
 
-# Needs cg version of actor.lib.Gaussian
+# Fails to compile: Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
 
-# Needs cg version of actor.lib.Gaussian
+# Has a problem with X_COMA_X.  Probably the TemplateParser.unescapeName() is not being run?  Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
 
-# Needs cg version of actor.lib.Gaussian
+# Needs fixes for privateSeed.  Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/Hysteresis.xml
 
-# Needs cg version of actor.lib.Gaussian
+# Needs fixes for privateSeed.  Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml
