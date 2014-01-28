@@ -70,10 +70,10 @@ public class ElementsToArray extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0).toString());
+        args.add(Integer.toString(0));
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock("fillArray", args);
         }
         codeStream.appendCodeBlock("sendOutput");

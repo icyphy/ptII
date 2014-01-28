@@ -124,12 +124,12 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         args.add(plusType);
 
         for (int i = 0; i < actor.plus.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock("plusBlock", args);
         }
 
         for (int i = 0; i < actor.minus.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             args.set(2, minusType);
             codeStream.appendCodeBlock("minusBlock", args);
         }

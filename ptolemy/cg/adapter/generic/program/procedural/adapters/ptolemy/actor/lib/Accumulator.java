@@ -80,7 +80,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
         if (actor.reset.isOutsideConnected()) {
             codeStream.appendCodeBlock("initReset");
             for (int i = 1; i < actor.reset.getWidth(); i++) {
-                args.set(0, Integer.valueOf(i).toString());
+                args.set(0, Integer.toString(i));
                 codeStream.appendCodeBlock("readReset", args);
             }
             codeStream.appendCodeBlock("ifReset");

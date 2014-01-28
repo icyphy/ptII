@@ -72,7 +72,7 @@ public class Commutator extends NamedProgramCodeGeneratorAdapter {
         String type = getCodeGenerator().codeGenType(actor.output.getType());
         args.add(type);
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock("fireBlock", args);
         }
         return processCode(codeStream.toString());

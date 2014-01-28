@@ -70,11 +70,11 @@ public class Distributor extends NamedProgramCodeGeneratorAdapter {
 
         ArrayList<String> args = new ArrayList<String>();
 
-        args.add(Integer.valueOf(0).toString());
+        args.add(Integer.toString(0));
         Type inputType = actor.input.getType();
         args.add(inputType.toString());
         for (int i = 0; i < actor.output.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
 
             String codeBlock = "";
             if (getCodeGenerator().isPrimitive(inputType)

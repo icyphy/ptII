@@ -120,12 +120,12 @@ public class AddSubtract
         codeStream.append(_eol + "bool triggered = false;" + _eol);
 
         for (int i = 0; i < actor.plus.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock("plusBlock", args);
         }
 
         for (int i = 0; i < actor.minus.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             args.set(2, minusType);
             codeStream.appendCodeBlock("minusBlock", args);
         }

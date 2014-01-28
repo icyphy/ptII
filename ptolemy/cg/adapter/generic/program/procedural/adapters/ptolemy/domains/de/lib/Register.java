@@ -80,7 +80,7 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
         }
         templateArgs.add("");
         for (int channel = 0; channel < commonWidth; channel++) {
-            templateArgs.set(0, Integer.valueOf(channel).toString());
+            templateArgs.set(0, Integer.toString(channel));
             codeStream.appendCodeBlock(initialValueBlock, templateArgs);
         }
 

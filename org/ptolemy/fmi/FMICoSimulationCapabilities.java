@@ -125,7 +125,7 @@ public class FMICoSimulationCapabilities {
                     } else if (field.getType().equals(Integer.TYPE)) {
                         int value = field.getInt(this);
                         if (value != 0) {
-                            valueString = Integer.valueOf(value).toString();
+                            valueString = Integer.toString(value);
                         }
                     }
                 } catch (IllegalAccessException ex) {

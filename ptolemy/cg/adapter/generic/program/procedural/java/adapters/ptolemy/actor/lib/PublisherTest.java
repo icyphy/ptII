@@ -73,12 +73,12 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.PublisherTest actor = (ptolemy.actor.lib.PublisherTest) getComponent();
 
         ArrayList<String> args = new ArrayList<String>();
-        args.add(Integer.valueOf(0).toString());
+        args.add(Integer.toString(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             if (actor.output.numberOfSinks() > 0) {
                 // Only transfer output if someone is listening to
                 // this publisher.
-                args.set(0, Integer.valueOf(i).toString());
+                args.set(0, Integer.toString(i));
                 // _codeStream.appendCodeBlock("fireBlock", args);
                 _templateParser.getCodeStream().appendCodeBlock("fireBlock",
                         args);
@@ -97,7 +97,7 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
             //args.add(codeGenType(actor.input.getType()));
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             if (getCodeGenerator().isPrimitive(actor.input.getType())) {
                 inputType = getCodeGenerator().codeGenType(
                         actor.input.getType());
@@ -146,9 +146,9 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
 
         if (actor.input.getWidth() > 1) {
             ArrayList<String> args = new ArrayList<String>();
-            args.add(Integer.valueOf(0).toString());
+            args.add(Integer.toString(0));
             for (int i = 0; i < actor.input.getWidth(); i++) {
-                args.set(0, Integer.valueOf(i).toString());
+                args.set(0, Integer.toString(i));
                 _templateParser.getCodeStream().appendCodeBlock(
                         "TokenPreinitBlock", args);
             }

@@ -74,7 +74,7 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
         ArrayList<String> args = new ArrayList<String>();
-        args.add(Integer.valueOf(0).toString());
+        args.add(Integer.toString(0));
         String multiChannel = "";
         String inputType = "";
 
