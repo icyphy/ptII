@@ -2371,6 +2371,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
                         (Actor) scheduler,
                         getModelTime().add(_nextScheduleTime.get(scheduler)));
+            } else {
+                throw new InternalErrorException(this, null,
+                        "_getExecutionAspect(" + actor.getFullName()
+                        + ") returned null?");
             }
         }
         return schedule;
