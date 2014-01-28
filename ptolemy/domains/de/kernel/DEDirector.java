@@ -2367,9 +2367,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         boolean schedule = super._schedule(actor, timestamp);
         if (!schedule) {
             ActorExecutionAspect scheduler = _getExecutionAspect(actor);
-            ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
-                    (Actor) scheduler,
-                    getModelTime().add(_nextScheduleTime.get(scheduler)));
+            if (scheduler != null) {
+                ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
+                        (Actor) scheduler,
+                        getModelTime().add(_nextScheduleTime.get(scheduler)));
+            }
         }
         return schedule;
     }
