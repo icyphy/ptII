@@ -58,6 +58,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
@@ -122,9 +123,17 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                     actorElement = ((ComponentEntity) getComponent())
                             .getAttribute(objName);
                 }
-                _setConstraints(actorElement,
-                        ((StringToken) constraintExpression.getToken())
-                                .stringValue());
+                if (actorElement == null) {
+                    throw new InternalErrorException(
+                            (getComponent() instanceof NamedObj ? ((NamedObj)getComponent()) : null),
+                            null,
+                            "Could not find a component or attribute named \""
+                            + objName + "\".  Thus, actorElement is null?");
+                } else {
+                    _setConstraints(actorElement,
+                            ((StringToken) constraintExpression.getToken())
+                            .stringValue());
+                }
             }
         }
         return super.constraintList();
