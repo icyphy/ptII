@@ -79,7 +79,7 @@ public class PortInfo {
     /** Create a PortInfo instance.
      *  @param port The port for which we are doing
      *  extra bookkeeping to generate code.
-     *  @para ports The ports the ports
+     *  @param ports The ports the ports
      *  @param component The component for which we are doing
      *  extra bookkeeping to generate code.
      *  @param director The director associated with the ports.

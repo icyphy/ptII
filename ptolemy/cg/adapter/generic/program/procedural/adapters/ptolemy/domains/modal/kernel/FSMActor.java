@@ -721,7 +721,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         // Findbugs wants this to be static.
         
         /** Retrieve an iterator for the transitions of a State.
-         *  @param State the state for which transitions are to be
+         *  @param state the state for which transitions are to be
          *  retrieved.
          *  @return An iterator for the retrieved states.
          */   
