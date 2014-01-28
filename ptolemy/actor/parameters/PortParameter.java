@@ -445,7 +445,13 @@ public class PortParameter extends AbstractInitializableParameter implements
     @Override
     public void setTypeEquals(Type type) throws IllegalActionException {
         super.setTypeEquals(type);
-        _port.setTypeEquals(type);
+
+        // _port might be null, to replicate: 
+        // cd $PTII/doc/test; $PTII/bin/ptjacl docManager.tcl 
+
+        if (_port != null) {
+            _port.setTypeEquals(type);
+        }
     }
 
     /** Check to see whether a token has arrived at the
