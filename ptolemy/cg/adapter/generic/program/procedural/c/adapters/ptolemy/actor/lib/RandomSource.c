@@ -2,6 +2,7 @@
 // is based on source code from Java.util.Random. Given the same seed, it
 // generates the same list of random numbers as the java.util.Random object.
 
+
 /*** sharedBlock ***/
 #ifdef PT_NO_TIME
 /* Atmel AVR does not have time() */

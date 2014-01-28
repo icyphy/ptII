@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class RandomSource extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
+public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
     /**
      * Construct a RandomSource helper.
      * @param actor the associated actor
@@ -109,16 +109,4 @@ public class RandomSource extends ptolemy.cg.adapter.generic.program.procedural.
         Set codeBlocks = super.getSharedCode();
         return codeBlocks;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Generate code for producing a new random number.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected String _generateRandomNumber() throws IllegalActionException {
-        ArrayList<String> args = new ArrayList<String>();
-        return getTemplateParser().generateBlockCode("randomBlock", args);
-    }
-
 }
