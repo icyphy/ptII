@@ -264,6 +264,7 @@ public class ExportModelJUnitTest {
                 "JMFJAI.xml", // Requires a video camera
                 "KarplusStrong.xml", // "Audio Device Unavailable"
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
+                "MapReduceDDF.xml", // Hangs.
                 "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
                 "PublisherTest", // gt
