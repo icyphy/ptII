@@ -2799,6 +2799,7 @@
       </fileset>
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernell/*.class"/>
+      </fileset>
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/modal/*.class"/>
       </fileset>
@@ -3831,7 +3832,7 @@
 	<include name="ptolemy/domains/scr/*.xml"/>
       </fileset>
     </jar>
- 
+    
     <!-- ptolemy/domains/scr/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/scr/demo/demo.jar"
