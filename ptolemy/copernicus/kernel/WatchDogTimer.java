@@ -113,7 +113,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
             return;
         }
 
-        final long timeToDie = Long.valueOf(timeToDieString).longValue();
+        final long timeToDie = Long.parseLong(timeToDieString);
 
         // Timers are new in JDK1.3
         // For information about Timers, see

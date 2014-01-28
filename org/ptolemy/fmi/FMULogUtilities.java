@@ -148,8 +148,7 @@ public class FMULogUtilities {
                         String integerString = messageString.substring(i + 2,
                                 end);
                         try {
-                            int variableReference = Integer
-                                    .valueOf(integerString);
+                            int variableReference = Integer.parseInt(integerString);
                             boolean foundIt = false;
                             for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
                                 if (scalarVariable.valueReference == variableReference

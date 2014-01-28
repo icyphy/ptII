@@ -541,7 +541,7 @@ public class TemplateParser {
 
                 if (token instanceof ArrayToken) {
                     Token element = ((ArrayToken) token).getElement(Integer
-                            .valueOf(offset).intValue());
+                            .parseInt(offset));
 
                     /////////////////////////////////////////////////////
                     ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();

@@ -279,14 +279,14 @@ public class PlotBoxMLParser extends HandlerBase {
 
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
-                int height = Integer.valueOf(spec).intValue();
+                int height = Integer.parseInt(spec);
 
                 spec = (String) _attributes.get("width");
                 _checkForNull(spec, "No width argument for element \"size\"");
 
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
-                int width = Integer.valueOf(spec).intValue();
+                int width = Integer.parseInt(spec);
 
                 _plot.setSize(width, height);
             } else if (elementName.equals("tick")) {
@@ -298,7 +298,7 @@ public class PlotBoxMLParser extends HandlerBase {
 
                 // NOTE: Do not use parseDouble() to maintain Java 1.1
                 // compatibility.
-                double position = Double.valueOf(spec).doubleValue();
+                double position = Double.parseDouble(spec);
 
                 if (_xtick) {
                     _plot.addXTick(label, position);
@@ -313,16 +313,12 @@ public class PlotBoxMLParser extends HandlerBase {
                 String spec = (String) _attributes.get("min");
                 _checkForNull(spec, "No min argument for element \"xRange\"");
 
-                // NOTE: Do not use parseDouble() to maintain Java 1.1
-                // compatibility.
-                double min = Double.valueOf(spec).doubleValue();
+                double min = Double.parseDouble(spec);
 
                 spec = (String) _attributes.get("max");
                 _checkForNull(spec, "No max argument for element \"xRange\"");
 
-                // NOTE: Do not use parseDouble() to maintain Java 1.1
-                // compatibility.
-                double max = Double.valueOf(spec).doubleValue();
+                double max = Double.parseDouble(spec);
 
                 _plot.setXRange(min, max);
             } else if (elementName.equals("xTicks")) {
@@ -333,16 +329,12 @@ public class PlotBoxMLParser extends HandlerBase {
                 String spec = (String) _attributes.get("min");
                 _checkForNull(spec, "No min argument for element \"yRange\"");
 
-                // NOTE: Do not use parseDouble() to maintain Java 1.1
-                // compatibility.
-                double min = Double.valueOf(spec).doubleValue();
+                double min = Double.parseDouble(spec);
 
                 spec = (String) _attributes.get("max");
                 _checkForNull(spec, "No max argument for element \"yRange\"");
 
-                // NOTE: Do not use parseDouble() to maintain Java 1.1
-                // compatibility.
-                double max = Double.valueOf(spec).doubleValue();
+                double max = Double.parseDouble(spec);
 
                 _plot.setYRange(min, max);
             } else if (elementName.equals("yTicks")) {

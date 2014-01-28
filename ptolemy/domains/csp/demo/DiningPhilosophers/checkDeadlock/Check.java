@@ -189,7 +189,7 @@ public class Check {
      */
     public static void main(String[] args) {
         try {
-            int number = Integer.valueOf(args[0]).intValue();
+            int number = Integer.parseInt(args[0]);
             boolean useSimple = true;
 
             if (args.length > 1) {

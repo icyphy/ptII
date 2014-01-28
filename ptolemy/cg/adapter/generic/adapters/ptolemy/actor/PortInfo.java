@@ -448,7 +448,7 @@ public class PortInfo {
             if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                 int offset = ((Integer) offsetObject).intValue()
-                    + Integer.valueOf(offsetString).intValue();
+                    + Integer.parseInt(offsetString);
 
                 offset %= getBufferSize(channel);
                 temp = Integer.toString(offset);

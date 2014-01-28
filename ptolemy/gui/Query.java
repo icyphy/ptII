@@ -1053,8 +1053,7 @@ public class Query extends JPanel {
                     + "calling getDoubleValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return Double.valueOf(((JTextField) result).getText())
-                    .doubleValue();
+            return Double.parseDouble(((JTextField) result).getText());
         } else {
             throw new IllegalArgumentException("Item named \"" + name
                     + "\" is not a text line, and hence cannot be converted "
@@ -1095,7 +1094,7 @@ public class Query extends JPanel {
                     + "calling getIntValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return Integer.valueOf(((JTextField) result).getText()).intValue();
+            return Integer.parseInt(((JTextField) result).getText());
         } else if (result instanceof JSlider) {
             return ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
@@ -1359,10 +1358,10 @@ public class Query extends JPanel {
             ((QueryScrollPane) result).setText(value);
         } else if (result instanceof JToggleButton) {
             // JRadioButton and JCheckButton are subclasses of JToggleButton
-            Boolean flag = Boolean.valueOf(value);
+            Boolean flag = Boolean.parseBoolean(value);
             setBoolean(name, flag.booleanValue());
         } else if (result instanceof JSlider) {
-            Integer parsed = Integer.valueOf(value);
+            Integer parsed = Integer.parseInt(value);
             ((JSlider) result).setValue(parsed.intValue());
         } else if (result instanceof JComboBox) {
             ((JComboBox) result).setSelectedItem(value);

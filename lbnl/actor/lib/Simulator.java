@@ -552,7 +552,7 @@ public class Simulator extends SDFTransformer {
         // Command that starts the simulation
         final String simCon = socketConfigurationFile.stringValue();
         // Assign BSD port number
-        porNo = Integer.valueOf(socketPortNumber.getExpression());
+        porNo = Integer.parseInt(socketPortNumber.getExpression());
         //////////////////////////////////////////////////////////////
         // Instantiate server for IPC
         try {

@@ -313,12 +313,12 @@ public class FMUFile {
             fmiModelDescription.guid = root.getAttribute("guid");
         }
         if (root.hasAttribute("numberOfContinuousStates")) {
-            fmiModelDescription.numberOfContinuousStates = Integer.valueOf(
-                    root.getAttribute("numberOfContinuousStates")).intValue();
+            fmiModelDescription.numberOfContinuousStates = Integer.parseInt(
+                    root.getAttribute("numberOfContinuousStates"));
         }
         if (root.hasAttribute("numberOfEventIndicators")) {
-            fmiModelDescription.numberOfEventIndicators = Integer.valueOf(
-                    root.getAttribute("numberOfEventIndicators")).intValue();
+            fmiModelDescription.numberOfEventIndicators = Integer.parseInt(
+                    root.getAttribute("numberOfEventIndicators"));
         }
 
         // TypeDefinitions

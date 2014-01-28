@@ -281,8 +281,8 @@ public class Server {
     public static void main(String[] args) throws Exception {
         int timOut = 10000; // time out in milliseconds
         Server[] ser = new Server[2];
-        ser[0] = new Server(Integer.valueOf(args[0]), timOut);
-        ser[1] = new Server(Integer.valueOf(args[0]) + 1, timOut);
+        ser[0] = new Server(Integer.parseInt(args[0]), timOut);
+        ser[1] = new Server(Integer.parseInt(args[0]) + 1, timOut);
         double[] dbl = new double[1];
         for (int i = 0; i < dbl.length; i++) {
             dbl[i] = i;

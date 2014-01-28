@@ -212,13 +212,12 @@ public abstract class PortDirector extends Director {
             // when the channel specification is not an integer.
             if (dynamicReferencesAllowed) {
                 try {
-                    channelNumber = Integer.valueOf(channelAndOffset[0])
-                            .intValue();
+                    channelNumber = Integer.parseInt(channelAndOffset[0]);
                 } catch (NumberFormatException ex) {
                     isChannelNumberInt = false;
                 }
             } else {
-                channelNumber = Integer.valueOf(channelAndOffset[0]).intValue();
+                channelNumber = Integer.parseInt(channelAndOffset[0]);
             }
         }
         if (!isChannelNumberInt) { // variable channel reference.

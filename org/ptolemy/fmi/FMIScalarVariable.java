@@ -126,7 +126,7 @@ public class FMIScalarVariable {
             String valueReferenceString = element
                     .getAttribute("valueReference");
             try {
-                valueReference = Long.valueOf(valueReferenceString);
+                valueReference = Long.parseLong(valueReferenceString);
             } catch (NumberFormatException ex) {
                 throw new NumberFormatException(
                         "Failed to parse valueReference "

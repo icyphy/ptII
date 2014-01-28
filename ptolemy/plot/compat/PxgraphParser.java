@@ -575,7 +575,7 @@ public class PxgraphParser {
                     continue;
                 } else if (arg.equals("-debug")) {
                     // -debug is not in the original X11 pxgraph.
-                    //_debug = (int) Integer.valueOf(args[i++]).intValue();
+                    //_debug = (int) Integer.parseInt(args[i++]);
                     continue;
                 } else if (arg.equals("-fg")) {
                     _plot.setForeground(PlotBox.getColorByName(args[i++]));
@@ -655,10 +655,7 @@ public class PxgraphParser {
                 } else if (arg.length() > 1 && arg.charAt(0) == '-') {
                     // Process '-<digit> <datasetname>'
                     try {
-                        Integer datasetnumberint = Integer.valueOf(arg
-                                .substring(1));
-                        int datasetnumber = datasetnumberint.intValue();
-
+                        int datasetnumber = Integer.parseInt(arg.substring(1));
                         if (datasetnumber >= 0) {
                             _plot.addLegend(datasetnumber, args[i++]);
                             continue;
@@ -669,8 +666,7 @@ public class PxgraphParser {
             } else {
                 if (arg.startsWith("=")) {
                     // Process =WxH+X+Y
-                    width = Integer.valueOf(arg.substring(1, arg.indexOf('x')))
-                            .intValue();
+                    width = Integer.parseInt(arg.substring(1, arg.indexOf('x')));
 
                     int plusIndex = arg.indexOf('+');
                     int minusIndex = arg.indexOf('-');
@@ -685,28 +681,27 @@ public class PxgraphParser {
                                 index = plusIndex;
                             }
 
-                            height = Integer.valueOf(
-                                    arg.substring(arg.indexOf('x') + 1, index))
-                                    .intValue();
+                            height = Integer.parseInt(
+                                    arg.substring(arg.indexOf('x') + 1, index));
                         } else {
                             if (plusIndex != -1) {
                                 // =WxH+X+Y
-                                height = Integer.valueOf(
+                                height = Integer.parseInt(
                                         arg.substring(arg.indexOf('x') + 1,
-                                                plusIndex)).intValue();
+                                                plusIndex));
                             } else {
                                 // =WxH-X-Y
-                                height = Integer.valueOf(
+                                height = Integer.parseInt(
                                         arg.substring(arg.indexOf('x') + 1,
-                                                minusIndex)).intValue();
+                                                minusIndex));
                             }
                         }
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
                             // =WxH
-                            height = Integer.valueOf(
+                            height = Integer.parseInt(
                                     arg.substring(arg.indexOf('x') + 1,
-                                            arg.length())).intValue();
+                                            arg.length()));
                         }
                     }
 
@@ -1093,15 +1088,15 @@ public class PxgraphParser {
 
         if (comma < 0) {
             double[] result = new double[1];
-            result[0] = Double.valueOf(spec).doubleValue();
+            result[0] = Double.parseDouble(spec);
             return result;
         } else {
             double[] result = new double[2];
             String spec1 = spec.substring(0, comma);
-            result[0] = Double.valueOf(spec1).doubleValue();
+            result[0] = Double.parseDouble(spec1);
 
             String spec2 = spec.substring(comma + 1);
-            result[1] = Double.valueOf(spec2).doubleValue();
+            result[1] = Double.parseDouble(spec2);
             return result;
         }
     }

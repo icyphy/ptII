@@ -57,7 +57,7 @@ public class FMIIntegerType extends FMIType {
     public FMIIntegerType(String name, String description, Element element) {
         super(name, description, element);
         if (element.hasAttribute("start")) {
-            start = Integer.valueOf(element.getAttribute("start"));
+            start = Integer.parseInt(element.getAttribute("start"));
         }
     }
 

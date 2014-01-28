@@ -86,7 +86,7 @@ public class FMICoSimulationCapabilities {
                                 .getAttribute(field.getName()));
                         field.setBoolean(this, value);
                     } else if (field.getType().equals(Integer.TYPE)) {
-                        int value = Integer.valueOf(element.getAttribute(field
+                        int value = Integer.parseInt(element.getAttribute(field
                                 .getName()));
                         field.setInt(this, value);
                     }

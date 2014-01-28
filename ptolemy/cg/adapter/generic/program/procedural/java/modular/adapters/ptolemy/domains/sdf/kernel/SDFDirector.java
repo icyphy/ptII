@@ -630,7 +630,7 @@ public class SDFDirector
                     }
                 }
             } else {
-                channelNumber = Integer.valueOf(channelAndOffset[0]).intValue();
+                channelNumber = Integer.parseInt(channelAndOffset[0]);
             }
         }
 

@@ -148,7 +148,7 @@ public class XMLWriter {
     public static void main(String[] arg) {
         String fileDirectory = ".";
         int portNo = 1;
-        int n = Integer.valueOf(arg[0]);
+        int n = Integer.parseInt(arg[0]);
         for (int i = 0; i < n; i++) {
             XMLWriter w = new XMLWriter(fileDirectory, "test-" + i + ".txt",
                     portNo);
