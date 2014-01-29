@@ -336,8 +336,8 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
                 Set<Inequality> outPortConstraints = output.typeConstraints();
 
                 // 1) no default constraint if input port is output port, or
-                //    if one of both ports have a declared type (for parameters
-                //    this is always the case, since they have a default value)
+                //    if one of both ports have a declared type, or the port 
+                //    is a ParameterPort
                 if (input == output || !input.getTypeTerm().isSettable()
                         || !output.getTypeTerm().isSettable() 
                         || input instanceof ParameterPort) {
