@@ -172,7 +172,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         //$PTII/bin/ptcg -language c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple01.xml 
         String name = fsmActor.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
-        name = name.replace('.', '_').replace(' ', '_');
+        //name = name.replace('.', '_').replace(' ', '_');
         modalName = modalName.replace('.', '_').replace(' ', '_');
 
         // The default value 1 of transitionFlag means the transition

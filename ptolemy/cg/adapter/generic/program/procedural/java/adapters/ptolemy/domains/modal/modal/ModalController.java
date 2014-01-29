@@ -67,7 +67,7 @@ public class ModalController
 
         String name = _myController.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
-        name = name.replace('.', '_');
+        //name = name.replace('.', '_');
         modalName = modalName.replace('.', '_');
 
         code.append("public static int " + modalName + "__transitionFlag;" + _eol);

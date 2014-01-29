@@ -124,7 +124,7 @@ public class FSMActor
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+//        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         CodeStream codeStream = _templateParser.getCodeStream();
 //         ArrayList args = new ArrayList(2);
