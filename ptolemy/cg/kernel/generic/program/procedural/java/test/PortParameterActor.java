@@ -27,10 +27,14 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.java.test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.Token;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -89,4 +93,16 @@ public class PortParameterActor extends TypedAtomicActor {
         Token sum = myPortParameter.getToken();
         output.send(0, sum);
     }
+
+    /**
+     * 
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
+        result.add(new Inequality(myPortParameter.getTypeTerm(), output.getTypeTerm()));
+        return result;
+    }
+    
+    
 }
