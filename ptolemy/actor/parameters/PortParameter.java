@@ -434,7 +434,7 @@ public class PortParameter extends AbstractInitializableParameter implements
 
     
     /** Declare the type of this parameter to by equal the specified value. 
-     *  In addition, declare the type of the associated port to be equal
+     *  In addition, if a port is associated, declare its type to be equal
      *  to this value.
      *  To undo, call this method with the argument BaseType.UNKNOWN.
      *  @see ParameterPort
@@ -445,12 +445,8 @@ public class PortParameter extends AbstractInitializableParameter implements
     @Override
     public void setTypeEquals(Type type) throws IllegalActionException {
         super.setTypeEquals(type);
-
-        // _port might be null, to replicate: 
-        // cd $PTII/doc/test; $PTII/bin/ptjacl docManager.tcl 
-
         if (_port != null) {
-            _port.setTypeEquals(type);
+          _port.setTypeEquals(type);
         }
     }
 
