@@ -36,6 +36,8 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -165,11 +167,11 @@ public class SCRGraphTableau extends Tableau {
             super(container, name);
         }
 
-        /** Create an instance of FSMGraphTableau for the specified effigy,
-         *  if it is an effigy for an instance of FSMActor.
-         *  @param effigy The effigy for an FSMActor.
-         *  @return A new FSMGraphTableau, if the effigy is a PtolemyEffigy
-         *   that references an FSMActor, or null otherwise.
+        /** Create an instance of SCRGraphTableau for the specified effigy,
+         *  if it is an effigy has a parameter openAsSCRActor set to true.
+         *  @param effigy The effigy for an SCRModel actor.
+         *  @return A new SCRGraphTableau, if the effigy is a PtolemyEffigy
+         *   that references an SCRModel actor, or null otherwise.
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
          */
@@ -178,21 +180,22 @@ public class SCRGraphTableau extends Tableau {
                 return null;
             }
 
-            Tableau tableau = (Tableau) effigy.getEntity("fsmGraphTableau");
+            Tableau tableau = (Tableau) effigy.getEntity("scrGraphTableau");
             if (tableau != null) {
                 return tableau;
             }
 
+            
+            
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model instanceof FSMActor) {
-                // Check to see whether this factory contains a
-                // default library.
-                LibraryAttribute library = (LibraryAttribute) getAttribute(
-                        "_library", LibraryAttribute.class);
-
-                tableau = new FSMGraphTableau((PtolemyEffigy) effigy,
-                        "fsmGraphTableau", library);
+            if (model != null
+                    && model.getContainer() != null
+                    && model.getContainer().getAttribute("openAsSCRActor") != null
+                    && ((BooleanToken)(((Parameter)model.getContainer()
+                                            .getAttribute("openAsSCRActor"))
+                                    .getToken())).booleanValue()) {
+            	tableau = new SCRGraphTableau((PtolemyEffigy) effigy, "scrGraphTableau");
                 return tableau;
             } else {
                 return null;

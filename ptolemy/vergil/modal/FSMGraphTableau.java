@@ -33,8 +33,6 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,7 +40,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.scr.SCRGraphTableau;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMGraphTableau
@@ -182,14 +179,7 @@ public class FSMGraphTableau extends Tableau {
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
             // If we save a plot, then the model of the effigy will be null.
-            if (model != null
-                    && model.getContainer() != null
-                    && model.getContainer().getAttribute("openAsSCRActor") != null
-                    && ((BooleanToken)(((Parameter)model.getContainer()
-                                            .getAttribute("openAsSCRActor"))
-                                    .getToken())).booleanValue()) {
-            	tableau = new SCRGraphTableau((PtolemyEffigy) effigy, "SCRTables");
-            } else if (model instanceof FSMActor) {
+            if (model instanceof FSMActor) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute) getAttribute(

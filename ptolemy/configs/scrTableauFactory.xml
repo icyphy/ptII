@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Factory for SCR editor.  -->
+<property name="factorySCR" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <!-- These will appear in the View menu of an fsm tableau. -->
+  <property name="SCR Editor"
+            class="ptolemy.vergil.scr.SCRGraphTableau$Factory">
+        <input source="ptolemy/configs/modalLibrary.xml"/>
+  </property>
+  <property name="Run Window"
+            class="ptolemy.actor.gui.RunTableau$TopFactory"/>
+  <property name="Tree View"
+            class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML view"
+            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+</property>

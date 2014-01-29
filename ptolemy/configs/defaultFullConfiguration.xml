@@ -71,6 +71,7 @@
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
     <input source="ptolemy/configs/ontologyEffigyFactory.xml"/>
     <input source="ptolemy/configs/ontologySolverEffigyFactory.xml"/>
+    <input source="ptolemy/configs/scrEffigyFactory.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
@@ -79,6 +80,7 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/scrTableauFactory.xml"/>
     <input source="ptolemy/configs/ontologyTableauFactories.xml"/>
     <input source="ptolemy/configs/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/pteraTableauFactory.xml"/>
