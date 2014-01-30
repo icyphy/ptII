@@ -395,7 +395,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                     + m2event_out_pipe_name + "\".");
         }
         File pipe2 = new File(m2event_in_pipe_name);
-        if (!pipe1.exists()) {
+        if (!pipe2.exists()) {
             throw new IllegalActionException(this, "Failed to create a pipe named \""
                     + m2event_in_pipe_name + "\".");
         }
