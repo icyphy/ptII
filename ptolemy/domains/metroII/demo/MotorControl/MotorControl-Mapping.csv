@@ -1,0 +1,6 @@
+.FunctionalModel.DriveController.MetroIIPtidesPlatform.PtidesPlatformContents.Const.FIRE_BEGIN,Task1.Const.Begin
+.FunctionalModel.DriveController.MetroIIPtidesPlatform.PtidesPlatformContents.Const.FIRE_END,Task1.Const.End
+.FunctionalModel.DriveController.MetroIIPtidesPlatform.PtidesPlatformContents.AddSubtract.FIRE_BEGIN,Task1.AddSubtract.Begin
+.FunctionalModel.DriveController.MetroIIPtidesPlatform.PtidesPlatformContents.AddSubtract.FIRE_END,Task1.AddSubtract.End
+.FunctionalModel.DriveController.MetroIIPtidesPlatform.PtidesPlatformContents.PID.FIRE_BEGIN,Task1.PID.Begin
+.FunctionalModel.DriveController.MetroIIPtidesPlatform.PtidesPlatformContents.PID.FIRE_END,Task1.PID.End

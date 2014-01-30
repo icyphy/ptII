@@ -192,7 +192,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
             }
         }
         // super.stop();
-        System.out.println(this.getFullName()+" stops!"); 
+        // System.out.println(this.getFullName()+" stops!"); 
     }
 
     /**

@@ -30,10 +30,8 @@ package ptolemy.domains.metroII.kernel;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.TreeMap;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -444,7 +442,7 @@ public class MetroIIDirector extends Director {
     @Override
     public void stopFire() {
         super.stopFire();
-        System.out.println(this.getFullName() + " stopFire!");
+        // System.out.println(this.getFullName() + " stopFire!");
     }
 
     /**
@@ -459,7 +457,7 @@ public class MetroIIDirector extends Director {
             }
         }
         super.wrapup();
-        System.out.println(this.getFullName() + " wrapups!");
+        // System.out.println(this.getFullName() + " wrapups!");
     }
 
     ///////////////////////////////////////////////////////////////////

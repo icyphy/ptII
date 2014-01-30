@@ -576,11 +576,13 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * ready are transferred. After super.getfire() is called, transfer all
      * output events that are ready are transferred.
      * 
-     * @throws IllegalActionException If any called method of one
-     *  of the associated actors throws it.
-     *             
-     * @throws CollectionAbortedException If any called method of one
-     *  of the associated actors throws it.
+     * @throws IllegalActionException
+     *             If any called method of one of the associated actors throws
+     *             it.
+     * 
+     * @throws CollectionAbortedException
+     *             If any called method of one of the associated actors throws
+     *             it.
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException {
@@ -595,11 +597,6 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     _currentLogicalIndex = event.microstep();
                     event.receiver().put(event.token());
 
-                    //                        System.out
-                    //                                .println("input: " + event.token().getClass());
-                    //                        System.out.println(this.getFullName());
-                    //                        System.out.println(event.receiver());
-
                     _currentLogicalTime = null;
                     if (_debugging) {
                         _debug("iiiiiiii - transfer inputs from "
@@ -607,7 +604,6 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     }
                 }
             }
-            // System.out.println(getModelTime());
             _inputEventQueue.remove(getModelTime());
         }
 
@@ -660,10 +656,6 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     _currentLogicalIndex = event.microstep();
                     event.ioPort().send(0, event.token());
 
-                    // System.out.println("output:");
-                    // System.out.println(this.getFullName());
-                    // System.out.println(event.receiver());
-
                     _currentLogicalTime = null;
                     ptidesOutputPortList.poll();
                     if (_debugging) {
@@ -708,8 +700,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Returns false if there are no more actors to be fired or the stop() method
-     * has been called.
+     * Returns false if there are no more actors to be fired or the stop()
+     * method has been called.
      * 
      * @return True If this director will be fired again.
      * @exception IllegalActionException
@@ -1033,9 +1025,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Returns the actor to fire in this iteration, or null if no actor should be
-     * fired. Since _checkForNextEvent() always returns true, this method will
-     * keep being called until it returns null.
+     * Returns the actor to fire in this iteration, or null if no actor should
+     * be fired. Since _checkForNextEvent() always returns true, this method
+     * will keep being called until it returns null.
      * 
      * @exception IllegalActionException
      */
@@ -1052,9 +1044,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     }
 
     /**
-     * Returns the actor to fire in this iteration, or null if no actor should be
-     * fired. Since _checkForNextEvent() always returns true, this method will
-     * keep being called until it returns null.
+     * Returns the actor to fire in this iteration, or null if no actor should
+     * be fired. Since _checkForNextEvent() always returns true, this method
+     * will keep being called until it returns null.
      * 
      * @exception IllegalActionException
      *                If _isSafeToProcess() throws it.
@@ -1792,8 +1784,6 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 .getFullName());
 
         if (metroActor.getState() != FireMachine.State.START) {
-            // System.out.println(metroActor.getState());
-            // System.out.println(FireMachine.State.START);
             return false;
         }
 
