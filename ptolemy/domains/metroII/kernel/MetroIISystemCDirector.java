@@ -202,6 +202,9 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         if (_debugging) {
             _debug("syncEvents:");
         }
+        if (events == null) {
+            throw new NullPointerException("syncEvents(): events argument was null?");
+        }
         events.clear();
         EventVector ev = null;
         try {
@@ -246,6 +249,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                     public void run() {
                         String s = null;
                         try {
+                            String command = null;
                             try {
                                 StringToken modelFileNameToken;
                                 StringToken configFileNameToken;
@@ -254,18 +258,20 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                                             .getToken();
                                     configFileNameToken = (StringToken) configFileName
                                             .getToken();
-                                    System.out
-                                            .println(modelFileNameToken
-                                                    .stringValue()
-                                                    + " "
-                                                    + configFileNameToken
-                                                            .stringValue());
-                                    // using the Runtime exec method:
-                                    process = Runtime.getRuntime().exec(
-                                            modelFileNameToken.stringValue()
-                                                    + " "
-                                                    + configFileNameToken
-                                                            .stringValue());
+                                    File modelFile = new File(modelFileNameToken.stringValue());
+                                    if (!modelFile.exists()) {
+                                        throw new IllegalActionException("The value of the modelFileName parameter \""
+                                                + modelFileNameToken.stringValue() + "\" does not exist?");
+                                    }
+
+
+                                    command = modelFileNameToken.stringValue()
+                                        + " "
+                                        + configFileNameToken
+                                        .stringValue();
+                                    System.out.println("The MetroII command is: " + command);
+                                    // Using the Runtime exec method:
+                                    process = Runtime.getRuntime().exec(command);
                                 } catch (IllegalActionException e) {
                                     e.printStackTrace();
                                 }
@@ -281,7 +287,14 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                                 }
 
                             } finally {
-                                stdInput.close();
+                                if (stdInput != null) {
+                                    try {
+                                        stdInput.close();
+                                    } catch (IOException ex) {
+                                        System.err.println("Hmm, failed to close the stdInput stream of the subprocess \""
+                                                + (command == null ? "null?" : command) +  "\"");
+                                    }
+                                } 
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -294,6 +307,9 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             }
         }
         while (!isStopRequested()) {
+            if (events == null) {
+                throw new NullPointerException("MetroIISystemCDirector.getFire(): stop was not requested, but events is null??");
+            }
             syncEvents(events);
 
             do {
@@ -331,11 +347,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         super.initialize();
 
         path = System.getenv("METRO_TEMP");
-        path = path + "/";
         if (path == null) {
             throw new IllegalActionException(this,
-                    "Environment varialble METRO_TEMP is not accessable.");
+                    "The METRO_TEMP property was not set.  Please set it so that both Ptolemy and the C-based MetroII example can access the same directory.");
         }
+        path = path + "/";
 
         m2event_out_pipe_name = path + "m2event_ptolemy_buffer";
         m2event_in_pipe_name = path + "m2event_metro_buffer";
@@ -374,16 +390,19 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         //        }
 
         File pipe1 = new File(m2event_out_pipe_name);
+        if (!pipe1.exists()) {
+            throw new IllegalActionException(this, "Failed to create a pipe named \""
+                    + m2event_out_pipe_name + "\".");
+        }
         File pipe2 = new File(m2event_in_pipe_name);
-
-        if (!pipe1.exists() || !pipe2.exists()) {
-            throw new IllegalActionException(this, "Failed to create pipes!");
+        if (!pipe1.exists()) {
+            throw new IllegalActionException(this, "Failed to create a pipe named \""
+                    + m2event_in_pipe_name + "\".");
         }
 
         events = new LinkedList<Event.Builder>();
 
         createProcess = false;
-
     }
 
     /**
