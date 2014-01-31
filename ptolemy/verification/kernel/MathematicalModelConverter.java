@@ -32,6 +32,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Random;
 
 import ptolemy.actor.CompositeActor;
@@ -49,6 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringBufferExec;
 import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
 import ptolemy.verification.kernel.maude.RTMaudeUtility;
 
@@ -225,6 +229,7 @@ public class MathematicalModelConverter extends Attribute {
                             writer.close();
                         }
                     }
+                    System.out.println("Wrote " + file);
                 } else {
                     if (modelType == ModelType.Kripke) {
                         // Invoke NuSMV. Create a temporal file and
@@ -280,31 +285,34 @@ public class MathematicalModelConverter extends Attribute {
                             }
                         }
 
-                        BufferedReader reader = null;
+                        List execCommands = new LinkedList();
+                        execCommands.add("NuSMV " + "\"" + fileAbsolutePath + "\"");
+                        StringBufferExec exec = new StringBufferExec();
+                            
+                        System.out.println("MathematicalModelConverter: About to execute: " + execCommands);
+                        exec.setCommands(execCommands);
+                        exec.setWaitForLastSubprocess(true);
                         try {
-                            Runtime rt = Runtime.getRuntime();
-                            Process pr = rt.exec("NuSMV " + "\""
-                                    + fileAbsolutePath + "\"");
-                            InputStreamReader inputStream = new InputStreamReader(
-                                    pr.getInputStream());
-                            reader = new BufferedReader(inputStream);
-                            String line = null;
-                            while ((line = reader.readLine()) != null) {
-                                returnStringBuffer.append(line + "\n");
+                            exec.start();
+                        } catch (Throwable throwable) {
+                            StringBuffer errorMessage = new StringBuffer();
+                            Iterator<String> allCommands = execCommands.iterator();
+                            while (allCommands.hasNext()) {
+                                errorMessage.append(allCommands.next() + "\n");
                             }
-
-                        } finally {
-                            if (reader != null) {
-                                try {
-                                    reader.close();
-                                } catch (IOException ex) {
-                                    System.err
-                                            .println("Failed to close reader? "
-                                                    + ex);
-                                }
-                            }
+                            throw new IllegalActionException("Problem executing the "
+                                    + "commands:\n" + errorMessage + "\n" + throwable);
                         }
-                        _deleteFolder(smvFolder);
+
+                        returnStringBuffer = exec.buffer;
+                        if (exec.getLastSubprocessReturnCode() != 0) {
+                            System.err.println("Executing " + execCommands + " returned non-zero: "
+                                    + exec.getLastSubprocessReturnCode() + ".  Not deleting "
+                                    + smvFolder);
+                        } else {
+                            _deleteFolder(smvFolder);
+                        }
+
                         return returnStringBuffer;
                     } else {
                         MessageHandler
