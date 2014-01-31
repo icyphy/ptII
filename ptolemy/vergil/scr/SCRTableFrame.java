@@ -133,12 +133,17 @@ public class SCRTableFrame extends PtolemyFrame {
 		addRowButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				Vector<String> vector = new Vector<String>();
-				vector.add("");
-				vector.add("");
-				vector.add("");
-				tableModel.addRow(vector);
+				tableModel.addRow();
 
+			}
+		});
+		
+		JButton deleteRowButton = new JButton("Delete Row");
+		deleteRowButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (table.getSelectedRow() != -1) {
+					tableModel.deleteRow(table.getSelectedRow());
+				}
 			}
 		});
 
@@ -174,7 +179,6 @@ public class SCRTableFrame extends PtolemyFrame {
 					_initializeStates();
 				}
 				if (arg0 >= 0 && _states.size() > arg0) {
-					System.out.println(arg0);
 					return _states.get(arg0);
 				} else {
 					return "";
@@ -261,6 +265,7 @@ public class SCRTableFrame extends PtolemyFrame {
 
 		JPanel buttons = new JPanel();
 		buttons.add(addRowButton);
+		buttons.add(deleteRowButton);
 		buttons.add(new JLabel("Initial State:"));
 		buttons.add(box);
 		buttons.add(saveButton);

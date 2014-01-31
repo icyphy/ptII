@@ -28,7 +28,9 @@
 package ptolemy.vergil.scr;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
@@ -56,11 +58,24 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 		_initializeTableContent();
 	}
 
-	public void addRow(Vector rowData) {
+	public void addRow() {
 		if (_tableContent == null) {
 			_tableContent = new ArrayList<String>();
 		}
-		_tableContent.addAll(rowData);
+		Vector<String> vector = new Vector<String>();
+		vector.add("");
+		vector.add("");
+		vector.add("");
+		_tableContent.addAll(vector);
+		_tableContentIsInvalid = false;
+		this.fireTableDataChanged();
+	}
+
+	public void deleteRow(int selectedRow) {
+		System.out.println(selectedRow);
+		_tableContent.remove(selectedRow * 3);
+		_tableContent.remove(selectedRow * 3);
+		_tableContent.remove(selectedRow * 3);
 		_tableContentIsInvalid = false;
 		this.fireTableDataChanged();
 	}
@@ -68,6 +83,21 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 	@Override
 	public int getColumnCount() {
 		return 3;
+	}
+
+	@Override
+	public String getColumnName(int column) {
+		switch (column) {
+		case 0:
+			return "Source Mode";
+		case 1:
+			return "Events";
+		case 2:
+			return "Destination Mode";
+		default:
+			return "";
+		}
+	
 	}
 
 	@Override
@@ -87,11 +117,6 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 		}
 	}
 
-	public void setValueAt(Object value, int row, int col) {
-		_tableContent.set(row * 3 + col, value);
-		fireTableCellUpdated(row, col);
-	}
-
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return true;
@@ -99,10 +124,14 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 
 	public void saveModel() throws IllegalActionException,
 			NameDuplicationException {
-		//_removeAllButSelfTransitions();
-		//_model.removeAllEntities();
+		Set<State> states = new HashSet<State>();
 		
 		for (int i = 0; i < _tableContent.size(); i = i + 3) {
+			if (_tableContent.get(i).equals("") || 
+					_tableContent.get(i + 1).equals("") || 
+					_tableContent.get(i + 2).equals("")) {
+				throw new IllegalActionException(_model, "Table cell cannot be empty.");
+			}
 			String sourceState = (String) _tableContent.get(i);
 			String transitionGuard = (String) _tableContent.get(i + 1);
 			String destinationState = (String) _tableContent.get(i + 2);
@@ -115,6 +144,8 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 			if (destination == null) {
 				destination = new State(_model, destinationState);
 			}
+			states.add(source);
+			states.add(destination);
 			
 			Transition transition = null;
 			for (Object object : source.outgoingPort.linkedRelationList()) {
@@ -131,21 +162,18 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 			
 			transition.guardExpression.setExpression(transitionGuard);
 		}
+		
+		// remove all states that are not in the table anymore.
+		for (Object entity : _model.entityList()) {
+			if (entity instanceof State && !states.contains(entity)) {
+				((State)entity).setContainer(null);
+			}
+		}
 	}
 
-	@Override
-	public String getColumnName(int column) {
-		switch (column) {
-		case 0:
-			return "Source Mode";
-		case 1:
-			return "Events";
-		case 2:
-			return "Destination Mode";
-		default:
-			return "";
-		}
-
+	public void setValueAt(Object value, int row, int col) {
+		_tableContent.set(row * 3 + col, value);
+		fireTableCellUpdated(row, col);
 	}
 
 	private void _initializeTableContent() {
