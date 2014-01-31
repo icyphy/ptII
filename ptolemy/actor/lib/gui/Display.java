@@ -289,7 +289,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
             else if (!_isSuppressBlankLines) {
                 // There is no input token on this channel, so we
                 // output a blank line.
-                _implementation.display("\n");
+                _implementation.display("");
             }
 
         }
