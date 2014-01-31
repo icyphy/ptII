@@ -64,6 +64,7 @@ JSRCS = \
 	AbsoluteValue.java \
 	Accumulator.java \
 	AddSubtract.java \
+	Bernoulli.java \
 	BooleanMultiplexor.java \
 	Commutator.java \
 	Const.java \
