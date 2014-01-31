@@ -140,17 +140,18 @@ public class UpdateAnnotations extends MoMLFilterSimple {
                 _currentlyProcessingLocation = false;
             }
         }
-        if (_currentlyProcessingAnnotation
-                && container != null
-                && !container.getFullName().equals(_currentAnnotationFullName)
-                && (_currentAnnotationFullName == null
-                        && (!_currentAnnotationFullName.startsWith(container
-                                        .getFullName())
-                                && !container.getFullName().startsWith(
-                                        _currentAnnotationFullName)))) {
-            // We found another class in a different container
-            // while handling an annotation.
-            _reset();
+        if (_currentlyProcessingAnnotation) {
+            if (container != null) {
+                if (!container.getFullName().equals(_currentAnnotationFullName)) {
+                    if (_currentAnnotationFullName == null 
+                            || (!_currentAnnotationFullName.startsWith(container.getFullName())
+                                    && !container.getFullName().startsWith(_currentAnnotationFullName))) {
+                        // We found another class in a different container
+                        // while handling an annotation.
+                        _reset();
+                    }
+                }
+            }
         }
 
         return attributeValue;
