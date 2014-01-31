@@ -29,7 +29,7 @@ package ptolemy.verification.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -44,6 +44,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.EditorPaneFactory;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyQuery;
@@ -114,14 +115,15 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         messageArea.setWrapStyleWord(true);
         caveatsPanel.add(messageArea);
 
-        JPanel left = new JPanel();
-        left.setSize(500, 400);
-        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+        JPanel upper = new JPanel();
+        upper.setLayout(new BoxLayout(upper, BoxLayout.Y_AXIS));
         caveatsPanel.setMaximumSize(new Dimension(500, 100));
-        left.add(caveatsPanel);
+        upper.add(caveatsPanel);
 
         // Panel for push buttons.
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1, 3));
+
         JButton goButton = new JButton("Convert");
         goButton.setToolTipText("Convert Model");
         buttonPanel.add(goButton, BorderLayout.CENTER);
@@ -156,33 +158,34 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         buttonPanel.add(moreInfoButton);
 
         buttonPanel.setMaximumSize(new Dimension(500, 50));
-        left.add(buttonPanel);
+        upper.add(buttonPanel);
 
-        // Query.
-        JPanel queryPanel = new JPanel();
+        Configurer configurer = new Configurer(modelConverter);
+        JPanel controlPanel = new JPanel();
+        controlPanel.add(configurer);
 
-        _query = new PtolemyQuery(modelConverter);
-        _query.setInsets(new Insets(2, 0, 2, 0));
-        _query.setTextWidth(25);
-        queryPanel.add(EditorPaneFactory.createEditorPane(modelConverter,
-                _query));
+        JScrollPane scrollPane = new JScrollPane(controlPanel);
 
-        JScrollPane scrollPane = new JScrollPane(queryPanel);
-
-        left.add(scrollPane, BorderLayout.CENTER);
+        upper.add(scrollPane, BorderLayout.CENTER);
 
         // Create a JTextAreaExec without Start and Cancel buttons.
-        final JTextAreaExec exec = new JTextAreaExec(
-                "Terminal (Verification Results)", false);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                left, exec);
+        // FIXME: We use a JTextArea because eventually we should pass
+        // this to the modelConverter.generateFile() method.
+
+        final JTextAreaExec exec = new JTextAreaExec("Terminal (Verification Results)",
+                false);
+
+        exec.setPreferredSize(new Dimension(500, 300));
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper,
+                exec);
         splitPane.setOneTouchExpandable(true);
 
         // Adjust the divider so that the control panel does not have a
         // horizontal scrollbar.
-        Dimension preferred = left.getPreferredSize();
-        splitPane.setDividerLocation(preferred.width + 20);
+        Dimension preferred = upper.getPreferredSize();
+        splitPane.setDividerLocation(preferred.height + 20);
 
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -199,6 +202,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                             .getChosenValue();
 
                     File file = modelConverter.target.asFile();
+                    exec.stdout("File to be generated is " + file);
 
                     exec.updateStatusBar("// Starting " + modelConverter
                             + "model converting process.");
@@ -259,6 +263,4 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         _query.notifyListeners();
         return super._close();
     }
-
-    private PtolemyQuery _query;
 }

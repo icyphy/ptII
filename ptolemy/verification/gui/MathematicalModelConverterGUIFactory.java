@@ -93,12 +93,12 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
         try {
             if (effigy == null) {
                 tableau = new Tableau(workspace());
-                tableau.setName("codeGeneratorGUI");
-                tableau.setTitle("codeGeneratorGUI");
+                tableau.setName("MathematicalModelConverterGUI");
+                tableau.setTitle("MathematicalModelConverterGUI");
             } else {
-                tableau = (Tableau) effigy.getEntity("codeGeneratorGUI");
+                tableau = (Tableau) effigy.getEntity("MathematicalModelConverterGUI");
                 if (tableau == null) {
-                    tableau = new Tableau(effigy, "codeGeneratorGUI");
+                    tableau = new Tableau(effigy, "MathematicalModelConverterGUI");
                 }
             }
         } catch (KernelException e) {
@@ -117,21 +117,11 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
         }
 
         // Show the result.
-        //frame.pack();
-        frame.setSize(800, 350);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
+        frame.pack();
+        //frame.setSize(800, 350);
+        //frame.setResizable(false);
+        //frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        //try {
-        //    int a = codeGenerator.generateCode();
-        //} catch (Exception ex) {
-        //    MessageHandler
-        //            .error("Error: CodeGeneratorGUIFactory.createEditor() clashes: \n"
-        //                    + ex.getMessage());
-        //}
-
     }
-
-    // FIXME: Check that the container is an instance of CodeGenerator.
 }
