@@ -90,18 +90,19 @@ public class HideAnnotationNames extends MoMLFilterSimple {
             }
         }
 
-        if (_currentlyProcessingAnnotation
-                && container != null
-                && !container.getFullName().equals(_currentAnnotationFullName)
-                && (_currentAnnotationFullName == null
-                        && (!_currentAnnotationFullName.startsWith(container
-                                        .getFullName())
-                                && !container.getFullName().startsWith(
-                                        _currentAnnotationFullName)))) {
-            // We found another class in a different container
-            // while handling an annotation.
-            _currentlyProcessingAnnotation = false;
-            _currentAnnotationFullName = null;
+        if (_currentlyProcessingAnnotation) {
+            if (container != null) {
+                if (!container.getFullName().equals(_currentAnnotationFullName)) {
+                    if (_currentAnnotationFullName == null 
+                            || (!_currentAnnotationFullName.startsWith(container.getFullName())
+                                    && !container.getFullName().startsWith(_currentAnnotationFullName))) {
+                        // We found another class in a different container
+                        // while handling an annotation.
+                        _currentlyProcessingAnnotation = false;
+                        _currentAnnotationFullName = null;
+                    }
+                }
+            }
         }
 
         return attributeValue;
