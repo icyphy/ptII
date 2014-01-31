@@ -420,7 +420,8 @@ public class NCApp2MoML {
         } finally {
             if (out != null) {
                 try {
-                    out.flush();
+                    // No need to flush, this will happen in the close().
+                    //out.flush();
                     out.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();

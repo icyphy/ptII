@@ -205,7 +205,9 @@ public class NC2MoML {
         } finally {
             if (out != null) {
                 try {
-                    out.flush();
+                    // No need to flush, this will happen in the close().
+                    // If we flush, then FindBugs says that the close() might not be called.
+                    //out.flush();
                     out.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
