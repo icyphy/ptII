@@ -214,20 +214,20 @@ public class PxgraphApplication extends PlotApplication {
                         arg.length()), "=x-+");
 
                 if (stoken.hasMoreTokens()) {
-                    width = Integer.valueOf(stoken.nextToken()).intValue();
+                    width = Integer.parseInt(stoken.nextToken());
                 }
 
                 if (stoken.hasMoreTokens()) {
-                    height = Integer.valueOf(stoken.nextToken()).intValue();
+                    height = Integer.parseInt(stoken.nextToken());
                 }
 
                 if (stoken.hasMoreTokens()) {
-                    xscreen = Integer.valueOf(stoken.nextToken()).intValue();
+                    xscreen = Integer.parseInt(stoken.nextToken());
                     screenlocationgiven = true;
                 }
 
                 if (stoken.hasMoreTokens()) {
-                    yscreen = Integer.valueOf(stoken.nextToken()).intValue();
+                    yscreen = Integer.parseInt(stoken.nextToken());
                     screenlocationgiven = true;
                 }
 
