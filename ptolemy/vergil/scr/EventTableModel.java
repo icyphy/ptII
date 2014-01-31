@@ -406,7 +406,7 @@ public class EventTableModel extends AbstractTableModel {
 					after = after.substring(index + 1).trim();
 				}
 			}
-			if (!inmodeExpression.equals("")) {
+			if (!inmodeExpression.toString().equals("")) {
 				// if inmodeExpression then value
 				inmodeExpression = inmodeExpression.append(" ? " + value);
 			}
