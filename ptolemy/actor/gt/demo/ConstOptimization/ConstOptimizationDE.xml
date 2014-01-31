@@ -26,7 +26,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 911, 634}, maximized=false}">
     </property>
@@ -127,30 +127,15 @@
                         </property>
                         <property name="matcherOnly" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={546, 329, 828, 542}, maximized=false}">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={412, 208, 855, 634}, maximized=false}">
                         </property>
-                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 478]">
                         </property>
                         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                         </property>
-                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
                         </property>
                         <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-                            <property name="Constraint1" class="ptolemy.actor.gt.Constraint" value="A.input.getWidth() == 2">
-                                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                                    </property>
-                                </property>
-                                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                                    <configure>
-          <svg>
-            <text style="font-size:14; font-family:SansSerif; fill:blue">-C-</text>
-          </svg>
-        </configure>
-                                </property>
-                                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 200.0]">
-                                </property>
-                            </property>
                             <property name="Constraint2" class="ptolemy.actor.gt.Constraint" value="&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.AddSubtract&quot;) &amp;&amp; A.input.getName().equals(&quot;plus&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.MultiplyDivide&quot;) &amp;&amp; A.input.getName().equals(&quot;multiply&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.Maximum&quot;)">
                                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -164,21 +149,6 @@
         </configure>
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 235.0]">
-                                </property>
-                            </property>
-                            <property name="Constraint3" class="ptolemy.actor.gt.Constraint" value="A.output.getWidth() == 1">
-                                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                                    </property>
-                                </property>
-                                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                                    <configure>
-          <svg>
-            <text style="font-size:14; font-family:SansSerif; fill:blue">-C-</text>
-          </svg>
-        </configure>
-                                </property>
-                                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
                                 </property>
                             </property>
                             <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute" value="BaseModel.xml">
