@@ -95,7 +95,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
             targetType = "Token";
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             codeStream.appendCodeBlock(targetType + "FireBlock", args);
         }
         codeStream.appendCodeBlock("sendBlock");

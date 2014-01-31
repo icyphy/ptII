@@ -87,7 +87,7 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
         //Generate trigger block; if a trigger is received, output
         // the stored value for every channel
         for (int channel = 0; channel < commonWidth; channel++) {
-            templateArgs.set(0, Integer.valueOf(channel).toString());
+            templateArgs.set(0, Integer.toString(channel));
             codeStream.appendCodeBlock("triggerBlock", templateArgs);
         }
 
@@ -95,7 +95,7 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
         // store the value and trigger the old value (if not already
         // for this firing)
         for (int channel = 0; channel < commonWidth; channel++) {
-            templateArgs.set(0, Integer.valueOf(channel).toString());
+            templateArgs.set(0, Integer.toString(channel));
             codeStream.appendCodeBlock("updateValueBlock", templateArgs);
         }
 

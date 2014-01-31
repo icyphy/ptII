@@ -86,7 +86,7 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
             //args.add(codeGenType(actor.input.getType()));
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i).toString());
+            args.set(0, Integer.toString(i));
             if (getCodeGenerator().isPrimitive(actor.input.getType())) {
                 inputType = getCodeGenerator().codeGenType(
                         actor.input.getType());
@@ -149,9 +149,9 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
 
         if (actor.input.getWidth() > 1) {
             ArrayList<String> args = new ArrayList<String>();
-            args.add(Integer.valueOf(0).toString());
+            args.add(Integer.toString(0));
             for (int i = 0; i < actor.input.getWidth(); i++) {
-                args.set(0, Integer.valueOf(i).toString());
+                args.set(0, Integer.toString(i));
                 codeStream.appendCodeBlock("TokenPreinitBlock", args);
             }
         }
