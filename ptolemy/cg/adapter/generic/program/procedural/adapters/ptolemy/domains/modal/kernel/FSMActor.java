@@ -40,6 +40,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -180,6 +181,9 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         // set to value 0.
 
         //codeBuffer.append("$actorSymbol(transitionFlag) = 1;" + _eol);
+
+        codeBuffer.append(getCodeGenerator().comment("ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/kernel/FSMActor.java"));
+
         codeBuffer.append(_eol + modalName + "__transitionFlag = 1;" + _eol);
 
         // States are numbered according to the order they are created,
@@ -581,7 +585,10 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         }
 
         codeBuffer.append(_eol + "}" + _eol); // end of switch statement
-        code.append(processCode(codeBuffer.toString())); // was initially enclosed with processCode()
+        //code.append(processCode(codeBuffer.toString())); // was initially enclosed with processCode()
+
+        code.append(TemplateParser.unescapeName(processCode(codeBuffer
+                                .toString()))); // was initially enclosed with processCode()
     }
 
     /** A class implementing this interface implements a method to

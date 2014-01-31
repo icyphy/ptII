@@ -189,7 +189,7 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/test-direct-in-
 # Fails to compile: Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
 
-# Has a problem with X_COMA_X.  Probably the TemplateParser.unescapeName() is not being run?  Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
+# Segfaults while getting a token from a port. Was: Has a problem with X_COMA_X.  Probably the TemplateParser.unescapeName() is not being run?  Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
 
 # Needs fixes for privateSeed.  Was: Needs cg version of actor.lib.Gaussian
