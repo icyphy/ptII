@@ -107,17 +107,63 @@ public class SCRTableFrame extends PtolemyFrame {
 
 	
 
-	private void _init() {
-		JTabbedPane pane = new JTabbedPane();
-
-		pane.addTab("Mode Transition Table", _getModeTransitionPanel());
-		pane.addTab("Event Table", _getEventTablePanel());
-		pane.addTab("Condition Table", _getConditionTablePanel());
-
-		getContentPane().add(pane, BorderLayout.CENTER);
-		this.setSize(new Dimension(700, 400));
+	private void _addParameterTable(Parameter parameter, JTabbedPane eventTablesPanel) {
+		final JPanel tabPanel1 = new JPanel(new BorderLayout());
+		final EventTableModel tableModel = new EventTableModel(parameter,
+				_model);
+		final JTable table = new JTable(tableModel);
+		table.setColumnSelectionAllowed(true);
+		_setCellRenderer(table);
+		table.setGridColor(Color.black);
+		JButton addColumn = new JButton("Add Column");
+		addColumn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tableModel.addColumn();
+				_setCellRenderer(table);
+			}
+		});
 		
-		super.show();
+		JButton deleteColumn = new JButton("Delete Column");
+		deleteColumn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tableModel.deleteColumn(table.getSelectedColumn());
+				_setCellRenderer(table);
+			}
+		});
+		
+		JButton saveButton = new JButton("Save");
+		saveButton.addActionListener(new ActionListener() {
+	
+			public void actionPerformed(ActionEvent e) {
+				try {
+					tableModel.saveModel();
+				} catch (IllegalActionException e1) {
+					MessageHandler.error(e1.getMessage(), e1);
+				}
+			}
+		});
+		
+		JButton checkDButton = new JButton("Check Disjointness");
+		checkDButton.addActionListener(new ActionListener() {
+	
+			public void actionPerformed(ActionEvent e) {
+				try {
+					tableModel.checkDisjointness();
+				} catch (IllegalActionException e1) {
+					MessageHandler.error(e1.getMessage(), e1);
+				}
+			}
+		});
+	
+		JPanel buttons = new JPanel();
+		buttons.add(addColumn);
+		buttons.add(deleteColumn);
+		buttons.add(checkDButton);
+		buttons.add(saveButton);
+	
+		tabPanel1.add(table, BorderLayout.CENTER);
+		tabPanel1.add(buttons, BorderLayout.SOUTH);
+		eventTablesPanel.addTab(parameter.getName(), tabPanel1);
 	}
 
 	private JComponent _getModeTransitionPanel() {
@@ -355,65 +401,6 @@ public class SCRTableFrame extends PtolemyFrame {
 		return eventTablePanel;
 	}
 
-	private void _addParameterTable(Parameter parameter, JTabbedPane eventTablesPanel) {
-		final JPanel tabPanel1 = new JPanel(new BorderLayout());
-		final EventTableModel tableModel = new EventTableModel(parameter,
-				_model);
-		final JTable table = new JTable(tableModel);
-		table.setColumnSelectionAllowed(true);
-		_setCellRenderer(table);
-		table.setGridColor(Color.black);
-		JButton addColumn = new JButton("Add Column");
-		addColumn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tableModel.addColumn();
-				_setCellRenderer(table);
-			}
-		});
-		
-		JButton deleteColumn = new JButton("Delete Column");
-		deleteColumn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tableModel.deleteColumn(table.getSelectedColumn());
-				_setCellRenderer(table);
-			}
-		});
-		
-		JButton saveButton = new JButton("Save");
-		saveButton.addActionListener(new ActionListener() {
-	
-			public void actionPerformed(ActionEvent e) {
-				try {
-					tableModel.saveModel();
-				} catch (IllegalActionException e1) {
-					MessageHandler.error(e1.getMessage(), e1);
-				}
-			}
-		});
-		
-		JButton checkDButton = new JButton("Check Disjointness");
-		checkDButton.addActionListener(new ActionListener() {
-	
-			public void actionPerformed(ActionEvent e) {
-				try {
-					tableModel.checkDisjointness();
-				} catch (IllegalActionException e1) {
-					MessageHandler.error(e1.getMessage(), e1);
-				}
-			}
-		});
-	
-		JPanel buttons = new JPanel();
-		buttons.add(addColumn);
-		buttons.add(deleteColumn);
-		buttons.add(saveButton);
-		buttons.add(checkDButton);
-	
-		tabPanel1.add(table, BorderLayout.CENTER);
-		tabPanel1.add(buttons, BorderLayout.SOUTH);
-		eventTablesPanel.addTab(parameter.getName(), tabPanel1);
-	}
-
 	private JComponent _getConditionTablePanel() {
 		JTabbedPane eventTablesPanel = new JTabbedPane();
 
@@ -486,6 +473,19 @@ public class SCRTableFrame extends PtolemyFrame {
 		}
 
 		return eventTablesPanel;
+	}
+
+	private void _init() {
+		JTabbedPane pane = new JTabbedPane();
+	
+		pane.addTab("Mode Transition Table", _getModeTransitionPanel());
+		pane.addTab("Event Table", _getEventTablePanel());
+		pane.addTab("Condition Table", _getConditionTablePanel());
+	
+		getContentPane().add(pane, BorderLayout.CENTER);
+		this.setSize(new Dimension(700, 400));
+		
+		super.show();
 	}
 
 	private void _setCellRenderer(JTable table) {
