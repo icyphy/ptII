@@ -486,16 +486,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // $PTII/bin/ptcg -language java ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport.xml
                     List sourcePortList = actorPort.sourcePortList();
                     for (int i = 0; i < sourcePortList.size(); i++) {
-                        if (actorPort.isOutsideConnected()) {
+                        // If a multiport input has one channel that isAutoAdaptered and one channel that is not autoAdaptered,
+                        // then skip generating the sendInside if the channel is autoAdaptered.  The test is:
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+                        if (actorPort.isOutsideConnected()
+                                && !isAutoAdaptered(((IOPort)sourcePortList.get(i)).getContainer())) {
                             code.append(_generatePortInstantiation(name, name
-                                    + "Source" + i, actorPort, i,
-                                    sourcePortList));
+                                            + "Source" + i, actorPort, i,
+                                            sourcePortList));
                         }
                     }
 
                     List sinkPortList = actorPort.sinkPortList();
                     for (int i = 0; i < sinkPortList.size(); i++) {
-                        if (actorPort.isOutsideConnected()) {
+                        // If a multiport input has one channel that isAutoAdaptered and one channel that is not autoAdaptered,
+                        // then skip generating the sendInside if the channel is autoAdaptered.  The test is:
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+                        if (actorPort.isOutsideConnected()
+                                && !isAutoAdaptered(((IOPort)sinkPortList.get(i)).getContainer())) {
                             code.append(_generatePortInstantiation(name, name
                                     + "Sink" + i, actorPort, i, sinkPortList));
                         }
@@ -1018,6 +1026,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     int sources = sourcePortList.size();
                     //code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort name " + name + " type: " + type + " numberOfSources: " + inputPort.numberOfSources() + " inputPort: " + inputPort + " width: " + inputPort.getWidth() + " numberOfSinks: " + inputPort.numberOfSinks()));
                     for (int i = 0; i < sources; i++) {
+                        // If a multiport input has one channel that isAutoAdaptered and one channel that is not autoAdaptered,
+                        // then skip generating the sendInside if the channel is autoAdaptered.  The test is:
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+                        if (isAutoAdaptered(((IOPort)sourcePortList.get(i)).getContainer())) {
+                            continue;
+                        }
                         code.append(_generateSendInside(name, name + "Source"
                                 + i, type, i));
 
@@ -1109,6 +1123,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     }
                     // FIXME: Shouldn't we use sinkPortList() and not numberOfSinks()?  See generatePreinitializeMethodBodyCode().
                     for (int i = 0; i < sinks; i++) {
+                        // If a multiport input has one channel that isAutoAdaptered and one channel that is not autoAdaptered,
+                        // then skip generating the sendInside if the channel is autoAdaptered.  The test is:
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+                        if (isAutoAdaptered(((IOPort)inputPort.sinkPortList().get(i)).getContainer())) {
+                            continue;
+                        }
+                        // FIXME: it seems out that we are calling send inside on a sink?
                         code.append(_generateSendInside(name,
                                 name + "Sink" + i, type, i));
                     }
