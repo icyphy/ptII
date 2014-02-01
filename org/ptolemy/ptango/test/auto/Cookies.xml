@@ -1,0 +1,1087 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Cookies" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 22, 1229, 655}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 538]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000013">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{521.3749999999987, 259.00000000000006}">
+    </property>
+    <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8060">
+        </property>
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 55.0]">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 45.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Settings:&#10;DE Director: stopWhenQueueIsEmpty false&#10;Model: enableBackwardTypeInference true&#10;ThreadedComposite: delay UNDEFINED for all">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8060">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 100.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="5.0">
+        </property>
+        <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="CookiesService" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 210.0]">
+        </property>
+        <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="done" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="ThreadedCompositeInside" class="ptolemy.actor.lib.hoc.MirrorComposite$MirrorCompositeContents">
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">DE director
+stopWhenQueueIsEmpty false</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 50.0]">
+                </property>
+            </property>
+            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 75.0}">
+                </property>
+            </property>
+            <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="stop" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                </property>
+            </port>
+            <port name="done" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 210.0]">
+                </property>
+            </port>
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+                <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 210.0}">
+                </property>
+                <port name="start" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="stop" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="done" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="output"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                        <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+                    </property>
+                    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                        </property>
+                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">See Jetty app lifecycle:
+http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html</text></svg></configure>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 130.0]">
+                        </property>
+                        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                        </property>
+                        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                        </property>
+                    </property>
+                    <port name="start" class="ptolemy.domains.modal.modal.RefinementPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.50000000000003, 242.0311584472656]">
+                        </property>
+                    </port>
+                    <port name="stop" class="ptolemy.domains.modal.modal.RefinementPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.50000000000003, 282.0311584472656]">
+                        </property>
+                    </port>
+                    <port name="done" class="ptolemy.domains.modal.modal.RefinementPort">
+                        <property name="input"/>
+                        <property name="output"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.5, 247.0311584472656]">
+                        </property>
+                    </port>
+                    <entity name="deployed" class="ptolemy.domains.modal.kernel.State">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.50000000000003, 252.0311584472656]">
+                        </property>
+                    </entity>
+                    <entity name="started" class="ptolemy.domains.modal.kernel.State">
+                        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="started">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.5, 252.0311584472656]">
+                        </property>
+                    </entity>
+                    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="start">
+                        </property>
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8629284297025847">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.09084559637114058">
+                        </property>
+                    </relation>
+                    <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="stop">
+                        </property>
+                        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="done = true">
+                        </property>
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7851030102031982">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.0539139734236773">
+                        </property>
+                    </relation>
+                    <link port="deployed.incomingPort" relation="relation2"/>
+                    <link port="deployed.outgoingPort" relation="relation"/>
+                    <link port="started.incomingPort" relation="relation"/>
+                    <link port="started.outgoingPort" relation="relation2"/>
+                </entity>
+                <entity name="started" class="ptolemy.domains.modal.modal.Refinement">
+                    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.81240844726562, 403.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If there is a cookie named &quot;name&quot;, then&#10;customize the page served, otherwise&#10;use a generic welcome page.">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.8124084472656, 498.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8078/cookies,&#10;set the cookie named &quot;name&quot; to the value &#10;given in the request's parameters&#10;">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 705.0]">
+                        </property>
+                    </property>
+                    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this case, the postParameters output contains a record token&#10;with only one field, &quot;name&quot;. We feed this record back directly to&#10;set a cookie named &quot;name&quot;.&#10;">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 765.0]">
+                        </property>
+                    </property>
+                    <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.81240844726562, 693.271728515625]">
+                        </property>
+                        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3">
+                        </property>
+                        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+                        </property>
+                        <property name="dashArray" class="ptolemy.data.expr.Parameter" value="{10}">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="1100.0">
+                        </property>
+                    </property>
+                    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /cookies">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.81240844726562, 658.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST /cookies">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.81240844726562, 708.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.81240844726562, 878.271728515625]">
+                        </property>
+                        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3">
+                        </property>
+                        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+                        </property>
+                        <property name="dashArray" class="ptolemy.data.expr.Parameter" value="{10}">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="1100.0">
+                        </property>
+                    </property>
+                    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST cookies/delete">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.81240844726562, 898.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8078/cookies/delete,&#10;send a RecordToken with the label &quot;name&quot; and the value empty string&#10;which notifies HttpActor to delete the cookie&#10;">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.8124084472656, 888.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the input port is set to&#10;to &quot;{name=string}&quot; to assist type inference.">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-84.81239318847656, -60.771728515625]">
+                            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression">
+                            </property>
+                            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/cookies&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).&#10;&#10;&#10;">
+                        </property>
+                        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/cookies#in_browser">
+                            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                            </property>
+                            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                                </property>
+                            </property>
+                            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+                            </property>
+                            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
+                            </property>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[255.81240844726562, 373.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, we return only a line of text, instead of a complete HTML page.&#10;The cookies web page uses an ajax call to /cookies/delete .  Ajax is&#10;used to insert new data into an existing web page. So, here, we only&#10;need the new message.&#10;&#10;Ajax is used so that the URL in the browser does not change.  &#10;We want to keep /cookies , not /cookies/delete , as the URL, &#10;so that our cookies will be saved relative to the /cookies URL.">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.8124084472656, 953.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In HttpActor, specify the name of the cookie &#10;to get in the requestedCookies parameter.&#10;Here, we look for a cookie called &quot;name&quot;.">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.8124084472656, 498.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the list of cookies in your browser, please try:&#10;Safari's Web Inspector Storage Navigator (in Developer Tools)&#10;Firebug for Firefox:  https://getfirebug.com/">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.8124084472656, 413.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+                        </property>
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Elizabeth Latronico, Roxana Gheorghiu, and Edward A. Lee">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.81240844726562, 1083.271728515625]">
+                        </property>
+                    </property>
+                    <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the input port is set to&#10;to &quot;{name=string}&quot; to assist type inference.">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 40.0]">
+                            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression2">
+                            </property>
+                            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+                            </property>
+                        </property>
+                    </property>
+                    <port name="start" class="ptolemy.domains.modal.modal.RefinementPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.50000000000003, 242.0311584472656]">
+                        </property>
+                    </port>
+                    <port name="stop" class="ptolemy.domains.modal.modal.RefinementPort">
+                        <property name="input"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.50000000000003, 282.0311584472656]">
+                        </property>
+                    </port>
+                    <port name="done" class="ptolemy.domains.modal.modal.RefinementPort">
+                        <property name="output"/>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.5, 247.0311584472656]">
+                        </property>
+                    </port>
+                    <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
+                        <property name="path" class="ptolemy.data.expr.StringParameter" value="/cookies/*">
+                        </property>
+                        <property name="requestedCookies" class="ptolemy.data.expr.Parameter" value="{&quot;name&quot;}">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.8124084472656, 603.271728515625]">
+                        </property>
+                        <port name="setCookies" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{name=string}">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+                        <property name="template" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies/pages/template.html">
+                            <display name="Template HTML file"/>
+                        </property>
+                        <property name="htmlTitle" class="ptolemy.data.expr.StringParameter" value="Cookies Demo">
+                            <display name="HTML page title"/>
+                        </property>
+                        <property name="saveToFile" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="Save the new HTML page to a separate file"/>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.8124084472656, 593.271728515625]">
+                        </property>
+                        <port name="welcomeMessage" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="HTMLPageAssembler2" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+                        <property name="template" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies/pages/template.html">
+                            <display name="Template HTML file"/>
+                        </property>
+                        <property name="htmlTitle" class="ptolemy.data.expr.StringParameter" value="Cookies Demo">
+                            <display name="HTML page title"/>
+                        </property>
+                        <property name="saveToFile" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="Save the new HTML page to a separate file"/>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.8124084472656, 838.271728515625]">
+                        </property>
+                        <port name="output" class="ptolemy.actor.TypedIOPort">
+                            <property name="output"/>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                            </property>
+                        </port>
+                        <port name="welcomeMessage" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                            </property>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="HttpActor2" class="org.ptolemy.ptango.lib.HttpActor">
+                        <property name="path" class="ptolemy.data.expr.StringParameter" value="/cookies/delete">
+                        </property>
+                        <property name="requestedCookies" class="ptolemy.data.expr.Parameter" value="{&quot;name&quot;}">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.8124084472656, 943.271728515625]">
+                        </property>
+                        <port name="getParameters" class="ptolemy.actor.TypedIOPort">
+                            <property name="output"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+                            </property>
+                        </port>
+                        <port name="getCookies" class="ptolemy.actor.TypedIOPort">
+                            <property name="output"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+                            </property>
+                        </port>
+                        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
+                            <property name="output"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+                            </property>
+                        </port>
+                        <port name="postCookies" class="ptolemy.actor.TypedIOPort">
+                            <property name="output"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="Const" class="ptolemy.actor.lib.Const">
+                        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Cookie named \&quot;name\&quot; successfully deleted&quot;&#10;">
+                        </property>
+                        <doc>Create a constant sequence.</doc>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.8124084472656, 1043.271728515625]">
+                        </property>
+                        <port name="output" class="ptolemy.actor.TypedIOPort">
+                            <property name="output"/>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                            </property>
+                        </port>
+                        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="multiport"/>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="Const2" class="ptolemy.actor.lib.Const">
+                        <property name="value" class="ptolemy.data.expr.Parameter" value="{name=&quot;&quot;}&#10;">
+                        </property>
+                        <doc>Create a constant sequence.</doc>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.8124084472656, 953.271728515625]">
+                        </property>
+                    </entity>
+                    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Name &quot; + post.name + &quot; successfully saved as a cookie&quot;">
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[574.8123931884766, 770.771728515625]">
+                        </property>
+                        <port name="post" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                            </property>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{name=string}">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+                        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(cookies.name == &quot;&quot;) ?&#10;  &quot;Welcome to the cookies demo!&quot;&#10;: &quot;Welcome back, &quot; + cookies.name + &quot;!&quot;">
+                            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                                </property>
+                                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                                </property>
+                            </property>
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.8124084472656, 593.271728515625]">
+                        </property>
+                        <port name="cookies" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{name=string}">
+                            </property>
+                            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.8124084472656, 488.271728515625]">
+                        </property>
+                        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.8124084472656, 668.271728515625]">
+                        </property>
+                        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.8124084472656, 838.271728515625]">
+                        </property>
+                        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.8124084472656, 1043.271728515625]">
+                        </property>
+                        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="MicrostepDelay5" class="ptolemy.actor.lib.MicrostepDelay">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.8124084472656, 998.271728515625]">
+                        </property>
+                        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </entity>
+                    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                        <vertex name="vertex1" value="[710.8124084472656, 998.271728515625]">
+                        </vertex>
+                        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                        </property>
+                    </relation>
+                    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+                        </property>
+                    </relation>
+                    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                        </property>
+                        <vertex name="vertex1" value="[390.8124084472656, 668.271728515625]">
+                        </vertex>
+                    </relation>
+                    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                        <vertex name="vertex1" value="[270.8124084472656, 488.271728515625]">
+                        </vertex>
+                    </relation>
+                    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                        <vertex name="vertex1" value="[255.81240844726562, 838.271728515625]">
+                        </vertex>
+                    </relation>
+                    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                        <vertex name="vertex1" value="[260.8124084472656, 1043.271728515625]">
+                        </vertex>
+                    </relation>
+                    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+                    </relation>
+                    <link port="HttpActor.response" relation="relation4"/>
+                    <link port="HttpActor.response" relation="relation5"/>
+                    <link port="HttpActor.getCookies" relation="relation7"/>
+                    <link port="HttpActor.postParameters" relation="relation3"/>
+                    <link port="HttpActor.setCookies" relation="relation11"/>
+                    <link port="HTMLPageAssembler.output" relation="relation10"/>
+                    <link port="HTMLPageAssembler.welcomeMessage" relation="relation8"/>
+                    <link port="HTMLPageAssembler2.output" relation="relation12"/>
+                    <link port="HTMLPageAssembler2.welcomeMessage" relation="relation2"/>
+                    <link port="HttpActor2.response" relation="relation9"/>
+                    <link port="HttpActor2.postRequestURI" relation="relation6"/>
+                    <link port="HttpActor2.setCookies" relation="relation14"/>
+                    <link port="Const.output" relation="relation13"/>
+                    <link port="Const.trigger" relation="relation"/>
+                    <link port="Const2.output" relation="relation"/>
+                    <link port="Const2.trigger" relation="relation6"/>
+                    <link port="Expression.output" relation="relation2"/>
+                    <link port="Expression.post" relation="relation3"/>
+                    <link port="Expression2.output" relation="relation8"/>
+                    <link port="Expression2.cookies" relation="relation7"/>
+                    <link port="MicrostepDelay.input" relation="relation10"/>
+                    <link port="MicrostepDelay.output" relation="relation4"/>
+                    <link port="MicrostepDelay2.input" relation="relation3"/>
+                    <link port="MicrostepDelay2.output" relation="relation11"/>
+                    <link port="MicrostepDelay3.input" relation="relation12"/>
+                    <link port="MicrostepDelay3.output" relation="relation5"/>
+                    <link port="MicrostepDelay4.input" relation="relation13"/>
+                    <link port="MicrostepDelay4.output" relation="relation9"/>
+                    <link port="MicrostepDelay5.input" relation="relation"/>
+                    <link port="MicrostepDelay5.output" relation="relation14"/>
+                </entity>
+                <relation name="startRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <relation name="stopRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <relation name="doneRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <link port="start" relation="startRelation"/>
+                <link port="stop" relation="stopRelation"/>
+                <link port="done" relation="doneRelation"/>
+                <link port="_Controller.start" relation="startRelation"/>
+                <link port="_Controller.stop" relation="stopRelation"/>
+                <link port="_Controller.done" relation="doneRelation"/>
+                <link port="started.start" relation="startRelation"/>
+                <link port="started.stop" relation="stopRelation"/>
+                <link port="started.done" relation="doneRelation"/>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="start" relation="relation"/>
+            <link port="stop" relation="relation2"/>
+            <link port="done" relation="relation3"/>
+            <link port="ModalModel.start" relation="relation"/>
+            <link port="ModalModel.stop" relation="relation2"/>
+            <link port="ModalModel.done" relation="relation3"/>
+        </entity>
+    </entity>
+    <entity name="CookiesClient" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 280.0]">
+        </property>
+        <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="done" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="ThreadedCompositeInside" class="ptolemy.actor.lib.hoc.MirrorComposite$MirrorCompositeContents">
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+                </property>
+            </property>
+            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">GET/cookies (returns generic welcome message)</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 85.0}">
+                </property>
+            </property>
+            <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">POST /cookies</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 200.0]">
+                </property>
+            </property>
+            <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">GET /cookies (note:  returns generic message since HttpActor only implements session cookies,
+              which are deleted once the browser is closed.  In a manual test with the browser
+	      left open, this would return a personalized message.)</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 295.0]">
+                </property>
+            </property>
+            <property name="annotation5" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">POST /cookies/delete</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 440.0]">
+                </property>
+            </property>
+            <property name="annotation6" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">GET/cookies (returns generic welcome message again)</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 535.0]">
+                </property>
+            </property>
+            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 65}">
+                </property>
+            </property>
+            <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 155.0]">
+                </property>
+            </port>
+            <port name="done" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 685.0]">
+                </property>
+            </port>
+            <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 255.0]">
+                </property>
+            </entity>
+            <entity name="Test" class="ptolemy.actor.lib.Test">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt;\r\n  &lt;head&gt;\r\n    &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;\r\n    \r\n    &lt;/script&gt;\r\n    &lt;script type=\&quot;text/javascript\&quot;&gt;\r\n    function deleteCookie() {\r\n\t\t\t\tjQuery.ajax({\r\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\r\n\t\t\t\t\t  type: \&quot;post\&quot;,\r\n\t\t\t\t\t  success: function(data) {\r\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\r\n\t\t\t\t\t\t  },\r\n\t\t\t\t\t  error: function(data) {\r\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\r\n\t\t\t\t\t  }\r\n\t\t\t\t\t});\r\n\t\t\t}\r\n    &lt;/script&gt;\r\n    &lt;title&gt;Cookies Demo&lt;/title&gt;\r\n    \r\n  &lt;/head&gt;\r\n  &lt;body&gt;\r\n    &lt;div&gt;\r\n      &lt;div id=\&quot;welcomeMessage\&quot;&gt;\r\n        Welcome to the cookies demo!\r\n      &lt;/div&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          You can:\r\n        &lt;/p&gt;\r\n      &lt;/div&gt;\r\n      &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;\r\n        &lt;p&gt;\r\n          Save a cookie with your name\r\n        &lt;/p&gt;\r\n        &lt;p&gt;\r\n          Please enter a name: &lt;input type=\&quot;text\&quot; id=\&quot;name\&quot; name=\&quot;name\&quot;&gt;&lt;br&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot;&gt;\r\n        &lt;/p&gt;\r\n      &lt;/form&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          Delete the cookie with your name\r\n        &lt;/p&gt;\r\n        &lt;input onclick=\&quot;deleteCookie()\&quot; type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot;&gt;\r\n        \r\n      &lt;/div&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          Refresh the page for a personalized greeting\r\n        &lt;/p&gt;\r\n      &lt;/div&gt;\r\n      &lt;form action=\&quot;/cookies\&quot; method=\&quot;get\&quot; name=\&quot;input\&quot;&gt;\r\n        &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot;&gt;\r\n      &lt;/form&gt;\r\n    &lt;/div&gt;\r\n  &lt;/body&gt;\r\n&lt;/html&gt;\r\n\r\n&quot;}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 165.0]">
+                </property>
+            </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="{name=&quot;Claudius Ptolemaeus&quot;}">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 255.0]">
+                </property>
+            </entity>
+            <entity name="Test2" class="ptolemy.actor.lib.Test">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt;\n  &lt;head&gt;\n    &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;\n    \n    &lt;/script&gt;\n    &lt;script type=\&quot;text/javascript\&quot;&gt;\n    function deleteCookie() {\n\t\t\t\tjQuery.ajax({\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\n\t\t\t\t\t  type: \&quot;post\&quot;,\n\t\t\t\t\t  success: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\n\t\t\t\t\t\t  },\n\t\t\t\t\t  error: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\n\t\t\t\t\t  }\n\t\t\t\t\t});\n\t\t\t}\n    &lt;/script&gt;\n    &lt;title&gt;Cookies Demo&lt;/title&gt;\n    \n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;div&gt;\n      &lt;div id=\&quot;welcomeMessage\&quot;&gt;\n        Name Claudius Ptolemaeus successfully saved as a cookie\n      &lt;/div&gt;\n      &lt;div&gt;\n        &lt;p&gt;\n          You can:\n        &lt;/p&gt;\n      &lt;/div&gt;\n      &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;\n        &lt;p&gt;\n          Save a cookie with your name\n        &lt;/p&gt;\n        &lt;p&gt;\n          Please enter a name: &lt;input type=\&quot;text\&quot; id=\&quot;name\&quot; name=\&quot;name\&quot;&gt;&lt;br&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot;&gt;\n        &lt;/p&gt;\n      &lt;/form&gt;\n      &lt;div&gt;\n        &lt;p&gt;\n          Delete the cookie with your name\n        &lt;/p&gt;\n        &lt;input onclick=\&quot;deleteCookie()\&quot; type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot;&gt;\n        \n      &lt;/div&gt;\n      &lt;div&gt;\n        &lt;p&gt;\n          Refresh the page for a personalized greeting\n        &lt;/p&gt;\n      &lt;/div&gt;\n      &lt;form action=\&quot;/cookies\&quot; method=\&quot;get\&quot; name=\&quot;input\&quot;&gt;\n        &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot;&gt;\n      &lt;/form&gt;\n    &lt;/div&gt;\n  &lt;/body&gt;\n&lt;/html&gt;\n\n&quot;}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 255.0]">
+                </property>
+            </entity>
+            <entity name="Test3" class="ptolemy.actor.lib.Test">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt;\r\n  &lt;head&gt;\r\n    &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;\r\n    \r\n    &lt;/script&gt;\r\n    &lt;script type=\&quot;text/javascript\&quot;&gt;\r\n    function deleteCookie() {\r\n\t\t\t\tjQuery.ajax({\r\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\r\n\t\t\t\t\t  type: \&quot;post\&quot;,\r\n\t\t\t\t\t  success: function(data) {\r\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\r\n\t\t\t\t\t\t  },\r\n\t\t\t\t\t  error: function(data) {\r\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\r\n\t\t\t\t\t  }\r\n\t\t\t\t\t});\r\n\t\t\t}\r\n    &lt;/script&gt;\r\n    &lt;title&gt;Cookies Demo&lt;/title&gt;\r\n    \r\n  &lt;/head&gt;\r\n  &lt;body&gt;\r\n    &lt;div&gt;\r\n      &lt;div id=\&quot;welcomeMessage\&quot;&gt;\r\n        Welcome to the cookies demo!\r\n      &lt;/div&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          You can:\r\n        &lt;/p&gt;\r\n      &lt;/div&gt;\r\n      &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;\r\n        &lt;p&gt;\r\n          Save a cookie with your name\r\n        &lt;/p&gt;\r\n        &lt;p&gt;\r\n          Please enter a name: &lt;input type=\&quot;text\&quot; id=\&quot;name\&quot; name=\&quot;name\&quot;&gt;&lt;br&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot;&gt;\r\n        &lt;/p&gt;\r\n      &lt;/form&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          Delete the cookie with your name\r\n        &lt;/p&gt;\r\n        &lt;input onclick=\&quot;deleteCookie()\&quot; type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot;&gt;\r\n        \r\n      &lt;/div&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          Refresh the page for a personalized greeting\r\n        &lt;/p&gt;\r\n      &lt;/div&gt;\r\n      &lt;form action=\&quot;/cookies\&quot; method=\&quot;get\&quot; name=\&quot;input\&quot;&gt;\r\n        &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot;&gt;\r\n      &lt;/form&gt;\r\n    &lt;/div&gt;\r\n  &lt;/body&gt;\r\n&lt;/html&gt;\r\n\r\n&quot;}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[348.330078125, 404.98046875]">
+                </property>
+            </entity>
+            <entity name="HttpPost2" class="org.ptolemy.ptango.lib.HttpPost">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies/delete">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 490.0]">
+                </property>
+            </entity>
+            <entity name="Const2" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="{name=&quot;&quot;}">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 490.0]">
+                </property>
+            </entity>
+            <entity name="Test4" class="ptolemy.actor.lib.Test">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Cookie named \&quot;name\&quot; successfully deleted\n&quot;}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 490.0]">
+                </property>
+            </entity>
+            <entity name="Test5" class="ptolemy.actor.lib.Test">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt;\r\n  &lt;head&gt;\r\n    &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;\r\n    \r\n    &lt;/script&gt;\r\n    &lt;script type=\&quot;text/javascript\&quot;&gt;\r\n    function deleteCookie() {\r\n\t\t\t\tjQuery.ajax({\r\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\r\n\t\t\t\t\t  type: \&quot;post\&quot;,\r\n\t\t\t\t\t  success: function(data) {\r\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\r\n\t\t\t\t\t\t  },\r\n\t\t\t\t\t  error: function(data) {\r\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\r\n\t\t\t\t\t  }\r\n\t\t\t\t\t});\r\n\t\t\t}\r\n    &lt;/script&gt;\r\n    &lt;title&gt;Cookies Demo&lt;/title&gt;\r\n    \r\n  &lt;/head&gt;\r\n  &lt;body&gt;\r\n    &lt;div&gt;\r\n      &lt;div id=\&quot;welcomeMessage\&quot;&gt;\r\n        Welcome to the cookies demo!\r\n      &lt;/div&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          You can:\r\n        &lt;/p&gt;\r\n      &lt;/div&gt;\r\n      &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;\r\n        &lt;p&gt;\r\n          Save a cookie with your name\r\n        &lt;/p&gt;\r\n        &lt;p&gt;\r\n          Please enter a name: &lt;input type=\&quot;text\&quot; id=\&quot;name\&quot; name=\&quot;name\&quot;&gt;&lt;br&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot;&gt;\r\n        &lt;/p&gt;\r\n      &lt;/form&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          Delete the cookie with your name\r\n        &lt;/p&gt;\r\n        &lt;input onclick=\&quot;deleteCookie()\&quot; type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot;&gt;\r\n        \r\n      &lt;/div&gt;\r\n      &lt;div&gt;\r\n        &lt;p&gt;\r\n          Refresh the page for a personalized greeting\r\n        &lt;/p&gt;\r\n      &lt;/div&gt;\r\n      &lt;form action=\&quot;/cookies\&quot; method=\&quot;get\&quot; name=\&quot;input\&quot;&gt;\r\n        &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot;&gt;\r\n      &lt;/form&gt;\r\n    &lt;/div&gt;\r\n  &lt;/body&gt;\r\n&lt;/html&gt;\r\n\r\n&quot;}">
+                </property>
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 605.0]">
+                </property>
+            </entity>
+            <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 155.0]">
+                </property>
+            </entity>
+            <entity name="HttpGet2" class="org.ptolemy.ptango.lib.HttpGet">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 400.0]">
+                </property>
+            </entity>
+            <entity name="HttpGet3" class="org.ptolemy.ptango.lib.HttpGet">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 605.0]">
+                </property>
+            </entity>
+            <entity name="Const3" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 685.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="[220.0, 195.0]">
+                </vertex>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, tail={id=&quot;Test.input&quot;,x=300.0,y=210.0}, points={} },{ head={id=&quot;FileReader.output&quot;,x=195.0,y=210.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=375.0,y=145.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, points={250.0,145.0} } }">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[440.0, 285.0]">
+                </vertex>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[285.0, 440.0]">
+                </vertex>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[405.0, 530.0]">
+                </vertex>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[210.0, 605.0]">
+                </vertex>
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="start" relation="relation7"/>
+            <link port="done" relation="relation8"/>
+            <link port="HttpPost.input" relation="relation2"/>
+            <link port="HttpPost.output" relation="relation3"/>
+            <link port="Test.input" relation="relation"/>
+            <link port="Const.output" relation="relation2"/>
+            <link port="Const.trigger" relation="relation"/>
+            <link port="Test2.input" relation="relation3"/>
+            <link port="Test3.input" relation="relation4"/>
+            <link port="HttpPost2.input" relation="relation5"/>
+            <link port="HttpPost2.output" relation="relation6"/>
+            <link port="Const2.output" relation="relation5"/>
+            <link port="Const2.trigger" relation="relation4"/>
+            <link port="Test4.input" relation="relation6"/>
+            <link port="Test5.input" relation="relation9"/>
+            <link port="HttpGet.output" relation="relation"/>
+            <link port="HttpGet.trigger" relation="relation7"/>
+            <link port="HttpGet2.output" relation="relation4"/>
+            <link port="HttpGet2.trigger" relation="relation3"/>
+            <link port="HttpGet3.output" relation="relation9"/>
+            <link port="HttpGet3.trigger" relation="relation6"/>
+            <link port="Const3.output" relation="relation8"/>
+            <link port="Const3.trigger" relation="relation9"/>
+        </entity>
+    </entity>
+    <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 280.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[235.0, 200.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="Stop.input" relation="relation2"/>
+    <link port="MicrostepDelay.input" relation="relation3"/>
+    <link port="MicrostepDelay.output" relation="relation2"/>
+    <link port="Discrete TimeDelay.input" relation="relation"/>
+    <link port="Discrete TimeDelay.output" relation="relation4"/>
+    <link port="CookiesService.start" relation="relation4"/>
+    <link port="CookiesService.stop" relation="relation6"/>
+    <link port="CookiesService.done" relation="relation3"/>
+    <link port="CookiesClient.start" relation="relation4"/>
+    <link port="CookiesClient.done" relation="relation11"/>
+    <link port="MicrostepDelay4.input" relation="relation11"/>
+    <link port="MicrostepDelay4.output" relation="relation6"/>
+</entity>
