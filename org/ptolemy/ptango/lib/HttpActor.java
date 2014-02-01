@@ -492,7 +492,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         _request = null;
         _response = null;
         _initializeModelTime = getDirector().getModelTime();
-        _initializeRealTime = System.currentTimeMillis();
+        // Subtract a tenth of a second.  As this actor is initialized
+        // after the director, the initial time here could be later than what 
+        // the director perceives as the initial real time.
+        // FIXME:  The director could offer e.g. a getInitialRealTime() function
+        // to avoid this workaround
+        _initializeRealTime = System.currentTimeMillis() - 100;
         _lastOutputTime = null;
     }
 
@@ -647,18 +652,22 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     // Figure out what time to request a firing for.
                     long elapsedRealTime = System.currentTimeMillis()
                             - _initializeRealTime;
+                    
                     // Assume model time is in seconds, not milliseconds.
-                    elapsedRealTime = elapsedRealTime / 1000;
                     Time timeOfRequest = _initializeModelTime
-                            .add(elapsedRealTime);
+                            .add(elapsedRealTime / 1000.0);
 
                     if (_debugging) {
                         _debug("**** Request firing at time " + timeOfRequest);
                     }
 
-                    // Note that fireAt() will modify the requested firing time if it is in the past.
+                    // Note that fireAt() will modify the requested firing time 
+                    // if it is in the past.
+                    // Note that past firing times might not be modified
+                    // if ThreadedComposite actors are used (since the request 
+                    // might be at a present time inside the ThreadedComposite, 
+                    // but a past time for the top-level model).  
                     getDirector().fireAt(HttpActor.this, timeOfRequest);
-
                 } catch (IllegalActionException e) {
                     _request = null;
                     _writeError(response, HttpServletResponse.SC_BAD_REQUEST,
