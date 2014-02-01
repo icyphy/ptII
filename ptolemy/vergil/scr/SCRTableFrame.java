@@ -139,6 +139,8 @@ public class SCRTableFrame extends PtolemyFrame {
 					tableModel.saveModel();
 				} catch (IllegalActionException e1) {
 					MessageHandler.error(e1.getMessage(), e1);
+				} catch (NameDuplicationException e1) {
+					MessageHandler.error(e1.getMessage(), e1);
 				}
 			}
 		});

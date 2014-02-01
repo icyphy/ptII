@@ -152,8 +152,9 @@ public class ConditionsTableModel extends AbstractTableModel {
 			// insert the last value as the dummy
 			expression = expression.append(" " + value);
 			for (int j = 0; j < getColumnCount() - 1; j++) {
-				expression = expression.append(expression + ")");
+				expression = expression.append(")");
 			}
+			// System.out.println("Save model - expression: " + expression);
 			try {
 				if (state.getRefinement() == null) {
 					((RefinementActor) state.getContainer()).addRefinement(
@@ -232,8 +233,6 @@ public class ConditionsTableModel extends AbstractTableModel {
 							expression = "";
 						}
 						_parseExpression(expression, rowIndex);
-						
-						//if (_port.c)
 					}
 				} catch (IllegalActionException e) {
 					// TODO Auto-generated catch block

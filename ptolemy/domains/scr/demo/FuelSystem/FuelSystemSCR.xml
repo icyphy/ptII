@@ -66,7 +66,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Tank1, Tank2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 495, 1041, 332}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 495, 1041, 332}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1041, 288]">
         </property>
@@ -302,15 +302,23 @@
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
                 </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
             </property>
             <port name="tank1Level" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
             </port>
             <port name="tank1Full" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                </property>
             </port>
             <port name="tank2to1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
             </port>
             <entity name="tank2to1_out" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0.0 : (false ? moveRate :  moveRate))">
@@ -322,6 +330,8 @@
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 175.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -353,15 +363,23 @@
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
                 </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
             </property>
             <port name="tank1Level" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
             </port>
             <port name="tank1Full" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                </property>
             </port>
             <port name="tank2to1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
             </port>
             <entity name="tank2to1_out" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0.0 : (true ? moveRate :  moveRate))">
@@ -373,6 +391,8 @@
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
