@@ -1,2 +1,2 @@
 $Id$
-See package.html
+See README.html
