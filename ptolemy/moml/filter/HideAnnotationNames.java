@@ -79,8 +79,9 @@ public class HideAnnotationNames extends MoMLFilterSimple {
                 // <property name="13:0:0:annotation1"
                 //          class="ptolemy.kernel.util.Attribute">
                 _currentlyProcessingAnnotation = true;
-                _currentAnnotationFullName = container.getFullName() + "."
-                        + attributeValue;
+                // Coverity says that container could be null.
+                _currentAnnotationFullName = (container == null ? "" : container.getFullName())
+                    + "." + attributeValue;
             } else if (_currentlyProcessingAnnotation
                     && attributeValue.equals("_hideName")) {
                 // We are processing an annotation and it already
