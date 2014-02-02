@@ -253,7 +253,9 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         }
 
         // If there is a postponed output, then produce it.
-        if (_postponed > 0 && _postponed == microstep) {
+        // Need to use <= rather than == here because a modal
+        // model may have been suspended when the microstep matched.
+        if (_postponed > 0 && _postponed <= microstep) {
             if (_debugging) {
                 _debug("-- Produce postponed output.");
             }
@@ -377,7 +379,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
             // there is not, and we can reset _postponed.
             ContinuousDirector dir = (ContinuousDirector) getDirector();
             int microstep = dir.getIndex();
-            if (microstep == _postponed) {
+            if (microstep >= _postponed) {
                 _postponed = 0;
             }
         }
