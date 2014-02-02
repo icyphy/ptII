@@ -1386,6 +1386,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                                 i++;
                             }
                             object.moveToIndex(i);
+                        } else {
+                            throw new InternalErrorException(tableau, null,
+                                    "Could not instantiate class \"" + clazz
+                                    + "\"");
                         }
 
                         String iconFile = optionalActorClass.replace('.', '/')
