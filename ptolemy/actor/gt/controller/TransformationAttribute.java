@@ -175,7 +175,8 @@ public class TransformationAttribute extends Attribute implements Configurable,
     public void configure(URL base, String source, String text)
             throws Exception {
         _configureSource = source;
-        if (!text.trim().equals("")) {
+        // Coverity says that MoMLParser could call configure with the text = null.
+        if (text != null && !text.trim().equals("")) {
             MoMLParser parser = new MoMLParser(workspace());
             _configurer.removeAllEntities();
             parser.setContext(_configurer);
