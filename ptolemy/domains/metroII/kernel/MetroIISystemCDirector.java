@@ -111,7 +111,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             throws IllegalActionException {
         if (attribute == modelFileName) {
             File modelFile = modelFileName.asFile();
-            if (modelFile.getName() != "" && !modelFile.exists()) {
+            if (!modelFile.getName().equals("") && !modelFile.exists()) {
                 throw new IllegalActionException(
                         "The modelFileName parameter \""
                         + modelFileName.getExpression()
