@@ -123,7 +123,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             StringToken configFileNameToken = (StringToken) configFileName
                     .getToken();
             File configFile = new File(configFileNameToken.stringValue());
-            if (!configFile.exists()) {
+            if (!configFile.getName().equals("") && !configFile.exists()) {
                 throw new IllegalActionException(
                         "The value of the configFileName parameter \""
                                 + configFileNameToken.stringValue()
