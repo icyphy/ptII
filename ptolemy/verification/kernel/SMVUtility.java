@@ -5355,7 +5355,9 @@ public class SMVUtility {
         if (refinementStateName.trim().equalsIgnoreCase("")) {
             frontAttachment.append(" )\n");
         } else {
-            if (guardSignalVariableInfo.size() == 0) {
+            // Coverity suggests that guardSignalVariableInfo might be null.
+            if (guardSignalVariableInfo == null
+                    || guardSignalVariableInfo.size() == 0) {
                 frontAttachment.append(" UpperState  )\n");
             } else {
                 frontAttachment.append(", UpperState )\n");
