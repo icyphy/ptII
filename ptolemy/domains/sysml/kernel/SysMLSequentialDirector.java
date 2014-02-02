@@ -713,7 +713,7 @@ public class SysMLSequentialDirector extends Director implements
      */
     protected boolean _iterateActorOnce(Actor actor)
             throws IllegalActionException {
-
+        // FIXME: See ProcessThread.iterateActor() for very similar code.
         FiringsRecordable firingsRecordable = null;
         if (actor instanceof FiringsRecordable) {
             firingsRecordable = (FiringsRecordable) actor;
@@ -743,8 +743,9 @@ public class SysMLSequentialDirector extends Director implements
                 firingsRecordable.recordFiring(FiringEvent.AFTER_POSTFIRE);
             }
         } else {
-            // Coverity suggests that firingsRecordable will not be null.
-            firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
+            if (firingsRecordable != null) {
+                firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
+            }
         }
         if (!result) {
             // Postfire returned false.

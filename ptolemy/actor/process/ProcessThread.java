@@ -317,6 +317,7 @@ public class ProcessThread extends PtolemyThread {
      */
     protected boolean _iterateActor() throws IllegalActionException {
         FiringsRecordable firingsRecordable = null;
+        // FIXME: See SysMLSequentialDIrector.iterateActorOnce() for very similar code.
         if (_actor instanceof FiringsRecordable) {
             firingsRecordable = (FiringsRecordable) _actor;
         }
@@ -345,8 +346,9 @@ public class ProcessThread extends PtolemyThread {
                 firingsRecordable.recordFiring(FiringEvent.AFTER_POSTFIRE);
             }
         } else {
-            // Dereference before null check.
-            firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
+            if (firingsRecordable != null) {
+                firingsRecordable.recordFiring(FiringEvent.AFTER_PREFIRE);
+            }
         }
         return result;
     }
