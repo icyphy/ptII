@@ -172,7 +172,7 @@ public class CorbaActorClient extends TypedAtomicActor {
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         _typesValid = false; // Set flag to invalidate cached type constraints
-        super.attributeChanged(attribute);
+        super.attributeTypeChanged(attribute);
     }
 
     /** Setup the link to the remote actor. This includes creating

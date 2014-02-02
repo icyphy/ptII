@@ -80,7 +80,7 @@ public class LimitedFiringSource extends NamedProgramCodeGeneratorAdapter {
      *  error in processing the specified code block(s).
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(super.generatePostfireCode());
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
         ptolemy.actor.lib.LimitedFiringSource actor = (ptolemy.actor.lib.LimitedFiringSource) getComponent();
 
