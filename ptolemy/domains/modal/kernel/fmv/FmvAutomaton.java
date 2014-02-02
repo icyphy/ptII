@@ -199,7 +199,7 @@ public class FmvAutomaton extends FSMActor {
                                 + "\" from \"_variableInfo\" returned null?");
             } else {
                 if (individual._minValue != null
-                        && individual._minValue != null) {
+                        && individual._maxValue != null) {
                     int lowerBound = Integer.parseInt(individual._minValue);
                     int upperBound = Integer.parseInt(individual._maxValue);
                     returnSmvFormat.append(" ls,");
