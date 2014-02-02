@@ -35,7 +35,13 @@ import java.util.Set;
 
 import javax.swing.table.AbstractTableModel;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.Expression;
+import ptolemy.actor.lib.SetVariable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -48,9 +54,12 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
+import ptolemy.domains.modal.modal.Refinement;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -145,9 +154,9 @@ public class EventTableModel extends AbstractTableModel {
 		return _columnCount;
 	}
 	
-	public void saveModel() throws IllegalActionException {
+	public void saveModel() throws IllegalActionException, NameDuplicationException {
 		for (int i = 0; i < getRowCount() - 1; i++) {
-			StringBuffer selfTransitionExpression = new StringBuffer();
+			StringBuffer insideModeExpression = new StringBuffer();
 			StringBuffer enterModeExpression = new StringBuffer();
 			String guard = "";
 			String value = "";
@@ -175,40 +184,82 @@ public class EventTableModel extends AbstractTableModel {
 				if (enterModeCondition.equals("")) {
 					enterModeCondition = "false";
 				}
-				selfTransitionExpression = selfTransitionExpression.append("(" + condition + " ? " + value + " : ");
+				insideModeExpression = insideModeExpression.append("(" + condition + " ? " + value + " : ");
 				enterModeExpression = enterModeExpression.append("(" + enterModeCondition + " ? " + value + " : ");
 			}
-			// insert the last value as the dummy
-			selfTransitionExpression = selfTransitionExpression.append(" " + value);
-			enterModeExpression = enterModeExpression.append(" " + value);
+			// if no condition was true leave value unchanged
+			insideModeExpression = insideModeExpression.append(" " + _parameter.getName());
+			enterModeExpression = enterModeExpression.append(" " + _parameter.getName());
 			// close brackets
 			for (int j = 0; j < getColumnCount() - 1; j++) {
-				selfTransitionExpression = selfTransitionExpression.append(")");
+				insideModeExpression = insideModeExpression.append(")");
 				enterModeExpression = enterModeExpression.append(")"); 
 			}
 			
-			Transition transition = SCRTableHelper.getSelfTransition(state, _parameter);
-			if (transition == null) {
-				try {
-					transition = new Transition(_model, ((CompositeEntity) _model).uniqueName(state.getName() + "_transition"));
-					state.outgoingPort.link(transition);
-					state.incomingPort.link(transition);
-				} catch (IllegalActionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NameDuplicationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			// self transitions can become problematic when several self transitions are enabled.
+//			Transition transition = SCRTableHelper.getSelfTransition(state, _parameter);
+//			if (transition == null) {
+//				try {
+//					transition = new Transition(_model, ((CompositeEntity) _model).uniqueName(state.getName() + "_transition"));
+//					state.outgoingPort.link(transition);
+//					state.incomingPort.link(transition);
+//				} catch (IllegalActionException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (NameDuplicationException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//			transition.setActions.setExpression(_parameter.getName() + " = " + insideModeExpression);
+//			transition.guardExpression.setExpression(guard);
+
+			if (state.getRefinement() == null) {
+				((RefinementActor) state.getContainer()).addRefinement(
+						state,
+						((CompositeEntity) _model).uniqueName(state
+								.getName() + "_refinement"), null,
+						Refinement.class.getName(), null);
 			}
-			transition.setActions.setExpression(_parameter.getName() + " = " + selfTransitionExpression);
-			transition.guardExpression.setExpression(guard);
+			CompositeEntity entity = (CompositeEntity) state
+					.getRefinement()[0];
+			if (entity.attributeList(Director.class).size() == 0) {
+				ContinuousDirector director = new ContinuousDirector(
+						entity, "Continuous Director");
+			}
+			Object setVariableActor = entity.getEntity("set_" + _parameter.getName());
+			if (setVariableActor == null) {
+				setVariableActor = new SetVariable(entity,
+						"set_" + _parameter.getName());
+			}
+			SetVariable setVariable = (SetVariable) setVariableActor;
+			setVariable.delayed.setExpression("false");
+			setVariable.variableName.setExpression(_parameter.getName());
+
+			Object expressionActorObject = entity.getEntity("set_" + _parameter.getName() + "_expression");
+			TypedIORelation relation = null;
+			if (expressionActorObject == null) {
+				expressionActorObject = new Expression(entity,
+						"set_" + _parameter.getName() + "_expression");
+				relation = new TypedIORelation(entity,
+						entity.uniqueName("relation"));
+
+			}
+			Expression expressionActor = (Expression) expressionActorObject;
+			expressionActor.expression.setExpression(insideModeExpression.toString());
 			
+			if (relation != null) {
+				expressionActor.output.link(relation);
+				setVariable.input.link(relation);
+			}
+			
+			
+			Transition transition = null;
 			boolean noSetActionSet = true;
 			// set inmodeExpression/enter mode expression
-			for (Object relation : state.incomingPort.linkedRelationList()) {
-				if (!state.outgoingPort.linkedRelationList().contains(relation)) {
-					transition = (Transition) relation;
+			for (Object intoModeTransition : state.incomingPort.linkedRelationList()) {
+				if (!state.outgoingPort.linkedRelationList().contains(intoModeTransition)) {
+					transition = (Transition) intoModeTransition;
 					String newExpression = _parameter.getName() + " = " + enterModeExpression;
 					String expression = transition.setActions.getExpression();
 					System.out.println("before: " + expression);
@@ -240,7 +291,7 @@ public class EventTableModel extends AbstractTableModel {
 				}
 			}
 			if (noSetActionSet) {
-				throw new IllegalActionException(_model, "Cannot add in mode expression because no transitions into mode " + state.getName());
+				// throw new IllegalActionException(_model, "Cannot add in mode expression because no transitions into mode " + state.getName());
 			}
 
 		}
@@ -259,7 +310,7 @@ public class EventTableModel extends AbstractTableModel {
 
 	/**
 	 * 
-	 * (condition1 ? value1 : (condition2 ? value2 : (... : dummyValue)))
+	 * (condition1 ? value1 : (condition2 ? value2 : (... : originalValue)))
 	 * 
 	 * 
 	 * @param expression
@@ -299,7 +350,7 @@ public class EventTableModel extends AbstractTableModel {
 				expression = expression.substring(expression.indexOf(":") + 1).trim();
 				// (...
 				
-				expression = expression.substring(expression.indexOf("(") + 1).trim();
+				// expression = expression.substring(expression.indexOf("(") + 1).trim();
 				// ...
 				
 				int valueIndex = _getContentIndex(getRowCount() - 1, i);
@@ -360,7 +411,7 @@ public class EventTableModel extends AbstractTableModel {
 						if (!expression.equals("")) {
 							if (state.outgoingPort.linkedRelationList().contains(transition)) {
 								// self transition
-								_parseExpression(expression, rowIndex, false);
+								
 							} else if (!parsedInmode) {
 								// incoming transition -- inmode
 								_parseExpression(expression, rowIndex, true); 
@@ -370,6 +421,27 @@ public class EventTableModel extends AbstractTableModel {
 					}
 				}
 				
+				try {
+					if (state.getRefinement() != null) {
+						CompositeEntity composite = (CompositeEntity) state
+								.getRefinement()[0];
+						Expression expressionActor = (Expression) composite
+								.getEntity("set_" + _parameter.getName() + "_expression");
+						String expression = null;
+						if (expressionActor != null) {
+							expression = expressionActor.expression
+									.getExpression();
+						} else {
+							expression = "";
+						}
+						_parseExpression(expression, rowIndex, false);
+						
+						//if (_port.c)
+					}
+				} catch (IllegalActionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
 			}
 		}
 	}
