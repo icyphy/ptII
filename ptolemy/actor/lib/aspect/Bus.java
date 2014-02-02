@@ -281,8 +281,7 @@ public class Bus extends AtomicCommunicationAspect {
         // only token on the queue, then request a firing at
         // the time that token should be delivered to the
         // delegated receiver.
-        if ((getDirector() instanceof FixedPointDirector)
-                && _receiversAndTokensToSendTo != null) {
+        if ((getDirector() instanceof FixedPointDirector)) {
             while (_tempReceiverQueue.size() > 0) {
                 Receiver receiver = (Receiver) _tempReceiverQueue.take();
                 Token token = _receiversAndTokensToSendTo.get(receiver);
