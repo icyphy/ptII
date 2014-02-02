@@ -145,16 +145,6 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
         return code.toString();
     }
 
-    /** Get the files needed by the code generated from this adapter class.
-     *  This base class returns an empty set.
-     *  @return A set of strings that are header files needed by the code
-     *  generated from this adapter class.
-     *  @exception IllegalActionException If something goes wrong.
-     */
-    public Set<String> getHeaderFiles() throws IllegalActionException {
-        return new HashSet<String>();
-    }
-
     /** Generate the constructor code for the specified director.
      * This is only used in the C Code generation.
      *

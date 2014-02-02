@@ -62,7 +62,7 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set<String> getSharedCode() throws IllegalActionException {
-        Set<String> sharedCode = new HashSet<String>();
+        Set<String> sharedCode = super.getSharedCode();
         CodeStream codestream = _templateParser.getCodeStream();
         codestream.clear();
         if (_needScaleMethods) {

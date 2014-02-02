@@ -191,6 +191,7 @@ public class SchedulingRelation extends Transition {
                 }
             }
         }
+        super.attributeChanged(attribute);
     }
 
     /** Clone the scheduling relation into the specified workspace. This calls

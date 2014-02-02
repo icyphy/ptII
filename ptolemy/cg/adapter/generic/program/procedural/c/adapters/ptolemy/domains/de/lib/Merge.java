@@ -91,7 +91,7 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
      *  error in processing the specified code block(s).
      */
     protected String _generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(super._generateFireCode());
         LinkedList args = new LinkedList();
 
         ptolemy.domains.de.lib.Merge actor = (ptolemy.domains.de.lib.Merge) getComponent();

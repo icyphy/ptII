@@ -165,7 +165,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-        //return processCode(super._generateFireCode());
+        String parentFireCode = super._generateFireCode();
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
@@ -179,7 +179,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         }
 
         codeStream.appendCodeBlock("fireBlockEnd");
-        return processCode(codeStream.toString());
+        return parentFireCode + processCode(codeStream.toString());
     }
 
     /**
