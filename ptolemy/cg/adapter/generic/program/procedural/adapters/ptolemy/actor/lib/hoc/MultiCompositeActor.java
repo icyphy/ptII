@@ -157,9 +157,10 @@ public class MultiCompositeActor extends TypedCompositeActor {
         if (port.isMultiport()) {
             if (!variablesAsArrays) {
                 code.append("[]");
-                if (bufferSize > 1) {
-                    code.append("[]");
-                }
+                // Coverity points out that buffersize is 1;
+//                 if (bufferSize > 1) {
+//                     code.append("[]");
+//                 }
             }
             code.append(" = new " + targetType(port.getType()));
             // Coverity points out that bufferSize is 1, so the if will never be new.
@@ -180,11 +181,12 @@ public class MultiCompositeActor extends TypedCompositeActor {
                     + "]");
         }
 
-        if (bufferSize > 1) {
-            code.append("[" + bufferSize + "]");
-        } else {
-            //code.append("0");
-        }
+        // Coverity points out the bufferSize is 1.
+//         if (bufferSize > 1) {
+//             code.append("[" + bufferSize + "]");
+//         } else {
+//             //code.append("0");
+//         }
         code.append(";" + _eol);
         if (variablesAsArrays) {
             if (code.toString().indexOf("=") != -1) {
