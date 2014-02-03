@@ -102,6 +102,9 @@ public class Expression extends LatticeOntologyAdapter {
      *  @see ptolemy.data.ontologies.OntologyAdapter#_getPropertyableAttributes()
      */
     protected List<Attribute> _getPropertyableAttributes() {
+        // Note that we don't call the superclass because the expression is
+        // the only propertyable attribute inside the expression actor.
+        // FIXME: is this true?  Coverity warns us.
         List<Attribute> result = new LinkedList<Attribute>();
 
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
