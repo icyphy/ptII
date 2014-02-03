@@ -71,6 +71,7 @@ public class DefaultActions {
      * If there is no current document, or the application does not have a
      * clipboard, do nothing.
      */
+    @SuppressWarnings("serial")
     public static Action copyAction(final Application app) {
         return new AbstractAction(COPY) {
             public void actionPerformed(ActionEvent e) {
@@ -87,6 +88,7 @@ public class DefaultActions {
     /** Create an action named "Close" that closes the current
      * document. If there is no current document, do nothing.
      */
+    @SuppressWarnings("serial")
     public static Action closeAction(final Application app) {
         return new AbstractAction(CLOSE) {
             public void actionPerformed(ActionEvent e) {
@@ -100,6 +102,7 @@ public class DefaultActions {
      * If there is no current document, or the application does not have a
      * clipboard, do nothing.
      */
+    @SuppressWarnings("serial")
     public static Action cutAction(final Application app) {
         return new AbstractAction(CUT) {
             public void actionPerformed(ActionEvent e) {
@@ -118,6 +121,7 @@ public class DefaultActions {
      * then exits Java.  As soon as one document is not successfully closed,
      * the action is cancelled.
      */
+    @SuppressWarnings("serial")
     public static Action exitAction(final Application app) {
         return new AbstractAction(EXIT) {
             public void actionPerformed(ActionEvent e) {
@@ -139,6 +143,7 @@ public class DefaultActions {
     /** Create an action named "New" that creates a new
      * document.
      */
+    @SuppressWarnings("serial")
     public static Action newAction(final Application app) {
         return new AbstractAction(NEW) {
             public void actionPerformed(ActionEvent e) {
@@ -155,6 +160,7 @@ public class DefaultActions {
     /** Create an action named "Open" that opens a new
      * document.
      */
+    @SuppressWarnings("serial")
     public static Action openAction(final Application app) {
         return new AbstractAction(OPEN) {
             public void actionPerformed(ActionEvent e) {
@@ -177,6 +183,7 @@ public class DefaultActions {
      * Pageable interface.  If there is no current document, or the
      * Document is not printable/pageable do nothing.
      */
+    @SuppressWarnings("serial")
     public static Action printAction(final Application app) {
         return new AbstractAction(PRINT) {
             public void actionPerformed(ActionEvent e) {
@@ -216,6 +223,7 @@ public class DefaultActions {
      * If there is no current document, or the application does not have a
      * clipboard, do nothing.
      */
+    @SuppressWarnings("serial")
     public static Action pasteAction(final Application app) {
         return new AbstractAction(PASTE) {
             public void actionPerformed(ActionEvent e) {
@@ -240,6 +248,7 @@ public class DefaultActions {
     /** Create an action named "Save" that saves the current
      * document. If there is no current document, do nothing.
      */
+    @SuppressWarnings("serial")
     public static Action saveAction(final Application app) {
         return new AbstractAction(SAVE) {
             public void actionPerformed(ActionEvent e) {
@@ -252,6 +261,7 @@ public class DefaultActions {
      * document to a different location. If there is no current
      * document, do nothing.
      */
+    @SuppressWarnings("serial")
     public static Action saveAsAction(final Application app) {
         return new AbstractAction(SAVE_AS) {
             public void actionPerformed(ActionEvent e) {

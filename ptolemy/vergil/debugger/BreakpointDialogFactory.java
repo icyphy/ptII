@@ -91,6 +91,7 @@ public class BreakpointDialogFactory implements MenuItemFactory {
             return null;
         }
 
+        @SuppressWarnings("serial")
         Action action = new AbstractAction(name) {
             public void actionPerformed(ActionEvent e) {
                 try {

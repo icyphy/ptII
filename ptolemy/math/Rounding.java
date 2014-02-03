@@ -172,7 +172,7 @@ import java.util.Map;
  @Pt.ProposedRating Red (Ed.Willink)
  @Pt.AcceptedRating Red
  */
-public abstract class Rounding implements Cloneable, Serializable {
+public abstract class Rounding implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

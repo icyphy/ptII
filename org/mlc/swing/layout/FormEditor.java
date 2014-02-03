@@ -577,7 +577,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class ComponentSelectionListModel extends
             javax.swing.AbstractListModel {
         //    private String selectedName = null;
@@ -950,7 +949,6 @@ public class FormEditor extends JPanel {
         return newComponents.contains(component);
     }
 
-    @SuppressWarnings("serial")
     private class NewComponentDialog0 extends JDialog {
         JTextField nameField = new JTextField();
 

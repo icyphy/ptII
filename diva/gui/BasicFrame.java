@@ -76,6 +76,7 @@ public class BasicFrame extends ApplicationContext {
         menuFile.setMnemonic('F');
 
         // NOT a default action.
+        @SuppressWarnings("serial")
         Action action = new AbstractAction("Exit") {
             public void actionPerformed(ActionEvent e) {
                 BasicFrame.exit(0);
@@ -116,6 +117,7 @@ public class BasicFrame extends ApplicationContext {
         menuFile.setMnemonic('F');
 
         // NOT a default action.
+        @SuppressWarnings("serial")
         Action action = new AbstractAction("Exit") {
             public void actionPerformed(ActionEvent e) {
                 BasicFrame.exit(0);

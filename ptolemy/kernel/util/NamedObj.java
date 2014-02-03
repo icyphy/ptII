@@ -136,8 +136,10 @@ import ptolemy.util.StringUtilities;
  @see Workspace
  */
 public class NamedObj implements Changeable, Cloneable, Debuggable,
-        DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable,
-        Serializable {
+        DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
+    // This class used to implement Serializable, but the implementation was never
+    // complete and thus cause many warnings.
+	
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 

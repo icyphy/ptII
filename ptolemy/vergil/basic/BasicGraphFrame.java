@@ -2966,6 +2966,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Initialize the layout gui. */
+    @SuppressWarnings("serial")
     protected void _initLayoutGuiAction() {
         // Try to create an advanced layout action.
         final IGuiAction layoutGuiAction = _createLayoutAction();
@@ -3533,6 +3534,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          * documentation for the given object
          */
         public JMenuItem create(final JContextMenu menu, final NamedObj object) {
+            @SuppressWarnings("serial")
             Action action = new GetDocumentationAction() {
                 public void actionPerformed(ActionEvent e) {
                     Configuration configuration = getConfiguration();
@@ -4235,6 +4237,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          * given object as an editable model.
          */
         public JMenuItem create(final JContextMenu menu, final NamedObj object) {
+            @SuppressWarnings("serial")
             Action action = new AbstractAction("Open for Editing") {
                 public void actionPerformed(ActionEvent e) {
                     try {

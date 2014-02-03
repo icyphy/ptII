@@ -82,6 +82,7 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
      * @param element The element to visualize.
      * @exception IllegalActionException if there is a problem parsing attribute's style.
      */
+    @SuppressWarnings("serial")
     public AttributeStyleWidget(Scene scene, PositionableElement element)
             throws IllegalActionException {
         super(scene, element);
