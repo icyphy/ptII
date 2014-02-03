@@ -111,7 +111,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             throws IllegalActionException {
         if (attribute == modelFileName) {
             File modelFile = modelFileName.asFile();
-            if (!modelFile.getName().equals("") && !modelFile.exists()) {
+            // modelFile could be null during cloning.
+            if (modelFile != null && !modelFile.getName().equals("") && !modelFile.exists()) {
                 throw new IllegalActionException(
                         "The modelFileName parameter \""
                         + modelFileName.getExpression()
@@ -123,7 +124,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
             StringToken configFileNameToken = (StringToken) configFileName
                     .getToken();
             File configFile = new File(configFileNameToken.stringValue());
-            if (!configFile.getName().equals("") && !configFile.exists()) {
+            // configFile could be null during cloning.
+            if (configFile != null && !configFile.getName().equals("") && !configFile.exists()) {
                 throw new IllegalActionException(
                         "The value of the configFileName parameter \""
                                 + configFileNameToken.stringValue()
