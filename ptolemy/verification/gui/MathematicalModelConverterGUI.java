@@ -256,9 +256,4 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
             }
         });
     }
-
-    protected boolean _close() {
-        _query.notifyListeners();
-        return super._close();
-    }
 }
