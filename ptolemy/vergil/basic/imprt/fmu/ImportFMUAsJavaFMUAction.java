@@ -33,8 +33,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.AbstractAction;
 
 import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.domains.fmi.lib.FMU;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.domains.fmi.lib.FMU;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;

@@ -40,7 +40,6 @@ import java.text.NumberFormat;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.csp.kernel.CSPDirector;

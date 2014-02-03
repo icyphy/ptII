@@ -45,9 +45,7 @@ import javax.swing.JTextArea;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
-import ptolemy.actor.gui.EditorPaneFactory;
 import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.IntToken;
 import ptolemy.gui.JTextAreaExec;

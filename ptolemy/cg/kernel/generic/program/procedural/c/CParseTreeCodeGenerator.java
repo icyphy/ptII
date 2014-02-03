@@ -27,61 +27,37 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.c;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
-import ptolemy.cg.kernel.generic.program.procedural.ProceduralParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BitwiseOperationToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.OrderedRecordToken;
-import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
-import ptolemy.data.expr.ASTPtBitwiseNode;
-import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
 import ptolemy.data.expr.ASTPtFunctionalIfNode;
 import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtLogicalNode;
 import ptolemy.data.expr.ASTPtMatrixConstructNode;
-import ptolemy.data.expr.ASTPtMethodCallNode;
-import ptolemy.data.expr.ASTPtOrderedRecordConstructNode;
-import ptolemy.data.expr.ASTPtPowerNode;
 import ptolemy.data.expr.ASTPtProductNode;
-import ptolemy.data.expr.ASTPtRecordConstructNode;
-import ptolemy.data.expr.ASTPtRelationalNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ASTPtShiftNode;
-import ptolemy.data.expr.ASTPtSumNode;
-import ptolemy.data.expr.ASTPtUnaryNode;
-import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ExpressionFunction;
 import ptolemy.data.expr.ParseTreeSpecializer;
 import ptolemy.data.expr.ParseTreeTypeInference;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
-import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.util.StringUtilities;
 
 ////ParseTreeEvaluator
 

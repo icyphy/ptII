@@ -33,7 +33,6 @@ import java.util.Locale;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralTemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
 

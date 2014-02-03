@@ -29,6 +29,7 @@ package ptolemy.domains.metroII.kernel.test.junit;
 
 import java.util.LinkedList;
 
+import junit.framework.TestCase;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.test.TestActor;
 import ptolemy.domains.metroII.kernel.BlockingFire;
@@ -37,7 +38,6 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import junit.framework.TestCase;
 
 ///////////////////////////////////////////////////////////////////
 //// BlockingFireTest

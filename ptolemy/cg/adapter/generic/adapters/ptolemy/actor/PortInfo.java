@@ -28,40 +28,14 @@
 package ptolemy.cg.adapter.generic.adapters.ptolemy.actor;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.actor.util.Time;
-import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.TemplateParser;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 

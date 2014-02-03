@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;

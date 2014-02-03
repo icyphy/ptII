@@ -34,7 +34,6 @@ import java.util.Set;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
-import ptolemy.cg.kernel.generic.program.procedural.java.JavaParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////

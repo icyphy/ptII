@@ -27,35 +27,14 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.TemplateParser;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.Variable;
-import ptolemy.domains.modal.kernel.AbstractActionsAttribute;
 import ptolemy.domains.modal.kernel.State;
-import ptolemy.domains.modal.kernel.Transition;
-import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMActor

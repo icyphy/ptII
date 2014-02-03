@@ -32,8 +32,6 @@ package ptolemy.kernel.util;
 
 import java.util.List;
 
-import ptolemy.data.expr.Variable;
-
 //////////////////////////////////////////////////////////////////////////
 //// ScopeExtender
 

@@ -27,32 +27,22 @@
  */
 package ptolemy.cg.adapter.generic.adapters.ptolemy.actor;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ptides.kernel.PtidesPlatform;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// PortDirector

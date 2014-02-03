@@ -35,7 +35,6 @@ import ptolemy.data.AbsentToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sr.kernel.SRDirector;
-//import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

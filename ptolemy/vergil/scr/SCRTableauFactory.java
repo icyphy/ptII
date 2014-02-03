@@ -33,7 +33,6 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
-import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.domains.scr.SCRModel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

@@ -26,17 +26,12 @@
  */
 package ptolemy.domains.modal.modal;
 
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.InstanceOpener;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.modal.kernel.ContainmentExtender;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.RefinementActor;
@@ -46,12 +41,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DropTargetHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;

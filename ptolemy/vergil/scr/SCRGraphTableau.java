@@ -29,11 +29,8 @@ package ptolemy.vergil.scr;
 
 import java.awt.Color;
 
-import javax.swing.JTabbedPane;
-
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.data.BooleanToken;
@@ -45,8 +42,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.modal.FSMGraphFrame;
-import ptolemy.vergil.modal.FSMGraphTableau;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMGraphTableau

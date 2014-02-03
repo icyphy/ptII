@@ -30,23 +30,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeConstant;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
-import ptolemy.kernel.util.IllegalActionException; 
+import ptolemy.kernel.util.IllegalActionException;
 
 
 /**

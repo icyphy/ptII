@@ -28,19 +28,11 @@
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.kernel;
 
 import java.util.Iterator;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.SuperdenseTimeDirector;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 ////FSMDirector

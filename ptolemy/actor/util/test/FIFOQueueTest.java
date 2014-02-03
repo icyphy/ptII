@@ -28,7 +28,6 @@
 package ptolemy.actor.util.test;
 
 import ptolemy.actor.util.FIFOQueue;
-import ptolemy.actor.util.CalendarQueue;
 
 ///////////////////////////////////////////////////////////////////
 //// FIFOQueue

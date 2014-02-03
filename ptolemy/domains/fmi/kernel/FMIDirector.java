@@ -28,12 +28,11 @@
 package ptolemy.domains.fmi.kernel;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.Initializable;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Initializable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 
 ///////////////////////////////////////////////////////////////////
 //// FMIDirector
