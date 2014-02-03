@@ -28,7 +28,11 @@ if [ ! -d tmp.cvs/$cvsrepo ]; then
     mkdir tmp.cvs
   fi    
   cd tmp.cvs
-  cvs -d :ext:source.eecs.berkeley.edu:/home/$cvsrepohome co $cvsrepo
+  if [ "$cvsrepohome" == "cvs_eal" ]; then
+      cvs -d $PTII/adm/cvs2svn/cvs_eal_src co $cvsrepo
+  else
+      cvs -d :ext:source.eecs.berkeley.edu:/home/$cvsrepohome co $cvsrepo
+  fi
   cd ..
 fi
 
@@ -72,10 +76,16 @@ if [ ! -d $cvsrepohome/$cvsrepo ]; then
       echo "$0: cvsrepohome = $cvsrepohome, so we are using $cvsdir"
   fi
 
+  if [ $cvsrepohome == "cvs_eal" ]; then
+      echo "Creating $cvsrepohome/$cvsrepo from cvs_eal_src"
+      (cd cvs_eal_src; gtar zcf - --exclude=commitlogs CVSROOT $cvsrepo) > $cvsrepohome/$cvsrepo.tar.gz
+      (cd $cvsrepohome/$cvsrepo; mkdir $cvsrepohome; cd $cvsrepohome; tar -zxf ../../$cvsrepo.tar.gz)
+  else
+      echo "Creating $cvsrepohome/$cvsrepo from source.eecs."
+      ssh source "cd $cvsdir; gtar zcf - --exclude=commitlogs $cvsrepohome/CVSROOT $cvsrepohome/$cvsrepo" > $cvsrepohome/$cvsrepo.tar.gz
 
-  ssh source "cd $cvsdir; gtar zcf - --exclude=commitlogs $cvsrepohome/CVSROOT $cvsrepohome/$cvsrepo" > $cvsrepohome/$cvsrepo.tar.gz
-
-  (cd $cvsrepohome/$cvsrepo; tar -zxf ../$cvsrepo.tar.gz)
+      (cd $cvsrepohome/$cvsrepo; tar -zxf ../$cvsrepo.tar.gz)
+  fi
 fi
 
 if [ ! -d repos ]; then

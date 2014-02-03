@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#rm -rf repos cvs_eal tmp.svn
+
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal cpsproposal
+# $PTII/adm/cvs2svn/cvsTosvn cvs_eal dgc3 - mostly empty with one dot file : -rwxr-xr-x 1 cxh gopher 4189184 Jul 12  2006 .new.DARPA Grand Challenge Summary.ppt
+#ee120: four subdirectories
+
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal eal
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal ee225a
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal eecs20
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal eecs20swing
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal lectures_2004_290n
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal lectures_2011_219D
+#meetings - small, skipit
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal metaII2010
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal moc
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal onr09ptides
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal ptIIsolutions
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal public_html
+# semantics - empty
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal solutions
+#$PTII/adm/cvs2svn/cvsTosvn cvs_eal test
+
+
+# To generate a script to create update the repos on repo.eecs
+# egrep '^\$PTII' allealcvs | awk '{print "$PTII/adm/cvs2svn/syncit ealprivi " $NF}' > /tmp/doit
+
+# To generate a script that will check out the repos on moog.
+# egrep '^\$PTII' allealcvs | awk '{print "/home/www/bin/vc-svn co --username vc@e3s-center.org --config-dir /home/vc/.subversion-e3s co https://repo.eecs.berkeley.edu/svn/projects/e3s/" $NF "/trunk/" $NF}'

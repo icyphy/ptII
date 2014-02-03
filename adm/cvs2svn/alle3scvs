@@ -22,7 +22,7 @@ $PTII/adm/cvs2svn/cvsTosvn cvs_e3scenter systems
 
 
 # To generate a script to create update the repos on repo.eecs
-# egrep '^#\$PTII' alle3scvs | awk '{print "$PTII/adm/cvs2svn/syncit cvs_e3s " $NF}' > /tmp/doit
+# egrep '^\$PTII' alle3scvs | awk '{print "$PTII/adm/cvs2svn/syncit e3s " $NF}' > /tmp/doit
 
 # To generate a script that will check out the repos on moog.
-# egrep '^#\$PTII' alle3scvs | awk '{print "svn co https://repo.eecs.berkeley.edu/svn/projects/e3s/" $NF "/trunk/" $NF}'
+# egrep '^\$PTII' alle3scvs | awk '{print "/home/www/bin/vc-svn co --username vc@e3s-center.org --config-dir /home/vc/.subversion-e3s co https://repo.eecs.berkeley.edu/svn/projects/e3s/" $NF "/trunk/" $NF}'
