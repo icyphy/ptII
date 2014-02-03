@@ -258,9 +258,11 @@ public class SMVUtility {
                         } else {
                             // Outside scope; use 1 to represent the signal
                             if (i == signalInfo.size() - 1) {
-                                mainModuleDescription.append(" 1");
+                                // nusmv 2.5.4 requires "TRUE" instead of "1" here.
+                                mainModuleDescription.append(" TRUE");
                             } else {
-                                mainModuleDescription.append(" 1,");
+                                // nusmv 2.5.4 requires "TRUE" instead of "1" here.
+                                mainModuleDescription.append(" TRUE,");
                             }
                         }
                     }
@@ -5258,7 +5260,8 @@ public class SMVUtility {
                 }
             }
         }
-        returnSmvFormat.append("\t\t\t\t1             : state;\n");
+        // nusmv 2.5.4 requires "TRUE" instead of "1" here.
+        returnSmvFormat.append("\t\t\t\tTRUE             : state;\n");
         returnSmvFormat.append("\t\t\tesac;\n\n");
 
         // Find out initial values for those variables.
@@ -5302,7 +5305,8 @@ public class SMVUtility {
 
                     }
                 }
-                returnSmvFormat.append("\t\t\t\t1             : " + valName
+                // nusmv 2.5.4 requires "TRUE" instead of "1" here.
+                returnSmvFormat.append("\t\t\t\tTRUE             : " + valName
                         + ";\n");
 
                 returnSmvFormat.append("\t\t\tesac;\n\n");
