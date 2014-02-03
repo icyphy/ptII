@@ -884,9 +884,6 @@ public class Simulator extends SDFTransformer {
     /** Server used for data exchange. */
     protected Server server;
 
-    /** Process that runs the simulation. */
-    protected Process simProJav;
-
     /** Working directory of the subprocess. */
     protected String worDir;
 
