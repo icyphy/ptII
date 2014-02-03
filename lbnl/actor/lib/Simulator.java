@@ -557,7 +557,7 @@ public class Simulator extends SDFTransformer {
         // Instantiate server for IPC
         try {
             // time out in milliseconds
-            final int timOutMilSec = Integer.valueOf(socketTimeout
+            final int timOutMilSec = Integer.parseInt(socketTimeout
                     .getExpression());
             if (timOutMilSec <= 0) {
                 final String em = "Parameter for socket time out must be positive."
