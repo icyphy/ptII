@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/scr/demo
 
-DIRS = 		FuelSystem HelloWorldDemo
+DIRS = 		FuelSystem HelloWorldDemo TrafficLight
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -45,7 +45,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	FuelSystem\FuelSystem.jar
+	FuelSystem\FuelSystem.jar \
+	HelloWorldDemo\HelloWorldDemo.jar \
+	TrafficLight\TrafficLight.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

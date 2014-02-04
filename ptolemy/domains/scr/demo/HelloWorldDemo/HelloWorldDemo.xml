@@ -63,7 +63,7 @@
         </configure>
     </entity>
     <entity name="SCRModel" class="ptolemy.domains.scr.SCRModel">
-        <property name="openAsSCRActor" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="openAsSCRActor" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.scr.SCRTableauFactory">
         </property>
