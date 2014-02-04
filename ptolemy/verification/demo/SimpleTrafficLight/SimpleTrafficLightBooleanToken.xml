@@ -14,15 +14,15 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 1054, 575}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 1073, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 442]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.5, 221.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -249,6 +249,10 @@
         </property>
     </property>
     <entity name="CarLightNormal" class="ptolemy.domains.modal.kernel.FSMActor">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetSeedOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
@@ -368,13 +372,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5124615234238838">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -388,13 +393,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.106770176520598">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -410,13 +416,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9466022967752517">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -432,13 +439,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.12865144475954">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
@@ -452,13 +460,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1112576304732045">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
@@ -474,13 +483,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.1674944875851097">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
@@ -494,13 +504,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7108203003142322">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <link port="Cinit.outgoingPort" relation="relation"/>
@@ -598,13 +609,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.09640117582917482">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -618,13 +630,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.078890607135539">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -638,13 +651,14 @@
             </property>
             <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3794631870682577">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
         <link port="Pinit.outgoingPort" relation="relation3"/>
