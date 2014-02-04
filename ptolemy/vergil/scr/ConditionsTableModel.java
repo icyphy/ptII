@@ -244,7 +244,7 @@ public class ConditionsTableModel extends AbstractTableModel {
 
 	/**
 		 * 
-		 * (condition1 ? value1 : (condition2 ? value2 : (... : dummyValue)))
+		 * (condition1 ? value1 : (condition2 ? value2 : (... : nil)))
 		 * 
 		 * 
 		 * @param expression

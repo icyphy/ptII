@@ -181,15 +181,15 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 			_tableContent = new ArrayList();
 			for (Object entity : _model.relationList()) {
 				Transition transition = ((Transition) entity);
-				if (transition.sourceState() != transition
-						.destinationState()) {
+//				if (transition.sourceState() != transition
+//						.destinationState()) {
 					_tableContent.add(transition.sourceState()
 							.getName());
 					_tableContent.add(transition.guardExpression
 							.getExpression());
 					_tableContent.add(transition.destinationState()
 							.getName());
-				}
+//				}
 			}
 			_tableContentIsInvalid = false;
 		}

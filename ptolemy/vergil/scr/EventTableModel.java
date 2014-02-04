@@ -35,6 +35,7 @@ import javax.swing.table.AbstractTableModel;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.Expression;
+import ptolemy.actor.lib.RemoveNilTokens;
 import ptolemy.actor.lib.SetVariable;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -171,9 +172,15 @@ public class EventTableModel extends AbstractTableModel {
 				insideModeExpression = insideModeExpression.append("(" + condition + " ? " + value + " : ");
 				enterModeExpression = enterModeExpression.append("(" + enterModeCondition + " ? " + value + " : ");
 			}
-			// if no condition was true leave value unchanged
-			insideModeExpression = insideModeExpression.append(" " + _parameter.getName());
-			enterModeExpression = enterModeExpression.append(" " + _parameter.getName());
+			// if no condition was true use 
+			// - nil ?
+			// - last value again ?
+//			insideModeExpression = insideModeExpression.append(" " + _parameter.getName());
+//			enterModeExpression = enterModeExpression.append(" " + _parameter.getName());
+			
+			insideModeExpression = insideModeExpression.append(" nil");
+			enterModeExpression = enterModeExpression.append(" nil");
+			
 			// close brackets
 			for (int j = 0; j < getColumnCount() - 1; j++) {
 				insideModeExpression = insideModeExpression.append(")");
@@ -211,32 +218,38 @@ public class EventTableModel extends AbstractTableModel {
 				ContinuousDirector director = new ContinuousDirector(
 						entity, "Continuous Director");
 			}
+			
 			Object setVariableActor = entity.getEntity("set_" + _parameter.getName());
 			if (setVariableActor == null) {
 				setVariableActor = new SetVariable(entity,
 						"set_" + _parameter.getName());
 			}
 			SetVariable setVariable = (SetVariable) setVariableActor;
-			setVariable.delayed.setExpression("false");
+			setVariable.delayed.setExpression("true");
 			setVariable.variableName.setExpression(_parameter.getName());
 
 			Object expressionActorObject = entity.getEntity("set_" + _parameter.getName() + "_expression");
 			TypedIORelation relation = null;
+			TypedIORelation relationExpressionRemoveNil = null;
+			RemoveNilTokens removeNilTokens = null;
 			if (expressionActorObject == null) {
 				expressionActorObject = new Expression(entity,
 						"set_" + _parameter.getName() + "_expression");
 				relation = new TypedIORelation(entity,
 						entity.uniqueName("relation"));
-
+				removeNilTokens = new RemoveNilTokens(entity, entity.uniqueName("RemoveNilTokens"));
+				relationExpressionRemoveNil = new TypedIORelation(entity,
+						entity.uniqueName("relation"));
 			}
 			Expression expressionActor = (Expression) expressionActorObject;
 			expressionActor.expression.setExpression(insideModeExpression.toString());
 			
 			if (relation != null) {
-				expressionActor.output.link(relation);
+				expressionActor.output.link(relationExpressionRemoveNil);
+				removeNilTokens.input.link(relationExpressionRemoveNil);
+				removeNilTokens.output.link(relation);
 				setVariable.input.link(relation);
 			}
-			
 			
 			Transition transition = null;
 			boolean noSetActionSet = true;
@@ -246,7 +259,6 @@ public class EventTableModel extends AbstractTableModel {
 					transition = (Transition) intoModeTransition;
 					String newExpression = _parameter.getName() + " = " + enterModeExpression;
 					String expression = transition.setActions.getExpression();
-					System.out.println("before: " + expression);
 					try {
 						if (transition.setActions.getDestinations().contains(_parameter)) {
 							int index = expression.indexOf(_parameter.getName() + " =");
@@ -265,7 +277,6 @@ public class EventTableModel extends AbstractTableModel {
 						if (!expression.equals("") && !expression.endsWith(";")) {
 							expression = expression + "; ";
 						}
-						System.out.println("after:  " + expression + newExpression);
 						transition.setActions.setExpression(expression + newExpression);
 						transition.setActions.setPersistent(true);
 						noSetActionSet = false;

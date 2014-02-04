@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 25.0]">
         </property>
@@ -25,7 +25,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of an SCRModel actor.&#10;The model describes a state machine with 2 states a and b.&#10;State transitions are triggerd by the inputs to the state&#10;machine. The output variables are configured in the &#10;Condition table and the event table describes 2 controlled&#10;variables that describe whether the state machine is in &#10;state a or b.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 255.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -43,7 +43,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={350, 499, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 505, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -63,11 +63,11 @@
         </configure>
     </entity>
     <entity name="SCRModel" class="ptolemy.domains.scr.SCRModel">
-        <property name="openAsSCRActor" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="openAsSCRActor" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.scr.SCRTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 100.0}">
         </property>
         <port name="in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -160,7 +160,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 255.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 255.0]">
                 </property>
             </entity>
             <relation name="transition" class="ptolemy.domains.modal.kernel.Transition">
@@ -168,11 +168,11 @@
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_inA = (true ? false : (false ? true :  scr_inA)); scr_inB = (false ? false : (true ? true :  scr_inB))">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_inA = (true ? false : (false ? true :  nil)); scr_inB = (false ? false : (true ? true :  nil))">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.7135388047699611">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8074301812336282">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.903420904970227">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.0180546530832726">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                     <display name="default"/>
@@ -193,11 +193,11 @@
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="reset_isPresent">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_inA = (false ? false : (true ? true :  scr_inA)); scr_inB = (true ? false : (false ? true :  scr_inB))">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_inA = (false ? false : (true ? true :  nil)); scr_inB = (true ? false : (false ? true :  nil))">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.7656418009724502">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6647979312558062">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.1514054275599116">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.058839375696386226">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                     <display name="default"/>
@@ -240,21 +240,33 @@
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
                 </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, -5.0}">
+                </property>
             </property>
             <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, -15.0}">
+                </property>
             </port>
             <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 55.0}">
+                </property>
             </port>
             <port name="reset" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, -15.0}">
+                </property>
             </port>
             <port name="inA" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 190.0}">
+                </property>
             </port>
             <port name="inB" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 125.0}">
+                </property>
             </port>
             <entity name="out_out" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? -2 : (false ? -1 :  -1))">
@@ -266,6 +278,8 @@
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-30.0, 55.0}">
                 </property>
             </entity>
             <entity name="inA_out" class="ptolemy.actor.lib.Expression">
@@ -279,6 +293,8 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 190.0}">
+                </property>
             </entity>
             <entity name="inB_out" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(!scr_inB ? false : (scr_inB ? true :  true))">
@@ -291,15 +307,19 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 125.0}">
+                </property>
             </entity>
             <entity name="set_scr_inA" class="ptolemy.actor.lib.SetVariable">
                 <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_inA">
                 </property>
-                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 345.0]">
                 </property>
             </entity>
             <entity name="set_scr_inA_expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  scr_inA))">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  nil))">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
@@ -308,16 +328,20 @@
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 345.0}">
                 </property>
             </entity>
             <entity name="set_scr_inB" class="ptolemy.actor.lib.SetVariable">
                 <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_inB">
                 </property>
-                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 270.0]">
                 </property>
             </entity>
             <entity name="set_scr_inB_expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  scr_inB))">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  nil))">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
@@ -327,26 +351,42 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 270.0}">
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 270.0]">
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens2" class="ptolemy.actor.lib.RemoveNilTokens">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 340.0]">
+                </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=90.0,y=55.0}, tail={id=&quot;out_out.output&quot;,x=-30.0,y=55.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inA._location&quot;,x=155.0,y=190.0}, tail={id=&quot;inA_out.output&quot;,x=0.0,y=190.0}, points={} } }">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inB._location&quot;,x=150.0,y=125.0}, tail={id=&quot;inB_out.output&quot;,x=0.0,y=125.0}, points={} } }">
                 </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="out" relation="relation"/>
             <link port="inA" relation="relation2"/>
@@ -354,10 +394,14 @@
             <link port="out_out.output" relation="relation"/>
             <link port="inA_out.output" relation="relation2"/>
             <link port="inB_out.output" relation="relation3"/>
-            <link port="set_scr_inA.input" relation="relation4"/>
+            <link port="set_scr_inA.input" relation="relation7"/>
             <link port="set_scr_inA_expression.output" relation="relation4"/>
-            <link port="set_scr_inB.input" relation="relation5"/>
+            <link port="set_scr_inB.input" relation="relation6"/>
             <link port="set_scr_inB_expression.output" relation="relation5"/>
+            <link port="RemoveNilTokens.input" relation="relation5"/>
+            <link port="RemoveNilTokens.output" relation="relation6"/>
+            <link port="RemoveNilTokens2.input" relation="relation4"/>
+            <link port="RemoveNilTokens2.output" relation="relation7"/>
         </entity>
         <entity name="b_refinement" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
@@ -381,32 +425,32 @@
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 25.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 25.0}">
                 </property>
             </property>
             <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 15.0}">
                 </property>
             </port>
             <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 85.0}">
                 </property>
             </port>
             <port name="reset" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 15.0}">
                 </property>
             </port>
             <port name="inA" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 240.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 220.0}">
                 </property>
             </port>
             <port name="inB" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 280.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 155.0}">
                 </property>
             </port>
             <entity name="out_out" class="ptolemy.actor.lib.Expression">
@@ -420,7 +464,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 320.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 85.0}">
                 </property>
             </entity>
             <entity name="inA_out" class="ptolemy.actor.lib.Expression">
@@ -434,7 +478,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 240.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 220.0}">
                 </property>
             </entity>
             <entity name="inB_out" class="ptolemy.actor.lib.Expression">
@@ -448,23 +492,23 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 155.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 155.0}">
                 </property>
             </entity>
             <entity name="set_scr_inA" class="ptolemy.actor.lib.SetVariable">
                 <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_inA">
                 </property>
-                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 305.0]">
                 </property>
             </entity>
             <entity name="set_scr_inA_expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  scr_inA))">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  nil))">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 20.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 300.0}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -476,17 +520,17 @@
             <entity name="set_scr_inB" class="ptolemy.actor.lib.SetVariable">
                 <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_inB">
                 </property>
-                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 100.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 380.0]">
                 </property>
             </entity>
             <entity name="set_scr_inB_expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  scr_inB))">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? false : (false ? true :  nil))">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 90.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 375.0}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -495,25 +539,39 @@
                     </property>
                 </property>
             </entity>
+            <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 305}">
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens2" class="ptolemy.actor.lib.RemoveNilTokens">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 375.0]">
+                </property>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=145.0,y=85.0}, tail={id=&quot;out_out.output&quot;,x=25.0,y=85.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inA._location&quot;,x=200.0,y=220.0}, tail={id=&quot;inA_out.output&quot;,x=50.0,y=220.0}, points={} } }">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inB._location&quot;,x=200.0,y=155.0}, tail={id=&quot;inB_out.output&quot;,x=50.0,y=155.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-                </property>
             </relation>
             <link port="out" relation="relation"/>
             <link port="inA" relation="relation2"/>
@@ -521,10 +579,14 @@
             <link port="out_out.output" relation="relation"/>
             <link port="inA_out.output" relation="relation2"/>
             <link port="inB_out.output" relation="relation3"/>
-            <link port="set_scr_inA.input" relation="relation4"/>
+            <link port="set_scr_inA.input" relation="relation6"/>
             <link port="set_scr_inA_expression.output" relation="relation4"/>
-            <link port="set_scr_inB.input" relation="relation5"/>
+            <link port="set_scr_inB.input" relation="relation7"/>
             <link port="set_scr_inB_expression.output" relation="relation5"/>
+            <link port="RemoveNilTokens.input" relation="relation4"/>
+            <link port="RemoveNilTokens.output" relation="relation6"/>
+            <link port="RemoveNilTokens2.input" relation="relation5"/>
+            <link port="RemoveNilTokens2.output" relation="relation7"/>
         </entity>
         <entity name="AnythingToDouble" class="ptolemy.actor.lib.conversions.AnythingToDouble">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 190}">
@@ -582,11 +644,11 @@
         </property>
     </entity>
     <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370, 145}">
         </property>
     </entity>
     <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[361.875, 200.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -595,34 +657,26 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[300.0, 170.0]">
-        </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[290.0, 215.0]">
-        </vertex>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation6"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation7"/>
     <link port="SCRModel.in" relation="relation2"/>
     <link port="SCRModel.out" relation="relation3"/>
     <link port="SCRModel.reset" relation="relation"/>
-    <link port="SCRModel.inA" relation="relation5"/>
-    <link port="SCRModel.inB" relation="relation7"/>
+    <link port="SCRModel.inA" relation="relation4"/>
+    <link port="SCRModel.inB" relation="relation5"/>
     <link port="SingleEvent2.output" relation="relation"/>
-    <link port="BooleanToAnything.input" relation="relation5"/>
+    <link port="BooleanToAnything.input" relation="relation4"/>
     <link port="BooleanToAnything.output" relation="relation6"/>
-    <link port="BooleanToAnything2.input" relation="relation7"/>
-    <link port="BooleanToAnything2.output" relation="relation4"/>
+    <link port="BooleanToAnything2.input" relation="relation5"/>
+    <link port="BooleanToAnything2.output" relation="relation7"/>
 </entity>
