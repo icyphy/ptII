@@ -1,0 +1,1820 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 22, 1034, 741}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 631]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000001">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{267.38076853197674, 121.56940406976747}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-32.5, -26.583251953125]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A traffic light model for a car and a passenger light. &#10;When the car light is red, the passenger light says go. &#10;All other times, the passenger light says stop.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 200.0]">
+        </property>
+    </property>
+    <entity name="SCRModel" class="ptolemy.domains.scr.SCRModel">
+        <property name="openAsSCRActor" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.scr.SCRTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[57.5, 128.416748046875]">
+        </property>
+        <port name="Sec" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Pgo" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Pstop" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Cred" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Cyel" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Cgrn" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="scr_count" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 64, 1229, 772}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[995, 661]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{161.5106215582955, 321.62944361368824}">
+            </property>
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 10.0}">
+                </property>
+            </port>
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 10.0}">
+                </property>
+            </port>
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 100.0]">
+                </property>
+            </port>
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 10.0}">
+                </property>
+            </port>
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 10.0}">
+                </property>
+            </port>
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 10.0}">
+                </property>
+            </port>
+            <entity name="Cinit" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cinit_refinement">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 145.0]">
+                </property>
+            </entity>
+            <entity name="Cred" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cred_refinement">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 240.0]">
+                </property>
+            </entity>
+            <entity name="Credyel" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Credyel_refinement">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 305.0]">
+                </property>
+            </entity>
+            <entity name="Cgrn" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cgrn_refinement">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 445.0]">
+                </property>
+            </entity>
+            <entity name="Cyel" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cyel_refinement">
+                </property>
+                <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 380.0]">
+                </property>
+            </entity>
+            <relation name="transition" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_count = (true ? 0 : (false ? 1 :  nil))">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.06288038540263763">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="transition2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; scr_count == 1">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_count = (true ? 0 : (false ? 1 :  nil))">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.0041457098846212626">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="transition3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_count = (true ? 0 : (false ? 1 :  nil))">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8382161177404795">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6778028425257348">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="transition4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; scr_count == 1">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_count = (false ? 0 : (false ? 1 :  nil))">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.46287061048758915">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.895566807638997">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="transition5" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_count = (true ? 0 : (false ? 1 :  nil))">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.667671428782009">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.259212193358467">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="transition6" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; scr_count &lt; 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.0339547098818898">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-4.580024764056144">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="transition7" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; scr_count &lt; 1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3316534805510787">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.005115232005928765">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="error" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="Cinit.outgoingPort" relation="transition"/>
+            <link port="Cred.incomingPort" relation="transition"/>
+            <link port="Cred.incomingPort" relation="transition5"/>
+            <link port="Cred.incomingPort" relation="transition6"/>
+            <link port="Cred.outgoingPort" relation="transition2"/>
+            <link port="Cred.outgoingPort" relation="transition6"/>
+            <link port="Credyel.incomingPort" relation="transition2"/>
+            <link port="Credyel.outgoingPort" relation="transition3"/>
+            <link port="Cgrn.incomingPort" relation="transition3"/>
+            <link port="Cgrn.incomingPort" relation="transition7"/>
+            <link port="Cgrn.outgoingPort" relation="transition4"/>
+            <link port="Cgrn.outgoingPort" relation="transition7"/>
+            <link port="Cyel.incomingPort" relation="transition4"/>
+            <link port="Cyel.outgoingPort" relation="transition5"/>
+        </entity>
+        <entity name="Cinit_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, -5.0}">
+                </property>
+            </property>
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 265.0}">
+                </property>
+            </port>
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 60.0}">
+                </property>
+            </port>
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 195.0}">
+                </property>
+            </port>
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 130.0}">
+                </property>
+            </port>
+            <entity name="Pgo_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, -10.0}">
+                </property>
+            </entity>
+            <entity name="Pstop_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, 265.0}">
+                </property>
+            </entity>
+            <entity name="Cred_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 60.0}">
+                </property>
+            </entity>
+            <entity name="Cyel_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="Cgrn_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 130.0}">
+                </property>
+            </entity>
+            <entity name="set_scr_count" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_count">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </entity>
+            <entity name="set_scr_count_expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=280.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=165.0,y=-10.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=80.0,y=265.0}, tail={id=&quot;Pstop_out.output&quot;,x=-35.0,y=265.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=75.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=75.0,y=195.0}, tail={id=&quot;Cyel_out.output&quot;,x=-40.0,y=195.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=75.0,y=130.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-40.0,y=130.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="Pgo" relation="relation"/>
+            <link port="Pstop" relation="relation2"/>
+            <link port="Cred" relation="relation3"/>
+            <link port="Cyel" relation="relation4"/>
+            <link port="Cgrn" relation="relation5"/>
+            <link port="Pgo_out.output" relation="relation"/>
+            <link port="Pstop_out.output" relation="relation2"/>
+            <link port="Cred_out.output" relation="relation3"/>
+            <link port="Cyel_out.output" relation="relation4"/>
+            <link port="Cgrn_out.output" relation="relation5"/>
+            <link port="set_scr_count.input" relation="relation6"/>
+            <link port="set_scr_count_expression.output" relation="relation7"/>
+            <link port="RemoveNilTokens.input" relation="relation7"/>
+            <link port="RemoveNilTokens.output" relation="relation6"/>
+        </entity>
+        <entity name="Cred_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-100.0, -10.0}">
+                </property>
+            </property>
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, -15.0}">
+                </property>
+            </port>
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 265.0}">
+                </property>
+            </port>
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 60.0}">
+                </property>
+            </port>
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 195.0}">
+                </property>
+            </port>
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 130.0}">
+                </property>
+            </port>
+            <entity name="Pgo_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -10.0}">
+                </property>
+            </entity>
+            <entity name="Pstop_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-65.0, 265.0}">
+                </property>
+            </entity>
+            <entity name="Cred_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-65.0, 60.0}">
+                </property>
+            </entity>
+            <entity name="Cyel_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-65.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="Cgrn_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-65.0, 130.0}">
+                </property>
+            </entity>
+            <entity name="set_scr_count" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_count">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 345.0}">
+                </property>
+            </entity>
+            <entity name="set_scr_count_expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, 345.0}">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 345.0}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=255.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=140.0,y=-10.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=50.0,y=265.0}, tail={id=&quot;Pstop_out.output&quot;,x=-65.0,y=265.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=50.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-65.0,y=60.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=50.0,y=195.0}, tail={id=&quot;Cyel_out.output&quot;,x=-65.0,y=195.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=50.0,y=130.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-65.0,y=130.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RemoveNilTokens.output&quot;,x=50.0,y=345.0}, tail={id=&quot;set_scr_count.input&quot;,x=175.0,y=345.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;set_scr_count_expression.output&quot;,x=-120.0,y=345.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=50.0,y=345.0}, points={} } }">
+                </property>
+            </relation>
+            <link port="Pgo" relation="relation"/>
+            <link port="Pstop" relation="relation2"/>
+            <link port="Cred" relation="relation3"/>
+            <link port="Cyel" relation="relation4"/>
+            <link port="Cgrn" relation="relation5"/>
+            <link port="Pgo_out.output" relation="relation"/>
+            <link port="Pstop_out.output" relation="relation2"/>
+            <link port="Cred_out.output" relation="relation3"/>
+            <link port="Cyel_out.output" relation="relation4"/>
+            <link port="Cgrn_out.output" relation="relation5"/>
+            <link port="set_scr_count.input" relation="relation6"/>
+            <link port="set_scr_count_expression.output" relation="relation7"/>
+            <link port="RemoveNilTokens.input" relation="relation7"/>
+            <link port="RemoveNilTokens.output" relation="relation6"/>
+        </entity>
+        <entity name="Credyel_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-90.0, -5.0}">
+                </property>
+            </property>
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 195.0}">
+                </property>
+            </port>
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 60.0}">
+                </property>
+            </port>
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 130.0}">
+                </property>
+            </port>
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 60.0}">
+                </property>
+            </port>
+            <entity name="Pgo_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -10.0}">
+                </property>
+            </entity>
+            <entity name="Pstop_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="Cred_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-65.0, 60.0}">
+                </property>
+            </entity>
+            <entity name="Cyel_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 130.0}">
+                </property>
+            </entity>
+            <entity name="Cgrn_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 60.0}">
+                </property>
+            </entity>
+            <entity name="set_scr_count" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_count">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </entity>
+            <entity name="set_scr_count_expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=250.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=140.0,y=-10.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=55.0,y=195.0}, tail={id=&quot;Pstop_out.output&quot;,x=-60.0,y=195.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=45.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-65.0,y=60.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=55.0,y=130.0}, tail={id=&quot;Cyel_out.output&quot;,x=-60.0,y=130.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=280.0,y=60.0}, tail={id=&quot;Cgrn_out.output&quot;,x=170.0,y=60.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="Pgo" relation="relation"/>
+            <link port="Pstop" relation="relation2"/>
+            <link port="Cred" relation="relation3"/>
+            <link port="Cyel" relation="relation4"/>
+            <link port="Cgrn" relation="relation5"/>
+            <link port="Pgo_out.output" relation="relation"/>
+            <link port="Pstop_out.output" relation="relation2"/>
+            <link port="Cred_out.output" relation="relation3"/>
+            <link port="Cyel_out.output" relation="relation4"/>
+            <link port="Cgrn_out.output" relation="relation5"/>
+            <link port="set_scr_count.input" relation="relation6"/>
+            <link port="set_scr_count_expression.output" relation="relation7"/>
+            <link port="RemoveNilTokens.input" relation="relation7"/>
+            <link port="RemoveNilTokens.output" relation="relation6"/>
+        </entity>
+        <entity name="Cgrn_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, -10.0}">
+                </property>
+            </property>
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, -15.0}">
+                </property>
+            </port>
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 195.0}">
+                </property>
+            </port>
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 60.0}">
+                </property>
+            </port>
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 130.0}">
+                </property>
+            </port>
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 60.0}">
+                </property>
+            </port>
+            <entity name="Pgo_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, -10.0}">
+                </property>
+            </entity>
+            <entity name="Pstop_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="Cred_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 60.0}">
+                </property>
+            </entity>
+            <entity name="Cyel_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 130.0}">
+                </property>
+            </entity>
+            <entity name="Cgrn_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 60.0}">
+                </property>
+            </entity>
+            <entity name="set_scr_count" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_count">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 275.0}">
+                </property>
+            </entity>
+            <entity name="set_scr_count_expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 275.0}">
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 275.0}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=280.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=165.0,y=-10.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=75.0,y=195.0}, tail={id=&quot;Pstop_out.output&quot;,x=-40.0,y=195.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=75.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=75.0,y=130.0}, tail={id=&quot;Cyel_out.output&quot;,x=-40.0,y=130.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=315.0,y=60.0}, tail={id=&quot;Cgrn_out.output&quot;,x=205.0,y=60.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;set_scr_count.input&quot;,x=225.0,y=275.0}, tail={id=&quot;RemoveNilTokens.output&quot;,x=100.0,y=275.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;set_scr_count_expression.output&quot;,x=-40.0,y=275.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=100.0,y=275.0}, points={} } }">
+                </property>
+            </relation>
+            <link port="Pgo" relation="relation"/>
+            <link port="Pstop" relation="relation2"/>
+            <link port="Cred" relation="relation3"/>
+            <link port="Cyel" relation="relation4"/>
+            <link port="Cgrn" relation="relation5"/>
+            <link port="Pgo_out.output" relation="relation"/>
+            <link port="Pstop_out.output" relation="relation2"/>
+            <link port="Cred_out.output" relation="relation3"/>
+            <link port="Cyel_out.output" relation="relation4"/>
+            <link port="Cgrn_out.output" relation="relation5"/>
+            <link port="set_scr_count.input" relation="relation6"/>
+            <link port="set_scr_count_expression.output" relation="relation7"/>
+            <link port="RemoveNilTokens.input" relation="relation7"/>
+            <link port="RemoveNilTokens.output" relation="relation6"/>
+        </entity>
+        <entity name="Cyel_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, -5.0}">
+                </property>
+            </property>
+            <port name="Sec" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pgo" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, -10.0}">
+                </property>
+            </port>
+            <port name="Pstop" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 265.0}">
+                </property>
+            </port>
+            <port name="Cred" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 60.0}">
+                </property>
+            </port>
+            <port name="Cyel" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 195.0}">
+                </property>
+            </port>
+            <port name="Cgrn" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 130.0}">
+                </property>
+            </port>
+            <entity name="Pgo_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, -10.0}">
+                </property>
+            </entity>
+            <entity name="Pstop_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  1))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, 265.0}">
+                </property>
+            </entity>
+            <entity name="Cred_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 60.0}">
+                </property>
+            </entity>
+            <entity name="Cyel_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(false ? 0 : (true ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, 195.0}">
+                </property>
+            </entity>
+            <entity name="Cgrn_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 130.0}">
+                </property>
+            </entity>
+            <entity name="set_scr_count" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="scr_count">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </entity>
+            <entity name="set_scr_count_expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? 0 : (false ? 1 :  nil))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+            </entity>
+            <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=275.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=165.0,y=-10.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=80.0,y=265.0}, tail={id=&quot;Pstop_out.output&quot;,x=-35.0,y=265.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=70.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=80.0,y=195.0}, tail={id=&quot;Cyel_out.output&quot;,x=-35.0,y=195.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=70.0,y=130.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-40.0,y=130.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="Pgo" relation="relation"/>
+            <link port="Pstop" relation="relation2"/>
+            <link port="Cred" relation="relation3"/>
+            <link port="Cyel" relation="relation4"/>
+            <link port="Cgrn" relation="relation5"/>
+            <link port="Pgo_out.output" relation="relation"/>
+            <link port="Pstop_out.output" relation="relation2"/>
+            <link port="Cred_out.output" relation="relation3"/>
+            <link port="Cyel_out.output" relation="relation4"/>
+            <link port="Cgrn_out.output" relation="relation5"/>
+            <link port="set_scr_count.input" relation="relation6"/>
+            <link port="set_scr_count_expression.output" relation="relation7"/>
+            <link port="RemoveNilTokens.input" relation="relation7"/>
+            <link port="RemoveNilTokens.output" relation="relation6"/>
+        </entity>
+        <relation name="SecRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="PgoRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="PstopRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="CredRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="CyelRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="CgrnRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="Sec" relation="SecRelation"/>
+        <link port="Pgo" relation="PgoRelation"/>
+        <link port="Pstop" relation="PstopRelation"/>
+        <link port="Cred" relation="CredRelation"/>
+        <link port="Cyel" relation="CyelRelation"/>
+        <link port="Cgrn" relation="CgrnRelation"/>
+        <link port="_Controller.Sec" relation="SecRelation"/>
+        <link port="_Controller.Pgo" relation="PgoRelation"/>
+        <link port="_Controller.Pstop" relation="PstopRelation"/>
+        <link port="_Controller.Cred" relation="CredRelation"/>
+        <link port="_Controller.Cyel" relation="CyelRelation"/>
+        <link port="_Controller.Cgrn" relation="CgrnRelation"/>
+        <link port="Cinit_refinement.Sec" relation="SecRelation"/>
+        <link port="Cinit_refinement.Pgo" relation="PgoRelation"/>
+        <link port="Cinit_refinement.Pstop" relation="PstopRelation"/>
+        <link port="Cinit_refinement.Cred" relation="CredRelation"/>
+        <link port="Cinit_refinement.Cyel" relation="CyelRelation"/>
+        <link port="Cinit_refinement.Cgrn" relation="CgrnRelation"/>
+        <link port="Cred_refinement.Sec" relation="SecRelation"/>
+        <link port="Cred_refinement.Pgo" relation="PgoRelation"/>
+        <link port="Cred_refinement.Pstop" relation="PstopRelation"/>
+        <link port="Cred_refinement.Cred" relation="CredRelation"/>
+        <link port="Cred_refinement.Cyel" relation="CyelRelation"/>
+        <link port="Cred_refinement.Cgrn" relation="CgrnRelation"/>
+        <link port="Credyel_refinement.Sec" relation="SecRelation"/>
+        <link port="Credyel_refinement.Pgo" relation="PgoRelation"/>
+        <link port="Credyel_refinement.Pstop" relation="PstopRelation"/>
+        <link port="Credyel_refinement.Cred" relation="CredRelation"/>
+        <link port="Credyel_refinement.Cyel" relation="CyelRelation"/>
+        <link port="Credyel_refinement.Cgrn" relation="CgrnRelation"/>
+        <link port="Cgrn_refinement.Sec" relation="SecRelation"/>
+        <link port="Cgrn_refinement.Pgo" relation="PgoRelation"/>
+        <link port="Cgrn_refinement.Pstop" relation="PstopRelation"/>
+        <link port="Cgrn_refinement.Cred" relation="CredRelation"/>
+        <link port="Cgrn_refinement.Cyel" relation="CyelRelation"/>
+        <link port="Cgrn_refinement.Cgrn" relation="CgrnRelation"/>
+        <link port="Cyel_refinement.Sec" relation="SecRelation"/>
+        <link port="Cyel_refinement.Pgo" relation="PgoRelation"/>
+        <link port="Cyel_refinement.Pstop" relation="PstopRelation"/>
+        <link port="Cyel_refinement.Cred" relation="CredRelation"/>
+        <link port="Cyel_refinement.Cyel" relation="CyelRelation"/>
+        <link port="Cyel_refinement.Cgrn" relation="CgrnRelation"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-62.5, 128.416748046875]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="period" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.5, -146.583251953125]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.5, -81.583251953125]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Scale3" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.5, -11.583251953125]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Scale4" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.5, 63.416748046875]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Scale5" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.5, 148.416748046875]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -145.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, -90.0]">
+        </property>
+    </entity>
+    <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+        <doc>Output the current microstep.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -30.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0, 1.0, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5, 1.6, 1.6, 1.7, 1.7, 1.8, 1.8, 1.9, 1.9, 2.0, 2.0, 2.0, 2.0, 2.1, 2.1, 2.2, 2.2, 2.3, 2.3, 2.4, 2.4, 2.5, 2.5, 2.6, 2.6, 2.7, 2.7, 2.8, 2.8, 2.9, 2.9, 3.0, 3.0, 3.0, 3.0, 3.1, 3.1, 3.2, 3.2, 3.3, 3.3, 3.4, 3.4, 3.5, 3.5, 3.6, 3.6, 3.7, 3.7, 3.8, 3.8, 3.9, 3.9, 4.0, 4.0, 4.0, 4.0, 4.1, 4.1, 4.2, 4.2, 4.3, 4.3, 4.4, 4.4, 4.5, 4.5, 4.6, 4.6, 4.7, 4.7, 4.8, 4.8, 4.9, 4.9, 5.0, 5.0, 5.0, 5.0, 5.1, 5.1, 5.2, 5.2, 5.3, 5.3, 5.4, 5.4, 5.5, 5.5, 5.6, 5.6, 5.7, 5.7, 5.8, 5.8, 5.9, 5.9, 6.0, 6.0, 6.0, 6.0, 6.1, 6.1, 6.2, 6.2, 6.3, 6.3, 6.4, 6.4, 6.5, 6.5, 6.6, 6.6, 6.7, 6.7, 6.8, 6.8, 6.9, 6.9, 7.0, 7.0, 7.0, 7.0, 7.1, 7.1, 7.2, 7.2, 7.3, 7.3, 7.4, 7.4, 7.5, 7.5, 7.6, 7.6, 7.7, 7.7, 7.8, 7.8, 7.9, 7.9, 8.0, 8.0, 8.0, 8.0, 8.1, 8.1, 8.2, 8.2, 8.3, 8.3, 8.4, 8.4, 8.5, 8.5, 8.6, 8.6, 8.7, 8.7, 8.8, 8.8, 8.9, 8.9, 9.0, 9.0, 9.0, 9.0, 9.1, 9.1, 9.2, 9.2, 9.3, 9.3, 9.4, 9.4, 9.5, 9.5, 9.6, 9.6, 9.7, 9.7, 9.8, 9.8, 9.9, 9.9, 10.0, 10.0, 10.0, 10.0, 10.1, 10.1, 10.2, 10.2, 10.3, 10.3, 10.4, 10.4, 10.5, 10.5, 10.6, 10.6, 10.7, 10.7, 10.8, 10.8, 10.9, 10.9, 11.0, 11.0, 11.0, 11.0, 11.1, 11.1, 11.2, 11.2, 11.3, 11.3, 11.4, 11.4, 11.5, 11.5, 11.6, 11.6, 11.7, 11.7, 11.8, 11.8, 11.9, 11.9, 12.0, 12.0, 12.0, 12.0, 12.1, 12.1, 12.2, 12.2, 12.3, 12.3, 12.4, 12.4, 12.5, 12.5, 12.6, 12.6, 12.7, 12.7, 12.8, 12.8, 12.9, 12.9, 13.0, 13.0, 13.0, 13.0, 13.1, 13.1, 13.2, 13.2, 13.3, 13.3, 13.4, 13.4, 13.5, 13.5, 13.6, 13.6, 13.7, 13.7, 13.8, 13.8, 13.9, 13.9, 14.0, 14.0, 14.0, 14.0, 14.1, 14.1, 14.2, 14.2, 14.3, 14.3, 14.4, 14.4, 14.5, 14.5, 14.6, 14.6, 14.7, 14.7, 14.8, 14.8, 14.9, 14.9, 15.0, 15.0, 15.0, 15.0, 15.1, 15.1, 15.2, 15.2, 15.3, 15.3, 15.4, 15.4, 15.5, 15.5, 15.6, 15.6, 15.7, 15.7, 15.8, 15.8, 15.9, 15.9, 16.0, 16.0, 16.0, 16.0, 16.1, 16.1, 16.2, 16.2, 16.3, 16.3, 16.4, 16.4, 16.5, 16.5, 16.6, 16.6, 16.7, 16.7, 16.8, 16.8, 16.9, 16.9, 17.0, 17.0, 17.0, 17.0, 17.1, 17.1, 17.2, 17.2, 17.3, 17.3, 17.4, 17.4, 17.5, 17.5, 17.6, 17.6, 17.7, 17.7, 17.8, 17.8, 17.9, 17.9, 18.0, 18.0, 18.0, 18.0, 18.1, 18.1, 18.2, 18.2, 18.3, 18.3, 18.4, 18.4, 18.5, 18.5, 18.6, 18.6, 18.7, 18.7, 18.8, 18.8, 18.9, 18.9, 19.0, 19.0, 19.0, 19.0, 19.1, 19.1, 19.2, 19.2, 19.3, 19.3, 19.4, 19.4, 19.5, 19.5, 19.6, 19.6, 19.7, 19.7, 19.8, 19.8, 19.9, 19.9, 20.0, 20.0, 20.0, 20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.010000000000001E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -90.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -30.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 25.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 80.0]">
+        </property>
+    </entity>
+    <entity name="CurrentMicrostep2" class="ptolemy.actor.lib.CurrentMicrostep">
+        <doc>Output the current microstep.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest5" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0, 1.0, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5, 1.6, 1.6, 1.7, 1.7, 1.8, 1.8, 1.9, 1.9, 2.0, 2.0, 2.0, 2.0, 2.1, 2.1, 2.2, 2.2, 2.3, 2.3, 2.4, 2.4, 2.5, 2.5, 2.6, 2.6, 2.7, 2.7, 2.8, 2.8, 2.9, 2.9, 3.0, 3.0, 3.0, 3.0, 3.1, 3.1, 3.2, 3.2, 3.3, 3.3, 3.4, 3.4, 3.5, 3.5, 3.6, 3.6, 3.7, 3.7, 3.8, 3.8, 3.9, 3.9, 4.0, 4.0, 4.0, 4.0, 4.1, 4.1, 4.2, 4.2, 4.3, 4.3, 4.4, 4.4, 4.5, 4.5, 4.6, 4.6, 4.7, 4.7, 4.8, 4.8, 4.9, 4.9, 5.0, 5.0, 5.0, 5.0, 5.1, 5.1, 5.2, 5.2, 5.3, 5.3, 5.4, 5.4, 5.5, 5.5, 5.6, 5.6, 5.7, 5.7, 5.8, 5.8, 5.9, 5.9, 6.0, 6.0, 6.0, 6.0, 6.1, 6.1, 6.2, 6.2, 6.3, 6.3, 6.4, 6.4, 6.5, 6.5, 6.6, 6.6, 6.7, 6.7, 6.8, 6.8, 6.9, 6.9, 7.0, 7.0, 7.0, 7.0, 7.1, 7.1, 7.2, 7.2, 7.3, 7.3, 7.4, 7.4, 7.5, 7.5, 7.6, 7.6, 7.7, 7.7, 7.8, 7.8, 7.9, 7.9, 8.0, 8.0, 8.0, 8.0, 8.1, 8.1, 8.2, 8.2, 8.3, 8.3, 8.4, 8.4, 8.5, 8.5, 8.6, 8.6, 8.7, 8.7, 8.8, 8.8, 8.9, 8.9, 9.0, 9.0, 9.0, 9.0, 9.1, 9.1, 9.2, 9.2, 9.3, 9.3, 9.4, 9.4, 9.5, 9.5, 9.6, 9.6, 9.7, 9.7, 9.8, 9.8, 9.9, 9.9, 10.0, 10.0, 10.0, 10.0, 10.1, 10.1, 10.2, 10.2, 10.3, 10.3, 10.4, 10.4, 10.5, 10.5, 10.6, 10.6, 10.7, 10.7, 10.8, 10.8, 10.9, 10.9, 11.0, 11.0, 11.0, 11.0, 11.1, 11.1, 11.2, 11.2, 11.3, 11.3, 11.4, 11.4, 11.5, 11.5, 11.6, 11.6, 11.7, 11.7, 11.8, 11.8, 11.9, 11.9, 12.0, 12.0, 12.0, 12.0, 12.1, 12.1, 12.2, 12.2, 12.3, 12.3, 12.4, 12.4, 12.5, 12.5, 12.6, 12.6, 12.7, 12.7, 12.8, 12.8, 12.9, 12.9, 13.0, 13.0, 13.0, 13.0, 13.1, 13.1, 13.2, 13.2, 13.3, 13.3, 13.4, 13.4, 13.5, 13.5, 13.6, 13.6, 13.7, 13.7, 13.8, 13.8, 13.9, 13.9, 14.0, 14.0, 14.0, 14.0, 14.1, 14.1, 14.2, 14.2, 14.3, 14.3, 14.4, 14.4, 14.5, 14.5, 14.6, 14.6, 14.7, 14.7, 14.8, 14.8, 14.9, 14.9, 15.0, 15.0, 15.0, 15.0, 15.1, 15.1, 15.2, 15.2, 15.3, 15.3, 15.4, 15.4, 15.5, 15.5, 15.6, 15.6, 15.7, 15.7, 15.8, 15.8, 15.9, 15.9, 16.0, 16.0, 16.0, 16.0, 16.1, 16.1, 16.2, 16.2, 16.3, 16.3, 16.4, 16.4, 16.5, 16.5, 16.6, 16.6, 16.7, 16.7, 16.8, 16.8, 16.9, 16.9, 17.0, 17.0, 17.0, 17.0, 17.1, 17.1, 17.2, 17.2, 17.3, 17.3, 17.4, 17.4, 17.5, 17.5, 17.6, 17.6, 17.7, 17.7, 17.8, 17.8, 17.9, 17.9, 18.0, 18.0, 18.0, 18.0, 18.1, 18.1, 18.2, 18.2, 18.3, 18.3, 18.4, 18.4, 18.5, 18.5, 18.6, 18.6, 18.7, 18.7, 18.8, 18.8, 18.9, 18.9, 19.0, 19.0, 19.0, 19.0, 19.1, 19.1, 19.2, 19.2, 19.3, 19.3, 19.4, 19.4, 19.5, 19.5, 19.6, 19.6, 19.7, 19.7, 19.8, 19.8, 19.9, 19.9, 20.0, 20.0, 20.0, 20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.010000000000001E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 80.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest6" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest7" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="CurrentMicrostep3" class="ptolemy.actor.lib.CurrentMicrostep">
+        <doc>Output the current microstep.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest8" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0, 1.0, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5, 1.6, 1.6, 1.7, 1.7, 1.8, 1.8, 1.9, 1.9, 2.0, 2.0, 2.0, 2.0, 2.1, 2.1, 2.2, 2.2, 2.3, 2.3, 2.4, 2.4, 2.5, 2.5, 2.6, 2.6, 2.7, 2.7, 2.8, 2.8, 2.9, 2.9, 3.0, 3.0, 3.0, 3.0, 3.1, 3.1, 3.2, 3.2, 3.3, 3.3, 3.4, 3.4, 3.5, 3.5, 3.6, 3.6, 3.7, 3.7, 3.8, 3.8, 3.9, 3.9, 4.0, 4.0, 4.0, 4.0, 4.1, 4.1, 4.2, 4.2, 4.3, 4.3, 4.4, 4.4, 4.5, 4.5, 4.6, 4.6, 4.7, 4.7, 4.8, 4.8, 4.9, 4.9, 5.0, 5.0, 5.0, 5.0, 5.1, 5.1, 5.2, 5.2, 5.3, 5.3, 5.4, 5.4, 5.5, 5.5, 5.6, 5.6, 5.7, 5.7, 5.8, 5.8, 5.9, 5.9, 6.0, 6.0, 6.0, 6.0, 6.1, 6.1, 6.2, 6.2, 6.3, 6.3, 6.4, 6.4, 6.5, 6.5, 6.6, 6.6, 6.7, 6.7, 6.8, 6.8, 6.9, 6.9, 7.0, 7.0, 7.0, 7.0, 7.1, 7.1, 7.2, 7.2, 7.3, 7.3, 7.4, 7.4, 7.5, 7.5, 7.6, 7.6, 7.7, 7.7, 7.8, 7.8, 7.9, 7.9, 8.0, 8.0, 8.0, 8.0, 8.1, 8.1, 8.2, 8.2, 8.3, 8.3, 8.4, 8.4, 8.5, 8.5, 8.6, 8.6, 8.7, 8.7, 8.8, 8.8, 8.9, 8.9, 9.0, 9.0, 9.0, 9.0, 9.1, 9.1, 9.2, 9.2, 9.3, 9.3, 9.4, 9.4, 9.5, 9.5, 9.6, 9.6, 9.7, 9.7, 9.8, 9.8, 9.9, 9.9, 10.0, 10.0, 10.0, 10.0, 10.1, 10.1, 10.2, 10.2, 10.3, 10.3, 10.4, 10.4, 10.5, 10.5, 10.6, 10.6, 10.7, 10.7, 10.8, 10.8, 10.9, 10.9, 11.0, 11.0, 11.0, 11.0, 11.1, 11.1, 11.2, 11.2, 11.3, 11.3, 11.4, 11.4, 11.5, 11.5, 11.6, 11.6, 11.7, 11.7, 11.8, 11.8, 11.9, 11.9, 12.0, 12.0, 12.0, 12.0, 12.1, 12.1, 12.2, 12.2, 12.3, 12.3, 12.4, 12.4, 12.5, 12.5, 12.6, 12.6, 12.7, 12.7, 12.8, 12.8, 12.9, 12.9, 13.0, 13.0, 13.0, 13.0, 13.1, 13.1, 13.2, 13.2, 13.3, 13.3, 13.4, 13.4, 13.5, 13.5, 13.6, 13.6, 13.7, 13.7, 13.8, 13.8, 13.9, 13.9, 14.0, 14.0, 14.0, 14.0, 14.1, 14.1, 14.2, 14.2, 14.3, 14.3, 14.4, 14.4, 14.5, 14.5, 14.6, 14.6, 14.7, 14.7, 14.8, 14.8, 14.9, 14.9, 15.0, 15.0, 15.0, 15.0, 15.1, 15.1, 15.2, 15.2, 15.3, 15.3, 15.4, 15.4, 15.5, 15.5, 15.6, 15.6, 15.7, 15.7, 15.8, 15.8, 15.9, 15.9, 16.0, 16.0, 16.0, 16.0, 16.1, 16.1, 16.2, 16.2, 16.3, 16.3, 16.4, 16.4, 16.5, 16.5, 16.6, 16.6, 16.7, 16.7, 16.8, 16.8, 16.9, 16.9, 17.0, 17.0, 17.0, 17.0, 17.1, 17.1, 17.2, 17.2, 17.3, 17.3, 17.4, 17.4, 17.5, 17.5, 17.6, 17.6, 17.7, 17.7, 17.8, 17.8, 17.9, 17.9, 18.0, 18.0, 18.0, 18.0, 18.1, 18.1, 18.2, 18.2, 18.3, 18.3, 18.4, 18.4, 18.5, 18.5, 18.6, 18.6, 18.7, 18.7, 18.8, 18.8, 18.9, 18.9, 19.0, 19.0, 19.0, 19.0, 19.1, 19.1, 19.2, 19.2, 19.3, 19.3, 19.4, 19.4, 19.5, 19.5, 19.6, 19.6, 19.7, 19.7, 19.8, 19.8, 19.9, 19.9, 20.0, 20.0, 20.0, 20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.010000000000001E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest9" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest10" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="CurrentMicrostep4" class="ptolemy.actor.lib.CurrentMicrostep">
+        <doc>Output the current microstep.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 475.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest11" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0, 1.0, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5, 1.6, 1.6, 1.7, 1.7, 1.8, 1.8, 1.9, 1.9, 2.0, 2.0, 2.0, 2.0, 2.1, 2.1, 2.2, 2.2, 2.3, 2.3, 2.4, 2.4, 2.5, 2.5, 2.6, 2.6, 2.7, 2.7, 2.8, 2.8, 2.9, 2.9, 3.0, 3.0, 3.0, 3.0, 3.1, 3.1, 3.2, 3.2, 3.3, 3.3, 3.4, 3.4, 3.5, 3.5, 3.6, 3.6, 3.7, 3.7, 3.8, 3.8, 3.9, 3.9, 4.0, 4.0, 4.0, 4.0, 4.1, 4.1, 4.2, 4.2, 4.3, 4.3, 4.4, 4.4, 4.5, 4.5, 4.6, 4.6, 4.7, 4.7, 4.8, 4.8, 4.9, 4.9, 5.0, 5.0, 5.0, 5.0, 5.1, 5.1, 5.2, 5.2, 5.3, 5.3, 5.4, 5.4, 5.5, 5.5, 5.6, 5.6, 5.7, 5.7, 5.8, 5.8, 5.9, 5.9, 6.0, 6.0, 6.0, 6.0, 6.1, 6.1, 6.2, 6.2, 6.3, 6.3, 6.4, 6.4, 6.5, 6.5, 6.6, 6.6, 6.7, 6.7, 6.8, 6.8, 6.9, 6.9, 7.0, 7.0, 7.0, 7.0, 7.1, 7.1, 7.2, 7.2, 7.3, 7.3, 7.4, 7.4, 7.5, 7.5, 7.6, 7.6, 7.7, 7.7, 7.8, 7.8, 7.9, 7.9, 8.0, 8.0, 8.0, 8.0, 8.1, 8.1, 8.2, 8.2, 8.3, 8.3, 8.4, 8.4, 8.5, 8.5, 8.6, 8.6, 8.7, 8.7, 8.8, 8.8, 8.9, 8.9, 9.0, 9.0, 9.0, 9.0, 9.1, 9.1, 9.2, 9.2, 9.3, 9.3, 9.4, 9.4, 9.5, 9.5, 9.6, 9.6, 9.7, 9.7, 9.8, 9.8, 9.9, 9.9, 10.0, 10.0, 10.0, 10.0, 10.1, 10.1, 10.2, 10.2, 10.3, 10.3, 10.4, 10.4, 10.5, 10.5, 10.6, 10.6, 10.7, 10.7, 10.8, 10.8, 10.9, 10.9, 11.0, 11.0, 11.0, 11.0, 11.1, 11.1, 11.2, 11.2, 11.3, 11.3, 11.4, 11.4, 11.5, 11.5, 11.6, 11.6, 11.7, 11.7, 11.8, 11.8, 11.9, 11.9, 12.0, 12.0, 12.0, 12.0, 12.1, 12.1, 12.2, 12.2, 12.3, 12.3, 12.4, 12.4, 12.5, 12.5, 12.6, 12.6, 12.7, 12.7, 12.8, 12.8, 12.9, 12.9, 13.0, 13.0, 13.0, 13.0, 13.1, 13.1, 13.2, 13.2, 13.3, 13.3, 13.4, 13.4, 13.5, 13.5, 13.6, 13.6, 13.7, 13.7, 13.8, 13.8, 13.9, 13.9, 14.0, 14.0, 14.0, 14.0, 14.1, 14.1, 14.2, 14.2, 14.3, 14.3, 14.4, 14.4, 14.5, 14.5, 14.6, 14.6, 14.7, 14.7, 14.8, 14.8, 14.9, 14.9, 15.0, 15.0, 15.0, 15.0, 15.1, 15.1, 15.2, 15.2, 15.3, 15.3, 15.4, 15.4, 15.5, 15.5, 15.6, 15.6, 15.7, 15.7, 15.8, 15.8, 15.9, 15.9, 16.0, 16.0, 16.0, 16.0, 16.1, 16.1, 16.2, 16.2, 16.3, 16.3, 16.4, 16.4, 16.5, 16.5, 16.6, 16.6, 16.7, 16.7, 16.8, 16.8, 16.9, 16.9, 17.0, 17.0, 17.0, 17.0, 17.1, 17.1, 17.2, 17.2, 17.3, 17.3, 17.4, 17.4, 17.5, 17.5, 17.6, 17.6, 17.7, 17.7, 17.8, 17.8, 17.9, 17.9, 18.0, 18.0, 18.0, 18.0, 18.1, 18.1, 18.2, 18.2, 18.3, 18.3, 18.4, 18.4, 18.5, 18.5, 18.6, 18.6, 18.7, 18.7, 18.8, 18.8, 18.9, 18.9, 19.0, 19.0, 19.0, 19.0, 19.1, 19.1, 19.2, 19.2, 19.3, 19.3, 19.4, 19.4, 19.5, 19.5, 19.6, 19.6, 19.7, 19.7, 19.8, 19.8, 19.9, 19.9, 20.0, 20.0, 20.0, 20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.010000000000001E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest12" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 475.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest13" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime5" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 595.0]">
+        </property>
+    </entity>
+    <entity name="CurrentMicrostep5" class="ptolemy.actor.lib.CurrentMicrostep">
+        <doc>Output the current microstep.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 655.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest14" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0, 1.0, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.3, 1.3, 1.4, 1.4, 1.5, 1.5, 1.6, 1.6, 1.7, 1.7, 1.8, 1.8, 1.9, 1.9, 2.0, 2.0, 2.0, 2.0, 2.1, 2.1, 2.2, 2.2, 2.3, 2.3, 2.4, 2.4, 2.5, 2.5, 2.6, 2.6, 2.7, 2.7, 2.8, 2.8, 2.9, 2.9, 3.0, 3.0, 3.0, 3.0, 3.1, 3.1, 3.2, 3.2, 3.3, 3.3, 3.4, 3.4, 3.5, 3.5, 3.6, 3.6, 3.7, 3.7, 3.8, 3.8, 3.9, 3.9, 4.0, 4.0, 4.0, 4.0, 4.1, 4.1, 4.2, 4.2, 4.3, 4.3, 4.4, 4.4, 4.5, 4.5, 4.6, 4.6, 4.7, 4.7, 4.8, 4.8, 4.9, 4.9, 5.0, 5.0, 5.0, 5.0, 5.1, 5.1, 5.2, 5.2, 5.3, 5.3, 5.4, 5.4, 5.5, 5.5, 5.6, 5.6, 5.7, 5.7, 5.8, 5.8, 5.9, 5.9, 6.0, 6.0, 6.0, 6.0, 6.1, 6.1, 6.2, 6.2, 6.3, 6.3, 6.4, 6.4, 6.5, 6.5, 6.6, 6.6, 6.7, 6.7, 6.8, 6.8, 6.9, 6.9, 7.0, 7.0, 7.0, 7.0, 7.1, 7.1, 7.2, 7.2, 7.3, 7.3, 7.4, 7.4, 7.5, 7.5, 7.6, 7.6, 7.7, 7.7, 7.8, 7.8, 7.9, 7.9, 8.0, 8.0, 8.0, 8.0, 8.1, 8.1, 8.2, 8.2, 8.3, 8.3, 8.4, 8.4, 8.5, 8.5, 8.6, 8.6, 8.7, 8.7, 8.8, 8.8, 8.9, 8.9, 9.0, 9.0, 9.0, 9.0, 9.1, 9.1, 9.2, 9.2, 9.3, 9.3, 9.4, 9.4, 9.5, 9.5, 9.6, 9.6, 9.7, 9.7, 9.8, 9.8, 9.9, 9.9, 10.0, 10.0, 10.0, 10.0, 10.1, 10.1, 10.2, 10.2, 10.3, 10.3, 10.4, 10.4, 10.5, 10.5, 10.6, 10.6, 10.7, 10.7, 10.8, 10.8, 10.9, 10.9, 11.0, 11.0, 11.0, 11.0, 11.1, 11.1, 11.2, 11.2, 11.3, 11.3, 11.4, 11.4, 11.5, 11.5, 11.6, 11.6, 11.7, 11.7, 11.8, 11.8, 11.9, 11.9, 12.0, 12.0, 12.0, 12.0, 12.1, 12.1, 12.2, 12.2, 12.3, 12.3, 12.4, 12.4, 12.5, 12.5, 12.6, 12.6, 12.7, 12.7, 12.8, 12.8, 12.9, 12.9, 13.0, 13.0, 13.0, 13.0, 13.1, 13.1, 13.2, 13.2, 13.3, 13.3, 13.4, 13.4, 13.5, 13.5, 13.6, 13.6, 13.7, 13.7, 13.8, 13.8, 13.9, 13.9, 14.0, 14.0, 14.0, 14.0, 14.1, 14.1, 14.2, 14.2, 14.3, 14.3, 14.4, 14.4, 14.5, 14.5, 14.6, 14.6, 14.7, 14.7, 14.8, 14.8, 14.9, 14.9, 15.0, 15.0, 15.0, 15.0, 15.1, 15.1, 15.2, 15.2, 15.3, 15.3, 15.4, 15.4, 15.5, 15.5, 15.6, 15.6, 15.7, 15.7, 15.8, 15.8, 15.9, 15.9, 16.0, 16.0, 16.0, 16.0, 16.1, 16.1, 16.2, 16.2, 16.3, 16.3, 16.4, 16.4, 16.5, 16.5, 16.6, 16.6, 16.7, 16.7, 16.8, 16.8, 16.9, 16.9, 17.0, 17.0, 17.0, 17.0, 17.1, 17.1, 17.2, 17.2, 17.3, 17.3, 17.4, 17.4, 17.5, 17.5, 17.6, 17.6, 17.7, 17.7, 17.8, 17.8, 17.9, 17.9, 18.0, 18.0, 18.0, 18.0, 18.1, 18.1, 18.2, 18.2, 18.3, 18.3, 18.4, 18.4, 18.5, 18.5, 18.6, 18.6, 18.7, 18.7, 18.8, 18.8, 18.9, 18.9, 19.0, 19.0, 19.0, 19.0, 19.1, 19.1, 19.2, 19.2, 19.3, 19.3, 19.4, 19.4, 19.5, 19.5, 19.6, 19.6, 19.7, 19.7, 19.8, 19.8, 19.9, 19.9, 20.0, 20.0, 20.0, 20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.010000000000001E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 595.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest15" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 655.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Sec&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;DiscreteClock.output&quot;,x=-62.5,y=128.416748046875}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Pgo&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale.input&quot;,x=222.5,y=-146.583251953125}, points={127.5,108.416748046875,127.5,-146.583251953125} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Pstop&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale2.input&quot;,x=222.5,y=-81.583251953125}, points={142.5,118.416748046875,142.5,-81.583251953125} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Cred&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale3.input&quot;,x=222.5,y=-11.583251953125}, points={157.5,128.416748046875,157.5,-11.583251953125} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Cyel&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale4.input&quot;,x=222.5,y=63.416748046875}, points={172.5,138.416748046875,172.5,63.416748046875} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Cgrn&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale5.input&quot;,x=222.5,y=148.416748046875}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[315.0, -145.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 25.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 190.0]">
+        </vertex>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 360.0]">
+        </vertex>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[315.0, 540.0]">
+        </vertex>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SCRModel.Sec" relation="relation3"/>
+    <link port="SCRModel.Pgo" relation="relation7"/>
+    <link port="SCRModel.Pstop" relation="relation8"/>
+    <link port="SCRModel.Cred" relation="relation9"/>
+    <link port="SCRModel.Cyel" relation="relation10"/>
+    <link port="SCRModel.Cgrn" relation="relation11"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="Scale.input" relation="relation7"/>
+    <link port="Scale.output" relation="relation"/>
+    <link port="Scale2.input" relation="relation8"/>
+    <link port="Scale2.output" relation="relation2"/>
+    <link port="Scale3.input" relation="relation9"/>
+    <link port="Scale3.output" relation="relation6"/>
+    <link port="Scale4.input" relation="relation10"/>
+    <link port="Scale4.output" relation="relation16"/>
+    <link port="Scale5.input" relation="relation11"/>
+    <link port="Scale5.output" relation="relation19"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation12"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="CurrentMicrostep.output" relation="relation13"/>
+    <link port="CurrentMicrostep.trigger" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation12"/>
+    <link port="NonStrictTest3.input" relation="relation13"/>
+    <link port="NonStrictTest4.input" relation="relation2"/>
+    <link port="CurrentTime2.output" relation="relation4"/>
+    <link port="CurrentTime2.trigger" relation="relation2"/>
+    <link port="CurrentMicrostep2.output" relation="relation5"/>
+    <link port="CurrentMicrostep2.trigger" relation="relation2"/>
+    <link port="NonStrictTest5.input" relation="relation4"/>
+    <link port="NonStrictTest6.input" relation="relation5"/>
+    <link port="NonStrictTest7.input" relation="relation6"/>
+    <link port="CurrentTime3.output" relation="relation14"/>
+    <link port="CurrentTime3.trigger" relation="relation6"/>
+    <link port="CurrentMicrostep3.output" relation="relation15"/>
+    <link port="CurrentMicrostep3.trigger" relation="relation6"/>
+    <link port="NonStrictTest8.input" relation="relation14"/>
+    <link port="NonStrictTest9.input" relation="relation15"/>
+    <link port="NonStrictTest10.input" relation="relation16"/>
+    <link port="CurrentTime4.output" relation="relation17"/>
+    <link port="CurrentTime4.trigger" relation="relation16"/>
+    <link port="CurrentMicrostep4.output" relation="relation18"/>
+    <link port="CurrentMicrostep4.trigger" relation="relation16"/>
+    <link port="NonStrictTest11.input" relation="relation17"/>
+    <link port="NonStrictTest12.input" relation="relation18"/>
+    <link port="NonStrictTest13.input" relation="relation19"/>
+    <link port="CurrentTime5.output" relation="relation20"/>
+    <link port="CurrentTime5.trigger" relation="relation19"/>
+    <link port="CurrentMicrostep5.output" relation="relation21"/>
+    <link port="CurrentMicrostep5.trigger" relation="relation19"/>
+    <link port="NonStrictTest14.input" relation="relation20"/>
+    <link port="NonStrictTest15.input" relation="relation21"/>
+</entity>
