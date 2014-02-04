@@ -1190,7 +1190,59 @@ public class UtilityFunctions {
             return BaseType.UNKNOWN;
         }
     }
-
+    /** Generate a sample from a multivariage Gaussian distribution.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static ArrayToken multivariateGaussian(ArrayToken mean, DoubleMatrixToken covariance)
+            throws IllegalActionException{ 
+        
+        // Cholesky factorization 
+        
+        //check dimensions
+        int N = mean.length(); // size of array
+        double[][] S = covariance.doubleMatrix();
+        if((covariance.getColumnCount() != N) || (covariance.getRowCount() != covariance.getColumnCount())){
+            throw new IllegalActionException("Covariance must be a square matrix and its dimension must " +
+            		"match the mean array length");
+        }
+        //check if the covariance matrix is symmetric
+        for(int i = 0; i < N; i++){
+            for(int j = 0; j < i; j ++){
+                if(S[i][j] != S[j][i]){
+                    throw new IllegalActionException("Covariance must be a symmetric matrix.");
+                }
+            }
+        }
+        //S should also be positive semi-definite. The function does not currently check for this.
+        double[][] L = new double[N][N]; // the lower triangular cholesky factor s.t. L*L^T = covariance
+        for(int i = 0; i < N; i++){
+            for(int j=0; j <= i ; j++){
+                double lowerSum = 0;
+                for(int k=0; k<j; k++){
+                    lowerSum += L[i][k]*L[j][k];
+                }
+                if( i!=j){
+                    L[i][j] = 1.0 / L[j][j] * (S[i][j] - lowerSum);
+                }else{
+                    L[i][j] = Math.pow(S[i][i] - lowerSum, 0.5);
+                }
+            }
+        }
+        // draw uncorrelated samples from a standard Gaussian.
+        ArrayToken uncorrelated = gaussian(0,1,N);
+        Token[] uncorrelatedTokens = uncorrelated.arrayValue();
+        Token[] correlatedTokens = new Token[N];
+        double[] correlatedSamples = new double[N];
+        for(int i=0; i < N; i++){
+            for(int j=0; j < N; j++){
+                double uncorr = ((DoubleToken)uncorrelatedTokens[j]).doubleValue();
+                correlatedSamples[i] += L[i][j]*uncorr;
+            }
+            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]);
+        }
+        return new ArrayToken(correlatedTokens);
+    }
     /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
