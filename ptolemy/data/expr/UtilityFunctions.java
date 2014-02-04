@@ -755,6 +755,7 @@ public class UtilityFunctions {
      *  {@link ptolemy.util.StringUtilities#getProperty(String)}
      *  instead
      */
+    @Deprecated
     public static String getProperty(String propertyName) {
         return StringUtilities.getProperty(propertyName);
     }
@@ -1190,7 +1191,14 @@ public class UtilityFunctions {
             return BaseType.UNKNOWN;
         }
     }
-    /** Generate a sample from a multivariage Gaussian distribution.
+    
+    /** FIXME. Placeholder for a function that will return a model.
+     */
+    public static ObjectToken model(String classname)
+            throws IllegalActionException {
+        return new ObjectToken(classname);
+    }
+    /** Generate a sample from a multivariate Gaussian distribution.
      *  @param type The type of the argument to the corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
@@ -1204,7 +1212,7 @@ public class UtilityFunctions {
         double[][] S = covariance.doubleMatrix();
         if((covariance.getColumnCount() != N) || (covariance.getRowCount() != covariance.getColumnCount())){
             throw new IllegalActionException("Covariance must be a square matrix and its dimension must " +
-            		"match the mean array length");
+                        "match the mean array length");
         }
         //check if the covariance matrix is symmetric
         for(int i = 0; i < N; i++){
@@ -1242,12 +1250,6 @@ public class UtilityFunctions {
             correlatedTokens[i] = new DoubleToken(correlatedSamples[i]);
         }
         return new ArrayToken(correlatedTokens);
-    }
-    /** FIXME. Placeholder for a function that will return a model.
-     */
-    public static ObjectToken model(String classname)
-            throws IllegalActionException {
-        return new ObjectToken(classname);
     }
 
     /** Parse the string provided and return the result wrapped in a token.
@@ -1419,6 +1421,7 @@ public class UtilityFunctions {
      *  @exception IllegalActionException If the file cannot be opened.
      *  @deprecated Use eval(readFile()) instead.
      */
+    @Deprecated
     public static DoubleMatrixToken readMatrix(String filename)
             throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
@@ -1894,6 +1897,7 @@ public class UtilityFunctions {
      *   columns.
      *  @deprecated Use zeroMatrixDouble instead.
      */
+    @Deprecated
     public static DoubleMatrixToken zeroMatrix(int rows, int columns) {
         return zeroMatrixDouble(rows, columns);
     }
@@ -2189,6 +2193,7 @@ public class UtilityFunctions {
          *  @exception ClassCastException If the arguments cannot
          *   be compared.
          */
+        @Override
         public int compare(Object arg0, Object arg1) throws ClassCastException {
             // NOTE: This logic indicates which tokens are comparable
             // and is replicated in the sortReturnType() method. If
