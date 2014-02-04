@@ -258,7 +258,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         return graphPane;
     }
 
-    protected JComponent _createRightComponent(NamedObj entity) {
+    @SuppressWarnings("serial")
+	protected JComponent _createRightComponent(NamedObj entity) {
         // entity must be SingleRuleTransformer or CompositeActorMatcher.
 
         if (_isFSM(entity)) {
@@ -277,6 +278,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
         _graphPanes = new LinkedList<GraphPane>();
         _graphs = new LinkedList<JGraph>();
 
+        
         _tabbedPane = new JTabbedPane() {
             public void setMinimumSize(Dimension minimumSize) {
                 Iterator<JGraph> graphsIterator = _graphs.iterator();

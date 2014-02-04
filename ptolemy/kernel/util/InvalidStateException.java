@@ -49,6 +49,7 @@ import java.util.List;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
+@SuppressWarnings("serial")
 public class InvalidStateException extends KernelRuntimeException {
     /** Construct an exception with only a detail message.
      *  @param detail The message.

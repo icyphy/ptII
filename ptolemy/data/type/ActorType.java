@@ -27,8 +27,6 @@
  */
 package ptolemy.data.type;
 
-import java.io.Serializable;
-
 import ptolemy.data.ActorToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red
  */
-public class ActorType implements Type, Cloneable, Serializable {
+public class ActorType implements Type, Cloneable {
 
     public ActorType() {
         super();

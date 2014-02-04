@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.AcceptedRating Green (bart)
  @see Receiver
  */
+@SuppressWarnings("serial")
 public class NoRoomException extends KernelRuntimeException {
     /** Construct an exception with the given error message.
      *  @param message The message.

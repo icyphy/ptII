@@ -27,7 +27,6 @@
  */
 package ptolemy.data.type;
 
-import java.io.Serializable;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +64,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red
  */
-public abstract class BaseType implements Type, Serializable {
+public abstract class BaseType implements Type {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

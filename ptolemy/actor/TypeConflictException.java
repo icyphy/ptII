@@ -49,6 +49,7 @@ import ptolemy.kernel.util.KernelException;
  @Pt.ProposedRating Green (yuhong)
  @Pt.AcceptedRating Green (liuxj)
  */
+@SuppressWarnings("serial")
 public class TypeConflictException extends KernelException {
     /** Construct an Exception with a list of Inequality instances where
      *  type conflicts occurred.

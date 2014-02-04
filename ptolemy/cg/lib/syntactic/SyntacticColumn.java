@@ -44,6 +44,7 @@ import java.util.LinkedList;
  *  @Pt.AcceptedRating red
  *
  */
+@SuppressWarnings("serial")
 public class SyntacticColumn extends SyntacticTermList {
 
     /** Create new empty Syntactic Column. */

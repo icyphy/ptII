@@ -53,6 +53,7 @@ import java.util.LinkedList;
 @Pt.ProposedRating Red (shaver)
 @Pt.AcceptedRating Red
 */
+@SuppressWarnings("serial")
 public class SyntacticSeries extends SyntacticTermList {
 
     /** Create an empty SyntacticSeries term. */

@@ -62,6 +62,7 @@ import java.util.LinkedList;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
+@SuppressWarnings("serial")
 public class KernelRuntimeException extends RuntimeException {
     /** Construct an exception with no specific detail message. */
     public KernelRuntimeException() {

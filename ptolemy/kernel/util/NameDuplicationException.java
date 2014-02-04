@@ -52,6 +52,7 @@ package ptolemy.kernel.util;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
+@SuppressWarnings("serial")
 public class NameDuplicationException extends KernelException {
     /** Construct an exception with a detail message that includes the
      *  name of the first argument.  If one or more of the parameters

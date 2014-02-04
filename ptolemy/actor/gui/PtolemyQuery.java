@@ -1075,7 +1075,8 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  @param attributeName The name of the attribute edited by the component.
      *  @param attribute The attribute edited by the component.
      */
-    private void _addSubmitAction(final JComponent component,
+    @SuppressWarnings("serial")
+	private void _addSubmitAction(final JComponent component,
             final String attributeName, final Settable attribute) {
         component.getInputMap().put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");

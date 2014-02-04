@@ -552,7 +552,8 @@ public final class NamedList implements Cloneable, Serializable {
     private static final int _threshhold = 100;
 
     /** @serial A LinkedList containing the elements. */
-    private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
+    @SuppressWarnings("serial")
+	private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
         public boolean add(Nameable obj) {
             // Findbugs: "Ambiguous invocation of either an outer or
             // inherited method java.util.LinkedList.size()," so we use super.size()

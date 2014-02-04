@@ -505,7 +505,6 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         tabs.addTab(containerLayout.getName(), formEditor);
     }
 
-    @SuppressWarnings("serial")
     private class CodeDialog extends JDialog {
         public CodeDialog(Frame owner, String text) {
             super(owner, "FormLayoutMaker - Code View", true);

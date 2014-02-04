@@ -873,7 +873,8 @@ public class Query extends JPanel {
      *  @param width The width.
      *  @return The text area.
      */
-    public JTextArea addTextArea(String name, String label, String theValue,
+    @SuppressWarnings("serial")
+	public JTextArea addTextArea(String name, String label, String theValue,
             Color background, Color foreground, int height, int width) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
@@ -2001,7 +2002,8 @@ public class Query extends JPanel {
 
     /** Panel containing an entry box and button that opens a color chooser.
      */
-    public static class QueryColorChooser extends Box implements ActionListener {
+    @SuppressWarnings("serial")
+	public static class QueryColorChooser extends Box implements ActionListener {
         /** Create a panel containing an entry box and a color chooser.
          *  @param owner The owner query
          *  @param name The name of the query
@@ -2101,7 +2103,8 @@ public class Query extends JPanel {
     /** Panel containing an entry box and file chooser.
      *
      */
-    public/*static*/class QueryFileChooser extends Box implements
+    @SuppressWarnings("serial")
+	public/*static*/class QueryFileChooser extends Box implements
             ActionListener {
         // This class cannot be static because the FileDialog needs to be owned
         // by the parent Query.
@@ -2360,7 +2363,7 @@ public class Query extends JPanel {
                 background = jFileChooserBugFix.saveBackground();
                 // NOTE: If the last argument is null, then choose a
                 // default dir.
-                JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
+				JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
                     public void approveSelection() {
                         File file = getSelectedFile();
                         if (file.exists() && getDialogType() == SAVE_DIALOG) {

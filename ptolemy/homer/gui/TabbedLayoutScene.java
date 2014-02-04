@@ -65,6 +65,7 @@ import ptolemy.homer.events.TabEvent;
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
+@SuppressWarnings("serial")
 public class TabbedLayoutScene extends JPanel implements ActionListener {
 
     /** The tab button that is added to the tab.

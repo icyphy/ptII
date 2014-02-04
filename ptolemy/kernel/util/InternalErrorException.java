@@ -43,6 +43,7 @@ package ptolemy.kernel.util;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
+@SuppressWarnings("serial")
 public class InternalErrorException extends KernelRuntimeException {
     /** Construct an exception with a detail message.
      *  @param detail The message.

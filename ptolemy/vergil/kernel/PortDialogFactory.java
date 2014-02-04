@@ -91,7 +91,8 @@ public class PortDialogFactory implements MenuItemFactory {
         // will not have the appropriate parent, and will disappear
         // when put in the background.
         // Note, this uses the "new" way of doing dialogs.
-        Action configPortsAction = new AbstractAction(_configPorts) {
+        @SuppressWarnings("serial")
+		Action configPortsAction = new AbstractAction(_configPorts) {
             public void actionPerformed(ActionEvent e) {
                 Component parent = menu.getInvoker();
 
@@ -114,7 +115,8 @@ public class PortDialogFactory implements MenuItemFactory {
 
         retv = menu.add(configPortsAction, _configPorts);
 
-        Action configUnitsAction = new AbstractAction(_configUnits) {
+        @SuppressWarnings("serial")
+		Action configUnitsAction = new AbstractAction(_configUnits) {
             public void actionPerformed(ActionEvent e) {
                 Component parent = menu.getInvoker();
 

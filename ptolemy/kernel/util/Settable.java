@@ -204,7 +204,7 @@ public interface Settable extends Nameable {
      *  visibility.  Instances of this class cannot be constructed outside
      *  the enclosing interface because its constructor is private.
      */
-    public static class Visibility implements Serializable {
+    public static class Visibility {
         // Private constructor prevents construction outside.
         // This constructor should not be called!
         // it is protected to work around a compiler bug in JDK1.2.2

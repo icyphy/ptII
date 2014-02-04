@@ -80,6 +80,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */
+@SuppressWarnings("serial")
 public class RemoteObjectList extends JPanel implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
@@ -88,7 +89,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
     /** Create the listing of remote objects.
      *  @param parent The reference to the parent frame.
      */
-    public RemoteObjectList(HomerMainFrame parent) {
+	public RemoteObjectList(HomerMainFrame parent) {
         setLayout(new BorderLayout(0, 0));
         setBorder(new TitledBorder(null, "Remote Named Objects",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));

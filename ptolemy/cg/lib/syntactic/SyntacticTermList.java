@@ -50,6 +50,7 @@ import java.util.List;
  @Pt.ProposedRating Red (shaver)
  @Pt.AcceptedRating Red
 */
+@SuppressWarnings("serial")
 public class SyntacticTermList extends LinkedList<SyntacticTerm> implements
         SyntacticTerm {
 

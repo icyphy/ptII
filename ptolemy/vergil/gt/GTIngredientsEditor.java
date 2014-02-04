@@ -429,7 +429,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
     }
 
-    protected void _createComponents() {
+    @SuppressWarnings("serial")
+	protected void _createComponents() {
         // Clear all the buttons and panels created by superclasses.
         getContentPane().removeAll();
 

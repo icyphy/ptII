@@ -28,8 +28,6 @@
  */
 package ptolemy.cg.lib;
 
-import java.io.Serializable;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
@@ -115,7 +113,7 @@ public class PointerToken extends Token {
 
     /** The pointer type.
      */
-    public static final class PointerType implements Cloneable, Type, Serializable {
+    public static final class PointerType implements Cloneable, Type {
         // This class is final so as to fix a warning by FindBugs:
         // "clone method does not call super.clone()"
 

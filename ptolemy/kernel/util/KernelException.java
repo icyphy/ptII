@@ -65,6 +65,7 @@ import java.util.Iterator;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
+@SuppressWarnings("serial")
 public class KernelException extends Exception {
     /** Construct an exception with a no specific detail message. */
     public KernelException() {

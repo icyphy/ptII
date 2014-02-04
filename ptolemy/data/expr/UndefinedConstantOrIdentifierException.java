@@ -46,6 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class UndefinedConstantOrIdentifierException extends
         IllegalActionException {
     /** Constructs an Exception with a detail message that includes the

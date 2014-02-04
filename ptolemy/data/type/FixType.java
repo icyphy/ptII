@@ -27,8 +27,6 @@
  */
 package ptolemy.data.type;
 
-import java.io.Serializable;
-
 import ptolemy.data.FixToken;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
@@ -54,7 +52,7 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red
  */
-public class FixType extends StructuredType implements Cloneable, Serializable {
+public class FixType extends StructuredType implements Cloneable {
     /** Construct a new fix type, with no integer bits and no
      * fractional bits.  This (rather useless) type represents the
      * bottom of the FixPoint type lattice.

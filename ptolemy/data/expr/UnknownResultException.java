@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)
  */
+@SuppressWarnings("serial")
 public class UnknownResultException extends KernelRuntimeException {
     /** Constructs an Exception with a detail message.
      *  @param detail The message.

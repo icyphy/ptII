@@ -28,8 +28,6 @@
  */
 package ptolemy.data.type.test;
 
-import java.io.Serializable;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
@@ -109,7 +107,7 @@ public class TestToken extends Token {
 
     /** The class of this token.
      */
-    public static class TestType implements Type, Serializable, Cloneable {
+    public static class TestType implements Type, Cloneable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

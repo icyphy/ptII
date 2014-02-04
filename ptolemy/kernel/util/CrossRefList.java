@@ -27,7 +27,6 @@
  */
 package ptolemy.kernel.util;
 
-import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -69,7 +68,7 @@ import java.util.NoSuchElementException;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bart)
  */
-public final class CrossRefList implements Serializable {
+public final class CrossRefList {
     /** Construct a list with the specified container.
      *  The container is immutable (it cannot be changed).
      *  If the argument is null, then a null pointer exception will result
@@ -397,7 +396,7 @@ public final class CrossRefList implements Serializable {
      * in the comments for the above public methods.  "Link" here
      * refers to an element of a doubly-linked list.)
      */
-    protected class CrossRef implements Serializable {
+    protected class CrossRef {
         //         /** Return a String represetation of this object.
         //          *  For debugging use only.
         //          *  @return A String representation of this object.

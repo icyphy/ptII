@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.AcceptedRating Green (neuendor)
  @see Receiver
  */
+@SuppressWarnings("serial")
 public class NoTokenException extends KernelRuntimeException {
     /** Construct an exception with the given message.
      *  @param message The message.

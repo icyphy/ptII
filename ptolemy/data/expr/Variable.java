@@ -2482,7 +2482,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     /** Subclass of IllegalActionException for use in reporting
      *  circular dependency errors.
      */
-    public static class CircularDependencyError extends IllegalActionException {
+    @SuppressWarnings("serial")
+	public static class CircularDependencyError extends IllegalActionException {
         public CircularDependencyError(Nameable object, String detail) {
             super(object, detail);
         }

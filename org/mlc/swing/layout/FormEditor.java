@@ -1159,7 +1159,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class ConstraintTableCellRenderer extends DefaultTableCellRenderer {
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
@@ -1180,7 +1179,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class GridTableModel extends javax.swing.table.AbstractTableModel {
 
         public int getColumnCount() {
@@ -1270,7 +1268,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class RemoveComponentAction extends AbstractAction {
         public RemoveComponentAction() {
             super();
@@ -1301,7 +1298,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class NewComponentAction extends AbstractAction {
         public NewComponentAction() {
             super();
@@ -1380,7 +1376,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class InsertRowBeforeAction extends AbstractAction {
         public InsertRowBeforeAction() {
             super();
@@ -1402,7 +1397,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class InsertRowAfterAction extends AbstractAction {
         public InsertRowAfterAction() {
             super();
@@ -1424,7 +1418,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class InsertColumnBeforeAction extends AbstractAction {
         public InsertColumnBeforeAction() {
             super();
@@ -1446,7 +1439,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class InsertColumnAfterAction extends AbstractAction {
         public InsertColumnAfterAction() {
             super();
@@ -1468,7 +1460,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class DeleteRowAction extends AbstractAction {
         public DeleteRowAction() {
             super();
@@ -1514,7 +1505,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     private class DeleteColumnAction extends AbstractAction {
         public DeleteColumnAction() {
             super();
@@ -1557,7 +1547,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     class ComponentPaletteListModel extends AbstractListModel {
         List<ComponentDef> componentDefs = ComponentDef.createComponentDefs();
 
@@ -1570,7 +1559,6 @@ public class FormEditor extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
     class ComponentPaletteListRenderer extends JLabel implements
             ListCellRenderer {
         public ComponentPaletteListRenderer() {

@@ -32,7 +32,6 @@
  */
 package ptolemy.kernel.util;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -137,7 +136,7 @@ import java.util.List;
  @Pt.ProposedRating Green (liuxj)
  @Pt.AcceptedRating Green (liuxj)
  */
-public final class Workspace implements Nameable, Serializable {
+public final class Workspace implements Nameable {
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 

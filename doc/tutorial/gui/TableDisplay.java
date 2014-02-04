@@ -89,7 +89,8 @@ public class TableDisplay extends AbstractPlaceableActor {
             }
             _tableau = null;
         } else {
-            TableModel dataModel = new AbstractTableModel() {
+            @SuppressWarnings("serial")
+			TableModel dataModel = new AbstractTableModel() {
                 public int getColumnCount() {
                     return 10;
                 }

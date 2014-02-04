@@ -27,8 +27,6 @@
  */
 package ptolemy.data.type;
 
-import java.io.Serializable;
-
 import ptolemy.data.BooleanMatrixToken;
 import ptolemy.data.ComplexMatrixToken;
 import ptolemy.data.ComplexToken;
@@ -63,8 +61,7 @@ import ptolemy.math.FixPoint;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red
  */
-public class MatrixType extends StructuredType implements Cloneable,
-        Serializable {
+public class MatrixType extends StructuredType implements Cloneable {
 
     /** Construct a new matrix type that represents matrix tokens of the
      *  given class with the given number of rows and columns.

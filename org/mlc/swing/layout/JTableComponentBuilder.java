@@ -61,7 +61,8 @@ public class JTableComponentBuilder implements ComponentBuilder {
                 + "Control);\n";
     }
 
-    public java.awt.Component getInstance(
+    @SuppressWarnings("serial")
+	public java.awt.Component getInstance(
             java.util.Map<String, Object> beanProperties) throws Exception {
         JTable table = new JTable();
         table.setModel(new AbstractTableModel() {

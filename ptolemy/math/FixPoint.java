@@ -28,7 +28,6 @@
  */
 package ptolemy.math;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -84,7 +83,7 @@ import java.math.BigInteger;
  @see ptolemy.math.Precision
  @see ptolemy.math.Quantization
  */
-public class FixPoint implements Cloneable, Serializable {
+public class FixPoint implements Cloneable {
 
     /** Construct a FixPoint by converting a bigDecimal to comply
      *  with a quantization specification.

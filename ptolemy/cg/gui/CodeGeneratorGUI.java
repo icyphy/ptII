@@ -71,6 +71,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class CodeGeneratorGUI extends PtolemyFrame {
 
     /** Construct a frame to control code generation for the specified

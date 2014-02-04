@@ -29,8 +29,6 @@
  */
 package ptolemy.data;
 
-import java.io.Serializable;
-
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -87,7 +85,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see AbstractNotConvertibleToken
  @see MatrixToken
  */
-public class Token implements Serializable {
+public class Token {
 
     /** Create a Token.
      */
