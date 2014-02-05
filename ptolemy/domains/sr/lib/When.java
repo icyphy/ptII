@@ -28,6 +28,7 @@
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.BooleanSwitch;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
@@ -46,6 +47,10 @@ import ptolemy.kernel.util.Workspace;
  <i>input</i> being absent, then the output is absent.
  This actor is inspired by the "when" operator in the synchronous
  languages LUSTRE and SIGNAL.
+ <p>
+ Note that this actor does not read the input at all if the <i>control</i>
+ input is either absent or has value false. If you need an actor that
+ always reads the input, use the {@link BooleanSwitch}.
 
  <p>P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, "LUSTRE: A
  Declarative Language for Programming Synchronous Systems,"
