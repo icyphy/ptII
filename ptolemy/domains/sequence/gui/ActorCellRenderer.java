@@ -51,6 +51,7 @@ import ptolemy.util.MessageHandler;
 * @Pt.ProposedRating Red (ristau)
 * @Pt.AcceptedRating Red (ristau)
 */
+@SuppressWarnings("serial")
 public class ActorCellRenderer extends DefaultListCellRenderer {
 
     ///////////////////////////////////////////////////////////////////

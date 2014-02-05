@@ -46,6 +46,7 @@ import javax.swing.UIManager;
  * @author Michael Shilman
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class AppletContext extends JApplet implements AppContext {
     /**
      * The action that is called when this exits.
@@ -65,7 +66,6 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Create a new context and set the exit action to do nothing.
      */
-    @SuppressWarnings("serial")
     public AppletContext() {
         _exitAction = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {

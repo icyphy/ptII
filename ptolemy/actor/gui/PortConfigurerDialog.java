@@ -129,6 +129,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class PortConfigurerDialog extends PtolemyDialog implements
         ChangeListener {
     /**
@@ -1284,7 +1285,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         /** Construct a validating JTextField JTable Cell editor.
          *  @param jFormattedTextField The JTextField that provides choices.
          */
-        @SuppressWarnings("serial")
 		public ValidatingJTextFieldCellEditor(
                 final JFormattedTextField jFormattedTextField) {
             super(jFormattedTextField);
@@ -1477,7 +1477,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         /** Construct a validating combo box JTable Cell editor.
          *  @param comboBox The combo box that provides choices.
          */
-        @SuppressWarnings("serial")
 		public ValidatingComboBoxCellEditor(final JComboBox comboBox) {
             super(comboBox);
             _comboBox = (JComboBox) getComponent();

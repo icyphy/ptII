@@ -53,6 +53,7 @@ import ptolemy.plot.EditablePlot;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
+@SuppressWarnings("serial")
 public class SketchApplet extends MoMLApplet implements EditListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

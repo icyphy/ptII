@@ -83,6 +83,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class SearchResultsDialog extends PtolemyDialog implements
         ListSelectionListener, QueryListener {
 

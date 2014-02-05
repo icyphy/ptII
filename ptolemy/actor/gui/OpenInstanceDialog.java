@@ -63,6 +63,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener {
 
     /** Construct a dialog that presents the parameters as a table. Each row of the

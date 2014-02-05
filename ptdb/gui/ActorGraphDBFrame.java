@@ -78,7 +78,7 @@ import diva.gui.GUIUtilities;
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
  */
-
+@SuppressWarnings("serial")
 public class ActorGraphDBFrame extends ActorGraphFrame {
 
     /** Name of the parameter that prevents changes to database. */

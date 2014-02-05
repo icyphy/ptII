@@ -34,6 +34,7 @@ import diva.canvas.JCanvas;
  * @author John Reekie
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JCanvasPalette extends JCanvas {
     // FIXME
 }

@@ -97,6 +97,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.gui.GUIUtilities;
 
+@SuppressWarnings("serial")
 public class MatchResultViewer extends GTFrame {
 
     /** Construct a frame associated with the specified Ptolemy II model.

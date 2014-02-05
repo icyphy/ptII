@@ -239,7 +239,8 @@ public class AnnotationEditorFactory extends EditorFactory {
     /** A text widget for editing textual annotations (which are
      *  visible attributes).
      */
-    public class AnnotationTextEditor extends JPanel {
+    @SuppressWarnings("serial")
+	public class AnnotationTextEditor extends JPanel {
         /** Create an annotation text editor.
          *  @param textArea The text area.
          */

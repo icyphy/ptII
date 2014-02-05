@@ -67,6 +67,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class AdvancedSimpleSearchFrame extends JFrame {
 
     /**

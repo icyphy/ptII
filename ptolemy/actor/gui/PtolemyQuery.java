@@ -117,6 +117,7 @@ import com.microstar.xml.XmlException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
+@SuppressWarnings("serial")
 public class PtolemyQuery extends Query implements QueryListener,
         ValueListener, ChangeListener, CloseListener {
     /** Construct a panel with no queries in it and with the specified

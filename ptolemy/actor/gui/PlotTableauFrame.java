@@ -86,6 +86,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotTableauFrame extends TableauFrame implements Printable,
         ImageExportable {
     /** Construct a plot frame with a default title and by default contains

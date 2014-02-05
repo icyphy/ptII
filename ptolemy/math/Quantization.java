@@ -28,7 +28,6 @@
  */
 package ptolemy.math;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 
 /**
@@ -97,7 +96,7 @@ import java.math.BigInteger;
  @see ptolemy.math.Overflow
  @see ptolemy.math.Rounding
  */
-public abstract class Quantization implements Cloneable, Serializable {
+public abstract class Quantization implements Cloneable {
     /** Construct a Quantization with the given precision, overflow
      *  strategy, and rounding strategy.
      *

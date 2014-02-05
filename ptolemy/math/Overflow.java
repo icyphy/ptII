@@ -27,7 +27,6 @@
  */
 package ptolemy.math;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -134,7 +133,7 @@ import java.util.Map;
  @see ptolemy.math.Quantization
  @see ptolemy.math.Rounding
  */
-public abstract class Overflow implements Cloneable, Serializable {
+public abstract class Overflow implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -64,6 +64,7 @@ import ptdb.common.util.Utilities;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
     /**

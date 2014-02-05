@@ -36,6 +36,7 @@ package ptolemy.graph.analysis;
  @author Shahrooz Shahparnia
  @version $Id$
  */
+@SuppressWarnings("serial")
 public class AnalysisException extends RuntimeException {
     /** The default constructor without arguments.
      */

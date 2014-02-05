@@ -92,7 +92,7 @@ import diva.gui.GUIUtilities;
  * @Pt.AcceptedRating red (lholsing)
  *
  */
-
+@SuppressWarnings("serial")
 public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     /**

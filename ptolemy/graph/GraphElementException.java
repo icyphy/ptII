@@ -38,6 +38,7 @@ package ptolemy.graph;
  @Pt.ProposedRating Red (myko)
  @Pt.AcceptedRating Red (ssb)
  */
+@SuppressWarnings("serial")
 public class GraphElementException extends GraphException {
     /** Constructor for a given message.
      *  @param message The message.

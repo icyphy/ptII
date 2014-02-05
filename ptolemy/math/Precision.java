@@ -28,7 +28,6 @@
  */
 package ptolemy.math;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.regex.Matcher;
@@ -133,7 +132,7 @@ import java.util.regex.Pattern;
  @Pt.AcceptedRating Red (kienhuis)
  @see FixPoint
  */
-public class Precision implements Cloneable, Serializable {
+public class Precision implements Cloneable {
 
     /** Construct a Precision object based on the provided string. The
      *  string can describe the precision in any of the

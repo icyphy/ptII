@@ -44,6 +44,7 @@ import ptolemy.kernel.util.InvalidStateException;
  @Pt.ProposedRating Red (myko)
  @Pt.AcceptedRating Red (ssb)
  */
+@SuppressWarnings("serial")
 public class GraphInvalidStateException extends InvalidStateException {
 
     // This class extends IllegalActionException so that we have

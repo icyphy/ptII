@@ -47,6 +47,7 @@ import javax.swing.AbstractListModel;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class ArrayModelList extends AbstractListModel {
 
     /**

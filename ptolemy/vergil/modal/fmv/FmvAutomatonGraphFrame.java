@@ -76,6 +76,7 @@ import diva.gui.GUIUtilities;
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red ()
  */
+@SuppressWarnings("serial")
 public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
     /**

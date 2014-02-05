@@ -186,6 +186,7 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class TransformationEditor extends GTFrame implements ActionListener,
         MenuItemListener, TableModelListener, ValueListener {
 

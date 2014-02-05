@@ -39,6 +39,7 @@ package ptolemy.graph;
  @Pt.ProposedRating Red (myko)
  @Pt.AcceptedRating Red (ssb)
  */
+@SuppressWarnings("serial")
 public class GraphConstructionException extends GraphException {
     /** Constructor with an argument of text description.
      *  @param message The exception message.

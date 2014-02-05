@@ -54,6 +54,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Green (mudit)
  @Pt.AcceptedRating Yellow (mudit)
  */
+@SuppressWarnings("serial")
 public class TerminateProcessException extends RuntimeException {
     // NOTE: This class has much duplicated code with KernelException,
     // but because it needs to be a RuntimeException, there seemed to

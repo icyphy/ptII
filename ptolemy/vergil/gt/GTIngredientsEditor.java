@@ -136,6 +136,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
+@SuppressWarnings("serial")
 public class GTIngredientsEditor extends PtolemyDialog {
 
     public GTIngredientsEditor(DialogTableau tableau, Frame owner,
@@ -429,7 +430,6 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
     }
 
-    @SuppressWarnings("serial")
 	protected void _createComponents() {
         // Clear all the buttons and panels created by superclasses.
         getContentPane().removeAll();

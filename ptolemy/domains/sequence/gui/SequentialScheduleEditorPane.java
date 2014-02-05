@@ -59,6 +59,7 @@ import ptolemy.actor.sched.Schedule;
  * @Pt.ProposedRating Red (ristau)
  * @Pt.AcceptedRating Red (ristau)
  */
+@SuppressWarnings("serial")
 public class SequentialScheduleEditorPane extends JPanel implements
         ListSelectionListener {
 

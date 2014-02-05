@@ -137,6 +137,7 @@ Michael Connor (mlconnor&#064;yahoo.com).
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
 */
+@SuppressWarnings("serial")
 public class PtolemyFormEditor extends JPanel {
 
     /** Construct a new form editor.

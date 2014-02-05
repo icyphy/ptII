@@ -61,6 +61,7 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JCanvasPanner;
 
+@SuppressWarnings("serial")
 public class GTFrame extends ExtendedGraphFrame {
 
     /** Construct a frame associated with the specified Ptolemy II model.

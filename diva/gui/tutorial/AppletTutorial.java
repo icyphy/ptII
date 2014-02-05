@@ -39,6 +39,7 @@ import diva.gui.AppletContext;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class AppletTutorial extends AppletContext {
     public AppletTutorial() {
         new ApplicationTutorial(this);

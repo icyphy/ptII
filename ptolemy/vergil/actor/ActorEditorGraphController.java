@@ -189,7 +189,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     ///////////////////////////////////////////////////////////////////
     //// NewRelationAction
     /** An action to create a new relation. */
-    public class NewRelationAction extends FigureAction {
+    @SuppressWarnings("serial")
+	public class NewRelationAction extends FigureAction {
         /** Create an action that creates a new relation.
          */
         public NewRelationAction() {

@@ -27,7 +27,6 @@
  */
 package ptolemy.math;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;

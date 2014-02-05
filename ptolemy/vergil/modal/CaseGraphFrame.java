@@ -79,6 +79,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     /** Construct a frame associated with the specified case actor.
      *  After constructing this, it is necessary

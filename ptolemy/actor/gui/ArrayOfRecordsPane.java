@@ -67,6 +67,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class ArrayOfRecordsPane extends JPanel {
     /** Construct an empty table pane.
      */

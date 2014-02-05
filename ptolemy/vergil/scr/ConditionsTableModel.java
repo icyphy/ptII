@@ -53,6 +53,7 @@ The conditions table for configuring an SCR Model.
 @Pt.ProposedRating Red (pd)
 @Pt.AcceptedRating Red (pd)
 */
+@SuppressWarnings("serial")
 public class ConditionsTableModel extends AbstractTableModel {
 
 	/** Construct a new conditions table model for a given output port and

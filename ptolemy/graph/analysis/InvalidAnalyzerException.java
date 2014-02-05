@@ -37,6 +37,7 @@ package ptolemy.graph.analysis;
  @author Shahrooz Shahparnia
  @version $Id$
  */
+@SuppressWarnings("serial")
 public class InvalidAnalyzerException extends AnalysisException {
     /** The default constructor without arguments.
      */

@@ -29,7 +29,6 @@ package ptolemy.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -320,8 +319,7 @@ public class RecursiveFileFilter implements FilenameFilter {
        @Pt.ProposedRating Yellow (tfeng)
        @Pt.AcceptedRating Red (tfeng)
     */
-    private static class FileComparator implements Comparator<File>,
-            Serializable {
+    private static class FileComparator implements Comparator<File> {
 
         /** Compare two files with their names.
          *

@@ -160,7 +160,7 @@ import java.util.Map;
  * @see        Size
  * @see        Sizes
  */
-
+@SuppressWarnings("serial")
 public final class FormLayout implements LayoutManager2, Serializable {
 
     /**

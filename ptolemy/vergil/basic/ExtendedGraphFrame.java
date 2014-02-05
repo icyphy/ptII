@@ -60,6 +60,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary

@@ -55,6 +55,7 @@ import ptolemy.data.Token;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class MatrixPane extends JScrollPane {
     /** Construct an empty matrix pane.
      */

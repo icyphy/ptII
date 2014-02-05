@@ -322,7 +322,8 @@ public abstract class ActorController extends AttributeController {
      * An action to listen to debug messages in the actor. This is static so
      * that other classes can use it.
      */
-    public static class ListenToActorAction extends FigureAction {
+    @SuppressWarnings("serial")
+	public static class ListenToActorAction extends FigureAction {
         // Kepler uses this action.
 
         /** Create an action to listen to debug messages.
@@ -426,7 +427,8 @@ public abstract class ActorController extends AttributeController {
      * that it does not open the class definition, but rather opens the
      * instance.
      */
-    private class OpenInstanceAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class OpenInstanceAction extends FigureAction {
         public OpenInstanceAction() {
             super("Open Instance");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -536,7 +538,8 @@ public abstract class ActorController extends AttributeController {
     /**
      * An action to save this actor in the library.
      */
-    private class SaveInLibraryAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class SaveInLibraryAction extends FigureAction {
         /**
          * Create a new action to save an actor in a library.
          */

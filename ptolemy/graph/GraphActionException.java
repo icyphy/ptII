@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (myko)
  @Pt.AcceptedRating Red (ssb)
  */
+@SuppressWarnings("serial")
 public class GraphActionException extends IllegalActionException {
 
     // This class extends IllegalActionException so that we have

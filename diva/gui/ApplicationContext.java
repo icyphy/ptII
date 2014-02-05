@@ -49,6 +49,7 @@ import javax.swing.UIManager;
  * @author John Reekie
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class ApplicationContext extends JFrame implements AppContext {
     /**
      * The action that is called when this exits.

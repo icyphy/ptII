@@ -93,6 +93,7 @@ import diva.gui.GUIUtilities;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class GraphPatternSearchEditor extends TransformationEditor implements
         PTDBBasicFrame {
 

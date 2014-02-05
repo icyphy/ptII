@@ -93,6 +93,7 @@ import diva.gui.GUIUtilities;
  * @Pt.ProposedRating Red (neuendor)
  * @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class ActorGraphFrame extends ExtendedGraphFrame
 /*implements ActionListener*/{
     /**
