@@ -461,10 +461,10 @@ struct Actor* PtidesDirector__GetNextActorFrom(struct PtidesDirector* director, 
 struct SuperdenseDependency* PtidesDirector__GetSuperdenseDependencyPair(struct PtidesDirector* director,
                 struct IOPort* source, struct IOPort* destination) {
         struct SuperdenseDependency* result;
-        if (pblMapContainsKey(director->_superdenseDependencyPair, source, sizeof(struct IOPort*))) {
-                PblMap* map = pblMapGet(director->_superdenseDependencyPair, source, sizeof(struct IOPort*), NULL);
-                if (pblMapContainsKey(map, destination, sizeof(struct IOPort*))) {
-                       result = (struct SuperdenseDependency*)pblMapGet(map, destination, sizeof(struct IOPort*), NULL);
+        if (pblMapContainsKey(director->_superdenseDependencyPair, &source, sizeof(struct IOPort*))) {
+                PblMap* map = pblMapGet(director->_superdenseDependencyPair, &source, sizeof(struct IOPort*), NULL);
+                if (pblMapContainsKey(map, &destination, sizeof(struct IOPort*))) {
+                       result = (struct SuperdenseDependency*)pblMapGet(map, &destination, sizeof(struct IOPort*), NULL);
                 }
         } else {
             struct SuperdenseDependency* result = calloc(1, sizeof(struct SuperdenseDependency));

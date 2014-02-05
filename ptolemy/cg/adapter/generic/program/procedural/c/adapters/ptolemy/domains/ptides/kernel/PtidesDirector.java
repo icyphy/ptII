@@ -106,7 +106,7 @@ public class PtidesDirector extends DEDirector {
                     port2Name = CodeGeneratorAdapter.generateName(port2
                             .getContainer()) + "_" + port2.getName();
                 }
-                code.append(_eol + "pblMapAdd(tempMap, " + port2Name
+                code.append(_eol + "pblMapAdd(tempMap, &" + port2Name
                         + ", sizeof(struct TypedIOPort*), tempEntry"
                         + ", sizeof(struct SuperdenseDependency*));");
             }
@@ -118,7 +118,7 @@ public class PtidesDirector extends DEDirector {
                         .getContainer()) + "_" + port1.getName();
             }
             code.append(_eol + "pblMapAdd(" + _sanitizedDirectorName
-                    + "->_superdenseDependencyPair, " + port1Name
+                    + "->_superdenseDependencyPair, &" + port1Name
                     + ", sizeof(struct TypedIOPort*), tempMap"
                     + ", sizeof(PblMap));");
         }
