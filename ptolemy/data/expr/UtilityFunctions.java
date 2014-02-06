@@ -1213,6 +1213,8 @@ public class UtilityFunctions {
         if((covariance.getColumnCount() != N) || (covariance.getRowCount() != covariance.getColumnCount())){
             throw new IllegalActionException("Covariance must be a square matrix and its dimension must " +
                         "match the mean array length");
+        }else if(!BaseType.DOUBLE.isCompatible(mean.getElementType())){
+            throw new IllegalActionException("Mean vector must consist of scalar type elements");
         }
         //check if the covariance matrix is symmetric
         for(int i = 0; i < N; i++){
@@ -1242,14 +1244,16 @@ public class UtilityFunctions {
         Token[] uncorrelatedTokens = uncorrelated.arrayValue();
         Token[] correlatedTokens = new Token[N];
         double[] correlatedSamples = new double[N];
+        Token[] meanArray = mean.arrayValue();
         for(int i=0; i < N; i++){
             for(int j=0; j < N; j++){
                 double uncorr = ((DoubleToken)uncorrelatedTokens[j]).doubleValue();
                 correlatedSamples[i] += L[i][j]*uncorr;
             }
-            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]);
+            
+            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]).add(meanArray[i]);
         }
-        return new ArrayToken(correlatedTokens);
+        return new ArrayToken(BaseType.DOUBLE,correlatedTokens);
     }
 
     /** Parse the string provided and return the result wrapped in a token.
