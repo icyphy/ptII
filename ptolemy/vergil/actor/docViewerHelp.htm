@@ -1,72 +1,77 @@
 <html>
-<head>
-<!-- $Id$ -->
-<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1>Actor and model documentation system</h1>
- Primary Authors: Edward A. Lee, Christopher Brooks.
+  <head>
+    <!-- $Id$ -->
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Actor and model documentation system</h1>
+    <p> Primary Authors: Edward A. Lee, Christopher Brooks.</p>
 
- <p>Actor and model documentation is displayed using custom
- widget.  The documentation for an actor or model can be edited by 
- the user.  To view the documentation for an actor, right click on 
- the actor and select Documentation -&gt; Get Documentation.
+    <p>Actor and model documentation is displayed using custom
+      widget.  The documentation for an actor or model can be edited by 
+      the user.  To view the documentation for an actor, right click on 
+      the actor and select Documentation -&gt; Get Documentation.</p>
 
-<p> This functionality is implemented using
- <a href="../../../doc/codeDoc/ptolemy/vergil/actor/DocTableau.html">DocTableau</a>
- and other classes in vergil.actor and the
- <a href="../../../doc/codeDoc/doc/doclets/PtDoclet.html">PtDoclet</a> doclet.
+    <p> This functionality is implemented using
+      <a href="../../../doc/codeDoc/ptolemy/vergil/actor/DocTableau.html">DocTableau</a>
+      and other classes in vergil.actor and the
+      <a href="../../../doc/codeDoc/doc/doclets/PtDoclet.html">PtDoclet</a> doclet.</p>
 
-<h2>Building the documentation</h2>
-When the documentation system is invoked on an object, the documentation
-system checks for documentation file that must be present.
+    <h2>Building the documentation</h2>
+    <p>When the documentation system is invoked on an object, the documentation
+      system checks for documentation file that must be present.</p>
 
-<p>If the application is run from a prebuilt Windows installer, then
-the documentation usually need not be built.  If the application
-was built from sources, the documentation files will need to be created.
+    <p>If the application is run from a prebuilt Windows installer, then
+      the documentation usually need not be built.  If the application
+      was built from sources, the documentation files will need to be created.</p>
 
-<p>If the documentation system is missing its files, the the Doc Builder
-window will come up.  To rebuild the documentation, view the documentation
-on any actor, attribute or director, right click on the object,
-select Documentation -&gt; Get Documentation and then select Build -&gt;
-Build docs in the Doc Viewer.  The Documentation Builder will requires
-that <code>$PTII/configure</code> was run so that the system knows
-which packages are present.
+    <p>If the documentation system is missing its files, the the Doc Builder
+      window will come up.  To rebuild the documentation, view the documentation
+      on any actor, attribute or director, right click on the object,
+      select Documentation -&gt; Get Documentation and then select Build -&gt;
+      Build docs in the Doc Viewer.  The Documentation Builder will requires
+      that <code>$PTII/configure</code> was run so that the system knows
+      which packages are present.
 
-<p>If you are building from source, then you can either use the Documentation
-Builder as above or run:
-<pre>
-cd $PTII/doc; make docs
-</pre>
+    <p>If you are building from source, then you can either use the Documentation
+      Builder as above or run:</p>
+    <pre>
+      cd $PTII/doc; make docs
+    </pre>
 
 
-<h2>How the Indexer works</h2>
-The indexer is run by running <code>make docs</code> in <code>$PTII/doc</code>.
-This rule runs 
- <a href="../../../doc/codeDoc/ptolemy/moml/filter/ActorIndex.html">ptolemy.moml.filter.ActorIndex</a>, which read in two files:
-<dl>
-<dt> <a href="../../../doc/codeDoc/allNamedObjs.txt"><code>$PTII/doc/codeDoc/allNamedObjs.txt</code></a>
-<dd>All the NamedObj files that were seen while running the doclet defined in
-<a href="../../../doc/doclets/PtDoclet.java"><code>$PTII/doc/doclets/PtDoclet.java</code></a>.  This doclet is run while running
-<code>make</code> in <code>$PTII/doc</code>.
+    <h2>How the Indexer works</h2>
 
-<dt> <a href="../../configs/doc/models.txt"><code>$PTII/ptolemy/configs/doc/models.txt</code></a>
-<dd> The names of all the demonstrations in
-<a href="../../configs/doc/completeDemos.htm"><code>$PTII/ptolemy/configs/doc/completeDemos.htm</code></a>.
-<br>This file is created by running 
-<pre>
-cd $PTII/ptolemy/configs
-make
-</pre>
-That rule runs 
- <a href="../../../doc/codeDoc/ptolemy/actor/gui/HTMLAbout.html">HTMLAbout.main()</a>
-which creates <code>models.txt</code>.
-<br>Note: <code>models.txt</code> need only be updated if
-<a href="../../configs/doc/completeDemos.htm"><code>$PTII/ptolemy/configs/doc/completeDemos.htm</code></a> changes.
-</dl>
+    <p>If <code>$PTII/doc/mk/ptII.mk</code> is present (say by
+    running <code>./configure</code>), then the indexer is run by
+    running <code>make docs</code> in <code>$PTII/doc</code>.  If <code>ptII.mk</code> is not present (this is common under Windows or with Eclipse), then
+      the <code>javadoc</code> command is run.</p>
 
- <a href="../../../doc/codeDoc/ptolemy/moml/filter/ActorIndex.html">ptolemy.moml.filter.ActorIndex</a> reads these two files and creates <code>.idx</code>
-files in <code>$PTII/doc/codeDoc</code>.
+    <p> Both methods first run javadoc and then invoke
+      <a href="../../../doc/codeDoc/ptolemy/moml/filter/ActorIndex.html">ptolemy.moml.filter.ActorIndex</a>, which read in two files:</p>
+    <dl>
+      <dt> <a href="../../../doc/codeDoc/allNamedObjs.txt"><code>$PTII/doc/codeDoc/allNamedObjs.txt</code></a></dt>
+      <dd>All the NamedObj files that were seen while running the doclet defined in
+	<a href="../../../doc/doclets/PtDoclet.java"><code>$PTII/doc/doclets/PtDoclet.java</code></a>.  This doclet is run while running
+	<code>make</code> in <code>$PTII/doc</code>.</dd>
 
-</body>
+      <dt> <a href="../../configs/doc/models.txt"><code>$PTII/ptolemy/configs/doc/models.txt</code></a></dt>
+      <dd> The names of all the demonstrations in
+	<a href="../../configs/doc/completeDemos.htm"><code>$PTII/ptolemy/configs/doc/completeDemos.htm</code></a>.
+	<br>This file is created by running 
+	<pre>
+	  cd $PTII/ptolemy/configs
+	  make
+	</pre>
+	That rule runs 
+	<a href="../../../doc/codeDoc/ptolemy/actor/gui/HTMLAbout.html">HTMLAbout.main()</a>
+	which creates <code>models.txt</code>.
+	<br>Note: <code>models.txt</code> need only be updated if
+	<a href="../../configs/doc/completeDemos.htm"><code>$PTII/ptolemy/configs/doc/completeDemos.htm</code></a> changes.</dd>
+    </dl>
+
+    <p> <a href="../../../doc/codeDoc/ptolemy/moml/filter/ActorIndex.html">ptolemy.moml.filter.ActorIndex</a> reads these two files and creates <code>.idx</code>
+      files in <code>$PTII/doc/codeDoc</code>.</p>
+
+  </body>
 </head>
