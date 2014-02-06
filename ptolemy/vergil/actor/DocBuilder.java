@@ -43,6 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ExecuteCommands;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
@@ -240,13 +241,24 @@ public class DocBuilder extends Attribute {
                 // which means we look in doc.codeDoc.
             }
 
+            // Windows users might not have the rm command.  
+            if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
+                String codeDocDirectory = ptII + "/codeDoc";
+                _executeCommands
+                    .updateStatusBar("Deleting the contents of \""
+                            + codeDocDirectory + "\".");
+                if (!FileUtilities.deleteDirectory(codeDocDirectory)) {
+                    _executeCommands.stderr("Warning: Could not delete some of the files in \""
+                            + codeDocDirectory + "\".");
+                }
+            }
+
             if (applicationName == null) {
                 File ptIImk = new File(
                         StringUtilities.getProperty("ptolemy.ptII.dir")
                                 + "/mk/ptII.mk");
-                if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
-                    commands.add("rm -rf codeDoc");
-                }
+                // If the user has run configure, then we run make,
+                // otherwise we run the javadoc command.
                 if (ptIImk.exists()) {
                     commands.add("make codeDoc/tree.html");
                     commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
@@ -272,9 +284,6 @@ public class DocBuilder extends Attribute {
                             + "/ptolemy/configs/doc/models.txt\" doc/codeDoc");
                 }
             } else {
-                if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
-                    commands.add("rm -rf codeDoc" + applicationName);
-                }
                 commands.add("make codeDoc" + applicationName
                         + "/doc/codeDoc/tree.html");
                 commands.add("make APPLICATION=" + applicationName
