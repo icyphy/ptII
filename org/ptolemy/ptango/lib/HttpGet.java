@@ -120,7 +120,7 @@ public class HttpGet extends LimitedFiringSource {
      */
     public StringParameter timeoutResponse;
 
-    /** The URL to post to.
+    /** The URL to send the request to.
      *  This is a string that defaults to "http://localhost", which
      *  refers to a web server on the local host.
      */
