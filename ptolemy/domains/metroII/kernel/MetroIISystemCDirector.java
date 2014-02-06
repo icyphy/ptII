@@ -45,6 +45,8 @@ import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Director;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
@@ -53,6 +55,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringBufferExec;
 
@@ -95,6 +98,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
+     * The environmental variable METROII
+     */
+    public Parameter metroII; 
+    
+    /**
      * The executable file name of the MetroII SystemC model.
      */
     public FileParameter modelFileName;
@@ -121,14 +129,12 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
         } else if (attribute == configFileName) {
             //Check if the config is valid.
-            StringToken configFileNameToken = (StringToken) configFileName
-                    .getToken();
-            File configFile = new File(configFileNameToken.stringValue());
+            File configFile = configFileName.asFile();
             // configFile could be null during cloning.
             if (configFile != null && !configFile.getName().equals("") && !configFile.exists()) {
                 throw new IllegalActionException(
                         "The value of the configFileName parameter \""
-                                + configFileNameToken.stringValue()
+                                + configFileName.stringValue()
                                 + "\" does not exist?");
             }
         } else {
@@ -456,9 +462,15 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
+        startTime.setVisibility(Settable.NONE); 
+        stopTime.setVisibility(Settable.NONE); 
+        localClock.setVisibility(Settable.NONE);
+        
+        metroII = new Parameter(this, "METROII"); 
+        metroII.setExpression("\""+System.getenv("METROII")+"\""); 
+        metroII.setVisibility(Settable.NOT_EDITABLE);
         modelFileName = new FileParameter(this, "modelFileName");
         configFileName = new FileParameter(this, "configFileName");
-
     }
 
     ///////////////////////////////////////////////////////////////////

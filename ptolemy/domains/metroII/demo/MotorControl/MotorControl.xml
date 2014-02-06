@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.99999999999324, 173.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.9999999999932, 173.0}">
     </property>
     <property name="MetroIIDirector (CoSimDirector)" class="ptolemy.domains.metroII.kernel.MetroIIDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
@@ -621,7 +621,7 @@
                 </property>
             </port>
             <entity name="reserveFeedPaperRadius" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={877, 379, 584, 262}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={879, 435, 582, 233}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 212]">
                 </property>
@@ -641,7 +641,7 @@
 <xLabel>Time in seconds</xLabel>
 <yLabel>Paper Radius  (meters)</yLabel>
 <xRange min="0.0" max="3.0"/>
-<yRange min="-7.835466757829977" max="640.0"/>
+<yRange min="0.0" max="640.0"/>
 <default connected="no" marks="points" stems="yes"/>
 </plot>?>
                 </configure>
@@ -1221,16 +1221,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 125.0]">
         </property>
         <property name="MetroIISystemCDirector" class="ptolemy.domains.metroII.kernel.MetroIISystemCDirector">
-            <property name="modelFileName" class="ptolemy.data.expr.FileParameter" value="/home/glp/Project/metroII/examples/single-processor-platform/single-processor-platform">
+            <property name="modelFileName" class="ptolemy.data.expr.FileParameter" value="$METROII/examples/single-processor-platform/single-processor-platform">
             </property>
-            <property name="configFileName" class="ptolemy.data.expr.FileParameter" value="/home/glp/Project/metroII/examples/single-processor-platform/processor-configuration.csv">
-            </property>
-            <property name="mappingFileName" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="configFileName" class="ptolemy.data.expr.FileParameter" value="$METROII/examples/single-processor-platform/processor-configuration.csv">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 60.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={291, 323, 914, 605}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 323, 914, 605}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 516]">
         </property>
