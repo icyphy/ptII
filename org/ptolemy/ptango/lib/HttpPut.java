@@ -1,4 +1,4 @@
-/* An actor that writes an input string to the specified file.
+/* An actor that sends an HTTP PUT request to a Web server.
 
  @Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
@@ -27,18 +27,17 @@
  */
 package org.ptolemy.ptango.lib;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.ptolemy.ptango.lib.HttpRequest.Method;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -48,11 +47,11 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
- Post the contents of input record to a specified URL.
+ Take the input string, wrap it into a HTTP message, and send it 
+ to the server associated with the given URL.
  
-
- @see HttpGet
- @author  Edward A. Lee Marten Lohstroh
+ @see HttpRequest
+ @author  Edward A. Lee and Marten Lohstroh
  @version $Id: HttpPut.java 67693 2013-10-17 15:59:01Z hudson@moog.eecs.berkeley.edu $
  @since Ptolemy II 0.4
  @Pt.ProposedRating Yellow (eal)
@@ -74,22 +73,26 @@ public class HttpPut extends TypedAtomicActor {
         contentType = new PortParameter(this, "contentType");
         contentType.setStringMode(true);
         contentType.setExpression("application/x-www-form-urlencoded");
-        
-        new SingletonParameter(contentType.getPort(), "_showName").setToken(BooleanToken.TRUE);
-        (new StringAttribute(contentType.getPort(), "_cardinal")).setExpression("SOUTH");
-        
+
+        new SingletonParameter(contentType.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+        (new StringAttribute(contentType.getPort(), "_cardinal"))
+                .setExpression("SOUTH");
+
         url = new PortParameter(this, "url");
         url.setStringMode(true);
         url.setExpression("http://localhost");
-        
-        new SingletonParameter(url.getPort(), "_showName").setToken(BooleanToken.TRUE);
-        (new StringAttribute(url.getPort(), "_cardinal")).setExpression("SOUTH");
+
+        new SingletonParameter(url.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
+        (new StringAttribute(url.getPort(), "_cardinal"))
+                .setExpression("SOUTH");
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
-        
+
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
     }
@@ -101,7 +104,7 @@ public class HttpPut extends TypedAtomicActor {
      *  This is a string that defaults to "application/x-www-form-urlencoded".
      */
     public PortParameter contentType;
-    
+
     /** The input port, which accepts a string that must be formatted and 
      *  encoded in accordance with the given content-type.
      */
@@ -116,7 +119,7 @@ public class HttpPut extends TypedAtomicActor {
      *  refers to a web server on the local host.
      */
     public PortParameter url;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -141,66 +144,39 @@ public class HttpPut extends TypedAtomicActor {
         super.fire();
         url.update();
         contentType.update();
-        // If there is no input, do nothing.
-        if (input.hasToken(0)) {
-            String body = ((StringToken)input.get(0)).stringValue();
-            if (_debugging) {
-                _debug("Read input: " + body);
-            }
-            
-            String urlValue = ((StringToken) url.getToken()).stringValue();
-            if (urlValue == null || urlValue.isEmpty()) {
-                throw new IllegalActionException("No URL provided.");
-            }
-            OutputStreamWriter writer = null;
 
-            try {
-                URL url = new URL(urlValue);
-                HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-                connection.setRequestProperty("Content-Type", contentType.getExpression());
-                connection.setRequestMethod("PUT");
-                connection.setDoOutput(true);
-                try {
-                    writer = new OutputStreamWriter(connection.getOutputStream());
-                    writer.write(body);
-                    writer.flush();
-                } finally {
-                    if (writer != null) {
-                        writer.close();
-                    }
-                }
-                
-                _debug("Put: " + body);
-                _debug("To URL: " + url.toString());
-                _debug("Waiting for response.");
-                
-                BufferedReader reader = null;
-                StringBuffer response = new StringBuffer();
-                try {
-                    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        if (_request == null) {
+            _request = new HttpRequest();
+        }
 
-                    String line;
-                    // FIXME: Need a timeout here!
-                    while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                    if (!line.endsWith("\n")) {
-                        response.append("\n");
-                    }
-                    }
-                    if (_debugging) {
-                        _debug("Received response: " + response.toString());
-                    }
-                } finally {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                }
-                output.send(0, new StringToken(response.toString()));
-            } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "postfire() failed");
-            }
-        } else if (_debugging) {
-            _debug("No input token.");
+        String urlValue = ((StringToken) url.getToken()).stringValue();
+        if (urlValue == null || urlValue.isEmpty()) {
+            throw new IllegalActionException("No URL provided.");
+        }
+
+        try {
+            _request.setUrl(new URL(urlValue));
+
+            _request.setMethod(Method.PUT);
+            _request.setProperties(new RecordToken(
+                    new String[] { "Content-Type" }, new Token[] { contentType
+                            .getToken() }));
+            _request.setBody(((StringToken) input.get(0)).stringValue());
+            _request.setTimeout(3000);
+
+            String response = _request.execute();
+
+            // FIXME: default response upon failure or empty string? 
+
+            output.send(0, new StringToken(response.toString()));
+
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, "postfire() failed");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    HttpRequest _request;
 }
