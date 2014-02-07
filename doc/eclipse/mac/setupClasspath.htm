@@ -92,6 +92,16 @@
 	      export PTII=`pwd`  
 	    </pre>  
 	  </li>
+	  <li> <i>Optional</i>: The <code>PTII</code> environment variable needs to be set each time
+	    you run <code>configure</code>  To make this setting available after reboot,
+	    edit <code>~/.bashrc</code> file and add the command
+	    so that you do not need to enter it each time.  For example, if your workspace was in
+	    <code>/Users/MrPtolemy/Documents/workspacePt</code>, then edit <code>~/.bashrc</code> and
+	    add:
+	    <pre>
+	      export PTII=/Users/MrPtolemy/Documents/workspacePt
+	    </pre>
+          </li>
 	  <li> Make <code>configure</code> executable.
 	    <pre>
 	      chmod a+x configure
