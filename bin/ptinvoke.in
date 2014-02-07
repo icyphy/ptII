@@ -1485,7 +1485,7 @@ if [ "$error" = "none" ]; then
        <string>\$USER_HOME/.ptolemyII/*</string>
 EOF
         # Unfortunately, Java 1.6.0_31 does not support Java wildcards in the classpath
-	(cd $HOME/.ptolemyII; ls *.jar) | \
+	(cd $HOME/.ptolemyII; find . -name "*.jar") | \
 	  awk '{ for(i=1;i<=NF;i++) { print "       <string>$USER_HOME/.ptolemyII/" $i "</string>"}}' >> $MACAPP_PLIST
 
 cat >>$MACAPP_PLIST <<EOF2
