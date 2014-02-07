@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-260.0, -400.0}">
         </property>
     </property>
-    <property name="robot_pos" class="ptolemy.data.expr.Parameter" value="{x = -7.2128137208393, y = 9.9275864010896}">
+    <property name="robot_pos" class="ptolemy.data.expr.Parameter" value="{x = -4.5757980227502, y = 1.811686599808}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -156,9 +156,9 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="particles, robot position, target position">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={666, 181, 847, 524}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={739, 22, 653, 613}, maximized=true}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[847, 480]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 569]">
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="Nparticles+2">
         </property>
@@ -215,15 +215,17 @@
         </property>
         <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="36.0">
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
+        </property>
+        <property name="t" class="ptolemy.data.expr.Parameter" value="45.0">
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, -240.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="-13.691263367268858">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-8.816493234889917">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="7.927458163508199">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="8.275035487757865">
         </property>
         <property name="z" class="ptolemy.data.expr.Parameter" value="pow( (robot_pos.x-x)^2+(robot_pos.y- y)^2, 0.5)">
         </property>
@@ -231,7 +233,7 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z_m" class="ptolemy.data.expr.Parameter" value="7.7279923839562">
+        <property name="z_m" class="ptolemy.data.expr.Parameter" value="7.8669203076034">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -246,58 +248,52 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="-13.578683405485323">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-10.330825126297345">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="y_update" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="6.558221181776144">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="7.434148234568335">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="z_m_equation" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pow( (robot_pos.x-x)^2+(robot_pos.y- y)^2, 0.5)">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="z_m_covariance" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[0.5]">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="setz_m" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z_m">
             </property>
             <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
     </entity>
     <entity name="Controller2" class="ptolemy.actor.TypedCompositeActor">
@@ -341,7 +337,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, -545.0}">
             </property>
         </property>
-        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = -0.1873813145857, y = -0.9822872507287}">
+        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = 0.8090169943749, y = -0.5877852522925}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -480,7 +476,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -65.0]">
             </property>
         </property>
-        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="{x = -7.2128137208393, y = 9.9275864010896}">
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="{x = -4.5757980227502, y = 1.811686599808}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

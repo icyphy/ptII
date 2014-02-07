@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-150.0, -445.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 135, 972, 765}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 135, 986, 765}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[752, 655]">
     </property>
@@ -106,7 +106,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-205.0, -380.0}">
         </property>
     </property>
-    <property name="robot_position1" class="ptolemy.data.expr.Parameter" value="{x = 7.9037967264643, y = 5.0159019264805}">
+    <property name="robot_position1" class="ptolemy.data.expr.Parameter" value="{x = 5.5757980227502, y = 1.811686599808}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -125,7 +125,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-195.0, -400.0}">
         </property>
     </property>
-    <property name="robot_position2" class="ptolemy.data.expr.Parameter" value="{x = -9.4473065017954, y = 7.2553037374504}">
+    <property name="robot_position2" class="ptolemy.data.expr.Parameter" value="{x = -5.8920683578952, y = 9.0667880507809}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -149,7 +149,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, -475.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, 145.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -175,7 +175,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="particles from robot1, robot1 position, target position, particles from robot2, robot2 position">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 189, 946, 711}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 32, 946, 711}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[946, 667]">
         </property>
@@ -190,8 +190,8 @@
 <title>Range-Only Stationary Target Localization</title>
 <xLabel>x</xLabel>
 <yLabel>y</yLabel>
-<xRange min="-40.0" max="40.0"/>
-<yRange min="-40.0" max="40.0"/>
+<xRange min="-18.715860816688505" max="8.462985554954328"/>
+<yRange min="-8.893248234314694" max="16.756017312908245"/>
 <default connected="no" marks="dots"/>
 </plot>?>
         </configure>
@@ -234,15 +234,17 @@
         </property>
         <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="110.0">
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
+        </property>
+        <property name="t" class="ptolemy.data.expr.Parameter" value="6.0">
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, -240.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="-11.82321394688203">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-4.498251043851083">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="4.797480971615002">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="12.34173104767138">
         </property>
         <property name="z" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position1.x-x)^2+(robot_position1.y- y)^2)">
         </property>
@@ -250,7 +252,7 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z_m" class="ptolemy.data.expr.Parameter" value="19.9332304987571">
+        <property name="z_m" class="ptolemy.data.expr.Parameter" value="17.7630030359983">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -350,7 +352,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, -545.0}">
             </property>
         </property>
-        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = 0.3090169943749, y = 0.9510565162952}">
+        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = 0.7289686274214, y = 0.6845471059287}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -508,7 +510,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, -545.0}">
             </property>
         </property>
-        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = -0.8090169943749, y = -0.5877852522925}">
+        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = -0.9297764858883, y = -0.3681245526847}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -630,15 +632,17 @@
         </property>
         <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="110.0">
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
+        </property>
+        <property name="t" class="ptolemy.data.expr.Parameter" value="6.0">
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, -30.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="-12.248985985002182">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-14.94783941108305">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="5.808493815389494">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="7.178022790569033">
         </property>
         <property name="z" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position2.x-x)^2+(robot_position2.y- y)^2)">
         </property>
@@ -646,7 +650,7 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z_m" class="ptolemy.data.expr.Parameter" value="4.1602796482624">
+        <property name="z_m" class="ptolemy.data.expr.Parameter" value="7.8016624700287">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -727,7 +731,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-210.0, -115.0}">
             </property>
         </property>
-        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="{x = -9.4473065017954, y = 7.2553037374504}">
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="{x = -5.8920683578952, y = 9.0667880507809}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -990,7 +994,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, -35.0]">
             </property>
         </property>
-        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="{x = 7.9037967264643, y = 5.0159019264805}">
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="{x = 5.5757980227502, y = 1.811686599808}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
