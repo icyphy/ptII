@@ -19,7 +19,13 @@
 	<entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
 	</entity>
 
+	<entity name="HttpPut" class="org.ptolemy.ptango.lib.HttpPut">
+	</entity>
+
 	<entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpPut">
+	</entity>
+
+	<entity name="RecordToQueryString" class="org.ptolemy.ptango.lib.RecordToQueryString">
 	</entity>
 
 	<property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
