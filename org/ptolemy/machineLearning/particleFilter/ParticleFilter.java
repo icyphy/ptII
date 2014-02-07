@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.sun.org.apache.bcel.internal.generic.ArrayType;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
@@ -693,16 +695,34 @@ public class ParticleFilter extends TypedCompositeActor {
         }
         public void sampleFromPrior() throws IllegalActionException{
             _parseTree = _updateTrees.get("priorDistribution");
-            
-            for(int i = 0; i < _ssSize; i++){
-                Token priorSample = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
-                if (priorSample == null) {
+            Token priorSample = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
+
+            if (priorSample == null) {
+                throw new IllegalActionException(
+                        "Expression yields a null result: "
+                                + prior.getExpression());
+            }
+
+            Type t = priorSample.getType();
+            if(t.equals(BaseType.DOUBLE)){
+                // one dimensional 
+                if(this.getSize()>1){
                     throw new IllegalActionException(
-                            "Expression yields a null result: "
-                                    + prior.getExpression());
+                            "Prior distribution and state space dimensions must match.");
                 }
                 double value = ((DoubleToken)priorSample).doubleValue();
                 _particleValue.add(Double.valueOf(value));
+            }else{
+                Token[] vals = ((ArrayToken)priorSample).arrayValue();
+                if(vals.length!=_ssSize){
+                    throw new IllegalActionException(
+                            "Prior distribution and state space dimensions must match.");
+                }
+                for(int i = 0; i < _ssSize; i++){
+                      double value = ((DoubleToken)vals[i]).doubleValue();
+                      _particleValue.add(Double.valueOf(value));
+                }
+
             }
         }
         public int getSize(){
@@ -736,6 +756,7 @@ public class ParticleFilter extends TypedCompositeActor {
                         p = (Parameter)(ParticleFilter.this).getAttribute(_stateVariables[i]);
                     }
                     p.setExpression(_particleValue.get(i).toString());
+                    p.setVisibility(Settable.EXPERT);
                     _tokenMap.put(_stateVariables[i], new DoubleToken(_particleValue.get(i).doubleValue()));
                     
                 }
