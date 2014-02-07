@@ -222,38 +222,6 @@ public class ParticleFilter extends TypedCompositeActor {
   
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-//    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-//
-//        // Thomas Feng writes: "Set the _instantiables in
-//        // super.clone() so that it contains the instantiables newly
-//        // added, whose setContainer() is called with the cloned
-//        // object as its container."
-//        // See $PTII/ptolemy/actor/gt/test/auto/InitializationBug.xml
-//        
-//        ParticleFilter newObject = (ParticleFilter) super.clone(workspace);
-//        // If the next line is uncommented, the InitializationBug.xml fails.
-//        // newObject._initializables = null;
-//
-//        newObject._upToDate = false;
-//        newObject.Nparticles = this.Nparticles;
-//        newObject.particles = new Particle[Nparticles];
-//        newObject._stateSpaceSize = this._stateSpaceSize;
-//        newObject._stateVariables = new String[_stateSpaceSize];
-//        newObject._tokenMap = new HashMap();
-//        newObject._updateTrees = new HashMap<String, ASTPtRootNode>();
-//        newObject._measurementParameters = new HashMap<String,Parameter>();
-//        newObject._measurementValues = new HashMap<String,Token>();
-//        newObject._firstIteration = true;
-//        try{
-//            newObject._init();
-//        }catch(NameDuplicationException e){
-//            
-//        }catch(IllegalActionException e){
-//            
-//        }
-//        newObject._requestInitialization();
-//        return newObject;
-//    }
     /** If the argument is any parameter other than <i>stateVariableNames</i>
      *  <i>t</i>, or any parameter matching an input port,
      *  then request reinitialization.
@@ -694,10 +662,9 @@ public class ParticleFilter extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
+    private boolean doBootstrap = true;
     /** Flag indicating whether the contained model is up to date. */
     private boolean _upToDate = false;
-
 
     private Expression _measurementEquation;
 
@@ -1028,5 +995,5 @@ public class ParticleFilter extends TypedCompositeActor {
     // the name of the measurement variable. ( only one?)
     private String _measurementVariable;
     
-    private boolean doBootstrap = true;
+    
 }
