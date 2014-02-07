@@ -3,7 +3,7 @@
 # @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 # @Author: Ilge Akkaya
 #
-# @Copyright (c) 2007-2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -47,7 +47,7 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = hmm
+PTPACKAGE = particleFilter
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
@@ -66,6 +66,9 @@ MISC_FILES = test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = demo test\
+	'ParticleFilter$$1.class' \
+	'ParticleFilter$$Particle.class' \
+	'ParticleFilter$$VariableScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

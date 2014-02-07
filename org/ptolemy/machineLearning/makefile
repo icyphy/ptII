@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = hmm
+DIRS = hmm particleFilter
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -51,7 +51,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	hmm/hmm.jar
+	hmm/hmm.jar \
+	particleFilter/particleFilter.jar
 
 OTHER_FILES_TO_BE_JARED = \
 	machineLearning.xml
