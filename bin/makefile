@@ -152,10 +152,14 @@ makeapp: ptinvoke
 
 macapps: $(MAC_APPS)
 
+# We touch the .app directory so that running make again does not rerun makeapp
 Ptiny.app: makeapp
 	./makeapp $@ PTINY -ptiny
+	touch $@
+
 Vergil.app: makeapp
 	./makeapp $@ FULL -full
+	touch $@
 
 makebat: ptinvoke
 	rm -f makebat
