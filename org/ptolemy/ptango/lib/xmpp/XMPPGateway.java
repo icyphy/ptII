@@ -69,13 +69,23 @@ import ptolemy.kernel.util.NamedObj;
 //// XMPPGateway
 
 /**
- *  This attribute manages the connection between the Ptolemy model
- *  with an XMPP server, using <a href="http://www.igniterealtime.org/projects/smack/">Smack</a>
+ *  This attribute sets up and maintains a connection to a XMPP server. It
+ *  keeps track of actors within the model that implement the XMPPSubscriber
+ *  or XMPPPublisher interface and relays messages between those actors
+ *  and the XMPP server.
+ *  
+ *  The Executable interface is implemented merely to make sure that the 
+ *  connection maintained to the server is alive every iteration, before
+ *  any firings occur in which actors may attempt to publish something
+ *  by invoking the <code>XMPP.publish()</code> method.
+ *  
+ *  This implementation makes use of the 
+ *  <a href="http://www.igniterealtime.org/projects/smack/">Smack</a>
  *  library.
  *
- *  FIXME: complete class description
- *  FIXME: add XMPP icon
- *  @see XMPPGateway
+ *  @see XMPPSource
+ *  @see XMPPSink
+ *  @see Executable
  *  @author Marten Lohstroh and Ben Zhang
  *  @version $Id$
  *  @since Ptolemy II 10.0
@@ -84,6 +94,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class XMPPGateway extends AbstractInitializableAttribute implements
         Executable {
+    
     /** Construct an instance of the XMPPGateway attribute.
      *  @param container The container.
      *  @param name The name.
@@ -175,15 +186,14 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** Return immediately. */
     @Override
     public void fire() throws IllegalActionException {
-        // FIXME: It would be good to document *why* fire() does nothing.
-        // Also, look at AtomicActor.fire() and consider adding the debugging.
+        _debug("Called fire()");
         return;
     }
 
     /** Attempt to connect to the server and login. Discover subscribers
-     *  and establish a subscriptions by registering the actors as listeners.
-     *  If a subscriber wants to subscribe to a non-existent node, create it.
-     *  Also discover publishers and give them a reference to this attribute.
+     *  and them as listeners. If a subscriber wants to subscribe to a 
+     *  non-existent node, create it.
+     *  discover publishers and give them a reference to this attribute.
      *  This might change in the future, as changes to running models require
      *  actors to register themselves instead of being discovered.
      *  @exception IllegalActionException If unable to login, create a node,
