@@ -1,4 +1,4 @@
-/* An actor that writes input data to the specified file.
+/* An actor that sends an HTTP GET request to a Web server.
 
  @Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
@@ -50,20 +50,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/**
- Get the contents of the specified URL and output as a string.
- This is similar to the {@link FileReader}, except that it has
- a timeout parameter. If the timeout expires while
- performing the get, and the timeoutResponse parameter has been
- set, then send the specified response. If no timeoutResponse
- has been set, then throw an exception on timeout.
-
- @see HttpPost
- @author  Edward A. Lee
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (eal)
+/** Get the contents of the specified URL and output as a string.
+ *  This is similar to the {@link FileReader}, except that it has
+ *  a timeout parameter. If the timeout expires while
+ *  performing the get, and the timeoutResponse parameter has been
+ *  set, then send the specified response. If no timeoutResponse
+ *  has been set, then throw an exception on timeout.
+ *  
+ *  @see HttpPost
+ *  @author  Edward A. Lee
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.AcceptedRating Red (eal)
  */
 public class HttpGet extends LimitedFiringSource {
     /** Construct an actor with the given container and name.

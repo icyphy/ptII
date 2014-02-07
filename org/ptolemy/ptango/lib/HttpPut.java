@@ -46,16 +46,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-/**
- Take the input string, wrap it into a HTTP message, and send it 
- to the server associated with the given URL.
- 
- @see HttpRequest
- @author  Edward A. Lee and Marten Lohstroh
- @version $Id: HttpPut.java 67693 2013-10-17 15:59:01Z hudson@moog.eecs.berkeley.edu $
- @since Ptolemy II 0.4
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (eal)
+/** Take the input string, wrap it into a HTTP message, and send it 
+ *  to the server associated with the given URL.
+ * 
+ *  @see HttpRequest
+ *  @author  Edward A. Lee and Marten Lohstroh
+ *  @version $Id: HttpPut.java 67693 2013-10-17 15:59:01Z hudson@moog.eecs.berkeley.edu $
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.AcceptedRating Red (eal)
  */
 public class HttpPut extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
