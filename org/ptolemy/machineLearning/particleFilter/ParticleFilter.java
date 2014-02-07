@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.machineLearning;
+package org.ptolemy.machineLearning.particleFilter;
 
 import java.util.HashMap;
 import java.util.Iterator;
