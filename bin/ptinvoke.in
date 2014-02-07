@@ -1415,7 +1415,7 @@ if [ "$error" = "none" ]; then
     else
 	if [ "$makeapp" = "1" ]; then   
 	    # Create a Mac OS X .app file
-	    PTVERSION=8.1.devel
+	    PTVERSION=10.0.devel
 	    MACAPP_BASE=`basename $MACAPP_APP .app`
 	    MACAPP_PLIST=$MACAPP_APP/Contents/Info.plist 
 	    
