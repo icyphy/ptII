@@ -276,8 +276,14 @@
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
+  <target name="bin"
+	  description="Run make in $PTII/bin, which creates scripts like $PTII/bin/vergil.">
+      <exec dir="${basedir}/bin" executable="make">
+      </exec>
+  </target>
+
   <target name="build"
-	  depends="build-message, build-subprojects,build-project"
+	  depends="build-message, build-subprojects,build-project,bin"
 	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
 
   <target name="build-message">
