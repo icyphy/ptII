@@ -1,9 +1,9 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id$
+# @Version: $Id: makefile 67781 2013-10-26 16:04:48Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2012-2013 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui
 
-DIRS =		adapters arduino luminary #renesas xmos
+DIRS =	test
 
 # Root of the Java directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,37 +45,34 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	c
-PTCLASSJAR =
+PTPACKAGE = 	gui
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	adapters/adapters.jar \
-	arduino/arduino.jar \
-	luminary/luminary.jar \
+#PTCLASSALLJARS =
 
-#	renesas/renesas.jar
-#	xmos/xmos.jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	Display.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS:%.java=%.c)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	adapters luminary renesas xmos
+MISC_FILES = test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
