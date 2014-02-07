@@ -3849,20 +3849,32 @@ else
 
             PT_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
 
-            AC_MSG_CHECKING([for the proper JNI architecture lib directory])
+dnl             AC_MSG_CHECKING([for the proper JNI architecture lib directory])
 
-	    if test $PTJNI_ARCHITECTURE = "darwin"; then
-		PTJNI_LIB="$PTJAVA_HOME/../Libraries"
-	    else
-		PTJNI_LIB="$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"
-	    fi
+dnl 	    if test $PTJNI_ARCHITECTURE = "darwin"; then
+dnl 	        if test -d "$PTJAVA_HOME/../Libraries"; then
+dnl 		    # Probably Apple Java 1.6 under Mac OS X 10.7
+dnl 		    PTJNI_LIB="$PTJAVA_HOME/../Libraries"
+dnl                 else
+dnl 		    if test -d "$PTJAVA_HOME/lib"; then
+dnl 		        # Probably Oracle Java 1.7
+dnl 			# Why Oracle did not put the libs in
+dnl 			# an arch directory like ALL THE OTHER
+dnl 			# RELEASES is beyond me.  So much for write
+dnl 			# once, run everywhere. -cxh
+dnl 		        PTJNI_LIB="$PTJAVA_HOME/lib"
+dnl 	            fi
+dnl                 fi 
+dnl 	    else
+dnl 		PTJNI_LIB="$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"
+dnl 	    fi
 
-            if test ! -d "$PTJNI_LIB"; then 
-	        AC_MSG_WARN([$PTJNI_LIB was not found.
-    As a result, $PTII/jni/launcher/launcher might not work.])
-            else 
-	        PT_MSG_RESULT([$PTJNI_LIB])
-            fi
+dnl             if test ! -d "$PTJNI_LIB"; then 
+dnl 	        AC_MSG_WARN([$PTJNI_LIB was not found.
+dnl     As a result, $PTII/jni/launcher/launcher might not work.])
+dnl             else 
+dnl 	        PT_MSG_RESULT([$PTJNI_LIB])
+dnl             fi
 
             AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
             case "`uname -s`" in
