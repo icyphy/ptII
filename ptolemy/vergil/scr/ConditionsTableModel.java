@@ -156,6 +156,7 @@ public class ConditionsTableModel extends AbstractTableModel {
 				expression = expression.append(")");
 			}
 			// System.out.println("Save model - expression: " + expression);
+			
 			try {
 				if (state.getRefinement() == null) {
 					((RefinementActor) state.getContainer()).addRefinement(
