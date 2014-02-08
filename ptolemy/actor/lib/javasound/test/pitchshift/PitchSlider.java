@@ -84,6 +84,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (vogel)
  @Pt.AcceptedRating Red (vogel)
  */
+@SuppressWarnings("serial")
 public class PitchSlider extends JFrame {
     ProcessAudio processAudio;
 

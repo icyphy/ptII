@@ -44,6 +44,7 @@ import ptolemy.gui.Top;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class TopTest extends Top {
     /** Read the specified URL.
      *  @param url The URL to read.

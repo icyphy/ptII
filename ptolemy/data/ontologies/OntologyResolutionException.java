@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class OntologyResolutionException extends IllegalActionException {
 
     /** Construct an exception that includes the OntologySolver

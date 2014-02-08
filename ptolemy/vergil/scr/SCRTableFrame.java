@@ -75,6 +75,7 @@ The frame for configuring an SCR Model
 @Pt.ProposedRating Red (pd)
 @Pt.AcceptedRating Red (pd)
 */
+@SuppressWarnings("serial")
 public class SCRTableFrame extends PtolemyFrame {
 
 	/** Construct a frame associated with an SCR Model. 

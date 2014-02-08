@@ -39,6 +39,7 @@ package diva.graph;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class GraphException extends RuntimeException {
     public GraphException() {
         super();

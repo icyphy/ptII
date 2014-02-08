@@ -27,9 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.vergil.actor.lib;
 
-import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation adapter class for vergil.actor.lib.LEDMatrix.

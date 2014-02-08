@@ -142,7 +142,8 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
     /** The frame that is created by an instance of ExecShellTableau.
      */
-    public static class ExecShellFrame extends TableauFrame {
+    @SuppressWarnings("serial")
+	public static class ExecShellFrame extends TableauFrame {
         // FindBugs suggested refactoring this into a static class.
 
         /** Construct a frame to display the ExecShell window.

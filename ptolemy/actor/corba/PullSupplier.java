@@ -283,7 +283,8 @@ public class PullSupplier extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    private class pullSupplier extends _pullSupplierImplBase {
+    @SuppressWarnings("serial")
+	private class pullSupplier extends _pullSupplierImplBase {
         /**
          * Construct a pullSupplier.
          */

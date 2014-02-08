@@ -43,6 +43,7 @@ import javax.swing.JTextField;
  @Pt.ProposedRating Red (vogel)
  @Pt.AcceptedRating Red (vogel)
  */
+@SuppressWarnings("serial")
 public class DecimalField extends JTextField {
     private NumberFormat format;
 

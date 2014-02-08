@@ -53,6 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class ExampleSystem implements Serializable {
     /** Construct the graph.
      *  @exception NameDuplicationException if the example system cannot

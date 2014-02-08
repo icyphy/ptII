@@ -54,6 +54,7 @@ import javax.swing.JTextField;
  *
  */
 
+@SuppressWarnings("serial")
 public class GenericAttributePanel extends JPanel {
 
     /** Construct a GenericAttributePanel.  All components are

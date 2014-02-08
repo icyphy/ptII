@@ -65,6 +65,7 @@ import ptdb.common.dto.XMLDBAttribute;
  *
  */
 
+@SuppressWarnings("serial")
 public class ModelAttributePanel extends JPanel {
 
     /** Construct a ModelAttributePanel.  All components are

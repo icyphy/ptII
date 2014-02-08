@@ -103,7 +103,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
     //// ComposeWithAction
 
     /** An action to perform composition. */
-    public class ComposeWithAction extends AbstractAction {
+    @SuppressWarnings("serial")
+	public class ComposeWithAction extends AbstractAction {
         /** Create a new action to perform composition. */
         public ComposeWithAction() {
             super("Compose With");

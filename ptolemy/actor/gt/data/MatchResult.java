@@ -52,6 +52,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
 
     /** Construct an empty match result.

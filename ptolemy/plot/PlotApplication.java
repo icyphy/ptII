@@ -115,6 +115,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotApplication extends PlotFrame {
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.

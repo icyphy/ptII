@@ -44,6 +44,7 @@ package ptdb.common.exception;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
+@SuppressWarnings("serial")
 public class XMLDBModelParsingException extends Exception {
 
     ///////////////////////////////////////////////////////////////////

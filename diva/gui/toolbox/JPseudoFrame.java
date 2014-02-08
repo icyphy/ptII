@@ -74,6 +74,7 @@ import javax.swing.event.EventListenerList;
  * @author John Reekie
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public abstract class JPseudoFrame extends JComponent {
     /** Some glue
      */

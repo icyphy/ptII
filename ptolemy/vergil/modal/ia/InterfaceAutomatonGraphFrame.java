@@ -50,6 +50,7 @@ import diva.graph.GraphPane;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
     /** Construct a frame associated with the specified model.
      *  After constructing this, it is necessary

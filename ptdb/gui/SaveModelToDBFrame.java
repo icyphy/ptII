@@ -95,6 +95,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (lholsing)
  *
  */
+@SuppressWarnings("serial")
 public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
     /**

@@ -56,6 +56,7 @@ import com.microstar.xml.XmlException;
  @see ptolemy.plot.PlotBox
  @see ptolemy.plot.Plot
  */
+@SuppressWarnings("serial")
 public class PlotMLApplet extends PlotApplet {
     /** Return a string describing this applet.
      */

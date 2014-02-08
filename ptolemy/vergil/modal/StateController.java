@@ -108,7 +108,8 @@ public class StateController extends AttributeWithIconController {
      *  NOTE: This requires that the configuration be non null, or it
      *  will report an error with a fairly cryptic message.
      */
-    protected class LookInsideAction extends FigureAction {
+    @SuppressWarnings("serial")
+	protected class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
 

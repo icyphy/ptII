@@ -70,6 +70,7 @@ import ptolemy.util.StringUtilities;
  @see PxgraphParser
  @see Plot
  */
+@SuppressWarnings("serial")
 public class PxgraphApplication extends PlotApplication {
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.

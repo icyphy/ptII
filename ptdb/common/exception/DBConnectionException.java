@@ -44,6 +44,7 @@ package ptdb.common.exception;
  *
  *
  */
+@SuppressWarnings("serial")
 public class DBConnectionException extends Exception {
 
     /**

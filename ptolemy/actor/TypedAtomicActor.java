@@ -431,6 +431,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
     private Set<Inequality> _cachedTypeConstraints;
 
     /** Version number when the cache was last updated. */
-    private long _typeConstraintsVersion;
+    @SuppressWarnings("unused")
+	private long _typeConstraintsVersion;
 
 }

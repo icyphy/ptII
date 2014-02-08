@@ -60,6 +60,7 @@ import javax.swing.SwingUtilities;
  @see PlotBox
  @see Plot
  */
+@SuppressWarnings("serial")
 public class PlotApplet extends JApplet {
     //     /** Construct a Plot applet */
     //     public PlotApplet() {

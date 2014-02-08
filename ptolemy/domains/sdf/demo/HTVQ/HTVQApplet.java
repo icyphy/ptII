@@ -49,6 +49,7 @@ import ptolemy.kernel.CompositeEntity;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class HTVQApplet extends MoMLApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

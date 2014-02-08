@@ -114,6 +114,7 @@ import diva.graph.layout.LevelLayout;
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class BusContentionApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

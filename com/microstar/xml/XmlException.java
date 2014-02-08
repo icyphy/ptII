@@ -66,6 +66,7 @@ import java.io.StringWriter;
  @see XmlHandler#error
  @see HandlerBase
  */
+@SuppressWarnings("serial")
 public class XmlException extends Exception {
     /** Construct a new XML parsing exception.
      * @param message The error message from the parser.

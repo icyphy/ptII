@@ -46,6 +46,7 @@ import java.util.LinkedList;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class Tuple<E> extends LinkedList<E> {
 
     /** Construct a tuple containing all the elements of the given collection.

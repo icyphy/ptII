@@ -64,6 +64,7 @@ import ptolemy.moml.unit.UnitEquation;
  @Pt.ProposedRating Yellow (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
+@SuppressWarnings("serial")
 public class UnitConstraintsDialog extends PtolemyDialog implements
         ChangeListener {
     /**

@@ -52,6 +52,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class PortDialogAction extends FigureAction {
 
     /** Construct a rename dialog action with the specified name,

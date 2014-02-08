@@ -39,6 +39,7 @@ import ptolemy.homer.kernel.ContentPrototype;
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */
+@SuppressWarnings("serial")
 public class TabEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////

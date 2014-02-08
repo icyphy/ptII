@@ -37,6 +37,7 @@ import javax.swing.border.Border;
  * @author John Reekie
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JStatusBar extends JPanel {
     /** The progress bar associated with this status bar
      */

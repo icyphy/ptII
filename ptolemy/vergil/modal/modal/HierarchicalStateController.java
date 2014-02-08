@@ -107,7 +107,8 @@ public class HierarchicalStateController extends StateController {
 
     /** An action to add a new refinement.
      */
-    public class AddRefinementAction extends FigureAction {
+    @SuppressWarnings("serial")
+	public class AddRefinementAction extends FigureAction {
 
         public AddRefinementAction() {
             super("Add Refinement");
@@ -244,7 +245,8 @@ public class HierarchicalStateController extends StateController {
     }
 
     /** Action to remove refinements. */
-    public static class RemoveRefinementAction extends FigureAction {
+    @SuppressWarnings("serial")
+	public static class RemoveRefinementAction extends FigureAction {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 

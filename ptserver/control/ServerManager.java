@@ -46,6 +46,7 @@ import com.caucho.hessian.server.HessianServlet;
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */
+@SuppressWarnings("serial")
 public class ServerManager extends HessianServlet implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////

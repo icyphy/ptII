@@ -64,6 +64,7 @@ import ptolemy.util.MessageHandler;
  *
  */
 
+@SuppressWarnings("serial")
 public class ModelPanel extends JPanel {
 
     /**

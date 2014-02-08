@@ -42,7 +42,6 @@ import antlr.collections.AST;
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
-@SuppressWarnings("unused")
 public class PtalonPopulator extends antlr.TreeParser implements
         PtalonPopulatorTokenTypes {
 

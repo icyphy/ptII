@@ -112,7 +112,8 @@ public class TabScenePanel implements ContentPrototype {
 
     /** The popup menu added to each widget loaded on the scene.
      */
-    private class NamedObjectPopupMenu extends JPopupMenu {
+    @SuppressWarnings("serial")
+	private class NamedObjectPopupMenu extends JPopupMenu {
 
         /** Create a new context menu for the widget.
          *  @param element The triggering widget.

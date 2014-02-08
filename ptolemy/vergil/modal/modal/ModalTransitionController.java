@@ -92,7 +92,8 @@ public class ModalTransitionController extends TransitionController {
 
     /** An action to add a new refinement.
      */
-    private class AddRefinementAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class AddRefinementAction extends FigureAction {
         public AddRefinementAction() {
             super("Add Refinement");
         }
@@ -296,7 +297,8 @@ public class ModalTransitionController extends TransitionController {
     }
 
     /** Action to remove refinements. */
-    private static class RemoveRefinementAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private static class RemoveRefinementAction extends FigureAction {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 

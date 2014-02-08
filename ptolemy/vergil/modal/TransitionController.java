@@ -468,7 +468,8 @@ public class TransitionController extends BasicEdgeController {
      *  NOTE: This requires that the configuration be non null, or it
      *  will report an error with a fairly cryptic message.
      */
-    private class LookInsideAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
 

@@ -50,6 +50,7 @@ import diva.graph.GraphPane;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
+@SuppressWarnings("serial")
 public class OntologyGraphFrame extends ExtendedGraphFrame implements
         ActionListener {
 

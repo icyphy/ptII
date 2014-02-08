@@ -145,7 +145,8 @@ public class KeyToken extends Token {
 
     /** The cryptographic key type.
      */
-    public static final class KeyType implements Cloneable, Type, Serializable {
+    @SuppressWarnings("serial")
+	public static final class KeyType implements Cloneable, Type, Serializable {
         // This class is final so as to fix a warning by FindBugs:
         // "clone method does not call super.clone()"
 

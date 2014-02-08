@@ -66,6 +66,7 @@ import com.microstar.xml.XmlException;
  @see PlotBox
  @see Plot
  */
+@SuppressWarnings("serial")
 public class PlotMLApplication extends PlotApplication {
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.

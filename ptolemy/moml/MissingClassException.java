@@ -46,6 +46,7 @@ import com.microstar.xml.XmlException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class MissingClassException extends XmlException {
     /** Construct a new XML parsing exception.
     }

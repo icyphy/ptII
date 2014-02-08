@@ -42,6 +42,7 @@ package ptolemy.plot;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotLiveApplet extends PlotApplet {
     /** Return a string describing this applet.
      *  @return A description of the applet.

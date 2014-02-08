@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.AcceptedRating Red (cxh) This class was
  @see ptolemy.kernel.util.InvalidStateException
  */
+@SuppressWarnings("serial")
 public class NotSchedulableException extends InvalidStateException {
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.

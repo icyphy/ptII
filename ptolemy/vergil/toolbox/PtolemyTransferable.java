@@ -59,6 +59,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class PtolemyTransferable implements Transferable, Serializable {
     // This class implements Serializable in hopes that
     // drag and drop will work under Mac OS X.

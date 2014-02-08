@@ -102,6 +102,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class MoMLApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -103,6 +103,7 @@ import diva.graph.JGraph;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class DocViewer extends HTMLViewer {
 
     /** Construct a documentation viewer for the specified target.

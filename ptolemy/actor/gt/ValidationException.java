@@ -46,6 +46,7 @@ import ptolemy.kernel.util.KernelException;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class ValidationException extends KernelException {
 
     /** Construct an exception with a detail message.

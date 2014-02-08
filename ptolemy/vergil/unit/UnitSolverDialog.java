@@ -93,6 +93,7 @@ import diva.graph.JGraph;
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
+@SuppressWarnings("serial")
 public class UnitSolverDialog extends PtolemyDialog implements
         ListSelectionListener, SelectionListener {
     /**

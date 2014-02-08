@@ -46,6 +46,7 @@ import java.util.List;
  * @see        Sizes.ComponentSize
  */
 
+@SuppressWarnings("serial")
 final class BoundedSize implements Size, Serializable {
 
     /**

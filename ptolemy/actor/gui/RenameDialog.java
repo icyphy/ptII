@@ -45,6 +45,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class RenameDialog extends ComponentDialog {
     /** Construct a dialog with the specified owner and target.
      *  The dialog is placed relative to the owner.

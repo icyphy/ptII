@@ -41,6 +41,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Panel;
 
+@SuppressWarnings("serial")
 class TablePanel extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

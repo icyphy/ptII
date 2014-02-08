@@ -226,6 +226,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class Plot extends PlotBox implements PlotInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -62,6 +62,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class ShellTextArea extends JPanel {
     /** Create a new instance with no initial message.
      */

@@ -57,6 +57,7 @@ import ptolemy.gui.BasicJApplet;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class ShowRawDocumentApplet extends BasicJApplet {
     /** Constructor.
      */

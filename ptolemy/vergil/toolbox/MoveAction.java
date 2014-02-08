@@ -61,6 +61,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class MoveAction extends FigureAction {
     /** Construct a new action. The type of move is specified by
      *  the public fields DOWN, TO_FIRST, TO_LAST, and UP.

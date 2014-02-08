@@ -50,6 +50,7 @@ The event table for configuring an SCR Model.
 @Pt.ProposedRating Red (pd)
 @Pt.AcceptedRating Red (pd)
 */
+@SuppressWarnings("serial")
 public class EventTableModel extends AbstractTableModel {
 
 	/** Construct a new event table model for a given parameter and

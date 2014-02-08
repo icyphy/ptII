@@ -49,6 +49,7 @@ import java.util.Set;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class TwoWayHashMap<K, V> extends HashMap<K, V> {
 
     /** Construct an empty two-way hash map.

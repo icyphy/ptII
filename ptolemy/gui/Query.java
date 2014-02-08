@@ -113,6 +113,7 @@ import ptolemy.actor.gui.EditParametersDialog;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class Query extends JPanel {
     /** Construct a panel with no entries in it.
      */
@@ -873,7 +874,6 @@ public class Query extends JPanel {
      *  @param width The width.
      *  @return The text area.
      */
-    @SuppressWarnings("serial")
 	public JTextArea addTextArea(String name, String label, String theValue,
             Color background, Color foreground, int height, int width) {
         JLabel lbl = new JLabel(label + ": ");
@@ -2002,7 +2002,6 @@ public class Query extends JPanel {
 
     /** Panel containing an entry box and button that opens a color chooser.
      */
-    @SuppressWarnings("serial")
 	public static class QueryColorChooser extends Box implements ActionListener {
         /** Create a panel containing an entry box and a color chooser.
          *  @param owner The owner query
@@ -2103,7 +2102,6 @@ public class Query extends JPanel {
     /** Panel containing an entry box and file chooser.
      *
      */
-    @SuppressWarnings("serial")
 	public/*static*/class QueryFileChooser extends Box implements
             ActionListener {
         // This class cannot be static because the FileDialog needs to be owned

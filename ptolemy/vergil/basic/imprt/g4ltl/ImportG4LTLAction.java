@@ -84,6 +84,7 @@ import diva.gui.GUIUtilities;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
+@SuppressWarnings("serial")
 public class ImportG4LTLAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
 

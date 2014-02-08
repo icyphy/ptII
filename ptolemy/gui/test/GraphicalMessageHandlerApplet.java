@@ -46,6 +46,7 @@ import ptolemy.vergil.VergilApplication;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class GraphicalMessageHandlerApplet extends BasicJApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

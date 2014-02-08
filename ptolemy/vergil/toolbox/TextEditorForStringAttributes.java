@@ -46,6 +46,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (ptolemy)
  */
+@SuppressWarnings("serial")
 public class TextEditorForStringAttributes extends TextEditor {
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.

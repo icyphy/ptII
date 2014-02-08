@@ -45,6 +45,7 @@ import javax.swing.text.PlainDocument;
  @Pt.ProposedRating Red (vogel)
  @Pt.AcceptedRating Red (vogel)
  */
+@SuppressWarnings("serial")
 public class FormattedDocument extends PlainDocument {
     private Format format;
 

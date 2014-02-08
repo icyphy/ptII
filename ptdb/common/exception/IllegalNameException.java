@@ -41,6 +41,7 @@ package ptdb.common.exception;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class IllegalNameException extends Exception {
 
     ///////////////////////////////////////////////////////////////////

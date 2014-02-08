@@ -183,7 +183,8 @@ public class TransformationAttributeController extends AttributeController {
         private BasicGraphFrame _parent;
     }
 
-    private static class LookInsideAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private static class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Transformation Controller");

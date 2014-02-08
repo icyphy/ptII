@@ -76,6 +76,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.OutputType;
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class MathematicalModelConverterGUI extends PtolemyFrame {
 
     /** Construct a frame to control code generation for the specified

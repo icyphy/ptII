@@ -69,6 +69,7 @@ import diva.util.java2d.ShapeUtilities;
  * @author Steve Neuendorffer
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JCanvasPanner extends JPanel {
     /**
      * The target window that is being wrapped.

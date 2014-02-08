@@ -91,6 +91,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class ExportPDFAction extends AbstractAction {
     /** Create a new action to export PDF.
      *  @param frame The Frame which to which this action is added.

@@ -62,6 +62,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class TypeAnimatorApplet extends MoMLViewerApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -68,6 +68,7 @@ import java.util.NoSuchElementException;
  @Pt.AcceptedRating Green (cxh)
  @see Nameable
  */
+@SuppressWarnings("serial")
 public final class NamedList implements Cloneable, Serializable {
     /** Construct an empty NamedList with no container.
      */
@@ -552,7 +553,6 @@ public final class NamedList implements Cloneable, Serializable {
     private static final int _threshhold = 100;
 
     /** @serial A LinkedList containing the elements. */
-    @SuppressWarnings("serial")
 	private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
         public boolean add(Nameable obj) {
             // Findbugs: "Ambiguous invocation of either an outer or

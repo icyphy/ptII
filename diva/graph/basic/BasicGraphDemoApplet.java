@@ -35,6 +35,7 @@ import diva.gui.AppletContext;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class BasicGraphDemoApplet extends AppletContext {
     public BasicGraphDemoApplet() {
         new BasicGraphDemo(this);

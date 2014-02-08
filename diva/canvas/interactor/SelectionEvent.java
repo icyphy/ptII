@@ -39,6 +39,7 @@ import diva.util.NullIterator;
  * @author         Michael Shilman
  * @version        $Id$
  */
+@SuppressWarnings("serial")
 public class SelectionEvent extends java.util.EventObject {
     /**
      * The objects added to the selection.

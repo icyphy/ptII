@@ -69,6 +69,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
     /**

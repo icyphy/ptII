@@ -136,6 +136,7 @@ import diva.graph.GraphController;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
         WebExporter {
 

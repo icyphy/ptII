@@ -57,6 +57,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class CustomizableRunFrame extends TableauFrame {
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary

@@ -50,6 +50,7 @@ The mode transition table for configuring an SCR Model.
 @Pt.ProposedRating Red (pd)
 @Pt.AcceptedRating Red (pd)
 */
+@SuppressWarnings("serial")
 public class ModeTransitionTableModel extends AbstractTableModel {
 
 	public ModeTransitionTableModel(FSMActor model) {

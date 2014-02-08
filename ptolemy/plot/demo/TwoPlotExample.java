@@ -56,6 +56,7 @@ import ptolemy.plot.Plot;
  @Pt.ProposedRating red (eal)
  @Pt.AcceptedRating red (cxh)
  */
+@SuppressWarnings("serial")
 public class TwoPlotExample extends JFrame {
     /** We use a constructor here so that we can call methods
      *  directly on the Frame.  The main method is static

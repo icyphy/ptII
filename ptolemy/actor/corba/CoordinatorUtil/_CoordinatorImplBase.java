@@ -9,6 +9,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 /* A CORBA compatible interface for a coordinator.
  */
+@SuppressWarnings("serial")
 public abstract class _CoordinatorImplBase extends
         org.omg.CORBA.portable.ObjectImpl implements
         ptolemy.actor.corba.CoordinatorUtil.Coordinator,

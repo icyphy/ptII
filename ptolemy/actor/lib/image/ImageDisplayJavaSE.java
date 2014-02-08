@@ -461,7 +461,8 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     /** Version of TableauFrame that removes its association with the
      *  ImageDisplay upon closing, and also records the size of the display.
      */
-    protected class ImageWindow extends TableauFrame {
+    @SuppressWarnings("serial")
+	protected class ImageWindow extends TableauFrame {
         /** Construct an empty window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear

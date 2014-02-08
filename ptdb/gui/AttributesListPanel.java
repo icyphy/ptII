@@ -78,6 +78,7 @@ import ptolemy.util.MessageHandler;
  *
  */
 
+@SuppressWarnings("serial")
 public class AttributesListPanel extends JPanel {
 
     /**

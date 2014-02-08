@@ -103,6 +103,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (celaine)
  */
+@SuppressWarnings("serial")
 public class TableauFrame extends Top {
     /** Construct an empty top-level frame.
      *  After constructing this, it is necessary

@@ -3523,7 +3523,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     }
 
     /** Serializable version of the Java Object class. */
-    private static class SerializableObject extends Object implements
+    @SuppressWarnings("serial")
+	private static class SerializableObject extends Object implements
             Serializable {
         // FindBugs suggested making this class a static inner class:
         //

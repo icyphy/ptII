@@ -61,6 +61,7 @@ import ptolemy.plot.PlotBox;
  @see ptolemy.plot.PlotBox
  @see ptolemy.plot.Plot
  */
+@SuppressWarnings("serial")
 public class PxgraphApplet extends PlotApplet {
     /** Return a string describing this applet.
      */

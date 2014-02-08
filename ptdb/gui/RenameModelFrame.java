@@ -75,6 +75,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
     /**

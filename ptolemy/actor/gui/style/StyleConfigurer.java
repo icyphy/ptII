@@ -72,6 +72,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Yellow (neuendor)
  */
+@SuppressWarnings("serial")
 public class StyleConfigurer extends Query implements QueryListener {
     /** Construct a configurer for the specified object.
      *  @param object The object to configure.

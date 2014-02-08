@@ -53,6 +53,7 @@ import ptolemy.vergil.icon.XMLIcon;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 
     /** Construct a tree cell renderer that shows the expression value

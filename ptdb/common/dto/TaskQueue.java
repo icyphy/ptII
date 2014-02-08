@@ -43,6 +43,7 @@ import java.util.ArrayList;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
+@SuppressWarnings("serial")
 public class TaskQueue extends ArrayList<Task> {
 
     ///////////////////////////////////////////////////////////////////

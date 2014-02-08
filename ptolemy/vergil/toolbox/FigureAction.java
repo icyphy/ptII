@@ -79,6 +79,7 @@ import diva.util.UserObjectContainer;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class FigureAction extends AbstractAction {
     /** Construct an action that is attached to a figure on a named object.
      *  @param name The name of the object.

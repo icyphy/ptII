@@ -59,6 +59,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class BasicJApplet extends JApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

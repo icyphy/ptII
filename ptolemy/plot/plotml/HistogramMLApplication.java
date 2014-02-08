@@ -57,6 +57,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating red (cxh)
  @see Histogram
  */
+@SuppressWarnings("serial")
 public class HistogramMLApplication extends PlotMLApplication {
     /** Construct a histogram with no command-line arguments.
      *  It initially displays a sample plot.

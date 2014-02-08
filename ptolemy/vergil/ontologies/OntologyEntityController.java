@@ -132,7 +132,8 @@ public class OntologyEntityController extends AttributeInOntologyController {
      *  that it does not open the class definition, but rather opens the
      *  instance.
      */
-    private class OpenInstanceAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class OpenInstanceAction extends FigureAction {
 
         /** Create a new OpenInstanceAction object. */
         public OpenInstanceAction() {

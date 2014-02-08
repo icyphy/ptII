@@ -56,6 +56,7 @@ import ptolemy.moml.Documentation;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (janneck)
  */
+@SuppressWarnings("serial")
 public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     // FIXME: Possibly this class could also handle atomic actors.
     // This might be useful for code generation.

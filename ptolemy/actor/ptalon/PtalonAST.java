@@ -46,6 +46,7 @@ import antlr.collections.AST;
  @Pt.ProposedRating Red (acataldo)
  @Pt.AcceptedRating Red (acataldo)
  */
+@SuppressWarnings("serial")
 public class PtalonAST extends CommonAST {
 
     /** Call the default constructor.

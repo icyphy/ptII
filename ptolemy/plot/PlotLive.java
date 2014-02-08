@@ -62,6 +62,7 @@ import javax.swing.JButton;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public abstract class PlotLive extends Plot implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

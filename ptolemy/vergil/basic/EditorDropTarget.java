@@ -64,6 +64,7 @@ import diva.graph.JGraph;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class EditorDropTarget extends DropTarget {
 
     /** Construct a new graph target to operate on the given JGraph.

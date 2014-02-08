@@ -28,9 +28,8 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions;
 
-import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.kernel.util.IllegalActionException;
+
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.BooleanToAnything.

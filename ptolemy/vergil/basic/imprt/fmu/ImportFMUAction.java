@@ -85,6 +85,7 @@ import diva.graph.GraphController;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
+@SuppressWarnings("serial")
 public class ImportFMUAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
 

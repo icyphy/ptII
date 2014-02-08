@@ -47,6 +47,7 @@ import java.util.ListIterator;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
 
     /** Clear this two-way hash map.

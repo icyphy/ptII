@@ -44,6 +44,7 @@ package diva.graph;
  * @version $Id$
  * @Pt.AcceptedRating Yellow
  */
+@SuppressWarnings("serial")
 public class GraphEvent extends java.util.EventObject {
     /**
      * Edge head is changed; target is the edge, old value is the

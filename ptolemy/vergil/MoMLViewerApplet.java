@@ -103,6 +103,7 @@ import diva.graph.JGraph;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class MoMLViewerApplet extends MoMLApplet {
     // FIXME: this is a total hack as a placeholder for a general
     // implementation going through configurations.

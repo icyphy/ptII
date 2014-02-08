@@ -54,6 +54,7 @@ import ptdb.kernel.bl.setup.SetupManager;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
+@SuppressWarnings("serial")
 public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
 
     /** Create a new Database setup frame with values

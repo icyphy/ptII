@@ -220,7 +220,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
     //// NewPortAction
 
     /** An action to create a new port. */
-    public class NewPortAction extends FigureAction {
+    @SuppressWarnings("serial")
+	public class NewPortAction extends FigureAction {
         /** Create a new port that has the same input, output, and
          *  multiport properties as the specified port.  If the specified
          *  port is null, then a new port that is neither an input, an

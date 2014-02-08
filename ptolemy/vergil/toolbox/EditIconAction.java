@@ -48,6 +48,7 @@ import ptolemy.vergil.icon.XMLIcon;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class EditIconAction extends FigureAction {
 
     /** Create an action to edit an icon. */

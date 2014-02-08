@@ -47,6 +47,7 @@ import diva.graph.GraphPane;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class PteraGraphFrame extends FSMGraphFrame {
 
     /** Construct a frame associated with the specified Ptera model.

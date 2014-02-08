@@ -108,7 +108,8 @@ public class SceneGraphToken extends Token {
     }
 
     /** The SceneGraphToken type. */
-    public static class SceneGraphType implements Type, Serializable, Cloneable {
+    @SuppressWarnings("serial")
+	public static class SceneGraphType implements Type, Serializable, Cloneable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

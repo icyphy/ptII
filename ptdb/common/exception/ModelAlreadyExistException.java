@@ -43,6 +43,7 @@ package ptdb.common.exception;
 ///////////////////////////////////////////////////////////////////
 //// ModelAlreadyExistException
 
+@SuppressWarnings("serial")
 public class ModelAlreadyExistException extends Exception {
 
     /**

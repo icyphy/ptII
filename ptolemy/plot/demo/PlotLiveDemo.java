@@ -49,6 +49,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating red (eal)
  @Pt.AcceptedRating red (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotLiveDemo extends PlotLive {
     /** Construct a plot for live, animated signal display.
      *  Configure the title, axes, points style, and persistence.

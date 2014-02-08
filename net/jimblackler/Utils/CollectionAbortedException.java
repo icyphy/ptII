@@ -4,6 +4,7 @@ package net.jimblackler.Utils;
  * An exception class that can be thrown by collectors or results handlers in order to abort or
  * signal abortion of the collecting process, for any reason.
  */
+@SuppressWarnings("serial")
 public class CollectionAbortedException extends Exception {
 
     public CollectionAbortedException() {

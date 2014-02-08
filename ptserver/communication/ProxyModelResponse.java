@@ -42,6 +42,7 @@ import ptserver.control.Ticket;
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
+@SuppressWarnings("serial")
 public class ProxyModelResponse implements Serializable {
 
     ///////////////////////////////////////////////////////////////////

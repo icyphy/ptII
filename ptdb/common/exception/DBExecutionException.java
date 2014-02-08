@@ -42,6 +42,7 @@ package ptdb.common.exception;
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
  */
+@SuppressWarnings("serial")
 public class DBExecutionException extends Exception {
 
     ///////////////////////////////////////////////////////////////////

@@ -57,6 +57,7 @@ import java.util.StringTokenizer;
  * @see     com.jgoodies.forms.factories.FormFactory
  */
 
+@SuppressWarnings("serial")
 public final class RowSpec extends FormSpec {
 
     // Vertical Orientations ************************************************

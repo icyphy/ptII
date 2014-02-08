@@ -67,6 +67,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame {
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary

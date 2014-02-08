@@ -55,6 +55,7 @@ import ptolemy.gui.QueryListener;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotFormatter extends JPanel {
     /** Construct a plot formatter for the specified plot object.
      *  @param plot The specified plot object.

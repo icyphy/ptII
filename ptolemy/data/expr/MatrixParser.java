@@ -42,7 +42,6 @@ This Class provides a parser for read matrices in matlab format.
 @Pt.ProposedRating Red
 @Pt.AcceptedRating Red (kienhuis)
 */
-@SuppressWarnings("static-access")
 public class MatrixParser/*@bgen(jjtree)*/implements
         MatrixParserTreeConstants, MatrixParserConstants {/*@bgen(jjtree)*/
     protected static JJTMatrixParserState jjtree = new JJTMatrixParserState();

@@ -347,7 +347,8 @@ public class Configure extends Event {
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class Query extends PtolemyQuery {
+    @SuppressWarnings("serial")
+	private class Query extends PtolemyQuery {
 
         /** Construct a query.
          */

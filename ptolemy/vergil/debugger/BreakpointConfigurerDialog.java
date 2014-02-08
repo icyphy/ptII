@@ -53,6 +53,7 @@ import ptolemy.vergil.basic.BasicGraphController;
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
+@SuppressWarnings("serial")
 public class BreakpointConfigurerDialog extends ComponentDialog {
     /** Construct a dialog with the specified owner and target.
      *  The dialog is placed relative to the owner.

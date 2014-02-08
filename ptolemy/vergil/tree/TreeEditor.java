@@ -48,6 +48,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (ctsay)
  @Pt.AcceptedRating Red (ctsay)
  */
+@SuppressWarnings("serial")
 public class TreeEditor extends JFrame {
     /** Construct a display of the Ptolemy II model given by the
      *  specified MoML file.

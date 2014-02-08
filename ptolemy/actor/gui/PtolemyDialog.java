@@ -62,6 +62,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
+@SuppressWarnings("serial")
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
     /**
      * Construct a PtolemyDialog.

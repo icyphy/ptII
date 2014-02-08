@@ -56,6 +56,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class CustomizeDocumentationAction extends FigureAction {
 
     /** Construct an instance of this action. */

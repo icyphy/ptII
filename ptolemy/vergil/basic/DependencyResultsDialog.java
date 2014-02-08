@@ -57,6 +57,7 @@ import ptolemy.util.MessageHandler;
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
+@SuppressWarnings("serial")
 public class DependencyResultsDialog extends SearchResultsDialog {
 
     /** Construct a dialog for search results.

@@ -78,6 +78,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (lholsing)
  */
 
+@SuppressWarnings("serial")
 public class SearchResultsFrame extends JFrame implements Observer,
         PTDBBasicFrame {
 

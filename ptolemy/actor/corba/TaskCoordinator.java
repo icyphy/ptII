@@ -301,7 +301,8 @@ public class TaskCoordinator extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    private class Coordinator extends _CoordinatorImplBase {
+    @SuppressWarnings("serial")
+	private class Coordinator extends _CoordinatorImplBase {
         /**
          * Construct a Coordinator.
          */

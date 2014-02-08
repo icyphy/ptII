@@ -127,6 +127,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (johnr)
  */
+@SuppressWarnings("serial")
 public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

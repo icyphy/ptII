@@ -220,7 +220,8 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     //// ConvertToInstanceAction
     // An action to convert a class to an instance.
-    private class ConvertToInstanceAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class ConvertToInstanceAction extends FigureAction {
         public ConvertToInstanceAction(String commandName) {
             super(commandName);
         }
@@ -289,7 +290,8 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     //// CreateInstanceAction
     // An action to instantiate a class.
-    private class CreateInstanceAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class CreateInstanceAction extends FigureAction {
         public CreateInstanceAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -314,7 +316,8 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     //// CreateSubclassAction
     // An action to subclass a class.
-    private class CreateSubclassAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class CreateSubclassAction extends FigureAction {
         public CreateSubclassAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(

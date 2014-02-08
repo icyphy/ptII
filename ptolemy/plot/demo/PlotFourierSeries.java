@@ -43,6 +43,7 @@ import ptolemy.plot.PlotApplet;
  @Pt.ProposedRating red (eal)
  @Pt.AcceptedRating red (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotFourierSeries extends PlotApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

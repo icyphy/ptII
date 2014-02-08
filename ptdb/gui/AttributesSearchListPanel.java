@@ -61,6 +61,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  */
 
+@SuppressWarnings("serial")
 public class AttributesSearchListPanel extends AttributesListPanel {
 
     /**

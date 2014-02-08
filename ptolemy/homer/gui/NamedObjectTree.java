@@ -65,6 +65,7 @@ import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
  *  @Pt.ProposedRating Red (ishwinde)
  *  @Pt.AcceptedRating Red (ishwinde)
  */
+@SuppressWarnings("serial")
 public class NamedObjectTree extends JPanel {
 
     /** The data flavor of the label that is dropped onto the scene panel.
@@ -84,7 +85,6 @@ public class NamedObjectTree extends JPanel {
 
     /** Create a new NamedObj tree for dragging and dropping into the scene.
      */
-    @SuppressWarnings("serial")
 	public NamedObjectTree() {
         setBorder(new TitledBorder(null, "Named Objects", TitledBorder.LEADING,
                 TitledBorder.TOP, null, null));

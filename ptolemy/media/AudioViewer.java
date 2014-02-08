@@ -62,6 +62,7 @@ import sun.audio.AudioPlayer;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class AudioViewer extends PlotApplication {
     /** Construct an audio plot with no command-line arguments.
      *  @exception Exception Not thrown in this base class.

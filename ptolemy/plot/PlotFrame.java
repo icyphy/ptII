@@ -103,6 +103,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotFrame extends JFrame implements PropertyChangeListener,
         ImageExportable {
     /** Construct a plot frame with a default title and by default contains

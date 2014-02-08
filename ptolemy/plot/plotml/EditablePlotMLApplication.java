@@ -71,6 +71,7 @@ import ptolemy.util.StringUtilities;
  @see ptolemy.plot.PlotBox
  @see ptolemy.plot.Plot
  */
+@SuppressWarnings("serial")
 public class EditablePlotMLApplication extends PlotMLApplication {
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.

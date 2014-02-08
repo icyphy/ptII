@@ -44,6 +44,7 @@ import ptolemy.plot.PlotLiveApplet;
  @Pt.ProposedRating red (eal)
  @Pt.AcceptedRating red (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotLiveDemoApplet extends PlotLiveApplet {
     /** Return a string describing this applet.
      *  @return A description of the applet.

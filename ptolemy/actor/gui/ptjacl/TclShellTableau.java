@@ -132,7 +132,8 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
 
     /** The frame that is created by an instance of TclShellTableau.
      */
-    public static class TclShellFrame extends TableauFrame {
+    @SuppressWarnings("serial")
+	public static class TclShellFrame extends TableauFrame {
         // FindBugs suggested refactoring this into a static class.
 
         /** Construct a frame to display the TclShell window.

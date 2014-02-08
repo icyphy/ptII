@@ -41,6 +41,7 @@ package ptolemy.plot;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class HistogramApplet extends PlotApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

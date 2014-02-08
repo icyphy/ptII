@@ -48,6 +48,7 @@ import javax.swing.table.TableCellRenderer;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class CellPanelEditor extends AbstractCellEditor implements
         TableCellEditor, TableCellRenderer {
 

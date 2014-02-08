@@ -286,7 +286,8 @@ public class OntologyGraphController extends WithIconGraphController {
     //// NewConceptAction
 
     /** An action to create a new concept in the ontology model. */
-    private class NewConceptAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class NewConceptAction extends FigureAction {
 
         /** Construct a new concept. */
         public NewConceptAction() {

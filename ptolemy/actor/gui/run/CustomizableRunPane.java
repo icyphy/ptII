@@ -83,6 +83,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class CustomizableRunPane extends JPanel implements CloseListener {
 
     /** Construct a panel for interacting with the specified Ptolemy II model.

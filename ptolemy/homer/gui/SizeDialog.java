@@ -47,6 +47,7 @@ import javax.swing.SpinnerNumberModel;
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */
+@SuppressWarnings("serial")
 public class SizeDialog extends JPanel {
 
     ///////////////////////////////////////////////////////////////////

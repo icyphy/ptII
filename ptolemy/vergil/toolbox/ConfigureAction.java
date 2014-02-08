@@ -57,6 +57,7 @@ import diva.gui.GUIUtilities;
  @Pt.AcceptedRating Red (johnr)
  @see ptolemy.actor.gui.EditParametersDialog
  */
+@SuppressWarnings("serial")
 public class ConfigureAction extends FigureAction {
     /** Construct a new configure action.
      *  @param description A description.

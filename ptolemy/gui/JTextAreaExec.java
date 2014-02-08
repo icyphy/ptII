@@ -89,6 +89,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
 
  */
+@SuppressWarnings("serial")
 public class JTextAreaExec extends JPanel implements ExecuteCommands {
     /** Create the JTextArea, progress bar, status text field and
      *  optionally Start, Cancel and Clear buttons.

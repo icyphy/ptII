@@ -9,6 +9,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 /* A CORBA compatible interface for a consumer.
  */
+@SuppressWarnings("serial")
 public abstract class _ClientImplBase extends org.omg.CORBA.portable.ObjectImpl
         implements ptolemy.actor.corba.CoordinatorUtil.Client,
         org.omg.CORBA.portable.InvokeHandler {

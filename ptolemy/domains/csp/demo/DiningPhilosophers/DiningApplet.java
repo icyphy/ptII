@@ -69,6 +69,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class DiningApplet extends Applet implements Runnable,
         PhilosopherListener {
     ///////////////////////////////////////////////////////////////////

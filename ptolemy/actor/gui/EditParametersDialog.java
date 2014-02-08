@@ -81,6 +81,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
+@SuppressWarnings("serial")
 public class EditParametersDialog extends ComponentDialog implements
         ChangeListener {
     /** Construct a dialog with the specified owner and target.

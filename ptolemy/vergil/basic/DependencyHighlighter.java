@@ -245,7 +245,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
      *  @param list True if a list dialog is to be displayed.  If false,
      *  then the dependents or prerequisites are highlighted.
      */
-    private class HighlightDependents extends FigureAction {
+    @SuppressWarnings("serial")
+	private class HighlightDependents extends FigureAction {
         public HighlightDependents(String commandName, boolean forward,
                 boolean clear, boolean list) {
             super(commandName);

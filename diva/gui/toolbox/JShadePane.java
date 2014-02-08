@@ -69,6 +69,7 @@ import diva.gui.BasicFrame;
  * @author Michael Shilman
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JShadePane extends JPanel {
     /**
      * The selected index.

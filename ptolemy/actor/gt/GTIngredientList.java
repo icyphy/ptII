@@ -47,6 +47,7 @@ import java.util.LinkedList;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class GTIngredientList extends LinkedList<GTIngredient> {
 
     /** Construct an empty GTIngredientList contained by the given attribute.

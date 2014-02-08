@@ -46,6 +46,7 @@ import javax.swing.JLabel;
 @since Ptolemy II 8.0
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public abstract class QueryChooser extends Box implements SettableQueryChooser,
         ActionListener {
 

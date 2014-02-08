@@ -302,7 +302,8 @@ public class PushConsumer extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    private class pushConsumer extends _pushConsumerImplBase {
+    @SuppressWarnings("serial")
+	private class pushConsumer extends _pushConsumerImplBase {
         /**
          * Construct a pushConsumer.
          */

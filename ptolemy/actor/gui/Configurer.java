@@ -80,6 +80,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
+@SuppressWarnings("serial")
 public class Configurer extends JPanel implements CloseListener {
     /** Construct a configurer for the specified object.  This stores
      *  the current values of any Settable attributes of the given object,

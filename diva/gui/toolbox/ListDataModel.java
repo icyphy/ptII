@@ -42,6 +42,7 @@ import javax.swing.DefaultComboBoxModel;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class ListDataModel extends DefaultComboBoxModel {
     /** Create a new model.
      */

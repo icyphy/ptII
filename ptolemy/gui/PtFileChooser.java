@@ -91,6 +91,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class PtFileChooser extends Container {
     // java.awt.Container is the common baseclass between
     // java.awt.FileDialog and javax.swing.JFileChooser

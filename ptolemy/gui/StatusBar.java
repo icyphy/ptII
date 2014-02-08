@@ -51,6 +51,7 @@ import javax.swing.border.EmptyBorder;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class StatusBar extends JPanel {
     /** Create a new status bar with an empty label and progress at zero.
      */

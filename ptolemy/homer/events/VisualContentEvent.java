@@ -42,6 +42,7 @@ import ptolemy.homer.kernel.PositionableElement;
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */
+@SuppressWarnings("serial")
 public class VisualContentEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////

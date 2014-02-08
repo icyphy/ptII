@@ -39,6 +39,7 @@ import diva.canvas.Figure;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class ConnectorEvent extends java.util.EventObject {
     /**
      * Signifies that a connector is dragged some distance

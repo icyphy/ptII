@@ -56,6 +56,7 @@ import ptdb.kernel.bl.migration.MigrateModelsManager;
  *
  */
 
+@SuppressWarnings("serial")
 public class ModelMigrationFrame extends JFrame {
 
     /** Creates new form ModelMigrationFrame. */

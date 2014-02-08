@@ -125,6 +125,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class Histogram extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////

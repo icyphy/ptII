@@ -45,6 +45,7 @@ import diva.graph.JGraph;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class BasicGraphFrameExtension implements Serializable {
 
     // From the 2010-11-04 comment that added this class:

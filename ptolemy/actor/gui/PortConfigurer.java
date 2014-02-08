@@ -62,6 +62,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (neuendor)
  @deprecated This class is no longer used.  Use PortConfigurerDialog.
  */
+@SuppressWarnings("serial")
 public class PortConfigurer extends Query implements QueryListener {
     /** Construct a port configurer for the specified entity.
      *  @param object The entity to configure.

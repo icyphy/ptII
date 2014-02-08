@@ -43,6 +43,7 @@ package ptdb.common.exception;
  *
  */
 
+@SuppressWarnings("serial")
 public class DBModelNotFoundException extends Exception {
 
     /**

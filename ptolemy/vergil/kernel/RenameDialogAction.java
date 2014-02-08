@@ -54,6 +54,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class RenameDialogAction extends FigureAction {
 
     /**

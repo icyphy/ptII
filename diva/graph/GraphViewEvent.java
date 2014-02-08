@@ -40,6 +40,7 @@ package diva.graph;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class GraphViewEvent extends java.util.EventObject {
     /**
      * The figure representing a node was moved.

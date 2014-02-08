@@ -156,7 +156,8 @@ public class DBActorController extends ActorController {
     /**
      *  An action to open a model from the database.
      */
-    private class OpenActorFromDB extends FigureAction {
+    @SuppressWarnings("serial")
+	private class OpenActorFromDB extends FigureAction {
         public OpenActorFromDB() {
             super("Open Actor From Database");
 

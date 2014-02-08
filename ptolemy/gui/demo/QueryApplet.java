@@ -46,6 +46,7 @@ import ptolemy.gui.QueryListener;
  @Pt.AcceptedRating Red (eal)
  @see ptolemy.gui.Query
  */
+@SuppressWarnings("serial")
 public class QueryApplet extends BasicJApplet implements QueryListener {
     /** Constructor.
      */

@@ -38,6 +38,7 @@ package ptolemy.actor.ptalon;
  * @Pt.ProposedRating Red (acataldo)
  * @Pt.AcceptedRating Red (acataldo)
  */
+@SuppressWarnings("serial")
 public class PtalonRuntimeException extends Exception {
 
     /** Create a PtalonRuntimeException.

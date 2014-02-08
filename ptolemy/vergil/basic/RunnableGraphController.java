@@ -302,7 +302,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
     private Action _stopModelAction = new StopModelAction("Stop the model");
 
     /** An action to run the model that includes a button. */
-    private class ButtonFigureAction extends FigureAction {
+    @SuppressWarnings("serial")
+	private class ButtonFigureAction extends FigureAction {
         public ButtonFigureAction(String description) {
             super(description);
         }
@@ -319,7 +320,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
     //// RunModelAction
 
     /** An action to run the model. */
-    private class RunModelAction extends ButtonFigureAction {
+    @SuppressWarnings("serial")
+	private class RunModelAction extends ButtonFigureAction {
         /** Run the model without opening a run-control window.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -378,7 +380,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
     //// PauseModelAction
 
     /** An action to pause the model. */
-    private class PauseModelAction extends ButtonFigureAction {
+    @SuppressWarnings("serial")
+	private class PauseModelAction extends ButtonFigureAction {
         /** Pause the model if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -423,7 +426,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
     //// StopModelAction
 
     /** An action to stop the model. */
-    private class StopModelAction extends ButtonFigureAction {
+    @SuppressWarnings("serial")
+	private class StopModelAction extends ButtonFigureAction {
         /** Stop the model, if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.

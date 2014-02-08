@@ -9,6 +9,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 /* A CORBA compatible interface for a push consumer.
  */
+@SuppressWarnings("serial")
 public abstract class _pushConsumerImplBase extends
         org.omg.CORBA.portable.ObjectImpl implements
         ptolemy.actor.corba.CorbaIOUtil.pushConsumer,

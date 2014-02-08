@@ -43,6 +43,7 @@ import ptolemy.plot.HistogramApplet;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class HistogramDemo extends HistogramApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -76,6 +76,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (johnr)
  */
+@SuppressWarnings("serial")
 public abstract class PtolemyFrame extends TableauFrame {
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary

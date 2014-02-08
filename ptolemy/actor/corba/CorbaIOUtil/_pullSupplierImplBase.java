@@ -9,6 +9,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 /* A CORBA compatible interface for a pull supplier.
  */
+@SuppressWarnings("serial")
 public abstract class _pullSupplierImplBase extends
         org.omg.CORBA.portable.ObjectImpl implements
         ptolemy.actor.corba.CorbaIOUtil.pullSupplier,

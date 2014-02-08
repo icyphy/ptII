@@ -134,7 +134,8 @@ public class DebugListenerTableau extends Tableau {
     /** This class is a top-level window for displaying textual debug
      *  output from an instance of Debuggable.
      */
-    public static class DebugListenerFrame extends TextEditor implements
+    @SuppressWarnings("serial")
+	public static class DebugListenerFrame extends TextEditor implements
             DebugListener {
         /** Create a debug listener that displays messages in a top-level
          *  window.

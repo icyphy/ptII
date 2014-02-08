@@ -39,6 +39,7 @@ import diva.canvas.JCanvas;
  * @author         Michael Shilman
  * @version        $Id$
  */
+@SuppressWarnings("serial")
 public class JGraph extends JCanvas {
     /**
      * Construct a new JGraph with the given graph pane.

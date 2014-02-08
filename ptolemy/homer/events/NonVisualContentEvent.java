@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */
+@SuppressWarnings("serial")
 public class NonVisualContentEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////

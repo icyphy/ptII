@@ -32,6 +32,7 @@ package diva.util.jester;
  * @author John Reekie
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class TestFailedException extends Exception {
     /**
      * One of the objects involved in the failed test.

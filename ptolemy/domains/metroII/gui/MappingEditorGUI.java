@@ -62,6 +62,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  */
+@SuppressWarnings("serial")
 public class MappingEditorGUI extends PtolemyFrame {
 
     /**

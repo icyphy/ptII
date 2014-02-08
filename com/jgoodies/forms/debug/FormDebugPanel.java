@@ -56,6 +56,7 @@ import com.jgoodies.forms.layout.FormLayout;
  *
  * @see     FormDebugUtils
  */
+@SuppressWarnings("serial")
 public class FormDebugPanel extends JPanel {
 
     /**

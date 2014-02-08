@@ -49,6 +49,7 @@ import javax.swing.JPanel;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class Picture extends JPanel {
     /** Create an image with the specified width and height, in pixels.
      *  @param width The width in pixels.

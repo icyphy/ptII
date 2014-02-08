@@ -41,6 +41,7 @@ package ptolemy.caltrop;
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class FunctionCallException extends
         caltrop.interpreter.InterpreterException {
     /**

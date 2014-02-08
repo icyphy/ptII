@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.AcceptedRating Red (tfeng)
  @see GraphTransformer
  */
+@SuppressWarnings("serial")
 public class TransformationException extends KernelException {
 
     /** Construct an exception with a no specific detail message.

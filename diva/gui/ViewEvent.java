@@ -36,6 +36,7 @@ import javax.swing.JComponent;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class ViewEvent extends java.util.EventObject {
     /**  The view closing event type
      */

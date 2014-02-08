@@ -96,6 +96,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class WelcomeWindow extends HTMLViewer {
     /** Construct a blank HTML Viewer with no menu items.
      */

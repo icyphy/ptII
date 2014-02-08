@@ -66,6 +66,7 @@ import diva.gui.BasicFrame;
  * @author Steve Neuendorffer
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JTreePane extends JSplitPane {
     /**
      * The selected title.

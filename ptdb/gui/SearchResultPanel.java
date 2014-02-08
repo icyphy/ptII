@@ -57,6 +57,7 @@ import ptolemy.actor.gui.Configuration;
 * @Pt.AcceptedRating red (lholsing)
 */
 
+@SuppressWarnings("serial")
 public class SearchResultPanel extends JPanel {
 
     /**

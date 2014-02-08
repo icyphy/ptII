@@ -152,7 +152,8 @@ public class PteraGraphController extends FSMGraphController {
     }
 
     /** An action to create a new event. */
-    public class NewEventAction extends FigureAction {
+    @SuppressWarnings("serial")
+	public class NewEventAction extends FigureAction {
 
         /** Construct a new state. */
         public NewEventAction() {

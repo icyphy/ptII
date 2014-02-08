@@ -208,7 +208,8 @@ public class DataMapEnvironment implements Environment {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    public static class UnboundPortVarException extends InterpreterException {
+    @SuppressWarnings("serial")
+	public static class UnboundPortVarException extends InterpreterException {
         public UnboundPortVarException(String msg) {
             super(msg);
         }

@@ -93,6 +93,7 @@ import java.util.StringTokenizer;
  * @author        Karsten Lentzsch
  * @version $Revision$
  */
+@SuppressWarnings("serial")
 public final class CellConstraints implements Cloneable, Serializable {
 
     // Alignment Constants *************************************************

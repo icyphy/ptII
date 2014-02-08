@@ -60,6 +60,7 @@ import ptolemy.vergil.basic.BasicGraphController;
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
+@SuppressWarnings("serial")
 public class BreakpointConfigurer extends Query implements ChangeListener {
     /** Construct a breakpoint configurer for the specified entity.
      *  @param object The entity to configure.

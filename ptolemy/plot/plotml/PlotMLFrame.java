@@ -79,6 +79,7 @@ import com.microstar.xml.XmlException;
  @Pt.ProposedRating red (eal)
  @Pt.AcceptedRating red (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotMLFrame extends PlotFrame {
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.

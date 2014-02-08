@@ -53,6 +53,7 @@ import diva.canvas.toolbox.ImageFigure;
  * @author Steve Neuendorffer
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class FigureIcon extends ImageIcon {
     /**
      * Create a new icon that looks like the given figure.  The icon will

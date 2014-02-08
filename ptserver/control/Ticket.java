@@ -44,6 +44,7 @@ import java.util.Random;
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
 */
+@SuppressWarnings("serial")
 public class Ticket implements java.io.Serializable {
 
     ///////////////////////////////////////////////////////////////////

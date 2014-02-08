@@ -84,6 +84,7 @@ import diva.gui.toolbox.JCanvasPanner;
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
+@SuppressWarnings("serial")
 public class HomerMainFrame extends JFrame {
 
     ///////////////////////////////////////////////////////////////////

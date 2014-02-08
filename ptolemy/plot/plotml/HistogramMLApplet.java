@@ -44,6 +44,7 @@ import ptolemy.plot.PlotBox;
  @Pt.ProposedRating red (eal)
  @Pt.AcceptedRating red (cxh)
  */
+@SuppressWarnings("serial")
 public class HistogramMLApplet extends PlotMLApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

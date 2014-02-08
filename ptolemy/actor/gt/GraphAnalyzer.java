@@ -382,7 +382,8 @@ public abstract class GraphAnalyzer {
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    public static class IndexedList extends Pair<List<?>, Integer> {
+    @SuppressWarnings("serial")
+	public static class IndexedList extends Pair<List<?>, Integer> {
 
         /** Test the equivalence between two IndexedLists. They are equal if the
          *  elements in the lists that their indices point to are equal (by

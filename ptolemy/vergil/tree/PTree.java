@@ -63,6 +63,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class PTree extends JTree {
     /** Create a new tree that is rooted at the given entity.
      *  This constructor creates a tree that shows the expression

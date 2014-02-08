@@ -51,6 +51,7 @@ import diva.canvas.Figure;
  * @version        $Id$
  * @author John Reekie
  */
+@SuppressWarnings("serial")
 public class LayerEvent extends MouseEvent {
     // Note: This class now uses the improved JDK1.4 mechanism for
     // processing mouse events using getModifiersEx() which correspond

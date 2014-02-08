@@ -55,6 +55,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  *  @Pt.ProposedRating Red (mankit)
  *  @Pt.AcceptedRating Red (mankit)
  */
+@SuppressWarnings("serial")
 public class ListenToAction extends FigureAction {
     /** Construct an action that listens to NamedObj messages.
      *  @param controller The corresponding controller.

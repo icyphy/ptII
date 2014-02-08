@@ -163,6 +163,7 @@ public class CATableau extends Tableau {
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 class CAMatrixViewer extends Component {
 
     /**

@@ -143,7 +143,8 @@ public class TreeTableau extends Tableau {
     /** This is a top-level window containing a tree-view of a composite
      *  entity.
      */
-    public static class TreeFrame extends PtolemyFrame {
+    @SuppressWarnings("serial")
+	public static class TreeFrame extends PtolemyFrame {
         /** Construct a TreeFrame containing a tree view of the specified
          *  composite entity.
          *  @param entity The composite entity to view as a tree.

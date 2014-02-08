@@ -53,6 +53,7 @@ import ptolemy.plot.PlotBox;
  @Pt.ProposedRating red (eal)
  @Pt.AcceptedRating red (cxh)
  */
+@SuppressWarnings("serial")
 public class EditablePlotMLApplet extends PlotMLApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

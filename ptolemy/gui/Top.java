@@ -141,6 +141,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (janneck)
  */
+@SuppressWarnings("serial")
 public abstract class Top extends JFrame {
     /** Construct an empty top-level frame with the default status
      *  bar.  After constructing this, it is necessary to call

@@ -58,6 +58,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)
  */
+@SuppressWarnings("serial")
 public class RenameConfigurer extends Query implements ChangeListener,
         QueryListener {
     /** Construct a rename configurer for the specified entity.

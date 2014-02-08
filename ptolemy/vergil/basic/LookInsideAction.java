@@ -91,6 +91,7 @@ import diva.gui.GUIUtilities;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
+@SuppressWarnings("serial")
 public class LookInsideAction extends FigureAction {
 
     /** Create a new LookInsideAction object with the given

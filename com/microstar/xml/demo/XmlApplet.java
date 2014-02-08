@@ -32,6 +32,7 @@ import com.microstar.xml.XmlParser;
  * @see DtdDemo
  * @see StreamDemo
  */
+@SuppressWarnings("serial")
 public class XmlApplet extends Applet implements XmlHandler {
     /**
      * Flag to show whether we're running as an applet or application.

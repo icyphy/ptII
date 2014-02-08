@@ -51,6 +51,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.gui.Query
  */
+@SuppressWarnings("serial")
 public class FileChooserQuery extends JFrame implements QueryListener {
     /** Constructor.
      */

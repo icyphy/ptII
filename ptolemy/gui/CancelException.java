@@ -46,6 +46,7 @@ package ptolemy.gui;
  @Pt.AcceptedRating Green (janneck)
  @deprecated Use ptolemy.util.CancelException.
  */
+@SuppressWarnings("serial")
 public class CancelException extends Exception {
     /** Construct an exception with a default message.
      */

@@ -52,6 +52,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class TreeEditorPanel extends JScrollPane {
     /** Construct a display of the Ptolemy II model given by the
      *  specified MoML file.

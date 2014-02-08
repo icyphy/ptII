@@ -357,7 +357,8 @@ public class TaskReceiver extends Source {
     /** this inner class implements the Client interface defined in
      * Coordinator.idl.
      */
-    private class Client extends _ClientImplBase {
+    @SuppressWarnings("serial")
+	private class Client extends _ClientImplBase {
         /**
          * Construct a pushConsumer.
          */

@@ -68,6 +68,7 @@ import diva.canvas.TransformContext;
  * @author Steve Neuendorffer
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JPanner extends JPanel {
     /**
      * The target window that is being wrapped.

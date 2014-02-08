@@ -50,6 +50,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class RotateOrFlipPorts extends FigureAction {
 
     /** Create an action to rotate the ports.

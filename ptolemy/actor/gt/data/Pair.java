@@ -44,6 +44,7 @@ package ptolemy.actor.gt.data;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
+@SuppressWarnings("serial")
 public class Pair<E1, E2> extends Tuple<Object> {
 
     /** Construct a pair with two elements.

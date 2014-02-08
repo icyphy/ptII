@@ -463,7 +463,8 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
     /** A workaround for the busted JInternalFrame closing event handling in
      * jdk1.2. This should go away when we switch to 1.3 completely.
      */
-    private static class DesktopInternalFrame extends JInternalFrame {
+    @SuppressWarnings("serial")
+	private static class DesktopInternalFrame extends JInternalFrame {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -493,7 +494,8 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
         }
     }
 
-    private class DesktopPseudoFrame extends JPseudoFrame {
+    @SuppressWarnings("serial")
+	private class DesktopPseudoFrame extends JPseudoFrame {
         public DesktopPseudoFrame(JDesktopPane desktopPane, JMenuBar menuBar) {
             super(desktopPane, menuBar);
         }

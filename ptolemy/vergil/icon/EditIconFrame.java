@@ -65,6 +65,7 @@ import diva.graph.GraphPane;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class EditIconFrame extends BasicGraphFrame {
     /** Construct a frame to edit the specified icon.
      *  After constructing this, it is necessary

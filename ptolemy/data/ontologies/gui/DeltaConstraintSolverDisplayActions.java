@@ -108,7 +108,8 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
     /** The action for the highlight conflicts command to be added
      *  to the context menu.
      */
-    private class HighlightConflicts extends FigureAction {
+    @SuppressWarnings("serial")
+	private class HighlightConflicts extends FigureAction {
 
         /** Create a new ResolveConflicts object to be added to the
          *  OntologySolver's context menu.

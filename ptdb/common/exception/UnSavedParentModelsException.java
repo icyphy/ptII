@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
+@SuppressWarnings("serial")
 public class UnSavedParentModelsException extends KernelException {
 
     /**

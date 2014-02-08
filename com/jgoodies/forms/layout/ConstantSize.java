@@ -73,6 +73,7 @@ import java.util.Locale;
  * @see        Sizes
  */
 
+@SuppressWarnings("serial")
 public final class ConstantSize implements Size, Serializable {
 
     // Public Units *********************************************************

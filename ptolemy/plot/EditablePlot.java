@@ -82,6 +82,7 @@ import java.util.Vector;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class EditablePlot extends Plot {
     /** Constructor.
      */

@@ -43,6 +43,7 @@ import ptolemy.kernel.util.KernelException;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
 */
+@SuppressWarnings("serial")
 public class MalformedStringException extends KernelException {
 
     /** Construct an exception with an expression to be parsed into a rule list.

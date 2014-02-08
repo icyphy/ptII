@@ -65,6 +65,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class DocBuilderGUI extends PtolemyFrame {
 
     /** Construct a frame to build the Java and Actor documentation.

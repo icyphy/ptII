@@ -98,6 +98,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class HTMLViewer extends TableauFrame implements Printable,
         HyperlinkListener {
     /** Construct a blank viewer.

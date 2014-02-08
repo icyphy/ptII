@@ -120,7 +120,8 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      *  context menu.  This clears the list of resolved concepts (if any)
      *  and also clears the display.
      */
-    private class ClearResolution extends FigureAction {
+    @SuppressWarnings("serial")
+	private class ClearResolution extends FigureAction {
 
         /** Create a new ClearResolution object to be added to the
          *  OntologySolver's context menu.
@@ -155,7 +156,8 @@ public class OntologyDisplayActions extends NodeControllerFactory {
     /** The action for the resolve concepts command to be added
      *  to the context menu.
      */
-    private class ResolveConcepts extends FigureAction {
+    @SuppressWarnings("serial")
+	private class ResolveConcepts extends FigureAction {
 
         /** Create a new ResolveConcepts object to be added to the
          *  OntologySolver's context menu.

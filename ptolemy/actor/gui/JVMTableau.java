@@ -87,7 +87,8 @@ public class JVMTableau extends Tableau {
 
     /** The frame that is created by an instance of JVMTableau.
      */
-    public class JVMFrame extends PtolemyFrame {
+    @SuppressWarnings("serial")
+	public class JVMFrame extends PtolemyFrame {
         /** Construct a frame to display JVM properties.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.

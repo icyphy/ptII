@@ -80,6 +80,7 @@ import ptolemy.util.MessageHandler;
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
+@SuppressWarnings("serial")
 public class WidgetPropertiesFrame extends JPanel {
 
     ///////////////////////////////////////////////////////////////////

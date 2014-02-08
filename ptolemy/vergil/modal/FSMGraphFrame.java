@@ -79,6 +79,7 @@ import diva.graph.GraphPane;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */
+@SuppressWarnings("serial")
 public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener {
 
     /** Construct a frame associated with the specified FSM model.

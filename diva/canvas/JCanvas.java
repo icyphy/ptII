@@ -74,6 +74,7 @@ import diva.util.java2d.ShapeUtilities;
  * @author John Reekie
  * @Pt.AcceptedRating Yellow
  */
+@SuppressWarnings("serial")
 public class JCanvas extends JComponent implements Printable {
     /** The off-screen image.
      * @serial

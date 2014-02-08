@@ -40,6 +40,7 @@ import java.io.Serializable;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotPoint implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

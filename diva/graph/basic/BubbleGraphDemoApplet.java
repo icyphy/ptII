@@ -33,6 +33,7 @@ import diva.gui.AppletContext;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
+@SuppressWarnings("serial")
 public class BubbleGraphDemoApplet extends AppletContext {
     public BubbleGraphDemoApplet() {
         new BubbleGraphDemo(this);

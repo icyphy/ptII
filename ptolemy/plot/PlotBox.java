@@ -249,6 +249,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////

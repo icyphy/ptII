@@ -42,6 +42,7 @@ package ptolemy.caltrop.ddi;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class DDIException extends RuntimeException {
     /**
      * Create a <tt>DDIException</tt>.

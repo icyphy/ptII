@@ -91,6 +91,7 @@ import diva.graph.layout.LevelLayout;
  *  @Pt.ProposedRating Yellow (davisj)
  *  @Pt.AcceptedRating Red (davisj)
  */
+@SuppressWarnings("serial")
 public class LocalZenoApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

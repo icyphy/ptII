@@ -74,6 +74,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (janneck)
  */
+@SuppressWarnings("serial")
 public class ModelPane extends JPanel implements CloseListener {
     /** Construct a panel for interacting with the specified Ptolemy II model.
      *  This uses the default layout, which is horizontal, and shows

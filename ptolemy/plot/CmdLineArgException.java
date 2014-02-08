@@ -40,6 +40,7 @@ package ptolemy.plot;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@SuppressWarnings("serial")
 public class CmdLineArgException extends Exception {
     /** Construct a command line argument exception. */
     public CmdLineArgException() {

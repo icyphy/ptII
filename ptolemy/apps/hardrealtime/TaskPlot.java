@@ -59,6 +59,7 @@ import ptolemy.plot.PlotBox;
  @Pt.ProposedRating Red (chster)
  @Pt.AcceptedRating Red (chster)
  */
+@SuppressWarnings("serial")
 public class TaskPlot extends PlotBox {
     /** Construct a task plot. */
     public TaskPlot() {

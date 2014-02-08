@@ -292,7 +292,8 @@ public final class Sizes {
      * the {@link Size} interface for the component sizes:
      * <em>min, pref, default</em>.
      */
-    static final class ComponentSize implements Size, Serializable {
+    @SuppressWarnings("serial")
+	static final class ComponentSize implements Size, Serializable {
 
         private final transient String name;
 

@@ -85,6 +85,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@SuppressWarnings("serial")
 public class TextEditor extends TableauFrame implements DocumentListener,
         ImageExportable, Printable {
     /** Construct an empty text editor with no name.
@@ -532,7 +533,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     //// ExportImageAction
 
     /** Export an image. */
-    public class ExportImageAction extends AbstractAction {
+	public class ExportImageAction extends AbstractAction {
         // FIXME: this is very similar to PlotTableaFrame.ExportImageAction.
 
         /** Create a new action to export an image.

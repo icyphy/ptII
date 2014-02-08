@@ -53,6 +53,7 @@ import javax.swing.JPanel;
  * @author Michael Shilman
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JPalette extends JPanel {
     /**
      * Construct a new palette instance with a vertical grid layout.

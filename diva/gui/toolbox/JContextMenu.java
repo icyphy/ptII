@@ -35,6 +35,7 @@ import javax.swing.JPopupMenu;
  * @author Steve Neuendorffer
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class JContextMenu extends JPopupMenu {
     /**
      * Create a popup menu without an "invoker".  (Whatever the hell that

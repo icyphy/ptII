@@ -51,6 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ShellTextArea
  @see ExpressionShellEffigy
  */
+@SuppressWarnings("serial")
 public class ExpressionShellFrame extends TableauFrame {
     /** Construct a frame to display the ExpressionShell window.
      *  After constructing this, it is necessary

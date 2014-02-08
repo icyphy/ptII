@@ -43,6 +43,7 @@ package ptolemy.caltrop;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class CalIOException extends RuntimeException {
     /**
      * Create a <tt>CalIOException()</tt>.
