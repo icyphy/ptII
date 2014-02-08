@@ -240,11 +240,11 @@ if ($channel == 0) {
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && strcmp($actorSymbol(inputToken), Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)->payload)) {
+        && strcmp($actorSymbol(inputToken), StringArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel))) {
         printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
                     $actorSymbol(numberOfTokensSeen),
                     $actorSymbol(inputToken),
-                    $param(correctValues, $actorSymbol(numberOfTokensSeen)));
+                    StringArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel));
    exit(-1);
 }
 /**/
