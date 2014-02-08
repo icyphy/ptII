@@ -226,9 +226,9 @@ public class MetroIIDirector extends Director {
                 _timeScheduler.turnOffDebugging();
                 _debugger.turnOffDebugging();
             }
-        } else {
-            super.attributeChanged(attribute);
         }
+        super.attributeChanged(attribute);
+
     }
 
     /**
@@ -457,6 +457,7 @@ public class MetroIIDirector extends Director {
                 if (!filename.equals("")) {
                     try {
                         System.out.println(filename);
+                        _mappingConstraintSolver.clear();
                         _mappingConstraintSolver.readMapping(filename);
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
