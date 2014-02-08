@@ -3333,15 +3333,27 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
         } else if (platform.equals("Mac OS X")) {
             if (javaHome != null) {
-                libjvmAbsoluteDirectory = javaHome + "/../Libraries";
-            }
-            // Why do people who work at Apple insist on changing the
-            // names of things?  Why is jvmlinkage necessary?  
+                if (new File(javaHome + "/../Libraries").isDirectory()) {
+                    // Apple Java, directory layout is sadly different from all other jvms.  (Be Different).
+                    libjvmAbsoluteDirectory = javaHome + "/../Libraries";
 
-	    // We also need to adjust the rpath here so that this works:
-	    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml 
-	    
-            jvmLoaderDirective = "-Wl,-rpath," + libjvmAbsoluteDirectory + " -ljvmlinkage";
+                    // Why do people who work at Apple insist on changing the
+                    // names of things?  Why is jvmlinkage necessary?  
+
+                    // We also need to adjust the rpath here so that this works:
+                    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml 
+                    jvmLoaderDirective = "-Wl,-rpath," + libjvmAbsoluteDirectory + " -ljvmlinkage";
+                } else  {
+                    // Oracle Java 1.7
+                    addInclude("-I\"" + javaHome + "/include/darwin\"");
+                    libjvmAbsoluteDirectory = javaHome + "/jre/lib/server";
+
+                    // We also need to adjust the rpath here so that this works:
+                    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml 
+                    jvmLoaderDirective = "-Wl,-rpath," + libjvmAbsoluteDirectory;
+                }
+            }
+
 
         } else {
             // Solaris, Linux etc.
