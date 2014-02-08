@@ -36,6 +36,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+@SuppressWarnings("serial")
 public class TutorialApplet2 extends PtolemyApplet {
     public NamedObj _createModel(Workspace workspace) throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
