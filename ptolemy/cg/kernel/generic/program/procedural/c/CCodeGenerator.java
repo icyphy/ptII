@@ -2777,7 +2777,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
-        if (((BooleanToken) generateEmbeddedCode.getToken()).booleanValue()) {
+        // Only include the jvmHeader files if we are not at the top
+        // level and generateEmbeddedCode is true.   Otherwise
+        // $PTII/bin/ptcg $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml
+        // includes jni.h, which will fail under targets like Arduino.
+        if (!_isTopLevel() &&  (BooleanToken) generateEmbeddedCode.getToken()).booleanValue()) {
             includingFiles.addAll(_getJVMHeaderFiles());
         }
 
