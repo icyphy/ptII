@@ -962,7 +962,7 @@ public class DEDirector extends PortDirector {
      *   or if there is a problem getting the buffer size of a port.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter
@@ -1079,7 +1079,7 @@ public class DEDirector extends PortDirector {
      *  @exception IllegalActionException If something goes wrong.
      */
     public Set<String> getHeaderFiles() throws IllegalActionException {
-        HashSet<String> result = new HashSet<String>();
+        HashSet<String> result = new HashSet<String>(super.getHeaderFiles());
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter
                 .generateName(container);

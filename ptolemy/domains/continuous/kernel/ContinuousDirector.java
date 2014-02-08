@@ -1000,6 +1000,9 @@ public class ContinuousDirector extends FixedPointDirector implements
      *   relative to the time of local committed state.
      */
     public final void setModelTime(Time newTime) throws IllegalActionException {
+        // We don't call super.getModelTime() because Director.setModelTime()
+        // merely sets the local time of the localClock.  We want to do more here.
+
         if (_ignoreSetTime) {
             return;
         }

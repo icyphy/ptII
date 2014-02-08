@@ -275,8 +275,11 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Return the current model time which is the model time of the executive
      * director.
+     * @return the model time of the executive directory
      */
     public Time getModelTime() {
+        // We don't call super.getModelTime() because we want to get
+        // the model time of the exective director.
         return ((Actor) this.getContainer()).getExecutiveDirector()
                 .getModelTime();
     }

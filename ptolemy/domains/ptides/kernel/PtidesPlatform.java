@@ -628,8 +628,15 @@ public class PtidesPlatform extends MirrorComposite {
             return localClock.getLocalTime();
         }
 
+        /** Return the environment time.
+         *  @return The current enviroment time.
+         *  @see #getEnvironmentTime()
+         */
         @Override
         public Time getModelTime() {
+            // We don't call super.getModelTime() because
+            // Director.getModelTime() returns the local time of the
+            // localClock, which is not what we want.
             return getEnvironmentTime();
         }
 

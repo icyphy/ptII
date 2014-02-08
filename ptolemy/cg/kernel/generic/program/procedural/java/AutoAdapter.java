@@ -294,8 +294,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If illegal macro names are found.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(
-                "TypedAtomicActor $actorSymbol(actor);" + _eol);
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode() + _eol
+                + "TypedAtomicActor $actorSymbol(actor);" + _eol);
         if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
                 .booleanValue()) {
             // Declare each container only once.
@@ -992,7 +992,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateFireCode() throws IllegalActionException {
         // FIXME: what if the inline parameter is set?
-        StringBuffer code = new StringBuffer(getCodeGenerator().comment(
+        StringBuffer code = new StringBuffer(super._generateFireCode() + _eol
+                + getCodeGenerator().comment(
                 "AutoAdapter._generateFireCode() start"));
 
         // FIXME: it is odd that we are transferring data around in the fire code.

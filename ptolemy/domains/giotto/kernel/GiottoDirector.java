@@ -633,6 +633,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
+        // FIXME: We are ignoring the return value here.
+        super.postfire();
         if (_debugging) {
             _debug("Giotto director postfiring!");
         }

@@ -282,7 +282,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        Set sharedCode = new HashSet();
+        Set sharedCode = new HashSet(super.getSharedCode());
 
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case

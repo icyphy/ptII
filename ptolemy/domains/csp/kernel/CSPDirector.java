@@ -208,8 +208,13 @@ public class CSPDirector extends CompositeProcessDirector {
      *  input ports, or if stop() has been called, and true otherwise.
      *  <P>
      *  @return False if no more execution is possible, and true otherwise.
+     *  @exception IllegalActionException If thrown by the superclass.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
+        // This is a little odd because ProcessDirector.postfire()
+        // sets _notDone, but we want to be sure to call it and
+        // react to the return value;
+        _notDone = super.postfire();
         List ports = ((CompositeActor) getContainer()).inputPortList();
 
         if (ports.iterator().hasNext()) {

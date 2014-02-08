@@ -126,6 +126,8 @@ public class Undefined extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        // We do not call super.prefire() because we do not
+        // want to consume any trigger inputs.
         return false;
     }
 }

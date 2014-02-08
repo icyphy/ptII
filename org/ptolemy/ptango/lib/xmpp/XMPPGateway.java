@@ -201,6 +201,9 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
      *
      */
     public void initialize() throws IllegalActionException {
+        // Invoke any registered initializables in the super class.
+        super.initialize();
+
         // FIXME: if the server runs on localhost, it doesn't accept 'localhost',
         // but requires 127.0.0.1, look into this
         String jid = _userName + '@' + _serverName;
@@ -380,9 +383,13 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
         return;
     }
 
-    /** Disconnect from the server. */
+    /** Disconnect from the server.
+     *  @exception IllegalActionException If thrown in the base class.   
+     */
     @Override
-    public void wrapup() {
+    public void wrapup() throws IllegalActionException {
+        // Invoke any registered initializables in the super class.
+        super.wrapup();
         _disconnect();
     }
 

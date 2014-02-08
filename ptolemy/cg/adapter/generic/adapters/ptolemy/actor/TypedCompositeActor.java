@@ -58,7 +58,7 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
 
     @Override
     protected String _generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(super._generateFireCode());
 
         NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(

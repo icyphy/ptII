@@ -231,7 +231,7 @@ public class PtidesPreemptiveEDFDirector
      *  an actor throws it while generating initialize code for the actor.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(super.generateInitializeCode());
 
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case

@@ -453,6 +453,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
         /** Do nothing.
          */
         public void fire() {
+            // Do not call super.fire() here because ProcessDirector.fire()
+            // waits until a deadlock is detected, which we don't want to do.
         }
 
         /** Return false since this director has nothing to do.

@@ -642,7 +642,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 //         return processCode(code.toString());
 
 
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(super._generateFireCode());
         //code.append(super._generateFireCode());
         code.append(getCodeGenerator().comment("FSMActor._generateFireCode()"));
 
