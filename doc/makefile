@@ -229,7 +229,7 @@ COREPACKAGES = \
 	ptolemy.vergil.unit \
 
 # CG Codegen packages
-# cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g'
+# cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g' | grep -v test
 CGPACKAGES = \
 	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor \
@@ -252,29 +252,30 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.conversions \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.gui \
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.logic \
+	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.logic \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.cg.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.modal \
-	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel \
-	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib \
+	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.lib \
+	ptolemy.cg.adapter.generic.program.procedural.c.arduino.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.actor.lib \
-	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
-	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.de.lib \
+	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.de.lib \
-	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.colt \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.conversions \
@@ -300,7 +301,6 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
 	ptolemy.cg.kernel.generic.program.procedural.java.type \
 	ptolemy.cg.kernel.generic.syntactic \
-	ptolemy.cg.kernel.generic.test.actor \
 	ptolemy.cg.lib \
 	ptolemy.cg.lib.syntactic
 
