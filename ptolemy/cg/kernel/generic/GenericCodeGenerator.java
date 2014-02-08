@@ -139,7 +139,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
         _model = (CompositeEntity) getContainer();
 
-        //_generatorPackageListParser._updateGeneratorPackageList();
+        _generatorPackageListParser._updateGeneratorPackageList();
 
         // FIXME: We may not want this GUI dependency here...
         // This attribute could be put in the MoML in the library instead
