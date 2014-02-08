@@ -322,7 +322,7 @@ public class TestModel extends GTEvent {
             Object[] newValues = _trainingTokens.toArray();
 
             // NOTE: Support input multiport for the benefit of derived classes.
-            int width = 1;
+            //int width = 1;
             Token[] newTokens = new Token[newValues.length];
 
             // Coverity points out that bufferSize is 1, so the if will never be false.

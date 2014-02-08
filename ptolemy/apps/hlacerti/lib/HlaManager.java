@@ -242,7 +242,7 @@ implements TimeRegulator {
 			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
 
-		_lastProposedTime = null;
+		//_lastProposedTime = null;
 		_rtia = null;
 		_federateAmbassador = null;
 
@@ -994,7 +994,7 @@ implements TimeRegulator {
 			}
 		}
 
-		_lastProposedTime = breakpoint;
+		//_lastProposedTime = breakpoint;
 		return breakpoint;
 	}
 
@@ -1545,7 +1545,7 @@ implements TimeRegulator {
 	/** Records the last proposed time to avoid multiple HLA time advancement
 	 *  requests at the same time.
 	 */
-	private Time _lastProposedTime;
+	//private Time _lastProposedTime;
 
 	/** A reference to the enclosing director. */
 	private DEDirector _director;
@@ -1586,7 +1586,7 @@ implements TimeRegulator {
 		public LogicalTime logicalTimeHLA;
 
 		/** Federate time step. */
-		public LogicalTime timeStepHLA;
+		//public LogicalTime timeStepHLA;
 
 		/** Indicates if the request of synchronization by the Federate is
 		 *  validated by the HLA/CERTI Federation. This value is set by callback
@@ -1839,7 +1839,7 @@ implements TimeRegulator {
 		public void initializeTimeValues(Double startTime, Double timeStep, Double lookAHead) {
 			logicalTimeHLA = new CertiLogicalTime(startTime);
 			lookAHeadHLA = new CertiLogicalTimeInterval(lookAHead);
-			timeStepHLA = new CertiLogicalTime(timeStep);
+			//timeStepHLA = new CertiLogicalTime(timeStep);
 
 			timeAdvanceGrant = false;
 		}

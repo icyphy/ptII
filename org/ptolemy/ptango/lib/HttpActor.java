@@ -568,7 +568,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *
      *  See <a href"http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
      */
-    protected class ActorServlet extends HttpServlet {
+    @SuppressWarnings("serial")
+	protected class ActorServlet extends HttpServlet {
 
         /** Handle an HTTP get request by creating a web page as the HTTP
          *  response.

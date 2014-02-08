@@ -263,7 +263,7 @@ public class UnitLibrary {
         _unitsLibrary.add(Identity);
 
         Iterator oldStyleUnits = us.attributeList().iterator();
-        UnitLibrary enclosingObject = new UnitLibrary();
+        //UnitLibrary enclosingObject = new UnitLibrary();
         Vector pairs = new Vector();
 
         while (oldStyleUnits.hasNext()) {

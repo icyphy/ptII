@@ -41,6 +41,7 @@ import org.mlc.swing.layout.LayoutFrame;
 @version $Id$
 @since Ptolemy II 8.0
  */
+@SuppressWarnings("serial")
 public class CustomerPanel extends javax.swing.JPanel {
     javax.swing.JComboBox suffixCombo = new javax.swing.JComboBox();
 

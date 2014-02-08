@@ -1061,7 +1061,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
     private ModularSDFCodeGenerator _codeGenerator = null;
 
-    private boolean _isOpaque = true;
+    //private boolean _isOpaque = true;
 
     private long _receiversVersion;
 

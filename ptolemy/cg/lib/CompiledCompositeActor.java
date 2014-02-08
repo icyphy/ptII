@@ -292,7 +292,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         // We already loaded once, so increment the
                         // version number used to generate the
                         // sanitizedActorName
-                        ++_version;
+                        //++_version;
                         _updateSanitizedActorName();
                     }
                     String generatorPackageString = generatorPackage
@@ -648,7 +648,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             System.out.println(message + "No effigy.  This can happen when "
                     + "CodeGenerator.generateCode() is called from within "
                     + "the test suite.  The code will be recompiled.");
-            _version = ++_noEffigyVersion;
+            //_version = ++_noEffigyVersion;
             _updateSanitizedActorName();
             return true;
         }
@@ -990,13 +990,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  version number gets incremented.  If you change _version, then
      *  consider calling _updateSanitizedActorName.
      */
-    private int _version = 0;
+    //private int _version = 0;
 
     /** The version of the shared object to use if we have no effigy.
      *  If we don't have an effigy, then we increment this variable
      *  and set _version to its value.
      */
-    private static int _noEffigyVersion = 0;
+    //private static int _noEffigyVersion = 0;
 
     //private static boolean _pointerTypeInitialized = false;
 

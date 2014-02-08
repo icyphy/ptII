@@ -420,15 +420,15 @@ public class PtidesPreemptiveEDFDirector
     protected String _generateSensorFuncProtoCode() {
         StringBuffer code = new StringBuffer();
 
-        for (Actor actor : (List<Actor>) ((CompositeActor) _director
-                .getContainer()).deepEntityList()) {
+        //for (Actor actor : (List<Actor>) ((CompositeActor) _director
+           //     .getContainer()).deepEntityList()) {
             //            if (actor instanceof SensorHandler) {
             //                code.append("void "
             //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
             //                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
             //                        + _eol);
             //            }
-        }
+        //}
 
         return code.toString();
     }

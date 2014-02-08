@@ -366,14 +366,14 @@ public class PtidesPreemptiveEDFDirector extends Director {
     protected String _generateActuatorActuationFuncProtoCode() {
         StringBuffer code = new StringBuffer();
 
-        for (Actor actor : (List<Actor>) ((CompositeActor) _director
-                .getContainer()).deepEntityList()) {
+        //for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                //.getContainer()).deepEntityList()) {
             //            if (actor instanceof OutputDevice) {
             //                code.append("void Actuation_"
             //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
             //                        + "(void);" + _eol);
             //            }
-        }
+        //}
 
         return code.toString();
     }
@@ -499,8 +499,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
      */
     protected void _modelStaticAnalysis() throws IllegalActionException {
 
-        for (Actor actor : (List<Actor>) ((CompositeActor) _director
-                .getContainer()).deepEntityList()) {
+        //for (Actor actor : (List<Actor>) ((CompositeActor) _director
+              //  .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
             //            if (actor instanceof ActuatorSetup) {
             //                actuators.put(actor, Integer.valueOf(actuatorIndex));
@@ -511,7 +511,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
             //                sensors.put(actor, Integer.valueOf(sensorIndex));
             //                sensorIndex++;
             //            }
-        }
+        //}
     }
 
     ///////////////////////////////////////////////////////////////////

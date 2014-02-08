@@ -32,26 +32,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLConnection;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
 
 /** An object representation of an HTTP request. This class combines all
  *  components of a message (method type, header properties, body) and 

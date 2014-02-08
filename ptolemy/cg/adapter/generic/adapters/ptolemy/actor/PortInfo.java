@@ -61,7 +61,7 @@ public class PortInfo {
     public PortInfo(IOPort port, Ports ports, NamedObj component, PortDirector director) {
         _port = port;
         _ports = ports;
-        _component = component;
+        //_component = component;
         _director = director;
     }
 
@@ -575,7 +575,7 @@ public class PortInfo {
     /** The meta information about the ports in the container. */
     private Ports _ports;
 
-    private NamedObj _component;
+    //private NamedObj _component;
 
     private PortDirector _director;
 }

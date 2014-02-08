@@ -152,7 +152,7 @@ public class MultiCompositeActor extends TypedCompositeActor {
         }
         code.append(generatePortName(port));
 
-        int bufferSize = 1; //_ports.getBufferSize(port);
+        //int bufferSize = 1; //_ports.getBufferSize(port);
 
         if (port.isMultiport()) {
             if (!variablesAsArrays) {

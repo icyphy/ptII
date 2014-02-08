@@ -38,6 +38,7 @@ import com.sun.jna.Native;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class NativeSizeT extends IntegerType {
     /** Construct a zero-sized object. */
     public NativeSizeT() {

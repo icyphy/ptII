@@ -41,6 +41,7 @@ import org.mlc.swing.layout.LayoutFrame;
 @version $Id$
 @since Ptolemy II 8.0
  */
+@SuppressWarnings("serial")
 public class ExamplePanel extends javax.swing.JPanel {
     JLabel nameLabel = new JLabel("Name");
 

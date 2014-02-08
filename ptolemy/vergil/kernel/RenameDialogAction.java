@@ -131,6 +131,6 @@ public class RenameDialogAction extends FigureAction {
     //private TableauFrame parent;
     private static String DISPLAY_NAME = null;
     private static String TOOLTIP = null;
-    private static ImageIcon LARGE_ICON = null;
-    private static KeyStroke ACCELERATOR_KEY = null;
+    //private static ImageIcon LARGE_ICON = null;
+    //private static KeyStroke ACCELERATOR_KEY = null;
 }
