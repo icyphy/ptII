@@ -91,5 +91,12 @@ OPTIONAL_FILES =
 all: jclass
 install: jclass jars
 
+# The main target for this file is "jnlps", which is defined in $PTII/mk/ptcommon.mk
+
+# See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport
+# For instructions about how to update http://ptolemy.org/constructive
+
+# For an example that is in the ptII repo, see the $PTII/mk/jnlp.mk file.
+
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
