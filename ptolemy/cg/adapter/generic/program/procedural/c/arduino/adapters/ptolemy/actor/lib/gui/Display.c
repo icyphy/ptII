@@ -22,7 +22,7 @@ if ($hasToken(input#$channel)) {
 /*** BooleanPrintBlock($name, $channel) ***/
 // Arduino!
 if ($hasToken(input#$channel)) {
-        printf("%d\n", $get(input#$channel));
+        printf("%d Arduino!!!\n", $get(input#$channel));
 }
 /**/
 

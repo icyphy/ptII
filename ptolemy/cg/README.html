@@ -68,6 +68,25 @@ CodeGenerators -&gt;CGCodegen.</p>
   <dt> ptolemy/cg/adapter</dt>
   <dd> Language specific adapters classes that correspond with
 regular Ptolemy II classes.
+    <dl> 
+      <dt> ptolemy/cg/adapter/generic/program/procedural/</dt>
+      <dd> The classes for the procedural languages (C and Java)
+        <dl>
+	  <dt> ptolemy/cg/adapter/generic/program/procedural/adapters</dt>
+	  <dd> The adapter definitions that are shared between the procedural languages.  For example, the Display adapter is at ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/gui/Display.java</dd>
+	  <dt> ptolemy/cg/adapter/generic/program/procedural/adapters/c</dt>
+	  <dd> The adapters for actors that generate C.  In general, the Java class extends the shared adapter
+	    and contains only a constructor.  There is an optional <code>.c</code> file that contains
+	    C-specific blocks of code used in code generation.
+	    For example, we have ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.java
+	    and ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.c
+	  </dd>
+	  <dd> The adapters for actors that generate Java.  The layout is similar to the C version, except the
+	    <code>.j</code> file contains the Java template blocks.  The file is named .j so that it does not get compiled.
+	  </dd>
+        </dl>
+    </dl>
+  </dd>
   <dt> ptolemy/cg/gui</dt>
   <dd>Graphical User Interface (gui) code.  If a model has a
   ptolemy.cg.gui.CodeGeneratorGUIFactory attribute in it, then
@@ -80,6 +99,74 @@ regular Ptolemy II classes.
   <dd>Modular code generation work and syntactic code generation
 work</dd>
 </dl>
+
+<h2>Hints about working with the tree</h2>
+
+Because the tree is so deep, you may find it easier to use a few tools to quickly search files from the command line.
+
+<h3>Search for files</h3>
+To find all the files named <code>Display</code> use:
+<pre>
+cd $PTII/ptolemy/cg
+find . -name "Display"
+</pre>
+
+<h3>Search all the files for a string</h3>
+<pre>
+find . -type f | xargs grep MyString
+</pre>
+
+<h2>How to add an actor</h2>
+
+<p>Adding code generation support for an actor is fairly complex, but
+follows a pattern.</p>
+
+<ol>
+
+ <li>First, check to see that there is no already a code generation
+ version of the actor.  It could be that there is one for a different
+ language.  Also, look for code generation versions of the actors that
+ are similar to the actor in question.</li>
+
+ <li>Read the style guide
+ at <a href="../../doc/coding/style.htm">$PTII/doc/coding/style.htm</a>.
+ In particular, pay attention to the parts about makefiles.</li>
+
+ <li>The ptolemy/cg directory contains subdirectories that mimic the
+ Ptolemy II tree.  So, if we are adding a code generation version of
+ an actor in ptolemy/actor/lib, then we will be working in similar
+ subdirectories in ptolemy/cg.</li>
+
+ <li>The code generation system reads blocks of code from a template
+ file and does substitution.  Most of the work occurs in a file that
+ is shared between the procedural languages (C and Java).  The directory is
+ <code>$PTII/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/</code>
+
+ <li>The C or Java specific code is in
+   <br/><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/<b>c</b>/adapters/ptolemy/actor/lib/</code>
+or
+   <br/><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/<b>java</b>/adapters/ptolemy/actor/lib/</code>
+  <br/>These directories contain corresponding <code>.c</code> or <code>.j</code> files that define the blocks
+  used in the generated code.
+  <br/>These directories also contain a <code>test/auto/</code> directory that contains the test models.
+ </li>
+
+</ol>
+
+
+<h2>Supporting different targets</h2>
+
+<p>A target is typically an architecture-specific platform.  For
+example, the <code>arduino</code> target generates C-code meant to run
+on the Arduino platform. </p>
+
+<p>To generate code for a target, use the <code>-generatorPackageList</code> command line argument to 
+<code>$PTII/bin/cg</code>.  The value of the <code>-generatorPackageList</code> parameter i
+a semicolon or * separated list of Java packages to be searched for adapters.  For example
+<pre>
+$PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.arduino ptolemy/cg/adapter/generic/program/pro\
+cedural/c/arduino/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
+</pre>
 
 <p>
 <br><b>FIXME: Not updated below here</b>
