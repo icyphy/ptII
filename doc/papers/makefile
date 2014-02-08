@@ -33,7 +33,7 @@ ME =		doc/papers
 
 # Sub directories to run make in.
 # The 2011 starts with "y" so that it can be a legitimate package name.
-DIRS =		y11 y12
+DIRS =		y11 y12 y14
 
 # Root of Ptolemy II directory
 ROOT =		../..
