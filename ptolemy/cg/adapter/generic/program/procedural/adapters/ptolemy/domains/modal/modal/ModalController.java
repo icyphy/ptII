@@ -258,12 +258,6 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         _updatePortOffset(outputPort, code, 1);
     }
 
-    public Set<String> getHeaderFiles() {
-        Set<String> headerFiles;
-        headerFiles = new HashSet<String>();
-        return headerFiles;
-    }
-
     /** Generate code for the firing of refinements.
     *
     *  @param code The string buffer that the generated code is appended to.
