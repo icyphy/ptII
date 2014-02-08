@@ -48,6 +48,7 @@ import thales.vergil.SingleWindowApplication;
  @Pt.ProposedRating Yellow (jerome.blanc)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class NavigationPTree extends PTree {
     /**
      * Most of the time, we use the tree of the ptolemy.vergil.tree package,

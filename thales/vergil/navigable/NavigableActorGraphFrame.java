@@ -64,6 +64,7 @@ import thales.vergil.SingleWindowApplication;
  @Pt.ProposedRating Red (jerome.blanc)
  @Pt.AcceptedRating Red (cxh)
  */
+@SuppressWarnings("serial")
 public class NavigableActorGraphFrame extends ActorGraphFrame {
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
