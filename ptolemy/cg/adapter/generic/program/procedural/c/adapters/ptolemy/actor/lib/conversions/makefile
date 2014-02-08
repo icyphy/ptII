@@ -55,6 +55,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	BooleanToAnything.java \
 	ComplexToCartesian.java \
 	Round.java \
 	TokenToExpression.java
