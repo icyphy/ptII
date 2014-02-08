@@ -4,7 +4,7 @@
 <entity name="ErrorHandler" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 70, 1229, 655}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1229, 655}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 538]">
     </property>
@@ -63,7 +63,7 @@
         </property>
     </entity>
     <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="5.0">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="10.0">
         </property>
         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
@@ -249,7 +249,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </entity>
                 <entity name="started" class="ptolemy.domains.modal.modal.Refinement">
                     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/ErrorHandler.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8061/ErrorHandler.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
                         </property>
                         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/ErrorHandler#in_browser">
                             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -349,7 +349,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
                             </property>
-                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 370, 934, 635}, maximized=false}">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 63, 928, 641}, maximized=false}">
                             </property>
                             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
                             </property>
@@ -388,7 +388,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                                 </property>
-                                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 235.0]">
+                                <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 235.0}">
                                 </property>
                             </entity>
                             <entity name="error" class="ptolemy.domains.modal.kernel.State">
@@ -433,7 +433,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 50.0}">
                                 </property>
                             </property>
-                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 254, 1463, 634}, maximized=false}">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-253, 114, 1457, 615}, maximized=false}">
                             </property>
                             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1229, 497]">
                             </property>
@@ -468,7 +468,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                                 </property>
                             </entity>
                             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                                         </property>
@@ -543,7 +543,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                                 </property>
                             </entity>
                             <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;">
+                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;">
                                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                                         </property>
@@ -637,7 +637,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 170.0]">
                                 </property>
                             </property>
-                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 345, 1601, 634}, maximized=false}">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-249, 117, 1595, 631}, maximized=false}">
                             </property>
                             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1367, 514]">
                             </property>
@@ -666,7 +666,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                                 </property>
                             </port>
                             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                                         </property>
@@ -737,7 +737,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                                 </property>
                             </entity>
                             <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                                         </property>
@@ -858,7 +858,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
                         <property name="path" class="ptolemy.data.expr.StringParameter" value="/ErrorHandler/*">
                         </property>
-                        <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
+                        <property name="timeout" class="ptolemy.data.expr.Parameter" value="30000L">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 425.0]">
                         </property>
@@ -946,7 +946,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[287.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 215.0]">
         </property>
         <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="input"/>
@@ -1007,7 +1007,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
             </property>
             <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 150.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 150.0]">
                 </property>
             </port>
             <port name="done" class="ptolemy.actor.lib.hoc.MirrorPort">
@@ -1016,7 +1016,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </property>
             </port>
             <entity name="Test" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\r\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8078/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\r\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\r\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\r\n&lt;/form&gt;\r\n\r\n&quot;}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\r\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\r\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\r\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\r\n&lt;/form&gt;\r\n\r\n&quot;}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
@@ -1043,7 +1043,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </property>
             </entity>
             <entity name="Test2" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8078/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
@@ -1070,7 +1070,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </property>
             </entity>
             <entity name="Test3" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Bad Job! To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8078/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n&quot;}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Bad Job! To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n&quot;}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
@@ -1078,7 +1078,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </property>
             </entity>
             <entity name="Test4" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\r\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8078/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\r\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\r\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\r\n&lt;/form&gt;\r\n\r\n&quot;}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\r\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\r\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\r\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\r\n&lt;/form&gt;\r\n\r\n&quot;}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
@@ -1105,7 +1105,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </property>
             </entity>
             <entity name="Test5" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8078/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
@@ -1132,7 +1132,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </property>
             </entity>
             <entity name="Test6" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8078/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
@@ -1140,7 +1140,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 </property>
             </entity>
             <entity name="Test7" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\r\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8078/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\r\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\r\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\r\n&lt;/form&gt;\r\n\r\n&quot;}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\r\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\r\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\r\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\r\n&lt;/form&gt;\r\n\r\n&quot;}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
@@ -1178,6 +1178,62 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 950.0]">
                 </property>
             </entity>
+            <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="Discrete TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 275.0]">
+                </property>
+            </entity>
+            <entity name="Discrete TimeDelay3" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 390.0]">
+                </property>
+            </entity>
+            <entity name="Discrete TimeDelay4" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 505.0]">
+                </property>
+            </entity>
+            <entity name="Discrete TimeDelay5" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 630.0]">
+                </property>
+            </entity>
+            <entity name="Discrete TimeDelay6" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 770.0]">
+                </property>
+            </entity>
+            <entity name="Discrete TimeDelay7" class="ptolemy.actor.lib.TimeDelay">
+                <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 885.0}">
+                </property>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[325.0, 190.0]">
                 </vertex>
@@ -1207,50 +1263,78 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[405.0, 800.0]">
+                <vertex name="vertex1" value="[405.0, 815.0]">
                 </vertex>
             </relation>
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[270.0, 885.0]">
                 </vertex>
             </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation12" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="start" relation="relation11"/>
+            <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="start" relation="relation14"/>
             <link port="done" relation="relation12"/>
             <link port="Test.input" relation="relation"/>
             <link port="HttpPost.input" relation="relation2"/>
             <link port="HttpPost.output" relation="relation3"/>
             <link port="Const.output" relation="relation2"/>
-            <link port="Const.trigger" relation="relation"/>
+            <link port="Const.trigger" relation="relation15"/>
             <link port="Test2.input" relation="relation3"/>
             <link port="HttpPost2.input" relation="relation4"/>
             <link port="HttpPost2.output" relation="relation5"/>
             <link port="Const2.output" relation="relation4"/>
-            <link port="Const2.trigger" relation="relation3"/>
+            <link port="Const2.trigger" relation="relation16"/>
             <link port="Test3.input" relation="relation5"/>
             <link port="Test4.input" relation="relation6"/>
             <link port="HttpPost3.input" relation="relation7"/>
             <link port="HttpPost3.output" relation="relation8"/>
             <link port="Const3.output" relation="relation7"/>
-            <link port="Const3.trigger" relation="relation6"/>
+            <link port="Const3.trigger" relation="relation18"/>
             <link port="Test5.input" relation="relation8"/>
             <link port="HttpPost4.input" relation="relation9"/>
             <link port="HttpPost4.output" relation="relation10"/>
             <link port="Const4.output" relation="relation9"/>
-            <link port="Const4.trigger" relation="relation8"/>
+            <link port="Const4.trigger" relation="relation19"/>
             <link port="Test6.input" relation="relation10"/>
             <link port="Test7.input" relation="relation13"/>
             <link port="HttpGet.output" relation="relation"/>
             <link port="HttpGet.trigger" relation="relation11"/>
             <link port="HttpGet2.output" relation="relation6"/>
-            <link port="HttpGet2.trigger" relation="relation5"/>
+            <link port="HttpGet2.trigger" relation="relation17"/>
             <link port="HttpGet3.output" relation="relation13"/>
-            <link port="HttpGet3.trigger" relation="relation10"/>
+            <link port="HttpGet3.trigger" relation="relation20"/>
             <link port="Const5.output" relation="relation12"/>
             <link port="Const5.trigger" relation="relation13"/>
+            <link port="Discrete TimeDelay.input" relation="relation14"/>
+            <link port="Discrete TimeDelay.output" relation="relation11"/>
+            <link port="Discrete TimeDelay2.input" relation="relation"/>
+            <link port="Discrete TimeDelay2.output" relation="relation15"/>
+            <link port="Discrete TimeDelay3.input" relation="relation3"/>
+            <link port="Discrete TimeDelay3.output" relation="relation16"/>
+            <link port="Discrete TimeDelay4.input" relation="relation5"/>
+            <link port="Discrete TimeDelay4.output" relation="relation17"/>
+            <link port="Discrete TimeDelay5.input" relation="relation6"/>
+            <link port="Discrete TimeDelay5.output" relation="relation18"/>
+            <link port="Discrete TimeDelay6.input" relation="relation8"/>
+            <link port="Discrete TimeDelay6.output" relation="relation19"/>
+            <link port="Discrete TimeDelay7.input" relation="relation10"/>
+            <link port="Discrete TimeDelay7.output" relation="relation20"/>
         </entity>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
