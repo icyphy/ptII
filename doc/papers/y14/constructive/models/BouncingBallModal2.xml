@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 264, 1081, 635}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 264, 711, 453}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[847, 525]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[477, 343]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1472475578316703">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.9423828124994, 162.45024898260155}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{97.68686412597006, 83.12996681787637}">
     </property>
     <property name="m" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -85,13 +85,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="mass">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 5.0]">
-        </property>
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500, 340}">
         </property>
     </property>
     <property name="p" class="ptolemy.data.expr.Parameter" value="1E-3">
