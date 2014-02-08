@@ -29,13 +29,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 22, 1528, 981}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 22, 1347, 914}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1294, 871]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1113, 804]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.179232557472089">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{438.57812500000006, 309.0679395443926}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.833296826324, 280.6596329828662}">
     </property>
     <property name="mLeft" class="ptolemy.data.expr.Parameter" value="0.2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -148,13 +148,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Suppress right ball&#10;correction if the other&#10;collision occurs&#10;simultaneously">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 400.0]">
-        </property>
-    </property>
-    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-            <display name="Background Color"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{920, 515}">
         </property>
     </property>
     <entity name="LeftBall" class="BallDynamics">

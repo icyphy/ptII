@@ -6,13 +6,13 @@
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, -25.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 207, 1052, 771}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 207, 807, 394}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[818, 661]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 284]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0660098402033886">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.066780544755122">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.98336841142014, 444.34427331167666}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.8780781895661, 302.71675813533045}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -41,7 +41,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Control the step size to catch points&#10;where the velocity on the left becomes&#10;bigger than the velocity on the right.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 385.0]">
         </property>
     </property>
     <port name="collision" class="ptolemy.actor.TypedIOPort">
@@ -84,7 +84,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 285.0]">
         </property>
     </entity>
-    <entity name="Expression3" class="ptolemy.actor.lib.Expression">
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="distance &lt;= 0.0&#10;&amp;&amp; v1 &gt; v2">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
@@ -166,10 +166,10 @@
     <link port="LevelCrossingDetector.trigger" relation="relation6"/>
     <link port="TrueGate.input" relation="relation3"/>
     <link port="TrueGate.output" relation="relation4"/>
-    <link port="Expression3.output" relation="relation3"/>
-    <link port="Expression3.distance" relation="relation6"/>
-    <link port="Expression3.v1" relation="relation5"/>
-    <link port="Expression3.v2" relation="relation"/>
+    <link port="Expression.output" relation="relation3"/>
+    <link port="Expression.distance" relation="relation6"/>
+    <link port="Expression.v1" relation="relation5"/>
+    <link port="Expression.v2" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.minus" relation="relation"/>
     <link port="AddSubtract.output" relation="relation2"/>

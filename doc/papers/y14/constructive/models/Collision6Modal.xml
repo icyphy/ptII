@@ -300,7 +300,7 @@
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.374643601290478">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.68642175197607, 110.08997907137243}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.6864217519761, 110.08997907137243}">
             </property>
             <port name="F_r" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -368,24 +368,8 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 115.0]">
                 </property>
             </entity>
-            <entity name="transient1" class="ptolemy.domains.modal.kernel.State">
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, -15.0]">
-                </property>
-            </entity>
-            <entity name="transient2" class="ptolemy.domains.modal.kernel.State">
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 255.0]">
-                </property>
-            </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="F_r &gt; F_l">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="F_r &gt; F_l&#10;  || F_i_r_isPresent&#10;  || F_i_l_isPresent">
                 </property>
                 <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  separate.RightBall.x_0 = x_r;&#10;  separate.RightBall.v_0 = v_r;&#10;  separate.LeftBall.x_0 = x_l;&#10;  separate.LeftBall.v_0 = v_l">
                 </property>
@@ -393,20 +377,10 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5629769153442077">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                     <display name="default"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
-            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  F_i_r_isPresent&#10;  || F_i_l_isPresent">
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  separate.RightBall.x_0 = x_r;&#10;  separate.LeftBall.x_0 = x_l">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.21427516175102043">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.308507969735711E-4">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -419,70 +393,10 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5773145772457815">
                 </property>
             </relation>
-            <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  F_i_r_isPresent">
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="&#10;  separate.RightBall.v_0 = v_r + F_i_r / mRight">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.24520641447827096">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5513445118539573">
-                </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </relation>
-            <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="separate.RightBall.v_0 = v_r">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.2583743033501589">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5427963410830434">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
-                    <display name="default"/>
-                </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </relation>
-            <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="F_i_l_isPresent">
-                </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="separate.LeftBall.v_0 = v_l + F_i_l / mLeft">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.31422502076928094">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.7732620322855945">
-                </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </relation>
-            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="separate.LeftBall.v_0 = v_l">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.03318170147117652">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.7849735110599574">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="true">
-                    <display name="default"/>
-                </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </relation>
             <link port="together.incomingPort" relation="relation3"/>
             <link port="together.outgoingPort" relation="relation"/>
-            <link port="together.outgoingPort" relation="relation2"/>
             <link port="separate.incomingPort" relation="relation"/>
-            <link port="separate.incomingPort" relation="relation7"/>
-            <link port="separate.incomingPort" relation="relation4"/>
             <link port="separate.outgoingPort" relation="relation3"/>
-            <link port="transient1.incomingPort" relation="relation2"/>
-            <link port="transient1.outgoingPort" relation="relation5"/>
-            <link port="transient1.outgoingPort" relation="relation6"/>
-            <link port="transient2.incomingPort" relation="relation5"/>
-            <link port="transient2.incomingPort" relation="relation6"/>
-            <link port="transient2.outgoingPort" relation="relation7"/>
-            <link port="transient2.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="together" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
