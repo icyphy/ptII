@@ -81,11 +81,15 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
      *  per block
      *  @param variablesAsArrays If true, then try to save space by putting variables
      *  into arrays.
+     *  @param generatePackageList A semicolon or * separated list of
+     *  Java packages to be searched for adapters.  For example,
+     *  generic.program.procedural.c.arduino means use the arduino
      *  @exception Throwable If thrown while generating, compiling or executing the compiled code.
      */
     public void runModel(String fullPath, String language,
             boolean generateInSubdirectory, boolean inline,
-            int maximumLinesPerBlock, boolean variablesAsArrays)
+            int maximumLinesPerBlock, boolean variablesAsArrays,
+            String generatorPackageList)
             throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
             System.out.println("No auto/*.xml tests in "
@@ -100,26 +104,20 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
             System.out.println("Warning, failed to delete " + _cgDirectory);
         }
 
-        System.out
-                .println("----------------- (Known Failure) AutoCG $PTII/bin/ptcg "
-                        + "-language "
-                        + language
-                        + " -generateInSubdirectory "
-                        + generateInSubdirectory
-                        + " -inline "
-                        + inline
-                        + " -maximumLinesPerBlock "
-                        + maximumLinesPerBlock
-                        + " -variablesAsArrays "
-                        + variablesAsArrays
-                        + " "
-                        + fullPath);
-        String[] args = new String[] { "-language", language,
+        String [] args = new String[] {"-language", language,
                 "-generateInSubdirectory",
                 Boolean.toString(generateInSubdirectory), "-inline",
                 Boolean.toString(inline), "-maximumLinesPerBlock",
                 Integer.toString(maximumLinesPerBlock), "-variablesAsArrays",
-                Boolean.toString(variablesAsArrays), fullPath };
+                Boolean.toString(variablesAsArrays), 
+                "--generatorPackageList", generatorPackageList,
+                                       fullPath};
+
+        System.out.print("----------------- (Known Failure) AutoCG $PTII/bin/ptcg");
+        for (int i = 0; i < args.length; i++) {
+            System.out.print(" " + args[i]);
+        }
+
         try {
             int returnValue = ((Integer) _generateCodeMethod.invoke(null,
                     (Object) args)).intValue();

@@ -37,14 +37,14 @@ import org.junit.runners.Suite;
  *  Run the auto/ tests using c cg.
  *
  * @author Christopher Brooks
- * @version $Id$
+ * @version $Id: JUnitCGCTestBase.java 67792 2013-10-26 19:36:54Z cxh $
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ ptolemy.util.test.junit.AutoCGCKnownFailedTests.class,
+@Suite.SuiteClasses({ /*ptolemy.util.test.junit.AutoCGCKnownFailedTests.class,*/
                 /*ptolemy.util.test.junit.AutoCGCInlineTests.class,*/
-        ptolemy.util.test.junit.AutoCGCNoInlineTests.class })
-public class JUnitCGCTestBase {
+        ptolemy.util.test.junit.AutoCGCNoInlineArduinoTests.class })
+public class JUnitCGCArduinoTestBase {
 }

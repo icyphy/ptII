@@ -97,6 +97,7 @@ public class AutoCGCNoInlineTests extends AutoCGTests {
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,
-                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/);
+                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/,
+                "" /*generatorPackageList*/);
     }
 }

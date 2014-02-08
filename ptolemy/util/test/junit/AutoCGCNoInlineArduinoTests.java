@@ -36,11 +36,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 ///////////////////////////////////////////////////////////////////
-//// AutoCGCInlineTests
+//// AutoCGCNoInlineArduinoTests
 
 /**
  * Run the Ptolemy model tests in the auto/ directory using cg code generation
- * under JUnit with inlining.
+ * under JUnit without inlining for the Arduino target
  *
  * <p>
  * The DE codegen facility does not work with inlining.
@@ -64,13 +64,13 @@ import org.junit.runner.RunWith;
  * </p>
  *
  * @author Christopher Brooks
- * @version $Id$
+ * @version $Id: AutoCGCNoInlineTests.java 67784 2013-10-26 16:53:27Z cxh $
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(JUnitParamsRunner.class)
-public class AutoCGCInlineTests extends AutoCGTests {
+public class AutoCGCNoInlineArduinoTests extends AutoCGTests {
 
     /**
      * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class and its generateCode static
@@ -85,7 +85,7 @@ public class AutoCGCInlineTests extends AutoCGTests {
     }
 
     /**
-     * Generate, compile and run inline code for a model.
+     * Generate, compile and run non-inline code for a model.
      *
      * @param fullPath The full path to the model file to be
      * executed. If the fullPath ends with the value of the {@link
@@ -95,9 +95,9 @@ public class AutoCGCInlineTests extends AutoCGTests {
      */
     @Test
     @Parameters(method = "modelValues")
-    public void runModelInline(String fullPath) throws Throwable {
+    public void runModelNoInlineArduino(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,
-                true /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/,
-                "" /*generatorPackageList*/);
+                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/, 
+                "generic.program.procedural.c.arduino");
     }
 }
