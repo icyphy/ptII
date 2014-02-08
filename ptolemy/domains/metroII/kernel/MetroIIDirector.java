@@ -215,30 +215,6 @@ public class MetroIIDirector extends Director {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == mappingFileName) {
-            StringToken mappingFileNameToken = (StringToken) mappingFileName
-                    .getToken();
-            if (mappingFileNameToken == null
-                    || mappingFileNameToken.stringValue().equals("")) {
-                mappingFileName = null;
-            } else {
-                File file = mappingFileName.asFile();
-                if (file != null) {
-                    String filename = file.getAbsolutePath();
-                    if (!filename.equals("")) {
-                        try {
-                            System.out.println(filename);
-                            _mappingConstraintSolver.readMapping(filename);
-                        } catch (IOException ex) {
-                            throw new IllegalActionException(this, ex,
-                                    "Failed to open mapping file \"" + filename
-                                            + "\".");
-                        }
-                        if (_debugging) {
-                            _debug(_mappingConstraintSolver.toString());
-                        }
-                    }
-                }
-            }
 
         } else if (attribute == printDebug) {
             if (((BooleanToken) printDebug.getToken()).booleanValue()) {
@@ -274,7 +250,7 @@ public class MetroIIDirector extends Director {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        // _initializeMapping();
+        _initializeMapping();
 
         Nameable container = getContainer();
         int numActor = 0;
@@ -298,7 +274,6 @@ public class MetroIIDirector extends Director {
         _iterationCount = 0;
 
         _timeScheduler.initialize(numActor);
-
 
     }
 
@@ -464,6 +439,39 @@ public class MetroIIDirector extends Director {
     ////                         private methods                   ////
 
     /**
+     * Initialize mapping from the mapping file.
+     * 
+     * @throws IllegalActionException
+     *             If error occurs when reading the mapping file.
+     */
+    private void _initializeMapping() throws IllegalActionException {
+        StringToken mappingFileNameToken = (StringToken) mappingFileName
+                .getToken();
+        if (mappingFileNameToken == null
+                || mappingFileNameToken.stringValue().equals("")) {
+            mappingFileName = null;
+        } else {
+            File file = mappingFileName.asFile();
+            if (file != null) {
+                String filename = file.getAbsolutePath();
+                if (!filename.equals("")) {
+                    try {
+                        System.out.println(filename);
+                        _mappingConstraintSolver.readMapping(filename);
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to open mapping file \"" + filename
+                                        + "\".");
+                    }
+                    if (_debugging) {
+                        _debug(_mappingConstraintSolver.toString());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Initializes parameters. This is called by the constructor.
      * 
      * @exception IllegalActionException
@@ -512,5 +520,5 @@ public class MetroIIDirector extends Director {
      * The list of actors governed by MetroIIDirector.
      */
     private LinkedList<FireMachine> _actorList;
-    
+
 }
