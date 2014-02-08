@@ -2781,7 +2781,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // level and generateEmbeddedCode is true.   Otherwise
         // $PTII/bin/ptcg $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml
         // includes jni.h, which will fail under targets like Arduino.
-        if (!_isTopLevel() &&  (BooleanToken) generateEmbeddedCode.getToken()).booleanValue()) {
+        if (!_isTopLevel() &&  ((BooleanToken) generateEmbeddedCode.getToken()).booleanValue()) {
             includingFiles.addAll(_getJVMHeaderFiles());
         }
 
