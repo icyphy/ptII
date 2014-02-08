@@ -1,4 +1,4 @@
-# Template makefile from $PTII/ptolemy/codegen/c/makefile.in
+# Template makefile from $PTII/ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
 # $Id$
 # The CodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory
