@@ -1,0 +1,266 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LifePtalonCGAVR" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 104, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0303054694732">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{199.1757812499999, 176.2421875}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Adam Cataldo">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 350.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Conway's Game Of Life, implemented in Ptalon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 15.0]">
+        </property>
+    </property>
+    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="ElementsToArray2" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="ElementsToArray3" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="ElementsToArray4" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 265, 322, 226}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 220}">
+        </property>
+    </entity>
+    <entity name="ElementsToArray5" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="ElementsToArray6" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="GameOfLife" class="ptolemy.actor.ptalon.PtalonActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 205.0}">
+        </property>
+        <configure>
+            <ptalon file="ptolemy.actor.ptalon.demo.GameOfLife.GameOfLife">
+                <ptalonParameter name="delay" value="ptolemy.domains.sdf.lib.SampleDelay"/>
+                <ptalonParameter name="expression" value="ptolemy.actor.lib.Expression"/>
+                <ptalonExpressionParameter name="rows" value="5"/>
+                <ptalonExpressionParameter name="columns" value="5"/>
+                <ptalonExpressionParameter name="initialStates" value="[0,0,0,0,0;0,0,0,0,0;0,1,1,1,0;0,0,0,0,0;0,0,0,0,0]"/>
+            </ptalon>
+        </configure>
+    </entity>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="ElementsToArray.input" relation="relation3"/>
+    <link port="ElementsToArray.input" relation="relation4"/>
+    <link port="ElementsToArray.input" relation="relation5"/>
+    <link port="ElementsToArray.input" relation="relation6"/>
+    <link port="ElementsToArray.input" relation="relation7"/>
+    <link port="ElementsToArray.output" relation="relation10"/>
+    <link port="ElementsToArray2.input" relation="relation8"/>
+    <link port="ElementsToArray2.input" relation="relation9"/>
+    <link port="ElementsToArray2.input" relation="relation14"/>
+    <link port="ElementsToArray2.input" relation="relation16"/>
+    <link port="ElementsToArray2.input" relation="relation15"/>
+    <link port="ElementsToArray2.output" relation="relation11"/>
+    <link port="ElementsToArray3.input" relation="relation17"/>
+    <link port="ElementsToArray3.input" relation="relation18"/>
+    <link port="ElementsToArray3.input" relation="relation19"/>
+    <link port="ElementsToArray3.input" relation="relation20"/>
+    <link port="ElementsToArray3.input" relation="relation21"/>
+    <link port="ElementsToArray3.output" relation="relation12"/>
+    <link port="ElementsToArray4.input" relation="relation10"/>
+    <link port="ElementsToArray4.input" relation="relation11"/>
+    <link port="ElementsToArray4.input" relation="relation12"/>
+    <link port="ElementsToArray4.input" relation="relation"/>
+    <link port="ElementsToArray4.input" relation="relation2"/>
+    <link port="ElementsToArray4.output" relation="relation13"/>
+    <link port="Display.input" relation="relation13"/>
+    <link port="ElementsToArray5.input" relation="relation22"/>
+    <link port="ElementsToArray5.input" relation="relation23"/>
+    <link port="ElementsToArray5.input" relation="relation24"/>
+    <link port="ElementsToArray5.input" relation="relation25"/>
+    <link port="ElementsToArray5.input" relation="relation26"/>
+    <link port="ElementsToArray5.output" relation="relation"/>
+    <link port="ElementsToArray6.input" relation="relation27"/>
+    <link port="ElementsToArray6.input" relation="relation28"/>
+    <link port="ElementsToArray6.input" relation="relation30"/>
+    <link port="ElementsToArray6.input" relation="relation29"/>
+    <link port="ElementsToArray6.input" relation="relation31"/>
+    <link port="ElementsToArray6.output" relation="relation2"/>
+    <link port="GameOfLife.output0" relation="relation3"/>
+    <link port="GameOfLife.output1" relation="relation4"/>
+    <link port="GameOfLife.output2" relation="relation5"/>
+    <link port="GameOfLife.output3" relation="relation6"/>
+    <link port="GameOfLife.output4" relation="relation7"/>
+    <link port="GameOfLife.output5" relation="relation8"/>
+    <link port="GameOfLife.output6" relation="relation9"/>
+    <link port="GameOfLife.output7" relation="relation14"/>
+    <link port="GameOfLife.output8" relation="relation16"/>
+    <link port="GameOfLife.output9" relation="relation15"/>
+    <link port="GameOfLife.output10" relation="relation17"/>
+    <link port="GameOfLife.output11" relation="relation18"/>
+    <link port="GameOfLife.output12" relation="relation19"/>
+    <link port="GameOfLife.output13" relation="relation20"/>
+    <link port="GameOfLife.output14" relation="relation21"/>
+    <link port="GameOfLife.output15" relation="relation22"/>
+    <link port="GameOfLife.output16" relation="relation23"/>
+    <link port="GameOfLife.output17" relation="relation24"/>
+    <link port="GameOfLife.output18" relation="relation25"/>
+    <link port="GameOfLife.output19" relation="relation26"/>
+    <link port="GameOfLife.output20" relation="relation27"/>
+    <link port="GameOfLife.output21" relation="relation28"/>
+    <link port="GameOfLife.output22" relation="relation30"/>
+    <link port="GameOfLife.output23" relation="relation29"/>
+    <link port="GameOfLife.output24" relation="relation31"/>
+</entity>
