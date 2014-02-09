@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="CoupledClutches" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/CoupledClutches.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/CoupledClutches.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 215.0]">
         </property>
