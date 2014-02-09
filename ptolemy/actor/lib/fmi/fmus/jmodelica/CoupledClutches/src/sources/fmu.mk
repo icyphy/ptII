@@ -95,7 +95,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< -L/usr/local/jmodelica/lib/RuntimeLibrary -ljmi -l fmi1_me -lfmi1_cs -L/usr/local/jmodelica//ThirdParty/Sundials/lib -lsundials_cvode -lsundials_kinsol -lsundials_nvecserial -llapack -lblas 
+	$(CC) -dynamiclib -g $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< -L/usr/local/jmodelica/lib/RuntimeLibrary -ljmi -lfmi2 -L/usr/local/jmodelica//ThirdParty/Sundials/lib -lsundials_cvode -lsundials_kinsol -lsundials_nvecserial -llapack -lblas 
 
 FMUDIR=..
 

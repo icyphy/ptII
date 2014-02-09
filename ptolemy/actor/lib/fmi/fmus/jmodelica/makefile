@@ -40,7 +40,7 @@ FMUS_ME =
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
 
-DIRS =		$(FMUS)
+DIRS =		$(FMUS) test
 
 
 # Root of the Ptolemy II directory
@@ -86,7 +86,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: suball 
 install: subinstall jars
 
-# Update the .fmu files in the ../test/auto/directory.
+# Update the .fmu files in the test/auto/directory.
 update:
 	@if [ "x$(FMUS)" != "x" ]; then \
 		set $(FMUS); \
