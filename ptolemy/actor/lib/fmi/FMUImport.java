@@ -822,7 +822,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // with checks that _fmiComponent is non-null, so that FMU parameters
         // can be changed during run time.
         for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
-            if (scalar.variability == FMIScalarVariable.Variability.parameter
+            if ( (scalar.variability == FMIScalarVariable.Variability.parameter
+                            || scalar.variability == FMIScalarVariable.Variability.fixed) // FMI-2.0rc1
+                    && scalar.causality != Causality.local // FMI-2.0rc1
                     && scalar.causality != Causality.input
                     && scalar.causality != Causality.output) {
                 String sanitizedName = StringUtilities
@@ -973,7 +975,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
-            if (scalar.variability == FMIScalarVariable.Variability.parameter) {
+            if (scalar.variability == FMIScalarVariable.Variability.parameter
+                    || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
+                ) {
                 // Parameters
                 // Parameter parameter = new Parameter(this, scalar.name);
                 // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
@@ -991,8 +995,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                     + "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
                                     + scalar.type + "\"/>\n");
                     break;
+                case local: // FMI-2.0rc1
                 case internal:
                     // Internal variables are outputs that get hidden.
+                case calculatedParameter: // FMI-2.0rc1
+                case parameter: // FMI-2.0rc1
                 case none:
                     // FIXME: Need to sanitize the value.
                     parameterMoML
@@ -2562,6 +2569,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             if (scalarVariable.variability != FMIScalarVariable.Variability.parameter
                     && scalarVariable.variability != FMIScalarVariable.Variability.constant
+                    && scalarVariable.variability != FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                     && scalarVariable.causality == Causality.input) {
                 TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null) {

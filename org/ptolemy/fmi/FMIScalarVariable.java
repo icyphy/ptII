@@ -64,9 +64,8 @@ import com.sun.jna.ptr.PointerByReference;
  * </p>
  *
  * @author Christopher Brooks
-@version $Id$
-@since Ptolemy II 10.0
  * @version $Id$
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -107,18 +106,38 @@ public class FMIScalarVariable {
         causality = Causality.internal;
         if (element.hasAttribute("causality")) {
             String attribute = element.getAttribute("causality");
-            if (attribute.equals("input")) {
+
+            // FIXME: Check this for 2.0:
+            String choices = "calculatedParameter, input, internal, local, output, none or parameter";
+            if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
+                choices = "input,  internal, output, or none";
+            }
+            String message = "must be one of " + choices
+                        + " in " + name + ", " + description;
+
+            if (attribute.equals("calculatedParameter")) {
+                // FMI-2.0rc1
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                causality = Causality.calculatedParameter;
+            } else if (attribute.equals("input")) {
                 causality = Causality.input;
             } else if (attribute.equals("internal")) {
                 causality = Causality.internal;
+            } else if (attribute.equals("local")) {
+                // FMI-2.0rc1
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                causality = Causality.local;
             } else if (attribute.equals("output")) {
                 causality = Causality.output;
             } else if (attribute.equals("none")) {
                 causality = Causality.none;
+            } else if (attribute.equals("parameter")) {
+                // FMI-2.0rc1
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                causality = Causality.parameter;
             } else {
                 throw new IllegalArgumentException("causality \"" + attribute
-                        + "\" must be one of input, internal, output or none"
-                        + " in " + name + ", " + description);
+                        + "\" " + message);
             }
         }
 
@@ -136,21 +155,31 @@ public class FMIScalarVariable {
 
         if (element.hasAttribute("variability")) {
             String attribute = element.getAttribute("variability");
+
+            // FIXME: Check this for 2.0:
+            String choices = "constant, continuous, fixed, discrete or parameter.";
+            if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
+                choices = "constant, continuous, discrete or parameter.";
+            }
+            String message = "must be one of " + choices
+                        + " in " + name + ", " + description;
+
             if (attribute.equals("constant")) {
                 variability = Variability.constant;
             } else if (attribute.equals("continuous")) {
                 variability = Variability.continuous;
             } else if (attribute.equals("discrete")) {
                 variability = Variability.discrete;
+            } else if (attribute.equals("fixed")) {
+                // FMI-2.0
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                variability = Variability.fixed;
             } else if (attribute.equals("parameter")) {
                 variability = Variability.parameter;
             } else {
                 throw new IllegalArgumentException(
-                        "variability \""
-                                + attribute
-                                + "\" must be one of constant, continuous, discrete or parameter "
-                                + " in " + name + ", " + description);
-            }
+                        "variability \"" + attribute + "\"" + message);
+            } 
         }
 
         NodeList children = element.getChildNodes(); // NodeList. Worst. Ever.
@@ -384,6 +413,8 @@ public class FMIScalarVariable {
      *  Causality defines the visibility of the variable from outside of the model.
      */
     public enum Causality {
+        /** FMI-2.0rc1*/
+        calculatedParameter,
         /** The value is defined from the outside.  The value is
          * initially the value of the start attribute.
          */
@@ -393,9 +424,13 @@ public class FMIScalarVariable {
          *  The default Causality is "internal".
          */
         internal,
+        /** FMI-2.0rc1 */
+        local,
         /** The value can be read from the outside with a connection.
          */
         output,
+        /** FMI-2.0rc1 */
+        parameter,
         /** The value does not affect computation.  Typically, "none"
          *  values are tool specific and used to enable logging.
          */
@@ -419,6 +454,8 @@ public class FMIScalarVariable {
          *  and at event instances.
          */
         discrete,
+        /** FMI-2.0. */            
+        fixed, 
         /** The value does not change after initialization.
          */
         parameter
@@ -486,6 +523,26 @@ public class FMIScalarVariable {
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not get or set " + name
                     + " as a " + typeClass.getName() + ": " + fmiFlag);
+        }
+    }
+
+    /** If the fmi version is not 2.0 or later, then throw
+     *  an exception stating that the value is not acceptable.
+     *  @param fmiModelDescription The FMIModelDescription that 
+     *  has the fmi version.
+     *  @param The name of the attribute that is not present in FMI-1.0.
+     *  @param The string to be displayed that describes possible
+     *  values.  It should start with "must be".
+     *  @exception IllegalArgumentException If the fmi version is
+     *  is not 2.0 or later.
+     */
+    private void _fmi2AttributeCheck(FMIModelDescription fmiModelDescription,
+            String attribute, String message) throws IllegalArgumentException {
+        if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
+            throw new IllegalArgumentException("The attribute \""
+                    + attribute + "\" is only accepted in FMI-2.0 and later.  "
+                    + "The fmiVersion was \"" + fmiModelDescription + "\"."
+                    + "It " + message);
         }
     }
 
