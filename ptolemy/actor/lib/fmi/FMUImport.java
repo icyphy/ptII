@@ -1065,7 +1065,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         // Hide the port if we have lots of ports or it is
                         // internal.
                         + (portCount > maximumNumberOfPortsToDisplay
-                                || scalar.causality == Causality.internal ? hide
+                                || scalar.causality == Causality.internal 
+                                || scalar.causality == Causality.local // FMI-2.0rc1
+                                ? hide
                                 : "") + "  </port>\n");
             }
         }
