@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us -->
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="helloWorldME2"
+  modelIdentifier="helloWorldME2"
+  numberOfContinuousStates="42"
+  numberOfEventIndicators="42"
+  guid="{d192370b-a57a-487f-a6de-a0f8d07554c1}">
+<ModelVariables>
+  <ScalarVariable
+     name="output"
+     valueReference="0"
+     description="constant 42"
+     causality="output">
+     <Real/>
+  </ScalarVariable>
+</ModelVariables>
+</fmiModelDescription>

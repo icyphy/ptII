@@ -458,7 +458,7 @@ public class FMUFile {
             System.out
                     .println("Warning: FMU version "
                             + fmiModelDescription.fmiVersion
-                            + "does not support CoSimulation.  "
+                            + " does not support CoSimulation.  "
                             + "In FMI 1.0, the CoSimulation_Standalone element is optional.  "
                             + "In FMI 2.0, there must be a CoSimulation element.  "
                             + "Note that Model Exchange is not yet supported by Ptolemy II.");
