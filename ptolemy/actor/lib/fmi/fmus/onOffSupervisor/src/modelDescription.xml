@@ -2,7 +2,7 @@
 <!-- GUID generated at http://guid.us -->
 <fmiModelDescription
   description="On-Off Supervisor with Fault Management"
-  fmiVersion="2.0"
+  fmiVersion="1.5"
   guid="{7081763b-e37f-404a-967a-9f6fe0fc6072}"
   modelName="onOffSupervisor"
   numberOfEventIndicators="42"
