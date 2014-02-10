@@ -13,9 +13,12 @@ ARCH = darwin64
 ARCH_DIR = ../binaries/$(ARCH)/
 
 # This is for co-simulation
-INCLUDE = -DFMI_COSIMULATION -I.
+#INCLUDE = -DFMI_COSIMULATION -I.
 # This is for model exhange
 #INCLUDE =  -I.
+
+# This is for model exhange witj JModelica
+INCLUDE =  -DFMUME20 -I.
 
 # For co-simulation FMUs, modelExchange.mk does not exist.
 # For model exchange FMUs, modelExchange.mk defines INCLUDE.

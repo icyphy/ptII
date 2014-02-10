@@ -32,10 +32,10 @@
 ME =		ptolemy/actor/lib/fmi/fmus/jmodelica
 
 # Co-Simulation FMUS.
-FMUS_CS =	AMS_AMSSim CoupledClutches
+FMUS_CS =	AMS_AMSSim
 
 # Model Exchange FMUS.
-FMUS_ME =
+FMUS_ME = 	CoupledClutches
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)

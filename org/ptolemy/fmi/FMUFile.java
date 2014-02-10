@@ -363,27 +363,36 @@ public class FMUFile {
                 for (int j = 0; j < capabilities.getLength(); j++) {
                     Element capabilitiesElement = (Element) capabilities
                             .item(j);
-                    fmiModelDescription.capabilities = new FMICoSimulationCapabilities(
+                    fmiModelDescription.cosimulationCapabilities = new FMICoSimulationCapabilities(
                             capabilitiesElement);
                 }
             }
             // FIXME: handle CoSimulation_Tool
         } else {
             // Implementation description in FMI 2.0.
+
+            // JModelica FMUs can have both CoSimulation and
+            // ModelExchange NodeLists, see CoupledClutches.xml
+
+
+            // Handle CoSimulation.
             NodeList implementation = document
                     .getElementsByTagName("CoSimulation");
             if (implementation.getLength() > 1) {
                 System.out
                         .println("Warning: FMU modelDescription provides more than one CoSimulation element");
-            } else {
+            } 
+            if (implementation.getLength() == 1) {
                 foundCoSimulation = true;
                 Element cosimulation = (Element) implementation.item(0);
-                fmiModelDescription.capabilities = new FMICoSimulationCapabilities(
+                fmiModelDescription.cosimulationCapabilities = new FMI20CoSimulationCapabilities(
                         cosimulation);
 
-                // In FMI 2.0, the modelIdentifier is given in the CoSimulation element,
-                // not in the root element (presumably so that CoSimulation and ModelExcchange
-                // can use non-conflicting names and hence divergent C implementations.
+                // In FMI 2.0, the modelIdentifier is given in the
+                // ModelExchange or Cosimulation element, not in the
+                // root element (presumably so that CoSimulation and
+                // ModelExchange can use non-conflicting names and
+                // hence divergent C implementations.
                 if (cosimulation.hasAttribute("modelIdentifier")) {
                     fmiModelDescription.modelIdentifier = cosimulation
                             .getAttribute("modelIdentifier");
@@ -391,6 +400,14 @@ public class FMUFile {
                     System.out
                             .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
                 }
+
+                // FIXME: We should use the
+                // FMICoSimulationCapabilities class and preserve the
+                // Object Oriented nature of the modelDescription.xml
+                // file.  Adding toplevel fields fmiModelDescription
+                // means that we have fields that are present, but not
+                // useful.
+                
                 if (cosimulation.hasAttribute("canGetAndSetFMUstate")) {
                     fmiModelDescription.canGetAndSetFMUstate = Boolean
                             .parseBoolean(cosimulation
@@ -402,6 +419,34 @@ public class FMUFile {
                     fmiModelDescription.canProvideMaxStepSize = Boolean
                             .parseBoolean(cosimulation
                                     .getAttribute("canProvideMaxStepSize"));
+                }
+            }
+
+
+            // Handle ModelExchange.
+            implementation = document
+                    .getElementsByTagName("ModelExchange");
+            if (implementation.getLength() > 1) {
+                System.out
+                        .println("Warning: FMU modelDescription provides more than one ModelExchange element");
+            } 
+            if (implementation.getLength() == 1) {
+                foundCoSimulation = true;
+                Element modelExchange = (Element) implementation.item(0);
+                fmiModelDescription.modelExchangeCapabilities = new FMI20ModelExchangeCapabilities(
+                        modelExchange);
+
+                // In FMI 2.0, the modelIdentifier is given in the
+                // ModelExchange or Cosimulation element, not in the
+                // root element (presumably so that CoSimulation and
+                // ModelExchange can use non-conflicting names and
+                // hence divergent C implementations.
+                if (modelExchange.hasAttribute("modelIdentifier")) {
+                    fmiModelDescription.modelIdentifier = modelExchange
+                            .getAttribute("modelIdentifier");
+                } else {
+                    System.out
+                            .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
                 }
             }
         }

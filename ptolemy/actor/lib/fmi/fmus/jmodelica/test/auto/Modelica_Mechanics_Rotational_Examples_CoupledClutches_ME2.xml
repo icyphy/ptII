@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CoupledClutches" class="ptolemy.actor.TypedCompositeActor">
+<entity name="fmuME" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
@@ -15,11 +15,11 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 60}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 50}">
         </property>
     </property>
-    <entity name="CoupledClutches" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/CoupledClutches.fmu">
+    <entity name="Modelica_Mechanics_Rotational_Examples_CoupledClutches" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/Modelica_Mechanics_Rotational_Examples_CoupledClutches.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>

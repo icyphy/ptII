@@ -33,50 +33,50 @@ import java.lang.reflect.Modifier;
 import org.w3c.dom.Element;
 
 ///////////////////////////////////////////////////////////////////
-//// FMICoSimulationCapbilities
+//// FMI20CoSimulationCapbilities
 
 /**
  * An object that represents the the capabilities of a FMI co-simulation
- * slave for FMI-1.0;
+ * slave for FMI-2.0.
  *
  * <p>
  * A Functional Mock-up Unit file is a .fmu file in zip format that
- * contains a .xml file named "modelDescription.xml".  In FMI-1.0, the xml
- * file may optionally contain a "Implementation" element that will contain
- * either a "CoSimulation_Standalone" element or a "CoSimulation_Tool"
- * element.  Those two elements will contain a "Capabilities" element
- * that has attributes that define the capabilities of the slave.
- * This class has public fields that correspond to the attributes of
- * the "Capabilities" element.  The name of this class is taken from
- * the FMI specification.</p>
+ * contains a .xml file named "modelDescription.xml".  In FMI-2.0, the xml
+ * file may optionally contain a "CoSimulation" element that defines
+ * the capabilities of the CoSimulation FMU.</p>
+ *
+ * <p>FMI documentation may be found at
+ * <a href="https://fmi-standard.org/">https://fmi-standard.org/</a>.
+ * </p>
  *
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
  *
  * @author Christopher Brooks
-@version $Id$
+@version $Id: FMICoSimulationCapabilities.java 68209 2014-01-28 03:16:28Z cxh $
 @since Ptolemy II 10.0
- * @version $Id$
+ * @version $Id: FMICoSimulationCapabilities.java 68209 2014-01-28 03:16:28Z cxh $
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMICoSimulationCapabilities extends FMICapabilities {
+public class FMI20CoSimulationCapabilities extends FMICapabilities {
 
     /** Create an empty Capability. */
-    public FMICoSimulationCapabilities() {
+    public FMI20CoSimulationCapabilities() {
     }
 
     /** Create a FMICoSimulationCapability from an XML Element.
      *  @param element The XML Element that contains attributes.
      */
-    public FMICoSimulationCapabilities(Element element) {
+    public FMI20CoSimulationCapabilities(Element element) {
         super(element);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////             public fields                                 ////
 
+    
     /** True if only one FMU can be instantiated per process.
      *  The default value is false.
      */

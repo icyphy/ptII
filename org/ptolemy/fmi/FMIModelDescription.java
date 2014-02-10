@@ -130,8 +130,17 @@ public class FMIModelDescription {
     public Map<String, String> typeDefinitions = new HashMap<String, String>();
 
     /** The capabilities for co-simulation.
+     *  FMIModelDescription has a field for Cosimulation capabilities
+     *  and a field for Model Exchange capabilities.  We need both because
+     *  JModelica fmus define both capabilities.  We use a baseclass
+     *  here so that the FMIModelDescription class does not change
+     *  as we support other capabilities.
      */
-    public FMICoSimulationCapabilities capabilities;
+    public FMICapabilities cosimulationCapabilities;
+
+    /** The capabilities for model exchange.
+     */
+    public FMICapabilities modelExchangeCapabilities;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -257,16 +266,17 @@ public class FMIModelDescription {
         }
         Function function = null;
         String name1 = modelIdentifier + "_" + functionName;
+        String name2 = functionName;
         try {
             function = _nativeLibrary.getFunction(name1);
         } catch (UnsatisfiedLinkError error) {
             try {
-                function = _nativeLibrary.getFunction(functionName);
+                function = _nativeLibrary.getFunction(name2);
             } catch (UnsatisfiedLinkError error2) {
                 UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
                         "Could not find the function, \"" + name1 + "\" or \""
-                                + function + "\" in " + _nativeLibrary);
-                linkError.initCause(error);
+                                + name2 + "\" in " + _nativeLibrary);
+                //linkError.initCause(error);
                 throw linkError;
             }
         }

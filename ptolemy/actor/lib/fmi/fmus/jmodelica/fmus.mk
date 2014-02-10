@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: fmus.mk 67777 2013-10-26 01:51:06Z cxh $
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
@@ -37,7 +37,7 @@
 DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -93,17 +93,18 @@ $(FMU_NAME).fmu: $(FMU_SRCS)
 
 # We don't check in the fmu because it will be different on each platform
 # Instead, run make update to update the test directory.
+# The JModelica Tests are in a separate directory.
 update: $(FMU_NAME).fmu
-	if [  -f ../../test/auto/$(FMU_NAME).fmu ]; then  \
+	if [  -f ../test/auto/$(FMU_NAME).fmu ]; then  \
 	    mv $(FMU_NAME).fmu $(FMU_NAME).new.fmu; \
-	    cp ../../test/auto/$(FMU_NAME).fmu .; \
+	    cp ../test/auto/$(FMU_NAME).fmu .; \
 	    echo "Sleeping, then touching $(FMU_NAME).new.fmu to be sure it is the most recent fmu."; \
 	    sleep 1; \
 	    touch $(FMU_NAME).new.fmu; \
 	    $(ROOT)/bin/updateFmu $(FMU_NAME).fmu; \
 	    rm $(FMU_NAME).new.fmu; \
         fi 
-	cp $(FMU_NAME).fmu ../../test/auto/$(FMU_NAME).fmu
+	cp $(FMU_NAME).fmu ../test/auto/$(FMU_NAME).fmu
 
 test:
 	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu  1.0 0.1 true
