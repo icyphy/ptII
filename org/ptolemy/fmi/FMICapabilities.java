@@ -103,6 +103,22 @@ public class FMICapabilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get the value of a boolean field. 
+     *  @param The name of the boolean field.
+     *  @return True if the value of the field was true.
+     *  @exception IllegalArgumentException If the field is not found
+     *  or it is not a boolean.
+     */
+    public boolean getBoolean(String fieldName) throws IllegalArgumentException {
+        try {
+            Field field = getClass().getField(fieldName);
+            return field.getBoolean(this);
+        } catch (Throwable throwable) {
+            throw new IllegalArgumentException("Could not find field \""
+                    + fieldName + "\" in " + this + ".", throwable);
+        }
+    }
+
     /** Return a description of the fields that are true or
      *  non-zero.
      *  @return The true or non-zero fields

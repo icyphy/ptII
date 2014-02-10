@@ -276,10 +276,10 @@ public class FMUFile {
         // Location of the resources/ directory in the zip file;
         fmiModelDescription.fmuResourceLocation = fmuResourceLocation;
 
+        double fmiVersion = 0.0;
         // Handle the root attributes
         if (root.hasAttribute("fmiVersion")) {
             fmiModelDescription.fmiVersion = root.getAttribute("fmiVersion");
-            double fmiVersion = 0.0;
             try {
                 fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
             } catch (NumberFormatException ex) {
@@ -292,7 +292,7 @@ public class FMUFile {
             }
             // Under FMI 1.0, the fmuLocation parameter refers to the location
             // of the fmu.
-            if (fmiVersion < 2.0
+            if (fmiVersion < 1.5
                     && fmiModelDescription.fmuResourceLocation
                             .endsWith("resources")) {
                 fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation
@@ -346,7 +346,7 @@ public class FMUFile {
         // FIXME: handle Vendor annotations
 
         boolean foundCoSimulation = false;
-        if (fmiModelDescription.fmiVersion.equals("1.0")) {
+        if (fmiVersion < 1.5 ) {
             // Implementation description in FMI 1.0
             // NodeList is not a list, it only has getLength() and item(). #fail.
             NodeList implementation = document
