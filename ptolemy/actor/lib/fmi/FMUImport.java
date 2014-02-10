@@ -550,7 +550,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // Initialize the FMU if necessary.  Model exchange only.
 
             if (_firstFire) {
-                if (_fmiVersion < 2.0) {
+                if (_fmiVersion < 1.5) {
                     _fmiInitialize();
 
                     // Record the state.
@@ -562,7 +562,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _checkEventIndicators();
                 } else {
                     FMI20ModelExchangeCapabilities capabilities = null;
-                    if (_fmiVersion > 2.0 
+                    if (_fmiVersion >= 2.0 
                             && _fmiModelDescription.modelExchangeCapabilities instanceof FMI20ModelExchangeCapabilities) {
                         capabilities = (FMI20ModelExchangeCapabilities)_fmiModelDescription.modelExchangeCapabilities;
                     }
@@ -2018,7 +2018,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     @SuppressWarnings("deprecation")
     protected void _fmiInitialize() throws IllegalActionException {
         if (_fmiModelDescription.modelExchange) {
-            if (_fmiVersion < 2.0) {
+            if (_fmiVersion < 1.5) {
                 FMIEventInfo eventInfo = new FMIEventInfo.ByValue();
                 int fmiFlag = ((Integer) _fmiInitializeFunction.invoke(
                                 Integer.class,
@@ -2071,7 +2071,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             Time stopTime = director.getModelStopTime();
 
             int fmiFlag;
-            if (_fmiVersion < 2.0) {
+            if (_fmiVersion < 1.5) {
                 fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent,

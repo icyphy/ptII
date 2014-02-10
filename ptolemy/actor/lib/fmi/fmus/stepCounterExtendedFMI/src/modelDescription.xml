@@ -2,7 +2,7 @@
 <!-- GUID generated at http://guid.us -->
 <fmiModelDescription
   description="Periodic counter with period p"
-  fmiVersion="2.0"
+  fmiVersion="1.5"
   guid="{381b81b5-3ccd-4abd-8fb0-f1434b7d8643}"
   modelName="stepCounterExtendedFMI"
   numberOfEventIndicators="42"
