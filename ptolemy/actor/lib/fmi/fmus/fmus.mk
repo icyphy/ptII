@@ -95,6 +95,7 @@ $(FMU_NAME).fmu: $(FMU_SRCS)
 # Instead, run make update to update the test directory.
 update: $(FMU_NAME).fmu
 	if [  -f ../../test/auto/$(FMU_NAME).fmu ]; then  \
+	    echo "Updating ../../test/auto/$(FMU_NAME).fmu"; \
 	    mv $(FMU_NAME).fmu $(FMU_NAME).new.fmu; \
 	    cp ../../test/auto/$(FMU_NAME).fmu .; \
 	    echo "Sleeping, then touching $(FMU_NAME).new.fmu to be sure it is the most recent fmu."; \

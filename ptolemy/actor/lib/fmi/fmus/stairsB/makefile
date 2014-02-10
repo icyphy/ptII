@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) stairsB
+# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) Stairs CoSimulation
 #
 # @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 66549 2013-06-03 00:35:18Z eal $
+# @Version: $Id: makefile 67777 2013-10-26 01:51:06Z cxh $
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,69 +29,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/fmus/stairsB
+FMU_NAME = stairsB
 
-DIRS =
-
-# Root of the Ptolemy II directory
-ROOT =		../../../../../..
-
-CLASSPATH =	$(ROOT)
-
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
-
-# Used to build jar files
-PTPACKAGE = 	stairsB
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# PTCLASSALLJARS =
-# PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
-JSRCS =
-
-OTHER_FILES_TO_BE_JARED = \
-	$(PTPACKAGE).fmu
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT = $(PTPACKAGE).fmu
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	src
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-FMU_SRCS = \
-	src/documentation/* \
-	src/modelDescription.xml \
-	src/model.png \
-	src/sources/* \
-
-all: jclass $(PTPACKAGE).fmu
-
-
-install: jclass $(PTPACKAGE).fmu
-	@echo "Optionally run 'make update' to update the test/auto directory."
-
-$(PTPACKAGE).fmu:: $(FMU_SRCS)
-	(cd src/sources; $(MAKE))
-
-# We don't check in $(PTPACKAGE).fmu because it will be different on each platform
-# Instead, run make update to update the test directory.
-update: $(PTPACKAGE).fmu
-	cp $(PTPACKAGE).fmu ../../test/auto/$(PTPACKAGE).fmu
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+include ../fmus.mk

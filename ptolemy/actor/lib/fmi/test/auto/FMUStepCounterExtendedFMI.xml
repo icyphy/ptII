@@ -71,7 +71,7 @@
         </configure>
     </entity>
     <entity name="stepCounterExtendedFMI" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/stepCounterExtendedFMI2.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/stepCounterExtendedFMI.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 540.0}">
         </property>
@@ -98,7 +98,7 @@
         </port>
     </entity>
     <entity name="stepCounterExtendedFMI2" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/stepCounterExtendedFMI2.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/stepCounterExtendedFMI.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 405.0}">
         </property>

@@ -78,6 +78,11 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
 
+all: 
+	@echo "Nothing to be done in fmus/jmodelica/test for 'make all'"
+install: 
+	@echo "Nothing to be done in fmus/jmodelica/test for 'make install'"
+
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 

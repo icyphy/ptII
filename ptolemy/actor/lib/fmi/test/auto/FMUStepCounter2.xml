@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/stepCounter/src/sources&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/&#10;&gt; make update&#10;&#10;The resulting .fmu file will&#10;be in $PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter2.fmu&#10;which is referenced by these instances of the FMU.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/stepCounter/src/sources&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/&#10;&gt; make update&#10;&#10;The resulting .fmu file will&#10;be in $PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter.fmu&#10;which is referenced by these instances of the FMU.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-75.0, 200.0]">
         </property>
@@ -83,7 +83,7 @@
         </configure>
     </entity>
     <entity name="stepCounter2" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter2.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>

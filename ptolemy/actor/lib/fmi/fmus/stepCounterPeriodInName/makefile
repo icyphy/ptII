@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,75 +29,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/fmus/stepCounterPeriodInName
+FMU_NAME = stepCounterPeriodInName
 
-DIRS =
-
-# Root of the Ptolemy II directory
-ROOT =		../../../../../..
-
-CLASSPATH =	$(ROOT)
-
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
-
-# Used to build jar files
-PTPACKAGE = 	stepCounterPeriodInName
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# PTCLASSALLJARS =
-# PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
-JSRCS =
-
-OTHER_FILES_TO_BE_JARED = \
-	stepCounterPeriodInName.fmu
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT = stepCounterPeriodInName.fmu
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	src
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-FMU_SRCS = \
-	src/documentation/* \
-	src/modelDescription.xml \
-	src/model.png \
-	src/sources/* \
-
-all: jclass stepCounterPeriodInName.fmu
-
-
-install: jclass stepCounterPeriodInName.fmu jars
-	@echo "Optionally run 'make update' to update the test/auto directory."
-
-stepCounterPeriodInName.fmu: $(FMU_SRCS)
-	(cd src/sources; $(MAKE))
-
-# We don't check in stepCounterPeriodInName.fmu because it will be different on each platform
-# Instead, run make update to update the test directory.
-update: stepCounterPeriodInName.fmu
-	cp stepCounterPeriodInName.fmu ../../test/auto/stepCounterPeriodInName2.fmu 
-
-run: ../fmusim2/fmusim2
-	../fmusim2/fmusim2 stepCounterPeriodInName.fmu
-
-../fmusim2/fmusim2:
-	(cd ../fmusim2; $(MAKE))
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+include ../fmus.mk
