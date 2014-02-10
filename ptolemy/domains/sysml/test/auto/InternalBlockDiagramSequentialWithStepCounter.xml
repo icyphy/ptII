@@ -742,7 +742,7 @@
         </property>
     </entity>
     <entity name="stepCounter" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter2.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/stepCounter.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 350.0]">
         </property>
