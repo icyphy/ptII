@@ -562,6 +562,7 @@ ALLPACKAGES = \
 	doc.doclets \
 	org.ptolemy.machineImprovisation \
 	org.ptolemy.machineLearning.hmm \
+	org.ptolemy.qss \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
 	ptolemy.actor.lib.net \

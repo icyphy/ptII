@@ -22,7 +22,7 @@ do
 	  echo "$0: $packagefile exists, skipping"
       else 
 
-	  since="@since Ptolemy II 8.1" 
+	  since="@since Ptolemy II 10.1" 
 	  if [ "$since" = "" ]; then 
 	      since=`grep -h @since */*.java | sort | uniq | head -1`
 	  fi    

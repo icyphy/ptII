@@ -467,6 +467,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/img/img.jar \
 	$(PTANGO_JAR_FILES) \
 	org/ptolemy/ptango/ptango.jar \
+	org/ptolemy/qss/qss.jar \
 	$(PTFMI_JARS) \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \

@@ -1,9 +1,9 @@
-# Makefile org.ptolemy sources
+# Makefile for Quantized State Systems Actors.
 #
-# @Version: $Id$
-# @Author: Christopher Brooks
+# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2012-2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,28 +29,49 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# PTANGO_DIR is set by configure in $PTII/mk if jetty and javax.servlet are found.
-DIRS = fmi machineImprovisation machineLearning ptulip $(PTANGO_DIR) qss
-
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT = ../../..
+
+DIRS = test #demo
 
 # $(ME) is used in ptdir.mk
-ME =		org.ptolemy
+ME = org/ptolemy/qss
+
+CLASSPATH =	$(ROOT)
 
 # True source directory
-VPATH =		$(ROOT)/$(ME)
+VPATH =	$(ROOT)/$(ME)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-all: suball
-install: subinstall
+# Used to build jar files
+PTPACKAGE = qss
+PTCLASSJAR = $(PTPACKAGE).jar
+
+JSRCS = \
+	QSSIntegrator.java
+
+OTHER_FILES_TO_BE_JARED =
+
+
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
-MISC_FILES = $(DIRS)
+# want make checkjunk to barf on them.
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	demo
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
