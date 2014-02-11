@@ -126,6 +126,8 @@ public class FileUtilities {
 
     /**
      * Delete a directory and all of its content.
+     * If the path is a file, then it is deleted.  If the path is a directory
+     * then
      * @param filepath The path for the directory or file to be deleted.
      * @return false if one or more files or directories cannot be deleted.
      */
@@ -134,17 +136,24 @@ public class FileUtilities {
         File path = new File(filepath);
 
         if (path.exists()) {
-            File[] files = path.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    FileUtilities.deleteDirectory(files[i].getAbsolutePath());
-                    if (!files[i].delete()) {
-                        returnValue = false;
-                    }
-                } else {
-                    // The returned value is intentionally ignored.
-                    if (!files[i].delete()) {
-                        returnValue = false;
+            if (!path.isDirectory()) {
+                if (!path.delete()) {
+                    returnValue = false;
+                }
+            } else {
+                File[] files = path.listFiles();
+                if (files != null) {
+                    for (int i = 0; i < files.length; i++) {
+                        if (files[i].isDirectory()) {
+                            FileUtilities.deleteDirectory(files[i].getAbsolutePath());
+                            if (!files[i].delete()) {
+                                returnValue = false;
+                            }
+                        } else {
+                            if (!files[i].delete()) {
+                                returnValue = false;
+                            }
+                        }
                     }
                 }
             }
