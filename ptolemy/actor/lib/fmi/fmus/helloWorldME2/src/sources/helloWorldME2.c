@@ -233,8 +233,8 @@ FMI_Export fmiStatus fmiGetDirectionalDerivative(fmiComponent c,
 
 FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
         size_t nx) {
-    printf("helloWorldME.c: fmiGetContinuousStates() returning fmiError, it is not implemented yet");
-    return fmiError;
+    printf("helloWorldME.c: fmiGetContinuousStates() returning fmiOk, it is not implemented yet");
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c, 

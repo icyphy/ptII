@@ -4,7 +4,7 @@
    fmiVersion="2.0"
    guid="{d192370b-a57a-487f-a6de-a0f8d07554c1}"
    modelName="helloWorldME2"
-   numberOfContinuousStates="1"
+   numberOfContinuousStates="0"
    numberOfEventIndicators="42"
    variableNamingConvention="structured">
 
