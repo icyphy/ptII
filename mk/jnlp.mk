@@ -57,6 +57,8 @@
 
 # To update the website:  make jnlp_dist_update
 
+# To build a set of models for a paper, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport
+
 ################################
 # Large jar file containing all the codedoc documentation.
 # Comment this out for testing
@@ -786,7 +788,7 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(BCVTB_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(BCVTB_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(BCVTB_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(BCVTB_MAIN_JAR)`; \
 	cp -p $(BCVTB_MAIN_JAR) `dirname $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)`
@@ -823,7 +825,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(DSP_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(DSP_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(DSP_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
 	cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`
@@ -862,7 +864,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(HYBRID_SYSTEMS_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(HYBRID_SYSTEMS_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(HYBRID_SYSTEMS_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
 	cp -p $(HYBRID_SYSTEMS_MAIN_JAR) `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`
@@ -897,7 +899,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(PTINY_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
 	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`
@@ -932,7 +934,7 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(PTINY_KEPLER_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(PTINY_KEPLER_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(PTINY_KEPLER_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_KEPLER_MAIN_JAR)`; \
 	cp -p $(PTINY_KEPLER_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_KEPLER_MAIN_JAR)`
@@ -968,6 +970,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(PTINY_SANDBOX_MAIN_JAR) contains the main class"
+	"$(JAR)" -umf $(PTII)/$(JNLP_SANDBOX_MANIFEST) $(PTINY_SANDBOX_JAR) JNLP-INF/APPLICATION.JNLP
 	"$(JAR)" -uf $(PTINY_SANDBOX_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
@@ -1007,7 +1010,7 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(SPACE_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(SPACE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(SPACE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(SPACE_MAIN_JAR)`; \
 	cp -p $(SPACE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(SPACE_MAIN_JAR)`
@@ -1045,7 +1048,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(VISUAL_SENSE_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(VISUAL_SENSE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(VISUAL_SENSE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
 	cp -p $(VISUAL_SENSE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`
@@ -1057,7 +1060,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		"$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
-vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergil.jnlp.in > $@
@@ -1083,7 +1086,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
 	@echo "# $(FULL_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(FULL_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(FULL_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
 	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`
@@ -1114,6 +1117,8 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 			mkdir -p $(SIGNED_DIR)/`dirname $$jarfile`; \
 			cp -p $$jarfile `dirname $(SIGNED_DIR)/$$jarfile`; \
 		fi; \
+		echo "# Updating the manifest of $(SIGNED_DIR)/$$jarfile with the Permissions: attribute."; \
+		$(JAR) -umf $(PTII)/$(JNLP_MANIFEST) $(SIGNED_DIR)/$$jarfile; \
 		echo "# Signing $(SIGNED_DIR)/$$jarfile"; \
 		"$(JARSIGNER)" \
 			-keystore "$(KEYSTORE)" \
@@ -1684,7 +1689,7 @@ osgi_demo_test:
 # 1. To build all the jars and copy them to the webserver:
 #   First: create the directory on moog.  You must have an ssh account on moog
 #   and be in the ptolemy group:
-#     ssh moog "mkdir ~ptII/ptweb/ptolemyII/ptII9.0/jnlp-modularSemantics"
+#     ssh moog "mkdir ~www/ptweb/ptolemyII/ptII9.0/jnlp-modularSemantics"
 #   Then, run these commands:
 #     cd $PTII
 #     ant build javadoc
@@ -1767,9 +1772,18 @@ book_real_clean:
 # make -n JNLP_MODEL_DIRECTORY=doc/papers/y12/designContracts JNLP_MODEL=DCMotorTol KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat $HOME/.certpw`" KEYPASSWORD="-storepass `cat $HOME/.certpw`" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics jnlp_file
 jnlp_file: $(JNLP_FILE)
 
+# In 2014, signed jar files need a manifest that has a Permissions attribute.
+# See http://docs.oracle.com/javase/tutorial/deployment/jar/secman.html
+# http://docs.oracle.com/javase/7/docs/technotes/guides/jweb/security/manifest.html#permissions
+# http://docs.oracle.com/javase/tutorial/deployment/jar/modman.html
+JNLP_MANIFEST = jnlp_manifest.txt
+$(JNLP_MANIFEST):
+	echo "Application-Name: Ptolemy II" > $@
+	echo "Permissions: all-permissions" >> $@
+
 # Fix the jnlp file by substituting in the proper URL
 jnlp_file_fixed: $(JNLP_FILE_FIXED)
-$(JNLP_FILE_FIXED): $(JNLP_FILE)
+$(JNLP_FILE_FIXED): $(JNLP_FILE) $(JNLP_MANIFEST)
 	#
 	# mk/jnlp.mk: Fix the JNLP File
 	#
@@ -1785,7 +1799,7 @@ $(JNLP_FILE_FIXED): $(JNLP_FILE)
 		rm -rf JNLP-INF META-INF; \
 		mkdir JNLP-INF; \
 		cp ../$@ JNLP-INF/APPLICATION.JNLP; \
-		"$(JAR)" -cf ../$(JNLP_JAR) .)
+		"$(JAR)" -cmf $(PTII)/$(JNLP_MANIFEST) ../$(JNLP_JAR) .)
 	rm -rf tmpjar
 	# Signing the jar file
 	@"$(JARSIGNER)" \
@@ -1863,7 +1877,7 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 	#
 	# Update the Web Start help.  Not the most portable command :-(
 	svn update doc/webStartHelp.htm
-	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):~ptII/ptweb/ptolemyII/ptIIlatest/ptII/doc/
+	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):~www/ptweb/ptolemyII/ptIIlatest/ptII/doc/
 
 
 # Update the 9.0 tree.
@@ -1987,7 +2001,7 @@ $(JAI):
 	mkdir $(JAI)
 	mv download.java.net/media/jai/webstart/release/1.1.3 $(JAI)
 jai_update:
-	(cd $(JAI)/..; tar -cf - jai) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+	(cd $(JAI)/..; tar -cf - jai) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~www/ptweb/ptolemyII; tar -xf -"
 
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_jogl
 JOGL = $(WEBSTART)/jogl
@@ -2021,7 +2035,7 @@ $(JOGL)/jogl-natives-windows-i586.jar: $(JOGL)/jogl.jnlp
         done
 
 jogl_update:
-	(cd $(JOGL)/..; tar -cf - jogl) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+	(cd $(JOGL)/..; tar -cf - jogl) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~www/ptweb/ptolemyII; tar -xf -"
 
 
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_gluegen-rt
@@ -2056,5 +2070,5 @@ $(GLUEGEN_RT)/gluegen-rt-natives-windows-i586.jar: $(GLUEGEN_RT)/gluegen-rt.jnlp
         done
 
 gluegen-rt_update:
-	(cd $(GLUEGEN_RT)/..; tar -cf - gluegen-rt) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+	(cd $(GLUEGEN_RT)/..; tar -cf - gluegen-rt) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~www/ptweb/ptolemyII; tar -xf -"
 
