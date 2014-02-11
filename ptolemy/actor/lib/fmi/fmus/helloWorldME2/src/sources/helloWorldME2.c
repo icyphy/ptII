@@ -85,10 +85,12 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
 }
 
 FMI_Export fmiStatus fmiEnterInitializationMode(fmiComponent c) {
+    printf("helloWorldME.c: fmiEnterInitializationMode() returning fmiOK, though it is not implemented yet.\n");
     return fmiOK;
 }
 
 FMI_Export fmiStatus fmiExitInitializationMode(fmiComponent c) {
+    printf("helloWorldME.c: fmiExitInitializationMode() returning fmiOK, though it is not implemented yet.\n");
     return fmiOK;
 }
 
@@ -125,8 +127,8 @@ FMI_Export fmiStatus fmiReset(fmiComponent c) {
 
 ////////////////////////////////////////////////////////////
 // Below here are functions that need to be in the FMU for it to
-// pass the checker.  However, the all return fmiError so that we
-// can be sure that they are not called accidentally.
+// pass the checker.  However, the all return fmiError or print a
+// message so that we can be sure that they are not called accidentally.
 
 
 FMI_Export fmiStatus fmiGetInteger(fmiComponent c, const fmiValueReference vr[],
@@ -141,6 +143,23 @@ FMI_Export fmiStatus fmiGetBoolean(fmiComponent c, const fmiValueReference vr[],
 
 FMI_Export fmiStatus fmiGetString(fmiComponent c, const fmiValueReference vr[],
         size_t nvr, fmiString value[]) {
+    return fmiError;
+}
+
+FMI_Export const char* fmiGetTypesPlatform() {
+    // FIXME: this leaks, we not allocate memory each time we call it.
+    return strdup("default");
+}
+
+FMI_Export const char* fmiGetVersion() {
+    // FIXME: this leaks, we not allocate memory each time we call it.
+    return strdup("2.0");
+}
+
+FMI_Export fmiStatus fmiSetDebugLogging(fmiComponent    c,
+        fmiBoolean      loggingOn, 
+        size_t          nCategories, 
+        const fmiString categories[]) {
     return fmiError;
 }
 
@@ -162,6 +181,16 @@ FMI_Export fmiStatus fmiSetBoolean(fmiComponent c, const fmiValueReference vr[],
 FMI_Export fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[],
         size_t nvr, const fmiString value[]) {
     return fmiError;
+}
+
+FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c, 
+        fmiBoolean   toleranceDefined, 
+        fmiReal      tolerance, 
+        fmiReal      startTime, 
+        fmiBoolean   stopTimeDefined, 
+        fmiReal      stopTime) {
+    printf("helloWorldME2.c: Warning called fmiSetupExperiment, which is not yet implemented.\n");
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiGetFMUstate(fmiComponent c, fmiFMUstate* FMUstate) {
@@ -199,12 +228,12 @@ FMI_Export fmiStatus fmiGetDirectionalDerivative(fmiComponent c,
     return fmiError;
 }
 
-// Start of Model Exchange functions
+// Start of Model Exchange functions.
 // Alphabetical in this section.
 
 FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
         size_t nx) {
-    // Model Exchange
+    printf("helloWorldME.c: fmiGetContinuousStates() returning fmiError, it is not implemented yet");
     return fmiError;
 }
 
@@ -242,7 +271,8 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
 FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c, 
         fmiReal eventIndicators[], size_t ni) {
     // Model Exchange
-    return fmiError;
+    printf("helloWorldME.c: fmiGetEventIndicators() returning fmiOK, though it is not implemented yet.\n");
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiNewDiscreteStates(fmiComponent  c,
@@ -259,7 +289,8 @@ FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],
 
 FMI_Export fmiStatus fmiSetTime(fmiComponent c, fmiReal time) {
     // Model Exchange
-    return fmiError;
+    printf("helloWorldME.c: fmiSetTime() returning fmiOK, though it is not implemented yet.\n");
+    return fmiOK;
 }
 
 
