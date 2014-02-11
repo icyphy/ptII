@@ -50,21 +50,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 #PTCLASSALLJARS = \
 
 EXAMPLE_MODELS = \
-	BallDynamics.xml \
-	BallDynamicsIcon.xml \
 	BilliardsOneDimensional.xml \
 	BouncingBall.xml \
 	BouncingBallModal.xml \
 	BouncingBallModal2.xml \
-	CalculateImpulsiveForce.xml \
-	CalculateImpulsiveForceIcon.xml \
 	Collision.xml \
 	Collision3.xml \
 	Collision4.xml \
 	Collision5.xml \
 	Collision6Modal.xml \
-	CollisionDetector.xml \
-	CollisionDetectorIcon.xml \
 	CollisionSimultaneous.xml \
 	CollisionSimultaneousDifferentMasses.xml \
 	CollisionSimultaneousDifferentMasses2.xml \
@@ -76,6 +70,12 @@ EXAMPLE_MODELS = \
 	TwoCapacitorsModelWithDelays.xml
 
 OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS) \
+	BallDynamics.xml \
+	BallDynamicsIcon.xml \
+	CollisionDetector.xml \
+	CollisionDetectorIcon.xml \
+	CalculateImpulsiveForce.xml \
+	CalculateImpulsiveForceIcon.xml \
 	README.txt
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
@@ -97,6 +97,10 @@ install: jclass jars
 # For instructions about how to update http://ptolemy.org/constructive
 
 # For an example that is in the ptII repo, see the $PTII/mk/jnlp.mk file.
+
+# $PTII/mk/jnlp.mk calls "make echo_models"
+echo_models:
+	@echo "$(EXAMPLE_MODELS) $(EXAMPLE_SUBMODELS)" | awk '{for(i=1;i<=NF;i++) {print $$i}}' | sort
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
