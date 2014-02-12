@@ -101,13 +101,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 260.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={244, 164, 1170, 653}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={244, 164, 813, 524}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[936, 543]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[579, 414]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.135959986830652">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3139040351423146">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{228.76436021959458, 191.66278610641893}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{228.5302734375, 191.74029959358526}">
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Ball Dynamics">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model implements&#10;Newton's second law, F=ma.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 295.0]">
+        </property>
     </property>
     <port name="x" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>

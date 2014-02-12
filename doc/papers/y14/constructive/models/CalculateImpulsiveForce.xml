@@ -10,13 +10,13 @@
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 30.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 372, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 250, 862, 706}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 596]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1840440561139556">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1971252566735113">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.3742932271401, 262.947265625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.1183533447684, 237.75300171526587}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 85.0]">
@@ -68,6 +68,20 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Override default director.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 105.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Calculate Impulsive Force">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This class, when&#10;enabled, samples&#10;the inputs and&#10;calculates the&#10;impulsive forces&#10;due to a collision.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 0.0]">
         </property>
     </property>
     <port name="enable" class="ptolemy.actor.TypedIOPort">

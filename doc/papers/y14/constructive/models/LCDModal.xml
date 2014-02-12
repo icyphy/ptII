@@ -67,13 +67,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 162, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 330, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.5130711282784524">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4545334771617493">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{139.28222656250003, 94.15984205163043}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{235.189453125, 9.6889549365942}">
     </property>
     <property name="i_0" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -94,6 +94,316 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 30.0]">
         </property>
     </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Modal Inductor, Capacitor, Diode Model">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -165.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This circuit begins oscillating,&#10;and then when the diode becomes&#10;reverse biased, enters a quiescent&#10;state where it stores energy.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -115.0]">
+        </property>
+    </property>
+    <property name="Arc" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, -65.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
+        </property>
+        <property name="start" class="ptolemy.data.expr.Parameter" value="260.0">
+        </property>
+        <property name="extent" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+    </property>
+    <property name="Arc2" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, -75.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
+        </property>
+        <property name="start" class="ptolemy.data.expr.Parameter" value="260.0">
+        </property>
+        <property name="extent" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+    </property>
+    <property name="Arc3" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, -85.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="type" class="ptolemy.data.expr.StringParameter" value="open">
+        </property>
+        <property name="start" class="ptolemy.data.expr.Parameter" value="260.0">
+        </property>
+        <property name="extent" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+    </property>
+    <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, -105.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+    </property>
+    <property name="Line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, -55.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="L">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, -80.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="u">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, -75.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="+">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, -55.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="-">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, -95.0]">
+        </property>
+    </property>
+    <property name="Line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, -105.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="52.0">
+        </property>
+    </property>
+    <property name="Polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, -105.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, -15.0, -10.0, -15.0, 10.0}">
+        </property>
+    </property>
+    <property name="Line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -115.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+    </property>
+    <property name="Line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -105.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+    </property>
+    <property name="Line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, -105.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+    </property>
+    <property name="Line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, -75.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </property>
+    <property name="Line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, -65.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </property>
+    <property name="Line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, -65.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+    </property>
+    <property name="Line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, -35.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="120.0">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="C">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, -80.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="v">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, -75.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="+">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, -95.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="-">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, -50.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="i">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -30.0]">
+        </property>
+    </property>
+    <property name="Line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -35.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+    </property>
+    <property name="Line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, -40.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-5.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="w">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, -130.0]">
+        </property>
+    </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="+">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, -130.0]">
+        </property>
+    </property>
+    <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Serif">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="-">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, -125.0]">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="i, v, w, u">
         </property>
@@ -110,8 +420,8 @@
 <title>LCD Voltage and Current</title>
 <xLabel>time</xLabel>
 <yLabel>voltage/current</yLabel>
-<xRange min="-0.43333333333333335" max="5.433333333333334"/>
-<yRange min="-1.6590347934196015" max="1.6590347934196015"/>
+<xRange min="0.0" max="5.0"/>
+<yRange min="-1.4139501080280694" max="1.4139501080280694"/>
 <noGrid/>
 </plot>?>
         </configure>
@@ -119,7 +429,7 @@
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 135.0}">
         </property>
         <port name="i" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -147,19 +457,20 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 207, 634, 216}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={523, 207, 661, 542}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[400, 105]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[427, 431]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3883299798792756">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4787234042553192">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.45652173913044, 159.23564159006312}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.0, 280.3525179856115}">
             </property>
-            <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-                <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
-                    <display name="Background Color"/>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{615, 395}">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Forward biased and reverse&#10;biased are modeled using two&#10;distinct modes.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 140.0]">
                 </property>
             </property>
             <port name="i" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -195,7 +506,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 180}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
                 </property>
             </entity>
             <entity name="reverseBiased" class="ptolemy.domains.modal.kernel.State">
@@ -205,7 +516,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 180.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 280.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -252,13 +563,21 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 485.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={699, 76, 855, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={699, 76, 855, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[621, 399]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[621, 524]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5319148936170213">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{422.9236111111111, 545.2934027777778}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{422.9236111111111, 586.0920138888889}">
+            </property>
+            <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In the forward-biased mode,&#10;we have an LC circuit.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 685.0]">
+                </property>
             </property>
             <port name="i" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
@@ -401,7 +720,7 @@
             <link port="Const.output" relation="relation6"/>
         </entity>
         <entity name="reverseBiased" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="voltage" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="voltage" class="ptolemy.data.expr.Parameter" value="1.4139501080281">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -426,13 +745,21 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 375.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 397, 551, 465}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 397, 592, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[317, 355]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3568281938325992">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{414.1314935064935, 468.0292715097403}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In the reverse-biased&#10;mode, all outputs are&#10;constant.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 625.0]">
+                </property>
             </property>
             <port name="i" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>

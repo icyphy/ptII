@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 968, 778}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 910, 796}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[734, 668]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[676, 686]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1291406775770156">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.027387683586403">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5977848365215, 303.26655117048466}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.12302125091105, 296.98973328170547}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="impulsive&#10;force">
@@ -193,6 +193,8 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Coulomb's model of friction.&#10;A force is applied to mass 1.&#10;Mass 2 will move with it,&#10;unless it starts sliding.&#10;While sliding, kinetic friction&#10;causes mass 2 to accelerate.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 15.0]">
@@ -273,7 +275,13 @@
         </property>
     </property>
     <property name="HTMLText" class="ptolemy.vergil.basic.export.web.HTMLText" value="Click on the TimedPlotter to see a plot of the velocities as a function of time.&#10;With these parameter values:&#10;&lt;ul&gt;&#10;&lt;li&gt; Near time 0.2, mass 2 breaks away and begins sliding.&#10;&lt;li&gt; Near time 0.7, the velocities match, but the input force is too high for capture.&#10;&lt;li&gt; Near time 0.8, mass 1 reverses direction, starting to move right instead of left.&#10;At that time, the velocity of mass 2 stops decreasing and starts increasing.&#10;&lt;li&gt; Near time 1.0, mass 1 is jolted left with an impulsive force, reversing direction,&#10;causing the velocity of mass 2 to stop increasing and start decreasing.&#10;Although the velocity of mass 1 crosses that of mass 2, no capture occurs.&#10;&lt;li&gt; Near time 1.8, the volocities match and the input force is small enough&#10;so that mass 2 is captured.&#10;&lt;li&gt; At time 2.0, an impulsive force on mass 1 causes mass 2 to start sliding.&#10;&lt;li&gt; Etc.&#10;&lt;/ul&gt;">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 620.0]">
+        <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 660.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Coulomb's Model of Friction">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, -30.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -312,30 +320,40 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={238, 160, 1204, 729}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={238, 160, 1014, 750}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[970, 618]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[780, 639]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2782443391005125">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1969008816457387">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.51506024096415, 286.8262048192771}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.6640625, 285.7619419642857}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Both force inputs are&#10;assumed to be applied&#10;to mass 1 only.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 45.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 215.0]">
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Any impulsive force input causes a breakaway,&#10;so the force affects only mass 1. Mass 2 keeps&#10;the final velocity it had at the time of the&#10;impulsive force.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 60.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 65.0]">
                 </property>
             </property>
             <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Capture events can occur when impulsive forces&#10;cause the volocity of mass 1 to cross the velocity&#10;of mass 2. But this should not lead to capture&#10;unless the final velocities are close enough.&#10;Also, numerical errors can lead to failures in&#10;capture, so we have a capture threshold.">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 420.0]">
+                </property>
+            </property>
+            <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Two Modes for the Friction Model">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 25.0]">
                 </property>
             </property>
             <port name="force" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -460,6 +478,8 @@
         </entity>
         <entity name="sliding" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="acceleration&#10;of mass 1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 205.0]">
@@ -470,29 +490,39 @@
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="impulsive&#10;acceleration&#10;of mass 1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 350.0]">
                 </property>
             </property>
             <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="While sliding, the force on mass 2 is&#10;kinectic friction, which is independent&#10;of the sliding velocity (Coulomb's law&#10;of friction), except for the polarity.&#10;The dependence on polarity is modeled&#10;using a modal model to ensure that the&#10;acceleration is piecewise continuous&#10;(using a signum function would not&#10;provide this assurance).">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 420.0]">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="While sliding, the force on mass 2 is kinectic friction, which is independent&#10;of the sliding velocity (Coulomb's law of friction), except for the polarity.&#10;The dependence on polarity is modeled using a modal model to ensure that the&#10;acceleration is piecewise continuous (using a signum function would not&#10;provide this assurance).">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 430.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 412, 1339, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 412, 1219, 603}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1105, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[985, 493]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1277846401786413">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0940338773551206">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{492.4650262955131, 369.77491802250574}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{444.5986328125, 334.7427073317307}">
             </property>
             <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When the velocities match,&#10;mass 2 is recaptured and&#10;begins moving with mass 1.&#10;The capture event will&#10;trigger a mode change,&#10;unless there is simultaneously&#10;present an impulsive force.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 140.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{670.0, 140.0}">
+                </property>
+            </property>
+            <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Sliding Mode -- Act as Two Masses">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 110.0]">
                 </property>
             </property>
             <port name="force" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -507,7 +537,7 @@
             </port>
             <port name="velocity1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 250.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 250.0]">
                 </property>
             </port>
             <port name="velocity2" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -809,7 +839,7 @@
                 </vertex>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="{595.0, 250.0}">
+                <vertex name="vertex1" value="[565.0, 250.0]">
                 </vertex>
             </relation>
             <link port="force" relation="relation3"/>
@@ -837,6 +867,8 @@
         </entity>
         <entity name="stuck" class="ptolemy.domains.modal.modal.Refinement">
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="acceleration&#10;of masses&#10;1 &amp; 2">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 155.0]">
@@ -847,18 +879,24 @@
                 </property>
             </property>
             <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Any non-zero impulsive force&#10;will cause a breakaway, so we&#10;can safely ignore this input here.">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 265.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 277, 867, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 277, 808, 634}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 524]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[574, 487]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4028569418056436">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2700021110407431">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.04687499999997, 275.0921135132424}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.04687500000003, 246.79496343085108}">
+            </property>
+            <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Stuck Mode -- Act as One Mass">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 55.0]">
+                </property>
             </property>
             <port name="force" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>

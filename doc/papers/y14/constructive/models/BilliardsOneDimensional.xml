@@ -14,33 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 1306, 987}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 1131, 802}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1072, 877]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[897, 692]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.514978601997147">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3147682325748147">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.5, 378.03718661723167}">
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee, inspired by Newton's Cradle example of Haiyang Zheng.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 585.0}">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.3218100436294, 312.3613015217083}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -123,19 +103,11 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model does not handle causally unrelated&#10;simulaneous collisions, but it does correctly&#10;handle causally related simultaneous collisions.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 140.0}">
-        </property>
-    </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Modal model of ball collisions.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 110.0]">
         </property>
     </property>
     <property name="m_1" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -174,6 +146,10 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 165.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Modal Model of Ball Collisions">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 55.0}">
         </property>
     </property>
     <class name="Ball" extends="ptolemy.domains.modal.modal.ModalModel">
@@ -697,7 +673,7 @@ occurs when two adjacent balls make contact with velocity greater than zero.</te
 <xLabel>time</xLabel>
 <yLabel>position</yLabel>
 <xRange min="0.0" max="15.0"/>
-<yRange min="0.0" max="15.374953125"/>
+<yRange min="0.0" max="15.99995"/>
 </plot>?>
         </configure>
     </entity>
@@ -753,7 +729,7 @@ occurs when two adjacent balls make contact with velocity greater than zero.</te
 <xLabel>time</xLabel>
 <yLabel>velocity</yLabel>
 <xRange min="0.0" max="15.0"/>
-<yRange min="-0.25" max="1.0"/>
+<yRange min="0.0" max="1.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -783,7 +759,7 @@ occurs when two adjacent balls make contact with velocity greater than zero.</te
             </property>
         </entity>
         <entity name="action" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="v_0" class="ptolemy.data.expr.Parameter" value="0.1875">
+            <property name="v_0" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </entity>
     </entity>
@@ -809,7 +785,7 @@ occurs when two adjacent balls make contact with velocity greater than zero.</te
             </property>
         </entity>
         <entity name="action" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="v_0" class="ptolemy.data.expr.Parameter" value="-0.25">
+            <property name="v_0" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
         </entity>
     </entity>
@@ -837,7 +813,7 @@ occurs when two adjacent balls make contact with velocity greater than zero.</te
             </property>
         </entity>
         <entity name="action" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="v_0" class="ptolemy.data.expr.Parameter" value="0.9375">
+            <property name="v_0" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </entity>
     </entity>

@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, -20.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 264, 880, 505}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 264, 880, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[646, 395]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[646, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1472475578316703">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.230510265629895">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{171.34141185035787, 105.79290457922642}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{160.42937591196497, 46.85644531249997}">
     </property>
     <property name="m" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -93,6 +93,18 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="mass">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, with any precision for&#10;level-crossing detection, the ball will&#10;&quot;tunnel&quot; through the surface.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -125.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Bouncing Ball (Tunneling)">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -160.0]">
         </property>
     </property>
     <entity name="Ball" class="BallDynamics">

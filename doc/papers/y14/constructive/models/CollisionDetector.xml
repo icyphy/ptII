@@ -6,13 +6,13 @@
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, -25.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 207, 807, 394}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 207, 811, 497}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 284]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 387]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.066780544755122">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0700839344116237">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.8780781895661, 302.71675813533045}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.93248882937394, 284.1544061528641}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -41,7 +41,21 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Control the step size to catch points&#10;where the velocity on the left becomes&#10;bigger than the velocity on the right.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 385.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Collision Detector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 110.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This class implements a more&#10;sophisticated collision detector&#10;than a simple level-crossing detector.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 105.0]">
         </property>
     </property>
     <port name="collision" class="ptolemy.actor.TypedIOPort">
