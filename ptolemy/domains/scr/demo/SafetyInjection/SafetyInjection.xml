@@ -14,64 +14,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 0.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={376, 108, 1128, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={305, 22, 1128, 878}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 768]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9384480146633">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.3046715561224, 238.97048389668265}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.3046715561224, 368.972357302288}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simplified version of the control system for safety injection described &#10;by Courtois and Parnas in 'Documentation for Safety Critical Software'&#10;as described in 'Automated Consistency Checking of Requirements &#10;Specifications (1996)' by Constance L. Heitmeyer, Ralph D. Jeffords, and&#10;Bruce G. Labaw.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-45.0, 405.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-        </property>
-    </property>
-    <property name="Low" class="ptolemy.data.expr.Parameter">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{585, 45}">
-        </property>
-    </property>
-    <property name="Permit" class="ptolemy.data.expr.Parameter">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 65.0]">
         </property>
     </property>
     <entity name="SCRModel" class="ptolemy.domains.scr.SCRModel">
-        <property name="openAsSCRActor" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="openAsSCRActor" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.scr.SCRTableauFactory">
         </property>
@@ -96,7 +54,7 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="SafetyInjection" class="ptolemy.domains.modal.modal.ModalPort">
+        <port name="safetyInjection" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -114,7 +72,7 @@
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="scr_Overridden" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={262, 207, 1165, 635}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 132, 1165, 635}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[931, 524]">
             </property>
@@ -137,10 +95,10 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 15.0]">
                 </property>
             </port>
-            <port name="SafetyInjection" class="ptolemy.domains.modal.modal.RefinementPort">
+            <port name="safetyInjection" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 95.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -30.0]">
                 </property>
             </port>
             <port name="Block_event" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -154,7 +112,7 @@
                 </property>
             </port>
             <entity name="TooLow" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="TooLow_refinement">
                 </property>
                 <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -164,11 +122,11 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 195.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 160.0]">
                 </property>
             </entity>
             <entity name="Permitted" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Permitted_refinement">
                 </property>
                 <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -178,11 +136,11 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[11.046873292481223, 272.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 270.0]">
                 </property>
             </entity>
             <entity name="High" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="High_refinement">
                 </property>
                 <property name="_centerName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -192,13 +150,7 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[11.046873292481223, 372.0]">
-                </property>
-            </entity>
-            <entity name="State" class="ptolemy.domains.modal.kernel.State">
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-225, 15}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 405.0]">
                 </property>
             </entity>
             <relation name="transition" class="ptolemy.domains.modal.kernel.Transition">
@@ -324,11 +276,11 @@
                 </property>
                 <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="safetyInjection = (scr_Overridden ? false : (!scr_Overridden ? true :  true))">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="Overridden = ((Block_event_isPresent &amp;&amp; (Block == true) &amp;&amp; (Reset == false)) ? true &#10;  : ((Reset_event_isPresent &amp;&amp; (Reset == true)) ? false :  nil))">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="scr_Overridden = ((Block_event_isPresent &amp;&amp; (Block == true) &amp;&amp; (Reset == false)) ? true &#10;  : ((Reset_event_isPresent &amp;&amp; (Reset == true)) ? false :  nil))">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.8334424744385194">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.595407930138844">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="4.757462720465562">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.7338652693133034">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                     <display name="default"/>
@@ -375,12 +327,6 @@
                 <property name="termination" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.045325756416747">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5673531170193433">
-                </property>
-            </relation>
             <link port="TooLow.incomingPort" relation="transition3"/>
             <link port="TooLow.incomingPort" relation="TooLow_transition"/>
             <link port="TooLow.outgoingPort" relation="transition"/>
@@ -393,8 +339,236 @@
             <link port="Permitted.outgoingPort" relation="Permitted_transition"/>
             <link port="High.incomingPort" relation="transition2"/>
             <link port="High.outgoingPort" relation="transition4"/>
-            <link port="State.incomingPort" relation="relation"/>
-            <link port="State.outgoingPort" relation="relation"/>
+        </entity>
+        <entity name="TooLow_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, -15.0}">
+                </property>
+            </property>
+            <port name="WaterPres" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, 45.0}">
+                </property>
+            </port>
+            <port name="Block" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, -20.0}">
+                </property>
+            </port>
+            <port name="Reset" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, -20.0}">
+                </property>
+            </port>
+            <port name="safetyInjection" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+                </property>
+            </port>
+            <port name="Block_event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 50.0}">
+                </property>
+            </port>
+            <port name="Reset_event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 45.0}">
+                </property>
+            </port>
+            <entity name="safetyInjection_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(scr_Overridden ? false : (!scr_Overridden ? true :  true))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 130.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="safetyInjection" relation="relation"/>
+            <link port="safetyInjection_out.output" relation="relation"/>
+        </entity>
+        <entity name="Permitted_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, -15.0}">
+                </property>
+            </property>
+            <port name="WaterPres" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, 45.0}">
+                </property>
+            </port>
+            <port name="Block" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, -20.0}">
+                </property>
+            </port>
+            <port name="Reset" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, -20.0}">
+                </property>
+            </port>
+            <port name="safetyInjection" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+                </property>
+            </port>
+            <port name="Block_event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 50.0}">
+                </property>
+            </port>
+            <port name="Reset_event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 45.0}">
+                </property>
+            </port>
+            <entity name="safetyInjection_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? false : (false ? true :  true))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-90.0, 125.0}">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SafetyInjection_out.output&quot;,x=-90.0,y=125.0}, tail={id=&quot;safetyInjection._location&quot;,x=10.0,y=125.0}, points={} } }">
+                </property>
+            </relation>
+            <link port="safetyInjection" relation="relation"/>
+            <link port="safetyInjection_out.output" relation="relation"/>
+        </entity>
+        <entity name="High_refinement" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+            </property>
+            <port name="WaterPres" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 0.0]">
+                </property>
+            </port>
+            <port name="Block" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -20.0]">
+                </property>
+            </port>
+            <port name="Reset" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 15.0]">
+                </property>
+            </port>
+            <port name="safetyInjection" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 95.0]">
+                </property>
+            </port>
+            <port name="Block_event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 55.0]">
+                </property>
+            </port>
+            <port name="Reset_event" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 95.0]">
+                </property>
+            </port>
+            <entity name="safetyInjection_out" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(true ? false : (false ? true :  true))">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 200.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="safetyInjection" relation="relation"/>
+            <link port="safetyInjection_out.output" relation="relation"/>
         </entity>
         <relation name="WaterPresRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -408,7 +582,7 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <relation name="SafetyInjectionRelation" class="ptolemy.actor.TypedIORelation">
+        <relation name="safetyInjectionRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
@@ -423,15 +597,33 @@
         <link port="WaterPres" relation="WaterPresRelation"/>
         <link port="Block" relation="BlockRelation"/>
         <link port="Reset" relation="ResetRelation"/>
-        <link port="SafetyInjection" relation="SafetyInjectionRelation"/>
+        <link port="safetyInjection" relation="safetyInjectionRelation"/>
         <link port="Block_event" relation="Block_eventRelation"/>
         <link port="Reset_event" relation="Reset_eventRelation"/>
         <link port="_Controller.WaterPres" relation="WaterPresRelation"/>
         <link port="_Controller.Block" relation="BlockRelation"/>
         <link port="_Controller.Reset" relation="ResetRelation"/>
-        <link port="_Controller.SafetyInjection" relation="SafetyInjectionRelation"/>
+        <link port="_Controller.safetyInjection" relation="safetyInjectionRelation"/>
         <link port="_Controller.Block_event" relation="Block_eventRelation"/>
         <link port="_Controller.Reset_event" relation="Reset_eventRelation"/>
+        <link port="TooLow_refinement.WaterPres" relation="WaterPresRelation"/>
+        <link port="TooLow_refinement.Block" relation="BlockRelation"/>
+        <link port="TooLow_refinement.Reset" relation="ResetRelation"/>
+        <link port="TooLow_refinement.safetyInjection" relation="safetyInjectionRelation"/>
+        <link port="TooLow_refinement.Block_event" relation="Block_eventRelation"/>
+        <link port="TooLow_refinement.Reset_event" relation="Reset_eventRelation"/>
+        <link port="Permitted_refinement.WaterPres" relation="WaterPresRelation"/>
+        <link port="Permitted_refinement.Block" relation="BlockRelation"/>
+        <link port="Permitted_refinement.Reset" relation="ResetRelation"/>
+        <link port="Permitted_refinement.safetyInjection" relation="safetyInjectionRelation"/>
+        <link port="Permitted_refinement.Block_event" relation="Block_eventRelation"/>
+        <link port="Permitted_refinement.Reset_event" relation="Reset_eventRelation"/>
+        <link port="High_refinement.WaterPres" relation="WaterPresRelation"/>
+        <link port="High_refinement.Block" relation="BlockRelation"/>
+        <link port="High_refinement.Reset" relation="ResetRelation"/>
+        <link port="High_refinement.safetyInjection" relation="safetyInjectionRelation"/>
+        <link port="High_refinement.Block_event" relation="Block_eventRelation"/>
+        <link port="High_refinement.Reset_event" relation="Reset_eventRelation"/>
     </entity>
     <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 310.0]">
@@ -579,7 +771,7 @@
     <link port="SCRModel.WaterPres" relation="relation5"/>
     <link port="SCRModel.Block" relation="relation11"/>
     <link port="SCRModel.Reset" relation="relation12"/>
-    <link port="SCRModel.SafetyInjection" relation="relation"/>
+    <link port="SCRModel.safetyInjection" relation="relation"/>
     <link port="SCRModel.Block_event" relation="relation6"/>
     <link port="SCRModel.Reset_event" relation="relation8"/>
     <link port="BooleanToAnything.input" relation="relation"/>
