@@ -895,7 +895,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
             NameDuplicationException {
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
-        printTrace.setExpression("true");
+        printTrace.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////

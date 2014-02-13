@@ -93,7 +93,7 @@ public class MappingEditorGUI extends PtolemyFrame {
         
         JLabel label1 = new JLabel("ActorNames:");
         
-        JTextArea actorNameTextArea = new JTextArea(editor.actorNames(), 15, 80);
+        JTextArea actorNameTextArea = new JTextArea(editor.actorNames(), 10, 80);
         actorNameTextArea.setEditable(false);
         actorNameTextArea.setBorder(BorderFactory.createEtchedBorder());
 

@@ -156,9 +156,7 @@ public class MetroIIDirector extends Director {
         _actorList = new LinkedList<FireMachine>();
         _mappingConstraintSolver = new MappingConstraintSolver();
         _timeScheduler = new TimeScheduler();
-
         _initializeParameters();
-        // initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -215,7 +213,7 @@ public class MetroIIDirector extends Director {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == mappingFileName) {
-
+            
         } else if (attribute == printDebug) {
             if (((BooleanToken) printDebug.getToken()).booleanValue()) {
                 _mappingConstraintSolver.turnOnDebugging();
@@ -449,7 +447,8 @@ public class MetroIIDirector extends Director {
                 .getToken();
         if (mappingFileNameToken == null
                 || mappingFileNameToken.stringValue().equals("")) {
-            mappingFileName = null;
+            // mappingFileName = null;
+            _mappingConstraintSolver.clear();
         } else {
             File file = mappingFileName.asFile();
             if (file != null) {

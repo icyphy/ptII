@@ -43,9 +43,11 @@ import net.jimblackler.Utils.ResultHandler;
 import net.jimblackler.Utils.ThreadedYieldAdapter;
 import net.jimblackler.Utils.YieldAdapterIterable;
 import ptolemy.actor.Director;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
@@ -111,6 +113,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      */
     public FileParameter configFileName;
 
+    /**
+     * Option parameter whether debug info is printed out.
+     */
+    public Parameter printDebug;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -136,6 +143,12 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                                 + configFileName.stringValue()
                                 + "\" does not exist?");
             }
+        } else if (attribute == printDebug) {
+            if (((BooleanToken) printDebug.getToken()).booleanValue()) {
+                _debugger.turnOnDebugging();
+            } else {
+                _debugger.turnOffDebugging();
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -157,6 +170,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         MetroIISystemCDirector newObject = (MetroIISystemCDirector) super
                 .clone(workspace);
         newObject.events = new LinkedList<Event.Builder>();
+        newObject._debugger = _debugger.clone();
         return newObject;
     }
 
@@ -190,11 +204,10 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         } catch (IOException e) {
             throw new IllegalActionException("I/O exception caused by the pipe file: " + path + pipe2server);
         }
-        //                System.out.println("Pushing events: ");
-        //                for (Builder etb : events) {
-        //                    System.out
-        //                            .println(etb.getName() + " " + etb.getStatus().toString());
-        //                }
+
+        _debugger.printTitle("Pushing events: ");
+        _debugger.printMetroEvents(events); 
+
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
@@ -238,11 +251,10 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         for (Event e : ev.getEventList()) {
             events.add(e.toBuilder());
         }
-        //        System.out.println("Sync events: ");
-        //        for (Builder etb : events) {
-        //            System.out
-        //                    .println(etb.getName() + " " + etb.getStatus().toString());
-        //        }
+
+        _debugger.printTitle("Sync events: ");
+        _debugger.printMetroEvents(events); 
+        
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
@@ -470,15 +482,24 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         metroII.setVisibility(Settable.NOT_EDITABLE);
         modelFileName = new FileParameter(this, "modelFileName");
         configFileName = new FileParameter(this, "configFileName");
+
+        printDebug = new Parameter(this, "printDebug");
+        printDebug.setTypeEquals(BaseType.BOOLEAN);
+        printDebug.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                    private fields                         ////
 
     /**
+     * Debugger
+     */
+    private MetroIIDebugger _debugger = new MetroIIDebugger();
+
+    /**
      * Standard input of the SystemC model.
      */
-    BufferedReader stdInput;
+    private BufferedReader stdInput;
 
     /**
      * Standard error of the SystemC model.
@@ -488,22 +509,22 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     /**
      * The full name of the pipe to SystemC model.
      */
-    String m2event_out_pipe_name;
+    private String m2event_out_pipe_name;
 
     /**
      * The full name of the pipe from SystemC model.
      */
-    String m2event_in_pipe_name;
+    private String m2event_in_pipe_name;
 
     /**
      * The external process.
      */
-    Process process = null;
+    private Process process = null;
 
     /**
      * IO thread
      */
-    Thread _ioThread = null;
+    private Thread _ioThread = null;
 
     /**
      * Current event list
