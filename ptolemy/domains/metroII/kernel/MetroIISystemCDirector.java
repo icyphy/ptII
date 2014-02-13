@@ -101,8 +101,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     /**
      * The environmental variable METROII
      */
-    public Parameter metroII; 
-    
+    public Parameter metroII;
+
     /**
      * The executable file name of the MetroII SystemC model.
      */
@@ -126,18 +126,20 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         if (attribute == modelFileName) {
             File modelFile = modelFileName.asFile();
             // modelFile could be null during cloning.
-            if (modelFile != null && !modelFile.getName().equals("") && !modelFile.exists()) {
+            if (modelFile != null && !modelFile.getName().equals("")
+                    && !modelFile.exists()) {
                 throw new IllegalActionException(
                         "The modelFileName parameter \""
-                        + modelFileName.getExpression()
-                        + "\" is not empty yet names a file that does not exist?");
+                                + modelFileName.getExpression()
+                                + "\" is not empty yet names a file that does not exist?");
             }
 
         } else if (attribute == configFileName) {
             //Check if the config is valid.
             File configFile = configFileName.asFile();
             // configFile could be null during cloning.
-            if (configFile != null && !configFile.getName().equals("") && !configFile.exists()) {
+            if (configFile != null && !configFile.getName().equals("")
+                    && !configFile.exists()) {
                 throw new IllegalActionException(
                         "The value of the configFileName parameter \""
                                 + configFileName.stringValue()
@@ -169,7 +171,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIISystemCDirector newObject = (MetroIISystemCDirector) super
                 .clone(workspace);
-        newObject.events = new LinkedList<Event.Builder>();
+        newObject._events = new LinkedList<Event.Builder>();
         newObject._debugger = _debugger.clone();
         return newObject;
     }
@@ -179,9 +181,10 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * 
      * @param events
      *            the events to be added into the pipe.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    public void pushEvents(Iterable<Event.Builder> events) throws IllegalActionException {
+    public void pushEvents(Iterable<Event.Builder> events)
+            throws IllegalActionException {
         if (_debugging) {
             _debug("pushEvents:");
         }
@@ -193,20 +196,23 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
         EventVector ev = evb.build();
         try {
-            FileOutputStream fos = new FileOutputStream(path + pipe2server);
+            FileOutputStream fos = new FileOutputStream(_pipePath + _pipe2server);
             try {
                 ev.writeTo(fos);
             } finally {
                 fos.close();
             }
         } catch (FileNotFoundException e) {
-            throw new IllegalActionException("Unable to find the pipe file: " + path + pipe2server);
+            throw new IllegalActionException("Unable to find the pipe file: "
+                    + _pipePath + _pipe2server);
         } catch (IOException e) {
-            throw new IllegalActionException("I/O exception caused by the pipe file: " + path + pipe2server);
+            throw new IllegalActionException(
+                    "I/O exception caused by the pipe file: " + _pipePath
+                            + _pipe2server);
         }
 
         _debugger.printTitle("Pushing events: ");
-        _debugger.printMetroEvents(events); 
+        _debugger.printMetroEvents(events);
 
         if (_debugging) {
             for (Builder etb : events) {
@@ -225,27 +231,32 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * @param events
      *            the events to be synchronized from the pipe.
      */
-    public void syncEvents(LinkedList<Event.Builder> events) throws IllegalActionException {
+    public void syncEvents(LinkedList<Event.Builder> events)
+            throws IllegalActionException {
         if (_debugging) {
             _debug("syncEvents:");
         }
         if (events == null) {
-            throw new NullPointerException("syncEvents(): events argument was null?");
+            throw new NullPointerException(
+                    "syncEvents(): events argument was null?");
         }
         events.clear();
         EventVector ev = null;
         try {
-            FileInputStream fis = new FileInputStream(path + pipe2client);
+            FileInputStream fis = new FileInputStream(_pipePath + _pipe2client);
             try {
                 ev = EventVector.parseFrom(fis);
             } finally {
                 fis.close();
-            } 
+            }
 
         } catch (FileNotFoundException e) {
-            throw new IllegalActionException("Unable to find the pipe file: " + path + pipe2client);
+            throw new IllegalActionException("Unable to find the pipe file: "
+                    + _pipePath + _pipe2client);
         } catch (IOException e) {
-            throw new IllegalActionException("I/O exception caused by the pipe file: " + path + pipe2client);
+            throw new IllegalActionException(
+                    "I/O exception caused by the pipe file: " + _pipePath
+                            + _pipe2client);
         }
 
         for (Event e : ev.getEventList()) {
@@ -253,8 +264,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         }
 
         _debugger.printTitle("Sync events: ");
-        _debugger.printMetroEvents(events); 
-        
+        _debugger.printMetroEvents(events);
+
         if (_debugging) {
             for (Builder etb : events) {
                 _debug(etb.getName() + " " + etb.getStatus().toString());
@@ -268,12 +279,17 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException {
         if (modelFileName != null) {
-            if (!createProcess) {
-                _ioThread = new Thread() {
+            if (_process == null) {
+                /**
+                 * IO thread
+                 */
+                Thread _ioThread = new Thread() {
                     public void run() {
                         String s = null;
                         try {
                             String command = null;
+                            BufferedReader stdInput = null;
+
                             try {
                                 StringToken modelFileNameToken;
                                 StringToken configFileNameToken;
@@ -299,7 +315,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                                             .println("The MetroII command is: "
                                                     + command);
                                     // Using the Runtime exec method:
-                                    process = Runtime.getRuntime()
+                                    _process = Runtime.getRuntime()
                                             .exec(command);
                                 } catch (IllegalActionException e) {
                                     e.printStackTrace();
@@ -307,7 +323,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
                                 stdInput = new BufferedReader(
                                         new InputStreamReader(
-                                                process.getInputStream()));
+                                                _process.getInputStream()));
 
                                 // read the output from the command
 
@@ -334,23 +350,21 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                     }
                 };
                 _ioThread.start();
-
-                createProcess = true;
             }
         }
         while (!isStopRequested()) {
-            if (events == null) {
+            if (_events == null) {
                 throw new NullPointerException(
                         "MetroIISystemCDirector.getFire(): stop was not requested, but events is null??");
             }
-            syncEvents(events);
+            syncEvents(_events);
 
             do {
-                resultHandler.handleResult(events);
-            } while (!MetroIIEventBuilder.atLeastOneNotified(events)
+                resultHandler.handleResult(_events);
+            } while (!MetroIIEventBuilder.atLeastOneNotified(_events)
                     && !isStopRequested());
 
-            pushEvents(events);
+            pushEvents(_events);
         }
 
     }
@@ -380,21 +394,18 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        path = System.getenv("METRO_TEMP");
-        if (path == null) {
+        _pipePath = System.getenv("METRO_TEMP");
+        if (_pipePath == null) {
             throw new IllegalActionException(
                     this,
                     "The METRO_TEMP property was not set.  Please set it so that both Ptolemy and the C-based MetroII example can access the same directory.");
         }
-        path = path + "/";
+        _pipePath = _pipePath + "/";
 
-        m2event_out_pipe_name = path + "m2event_ptolemy_buffer";
-        m2event_in_pipe_name = path + "m2event_metro_buffer";
+        String m2event_out_pipe_name = _pipePath + "m2event_ptolemy_buffer";
+        String m2event_in_pipe_name = _pipePath + "m2event_metro_buffer";
 
-        //        System.out
-        //                .println("FIXME: MetroIISystemCDirector.initialize(): Not creating the pipe because this breaks the tests.");
-
-        System.out.println("Waiting for pipes to be created ...");
+        _debugger.printText("Waiting for pipes to be created ...");
 
         List execCommands = new LinkedList();
         execCommands.add("rm -f " + m2event_out_pipe_name);
@@ -405,23 +416,11 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         final StringBufferExec exec = new StringBufferExec();
         exec.setCommands(execCommands);
 
-        exec.start();
+        _debugger.printText("The following pipes were created successfully:");
+        _debugger.printText(m2event_out_pipe_name);
+        _debugger.printText(m2event_in_pipe_name);
 
-        //            Runtime.getRuntime().exec("rm -f " + m2event_out_pipe_name);
-        //            Process process = Runtime.getRuntime().exec(
-        //                    "mkfifo " + m2event_out_pipe_name);
-        //            process.waitFor();
-        //            Runtime.getRuntime().exec("rm -f " + m2event_in_pipe_name);
-        //            process = Runtime.getRuntime().exec(
-        //                    "mkfifo " + m2event_in_pipe_name);
-        //            process.waitFor();
-        //        } catch (IOException ex) {
-        //            throw new IllegalActionException(this, ex,
-        //                    "Failed to create pipes!");
-        //        } catch (InterruptedException ex) {
-        //            throw new IllegalActionException(this, ex,
-        //                    "Failed to create pipes!");
-        //        }
+        exec.start();
 
         File pipe1 = new File(m2event_out_pipe_name);
         if (!pipe1.exists()) {
@@ -436,15 +435,17 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                             + "\".");
         }
 
-        events = new LinkedList<Event.Builder>();
+        _events = new LinkedList<Event.Builder>();
 
-        createProcess = false;
+        _process = null;
     }
 
     /**
      * Stop firing as soon as possible.
      * 
      * IMPORTANT: stop() can only be called after getfire() returns.
+     * 
+     * @throws IllegalActionException
      * 
      */
     @Override
@@ -453,16 +454,17 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
 
         Event.Builder builder = MetroIIEventBuilder.newProposedEvent("stop");
         builder.setStatus(Status.NOTIFIED);
-        events.add(builder);
+        _events.add(builder);
 
         try {
-            pushEvents(events);
+            pushEvents(_events);
         } catch (IllegalActionException e) {
             e.printStackTrace();
         }
-        
+
         System.out.println(this.getFullName()
                 + " sent stop request to SystemC Model!");
+
     }
 
     /**
@@ -473,12 +475,12 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {
-        startTime.setVisibility(Settable.NONE); 
-        stopTime.setVisibility(Settable.NONE); 
+        startTime.setVisibility(Settable.NONE);
+        stopTime.setVisibility(Settable.NONE);
         localClock.setVisibility(Settable.NONE);
-        
-        metroII = new Parameter(this, "METROII"); 
-        metroII.setExpression("\""+System.getenv("METROII")+"\""); 
+
+        metroII = new Parameter(this, "METROII");
+        metroII.setExpression("\"" + System.getenv("METROII") + "\"");
         metroII.setVisibility(Settable.NOT_EDITABLE);
         modelFileName = new FileParameter(this, "modelFileName");
         configFileName = new FileParameter(this, "configFileName");
@@ -497,58 +499,28 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     private MetroIIDebugger _debugger = new MetroIIDebugger();
 
     /**
-     * Standard input of the SystemC model.
-     */
-    private BufferedReader stdInput;
-
-    /**
-     * Standard error of the SystemC model.
-     */
-    // BufferedReader stdError;
-
-    /**
-     * The full name of the pipe to SystemC model.
-     */
-    private String m2event_out_pipe_name;
-
-    /**
-     * The full name of the pipe from SystemC model.
-     */
-    private String m2event_in_pipe_name;
-
-    /**
-     * The external process.
-     */
-    private Process process = null;
-
-    /**
-     * IO thread
-     */
-    private Thread _ioThread = null;
-
-    /**
      * Current event list
      */
-    private LinkedList<Event.Builder> events;
+    private LinkedList<Event.Builder> _events;
 
     /**
-     * Whether a process is created for the wrapped Metro-SystemC model
+     * The external process running SystemC model
      */
-    private boolean createProcess;
+    private Process _process = null;
 
     /**
      * Path of the pipe
      */
-    private String path;
+    private String _pipePath;
 
     /**
      * Name of the incoming pipe
      */
-    private String pipe2server = "m2event_ptolemy_buffer";
+    private final String _pipe2server = "m2event_ptolemy_buffer";
 
     /**
      * Name of the outcoming pipe
      */
-    private String pipe2client = "m2event_metro_buffer";
+    private final String _pipe2client = "m2event_metro_buffer";
 
 }
