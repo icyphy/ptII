@@ -460,7 +460,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, -35.0]">
         </property>
     </property>
-    <entity name="LeftBall" class="BallDynamics">
+    <entity name="LeftBall" class="doc.papers.y14.constructive.models.BallDynamics">
         <property name="m" class="ptolemy.data.expr.Parameter" value="mLeft">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 180.0]">
@@ -468,7 +468,7 @@
         <property name="v_0" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
     </entity>
-    <entity name="MiddleBall" class="BallDynamics">
+    <entity name="MiddleBall" class="doc.papers.y14.constructive.models.BallDynamics">
         <property name="m" class="ptolemy.data.expr.Parameter" value="mMiddle">
         </property>
         <property name="x_0" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -574,7 +574,7 @@
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <entity name="RightBall" class="BallDynamics">
+    <entity name="RightBall" class="doc.papers.y14.constructive.models.BallDynamics">
         <property name="m" class="ptolemy.data.expr.Parameter" value="mRight">
         </property>
         <property name="x_0" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -613,17 +613,17 @@
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <entity name="CollisionDetector2" class="CollisionDetector">
+    <entity name="CollisionDetector2" class="doc.papers.y14.constructive.models.CollisionDetector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 400.0]">
         </property>
     </entity>
-    <entity name="CollisionDetector" class="CollisionDetector">
+    <entity name="CollisionDetector" class="doc.papers.y14.constructive.models.CollisionDetector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 265.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 411, 920, 634}, maximized=false}">
         </property>
     </entity>
-    <entity name="CalculateImpulsiveForce" class="CalculateImpulsiveForce">
+    <entity name="CalculateImpulsiveForce" class="doc.papers.y14.constructive.models.CalculateImpulsiveForce">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 200.0]">
         </property>
         <property name="m1" class="ptolemy.data.expr.Parameter" value="mLeft">
@@ -631,7 +631,7 @@
         <property name="m2" class="ptolemy.data.expr.Parameter" value="mMiddle">
         </property>
     </entity>
-    <entity name="CalculateImpulsiveForce2" class="CalculateImpulsiveForce">
+    <entity name="CalculateImpulsiveForce2" class="doc.papers.y14.constructive.models.CalculateImpulsiveForce">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 330.0]">
         </property>
         <property name="m1" class="ptolemy.data.expr.Parameter" value="mMiddle">

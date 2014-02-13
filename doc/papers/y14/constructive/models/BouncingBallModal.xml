@@ -340,7 +340,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 490.0]">
                 </property>
             </port>
-            <entity name="Ball" class="BallDynamics">
+            <entity name="Ball" class="doc.papers.y14.constructive.models.BallDynamics">
                 <property name="m" class="ptolemy.data.expr.Parameter" value="m">
                 </property>
                 <property name="x_0" class="ptolemy.data.expr.Parameter" value="10.0">

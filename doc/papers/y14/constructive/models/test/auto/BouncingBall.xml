@@ -107,7 +107,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -160.0]">
         </property>
     </property>
-    <entity name="Ball" class="BallDynamics">
+    <entity name="Ball" class="doc.papers.y14.constructive.models.BallDynamics">
         <property name="m" class="ptolemy.data.expr.Parameter" value="m">
         </property>
         <property name="x_0" class="ptolemy.data.expr.Parameter" value="10.0">

@@ -531,7 +531,7 @@
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <entity name="CollisionDetector" class="CollisionDetector">
+    <entity name="CollisionDetector" class="doc.papers.y14.constructive.models.CollisionDetector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 220.0]">
         </property>
     </entity>
@@ -779,7 +779,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 305.0]">
                 </property>
             </port>
-            <entity name="BothBalls" class="BallDynamics">
+            <entity name="BothBalls" class="doc.papers.y14.constructive.models.BallDynamics">
                 <property name="m" class="ptolemy.data.expr.Parameter" value="mLeft">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 235.0]">
@@ -907,7 +907,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[255.5, 322.5]">
                 </property>
             </port>
-            <entity name="LeftBall" class="BallDynamics">
+            <entity name="LeftBall" class="doc.papers.y14.constructive.models.BallDynamics">
                 <property name="m" class="ptolemy.data.expr.Parameter" value="mLeft">
                 </property>
                 <property name="x_0" class="ptolemy.data.expr.Parameter" value="3.125">
@@ -917,7 +917,7 @@
                 <property name="v_0" class="ptolemy.data.expr.Parameter" value="2.5">
                 </property>
             </entity>
-            <entity name="RightBall" class="BallDynamics">
+            <entity name="RightBall" class="doc.papers.y14.constructive.models.BallDynamics">
                 <property name="m" class="ptolemy.data.expr.Parameter" value="mRight">
                 </property>
                 <property name="x_0" class="ptolemy.data.expr.Parameter" value="4.125">
@@ -1025,7 +1025,7 @@
         <link port="separate.x_l" relation="x_lRelation"/>
         <link port="separate.v_l" relation="v_lRelation"/>
     </entity>
-    <entity name="CalculateImpulsiveForce" class="CalculateImpulsiveForce">
+    <entity name="CalculateImpulsiveForce" class="doc.papers.y14.constructive.models.CalculateImpulsiveForce">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 145.0]">
         </property>
         <property name="m1" class="ptolemy.data.expr.Parameter" value="mLeft">
