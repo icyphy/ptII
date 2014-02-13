@@ -18,7 +18,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 A quantized-state integrator.
 
-@author David Broman, Edward A. Lee, Thierry Nouidui Michael Wetter
+@author David Broman, Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id: When.java 68298 2014-02-05 17:00:30Z eal $
 @since Ptolemy II 10.1
 @Pt.ProposedRating Yellow (eal)
@@ -34,9 +34,9 @@ public class QSSIntegrator extends TypedAtomicActor {
 		q = new TypedIOPort(this, "q", false, true);
 		q.setTypeEquals(BaseType.DOUBLE);;
 		
-		qInit = new Parameter(this, "qInit");
-		qInit.setTypeEquals(BaseType.DOUBLE);
-		qInit.setExpression("0.0");
+		xInit = new Parameter(this, "xInit");
+		xInit.setTypeEquals(BaseType.DOUBLE);
+		xInit.setExpression("0.0");
 		
 		quantum = new Parameter(this, "quantum");
 		quantum.setTypeEquals(BaseType.DOUBLE);
@@ -52,7 +52,7 @@ public class QSSIntegrator extends TypedAtomicActor {
 	/** Output (the quantized state). */
 	public TypedIOPort q;
 
-	public Parameter qInit, quantum;
+	public Parameter xInit, quantum;
 	
     /** Declare that the output does not depend on the input in a firing.
      *  @exception IllegalActionException If the causality interface
@@ -77,13 +77,10 @@ public class QSSIntegrator extends TypedAtomicActor {
 	public void initialize() throws IllegalActionException {
 		super.initialize();
 		nextOutputTime = previousStateUpdateTime = null;
-		// FIXME: Quantizing the initial value of the state.
-		// Is this the right thing to do?
-		state = _quantize(((DoubleToken)qInit.getToken()).doubleValue());
-		nextOutputValue = state;
-		previousOutputValue = state;
+		x = ((DoubleToken)xInit.getToken()).doubleValue();
+		nextOutputValue = _quantize(((DoubleToken)xInit.getToken()).doubleValue());
+		previousOutputValue = nextOutputValue;
 		uPrevious = null;
-		
 		// To make sure this actor fires at the start time, request a firing.
 		getDirector().fireAtCurrentTime(this);
 	}
@@ -103,8 +100,16 @@ public class QSSIntegrator extends TypedAtomicActor {
 				double slope = _derivative(newInputValue);
 				// Is the current time a time at which we produce an output?
 				if (currentTime.equals(nextOutputTime) || nextOutputTime == null) {
-					state = nextOutputValue;
+				    if(nextOutputTime != null){
+				        x = nextOutputValue;
+				        }
 					previousStateUpdateTime = currentTime;
+	                                nextOutputValue = nextComputeOutputValue (quantumValue, nextOutputValue, slope);
+					nextOutputTime = nextEventTime (quantumValue, slope, currentTime);
+		                        if (nextOutputTime!=Time.POSITIVE_INFINITY){
+		                            getDirector().fireAt(this, nextOutputTime);  
+		                        }	
+	/*				
 					double timeIncrement = quantumValue/Math.abs(slope);
 					// FIXME: Need a more rational approach here. Is divide by zero OK?
 					if (timeIncrement < 10E10) {
@@ -120,11 +125,17 @@ public class QSSIntegrator extends TypedAtomicActor {
 					} else {
 						nextOutputTime = Time.POSITIVE_INFINITY;
 					}
-				} else {
+*/				} else {
 					// We have a new input, but it's not a time to produce a new output.
 					// Update the current state.
-					state += previousSlope * (currentTime.subtract(previousStateUpdateTime)).getDoubleValue();
+					x += previousSlope * (currentTime.subtract(previousStateUpdateTime)).getDoubleValue();
 					previousStateUpdateTime = currentTime;
+					nextOutputValue = nextComputeOutputValue (quantumValue, previousOutputValue, slope);
+					nextOutputTime = recomputeNextEventTime (slope, nextOutputValue, x, currentTime);
+					if (nextOutputTime!=Time.POSITIVE_INFINITY){
+                                            getDirector().fireAt(this, nextOutputTime);  
+                                        }
+					/*
 					if (slope > 0.0) {
 						nextOutputValue = previousOutputValue + quantumValue;
 					} else {
@@ -132,15 +143,21 @@ public class QSSIntegrator extends TypedAtomicActor {
 					}
 					double timeIncrement = (nextOutputValue - state)/slope;
 					nextOutputTime = currentTime.add(timeIncrement);
-					getDirector().fireAt(this, nextOutputTime);
+					getDirector().fireAt(this, nextOutputTime);*/
 				}
 				previousSlope = slope;
 			}
 		} else if (currentTime.equals(nextOutputTime)) {
 			// No input is provided, but we did produce an output.
-			state = nextOutputValue;
+			x = nextOutputValue;
 			// Calculate the time to the next output.
 			double slope = _derivative(((DoubleToken)uPrevious).doubleValue());
+			nextOutputValue = nextComputeOutputValue (quantumValue, nextOutputValue, slope);
+			nextOutputTime = nextEventTime (quantumValue, slope, currentTime);
+			if (nextOutputTime!=Time.POSITIVE_INFINITY){
+			    getDirector().fireAt(this, nextOutputTime);  
+			}
+/*			
 			double timeIncrement = quantumValue/Math.abs(slope);
 			// FIXME: Need a more rational approach here.
 			if (timeIncrement < 10E10) {
@@ -156,7 +173,7 @@ public class QSSIntegrator extends TypedAtomicActor {
 			} else {
 				nextOutputTime = Time.POSITIVE_INFINITY;
 			}
-		} else {
+*/		} else {
 			if (nextOutputTime == null) {
 				// First firing, and no input is now provided.
 				throw new IllegalActionException(this, "No input provided");
@@ -174,8 +191,50 @@ public class QSSIntegrator extends TypedAtomicActor {
 		double quantumValue = ((DoubleToken)quantum.getToken()).doubleValue();
 		return (Math.floor(x/quantumValue))*quantumValue;
 	}
+	
+	
+	/**
+	   * Time at which x deviates from q
+	   * @param dq The quantum
+	   * @param der The derivative
+	   * @param t The current time
+	   * @return The next event time
+	   */
+	  protected Time nextEventTime(double dq, double der, Time t) {
+	    if (Math.abs(der)<SMALL) return Time.POSITIVE_INFINITY;
+	    return t.add(Math.abs(dq/der));
+	  }
+	  
+	   /**
+           * Time at which x deviates from q 
+           * if new input arrives before an output is produced
+           * @param der The derivative
+           * @param out The output value
+           * @param state The state
+           * @param t The current time
+           * @return The next event time
+           */
+          protected Time recomputeNextEventTime(double der, double out, double state, Time t) {
+            if (Math.abs(der)<SMALL) return Time.POSITIVE_INFINITY;
+            return t.add(Math.abs((out-state)/der));
+          }
+	  
+	  /**
+           * Computes the next output value
+           * @param dq The quantum
+           * @param out The output value
+           * @param der The derivative
+           * @return The next output value
+           */
+          protected double nextComputeOutputValue(double dq, double out, double der) {
+            if (der > 0.0) return out + dq;
+            return out - dq;
+          }
+
 	private Time nextOutputTime, previousStateUpdateTime;
 	private double nextOutputValue, previousOutputValue;
 	private Token uPrevious;
-	private double state, previousSlope;
+	private double x, previousSlope;
+	//FIXME: Is "SMALL" adequate to check whether slope is zero?
+	private static final double SMALL = 10E-9; 
 }
