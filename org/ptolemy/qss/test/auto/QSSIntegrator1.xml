@@ -10,7 +10,7 @@
     </property>
     <property name="stoppedThreshold" class="ptolemy.data.expr.Parameter" value="0.01">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 945, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 931, 641}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -32,10 +32,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 140.0]">
         </property>
     </entity>
-    <entity name="QSSIntegrator" class="org.ptolemy.qss.QSSIntegrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 140.0]">
-        </property>
-    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1}">
         </property>
@@ -45,7 +41,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 418, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 418, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -64,17 +60,21 @@
 </plot>?>
         </configure>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="QSSIntegrator" class="org.ptolemy.qss.QSSIntegrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 140.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{270.0, 140.0}">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="SingleEvent.output" relation="relation"/>
-    <link port="QSSIntegrator.u" relation="relation"/>
-    <link port="QSSIntegrator.q" relation="relation3"/>
     <link port="Test.input" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="QSSIntegrator.u" relation="relation"/>
+    <link port="QSSIntegrator.q" relation="relation3"/>
 </entity>
