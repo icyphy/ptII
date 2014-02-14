@@ -352,7 +352,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                                 StringBuffer containerReference = new StringBuffer();
 
-                                codeBuffer.append("System.out.println(\"B\");");
+                                //codeBuffer.append("System.out.println(\"B\");");
                                 //containerReference.append("$ref("
                                 //        + generateSimpleName(destination));
 

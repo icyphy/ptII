@@ -600,7 +600,13 @@ public class FSMDirector
                 code.append(_eol + port.getName() + " = (struct IOPort*)"
                         + containerName + "_get_" + port.getName() + "();");
                 int width = port.getWidth();
+                String widthDeclaration;
                 for (int i = 0; i < width; i++) {
+                    if (width > 1) {
+                        widthDeclaration = "[" + i + "]";
+                    } else {
+                        widthDeclaration = "";
+                    }
                     code.append(_eol + "if (pblMapContainsKey(mapTokensOut, &"
                             + port.getName() + ", sizeof(struct IOPort*))) {"
                             + _eol);
@@ -609,7 +615,7 @@ public class FSMDirector
                             + port.getName()
                             + ", sizeof(struct IOPort*), NULL));");
                     code.append(_eol + containerName + "__Controller_"
-                            + port.getName());
+                            + port.getName() + widthDeclaration);
                     code.append(" = temp");
                     code.append(".payload."
                             + getCodeGenerator().codeGenType(port.getType())
