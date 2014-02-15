@@ -223,8 +223,8 @@ public class TimeDelay extends Transformer {
         _declareDelayDependency(input, output, _minimumDelay);
     }
 
-    /** Read one token from the input. Send out a token that is scheduled
-     *  to be produced at the current time.
+    /** Send out a token that is scheduled
+     *  to be produced at the current time, if any.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
