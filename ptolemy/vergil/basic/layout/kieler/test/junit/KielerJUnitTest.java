@@ -35,10 +35,10 @@ import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.test.Diff;
@@ -156,7 +156,7 @@ public class KielerJUnitTest {
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
         // of the element of the array.  Is this thread safe?
-        final TypedCompositeActor[] model = new TypedCompositeActor[1];
+        final CompositeEntity[] model = new CompositeEntity[1];
 
         final Throwable[] throwable = new Throwable[1];
         throwable[0] = null;
@@ -173,7 +173,7 @@ public class KielerJUnitTest {
                 try {
                     System.out.print(" " + modelFileName + " ");
                     model[0] = ConfigurationApplication
-                            .openModel(modelFileName);
+                            .openModelOrEntity(modelFileName);
                 } catch (Throwable throwableCause) {
                     throwable[0] = throwableCause;
                     throw new RuntimeException(throwableCause);

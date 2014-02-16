@@ -2131,7 +2131,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         // fail if the File was created with
                         // createTempFile, so we copy it.
                         if (FileUtilities.binaryCopyURLToFile(
-                                temporaryJarFileName.toURL(), jarFile)) {
+                                temporaryJarFileName.toURI().toURL(), jarFile)) {
                             System.out.println("Successfully copied "
                                     + temporaryJarFileName + " to " + jarFile);
                         } else {
