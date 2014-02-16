@@ -37,13 +37,13 @@
 # Done. This works and has been added to the tests Error was: Failed to replace the parameter "output#0" in the macro "put".
 #$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/CommitActionsAttribute.xml
 
-# Generates code, but fails to compile.
+# Compiles, but segfaults during run.
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/IOPortAsBothInputAndOutput.xml
 
 # Done.  Was failing with: "output#0" is not acceptable by $put(). $put could be used in the following ways: $put(output#channel, token); or, $put(output, token); or,$put(input#channel, offset, token); or, $put(input, offset, token)
 #$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/OutputActionsAttribute.xml
 
-# Generates code, but fails to compile.
+# Compiles, but segfaults during run in the same place as IOPortAsBothInputAndOutput.xml
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/kernel/test/auto/OutputActionsAttributeForNewDesign.xml
 
 # Done.  Was Results was 0 when it should have been -1
