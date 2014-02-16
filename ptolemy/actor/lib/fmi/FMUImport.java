@@ -37,11 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.ptolemy.fmi.FMI20CoSimulationCapabilities;
-import org.ptolemy.fmi.FMI20ModelExchangeCapabilities;
 import org.ptolemy.fmi.FMICallbackFunctions;
-import org.ptolemy.fmi.FMICapabilities;
-import org.ptolemy.fmi.FMICoSimulationCapabilities;
 import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;

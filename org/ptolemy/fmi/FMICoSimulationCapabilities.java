@@ -27,9 +27,6 @@
 */
 package org.ptolemy.fmi;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
 import org.w3c.dom.Element;
 
 ///////////////////////////////////////////////////////////////////
