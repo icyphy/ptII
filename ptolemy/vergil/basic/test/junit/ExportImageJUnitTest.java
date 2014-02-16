@@ -112,7 +112,7 @@ public class ExportImageJUnitTest {
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
         // of the element of the array.  Is this thread safe?
-        final TypedCompositeActor[] model = new TypedCompositeActor[1];
+        final CompositeEntity[] model = new CompositeEntity[1];
 
         /////
         // Open the model.
@@ -121,7 +121,7 @@ public class ExportImageJUnitTest {
             public void run() {
                 try {
                     model[0] = ConfigurationApplication
-                            .openModel(modelFileName);
+                            .openModelOrEntity(modelFileName);
                 } catch (Throwable throwable) {
                     throw new RuntimeException(throwable);
                 }
@@ -138,14 +138,14 @@ public class ExportImageJUnitTest {
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
         // of the element of the array.  Is this thread safe?
-        final TypedCompositeActor[] imageDisplayModel = new TypedCompositeActor[1];
+        final CompositeEntity[] imageDisplayModel = new CompositeEntity[1];
 
         // FIXME: Refactor this and KielerLayoutJUnitTest to a common class.
         Runnable openImageDisplayModelAction = new Runnable() {
             public void run() {
                 try {
                     imageDisplayModel[0] = ConfigurationApplication
-                            .openModel("$CLASSPATH/ptolemy/actor/lib/image/test/auto/ImageReaderImageDisplay.xml");
+                            .openModelOrEntity("$CLASSPATH/ptolemy/actor/lib/image/test/auto/ImageReaderImageDisplay.xml");
                 } catch (Throwable throwable) {
                     throw new RuntimeException(throwable);
                 }
@@ -189,16 +189,25 @@ public class ExportImageJUnitTest {
 
                         imageReader.fileOrURL.setExpression(imageFile.toURI()
                                 .toURL().toString());
-                        Manager manager = model[0].getManager();
-                        if (manager == null) {
-                            manager = new Manager(
-                                    imageDisplayModel[0].workspace(),
-                                    "MyManager");
-                            imageDisplayModel[0].setManager(manager);
+                        if (!(model[0] instanceof TypedCompositeActor)) {
+                        	throw new RuntimeException(model[0].getFullName() + "is not a TypedCompositeActor? " + model[0].getClass());
+                        } else {
+                        	Manager manager = ((TypedCompositeActor)model[0]).getManager();
+                        	if (manager == null) {
+                        		manager = new Manager(
+                        				imageDisplayModel[0].workspace(),
+                        				"MyManager");
+                        		
+                        	}
+                        	if (!(imageDisplayModel[0] instanceof TypedCompositeActor)) {
+                             	throw new RuntimeException(imageDisplayModel[0].getFullName() + "is not a TypedCompositeActor? " + imageDisplayModel[0].getClass());
+                            } else {
+                            	 ((TypedCompositeActor)imageDisplayModel[0]).setManager(manager);
+                            	 ((TypedCompositeActor)imageDisplayModel[0])
+                        			.setModelErrorHandler(new BasicModelErrorHandler());
+                            	 manager.execute();
+                            }
                         }
-                        imageDisplayModel[0]
-                                .setModelErrorHandler(new BasicModelErrorHandler());
-                        manager.execute();
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
