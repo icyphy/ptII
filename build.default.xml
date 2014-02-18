@@ -71,13 +71,20 @@
   <!-- The classname of the single JUnit test that is run by the test.single target. -->
   <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
 
-  <!-- The timeout in seconds for findbugs and junit. -->
+  <!-- The timeout in seconds for findbugs.
+       See also the timeout= values in ptolemy/util/test/junit/*.java. -->
   <property name="timeout" value="2400000" />
 
-  <!-- The timeout in seconds for long running junit tests. -->
+  <!-- The timeout in seconds for short running tests.
+       See also the timeout= values in ptolemy/util/test/junit/*.java. -->
+  <property name="timeout.short" value="100000" />
+
+  <!-- The timeout in seconds for long running junit tests.
+       See also the timeout= values in ptolemy/util/test/junit/*.java. -->
   <property name="timeout.long" value="4000000" />
 
-  <!-- The timeout in seconds for longest running junit tests. -->
+  <!-- The timeout in seconds for longest running junit tests.
+       See also the timeout= values in ptolemy/util/test/junit/*.java. -->
   <property name="timeout.longest" value="14000000" />
 
 
@@ -638,7 +645,7 @@ For example:
        test.single target runs single test specified by its class name (output=stdout)
 
       test.batch = ${test.batch}
-      timeout = ${timeout} milliseconds
+      timeout = ${timeout.short} milliseconds
 
     </echo>
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
@@ -647,7 +654,7 @@ For example:
 	   jvm="ptolemy/util/test/junit/javachdir32"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="${timeout}">
+	   timeout="${timeout.short}">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
@@ -736,14 +743,14 @@ For example:
 	 run for each test so that we run the test from the test directory.
       -->
 
-    <echo> Run the short tests with timeout=${timeout} </echo>
+    <echo> Run the short tests with timeout=${timeout.short} </echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   maxmemory="${java.maxmemory}"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
-	   timeout="${timeout}">
+	   timeout="${timeout.short}">
       <classpath>
 	<path location="${instrumented.dir}" />
 	<path refid="ptII.classpath" />
@@ -769,14 +776,14 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
-    <echo> Run the 32-bit tests with timeout=${timeout} </echo>
+    <echo> Run the 32-bit tests with timeout=${timeout.short} </echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir32"
 	   maxmemory="${java.maxmemory}"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
-	   timeout="${timeout}">
+	   timeout="${timeout.short}">
       <classpath>
 	<path location="${instrumented.dir}" />
 	<path refid="ptII.classpath" />
@@ -1027,14 +1034,14 @@ For example:
 	 run for each test so that we run the test from the test directory.
       -->
 
-    <echo> Run the tests in test.name=${test.name} with timeout=${timeout} </echo>
+    <echo> Run the tests in test.name=${test.name} with timeout=${timeout.short} </echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   maxmemory="2500m"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="${timeout}">
+	   timeout="${timeout.short}">
       <classpath>
 	<path location="${instrumented.dir}" />
 	<path refid="ptII.classpath" />
@@ -1096,7 +1103,7 @@ For example:
        test.short - runs tests that are fairly fast (~30 min., called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
-      timeout = ${timeout.longest} milliseconds
+      timeout = ${timeout.long} milliseconds
 
     </echo>
     <junit fork="yes" 
@@ -1238,7 +1245,7 @@ For example:
        test.single target runs single test specified by its class name (output=stdout)
 
       test.batch = ${test.batch}
-      timeout = ${timeout} milliseconds
+      timeout = ${timeout.short} milliseconds
 
     </echo>
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
@@ -1247,7 +1254,7 @@ For example:
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="${timeout}">
+	   timeout="${timeout.short}">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
@@ -1302,7 +1309,7 @@ For example:
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="${timeout}">
+	   timeout="${timeout.short}">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
