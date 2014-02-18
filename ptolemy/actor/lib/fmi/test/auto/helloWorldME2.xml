@@ -19,6 +19,12 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.200000000000003E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 165.0}">
         </property>
     </entity>
