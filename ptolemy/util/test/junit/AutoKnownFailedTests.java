@@ -67,7 +67,7 @@ import org.junit.runner.RunWith;
 public class AutoKnownFailedTests extends ModelKnownFailedTests {
 
     /**
-     * Execute a model.
+     * Execute a model.  Timeout after 5 minutes (30,000 ms.).
      *
      * @param fullPath
      *            The full path to the model file to be executed. If the
@@ -77,7 +77,7 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
      * @exception Throwable
      *                If thrown while executing the model.
      */
-    @Test
+    @Test(timeout=300000)
     @Parameters(method = "modelValues")
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
