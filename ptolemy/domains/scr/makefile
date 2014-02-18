@@ -1,9 +1,9 @@
-# Makefile for PtolemyII SCR Domain
+# Makefile for PtolemyII Software Cost Reduction Domain
 #
 # @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
 # @Author: Patricia Derler
 #
-# @Copyright (c) 2000-2009 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,6 +35,8 @@ DIRS =		demo
 # Root of Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
@@ -62,6 +64,8 @@ MISC_FILES =	kernel lib doc test
 # Moved doc to OPTIONAL_FILES because doc does not have a makefile
 OPTIONAL_FILES = \
 	demo
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars

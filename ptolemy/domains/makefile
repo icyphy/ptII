@@ -49,7 +49,8 @@ DOMAINS =	ca ci continuous coroutine csp curriculum \
 		ontologies \
 		openmodelica \
 		petrinet rendezvous sysml \
-		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
+		$(PTPSDF_DIR) ptera pthales ptides ptinyos \
+		scr $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS) test
@@ -87,6 +88,7 @@ PTAUXALLJARS = \
 		ptera/ptera.jar \
 		pthales/pthales.jar \
 		ptides/ptides.jar \
+		scr/scr.jar \
 		$(PTSPACEDOMAIN_JAR) \
 		sysml/sysml.jar \
 		taskpt/taskpt.jar \

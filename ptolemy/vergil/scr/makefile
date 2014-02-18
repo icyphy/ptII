@@ -57,9 +57,9 @@ JSRCS = \
 	EventTableModel.java \
 	ModeTransitionTableModel.java \
 	SCRGraphTableau.java \
-	SCRTableauFactor.java \
 	SCRTableFrame.java \
 	SCRTableHelper.java \
+	SCRTableauFactory.java \
 	VariableScope.java
 
 EXTRA_SRCS =    $(JSRCS)

@@ -34,7 +34,7 @@ ME =		ptolemy/vergil
 # PTPDFRENDERER_DIR is set to pdfrenderer by configure
 DIRS = 		toolbox basic actor kernel gt debugger test \
 		icon modal $(PTPDFRENDERER_DIR) \
-		ontologies ptera tree tdl \
+		ontologies ptera scr tree tdl \
 		unit
 
 # Root of the Java directory
@@ -65,6 +65,7 @@ PTAUXALLJARS = \
 
 # Packages that are not part of the ptiny version of Vergil
 #		ptera/ptera.jar
+#		scr/scr.jar
 #		gt/gt.jar
 #		tdl/tdl.jar 
 #		properties/properties.jar
