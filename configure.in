@@ -508,7 +508,8 @@ changequote([, ])dnl
     and $PTJAVA32_DIR/bin/java does not exist.
     Perhaps you need to install a separate 32-bit JVM
     or rerun configure with --with-java32?
-    The 32-bit JVM is only needed for FMI tests.])
+    The 32-bit JVM is only needed for certain 32-bit FMI tests.
+    In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.])
         fi
     fi
 fi
