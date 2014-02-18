@@ -81,7 +81,7 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
      *  per block
      *  @param variablesAsArrays If true, then try to save space by putting variables
      *  into arrays.
-     *  @param generatePackageList A semicolon or * separated list of
+     *  @param generatorPackageList A semicolon or * separated list of
      *  Java packages to be searched for adapters.  For example,
      *  generic.program.procedural.c.arduino means use the arduino
      *  @exception Throwable If thrown while generating, compiling or executing the compiled code.

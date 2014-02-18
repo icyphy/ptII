@@ -1692,7 +1692,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  indicates that fmiEventUpdate() should be called, call it.
      *  
      *  <p>Note that in FMI-2.0, the ModelExchange attribute as an element
-     *  {@link org.ptolemy.fmi.FMI20ModelExchangeCapabilities#
+     *  {@link org.ptolemy.fmi.FMI20ModelExchangeCapabilities#completedIntegratorStepNotNeeded}
      *  that in the default is false, which means that fmiCompletedIntegratorStep()
      *  should be called.  However, if completedIntegratorStepNotNeeded is true,
      *  then fmiCompletedIntegratorStep is not called.</p>

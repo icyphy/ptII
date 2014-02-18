@@ -1199,15 +1199,16 @@ public class UtilityFunctions {
         return new ObjectToken(classname);
     }
     /** Generate a sample from a multivariate Gaussian distribution.
-     *  @param type The type of the argument to the corresponding function.
-     *  @return The type of the value returned from the corresponding function.
+     *  @param mean The mean.
+     *  @param covariance The covariance.
+     *  @return a sample from a multivariate Gaussian distribution
      */
     public static ArrayToken multivariateGaussian(ArrayToken mean, DoubleMatrixToken covariance)
             throws IllegalActionException{ 
         
         // Cholesky factorization 
         
-        //check dimensions
+        // Check dimensions.
         int N = mean.length(); // size of array
         double[][] S = covariance.doubleMatrix();
         if((covariance.getColumnCount() != N) || (covariance.getRowCount() != covariance.getColumnCount())){
@@ -1216,7 +1217,7 @@ public class UtilityFunctions {
         }else if(!BaseType.DOUBLE.isCompatible(mean.getElementType())){
             throw new IllegalActionException("Mean vector must consist of scalar type elements");
         }
-        //check if the covariance matrix is symmetric
+        // Check if the covariance matrix is symmetric.
         for(int i = 0; i < N; i++){
             for(int j = 0; j < i; j ++){
                 if(S[i][j] != S[j][i]){
@@ -1239,7 +1240,7 @@ public class UtilityFunctions {
                 }
             }
         }
-        // draw uncorrelated samples from a standard Gaussian.
+        // Draw uncorrelated samples from a standard Gaussian.
         ArrayToken uncorrelated = gaussian(0,1,N);
         Token[] uncorrelatedTokens = uncorrelated.arrayValue();
         Token[] correlatedTokens = new Token[N];

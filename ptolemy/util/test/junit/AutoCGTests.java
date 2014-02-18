@@ -92,7 +92,7 @@ public class AutoCGTests extends ModelTests {
      * generated per block
      * @param variablesAsArrays If true, then try to save space by
      * putting variables into arrays.
-     * @param generatePackageList A semicolon or * separated list of
+     * @param generatorPackageList A semicolon or * separated list of
      * Java packages to be searched for adapters.  For example,
      * generic.program.procedural.c.arduino means use the arduino
      * target.

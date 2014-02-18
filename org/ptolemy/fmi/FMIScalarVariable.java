@@ -530,8 +530,8 @@ public class FMIScalarVariable {
      *  an exception stating that the value is not acceptable.
      *  @param fmiModelDescription The FMIModelDescription that 
      *  has the fmi version.
-     *  @param The name of the attribute that is not present in FMI-1.0.
-     *  @param The string to be displayed that describes possible
+     *  @param attribute The name of the attribute that is not present in FMI-1.0.
+     *  @param message The string to be displayed that describes possible
      *  values.  It should start with "must be".
      *  @exception IllegalArgumentException If the fmi version is
      *  is not 2.0 or later.

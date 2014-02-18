@@ -104,7 +104,7 @@ public class FMICapabilities {
     ////                         public methods                    ////
 
     /** Get the value of a boolean field. 
-     *  @param The name of the boolean field.
+     *  @param fieldName The name of the boolean field.
      *  @return True if the value of the field was true.
      *  @exception IllegalArgumentException If the field is not found
      *  or it is not a boolean.
