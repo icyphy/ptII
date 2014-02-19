@@ -301,6 +301,18 @@ viewing the copyrights from within the Vergil help menu.
 
 </ol>
 
+<h4>Maven</h4>
+In addition, the dependency must be added to <code>$PTII/pom.xml</code> so that maven knows about it.
+
+<ol>
+ <li>Search the web for the the xml code necessary to add the the dependency.  For most packages, searching for <code>maven packagename</code> will find the xml.</li
+ <li>Add the xml to <code>$PTII/pom.xml</code></li>
+ <li>Run <code>mvn compile</code></li>
+</ol>
+
+<p>If there is no public Maven repository for the jar, then it will need to be added to 
+<a href="http://chess.eecs.berkeley.edu/ptexternal/src/maven/">http://chess.eecs.berkeley.edu/ptexternal/src/maven/</a>.  See <a href="http://chess.eecs.berkeley.edu/chess/faq/63.html">How do I update workgroup pages using SVN?</a></p>
+
 <h3>Run-time considerations</h3>
 When <CODE>configure</CODE> runs, it also reads in
 <CODE>$PTII/bin/ptinvoke.in</CODE> and generates
