@@ -33,7 +33,8 @@
 ME =		ptolemy/vergil/basic/export
 
 # PTITEXTPDF_DIR is set to itextpdf if iText.jar was found by configure.
-DIRS =		html $(PTITEXTPDF_DIR) test web
+# PTJSOUP_EXPORT_HTML_DIR is set to html if jsoup-*.jar was found by configure.
+DIRS =		$(PTITEXTPDF_DIR) $(PTJSOUP_EXPORT_HTML_DIR) test web
 
 # Root of the Java directory
 ROOT =		../../../..

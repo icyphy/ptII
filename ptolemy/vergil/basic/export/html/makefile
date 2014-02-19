@@ -37,7 +37,8 @@ DIRS =		demo javascript test
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# PTJSOUP_JAR is set to the $PTII/lib/jsoup-*.jar by configure.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJSOUP_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

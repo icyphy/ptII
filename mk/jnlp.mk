@@ -194,11 +194,15 @@ CORE_JNLP_JARS = \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/vergil/basic/export/export.jar \
-	ptolemy/vergil/basic/export/html/html.jar \
 	ptolemy/vergil/basic/export/web/web.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	$(PTMATLAB_JARS)
+
+# Jar files for exporting html, no longer part of the core.
+EXPORT_HTML_JARS = \
+	$(PTJSOUP_JAR) \
+	ptolemy/vergil/basic/export/html/html.jar \
 
 #######
 # DSP - The smallest runtime
@@ -467,6 +471,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
+	$(EXPORT_HTML_JARS) \
 	$(PTANGO_JAR_FILES) \
 	org/ptolemy/ptango/ptango.jar \
 	org/ptolemy/qss/qss.jar \
@@ -652,6 +657,7 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(BCVTB_ONLY_JNLP_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR) \
+	$(EXPORT_HTML_JARS) \
 	$(FULL_ONLY_JNLP_JARS) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \

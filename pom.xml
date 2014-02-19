@@ -584,7 +584,6 @@ See $PTII/doc/coding/maven.htm
       <version>ptII</version>
     </dependency>
 
-
     <dependency> <!-- $PTII/lib/g4ltl.jar -->
       <groupId>g4ltl</groupId>
       <artifactId>g4ltl</artifactId>
@@ -595,6 +594,13 @@ See $PTII/doc/coding/maven.htm
       <groupId>kieler</groupId>
       <artifactId>kieler</artifactId>
       <version>ptII</version>
+    </dependency>
+
+    <dependency> <!-- $PTII/lib/jsoup-1.7.3.jar -->
+      <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.7.3</version>
     </dependency>
 
     <dependency> <!-- $PTII/lib/protobuf.jar -->

@@ -2535,6 +2535,7 @@ else
                           defaults to \$PTII/lib/smackx.jar],
         PTSMACKX_JAR=$withval,
 	PTSMACKX_JAR=$PTII/lib/smackx.jar)
+
     if test  -f "$PTSMACKX_JAR"; then
 	PT_MSG_RESULT([$PTSMACKXJAR])
        updateClasspath "$PTSMACKX_JAR"
@@ -2559,6 +2560,8 @@ else
     else 
        updateClasspath "$PTSERVLET_JAR"
     fi
+
+    # We check that the appropriate jars are available below for Ptango
 fi
 
 #--------------------------------------------------------------------
@@ -2900,6 +2903,44 @@ if test -z "$PTJACL_DIR"; then
 else
    updateClasspath "$PTJACL_JAR"
 fi 
+
+
+#--------------------------------------------------------------------
+#       "jsoup: Java HTML Parser"
+#	See http://www.jsoup.org
+#       Jsoup is used by the export html facility
+#--------------------------------------------------------------------
+
+# JSoup jar files used by export html facility
+PTJSOUP_JAR=
+
+# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+PTJSOUP_EXPORT_HTML_DIR=
+
+# We only need to look for Jsoup if $PTJSOUP_USER_DIR is present
+PTJSOUP_USER_DIR="$PTII/ptolemy/vergil/basic/export/html"
+
+if test ! -d "$PTJSOUP_USER_DIR"; then
+    PT_MSG_STATUS([$PTJSOUP_USER_DIR is not present,
+    so we need not find Jsoup.])
+else
+    AC_MSG_CHECKING([for JSoup, used when exporting html pages. ])
+    AC_ARG_WITH(jsoup, [  --with-jsoup=JAR       use jsoup.jar from JAR,
+                          defaults to \$PTII/lib/jsoup-1.7.3.jar],
+        PTJSOUP_JAR=$withval,
+	PTJSOUP_JAR=$PTII/lib/jsoup-1.7.3.jar)
+
+    if test  -f "$PTJSOUP_JAR"; then
+	PT_MSG_RESULT([$PTJSOUP_JAR])
+        updateClasspath "$PTJSOUP_JAR"
+        PTJSOUP_EXPORT_HTML_DIR=html
+    else
+        updateExcludes "ptolemy/vergil/basic/export/html"
+        AC_MSG_WARN([Failed to find the JSoup jar files necessary to
+    to compile the export html facility.
+    Typically, JSoup is found at $PTII/lib/jsoup-1.7.3.jar.])
+    fi
+fi
 
 
 #--------------------------------------------------------------------
@@ -6100,6 +6141,12 @@ AC_SUBST(PTJSON_DIR)
 
 # Set to json.org and used in $PTII/doc/makefile if JSON was found.
 AC_SUBST(PTJSON_PACKAGES)
+
+# JSoup jar files used by export html facility
+AC_SUBST(PTJSOUP_JAR)
+
+# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+AC_SUBST(PTJSOUP_EXPORT_HTML_DIR)
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
 AC_SUBST(PTJUNIT_DIR)
