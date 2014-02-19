@@ -28,18 +28,13 @@
 package ptolemy.vergil.basic.export.html;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
-import javax.swing.text.ElementIterator;
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -91,7 +86,7 @@ to a file if specified.
 For more information, please refer to "Manual for Creating Web Pages" in Ptolemy.
 </p>
 
-@author Baobing (Brian) Wang
+@author Baobing (Brian) Wang, Elizabeth Latronico
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (bwang)
@@ -168,16 +163,21 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
     public void fire() throws IllegalActionException {
         super.fire();
-        _htmlKit = new HTMLEditorKit();
-        _htmlDoc = (HTMLDocument) _htmlKit.createDefaultDocument();
-        _htmlDoc.setPreservesUnknownTags(true);
+        
         try {
-            //parser.parse(template.openForReading(), callback, true);
-            _htmlKit.read(template.openForReading(), _htmlDoc, 0);
-
-            // Set the HTML page title
-            _htmlDoc.putProperty(Document.TitleProperty, htmlTitle
-                    .stringValue().trim());
+            // Parse HTML.  Throw an exception if syntax is invalid
+            // FIXME:  Syntax error tracking is not working 
+            Parser.htmlParser().setTrackErrors(1);
+            _document = Jsoup.parse(template.asFile(), "UTF-8", "");
+            
+            if (Parser.htmlParser().getErrors() != null &&
+                    !Parser.htmlParser().getErrors().isEmpty()) {
+                throw new IllegalActionException(this, "Template file " +
+                    template.toString() + " contains HTML syntax errors.");
+            }
+        
+            // Set the page title
+            _document.title(htmlTitle.stringValue().trim());
 
             /*
              * Insert the content from each port to its corresponding div.
@@ -189,12 +189,24 @@ public class HTMLPageAssembler extends TypedAtomicActor {
             for (TypedIOPort port : portList) {
                 String divID = port.getName();
 
-                Element divElement = _htmlDoc.getElement(divID);
-                if (divElement == null) {
+                Elements divElements = _document.select("#"+divID);
+                              
+                // Throw exception if an element with this id is not found
+                if (divElements == null){
                     throw new IllegalActionException(this,
                             "Cannot find a \"div\" with id = \"" + divID
                                     + "\" in the template file.");
                 }
+                
+                // Throw exception if multiple elements with this id are found
+                // (for valid HTML, each id must be unique within the document)
+                if (divElements.size() > 1) {
+                    throw new IllegalActionException(this,
+                            "Id = \"" + divID + "\" is not unique in the " +
+                            	"template file.  Please make sure each" +
+                            	" element has a unique id (or none).");
+                }
+                
                 for (int i = port.getWidth() - 1; i >= 0; i--) {
                     Token token = port.get(i);
                     StringBuffer htmlText = new StringBuffer();
@@ -210,49 +222,15 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                                 + "\n");
 
                     }
-                    _htmlDoc.insertAfterStart(divElement, htmlText.toString());
-                }
-            }
-
-            // check syntax errors
-            ElementIterator iterator = new ElementIterator(_htmlDoc);
-            Element element;
-            while ((element = iterator.next()) != null) {
-                AttributeSet attributes = element.getAttributes();
-
-                Enumeration<?> attriList = attributes.getAttributeNames();
-                while (attriList.hasMoreElements()) {
-                    Object item = attriList.nextElement();
-                    if (item instanceof HTML.UnknownTag) {
-                        throw new IllegalActionException(this,
-                                "Unknown HTML tag: " + item.toString());
+                    
+                    // We previously checked that there is exactly one element
+                    for (Element element : divElements) {
+                        element.html(htmlText.toString());
                     }
                 }
             }
-
-            // send the result to the output, and save to the file if required
-
-            StringWriter stringWriter = new StringWriter();
-            // Manually add the DOCTYPE tag.  HTMLEditorKit removes this.
-            stringWriter.write("<!DOCTYPE html>");
-            // FIXME:  HTMLEditorKit appears to be replacing tags with color
-            // styling, such as <b style="color:blue">, with <font> tags
-            // The <font> tag is not supported in HTML5
-            // Is HTMLEditorKit the best here?  Is there another editor that
-            // is up to date with HTML5?
-            _htmlKit.write(stringWriter, _htmlDoc, 0, _htmlDoc.getLength());
-
-            /*
-             *  HTML script is commented out originally. Thus, we need to remove
-             *  the comment marks.
-             */
-            // FIXME:  Which script was commented out?  Why?
-            // This code uncomments ALL comments, meaning that any comments in
-            // the source HTML file will be uncommented and will be visible
-            // as text on the response page
-            String content = stringWriter.toString();
-            content = content.replaceAll("<!--", "").replaceAll("-->", "");
-
+            
+            String content = _document.toString();
             output.broadcast(new StringToken(content));
 
             if (((BooleanToken) saveToFile.getToken()).booleanValue()) {
@@ -261,10 +239,6 @@ public class HTMLPageAssembler extends TypedAtomicActor {
             }
             template.close();
 
-        } catch (BadLocationException e) {
-            throw new IllegalActionException(this, e,
-                    "Cannot insert into the template file: "
-                            + template.getExpression());
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
                     "Cannot read or write a file");
@@ -274,6 +248,5 @@ public class HTMLPageAssembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private HTMLDocument _htmlDoc;
-    private HTMLEditorKit _htmlKit;
+    private Document _document;
 }

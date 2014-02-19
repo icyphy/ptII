@@ -30,13 +30,13 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/vergil/basic/export/html/test
+ME =		ptolemy/vergil/basic/export/html/test/auto
 
 # PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
-DIRS =		auto $(PTJUNIT_DIR)
+DIRS =		
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -63,7 +63,9 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) \
+				HTMLPageAssembler.xml \
+				#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
