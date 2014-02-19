@@ -375,6 +375,11 @@ public class MostRecent extends Transformer {
      */
     protected void sendOutputIfTriggered(int commonWidth)
             throws IllegalActionException {
+    	// If the trigger input is not known, return without
+    	// doing anything.
+    	if (!trigger.isKnown()) {
+    		return;
+    	}
         // If we have a trigger...
         boolean triggered = false;
         for (int j = 0; j < trigger.getWidth(); j++) {
@@ -385,9 +390,9 @@ public class MostRecent extends Transformer {
             }
         }
 
-        if (triggered) {
-            for (int i = 0; i < commonWidth; i++) {
-                // Do not output anything if the <i>initialValue</i>
+        for (int i = 0; i < commonWidth; i++) {
+            if (triggered) {
+            	// Do not output anything if the <i>initialValue</i>
                 // parameter was not set and this actor has not
                 // received any inputs.
                 if (_lastInputs[i] != null) {
@@ -395,6 +400,10 @@ public class MostRecent extends Transformer {
                     // receiver has a FIFO behavior.
                     output.send(i, _lastInputs[i]);
                 }
+            } else {
+            	// Indicate that the output is absent so that this
+            	// be used in an SR or Continuous feedback loop.
+            	output.sendClear(i);
             }
         }
     }

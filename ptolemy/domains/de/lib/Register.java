@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  is constrained to be of a type at least that of the <i>input</i>
  port and the <i>initialValue</i> parameter.
  <p>
- This class extends Sampler. Unlike its base class, this actor
+ This class extends MostRecent. Unlike its base class, this actor
  can be used to break dependencies in a feedback loop in that
  the input tokens are consumed from the input ports after the outputs
  are generated. Another difference is that the Register actor can be
@@ -136,21 +136,25 @@ public class Register extends MostRecent {
         }
 
         sendOutputIfTriggered(commonWidth);
-
-        readInputs(commonWidth, inputWidth);
     }
-
-    /** Return true if there is any token in the input or the trigger
-     *  port.
-     *  @exception IllegalActionException If the base class throws it.
+    
+    /** Indicate that this actor can fire even if the inputs are not
+     *  known. This enables the actor to be used in SR and Continuous.
+     *  @return False.
      */
-    public boolean prefire() throws IllegalActionException {
-        boolean writeRequest = false;
-
-        if (input.isOutsideConnected()) {
-            writeRequest = input.hasToken(0);
-        }
-
-        return writeRequest || super.prefire();
+    public boolean isStrict() {
+    	return false;
+    }
+    
+    /** Read and record the inputs.
+     *  @return What the superclass returns.
+     *  @throws IllegalActionException If the superclass throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        int inputWidth = input.getWidth();
+        int outputWidth = output.getWidth();
+        int commonWidth = Math.min(inputWidth, outputWidth);
+        readInputs(commonWidth, inputWidth);
+        return super.postfire();
     }
 }
