@@ -34,6 +34,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.modal.kernel.ContainmentExtender;
 import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.FSMDirectorWithPersistentIO;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.ComponentEntity;
@@ -109,7 +110,29 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         }
     }
 
-    /** React to a list of objects being dropped onto a target.
+    /** Create a refinement for the given state.
+	 *
+	 *  @param state The state that will contain the new refinement.
+	 *  @param name The name of the composite entity that stores the refinement.
+	 *  @param template The template used to create the refinement, or null if
+	 *   template is not used.
+	 *  @param className The class name for the refinement, which is used when
+	 *   template is null.
+	 *  @param instanceOpener The instanceOpener, typically a
+	 *   Configuration, that is used to open the refinement (as a
+	 *   look-inside action) after it is created, or null if it is not
+	 *   needed to open the refinement.
+	 *  @exception IllegalActionException If error occurs while creating the
+	 *   refinement.
+	 */
+	public void addRefinement(State state, final String name, Entity template,
+	        String className, final InstanceOpener instanceOpener)
+	        throws IllegalActionException {
+	    ModalRefinement.addRefinement(state, name, template, className,
+	            instanceOpener, (CompositeEntity)getContainer());
+	}
+
+	/** React to a list of objects being dropped onto a target.
      *
      *  @param target The target on which the objects are dropped.
      *  @param dropObjects The list of objects dropped onto the target.
@@ -364,6 +387,10 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 }
             }
         }
+        if (getDirector() != null && getDirector() instanceof FSMDirectorWithPersistentIO) {
+        	((FSMDirectorWithPersistentIO)getDirector()).addPortInitAttribute(port.getName());
+        }
+        
         super._addPort(port);
     }
 
@@ -396,26 +423,14 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         return map;
     }
 
-    /** Create a refinement for the given state.
-     *
-     *  @param state The state that will contain the new refinement.
-     *  @param name The name of the composite entity that stores the refinement.
-     *  @param template The template used to create the refinement, or null if
-     *   template is not used.
-     *  @param className The class name for the refinement, which is used when
-     *   template is null.
-     *  @param instanceOpener The instanceOpener, typically a
-     *   Configuration, that is used to open the refinement (as a
-     *   look-inside action) after it is created, or null if it is not
-     *   needed to open the refinement.
-     *  @exception IllegalActionException If error occurs while creating the
-     *   refinement.
-     */
-    public void addRefinement(State state, final String name, Entity template,
-            String className, final InstanceOpener instanceOpener)
-            throws IllegalActionException {
-        ModalRefinement.addRefinement(state, name, template, className,
-                instanceOpener, (CompositeEntity)getContainer());
+    @Override
+    protected void _removePort(Port port) {
+    	if (getDirector() != null && getDirector() instanceof FSMDirectorWithPersistentIO) {
+        	((FSMDirectorWithPersistentIO)getDirector()).removePortInitAttribute(port.getName());
+        }
+        
+    	
+    	super._removePort(port);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.modal.modal;
 
+import ptolemy.actor.Director;
+import ptolemy.domains.modal.kernel.FSMDirectorWithPersistentIO;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -228,6 +230,14 @@ public class ModalPort extends ModalBasePort {
      */
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {
+    	if (getContainer() != null) {
+    		if (((ModalModel)getContainer()).getDirector() != null) {
+		    	Director director = ((ModalModel)getContainer()).getDirector();
+		        if (director instanceof FSMDirectorWithPersistentIO) {
+		        	((FSMDirectorWithPersistentIO)director).renamePortInitAttribute(this.getName(), name);
+		        }
+    		}
+    	}
         _setName(name);
     }
 
