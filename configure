@@ -690,6 +690,8 @@ PTJYTHON_DIR
 PTJXL_JAR
 PTJUNIT_PACKAGES
 PTJUNIT_DIR
+PTJSOUP_EXPORT_HTML_DIR
+PTJSOUP_JAR
 PTJSON_PACKAGES
 PTJSON_DIR
 PTJOYSTICK_PACKAGES
@@ -952,6 +954,7 @@ with_smackx
 with_javamail
 with_joystick_jar
 with_ptjacl_jar
+with_jsoup
 with_junit
 with_junitparams
 with_jxl
@@ -1664,6 +1667,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
                            used for running the test scripts
+  --with-jsoup=JAR       use jsoup.jar from JAR,
+                          defaults to \$PTII/lib/jsoup-1.7.3.jar
   --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
                           defaults to \$PTII/lib/junit-4.8.2.jar
   --with-junitparams=JARFILE       use JUnitParams Testing Framework from JARFILE,
@@ -8127,6 +8132,7 @@ else
   PTSMACKX_JAR=$PTII/lib/smackx.jar
 fi
 
+
     if test  -f "$PTSMACKX_JAR"; then
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSMACKXJAR" >&5
@@ -8162,6 +8168,8 @@ $as_echo "$as_me: WARNING: Failed to find the Servlet jar files necessary to com
     else
        updateClasspath "$PTSERVLET_JAR"
     fi
+
+    # We check that the appropriate jars are available below for Ptango
 fi
 
 #--------------------------------------------------------------------
@@ -8610,6 +8618,56 @@ if test -z "$PTJACL_DIR"; then
    updateExcludes "ptolemy/actor/gui/ptjacl/"
 else
    updateClasspath "$PTJACL_JAR"
+fi
+
+
+#--------------------------------------------------------------------
+#       "jsoup: Java HTML Parser"
+#	See http://www.jsoup.org
+#       Jsoup is used by the export html facility
+#--------------------------------------------------------------------
+
+# JSoup jar files used by export html facility
+PTJSOUP_JAR=
+
+# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+PTJSOUP_EXPORT_HTML_DIR=
+
+# We only need to look for Jsoup if $PTJSOUP_USER_DIR is present
+PTJSOUP_USER_DIR="$PTII/ptolemy/vergil/basic/export/html"
+
+if test ! -d "$PTJSOUP_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJSOUP_USER_DIR is not present,
+    so we need not find Jsoup." >&5
+$as_echo "$PTJSOUP_USER_DIR is not present,
+    so we need not find Jsoup." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JSoup, used when exporting html pages. " >&5
+$as_echo_n "checking for JSoup, used when exporting html pages. ... " >&6; }
+
+# Check whether --with-jsoup was given.
+if test "${with_jsoup+set}" = set; then :
+  withval=$with_jsoup; PTJSOUP_JAR=$withval
+else
+  PTJSOUP_JAR=$PTII/lib/jsoup-1.7.3.jar
+fi
+
+
+    if test  -f "$PTJSOUP_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJSOUP_JAR" >&5
+$as_echo "$PTJSOUP_JAR" >&6; }; fi
+        updateClasspath "$PTJSOUP_JAR"
+        PTJSOUP_EXPORT_HTML_DIR=html
+    else
+        updateExcludes "ptolemy/vergil/basic/export/html"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the JSoup jar files necessary to
+    to compile the export html facility.
+    Typically, JSoup is found at $PTII/lib/jsoup-1.7.3.jar." >&5
+$as_echo "$as_me: WARNING: Failed to find the JSoup jar files necessary to
+    to compile the export html facility.
+    Typically, JSoup is found at $PTII/lib/jsoup-1.7.3.jar." >&2;}
+    fi
 fi
 
 
@@ -13123,6 +13181,12 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Set to json.org and used in $PTII/doc/makefile if JSON was found.
+
+
+# JSoup jar files used by export html facility
+
+
+# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
 
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
