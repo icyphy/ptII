@@ -143,8 +143,8 @@ import ptolemy.kernel.util.Workspace;
  Directed loops of IO ports with no delay will trigger an exception.
  These are called <i>causality loops</i>. Such loops can be broken with
  actors whose output ports do not have an immediate dependence on their
- input ports, such as the <i>TimedDelay</i> actor.  Notice that the
- <i>TimedDelay</i> actor breaks a causality loop even if the time
+ input ports, such as the <i>TimeDelay</i> actor.  Notice that the
+ <i>TimeDelay</i> actor breaks a causality loop even if the time
  delay is set to 0.0. This is because DE uses a <i>superdense</i>
  notion of time.  The output is interpreted as being strictly later
  than the input even though its time value is the same.
@@ -171,11 +171,16 @@ import ptolemy.kernel.util.Workspace;
  until there are no more tokens in its input ports with the same tag,
  or until the actor returns false in its prefire() method. The
  director then keeps dequeuing and processing the earliest events from the
- event queue until no more events have the same tag. At that point, and
- only at that point, it invokes postfire() on all the actors that were
- fired during the iteration, and concludes the iteration.
- Note that under this policy, it is possible for an actor to be fired
- multiple times in an iteration prior to invocation of its postfire() method.
+ event queue until no more events have the same tag. 
+ </p><p>
+ Note that each time this director fires an actor, it
+ also invokes postfire() on that actor.
+ Note that under this policy, it is possible for an actor to be fired and postfired
+ multiple times in an iteration.
+ This does not really correctly implement superdense time semantics, but it is
+ an approximation that will reject some models that should be able to be executed.
+ An actor like the TimeDelay will be fired (and postfired) multiple times
+ at a superdense time index if it is in a feedback loop.
  </p><p>
  A model starts from the time specified by <i>startTime</i>. This is blank
  by default, which indicates that the start time is the current time of
