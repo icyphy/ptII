@@ -33,7 +33,7 @@
 ME =		ptolemy/vergil/basic/export/html/jsoup/test
 
 # PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
-DIRS =		auto $(PTJUNIT_DIR)
+DIRS =		$(PTJUNIT_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
