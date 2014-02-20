@@ -690,7 +690,8 @@ PTJYTHON_DIR
 PTJXL_JAR
 PTJUNIT_PACKAGES
 PTJUNIT_DIR
-PTJSOUP_EXPORT_HTML_DIR
+PTJSOUP_PACKAGES
+PTJSOUP_DIR
 PTJSOUP_JAR
 PTJSON_PACKAGES
 PTJSON_DIR
@@ -8630,8 +8631,8 @@ fi
 # JSoup jar files used by export html facility
 PTJSOUP_JAR=
 
-# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
-PTJSOUP_EXPORT_HTML_DIR=
+# Set to jsoup if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+PTJSOUP_DIR=
 
 # We only need to look for Jsoup if $PTJSOUP_USER_DIR is present
 PTJSOUP_USER_DIR="$PTII/ptolemy/vergil/basic/export/html"
@@ -8658,7 +8659,9 @@ fi
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJSOUP_JAR" >&5
 $as_echo "$PTJSOUP_JAR" >&6; }; fi
         updateClasspath "$PTJSOUP_JAR"
-        PTJSOUP_EXPORT_HTML_DIR=html
+        PTJSOUP_DIR=jsoup
+        # PTJSOUP_PACKAGES is used in ptII/doc/makefile
+	PTJSOUP_PACKAGES=ptolemy.vergil.basic.export.html.jsoup
     else
         updateExcludes "ptolemy/vergil/basic/export/html"
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the JSoup jar files necessary to
@@ -13186,7 +13189,10 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # JSoup jar files used by export html facility
 
 
-# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+# Set to jsoup if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+
+
+# Set to ptolemy.actor.lib.joystick and used int $PTII/doc/makefile if jsoup is found.
 
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
