@@ -173,6 +173,7 @@
     <include name="ptolemy/vergil/basic/export/export.jar" />
     <include name="ptolemy/vergil/basic/export/exportFull.jar" />
     <include name="ptolemy/vergil/basic/export/html/html.jar" />
+    <include name="ptolemy/vergil/basic/export/html/jsoup/jsoup.jar" />
     <include name="ptolemy/vergil/basic/export/web/web.jar" />
     <include name="ptolemy/vergil/basic/imprt/fmu/fmu.jar" />
     <include name="ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar" />
@@ -809,6 +810,16 @@
       </fileset>
     </jar>
 
+
+    <!-- ptolemy/vergil/basic/export/html/jsoup/jsoup.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/html/jsoup/*.class"/>
+	<include name="ptolemy/vergil/basic/export/html/jsoup/*.xml"/>
+      </fileset>
+    </jar>
 
     <!-- ptolemy/vergil/basic/export/web/web.jar -->
     <jar defaultexcludes="yes"

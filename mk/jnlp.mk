@@ -193,16 +193,12 @@ CORE_JNLP_JARS = \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
+	ptolemy/vergil/basic/export/html/html.jar \
 	ptolemy/vergil/basic/export/export.jar \
 	ptolemy/vergil/basic/export/web/web.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	$(PTMATLAB_JARS)
-
-# Jar files for exporting html, no longer part of the core.
-EXPORT_HTML_JARS = \
-	$(PTJSOUP_JAR) \
-	ptolemy/vergil/basic/export/html/html.jar \
 
 #######
 # DSP - The smallest runtime
@@ -243,6 +239,12 @@ PTANGO_JAR_FILES = \
 	lib/javax.servlet-api-3.0.1.jar \
 	lib/smack.jar \
 	lib/smackx.jar
+
+# Actors that use the jsoup html parser.
+JSOUP_JARS = \
+	$(PTJSOUP_JAR) \
+	ptolemy/vergil/basic/export/html/jsoup
+
 
 PTFMI_JARS = \
 	lib/jna.jar \
@@ -471,7 +473,6 @@ FULL_ONLY_JNLP_JARS = \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
-	$(EXPORT_HTML_JARS) \
 	$(PTANGO_JAR_FILES) \
 	org/ptolemy/ptango/ptango.jar \
 	org/ptolemy/qss/qss.jar \
@@ -544,6 +545,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTERA_JARS) \
 	$(PDFRENDERER_JARS) \
 	ptolemy/vergil/basic/export/exportFull.jar \
+	$(JSOUP_JARS) \
 	ptolemy/vergil/modal/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
 	ptolemy/vergil/scr/scr.jar \

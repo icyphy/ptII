@@ -1,10 +1,10 @@
-# Makefile for the ptolemy/vergil/basic/export/html package
+# Makefile for the ptolemy/vergil/basic/export/html/jsoup package
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 68432 2014-02-19 17:28:55Z cxh $
 #
-# @Copyright (c) 2011-2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,34 +30,33 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/basic/export/html
+ME =		ptolemy/vergil/basic/export/html/jsoup
 
-# PTJSOUP_DIR is set to jsoup if $PTII/lib/jsoup-*.jar is found by configure.
-DIRS =		demo javascript test $(PTJSOUP_DIR)
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)
+# PTJSOUP_JAR is set to the $PTII/lib/jsoup-*.jar by configure.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJSOUP_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	html
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	jsoup
+PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	javascript/javascript.jar
+#PTCLASSALLJARS =
 
 JSRCS = \
-	ExportHTMLAction.java \
+	HTMLPageAssembler.java
 
 OTHER_FILES_TO_BE_JARED = \
-	htmlExportConfiguration.xml
+	HTMLPageAssemblerIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -70,11 +69,7 @@ MISC_FILES =	javascript test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR) \
-	'ExportHTMLAction$$DirectoryFilter.class' \
-	'ExportHTMLAction$$IconVisibleLocation.class' \
-	'ExportHTMLAction$$1.class' \
-	'ExportHTMLAction$$1$$1.class'
+	$(PTCLASSJAR)
 
 JCLASS= $(JSRCS:%.java=%.class)
 

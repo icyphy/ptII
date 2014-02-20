@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic.export.html.jsoup;
 
 import java.io.IOException;
 import java.util.List;

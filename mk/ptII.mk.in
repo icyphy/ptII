@@ -696,8 +696,11 @@ PTJSON_PACKAGES = 	@PTJSON_PACKAGES@
 # JSoup jar files used by export html facility
 PTJSOUP_JAR =		@PTJSOUP_JAR@
 
-# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
-PTJSOUP_EXPORT_HTML_DIR = 	@PTJSOUP_EXPORT_HTML_DIR@
+# Set to jsoup if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+PTJSOUP_DIR = 	@PTJSOUP_DIR@
+
+# Set to ptolemy.actor.lib.joystick and used int $PTII/doc/makefile if jsoup is found.
+PTJSOUP_PACKAGES =	@PTJSOUP_PACKAGES@
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
 PTJUNIT_DIR =		@PTJUNIT_DIR@

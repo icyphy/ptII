@@ -2914,8 +2914,8 @@ fi
 # JSoup jar files used by export html facility
 PTJSOUP_JAR=
 
-# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
-PTJSOUP_EXPORT_HTML_DIR=
+# Set to jsoup if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+PTJSOUP_DIR=
 
 # We only need to look for Jsoup if $PTJSOUP_USER_DIR is present
 PTJSOUP_USER_DIR="$PTII/ptolemy/vergil/basic/export/html"
@@ -2933,7 +2933,9 @@ else
     if test  -f "$PTJSOUP_JAR"; then
 	PT_MSG_RESULT([$PTJSOUP_JAR])
         updateClasspath "$PTJSOUP_JAR"
-        PTJSOUP_EXPORT_HTML_DIR=html
+        PTJSOUP_DIR=jsoup
+        # PTJSOUP_PACKAGES is used in ptII/doc/makefile
+	PTJSOUP_PACKAGES=ptolemy.vergil.basic.export.html.jsoup
     else
         updateExcludes "ptolemy/vergil/basic/export/html"
         AC_MSG_WARN([Failed to find the JSoup jar files necessary to
@@ -6145,8 +6147,11 @@ AC_SUBST(PTJSON_PACKAGES)
 # JSoup jar files used by export html facility
 AC_SUBST(PTJSOUP_JAR)
 
-# Set to html if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
-AC_SUBST(PTJSOUP_EXPORT_HTML_DIR)
+# Set to jsoup if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
+AC_SUBST(PTJSOUP_DIR)
+
+# Set to ptolemy.actor.lib.joystick and used int $PTII/doc/makefile if jsoup is found.
+AC_SUBST(PTJSOUP_PACKAGES)
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
 AC_SUBST(PTJUNIT_DIR)
