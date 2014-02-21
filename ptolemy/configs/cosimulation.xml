@@ -10,7 +10,8 @@
 	    <input source="lbnl/actor/lib/simulatorentities.xml"/>
         
         <!-- FIXME: see when present or not -->
-        <input source="ptolemy/apps/hlacerti/lib/hlaentities.xml"/>
+	<!-- Don't include hlaentities because they are in ptolemy/apps and not shipped. -->
+        <!-- input source="ptolemy/apps/hlacerti/lib/hlaentities.xml"/-->
       </group>
     ?>
   </configure>
