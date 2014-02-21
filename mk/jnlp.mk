@@ -770,10 +770,25 @@ $(KEYSTORE):
 		$(STOREPASSWORD); \
 	fi
 
+# In 2014, signed jar files need a manifest that has a Permissions attribute.
+# See http://docs.oracle.com/javase/tutorial/deployment/jar/secman.html
+# http://docs.oracle.com/javase/7/docs/technotes/guides/jweb/security/manifest.html#permissions
+# http://docs.oracle.com/javase/tutorial/deployment/jar/modman.html
+JNLP_MANIFEST = jnlp_manifest.txt
+$(JNLP_MANIFEST):
+	echo "Application-Name: Ptolemy II" > $@
+	echo "Permissions: all-permissions" >> $@
+
+JNLP_SANDBOX_MANIFEST = jnlp_sandbox_manifest.txt
+$(JNLP_SANDBOX_MANIFEST):
+	echo "Application-Name: Ptolemy II" > $@
+	echo "Permissions: sandbox" >> $@
+
+
 # Web Start: BCVTB version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
 # PTII_LOCALURL has spaces in it that get converted to %20
-vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilBCVTB.jnlp.in > $@
@@ -810,7 +825,7 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # Web Start: DSP version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
 # PTII_LOCALURL has spaces in it that get converted to %20
-vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilDSP.jnlp.in > $@
@@ -848,7 +863,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # Web Start: HyVisual version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
 # PTII_LOCALURL has spaces in it that get converted to %20
-vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilHyVisual.jnlp.in > $@
@@ -884,7 +899,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		"$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
-vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilPtiny.jnlp.in > $@
@@ -919,7 +934,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		"$(SIGNED_DIR)/$(PTINY_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: Ptiny version of Vergil for Kepler
-vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilPtinyKepler.jnlp.in > $@
@@ -994,7 +1009,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # Web Start: Space version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
 # PTII_LOCALURL has spaces in it that get converted to %20
-vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilSpace.jnlp.in > $@
@@ -1032,7 +1047,7 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # Web Start: VisualSense version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
 # PTII_LOCALURL has spaces in it that get converted to %20
-vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilVisualSense.jnlp.in > $@
@@ -1068,7 +1083,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		"$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
-vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
+vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MANIFEST)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergil.jnlp.in > $@
@@ -1111,7 +1126,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
-jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
+jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	@set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
@@ -1779,15 +1794,6 @@ book_real_clean:
 # Create the .jnlp file, but don't fix it yet:
 # make -n JNLP_MODEL_DIRECTORY=doc/papers/y12/designContracts JNLP_MODEL=DCMotorTol KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat $HOME/.certpw`" KEYPASSWORD="-storepass `cat $HOME/.certpw`" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics jnlp_file
 jnlp_file: $(JNLP_FILE)
-
-# In 2014, signed jar files need a manifest that has a Permissions attribute.
-# See http://docs.oracle.com/javase/tutorial/deployment/jar/secman.html
-# http://docs.oracle.com/javase/7/docs/technotes/guides/jweb/security/manifest.html#permissions
-# http://docs.oracle.com/javase/tutorial/deployment/jar/modman.html
-JNLP_MANIFEST = jnlp_manifest.txt
-$(JNLP_MANIFEST):
-	echo "Application-Name: Ptolemy II" > $@
-	echo "Permissions: all-permissions" >> $@
 
 # Fix the jnlp file by substituting in the proper URL
 jnlp_file_fixed: $(JNLP_FILE_FIXED)
