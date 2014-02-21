@@ -248,6 +248,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.vergil.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.conversions \
@@ -301,6 +302,7 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
 	ptolemy.cg.kernel.generic.program.procedural.java.type \
 	ptolemy.cg.kernel.generic.syntactic \
+	ptolemy.cg.kernel.generic.test.actor \
 	ptolemy.cg.lib \
 	ptolemy.cg.lib.syntactic
 
@@ -562,6 +564,7 @@ ALLPACKAGES = \
 	doc.doclets \
 	org.ptolemy.machineImprovisation \
 	org.ptolemy.machineLearning.hmm \
+	org.ptolemy.machineLearning.hmmAOM \
 	org.ptolemy.machineLearning.particleFilter \
 	org.ptolemy.qss \
 	ptolemy.actor.process \
@@ -621,6 +624,7 @@ ALLPACKAGES = \
 	ptolemy.domains.tester.lib \
 	ptolemy.domains.tm.kernel \
 	ptolemy.domains.tm.lib \
+	$(PTJSOUP_PACKAGES) \
 	ptolemy.vergil.ontologies \
 	ptolemy.vergil.pdfrenderer \
 	ptolemy.vergil.ptera \
