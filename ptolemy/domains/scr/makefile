@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/scr
 
-DIRS =		demo
+DIRS =		demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
