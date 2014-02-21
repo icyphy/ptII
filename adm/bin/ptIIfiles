@@ -4,5 +4,5 @@
 
 # Filter out ptolemy/filter not moml/filter
 
-/usr/bin/find . -type f -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v ptolemy/filter | grep -v com/microstar | grep -v CVS | grep -v /.svn | grep -v collections | grep -v /copernicus/*/cg/ | grep -v /build/
+/usr/bin/find . -type f -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v ptolemy/filter | grep -v com/microstar | grep -v CVS | grep -v /.svn | grep -v collections | grep -v /copernicus/*/cg/ | grep -v /build/ | grep -v /reports/
 
