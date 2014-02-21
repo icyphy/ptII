@@ -78,7 +78,7 @@ public class AutoTests extends ModelTests {
      * @exception Throwable
      *                If thrown while executing the model.
      */
-    @Test(timeout=300000)
+    @Test(timeout=2400000)
     @Parameters(method = "modelValues")
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {

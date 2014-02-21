@@ -89,7 +89,7 @@ public class AutoCGJavaTests extends AutoCGTests {
      * immediately.
      * @exception Throwable If thrown while executing the model.
      */
-    @Test(timeout=30000)
+    @Test(timeout=240000)
     @Parameters(method = "modelValues")
     public void runModelInline(String fullPath) throws Throwable {
         runModel(fullPath, "java", false /* generateInSubdirectory */,
@@ -106,7 +106,7 @@ public class AutoCGJavaTests extends AutoCGTests {
      * immediately.
      * @exception Throwable If thrown while executing the model.
      */
-    @Test(timeout=30000)
+    @Test(timeout=240000)
     @Parameters(method = "modelValues")
     public void runModelLarge(String fullPath) throws Throwable {
         runModel(fullPath, "java", true /* generateInSubdirectory */,
@@ -123,7 +123,7 @@ public class AutoCGJavaTests extends AutoCGTests {
      * immediately.
      * @exception Throwable If thrown while executing the model.
      */
-    @Test(timeout=30000)
+    @Test(timeout=240000)
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
         runModel(fullPath, "java", false /* generateInSubdirectory */,

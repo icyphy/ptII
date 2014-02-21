@@ -200,7 +200,7 @@ public class TclTests {
 
     /**
      * Run a tclFile.
-     * Timeout after 30000 ms.
+     * Timeout after 240000 ms.
      *
      * @exception Throwable
      *                If thrown while executing the tclFile.
@@ -209,7 +209,7 @@ public class TclTests {
      *            ends with the value of the {@link #THERE_ARE_NO_TCL_TESTS},
      *            then the method returns immediately.
      */
-    @Test(timeout=30000)
+    @Test(timeout=240000)
     @Parameters
     public void RunTclFile(String tclFile) throws Throwable {
         if (tclFile.endsWith(THERE_ARE_NO_TCL_TESTS)) {
