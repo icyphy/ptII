@@ -718,6 +718,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>ptolemy/moml/test/NoPackageActor.java</exclude>
 	   <exclude>ptolemy/vergil/basic/imprt/g4ltl/**</exclude>
 	   <exclude>ptserver/**</exclude>
+           <exclude>reports/**</exclude>
            <exclude>src/**</exclude>
            <exclude>target/**</exclude>
 	  </excludes>
