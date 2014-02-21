@@ -190,7 +190,7 @@
   </target>
 
   <target name="build"
-	  depends="build-message, build-subprojects,build-project,bin"
+	  depends="build-message, build-lbnl, build-subprojects, build-project, bin"
 	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
 
   <target name="build-message">
@@ -204,6 +204,12 @@ For example:
   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
     </echo>
+  </target>
+
+  <target name="build-lbnl"
+	  description="Run make in $PTII/lbnl, which creates executables like cclient.">
+      <exec dir="${basedir}/lbnl" executable="make">
+      </exec>
   </target>
 
   <target name="build-subprojects"
