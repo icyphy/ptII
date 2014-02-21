@@ -489,7 +489,7 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.actor.lib.jni.EmbeddedCActor",
                 "ptolemy.cg.lib.EmbeddedCodeActor");
 
-        _classChanges.put("ptolemy.vergil.basic.export.html.HTMLPageAssembler,
+        _classChanges.put("ptolemy.vergil.basic.export.html.HTMLPageAssembler",
                 "ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler");
     }
 
