@@ -243,8 +243,7 @@ PTANGO_JAR_FILES = \
 # Actors that use the jsoup html parser.
 JSOUP_JARS = \
 	$(PTJSOUP_JAR) \
-	ptolemy/vergil/basic/export/html/jsoup
-
+	ptolemy/vergil/basic/export/html/jsoup/jsoup.jar
 
 PTFMI_JARS = \
 	lib/jna.jar \
