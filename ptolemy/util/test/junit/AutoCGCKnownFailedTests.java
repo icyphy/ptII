@@ -85,7 +85,7 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
      * immediately.
      * @exception Throwable If thrown while executing the model.
      */
-    @Test(timeout=240000)
+    //timeout
     @Parameters(method = "modelValues")
     public void runModelInline(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,
@@ -102,7 +102,7 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
      * immediately.
      * @exception Throwable If thrown while executing the model.
      */
-    @Test(timeout=240000)
+    //timeout
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,

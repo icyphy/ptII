@@ -68,7 +68,7 @@ import ptolemy.util.StringUtilities;
 public class AutoTests extends ModelTests {
 
     /**
-     * Execute a model and time out after 5 minutes (30,000 ms.).
+     * Execute a model and time out after 2400000 ms.
      *
      * @param fullPath
      *            The full path to the model file to be executed. If the
