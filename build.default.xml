@@ -76,7 +76,9 @@
   <property name="timeout" value="2400000" />
 
   <!-- The timeout in seconds for short running tests.
-       See also the timeout= values in ptolemy/util/test/junit/*.java. -->
+       See also the timeout= values in ptolemy/util/test/junit/*.java.
+       Originally, 2400000.
+       10000 was too short for ptolemy.cg.kernel.generic.program.procedural.java.modular.test.junit -->
   <property name="timeout.short" value="100000" />
 
   <!-- The timeout in seconds for long running junit tests.
