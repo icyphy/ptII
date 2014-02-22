@@ -27,10 +27,10 @@
 
 package ptolemy.vergil.basic.export.html.jsoup;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
@@ -49,6 +49,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 ////HTMLPageAssembler
@@ -130,6 +131,10 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
+        
+        newline = new Parameter(this, "newline");
+        newline.setExpression("property(\"line.separator\")");
+        newline.setVisibility(Settable.NONE);
 
     }
 
@@ -164,45 +169,86 @@ public class HTMLPageAssembler extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         
+        StringBuffer content = new StringBuffer("");
+        
         try {
             // Parse HTML.  Throw an exception if syntax is invalid
-            // FIXME:  Syntax error tracking is not working 
-            Parser.htmlParser().setTrackErrors(1);
-            _document = Jsoup.parse(template.asFile(), "UTF-8", "");
+            // Create a parser instead of using static method Jsoup.parse,
+            // since static method does not save error list
+            Parser htmlParser = Parser.htmlParser();
             
-            if (Parser.htmlParser().getErrors() != null &&
-                    !Parser.htmlParser().getErrors().isEmpty()) {
-                throw new IllegalActionException(this, "Template file " +
-                    template.toString() + " contains HTML syntax errors.");
+            // Max of 1 error, since this actor currently only reports error/OK
+            htmlParser.setTrackErrors(1); 
+            
+            
+            // htmlParser does not offer a method to read from a file, 
+            // so store file data in a string.  Copied from fileReader
+            BufferedReader reader = null;
+            StringBuffer lineBuffer = new StringBuffer();
+            try {
+                reader = template.openForReading();
+
+                String newlineValue = ((StringToken) newline.getToken())
+                        .stringValue();
+                while (true) {
+                    String line = reader.readLine();
+
+                    if (line == null) {
+                        break;
+                    }
+
+                    lineBuffer = lineBuffer.append(line);
+                    lineBuffer = lineBuffer.append(newlineValue);
+                }
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
+                        "Failed to read '" + template.getValueAsString() + "'");
+            } finally {
+                if (template != null) {
+                    template.close();
+                }
             }
-        
+            
+            _document = htmlParser.parseInput(lineBuffer.toString(), "");
+            
+            if (htmlParser.getErrors() != null &&
+                    !htmlParser.getErrors().isEmpty()) {
+                throw new IllegalActionException(this, "Template file '" +
+                    template.getValueAsString() + 
+                    "' contains HTML syntax errors.");
+            }
+                    
             // Set the page title
-            _document.title(htmlTitle.stringValue().trim());
+            _document.title(htmlTitle.stringValue().trim());         
 
             /*
-             * Insert the content from each port to its corresponding div.
-             * If the name of a port doesn't match any DOM object in the
-             * template file, or in the extra div list, throw an exception.
+             * Insert the content from each port to its corresponding element.
+             * Throw an exception if an element cannot be found whose id 
+             * attribute matches the port name.
              */
 
             List<TypedIOPort> portList = inputPortList();
             for (TypedIOPort port : portList) {
-                String divID = port.getName();
+                String id = port.getName();
 
-                Elements divElements = _document.select("#"+divID);
+                Elements elements = _document.select("#"+ id);
                               
                 // Throw exception if an element with this id is not found
-                if (divElements == null){
+                if (elements == null || elements.isEmpty()){
                     throw new IllegalActionException(this,
-                            "Cannot find a \"div\" with id = \"" + divID
-                                    + "\" in the template file.");
+                            "Cannot find an element with id = '" + id
+                                    + "' in the template file.");
                 }
                 
                 // Throw exception if multiple elements with this id are found
-                // (for valid HTML, each id must be unique within the document)
-                if (divElements.size() > 1) {
+                // (for valid HTML5, each id must be unique within the document)
+                // http://dev.w3.org/html5/markup/global-attributes.html
+                // The parser does not seem to throw an error, though
+                // Note this only checks elements we are inserting content into
+                // TODO:  Check all elements?
+                if (elements.size() > 1) {
                     throw new IllegalActionException(this,
-                            "Id = \"" + divID + "\" is not unique in the " +
+                            "Id = \"" + id + "\" is not unique in the " +
                             	"template file.  Please make sure each" +
                             	" element has a unique id (or none).");
                 }
@@ -220,21 +266,59 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                     } else {
                         htmlText.append(((StringToken) token).stringValue()
                                 + "\n");
-
+                    }
+                    
+                    // Check that each fragment is valid html
+                    // Wrap fragment in minimal document and try to parse
+                    String testFragment = "<!DOCTYPE html><html><head><body>" + 
+                            htmlText.toString() + " </body></html>"; 
+                    htmlParser.parseInput(testFragment, "");
+                    
+                    if (htmlParser.getErrors() != null &&
+                            !htmlParser.getErrors().isEmpty()) {
+                        throw new IllegalActionException(this, "Input '" +
+                            htmlText.toString() + 
+                            "' contains HTML syntax errors.");
                     }
                     
                     // We previously checked that there is exactly one element
-                    for (Element element : divElements) {
+                    for (Element element : elements) {
                         element.html(htmlText.toString());
-                    }
+                    }                                 
                 }
             }
             
-            String content = _document.toString();
-            output.broadcast(new StringToken(content));
+            // Correct <meta> tags, which parser handles improperly
+            // HTML5 requires an unclosed meta tag, e.g. <meta >
+            // XHTML requires a closed meta tag, e.g. <meta />
+            // For HTML5 documents, the parser correctly throws 
+            // an exception for closed <meta /> tags in input document; 
+            // however, the parser incorrectly adds a closing /> to the 
+            // result document
+           
+            // TODO:  Check on other self-closing tags like <br>
+            content = new StringBuffer(_document.html());
+            
+            if (content != null && content.length() > 0) {
+                int startTagIndex = content.indexOf("<meta", 0);
+                int closeTagIndex = 0;
+                
+                while (startTagIndex != -1) {
+                   closeTagIndex = content.indexOf("/>", startTagIndex);
+                   content.deleteCharAt(closeTagIndex);
+                   startTagIndex = 
+                            content.indexOf("<meta", startTagIndex + 1);
+                } 
+            }
+            
+            // TODO:  Check that result file does not contain illegal
+            // duplicate items (like ids, body tags, ...)  Parser does not
+            // seem to flag all of these situations?
+            
+            output.broadcast(new StringToken(content.toString()));
 
             if (((BooleanToken) saveToFile.getToken()).booleanValue()) {
-                outputFile.openForWriting().write(content);
+                outputFile.openForWriting().write(content.toString());
                 outputFile.close();
             }
             template.close();
@@ -248,5 +332,12 @@ public class HTMLPageAssembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The parsed HTML document
+     */
     private Document _document;
+    
+    /** The end of line character(s).  The default value is the value
+     *  of the line.separator property
+     */
+    private Parameter newline;
 }

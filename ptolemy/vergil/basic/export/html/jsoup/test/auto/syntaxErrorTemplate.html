@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<!--  This page has many errors.  HTMLPageAssembler should thrown an 
+      exception upon reading it. -->
+      Bunch of text in an invalid location
+	<head>
+		<!-- Prevents against cross-site scripting attacks that use UTF-7 -->
+		<meta charset='utf-8'>
+	</head>
+	
+	<!--  Unclosed body tag -->
+	<body
+	
+	
+	<!--  Missing quotes around attributes --> 
+	<div id="missingquote>
+		What is your name?
+
+		    <!-- No matching </div> -->
+			<div id="name"> 
+			
+			<!--   Even an improperly formatted comment!
+	
+	</div>
+	
+	</body>
+</html>
