@@ -268,7 +268,7 @@
     <exclude name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
-    <exclude name="**/ptolemy/domains/ptides/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/domains/ptides/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/plot/test/junit/JUnitTclTest*" />
   </patternset>
 
