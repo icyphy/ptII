@@ -190,7 +190,7 @@
   </target>
 
   <target name="build"
-	  depends="build-message, build-lbnl, build-subprojects, build-project, bin"
+	  depends="build-message, build-subprojects, build-project, build-lbnl, bin"
 	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
 
   <target name="build-message">
@@ -208,6 +208,10 @@ For example:
 
   <target name="build-lbnl"
 	  description="Run make in $PTII/lbnl, which creates executables like cclient.">
+      <echo>
+        Running make in $PTII/lbnl, which creates executables like cclient.
+	Typically, this is run after build-project so that the .class files are created.
+      </echo>
       <exec dir="${basedir}/lbnl" executable="make">
       </exec>
   </target>
