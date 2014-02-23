@@ -722,7 +722,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                         </property>
                     </port>
                 </entity>
-                <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+                <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler">
                     <property name="template" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies/pages/template.html">
                         <display name="Template HTML file"/>
                     </property>
@@ -740,7 +740,7 @@ http://www.eclipse.org/jetty/documentation/current/deployment-architecture.html<
                         </property>
                     </port>
                 </entity>
-                <entity name="HTMLPageAssembler2" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+                <entity name="HTMLPageAssembler2" class="ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler">
                     <property name="template" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies/pages/template.html">
                         <display name="Template HTML file"/>
                     </property>

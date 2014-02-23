@@ -1184,8 +1184,6 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -2910,7 +2908,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+        <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler">
             <property name="template" class="ptolemy.data.expr.FileParameter" value="files/template.html">
                 <display name="Template HTML file"/>
             </property>
@@ -2997,7 +2995,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </port>
         </entity>
         <entity name="Expression5" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Current TDay = &lt;b&gt;&quot; + params.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + params.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + params.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + params.RTime &#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b style=\&quot;color:red\&quot;&gt;&quot; + cost &#10; + &quot;&lt;/font&gt;&lt;/b&gt;&lt;br&gt;Previous TDay = &lt;b&gt;&quot; + previous.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + previous.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + previous.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + previous.RTime&#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b style=\&quot;color:red\&quot;&gt;&quot; + previousCost + &quot;&lt;/font&gt;&lt;/b&gt;&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Current TDay = &lt;b&gt;&quot; + params.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + params.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + params.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + params.RTime &#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b style=\&quot;color:red\&quot;&gt;&quot; + cost &#10; + &quot;&lt;/b&gt;&lt;br&gt;Previous TDay = &lt;b&gt;&quot; + previous.TDay + &quot;&lt;/b&gt;, TNight = &lt;b&gt;&quot; + previous.TNight&#10; + &quot;&lt;/b&gt;, Leaving = &lt;b&gt;&quot; + previous.LTime + &quot;&lt;/b&gt;, Return = &lt;b&gt;&quot; + previous.RTime&#10; + &quot;&lt;/b&gt;, Monthly Cost = &lt;b style=\&quot;color:red\&quot;&gt;&quot; + previousCost + &quot;&lt;/b&gt;&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
