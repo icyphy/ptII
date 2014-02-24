@@ -141,6 +141,10 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "org.json.JSONObject",
                 "org/json/json-license.htm");
 
+
+        _addIfPresent(copyrightsMap, "org.json.JSONObject",
+                "lib/jsoup-license.htm");
+
         _addIfPresent(copyrightsMap, "org.junit.runner.JUnitCore",
                 "lib/junit-license.htm");
 
