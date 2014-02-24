@@ -7,7 +7,7 @@ export MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=48m"
 See $PTII/doc/coding/maven.htm
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <version>8.1.devel</version>
+  <version>10.0.devel</version>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.ptolemy</groupId>
   <artifactId>ptII</artifactId>
@@ -874,7 +874,7 @@ See $PTII/doc/coding/maven.htm
           </archive>
 	  <excludes>
 	    <exclude>**/.svn/**</exclude>
-	    <exclude>ptII-8.1.devel.jar</exclude>
+	    <exclude>ptII-10.0.devel.jar</exclude>
 	  </excludes>
         </configuration>
       </plugin>
@@ -894,7 +894,7 @@ See $PTII/doc/coding/maven.htm
         <dependency>
           <groupId>org.ptolemy</groupId>
           <artifactId>ptII</artifactId>
-          <version>8.1.devel</version>
+          <version>10.0.devel</version>
 	</dependency>
       </dependencies>
 
@@ -926,8 +926,8 @@ See $PTII/doc/coding/maven.htm
 	<artifactItems>
 	  <artifactItem>
 	    <groupId>org.ptolemy</groupId>
-	    <artifactId>ptII-8.1.devel.jar</artifactId>
-	    <version>8.1.devel</version>
+	    <artifactId>ptII-10.0.devel.jar</artifactId>
+	    <version>10.0.devel</version>
 	    <type>jar</type>                            
 	  </artifactItem>
 	</artifactItems>
