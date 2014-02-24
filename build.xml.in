@@ -185,15 +185,27 @@
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
-  <target name="bin"
-	  description="Run make in $PTII/bin, which creates scripts like $PTII/bin/vergil.">
+  <target name="build"
+	  depends="build-message, build-subprojects, build-project, build-lbnl, build-bin"
+	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
+
+  <target name="build-bin"
+	  depends="-check-ptII-mk-file, build-bin-not"
+	  description="Run make in $PTII/bin, which creates scripts like $PTII/bin/vergil."
+	  if="${ptII.mk.exists}">
       <exec dir="${basedir}/bin" executable="make">
       </exec>
   </target>
 
-  <target name="build"
-	  depends="build-message, build-subprojects, build-project, build-lbnl, bin"
-	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
+  <target name="build-bin-not"
+	  unless="${ptII.mk.exists}">
+      <echo>
+	$PTII/mk/ptII.mk does not exist, perhaps (cd $PTII; ./configure) has not been run?
+	Skipping running make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
+	This is only an issue if you want to invoke "$PTII/bin/vergil" instead of "ant vergil".
+	However, $PTII/bin does include other scripts that may be of use.
+      </echo>
+  </target>
 
   <target name="build-message">
     <echo>Use ant -p to see other targets. JAVA_HOME=${env.JAVA_HOME}
@@ -208,14 +220,30 @@ For example:
     </echo>
   </target>
 
+  <target name="-check-ptII-mk-file" unless="ptII.mk..exists">
+    <available property="ptII.mk.exists" file="mk/ptII.mk"/>
+  </target>
+
   <target name="build-lbnl"
-	  description="Run make in $PTII/lbnl, which creates executables like cclient.">
+	  description="Run make in $PTII/lbnl, which creates executables like cclient."
+	  depends="-check-ptII-mk-file, build-lbnl-not"
+	  if="${ptII.mk.exists}">
       <echo>
         Running make in $PTII/lbnl, which creates executables like cclient.
 	Typically, this is run after build-project so that the .class files are created.
       </echo>
       <exec dir="${basedir}/lbnl" executable="make">
       </exec>
+  </target>
+
+  <target name="build-lbnl-not"
+	  unless="${ptII.mk.exists}">
+      <echo>
+	$PTII/mk/ptII.mk does not exist, perhaps (cd $PTII; ./configure) has not been run?
+	Skipping running make in $PTII/lbnl, which creates executables like cclient.
+	This is only an issue if you are trying to build
+	the Building Controls Virtual Test Bed (BCVTB).
+      </echo>
   </target>
 
   <target name="build-subprojects"
