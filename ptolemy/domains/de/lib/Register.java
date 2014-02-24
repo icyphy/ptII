@@ -157,4 +157,23 @@ public class Register extends MostRecent {
         readInputs(commonWidth, inputWidth);
         return super.postfire();
     }
+    
+    /** Return true if there is any token in the input or the trigger
+     *  port. This ensures that if an input is provided without a
+     *  trigger, it will get recorded.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        boolean inputPresent = false;
+
+        if (input.isOutsideConnected()) {
+        	for (int i = 0; i < input.getWidth(); i++) {
+        		if (input.hasToken(0)) {
+        			inputPresent = true;
+        			break;
+        		}
+        	}
+        }
+        return inputPresent || super.prefire();
+    }
 }
