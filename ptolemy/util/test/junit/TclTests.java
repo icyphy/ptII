@@ -212,7 +212,7 @@ public class TclTests {
      *            ends with the value of the {@link #THERE_ARE_NO_TCL_TESTS},
      *            then the method returns immediately.
      */
-    //timeout
+    @Test
     @Parameters
     public void RunTclFile(String tclFile) throws Throwable {
         if (tclFile.endsWith(THERE_ARE_NO_TCL_TESTS)) {

@@ -29,6 +29,8 @@
 package ptolemy.util.test.junit;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -104,14 +106,19 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
             System.out.println("Warning, failed to delete " + _cgDirectory);
         }
 
-        String [] args = new String[] {"-language", language,
+        LinkedList<String> argumentsList = new LinkedList<String>(Arrays.asList("-language", language,
                 "-generateInSubdirectory",
                 Boolean.toString(generateInSubdirectory), "-inline",
                 Boolean.toString(inline), "-maximumLinesPerBlock",
                 Integer.toString(maximumLinesPerBlock), "-variablesAsArrays",
-                Boolean.toString(variablesAsArrays), 
-                "--generatorPackageList", generatorPackageList,
-                                       fullPath};
+                        Boolean.toString(variablesAsArrays)));
+        if (generatorPackageList != null && generatorPackageList.length() > 0) {
+            argumentsList.add("-generatorPackageList");
+            argumentsList.add(generatorPackageList);
+        }
+        argumentsList.add(fullPath);
+
+        String [] args = argumentsList.toArray(new String[argumentsList.size()]);
 
         System.out.print("----------------- (Known Failure) AutoCG $PTII/bin/ptcg");
         for (int i = 0; i < args.length; i++) {

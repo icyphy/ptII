@@ -93,7 +93,7 @@ public class AutoCGCNoInlineArduinoTests extends AutoCGTests {
      * immediately.
      * @exception Throwable If thrown while executing the model.
      */
-    //timeout
+    @Test
     @Parameters(method = "modelValues")
     public void runModelNoInlineArduino(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,
