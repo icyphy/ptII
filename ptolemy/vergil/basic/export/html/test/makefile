@@ -33,7 +33,7 @@
 ME =		ptolemy/vergil/basic/export/html/test
 
 # PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
-DIRS =		auto $(PTJUNIT_DIR)
+DIRS =		$(PTJUNIT_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
@@ -67,7 +67,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl junit testDefs.tcl  junit
+MISC_FILES =	alljtests.tcl auto junit testDefs.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
