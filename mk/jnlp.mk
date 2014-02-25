@@ -464,6 +464,19 @@ FULL_8_1_JARS = \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 
+METROII_JARS = \
+	lib/protobuf-java-2.4.1.jar \
+	ptolemy/domains/metroII/metroII.jar \
+	ptolemy/domains/metroII/demo/demo.jar
+
+FULL_10_0_JARS = \
+	org/ptolemy/machineLearning/machineLearning.jar \
+	$(METROII_JARS) \
+	ptolemy/domains/openmodelica/openmodelica.jar \
+	ptolemy/domains/scr/scr.jar \
+	ptolemy/domains/scr/demo/demo.jar \
+	ptolemy/vergil/scr/scr.jar 
+
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
@@ -550,6 +563,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/vergil/scr/scr.jar \
 	ptolemy/vergil/tdl/tdl.jar \
 	$(FULL_8_1_JARS) \
+	$(FULL_10_0_JARS) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(RUN_JARS) \
 	$(WIRELESS_JARS)
@@ -1525,6 +1539,24 @@ echo_jars:
 
 echo_plist_jars:
 	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)"
+
+# make echo_classpath_jars JARS=PTINY_JNLP_JARS
+echo_classpath_jars:
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | awk '{for(i=1;i<NF;i++) {printf("${CLASSPATHSEPARATOR}"); if ($$i !~ /^\//) {printf("${PTII}/")} printf("%s", $$i)} printf("${CLASSPATHSEPARATOR}\n")}'
+
+# How to run from the jars:
+# make vergil_run_full
+# We run in the /tmp directory to avoid looking in $PTII
+vergil_run:
+	(cd /tmp; $(JAVA) $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication $(CONFIGURATION))
+vergil_run_ptiny:
+	$(MAKE) vergil_run CONFIGURATION_JARS=PTINY_JNLP_JARS CONFIGURATION=-ptiny 
+vergil_run_full:
+	$(MAKE) vergil_run CONFIGURATION_JARS=FULL_JNLP_JARS
+
+vergil_run_signed:
+	(cd /tmp; $(JAVA) $(JAVAFLAGS) -classpath `(cd $(PTII); make echo_classpath_jars JARS=PTINY_JNLP_JARS)` ptolemy.vergil.VergilApplication $(CONFIGURATION))
+
 
 ################################################################
 ################################################################

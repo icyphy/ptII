@@ -390,11 +390,11 @@ JODE_JAR="@JODE_CLASSES@"
 JODE_JFLAG=
 
 #### Jsoup
-# PTJSOUP_EXPORT_HTML_DIR is set to html if we found Jsoup
-PTJSOUP_EXPORT_HTML_DIR="@PTJSOUP_EXPORT_HTML_DIR@"
+# PTJSOUP_DIR is set to html if we found Jsoup
+PTJSOUP_DIR="@PTJSOUP_DIR@"
 JSOUP_JARS=""
-if [ "$PTJSOUP_EXPORT_HTML_DIR" = "html" ]; then
-    PTJSOUP_JAR="@PTSOUP_JAR@"
+if [ "$PTJSOUP_DIR" = "jsoup" ]; then
+    PTJSOUP_JAR="@PTJSOUP_JAR@"
     # Jar file that contains Python interface
     JSOUP_JARS="${CLASSPATHSEPARATOR}${PTJSOUP_JAR}"
 fi

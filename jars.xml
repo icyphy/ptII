@@ -28,6 +28,7 @@
     <include name="org/json/json.jar" />
     <include name="org/mlc/mlc.jar" />
     <include name="org/ptolemy/fmi/fmi.jar" />
+    <include name="org/ptolemy/machineLearning/machineLearning.jar" />
     <include name="org/ptolemy/ptango/ptango.jar" />
     <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="org/ptolemy/qss/qss.jar" />
@@ -122,6 +123,7 @@
     <include name="ptolemy/domains/modal/doc/doc.jar" />
     <include name="ptolemy/domains/modal/modal.jar" />
     <include name="ptolemy/domains/modal/modal/modal.jar" />
+    <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
     <include name="ptolemy/domains/pn/demo/demo.jar" />
     <include name="ptolemy/domains/pn/doc/doc.jar" />
     <include name="ptolemy/domains/pn/pn.jar" />
@@ -816,6 +818,7 @@
 	 destfile="${basedir}/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="lib/jsoup-license.htm"/>
 	<include name="ptolemy/vergil/basic/export/html/jsoup/*.class"/>
 	<include name="ptolemy/vergil/basic/export/html/jsoup/*.xml"/>
       </fileset>
@@ -3239,6 +3242,39 @@
       </fileset>
     </jar>
 
+    <!-- org/ptolemy/machineLearning/machineLearning.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/machineLearning/machineLearning.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/machineLearning.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/hmm/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/hmm/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/hmmAOM/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/hmmAOM/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/particleFilter/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/particleFilter/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/hmm/demo/*/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/particleFilter/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- org/ptolemy/ptango/ptango.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/ptolemy/ptango/ptango.jar"
@@ -3785,7 +3821,10 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="lib/protobuf-license.htm"/>
+	<include name="net/jimblackler/Utils/jimblacklerUtils-license.htm"/>
+	<include name="net/jimblackler/Utils/*.class"/>
 	<include name="ptolemy/domains/metroII/*.xml"/>
+	<include name="ptolemy/domains/metroII/gui/*.class"/>
 	<include name="ptolemy/domains/metroII/kernel/*.class"/>
 	<include name="ptolemy/domains/metroII/kernel/util/ProtoBuf/*.class"/>
       </fileset>
@@ -3839,6 +3878,21 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/modal/demo/SystemLevelType/fmv/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/openmodelica/openmodelica.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/openmodelica/openmodelica.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/openmodelica/kernel/*.class"/>
+	<include name="ptolemy/domains/openmodelica/lib/*.class"/>
+	<include name="ptolemy/domains/openmodelica/lib/omc/*.class"/>
+	<include name="ptolemy/domains/openmodelica/lib/omc/corba/*.class"/>
+	<include name="ptolemy/domains/openmodelica/*.xml"/>
+	<include name="ptolemy/domains/openmodelica/lib/*.xml"/>
+	<include name="ptolemy/domains/openmodelica/demo/*/*.xml"/>
       </fileset>
     </jar>
 
