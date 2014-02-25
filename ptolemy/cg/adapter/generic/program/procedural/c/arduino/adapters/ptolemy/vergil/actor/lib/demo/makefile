@@ -1,9 +1,9 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
+# @Version: $Id: makefile 65763 2013-03-07 01:54:37Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2014 The Regents of the University of California
+# @Copyright (c) 2005-2013 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo
 
-DIRS =		gui	
+DIRS =	    Life
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,27 +45,31 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	Life/Life.jar 
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = 
 
-
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c) 
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = gui
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

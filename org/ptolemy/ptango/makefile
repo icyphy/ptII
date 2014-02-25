@@ -35,7 +35,7 @@ DIRS =  doc lib test #demo
 ROOT =		../../..
 
 # $(ME) is used in ptdir.mk
-ME =		org.ptolemy.ptango
+ME =		org/ptolemy/ptango
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)

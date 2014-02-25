@@ -75,7 +75,7 @@ MISC_FILES =	adapters luminary renesas xmos
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	$(DIRS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 

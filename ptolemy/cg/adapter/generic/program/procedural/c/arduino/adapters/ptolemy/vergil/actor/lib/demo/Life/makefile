@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/demo/Life
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 

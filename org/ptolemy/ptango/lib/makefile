@@ -57,7 +57,9 @@ JSRCS = \
 	HttpGet.java \
 	HttpPost.java \
 	HttpPut.java \
+	HttpRequest.java \
 	HttpService.java \
+	RecordToQueryString.java \
 	WebServer.java \
 	WebApplicationInfo.java \
 	WebServerManager.java \
@@ -86,6 +88,7 @@ OPTIONAL_FILES = \
 	$(PTAUXJAR) \
 	'HTMLModelExporter$$1.class' \
 	'HttpActor$$ActorServlet.class' \
+	'HttpRequest$$Method.class' \
 	'WebServer$$1.class' \
 	'WebServer$$RunnableServer.class' \
 	'HttpActor$$HttpRequest.class' \

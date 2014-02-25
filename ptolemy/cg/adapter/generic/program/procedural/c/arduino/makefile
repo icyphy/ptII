@@ -58,7 +58,8 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	README.htm 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

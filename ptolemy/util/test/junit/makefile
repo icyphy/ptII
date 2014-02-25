@@ -40,6 +40,10 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(JUNI
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	junit
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 # Java Sources, keep these alphabetical,
 JSRCS = \
 	AutoCGCKnownFailedTests.java \

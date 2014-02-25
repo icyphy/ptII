@@ -71,7 +71,24 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    $(PTCLASSJAR)
+    $(PTCLASSJAR) \
+	'SCRGraphTableau$$Factory.class' \
+	'SCRTableFrame$$1.class' \
+	'SCRTableFrame$$10$$1.class' \
+	'SCRTableFrame$$10.class' \
+	'SCRTableFrame$$11.class' \
+	'SCRTableFrame$$12.class' \
+	'SCRTableFrame$$13.class' \
+	'SCRTableFrame$$14.class' \
+	'SCRTableFrame$$2.class' \
+	'SCRTableFrame$$3.class' \
+	'SCRTableFrame$$4.class' \
+	'SCRTableFrame$$5.class' \
+	'SCRTableFrame$$6.class' \
+	'SCRTableFrame$$7.class' \
+	'SCRTableFrame$$8.class' \
+	'SCRTableFrame$$9.class' \
+	'SCRTableFrame$$SCRTableCellRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

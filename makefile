@@ -254,15 +254,25 @@ cleanDerivedJavaFiles:
 	rm -rf ptolemy/backtrack/util/java/util/*.java
 
 CLEAN_SHIPPING_FILES = \
+		*.jnlp \
 		autom4te.cache \
 		com/microstar/xml/SAXDriver.* \
 		diva/build.xml \
 		diva/canvas/tutorial/doc-files \
 		doc/img/PtolemyIICD.ec3 \
+		doc/codeDoc*.jar \
+		doc/ptII.fb \
+		doc/ptII.fbp \
+		jnlp_manifest.txt \
+		jnlp_sandbox_manifest.txt \
+		lbnl/demo/CRoom/cclient.dSYM \
 		lbnl/lib/util/libbcvtb.dylib \
 		lbnl/lib/util/libbcvtb.dylib.dSYM \
+		lbnl/lib/util/libbcvtb.jnilib \
+		lbnl/lib/util/libbcvtb.jnilib.dSYM \
 		lbnl/lib/util/libbcvtb.so \
 		lib/cachedir \
+		ptKeystore \
 		ptolemy/apps \
 		ptolemy/actor/lib/ptp \
 		ptolemy/actor/gui/test/CustomQueryExample.tar.gz \
@@ -281,6 +291,7 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/domains/ct/lib/IPCInterface.java \
 		ptolemy/domains/dde/kernel/test/test.tcl \
 		ptolemy/domains/fairdf \
+		ptolemy/domains/fmi \
 		ptolemy/domains/fp \
 		ptolemy/domains/pdf \
 		ptolemy/domains/gr/lib/Loader3D.* \
@@ -301,8 +312,10 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/moml/filter/test/testNamedObjs.txt \
 		ptolemy/ptp \
 	        ptolemy/vergil/basic/layout/kieler/test/layoutPerformance.xml \
-	        ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml
-
+	        ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml \
+		signed \
+		tmp
+ 
 clean_shipping:
 	rm -rf $(CLEAN_SHIPPING_FILES)
 

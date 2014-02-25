@@ -54,10 +54,11 @@ JSRCS = \
 	BlockingFire.java \
 	ConstraintSolver.java \
 	EventDictionary.java \
+	EventTimeComparator.java \
 	FireMachine.java \
 	GetFirable.java \
 	Graph.java \
-    MappingConstraintReaderWriter.java \
+	MappingConstraintReaderWriter.java \
 	MappingConstraintSolver.java \
 	MappingEditor.java \
 	MetroIIDebugger.java \
@@ -97,6 +98,7 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
     doc \
+	'EventTimeComparator$$1.class' \
 	'FireMachine$$1.class' \
 	'FireMachine$$State.class' \
 	'MappingConstraintSolver$$ConstraintCounter.class' \
@@ -118,6 +120,7 @@ OPTIONAL_FILES = \
 	'MetroIISequentialSDFDirector$$1.class' \
 	'MetroIISRDirector$$1.class' \
 	'MetroIISystemCDirector$$1.class' \
+	'MetroIISystemCDirector$$2.class' \
 	'MetroModalModel$$1.class' \
 	'MetroSequentialSDFDirector$$1.class'
 

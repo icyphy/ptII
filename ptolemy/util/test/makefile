@@ -46,6 +46,16 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SAXON_JAR)$(CLASSPATHSEPARATOR)$(PDFSA
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	test
+#PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		junit/junit.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	testDefs.tcl

@@ -29,7 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-FMU_NAME = 
+FMU_NAME = AMS_AMSSim
+
+OTHER_OTHER_FILES_TO_BE_JARED = AMS_AMSSim.xml
 
 include ../fmus.mk
 
