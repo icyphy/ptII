@@ -68,7 +68,7 @@ MISC_FILES = test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(DIRS) \
-	'ParameterEstimator$BusAttribute.class'
+	'ParameterEstimator$$BusAttributes.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
