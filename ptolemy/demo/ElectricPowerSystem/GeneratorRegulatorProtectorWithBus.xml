@@ -519,7 +519,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 395.0]">
         </property>
     </entity>
-    <entity name="Controller" class="Controller">
+    <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 210.0]">
         </property>
         <port name="voltage" class="ptolemy.actor.TypedIOPort">

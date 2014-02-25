@@ -392,7 +392,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Controller" class="Controller">
+    <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 210.0]">
         </property>
         <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">

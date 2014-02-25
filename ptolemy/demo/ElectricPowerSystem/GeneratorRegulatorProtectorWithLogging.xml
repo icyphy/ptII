@@ -652,7 +652,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Controller" class="Controller">
+    <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 210.0]">
         </property>
         <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">

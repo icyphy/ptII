@@ -568,7 +568,7 @@
         <link port="_Controller.fault" relation="faultRelation"/>
         <link port="_Controller.contactor" relation="contactorRelation"/>
     </entity>
-    <entity name="Controller" class="Controller">
+    <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 210.0]">
         </property>
         <port name="voltage" class="ptolemy.actor.TypedIOPort">
