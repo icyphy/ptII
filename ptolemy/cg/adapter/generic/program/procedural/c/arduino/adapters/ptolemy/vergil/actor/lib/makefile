@@ -46,14 +46,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	lib/lib.jar
+#PTCLASSALLJARS = \
+#	lib/lib.jar
 
 # Keep this list alphabetized.
 JSRCS = 

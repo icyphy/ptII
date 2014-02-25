@@ -103,7 +103,7 @@ OTHER_FILES_TO_BE_JARED = \
 	runWelcomeWindow.xml \
 	scrEffigyFactories.xml \
 	scrEffigyFactory.xml \
-	scrTableauFactory.xml
+	scrTableauFactory.xml \
 	sdfRefinements.xml \
 	utilitiesLibrary.xml \
 	utilityAnalysis.xml \

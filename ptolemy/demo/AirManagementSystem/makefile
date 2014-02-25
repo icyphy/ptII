@@ -58,7 +58,6 @@ OTHER_FILES_TO_BE_JARED = \
 	AMSToFMU \
 	AMS_AMSSim.fmu \
 	AMS_AMSSim.xml \
-	AMS.fmu \
 	AMS.mo \
 	FlowChart.pdf \
 	NEWamsStateSpaceModel.pdf
@@ -77,7 +76,8 @@ EXTRA_SRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES =
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	AMS.fmu
 
 # Files to remove with 'make clean'
 KRUFT = \
