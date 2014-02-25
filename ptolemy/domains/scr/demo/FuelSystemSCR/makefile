@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/scr/demo/FuelSystem
+ME =		ptolemy/domains/scr/demo/FuelSystemSCR
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Array
+PTPACKAGE = 	FuelSystemSCR
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =

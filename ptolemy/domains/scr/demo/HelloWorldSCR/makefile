@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II SCR FuelSystem Demo
+# Makefile for Ptolemy II SCR HelloWorld Demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/scr/demo/HelloWorldDemo
+ME =		ptolemy/domains/scr/demo/HelloWorldSCR
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Array
+PTPACKAGE = 	HelloWorldSCR
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	HelloWorldDemo.xml
+	HelloWorldSCR.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
