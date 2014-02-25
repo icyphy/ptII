@@ -43,16 +43,22 @@ include $(CONFIG)
 
 
 # Used to build jar files
-PTPACKAGE = 	sr
-PTCLASSJAR =
+PTPACKAGE = 	scr
+PTCLASSJAR =	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS = 
+
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	SCRModel.java
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+OTHER_FILES_TO_BE_JARED = \
+	SCRModelIcon.xml \
+	scr.xml
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
