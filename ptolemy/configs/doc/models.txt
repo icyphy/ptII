@@ -325,6 +325,10 @@ $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml
+$CLASSPATH/ptolemy/domains/scr/demo/FuelSystemSCR/FuelSystemSCR.xml
+$CLASSPATH/ptolemy/domains/scr/demo/HelloWorldSCR/HelloWorldSCR.xml
+$CLASSPATH/ptolemy/domains/scr/demo/SafetyInjection/SafetyInjection.xml
+$CLASSPATH/ptolemy/domains/scr/demo/TrafficLight/TrafficLight.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Array/Array.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Expression/Expression.xml
