@@ -101,6 +101,9 @@ OTHER_FILES_TO_BE_JARED = \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
+	scrEffigyFactories.xml \
+	scrEffigyFactory.xml \
+	scrTableauFactory.xml
 	sdfRefinements.xml \
 	utilitiesLibrary.xml \
 	utilityAnalysis.xml \
