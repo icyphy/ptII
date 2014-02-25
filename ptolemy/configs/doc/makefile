@@ -173,6 +173,7 @@ missingDemos: demosModels.txt models.txt
 	@sort demosModels.txt > /tmp/demosModels.txt
 	@sort models.txt > /tmp/models.txt
 	@comm -13 /tmp/models.txt /tmp/demosModels.txt
+	@rm -f /tmp/models.txt /tmp/demosModels.txt
 
 update: $(DERIVED_FILES)
 	svn commit -m "Master files changed" $(DERIVED_FILES)
