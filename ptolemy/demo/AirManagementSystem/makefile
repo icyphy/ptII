@@ -58,6 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	AMSToFMU \
 	AMS_AMSSim.fmu \
 	AMS_AMSSim.xml \
+	AMS.fmu \
 	AMS.mo \
 	FlowChart.pdf \
 	NEWamsStateSpaceModel.pdf
