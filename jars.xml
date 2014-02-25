@@ -22,6 +22,7 @@
     <include name="doc/design/visualsense.jar" />
     <include name="doc/docConfig.jar" />
     <include name="doc/img/img.jar" />
+    <include name="doc/papers/papers.jar" />
     <include name="lbnl/demo/demo.jar" />
     <include name="lbnl/lbnl.jar" />
     <include name="lib/diva.jar" />
@@ -1178,6 +1179,18 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="doc/img/*.png"/>
+      </fileset>
+    </jar>
+
+
+    <!-- doc/papers/papers.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/papers/papers.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="doc/papers/y11/modularSemantics/*.xml"/>
+	<include name="doc/papers/y12/designContracts/*.xml"/>
+	<include name="doc/papers/y14/constructive/models/*.xml"/>
       </fileset>
     </jar>
 

@@ -41,8 +41,10 @@ ROOT =		../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	11
+PTPACKAGE = 	y11
 PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \

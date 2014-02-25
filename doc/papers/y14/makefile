@@ -42,11 +42,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 PTPACKAGE = 	y14
+#PTCLASSJAR =
+
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	constructive/constructive.xml
+	constructive/constructive.jar
 
 OTHER_FILES_TO_BE_JARED =
 

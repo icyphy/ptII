@@ -43,7 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 PTPACKAGE = 	papers
-PTCLASSJAR = $(PTPACKAGE).jar
+#PTCLASSJAR = $(PTPACKAGE).jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		y11/y11.jar \
+		y12/y12.jar \
+		y14/y14.jar
 
 OTHER_FILES_TO_BE_JARED =
 
