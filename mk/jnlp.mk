@@ -475,7 +475,9 @@ FULL_10_0_JARS = \
 	ptolemy/domains/openmodelica/openmodelica.jar \
 	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/scr/demo/demo.jar \
-	ptolemy/vergil/scr/scr.jar 
+	ptolemy/vergil/scr/scr.jar \
+	ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar \
+	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
@@ -523,6 +525,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/distributed/demo/demo.jar \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
+	ptolemy/domains/ca/demo/demo.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/ci/doc/doc.jar \
 	ptolemy/domains/csp/demo/demo.jar \

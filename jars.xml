@@ -87,6 +87,7 @@
     <include name="ptolemy/demo/demo.jar" />
     <include name="ptolemy/distributed/demo/demo.jar" />
     <include name="ptolemy/distributed/distributed.jar" />
+    <include name="ptolemy/domains/ca/demo.jar" />
     <include name="ptolemy/domains/ci/ci.jar" />
     <include name="ptolemy/domains/ci/demo/demo.jar" />
     <include name="ptolemy/domains/ci/doc/doc.jar" />
@@ -1626,19 +1627,17 @@
 	 destfile="${basedir}/ptolemy/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/demo/Demos/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/demo/ExecDemos/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/demo/ExecDemos/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/demo/FuelSystem/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/demo/PowerPlant/*.xml"/>
+	<include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
+	<include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
+	<include name="ptolemy/demo/*/*.csv"/>
+	<include name="ptolemy/demo/*/*.fmu"/>
+	<include name="ptolemy/demo/*/*.htm"/>
+	<include name="ptolemy/demo/*/*.html"/>
+	<include name="ptolemy/demo/*/*.mo"/>
+	<include name="ptolemy/demo/*/*.pdf"/>
+	<include name="ptolemy/demo/*/*.png"/>
+	<include name="ptolemy/demo/*/*.txt"/>
+	<include name="ptolemy/demo/*/*.xml"/>
       </fileset>
     </jar>
 
@@ -1849,17 +1848,24 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/ca/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/ca/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ca/demo/Conway/*.jpg"/>
+	<include name="ptolemy/domains/ca/demo/Conway/*.xml"/>
+	<include name="ptolemy/domains/ca/demo/ConwayRandom/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/ci/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/ci/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ci/demo/Router/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ci/demo/Router/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ci/demo/Router/*.xml"/>
       </fileset>
     </jar>
