@@ -353,6 +353,9 @@ $(PTIIDIST):
 	(cd $(PTIIDIST); rm -rf `(cd $(PTIIHOME); svn status | egrep '\?' | grep /demo/ | awk '{print $$2}')` )
 	# Rebuild jar files after removing unwanted code.
 	(cd $(PTIIDIST); ant -f jars.xml jars.clean; ant -f jars.xml jars)
+	# Rebuild jar_dist so that the Windows installer gets the new jars)
+	rm -rf $(PTII)/jar_dist
+	$(MAKE) ../../jar_dist
 
 clean_src:
 	rm -f $(PTII_FULL)
