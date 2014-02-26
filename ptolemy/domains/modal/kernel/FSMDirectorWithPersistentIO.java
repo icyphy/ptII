@@ -1,29 +1,29 @@
 /* A FSM Director with persistent input and output ports.
 
- Copyright (c) 2000-2013 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2014 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
- */
+*/
 
 
 package ptolemy.domains.modal.kernel;
@@ -43,16 +43,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /** A FSM Director with persistent input and output ports.
-*  @author Patricia Derler
-*  @version $Id: PtidesDirector.java 67858 2013-11-13 20:11:03Z pd $
-*  @since Ptolemy II 10.0
-*
-*  @Pt.ProposedRating Red (derler)
-*  @Pt.AcceptedRating Red (derler)
-*/
+ *  @author Patricia Derler
+ *  @version $Id: PtidesDirector.java 67858 2013-11-13 20:11:03Z pd $
+ *  @since Ptolemy II 10.0
+ *
+ *  @Pt.ProposedRating Red (derler)
+ *  @Pt.AcceptedRating Red (derler)
+ */
 public class FSMDirectorWithPersistentIO extends FSMDirector {
 
-	/**
+    /**
      * Construct a director in the default workspace with an empty
      * string as its name. The director is added to the list of
      * objects in the workspace. Increment the version number of the
@@ -118,84 +118,84 @@ public class FSMDirectorWithPersistentIO extends FSMDirector {
     public void addPortInitAttribute(String portName, Token token) throws IllegalActionException, NameDuplicationException {
     	ModalModel model = (ModalModel) getContainer();
     	if (model.getAttribute("init_" + portName) == null) {
-			Parameter parameter = new Parameter(model, "init_" + portName, token);
-		}
+            new Parameter(model, "init_" + portName, token);
+        }
     }
     
     /**
-	 * Return a receiver that is a one-place buffer. A token put into
-	 * the receiver will override any token already in the receiver.
-	 *
-	 * @return A receiver that is a one-place buffer.
-	 */
+     * Return a receiver that is a one-place buffer. A token put into
+     * the receiver will override any token already in the receiver.
+     *
+     * @return A receiver that is a one-place buffer.
+     */
     @Override
-	public Receiver newReceiver() {
-	    return new PersistentFSMReceiver();
-	}
+    public Receiver newReceiver() {
+        return new PersistentFSMReceiver();
+    }
 
     /** Set the receiver tokens to be the tokens in the initialization.
      */
-	@Override
+    @Override
     public void preinitialize() throws IllegalActionException {
     	super.preinitialize();
     	if (getContainer() != null) {
-    		ModalModel model = (ModalModel) getContainer();
-    		for (Object portObject : model.portList()) {
-    			IOPort port = (IOPort) ((ModalPort) portObject).insidePortList().get(0);
-    			Parameter parameter = (Parameter) model.getAttribute("init_" + port.getName());
-    			Receiver[][] receivers = port.getReceivers();
-    			Token token = parameter.getToken();
-    			for (int i = 0; i < receivers.length; i++) {
-    				for (int j = 0; j < receivers[i].length; j++) {
-    					receivers[i][j].put(token);
-    				}
-    			}
-    			receivers = port.getRemoteReceivers();
-    			for (int i = 0; i < receivers.length; i++) {
-    				for (int j = 0; j < receivers[i].length; j++) {
-    					receivers[i][j].put(token);
-    				}
-    			}
-    		}
+            ModalModel model = (ModalModel) getContainer();
+            for (Object portObject : model.portList()) {
+                IOPort port = (IOPort) ((ModalPort) portObject).insidePortList().get(0);
+                Parameter parameter = (Parameter) model.getAttribute("init_" + port.getName());
+                Receiver[][] receivers = port.getReceivers();
+                Token token = parameter.getToken();
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        receivers[i][j].put(token);
+                    }
+                }
+                receivers = port.getRemoteReceivers();
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        receivers[i][j].put(token);
+                    }
+                }
+            }
     	}
     }
 	
-	/** Remove initialization parameters for port. 
-	 * @param port The port
-	 */
-	public void removePortInitAttribute(String portName) {
-		ModalModel model = (ModalModel) getContainer();
-		Attribute attribute = model.getAttribute("init_" + portName);
+    /** Remove initialization parameters for port. 
+     * @param port The port
+     */
+    public void removePortInitAttribute(String portName) {
+        ModalModel model = (ModalModel) getContainer();
+        Attribute attribute = model.getAttribute("init_" + portName);
     	if (attribute != null) {
-    		model.removeAttribute(attribute);
-		}
-	}
+            model.removeAttribute(attribute);
+        }
+    }
 	
-	/** Rename port init attribute when port is renamed.
-	 * @param oldPortName The old port name.
-	 * @param newPortName The new port name.
-	 * @throws IllegalActionException If port init attributes cannot be edited.
-	 * @throws NameDuplicationException If port init attributes cannot be edited.
-	 */
-	public void renamePortInitAttribute(String oldPortName, String newPortName) throws IllegalActionException, NameDuplicationException {
-		ModalModel model = (ModalModel) getContainer();
-		Parameter parameter = (Parameter) model.getAttribute("init_" + oldPortName);
-		Token token = parameter.getToken();
-		removePortInitAttribute(oldPortName);
+    /** Rename port init attribute when port is renamed.
+     * @param oldPortName The old port name.
+     * @param newPortName The new port name.
+     * @throws IllegalActionException If port init attributes cannot be edited.
+     * @throws NameDuplicationException If port init attributes cannot be edited.
+     */
+    public void renamePortInitAttribute(String oldPortName, String newPortName) throws IllegalActionException, NameDuplicationException {
+        ModalModel model = (ModalModel) getContainer();
+        Parameter parameter = (Parameter) model.getAttribute("init_" + oldPortName);
+        Token token = parameter.getToken();
+        removePortInitAttribute(oldPortName);
     	addPortInitAttribute(newPortName, token);
-	}
+    }
 
-	/** Initialize parameters.
-	 * @throws IllegalActionException
-	 * @throws NameDuplicationException
-	 */
+    /** Initialize parameters.
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
     private void _initialize() throws IllegalActionException, NameDuplicationException {
     	if (getContainer() != null) {
-    		ModalModel model = (ModalModel) getContainer();
-    		for (Object portObject : model.portList()) {
-    			IOPort port = (IOPort) portObject;
-    			addPortInitAttribute(port.getName());
-    		}
+            ModalModel model = (ModalModel) getContainer();
+            for (Object portObject : model.portList()) {
+                IOPort port = (IOPort) portObject;
+                addPortInitAttribute(port.getName());
+            }
     	}
     }
 	

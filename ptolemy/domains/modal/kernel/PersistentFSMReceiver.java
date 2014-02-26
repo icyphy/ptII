@@ -1,6 +1,6 @@
 /* A Token holder that always contains exactly one token.
 
- Copyright (c) 1997-2013 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-//// FSMReceiver
+//// PersistentFSMReceiver
 
 /**
  A Token holder that always contains exactly one token. An
@@ -218,13 +218,17 @@ public class PersistentFSMReceiver extends AbstractReceiver {
     public void reset() throws IllegalActionException {
     	ModalModel model = null;
     	if (this.getContainer().getContainer() instanceof ModalModel) {
-	    	model = (ModalModel) this.getContainer().getContainer();
-    	} else if (((CompositeEntity)this.getContainer().getContainer()).getContainer() instanceof ModalModel) { 
+	    	model = (ModalModel)getContainer().getContainer();
+    	} else if (((CompositeEntity)getContainer().getContainer()).getContainer() instanceof ModalModel) { 
 	    	model = (ModalModel) ((CompositeEntity)this.getContainer().getContainer()).getContainer();
     	}
-	    	IOPort port = (IOPort) model.getPort(this.getContainer().getName());
-	    	Parameter parameter = (Parameter) model.getAttribute("init_" + port.getName());
-	    	_token = parameter.getToken();
+        if (model == null) {
+            throw new InternalErrorException(getContainer(), null, "Could not get the model?");
+        } else {
+            IOPort port = (IOPort) model.getPort(this.getContainer().getName());
+            Parameter parameter = (Parameter) model.getAttribute("init_" + port.getName());
+            _token = parameter.getToken();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
