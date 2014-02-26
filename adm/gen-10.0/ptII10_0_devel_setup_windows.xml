@@ -156,6 +156,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil"/>
+            <file src="../../jar_dist/ptolemy/vergil/basic/export/html/html.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html"/>
+            <file src="../../jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
             <file src="../../jar_dist/ptolemy/vergil/basic/export/web/web.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/web"/>
             <file src="../../jar_dist/ptolemy/vergil/basic/export/exportFull.jar"
@@ -379,6 +383,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/demo"/>
             <file src="../../jar_dist/ptolemy/domains/experimentalDomains.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains"/>
+            <file src="../../jar_dist/ptolemy/domains/ca/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ca/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ci/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ci/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ci/doc/doc.jar"
@@ -523,6 +529,31 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
             <file src="../../jar_dist/ptolemy/vergil/vergilApplet.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil"/>
+
+            <file src="../../jar_dist/org/ptolemy/machineLearning/machineLearning.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/machineLearning"/>
+
+            <!-- file src="../../jar_dist/lib/protobuf-java-2.4.1.jar"
+                  targetdir="$INSTALL_PATH/lib"/ -->
+            <!-- file src="../../jar_dist/ptolemy/domains/metroII/metroII.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/metroII"/-->
+            <!-- file src="../../jar_dist/ptolemy/domains/metroII/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/metroII/demo"/-->
+
+            <!-- file src="../../jar_dist/ptolemy/domains/openmodelica/openmodelica.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/openmodelica"/ -->
+
+            <!-- file src="../../jar_dist/ptolemy/domains/scr/scr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/scr"/ -->
+            <!-- file src="../../jar_dist/ptolemy/domains/scr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/scr/demo"/-->
+            <!-- file src="../../jar_dist/ptolemy/vergil/scr/scr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/scr"/-->
+
+            <file src="../../jar_dist/ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/g4ltl"/>
+            <file src="../../jar_dist/ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/g4ltl/demo"/>
 
         </pack>
 
