@@ -45,20 +45,15 @@ include $(CONFIG)
 PTPACKAGE = 	design
 PTCLASSJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \
-	ptIIdesign1-intro.pdf \
-	ptIIdesign2-software.pdf \
-	ptIIdesign3-domains.pdf
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	body.htm \
 	buttons.htm \
-	hyvisual.jar \
 	index.htm \
 	main.htm \
-	toc.htm \
-	visualsense.jar
+	toc.htm
 
 KRUFT = \
 	hyvisual.jar \
@@ -71,19 +66,13 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	hyvisual.pdf \
-	design1PDFPlaceHolder.pdf \
-	design2PDFPlaceHolder.pdf \
-	design3PDFPlaceHolder.pdf \
 	html \
 	src \
-	usingVergil \
-	usingVergil.pdf \
-	visualsense.pdf
+	usingVergil
 
 
 # Other jars to make, used by 'make jars'
-OTHER_JARS = hyvisual.jar visualsense.jar
+#OTHER_JARS = hyvisual.jar visualsense.jar
 
 all: suball
 install: all jars $(OTHER_JARS)
