@@ -308,7 +308,7 @@ $(PTIIDIST):
 	mv /tmp/cosimulation_tmp.xml \
 		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
-	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openmodelica" \
+	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openmodelica|scrEffigy|scrTableau|scr.xml" \
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
 		> /tmp/defaultFullConfiguration_tmp.xml
 	sed 's/, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;//' \
@@ -332,7 +332,7 @@ $(PTIIDIST):
 	mv /tmp/makefile_domains \
 		$(PTIIDIST)/ptolemy/domains/makefile
 	# Remove metroII and openmodelica from jars.xml
-	egrep -v "metroII|openmodelica" \
+	egrep -v "^    <include name=.*(metroII|openmodelica|/src)" \
 		< $(PTIIHOME)/jars.xml \
 		> /tmp/jars_tmp.xml
 	mv /tmp/jars_tmp.xml \
@@ -351,6 +351,8 @@ $(PTIIDIST):
                 $(PTIIDIST)/doc/makefile
 	# Remove the html generated files, the filenames are too long
 	(cd $(PTIIDIST); rm -rf `(cd $(PTIIHOME); svn status | egrep '\?' | grep /demo/ | awk '{print $$2}')` )
+	# Rebuild jar files after removing unwanted code.
+	(cd $(PTIIDIST); ant -f jars.xml jars.clean; ant -f jars.xml jars)
 
 clean_src:
 	rm -f $(PTII_FULL)
