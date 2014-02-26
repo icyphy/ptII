@@ -63,7 +63,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>
  This actor requires that the RXTX serial port API be installed
  from
- <a href="http://rxtx.qbang.org/wiki/index.php/Download">http://rxtx.qbang.org/wiki/index.php/Download</a>.
+<a href="http://mfizz.com/oss/rxtx-for-java">http://mfizz.com/oss/rxtx-for-java</a>.
+
+ <p>Under Windows, download the zip file, then do something like:</p>
+ <pre>
+ cp ~/src/rxtx/mfz-rxtx-2.2-20081207-win-x64/RXTXcomm.jar c:/Program\ Files/Java/jdk1.7.0_51/jre/lib/ext/
+ cp ~/src/rxtx/mfz-rxtx-2.2-20081207-win-x64/*.dll c:/Program\ Files/Java/jdk1.7.0_51/jre/bin
+ </pre>
+ <p>And then rerun <code>(cd $PTII;./configure)</code></p>
 
  <p>This actor can be used in most domains, but the parameters must
  be chosen carefully to match the domain semantics.  This actor sets
