@@ -1386,8 +1386,7 @@ PTCYGPATH=$(ROOT)/bin/ptcygpath
 L4JC=$(L4J_DIR)/launch4j
 
 # .exe files to be created by Launch4J
-L4J_DOC_EXES = 		designdocv1.exe designdocv2.exe designdocv3.exe \
-				hyvisualdoc.exe visualsensedoc.exe
+L4J_DOC_EXES = 		ptbook.exe
 L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe \
 				visualsense.exe
 L4J_PTPLOT_EXES = 	histogram.exe ptplot.exe
@@ -1416,29 +1415,13 @@ bcvtb_l4j.xml: $(MKL4J)
 bcvtb.exe: bcvtb_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) bcvtb_l4j.xml`
 
-designdocv1_l4j.xml:
-	$(MKL4J) designdocv1 ptolemy.actor.gui.BrowserLauncher \
+ptbook_l4j.xml:
+	$(MKL4J) ptbook ptolemy.actor.gui.BrowserLauncher \
 		 doc/img/pdf.ico \
-		 doc/design/ptIIdesign1-intro.pdf $(DOC_JNLP_JARS) > $@
-	chmod a+x doc/design/ptIIdesign1-intro.pdf
-designdocv1.exe: designdocv1_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) designdocv1_l4j.xml`
-
-designdocv2_l4j.xml:
-	$(MKL4J) designdocv2 ptolemy.actor.gui.BrowserLauncher \
-		doc/img/pdf.ico \
-	        doc/design/ptIIdesign2-software.pdf $(DOC_JNLP_JARS) > $@
-	chmod a+x doc/design/ptIIdesign2-software.pdf
-designdocv2.exe: designdocv2_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) designdocv2_l4j.xml`
-
-designdocv3_l4j.xml:
-	$(MKL4J) designdocv3 ptolemy.actor.gui.BrowserLauncher \
-		doc/img/pdf.ico \
-		doc/design/ptIIdesign3-domains.pdf $(DOC_JNLP_JARS) > $@
-	chmod a+x doc/design/ptIIdesign3-domains.pdf
-designdocv3.exe: designdocv3_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) designdocv3_l4j.xml`
+		 doc/books/systems/PtolemyII_DigitalV1_02.pdf $(DOC_JNLP_JARS) > $@
+	chmod a+x doc/books/systems/PtolemyII_DigitalV1_02.pdf
+ptbook.exe: ptbook_l4j.xml
+	"$(L4JC)" `$(PTCYGPATH) ptbook_l4j.xml`
 
 DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 dopseating_l4j.xml:
