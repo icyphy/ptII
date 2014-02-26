@@ -9370,7 +9370,7 @@ fi
 #       RXTX is the Serial Port interface that replaces
 #       Sun's commapi.
 #	See if there was a command-line option for rxtx is
-#       If not, check to see if $PTII/vendors/sun/rxtx
+#       If not, check to see if $PTII/vendors/misc/rxtx
 #--------------------------------------------------------------------
 # We only need to look for rxtx if $PTII/ptolemy/actor/lib/io/comm is present
 RXTX_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
@@ -9460,13 +9460,13 @@ $as_echo "ok, RXTX is probably in the jre directory" >&6; }; fi
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
     The rxtx package can be found at
-    http://rxtx.qbang.org/wiki/index.php/Download
+    http://mfizz.com/oss/rxtx-for-java\">http://mfizz.com/oss/rxtx-for-java
     and placed in \$PTII/vendors/misc/rxtx so that
     \$PTII/vendors/misc/rxtx/RXTXComm.jar exists." >&5
 $as_echo "$as_me: WARNING: Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
     The rxtx package can be found at
-    http://rxtx.qbang.org/wiki/index.php/Download
+    http://mfizz.com/oss/rxtx-for-java\">http://mfizz.com/oss/rxtx-for-java
     and placed in \$PTII/vendors/misc/rxtx so that
     \$PTII/vendors/misc/rxtx/RXTXComm.jar exists." >&2;}
     fi
