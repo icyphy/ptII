@@ -560,15 +560,10 @@ The Ptiny pack is required.
         <pack name="Docs" required="no">
             <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
 <!--/MacOSInclude-->
-            <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../ptbook.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
 <!--MacOSInclude-->
-            <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
-            <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
-            <file src="../../doc/design/ptIIdesign3-domains.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
+            <file src="../../doc/books/systems/PtolemyII_DigitalV1_02.pdf" targetdir="$INSTALL_PATH/doc/books/systems/"/>
             <file src="../../jar_dist/doc/codeDoc.jar"
                   targetdir="$INSTALL_PATH/doc"/>
         </pack>
@@ -576,13 +571,8 @@ The Ptiny pack is required.
         <pack name="FullDocs" required="no">
             <description>The documentation for HyVisual and VisualSense, including user documentation and java documentation.</description>
 <!--/MacOSInclude-->
-            <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../../visualsensedoc.exe"
-	          targetdir="$INSTALL_PATH/bin"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
 <!--MacOSInclude-->
-            <file src="../../doc/design/hyvisual.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
-            <file src="../../doc/design/visualsense.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../jar_dist/doc/codeDocHyVisual.jar"
                   targetdir="$INSTALL_PATH/doc"/>
             <!-- file src="../../jar_dist/doc/codeDocViptos.jar" targetdir="$INSTALL_PATH/doc"/ -->
