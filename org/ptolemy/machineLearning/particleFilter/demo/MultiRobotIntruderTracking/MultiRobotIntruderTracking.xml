@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-495.0, -235.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 11, 861, 658}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 867, 651}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 541]">
     </property>
@@ -31,7 +31,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-360.0, -205.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1024, 704}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1370, 697}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1136, 587]">
         </property>
@@ -1746,7 +1746,7 @@
         <entity name="Estimator" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 155.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 1022, 736}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1388, 747}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 637]">
             </property>
@@ -1896,7 +1896,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 74, 1142, 628}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 74, 1148, 634}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[914, 511]">
                     </property>
@@ -2219,13 +2219,13 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, -150.0}">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 754}, maximized=true}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=true}">
                     </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 637]">
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1167, 768]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
                     </property>
-                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.3649497487437, 147.4241520100503}">
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{414.5649497487437, 199.82415201005034}">
                     </property>
                     <property name="N_Particles" class="ptolemy.data.expr.Parameter" value="N_Particles">
                     </property>
@@ -2654,7 +2654,7 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 175.0}">
                             </property>
                         </property>
-                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 1024, 617}, maximized=false}">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1320, 634}, maximized=false}">
                         </property>
                         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1086, 500]">
                         </property>
@@ -2745,7 +2745,7 @@
                                     <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, -5.0}">
                                     </property>
                                 </property>
-                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1024, 658}, maximized=false}">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1225, 651}, maximized=false}">
                                 </property>
                                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 541]">
                                 </property>
@@ -2956,7 +2956,7 @@
                                         <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                                         </property>
                                     </property>
-                                    <property name="_location" class="ptolemy.kernel.util.Location" value="{1140.0, 140.0}">
+                                    <property name="_location" class="ptolemy.kernel.util.Location" value="[1130.0, 140.0]">
                                     </property>
                                     <port name="output" class="ptolemy.actor.TypedIOPort">
                                         <property name="output"/>
@@ -3064,8 +3064,6 @@
                                     </property>
                                 </relation>
                                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression6.RotMatrix&quot;,x=1140.0,y=140.0}, tail={id=&quot;Expression5.output&quot;,x=755.0,y=140.0}, points={} } }">
-                                    </property>
                                 </relation>
                                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                                     <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;IntruderPosition._location&quot;,x=115.0,y=55.0}, tail={id=&quot;AddSubtract.plus&quot;,x=240.0,y=65.0}, points={} } }">
@@ -4996,7 +4994,7 @@
         <link port="Estimator.MeasurementData" relation="relation13"/>
     </class>
     <class name="Intruder" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-360.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-360.0, -115.0}">
         </property>
         <property name="Y_init" class="ptolemy.data.expr.Parameter" value="50">
         </property>
@@ -5008,7 +5006,7 @@
         </property>
         <property name="V_in" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 928, 617}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 934, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
         </property>
@@ -5289,6 +5287,11 @@
                         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                         </property>
                         <configure>
+                        </configure>
+                        <configure>
+
+                        </configure>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5317,6 +5320,11 @@
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[479, 586]">
                 </property>
                 <configure>
+                </configure>
+                <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5335,6 +5343,11 @@
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[330, 300]">
                 </property>
                 <configure>
+                </configure>
+                <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5349,6 +5362,11 @@
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[328, 300]">
                 </property>
+                <configure>
+                </configure>
+                <configure>
+
+                </configure>
                 <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -5445,6 +5463,11 @@
                         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                         </property>
                         <configure>
+                        </configure>
+                        <configure>
+
+                        </configure>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5473,6 +5496,11 @@
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[646, 647]">
                 </property>
                 <configure>
+                </configure>
+                <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5491,6 +5519,11 @@
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[344, 300]">
                 </property>
                 <configure>
+                </configure>
+                <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5505,6 +5538,11 @@
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 300]">
                 </property>
+                <configure>
+                </configure>
+                <configure>
+
+                </configure>
                 <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">

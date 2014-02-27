@@ -7,7 +7,7 @@
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-495.0, -265.0}">
         </property>
@@ -16,11 +16,11 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1167, 768]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3030053076244585">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.326915107842764">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-152.02636718749994, -5.133955339779561}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-160.02636718749994, -10.375096221369915}">
     </property>
-    <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="50">
+    <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="100">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -84,7 +84,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Shuhei Emoto, Mai Kimura">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-600.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-600.0, 145.0}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -104,7 +104,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-360.0, -55.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1370, 697}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={172, 22, 1241, 697}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1136, 587]">
         </property>
@@ -1246,9 +1246,9 @@
             </property>
         </entity>
         <entity name="Estimator" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{970.0, 80.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 80.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 97, 1388, 747}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1388, 747}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 637]">
             </property>
@@ -1921,6 +1921,16 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{1020.0, 470.0}">
                 </property>
             </entity>
+            <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+                </property>
+                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+                </property>
+                <property name="persistence" class="ptolemy.data.expr.Parameter" value="Nparticles">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{1830, 250}">
+                </property>
+            </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary.readKeyArray&quot;,x=410.0,y=355.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=535.0,y=290.0}, points={315.0,345.0,315.0,290.0} } }">
                 </property>
@@ -2204,6 +2214,8 @@
             <link port="RecordAssembler.cov" relation="relation24"/>
             <link port="ArrayAverage.input" relation="relation13"/>
             <link port="ArrayAverage.output" relation="relation27"/>
+            <link port="XYScope.inputX" relation="relation48"/>
+            <link port="XYScope.inputY" relation="relation49"/>
         </entity>
         <entity name="OrderedRecordAssembler" class="ptolemy.actor.lib.OrderedRecordAssembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{1085.0, 40.0}">
@@ -2817,8 +2829,6 @@
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;robotMessage._location&quot;,x=730.0,y=70.0}, tail={id=&quot;Estimator.MeasurementDataFromOthers&quot;,x=970.0,y=80.0}, points={} } }">
-            </property>
         </relation>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -2851,8 +2861,6 @@
             </property>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Estimator.PFestimate&quot;,x=970.0,y=80.0}, tail={id=&quot;OrderedRecordAssembler.estimate&quot;,x=1085.0,y=40.0}, points={} } }">
-            </property>
         </relation>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -3072,9 +3080,9 @@
         </property>
     </entity>
     <entity name="intruder1" class="Intruder">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[71.2671702326902, 77.795524481386]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0000000000318, -39.9999999999967]">
         </property>
-        <property name="Y_init" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="Y_init" class="ptolemy.data.expr.Parameter" value="-40">
         </property>
         <property name="W_in" class="ptolemy.data.expr.Parameter" value="pi/5">
         </property>
@@ -3097,7 +3105,7 @@
             </property>
         </property>
         <entity name="DifferentialSystem" class="ptolemy.domains.continuous.lib.DifferentialSystem">
-            <property name="t" class="ptolemy.data.expr.Parameter" value="32.85">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="60.05">
             </property>
             <relation name="_R" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -3124,7 +3132,7 @@
         </entity>
     </entity>
     <entity name="Robot1" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-117.2634345957466, 139.0963801964861]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-51.3872600758209, 151.7206007831943]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 39, 1035, 641}, maximized=false}">
         </property>
@@ -3146,9 +3154,9 @@
             </property>
         </port>
         <entity name="RobotDynamics" class="ptolemy.actor.TypedCompositeActor">
-            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-1.6970929994038">
+            <property name="u_v" class="ptolemy.data.expr.Parameter" value="5.964892040028">
             </property>
-            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="0.5518091416136">
+            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="-12.5165235460759">
             </property>
         </entity>
         <entity name="Sensor" class="ptolemy.actor.TypedCompositeActor">
@@ -3162,21 +3170,19 @@
             </entity>
         </entity>
         <entity name="Estimator" class="ptolemy.actor.TypedCompositeActor">
-            <property name="Covariance" class="ptolemy.data.expr.Parameter" value="[91.3947096086776, -26.4655457623686; -26.4655457623686, 18.6052903913223]">
+            <property name="Covariance" class="ptolemy.data.expr.Parameter" value="[26.6631155830411, -34.9574166885929; -34.9574166885929, 83.3368844169589]">
             </property>
-            <property name="RobotPosition" class="ptolemy.data.expr.Parameter" value="[-117.2634345957466; 139.0963801964861]">
+            <property name="RobotPosition" class="ptolemy.data.expr.Parameter" value="[-51.3872600758209; 151.7206007831943]">
             </property>
             <entity name="ParticleFilter" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
-                <property name="t" class="ptolemy.data.expr.Parameter" value="32.8">
+                <property name="t" class="ptolemy.data.expr.Parameter" value="60.0">
                 </property>
-                <property name="z_m" class="ptolemy.data.expr.Parameter" value="[71.2671702326902; 77.795524481386]">
+                <property name="z_m" class="ptolemy.data.expr.Parameter" value="[40.0000000000318; -39.9999999999967]">
                 </property>
                 <entity name="x_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                    </property>
-                    <property name="x" class="ptolemy.data.expr.Parameter" value="74.25075223695585">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -3186,8 +3192,6 @@
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                    </property>
-                    <property name="y" class="ptolemy.data.expr.Parameter" value="75.22743143710623">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -3231,6 +3235,24 @@
             <entity name="ArrayElement2" class="ptolemy.actor.lib.ArrayElement">
                 <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
                 </property>
+            </entity>
+            <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 278, 500, 395}, maximized=false}">
+                </property>
+                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 351]">
+                </property>
+                <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYScope</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="25.193563540508425" max="45.55335410196903"/>
+<yRange min="-47.73321410895737" max="-34.62808608037255"/>
+<default connected="no" marks="pixels"/>
+</plot>?>
+                </configure>
             </entity>
             <relation name="relation33" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -3466,9 +3488,9 @@
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="intruder, PF1, PF2 , robot_pos1, robot_pos2">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 617, 577}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 610, 577}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[617, 533]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 533]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 435.0}">
             </property>
@@ -3479,8 +3501,8 @@
 <title>Trajectories of Robots, Particle Estimates and the Intruder</title>
 <xLabel>x</xLabel>
 <yLabel>y</yLabel>
-<xRange min="-154.5641251774473" max="186.5220298168956"/>
-<yRange min="-103.15523918934713" max="185.4189689837251"/>
+<xRange min="-3.8404811925383395" max="72.68435365592003"/>
+<yRange min="-43.50566263400638" max="214.8376265213705"/>
 <default marks="various"/>
 </plot>?>
             </configure>
@@ -3490,7 +3512,7 @@
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="intruder, robot1_estimate, robot2_estimate">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={664, 22, 785, 296}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={495, 22, 785, 296}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[785, 252]">
             </property>
@@ -3503,8 +3525,8 @@
 <title>X</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="51.1"/>
-<yRange min="-51.99622566572809" max="109.37705959295046"/>
+<xRange min="0.0" max="102.30000000000001"/>
+<yRange min="-56.60395403473376" max="102.76268607140625"/>
 </plot>?>
             </configure>
         </entity>
@@ -3513,7 +3535,7 @@
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="intruder, robot1_estimate, robot2_estimate">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={658, 312, 781, 291}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={499, 312, 781, 291}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 247]">
             </property>
@@ -3526,8 +3548,8 @@
 <title>Y</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="51.1"/>
-<yRange min="34.797464908368156" max="166.74359966884924"/>
+<xRange min="0.0" max="102.30000000000001"/>
+<yRange min="-53.272841553852984" max="56.57473655915379"/>
 </plot>?>
             </configure>
         </entity>
@@ -3705,7 +3727,7 @@
         </property>
     </entity>
     <entity name="Robot3" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[206.3498194492871, -80.6538317476833]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-47.3204450113091, 153.3583918459304]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 39, 1035, 641}, maximized=false}">
         </property>
@@ -3727,9 +3749,9 @@
             </property>
         </port>
         <entity name="RobotDynamics" class="ptolemy.actor.TypedCompositeActor">
-            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-5.1257384529134">
+            <property name="u_v" class="ptolemy.data.expr.Parameter" value="5.6031381238328">
             </property>
-            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="5.9508190944527">
+            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="-12.4102258191573">
             </property>
         </entity>
         <entity name="Sensor" class="ptolemy.actor.TypedCompositeActor">
@@ -3743,21 +3765,19 @@
             </entity>
         </entity>
         <entity name="Estimator" class="ptolemy.actor.TypedCompositeActor">
-            <property name="Covariance" class="ptolemy.data.expr.Parameter" value="[47.8806373203992, -44.4332609093268; -44.4332609093268, 62.1193626796008]">
+            <property name="Covariance" class="ptolemy.data.expr.Parameter" value="[25.2455436955042, -33.7590333099727; -33.7590333099727, 84.7544563044958]">
             </property>
-            <property name="RobotPosition" class="ptolemy.data.expr.Parameter" value="[206.8268454318112; -81.2047444840533]">
+            <property name="RobotPosition" class="ptolemy.data.expr.Parameter" value="[-47.3204450113091; 153.3583918459304]">
             </property>
             <entity name="ParticleFilter" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
-                <property name="t" class="ptolemy.data.expr.Parameter" value="32.8">
+                <property name="t" class="ptolemy.data.expr.Parameter" value="60.0">
                 </property>
-                <property name="z_m" class="ptolemy.data.expr.Parameter" value="[71.2671702326902; 77.795524481386]">
+                <property name="z_m" class="ptolemy.data.expr.Parameter" value="[40.0000000000318; -39.9999999999967]">
                 </property>
                 <entity name="x_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                    </property>
-                    <property name="x" class="ptolemy.data.expr.Parameter" value="73.74180485025101">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -3767,8 +3787,6 @@
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                    </property>
-                    <property name="y" class="ptolemy.data.expr.Parameter" value="72.33345663686904">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -3812,6 +3830,24 @@
             <entity name="ArrayElement2" class="ptolemy.actor.lib.ArrayElement">
                 <property name="index" class="ptolemy.actor.parameters.PortParameter" value="1">
                 </property>
+            </entity>
+            <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={780, 352, 500, 344}, maximized=false}">
+                </property>
+                <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+                </property>
+                <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYScope</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="27.343662681551244" max="46.79057640069978"/>
+<yRange min="-45.30452756228971" max="-32.57332408687578"/>
+<default connected="no" marks="pixels"/>
+</plot>?>
+                </configure>
             </entity>
             <relation name="relation33" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
