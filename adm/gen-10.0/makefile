@@ -121,6 +121,7 @@ PTII_TOPDIR=	.cshrc \
 		config \
 		configure \
 		configure.in \
+		contrib \
 		copyright.htm \
 		copyright.txt \
 		diva \
