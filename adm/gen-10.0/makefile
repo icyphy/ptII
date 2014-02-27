@@ -134,6 +134,7 @@ PTII_TOPDIR=	.cshrc \
 		org \
 		ptdb \
 		ptKeystore.properties \
+		pt-modules \
 		ptolemy \
 		ptserver \
 		thales \
