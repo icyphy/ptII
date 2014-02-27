@@ -117,7 +117,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     exec svn update doc/books/systems
     set bookURL http://ptolemy.eecs.berkeley.edu/books/Systems/PtolemyII_DigitalV1_02.pdf
     puts "Getting the Ptolemy book $bookURL"
-    exec wget $bookURL
+    exec -stderrok wget $bookURL
     exec mv PtolemyII_DigitalV1_02.pdf doc/books/systems/
     puts "Removing \$PTII/index.html and \$PTII/toc.htm, which can be created while exporting HTML for the book."
     exec rm -f index.html toc.htm
