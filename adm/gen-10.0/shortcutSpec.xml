@@ -95,56 +95,24 @@
     <createForPack name="Full"/>
   </shortcut>
 
+
    <shortcut
-     name="Design Document Vol 1 - Intro"
+     name="Systems Book"
      programGroup="yes"
      desktop="no"
      applications="no"
      startMenu="no"
      startup="no"
-     target="$INSTALL_PATH\doc\design\ptIIdesign1-intro.pdf"
+     target="$INSTALL_PATH\doc\books\systems\PtolemyII_DigitalV1_02.pdf"
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 1 - Introduction - of the Ptolemy 10.0.devel Design Document (PDF)"
+     description="This opens Adobe (Acrobat) Reader (if available) to view System Design, Modeling, and Simulation using Ptolemy II (PDF)"
      >
      <createForPack name="Docs" />
    </shortcut>
 
-   <shortcut
-     name="Design Document Vol 2 - Software"
-     programGroup="yes"
-     desktop="no"
-     applications="no"
-     startMenu="no"
-     startup="no"
-     target="$INSTALL_PATH\doc\design\ptIIdesign2-software.pdf"
-     commandLine=""
-     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
-     iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 2 - Software - of the Ptolemy 10.0.devel Design Document (PDF)"
-     >
-     <createForPack name="Docs" />
-   </shortcut>
-
-   <shortcut
-     name="Design Document Vol 3 - Domains"
-     programGroup="yes"
-     desktop="no"
-     applications="no"
-     startMenu="no"
-     startup="no"
-     target="$INSTALL_PATH\doc\design\ptIIdesign3-domains.pdf"
-     commandLine=""
-     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
-     iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 3 - Domains - of the Ptolemy 10.0.devel Design Document (PDF)"
-     >
-     <createForPack name="Docs" />
-   </shortcut>
-
-
-   <shortcut
+   <!-- shortcut
      name="HyVisual Documentation"
      programGroup="yes"
      desktop="no"
@@ -158,9 +126,9 @@
      description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual 10.0.devel (PDF) user documentation"
      >     
      <createForPack name="FullDocs" />
-   </shortcut>
+   </shortcut -->
 
-   <shortcut
+   <!-- shortcut
      name="VisualSense Documentation"
      programGroup="yes"
      desktop="no"
@@ -174,6 +142,6 @@
      description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense 10.0.devel (PDF) user documentation"
      >	  
      <createForPack name="FullDocs" />
-   </shortcut>
+   </shortcut -->
 
 </shortcuts>
