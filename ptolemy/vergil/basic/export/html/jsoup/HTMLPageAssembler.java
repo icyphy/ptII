@@ -175,9 +175,9 @@ public class HTMLPageAssembler extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HTMLPageAssembler newObject = (HTMLPageAssembler) super.clone(workspace);
-        // Expanding the configuration via the copyright facility
-        // indicated we needed a clone() method.
-        newObject.newline.setExpression(newline.getExpression());
+        // Not sure why this is necessary, but it stops
+        // (cd $PTII/ptolemy/configs/test; $PTII/bin/ptjacl allConfigs.tcl) from failing.
+        newObject.newline = (Parameter)newObject.getAttribute("newline");
         return newObject;
     }
 
