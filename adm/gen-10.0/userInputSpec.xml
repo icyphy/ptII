@@ -2,7 +2,7 @@
   <!-- Install -->
     <panel order="0">
 	<field type="check" variable="startPtiny">
-	  <spec txt="Would you like to start Ptolemy next?)" true="true" false="false"
+	  <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
 		id="startPtinyCheck"
 		set="true"/>
 	</field>
@@ -10,7 +10,7 @@
     <panel order="1">
 	<field type="check" variable="startVergil">
           <createForPack name="Full" />
-	  <spec txt="Would you like to start Ptolemy next?)" true="true" false="false"
+	  <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
 		id="startVergilCheck"
 		set="true"/>
 	</field>
