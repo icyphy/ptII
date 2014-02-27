@@ -76,8 +76,10 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
+# auto/Cookies.xml and auto/OptimizationAdvisor.xml use the HTMLPageExporter
+# actor, which requires the jsoup jar
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.ptolemy.ptango.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(PTJSOUP_JAR)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.ptolemy.ptango.test.junit.JUnitTclTest)
 
 test_java: jclass
 

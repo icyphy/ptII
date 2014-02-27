@@ -37,8 +37,9 @@ DIRS =	auto $(PTJUNIT_DIR)
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-# auto/SequenceToArray2.xml uses mapss.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar
+# auto/Cookies.xml and auto/OptimizationAdvisor.xml use the HTMLPageExporter
+# actor, which requires the jsoup jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(PTJSOUP_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
