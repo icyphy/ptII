@@ -2655,7 +2655,7 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup:  test_setup_start test_setup_make_fast_install test_setup_test
+test_setup:  test_setup_start test_setup_make_fast_install test_setup_test test_setup_ant
 
 test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest 
 
@@ -2699,7 +2699,7 @@ test_setup_make_tests:
 
 
 test_setup_ant:
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant build) 
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars) 
 
 test_setup_end: test_setup_XvfbStop
 
