@@ -33,10 +33,11 @@ ME =		doc/papers/y14/attackModeling
 
 # Sub directories to run make in.
 # Don't include src directory, since we don't ship it with the release
-DIRS =		test
+# Don't need a test here, we test it elsewhere.
+DIRS =		
 
 # Root of Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
