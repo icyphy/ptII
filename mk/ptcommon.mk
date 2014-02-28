@@ -865,7 +865,28 @@ _jnlps:
 			EXAMPLE_SUBMODELS="$(EXAMPLE_SUBMODELS)" \
 			JNLP_MODEL=`basename $$x .xml` \
 			JNLP_MODEL_DIRECTORY=$(ME) \
+			KEYSTORE="$(KEYSTORE)" \
+			KEYALIAS="$(KEYALIAS)" \
+			KEYPASSWORD="$(KEYPASSWORD)" \
+			STOREPASSWORD="$(STOREPASSWORD)" \
 			book_dist_update); \
+	done
+
+# Clean stuff.
+# 
+# Run this in the model directory, for example:
+# cd doc/papers/y14/constructive/models
+# make jnlps_real_clean
+jnlps_real_clean:
+	#
+	# mk/ptcommon.mk: jnlps rule.  About to run book_real_clean in $(EXAMPLE_MODELS).
+	#
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		(cd $(ROOT); $(MAKE) \
+			JNLP_MODEL_DIRECTORY=$(ME) \
+			JNLP_MODEL=`basename $$x .xml` \
+			book_real_clean); \
 	done
 
 # If index.html.in exists, then use it, otherwise create index.html.
