@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <!-- doc/books/systems/continuous/index.html.in $Id: index.html.in 68524 2014-02-28 05:56:47Z cxh $ 
+	 This gets copied to the website.
+
+If you want to change http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/attackModeling/index.html, then the source code at $PTII/doc/papers/y14/attackModeling/index.html.in.  That file gets copied to /home/www/ptweb/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/attackModeling on moog.
+
+To update, you could
+1. Edit $PTII/doc/papers/y14/attackModeling/index.html.in
+2.    scp index.html.in moog:/tmp
+3. Log on to moog as eal
+4. Become root:   sudo -i
+5. cd /home/www/ptweb/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/attackModeling
+6. cp index.html.in .
+
+      -->
+    <title></title>
+  </head>
+  <!--#include virtual="/ssi/toppremenu.htm" -->
+  <!--#include virtual="toc.htm" -->
+  <!--#include virtual="/ssi/toppostmenu.htm" -->
+  <!-- Do not include a body open tag here, the ssi does it -->
+  <h1>Car Tracking Attack Modeling</h1>
+<p>This page contains links to the models described in
+<p>TBD</p>
+<p>The models are in HTML and Java Web Start format.</p>
+
+  <ul>
+<li> <a href="CarTrackingAttackModeling/index.html">CarTrackingAttackModeling</a></li>
+  </ul>
+
+  <!--#include virtual="/ssi/bottom.htm" -->
+  <!-- Do not include a body or html close tag here, the ssi does it -->

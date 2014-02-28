@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy II 2014 papers
+# Makefile for the Ptolemy II Attack Modeling paper
 #
 # Version: $Id: makefile 64744 2012-10-01 22:51:43Z cxh $
 # Makefile Author: Christopher Brooks
@@ -29,33 +29,32 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/papers/y14
+ME =		doc/papers/y14/attackModeling
 
 # Sub directories to run make in.
-DIRS =		attackModeling constructive
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	y14
-#PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	models
+PTCLASSJAR = 	$(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	attackModeling/attackModeling.jar \
-	constructive/constructive.jar
+#PTCLASSALLJARS = \
 
-OTHER_FILES_TO_BE_JARED =
+EXAMPLE_MODELS = \
+	CarTrackingAttackModeling.xml
+
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -63,22 +62,23 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	index.html.in \
+	toc.htm
 
-all: suball
-install: all jars
+all: jclass
+install: jclass jars
 
-jnlps:
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making all in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) JNLP_MODEL_DIRECTORY=$(ME)/$$x jnlps ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
+# The main target for this file is "jnlps", which is defined in $PTII/mk/ptcommon.mk
+
+# See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport
+# For instructions about how to update http://ptolemy.org/constructive
+
+# For an example that is in the ptII repo, see the $PTII/mk/jnlp.mk file.
+
+# $PTII/mk/jnlp.mk calls "make echo_models"
+echo_models:
+	@echo "$(EXAMPLE_MODELS) $(EXAMPLE_SUBMODELS)" | awk '{for(i=1;i<=NF;i++) {print $$i}}' | sort
+
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
