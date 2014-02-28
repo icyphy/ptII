@@ -2503,10 +2503,11 @@ cleanSrc:
 	rm -f src/ptII$(VERSION)/.classpath
 	rm -f src/ptII$(VERSION)/lib/ptII.properties
 
+BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe cleanSrc src/ptII$(VERSION)/bin/vergil ../../ptolemy/matlab/ptmatlab.dll 
+$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe cleanSrc src/ptII$(VERSION)/bin/vergil ../../ptolemy/matlab/ptmatlab.dll ../../doc/books/systems/$(BOOK_PDF)
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
@@ -2583,7 +2584,7 @@ L4JC=$(L4J_DIR)/launch4j
 
 PTSETUP_DEPENDENCIES = \
 	../../ptiny.exe \
-	../../designdocv1.exe \
+	../../ptbook.exe \
 	../../jar_dist \
 	../../ptolemy/matlab/ptmatlab.dll
 
@@ -2628,8 +2629,19 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 ../../ptiny.exe:
 	 $(MAKE) -C ../.. exes
 
-../../designdocv1.exe:
+../../ptbook.exe:
 	 $(MAKE) -C ../.. exes
+
+book_pdf: ../../doc/books/systems/$(BOOK_PDF)
+
+BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
+../../doc/books/systems/$(BOOK_PDF):
+	if [ ! -f "$@" ] ; then \
+		echo "Downloading $(BOOK_URL)"; \
+		wget $(BOOK_URL); \
+		mv $(BOOK_PDF) ../../doc/books/systems; \
+		ls -l "$@"; \
+	fi
 
 ../../jar_dist:
 	if [ ! -d "$@" ] ; then \
@@ -2699,7 +2711,7 @@ test_setup_make_tests:
 
 
 test_setup_ant:
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars) 
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars; PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest) 
 
 test_setup_end: test_setup_XvfbStop
 
