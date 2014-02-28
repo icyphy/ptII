@@ -4,7 +4,17 @@
     <meta charset=utf-8>
     <!-- doc/books/systems/continuous/index.html.in $Id$ 
 	 This gets copied to the website.
-	 scp index.html.in moog:/export/home/pt0/ptweb/books/Systems/models/doc/books/systems/continuous/index.html
+
+If you want to change http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/constructive/models/index.html, then the source code at $PTII/doc/papers/y14/constructive/models/index.html.in.  That file gets copied to /home/www/ptweb/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/constructive/models on moog.
+
+To update, you could
+1. Edit $PTII/doc/papers/y14/constructive/models/index.html.in
+2.    scp index.html.in moog:/tmp
+3. Log on to moog as eal
+4. Become root:   sudo -i
+5. cd /home/www/ptweb/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/constructive/models
+6. cp index.html.in .
+
       -->
     <title></title>
   </head>
