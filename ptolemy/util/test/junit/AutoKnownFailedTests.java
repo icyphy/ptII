@@ -67,8 +67,13 @@ import org.junit.runner.RunWith;
 public class AutoKnownFailedTests extends ModelKnownFailedTests {
 
     /**
-     * Execute a model.  Timeout after 5 minutes (30,000 ms.).
+     * Execute a model.  Timeout after 150000 ms.
      *
+     * <p>To check the time, go to the list of tests for AutoTest, for example
+     * <a href="http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/724/testReport/ptolemy.util.test.junit/AutoKnownFailedTests/"><code>http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/724/testReport/ptolemy.util.test.junit/AutoKnownFailedTests/</code></a>,
+     * where 724 is a recent run of the build.  Look for thhe longest
+     * passing test, typically OpenModelicaInteractive (15 sec.), and round up by a factor
+     * of 10 because 15 sec. is so small.</p>
      * @param fullPath
      *            The full path to the model file to be executed. If the
      *            fullPath ends with the value of the
@@ -77,7 +82,7 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
      * @exception Throwable
      *                If thrown while executing the model.
      */
-    @Test(timeout=2400000)
+    @Test(timeout=150000)
     @Parameters(method = "modelValues")
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
