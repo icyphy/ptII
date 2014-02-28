@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 
+<!-- Used by izPack to create Windows Menu Shortcuts.  See ptIIX_Y_setup_windows.xml -->
 <shortcuts>
   <skipIfNotSupported/>
 
@@ -96,6 +97,7 @@
   </shortcut>
 
 
+  <!-- Other places to update the book location: $PTII/adm/gen-X.Y/{makefile,ptIIX_Y_devel_setup_windows.xml} adm/test/Release.tcl -->
    <shortcut
      name="Systems Book"
      programGroup="yes"

@@ -339,6 +339,18 @@ $(PTIIDIST):
 		> /tmp/jars_tmp.xml
 	mv /tmp/jars_tmp.xml \
 		$(PTIIDIST)/jars.xml
+	# Fix up experimentalDirector.xml
+	egrep -v "openmodelica" \
+		< $(PTIIHOME)/ptolemy/configs/experimentalDirectors.xml \
+		> /tmp/experimentalDirectors.xml 
+	mv /tmp/experimentalDirectors.xml \
+		$(PTIIDIST)/ptolemy/configs/experimentalDirectors.xml
+	# Fix up doc/makefile
+	egrep -v "giotto.cgc|openmodelica" \
+		< $(PTIIHOME)/doc/makefile \
+		> /tmp/makefile_tmp
+	mv /tmp/makefile_tmp \
+		$(PTIIDIST)/doc/makefile
 	# Remove ImportFMUAsJavaFMUAction.java from the makefile
 	egrep -v "ImportFMUAsJavaFMUAction.java" \
 		< $(PTIIHOME)/ptolemy/vergil/basic/imprt/fmu/makefile \
@@ -680,19 +692,6 @@ src_jar: #$(PTII_SRC)
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 	echo "About to remove unneeded sources from `pwd`"; \
 	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
-	# Fix up experimentalDirector.xml
-	egrep -v "openmodelica" \
-		src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml \
-		> src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml_tmp
-	mv src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml_tmp \
-	        src_jar/ptII$(VERSION)/ptolemy/configs/experimentalDirectors.xml
-	# Fix up doc/makefile
-	egrep -v "giotto.cgc|openmodelica" \
-		src_jar/ptII$(VERSION)/doc/makefile \
-		> src_jar/ptII$(VERSION)/doc/makefile.tmp
-	mv src_jar/ptII$(VERSION)/doc/makefile.tmp \
-		src_jar/ptII$(VERSION)/doc/makefile
-
 
 ############################################
 # HyVisual
@@ -2681,9 +2680,16 @@ test_setup_announce:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 
-test_setup_installerTest:
+test_setup_installerTest: _test_setup_installer_test_clean test/installerTest
+
+_test_setup_installerTest:
 	rm -rf test/installerTest
-	java -jar $(PTSETUP).jar installerTest.xml
+
+test/installerTest:
+	if [ ! -f test/installerTest ]; then \
+		echo "Invoking java -jar $(PTSETUP).jar installerTest.xml to create test/installerTest"; \
+		java -jar $(PTSETUP).jar installerTest.xml; \
+	fi
 
 test_setup_XvfbStart:
 	-pkill Xvfb
@@ -2710,8 +2716,8 @@ test_setup_make_tests:
 	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` tests)
 
 
-test_setup_ant:
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars; PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest) 
+test_setup_ant: test/installerTest
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars; PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest; PTII=`pwd` ant clean; cp build.default.xml build.xml; PTII=`pwd` ant) 
 
 test_setup_end: test_setup_XvfbStop
 

@@ -604,6 +604,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII10.0.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/diva" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/doc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII10.0.devel/jars.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/lbnl" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/lib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/makefile" targetdir="$INSTALL_PATH"/>
@@ -611,6 +612,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII10.0.devel/net" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/org" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/ptdb" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII10.0.devel/pt-modules" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/ptolemy" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/thales" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.devel/util" targetdir="$INSTALL_PATH"/>
