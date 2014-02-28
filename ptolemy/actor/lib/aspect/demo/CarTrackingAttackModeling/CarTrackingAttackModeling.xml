@@ -4,18 +4,18 @@
 <entity name="CarTrackingAttackModeling" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 22, 955, 634}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 36, 1248, 732}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1014, 622]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2689865934185875">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9333387803272737">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.70417807066093, 204.84868723497186}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.2832031249999, 268.8857460781872}">
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple adaptive cruise control system,&#10;illustrating model-integrated control strategies. A leading&#10;car model produces information that is observed with possible&#10;flaws by a following car. If the following car detects flaws, it&#10;uses a conservative strategy. Otherwise, it tracks the leading&#10;car closely.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 290.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -26,6 +26,14 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To use the model, switch the aspects &#10;in the relation between the LeadingCar &#10;and the FollowingCar:&#10;&#10;1. Right-click on the FollowingCar input &#10;    port&#10;2. Customize -&gt; Configure&#10;3. Enable one of the four Attack Models &#10;    by ticking the box and setting the &#10;    inputPort to 'in'.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 10.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
     <entity name="Position" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -33,7 +41,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="leading car, normal, man in the middle, fabrication, interruption, replay">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={649, 471, 522, 343}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1129, 281, 522, 343}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 299]">
         </property>
@@ -426,7 +434,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="leading car, following car">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 471, 522, 343}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1169, 281, 522, 343}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 299]">
         </property>
