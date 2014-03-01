@@ -779,9 +779,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Get the attributes of the composites.  We need to traverse
         // each opaque composite because it might have inner opaque composites.
         // ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml needed this.
+	System.out.println("allAttributeJars1.4: " + compositeEntity);
         Iterator composites = compositeEntity.deepEntityList().iterator();
         while (composites.hasNext()) {
             Object object = composites.next();
+	    if (_debug) {
+		System.out.println("allAttributeJars1.5: " + object);
+	    }
             if (object instanceof CompositeEntity) {
                 // FIXME: should we get the attributes inside atomic actors?
                 if (_debug) {
@@ -803,6 +807,21 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             //             }
         }
 
+        composites = compositeEntity.entityList(ptolemy.actor.TypedCompositeActor.class).iterator();
+        while (composites.hasNext()) {
+            Object object = composites.next();
+	    if (_debug) {
+		System.out.println("allAttributeJars2.5: " + object);
+	    }
+            if (object instanceof CompositeEntity) {
+                // FIXME: should we get the attributes inside atomic actors?
+                if (_debug) {
+                    System.out.println("allAttributeJars32: " + object);
+                }
+                results.putAll(_allAttributeJars((CompositeEntity) object));
+
+            }
+	}
         //         composites = _model.deepEntityList().iterator();
         //         while (composites.hasNext()) {
         //             Object object = composites.next();
