@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 538]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6227935586426155">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.4982348469140925">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{608.4869939630684, 291.38281250000017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{608.4869939630681, 291.38281250000017}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8063">
@@ -41,25 +41,44 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Give server time to start&#10;Started in separate thread &#10;during initialize()&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 70.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Settings:&#10;DE Director: stopWhenQueueIsEmpty false&#10;Model: enableBackwardTypeInference true&#10;ThreadedComposite: delay UNDEFINED for all">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Settings:&#10;DE Director: stopWhenQueueIsEmpty false&#10;Model: enableBackwardTypeInference true&#10;ThreadedComposites inside SmartRoomClient: delay UNDEFINED for all">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, -35.0]">
         </property>
     </property>
+    <property name="getRequestCount" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, -25.0]">
+        </property>
+    </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 170.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 205.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay10" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 205.0]">
         </property>
     </entity>
     <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
@@ -67,337 +86,11 @@
         </property>
         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
         </property>
-    </entity>
-    <entity name="SmartRoomClient" class="ptolemy.actor.lib.hoc.ThreadedComposite">
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
-        </property>
-        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
-            <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
-        </property>
-        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 230.0]">
-        </property>
-        <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="done" class="ptolemy.actor.lib.hoc.MirrorPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <entity name="ThreadedCompositeInside" class="ptolemy.actor.lib.hoc.MirrorComposite$MirrorCompositeContents">
-            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 165.0]">
-                </property>
-            </property>
-            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 225.0]">
-                </property>
-            </property>
-            <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">GET /room (also calls GET /room/markers and GET /room/map)</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 285.0]">
-                </property>
-            </property>
-            <property name="lights" class="ptolemy.data.expr.Parameter" value="{{name = &quot;L1&quot;, x = 50.0, y = 150.0}, {name = &quot;L2&quot;, x = 120.0, y = 20.0}, {name = &quot;L3&quot;, x = 300.0, y = 202.0}, {name = &quot;L4&quot;, x = 499.0, y = 199.0}, {name = &quot;L5&quot;, x = 88.0, y = 88.0}}">
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 220.0]">
-                </property>
-            </property>
-            <property name="sensors" class="ptolemy.data.expr.Parameter" value="{{name = &quot;S1&quot;, value = 276.4607272626583, x = 11.0, y = 11.0}, {name = &quot;S2&quot;, value = 621.451367547874, x = 123.0, y = 224.0}, {name = &quot;S3&quot;, value = 214.2019819439534, x = 355.0, y = 401.0}}">
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 240.0]">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 57, 928, 617}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{411.99999999999994, 414.98437500000006}">
-            </property>
-            <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">POST /room/markers</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[229.99999999999994, 465.0]">
-                </property>
-            </property>
-            <property name="annotation5" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">GET /room</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[224.99999999999994, 605.0]">
-                </property>
-            </property>
-            <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 360.0]">
-                </property>
-            </port>
-            <port name="done" class="ptolemy.actor.lib.hoc.MirrorPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 740.0]">
-                </property>
-            </port>
-            <entity name="Test" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML&gt;\r\n&lt;html&gt;\r\n\t&lt;head&gt;\r\n\t\t&lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt;\r\n\t\t&lt;meta charset='utf-8'&gt;\r\n\t\t\r\n\t\t&lt;!--  Set width to pixel width of screen, so display isn't zoomed out\r\n\t\t      by default.  Mainly for mobile, but doesn't hurt on desktop. --&gt;\r\n\t\t&lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1\&quot;&gt;\r\n\t\t\r\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;common.css\&quot; /&gt;\r\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;berkeley.css\&quot; /&gt;\r\n\t\t\r\n\t\t&lt;!-- Desktop-specific CSS --&gt;\r\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css\&quot; /&gt;\r\n\t\t\r\n\t\t&lt;!-- Mobile-specific CSS--&gt;\r\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\r\n\t\t&lt;!--  &lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css\&quot; /&gt; --&gt;\r\n\t\t\r\n\t\t\r\n\t\t&lt;!--  Use Google CDN when possible, since it is very common, and \r\n\t\t      will probably already have downloaded to user's device.  \r\n\t\t      Scripts are generally cached by the device once downloaded,\r\n\t\t      with each CDN seen as unique, even if the script is the same.  --&gt;\r\n\t\t&lt;script src=\&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js\&quot;&gt; &lt;/script&gt;\r\n\t\t\r\n\t\t&lt;!-- Desktop-specific JS--&gt;\r\n\t\t&lt;!-- jQueryUI not available through Google CDN --&gt;\r\n\t\t&lt;!--  Used for toggle checkboxes --&gt;\r\n\t\t&lt;script src=\&quot;http://code.jquery.com/ui/1.10.2/jquery-ui.js\&quot;&gt;&lt;/script&gt;\r\n\t\t \r\n\t\t&lt;!-- Mobile-specific JS--&gt;\r\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\r\n\t\t&lt;!-- &lt;script src=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\&quot;&gt; &lt;/script&gt; --&gt; \r\n\t\t\r\n\t\t&lt;!--  Dygraphs --&gt;\r\n\t\t&lt;!-- &lt;script src=\&quot;http://dygraphs.com/dygraph-combined.js\&quot;&gt; &lt;/script&gt; --&gt;\r\n\t\t\r\n\t\t&lt;!--  Heat map graphic uses the d3 library --&gt; \r\n\t\t&lt;script src=\&quot;http://d3js.org/d3.v3.min.js\&quot;&gt; &lt;/script&gt;\r\n\t\t&lt;script src=\&quot;heatmap.js\&quot;&gt; &lt;/script&gt;\r\n\r\n\t\t&lt;title&gt; Smart Room &lt;/title&gt;\r\n\t&lt;/head&gt;\r\n\r\n\t&lt;body&gt;\r\n\t\r\n\t&lt;!-- Header --&gt;\r\n\t&lt;header data-role=\&quot;header\&quot;&gt; \r\n\t\t &lt;!-- Nav bar --&gt;\r\n\t\t &lt;!--  \r\n\t \t&lt;nav&gt;\r\n\t \t\t&lt;ul&gt; \r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;index.html\&quot;&gt; HEAT MAP &lt;/a&gt; &lt;/li&gt;\r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;sensors.html\&quot;&gt; SENSORS &lt;/a&gt; &lt;/li&gt;\r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;settings.html\&quot;&gt; SETTINGS &lt;/a&gt; &lt;/li&gt;\r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;about.html\&quot;&gt; ABOUT&lt;/a&gt; &lt;/li&gt;\r\n\t \t\t&lt;/ul&gt;\r\n\t \t&lt;/nav&gt;\r\n\t \t--&gt;\r\n\t&lt;/header&gt;\t\t\r\n \t\r\n\r\n \t\r\n \t&lt;!-- Content --&gt;\r\n\t&lt;div&gt;\r\n\t\t&lt;!-- TODO:  Add flip switch for heat map? jQueryUI? --&gt;\r\n\t\t&lt;!--  \r\n\t\t&lt;label for=\&quot;flip\&quot;&gt; Heat map:&lt;/label&gt;\r\n\t\t&lt;select name=\&quot;flip\&quot; id=\&quot;flip\&quot; data-role=\&quot;slider\&quot;&gt;\r\n\t\t\t&lt;option value=\&quot;off\&quot;&gt;Off&lt;/option&gt;\r\n\t\t\t&lt;option value=\&quot;on\&quot;&gt;On&lt;/option&gt;\r\n\t\t&lt;/select&gt; \r\n\t\t--&gt;\r\n\t\t\r\n\t\t&lt;!-- Toggle radio group from jQueryUI --&gt;\r\n\t\t&lt;div id=\&quot;radio-group\&quot; class=\&quot;radio-group\&quot;&gt;\r\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio1\&quot; name=\&quot;radio\&quot; checked=\&quot;checked\&quot; onclick=\&quot;postMarkers()\&quot;/&gt;&lt;label for=\&quot;radio1\&quot;&gt;View Heat Map&lt;/label&gt;\r\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio2\&quot; name=\&quot;radio\&quot; onclick=\&quot;clearHeatMap()\&quot;/&gt;&lt;label for=\&quot;radio2\&quot;&gt;Move Markers&lt;/label&gt;\r\n\t\t&lt;/div&gt;\r\n\t\t\r\n\t\t&lt;div id=\&quot;room-map\&quot;&gt; \r\n\t\t\r\n\t\t&lt;/div&gt;\r\n\t&lt;/div&gt;\r\n\t\r\n\t&lt;!-- Footer --&gt; \r\n\t&lt;footer data-role=\&quot;footer\&quot;&gt; \r\n\t\t&lt;ul&gt; \r\n\t\t\t&lt;li&gt; &lt;/li&gt;\r\n\t\t&lt;/ul&gt;\r\n\t&lt;/footer&gt;\r\n\t\r\n\t&lt;/body&gt;\r\n&lt;/html&gt;\r\n\r\n&quot;}">
-                </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 355.0]">
-                </property>
-            </entity>
-            <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8063/room">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 360.0]">
-                </property>
-            </entity>
-            <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8063/room/markers">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 550.0]">
-                </property>
-            </entity>
-            <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 510.0]">
-                </property>
-                <port name="lightsList" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-                <port name="sensorsList" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
-                </port>
-            </entity>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="lights">
-                </property>
-                <doc>Create a constant sequence.</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[274.99999999999994, 525.0]">
-                </property>
-            </entity>
-            <entity name="Const2" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="sensors">
-                </property>
-                <doc>Create a constant sequence.</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[279.99999999999994, 560.0]">
-                </property>
-            </entity>
-            <entity name="Test2" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[\&quot;OK\&quot;]\n&quot;}">
-                </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 600.0]">
-                </property>
-            </entity>
-            <entity name="Test3" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML&gt;\r\n&lt;html&gt;\r\n\t&lt;head&gt;\r\n\t\t&lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt;\r\n\t\t&lt;meta charset='utf-8'&gt;\r\n\t\t\r\n\t\t&lt;!--  Set width to pixel width of screen, so display isn't zoomed out\r\n\t\t      by default.  Mainly for mobile, but doesn't hurt on desktop. --&gt;\r\n\t\t&lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1\&quot;&gt;\r\n\t\t\r\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;common.css\&quot; /&gt;\r\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;berkeley.css\&quot; /&gt;\r\n\t\t\r\n\t\t&lt;!-- Desktop-specific CSS --&gt;\r\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css\&quot; /&gt;\r\n\t\t\r\n\t\t&lt;!-- Mobile-specific CSS--&gt;\r\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\r\n\t\t&lt;!--  &lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css\&quot; /&gt; --&gt;\r\n\t\t\r\n\t\t\r\n\t\t&lt;!--  Use Google CDN when possible, since it is very common, and \r\n\t\t      will probably already have downloaded to user's device.  \r\n\t\t      Scripts are generally cached by the device once downloaded,\r\n\t\t      with each CDN seen as unique, even if the script is the same.  --&gt;\r\n\t\t&lt;script src=\&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js\&quot;&gt; &lt;/script&gt;\r\n\t\t\r\n\t\t&lt;!-- Desktop-specific JS--&gt;\r\n\t\t&lt;!-- jQueryUI not available through Google CDN --&gt;\r\n\t\t&lt;!--  Used for toggle checkboxes --&gt;\r\n\t\t&lt;script src=\&quot;http://code.jquery.com/ui/1.10.2/jquery-ui.js\&quot;&gt;&lt;/script&gt;\r\n\t\t \r\n\t\t&lt;!-- Mobile-specific JS--&gt;\r\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\r\n\t\t&lt;!-- &lt;script src=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\&quot;&gt; &lt;/script&gt; --&gt; \r\n\t\t\r\n\t\t&lt;!--  Dygraphs --&gt;\r\n\t\t&lt;!-- &lt;script src=\&quot;http://dygraphs.com/dygraph-combined.js\&quot;&gt; &lt;/script&gt; --&gt;\r\n\t\t\r\n\t\t&lt;!--  Heat map graphic uses the d3 library --&gt; \r\n\t\t&lt;script src=\&quot;http://d3js.org/d3.v3.min.js\&quot;&gt; &lt;/script&gt;\r\n\t\t&lt;script src=\&quot;heatmap.js\&quot;&gt; &lt;/script&gt;\r\n\r\n\t\t&lt;title&gt; Smart Room &lt;/title&gt;\r\n\t&lt;/head&gt;\r\n\r\n\t&lt;body&gt;\r\n\t\r\n\t&lt;!-- Header --&gt;\r\n\t&lt;header data-role=\&quot;header\&quot;&gt; \r\n\t\t &lt;!-- Nav bar --&gt;\r\n\t\t &lt;!--  \r\n\t \t&lt;nav&gt;\r\n\t \t\t&lt;ul&gt; \r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;index.html\&quot;&gt; HEAT MAP &lt;/a&gt; &lt;/li&gt;\r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;sensors.html\&quot;&gt; SENSORS &lt;/a&gt; &lt;/li&gt;\r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;settings.html\&quot;&gt; SETTINGS &lt;/a&gt; &lt;/li&gt;\r\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;about.html\&quot;&gt; ABOUT&lt;/a&gt; &lt;/li&gt;\r\n\t \t\t&lt;/ul&gt;\r\n\t \t&lt;/nav&gt;\r\n\t \t--&gt;\r\n\t&lt;/header&gt;\t\t\r\n \t\r\n\r\n \t\r\n \t&lt;!-- Content --&gt;\r\n\t&lt;div&gt;\r\n\t\t&lt;!-- TODO:  Add flip switch for heat map? jQueryUI? --&gt;\r\n\t\t&lt;!--  \r\n\t\t&lt;label for=\&quot;flip\&quot;&gt; Heat map:&lt;/label&gt;\r\n\t\t&lt;select name=\&quot;flip\&quot; id=\&quot;flip\&quot; data-role=\&quot;slider\&quot;&gt;\r\n\t\t\t&lt;option value=\&quot;off\&quot;&gt;Off&lt;/option&gt;\r\n\t\t\t&lt;option value=\&quot;on\&quot;&gt;On&lt;/option&gt;\r\n\t\t&lt;/select&gt; \r\n\t\t--&gt;\r\n\t\t\r\n\t\t&lt;!-- Toggle radio group from jQueryUI --&gt;\r\n\t\t&lt;div id=\&quot;radio-group\&quot; class=\&quot;radio-group\&quot;&gt;\r\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio1\&quot; name=\&quot;radio\&quot; checked=\&quot;checked\&quot; onclick=\&quot;postMarkers()\&quot;/&gt;&lt;label for=\&quot;radio1\&quot;&gt;View Heat Map&lt;/label&gt;\r\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio2\&quot; name=\&quot;radio\&quot; onclick=\&quot;clearHeatMap()\&quot;/&gt;&lt;label for=\&quot;radio2\&quot;&gt;Move Markers&lt;/label&gt;\r\n\t\t&lt;/div&gt;\r\n\t\t\r\n\t\t&lt;div id=\&quot;room-map\&quot;&gt; \r\n\t\t\r\n\t\t&lt;/div&gt;\r\n\t&lt;/div&gt;\r\n\t\r\n\t&lt;!-- Footer --&gt; \r\n\t&lt;footer data-role=\&quot;footer\&quot;&gt; \r\n\t\t&lt;ul&gt; \r\n\t\t\t&lt;li&gt; &lt;/li&gt;\r\n\t\t&lt;/ul&gt;\r\n\t&lt;/footer&gt;\r\n\t\r\n\t&lt;/body&gt;\r\n&lt;/html&gt;\r\n\r\n&quot;}">
-                </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 675.0}">
-                </property>
-            </entity>
-            <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[364.99999999999994, 525.0]">
-                </property>
-            </entity>
-            <entity name="TokenToJSON2" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[364.99999999999994, 575.0]">
-                </property>
-            </entity>
-            <entity name="HttpGet2" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8063/room">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[274.99999999999994, 675.0]">
-                </property>
-            </entity>
-            <entity name="Const3" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <doc>Create a constant sequence.</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 740.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[585.0, 600.0]">
-                </vertex>
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[354.99999999999994, 675.0]">
-                </vertex>
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="[440.0, 455.0]">
-                </vertex>
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="start" relation="relation8"/>
-            <link port="done" relation="relation10"/>
-            <link port="Test.input" relation="relation9"/>
-            <link port="HttpGet.output" relation="relation9"/>
-            <link port="HttpGet.trigger" relation="relation8"/>
-            <link port="HttpPost.input" relation="relation6"/>
-            <link port="HttpPost.output" relation="relation"/>
-            <link port="RecordAssembler.output" relation="relation6"/>
-            <link port="RecordAssembler.lightsList" relation="relation3"/>
-            <link port="RecordAssembler.sensorsList" relation="relation5"/>
-            <link port="Const.output" relation="relation2"/>
-            <link port="Const.trigger" relation="relation9"/>
-            <link port="Const2.output" relation="relation4"/>
-            <link port="Const2.trigger" relation="relation9"/>
-            <link port="Test2.input" relation="relation"/>
-            <link port="Test3.input" relation="relation7"/>
-            <link port="TokenToJSON.input" relation="relation2"/>
-            <link port="TokenToJSON.output" relation="relation3"/>
-            <link port="TokenToJSON2.input" relation="relation4"/>
-            <link port="TokenToJSON2.output" relation="relation5"/>
-            <link port="HttpGet2.output" relation="relation7"/>
-            <link port="HttpGet2.trigger" relation="relation"/>
-            <link port="Const3.output" relation="relation10"/>
-            <link port="Const3.trigger" relation="relation7"/>
-        </entity>
     </entity>
     <entity name="SmartRoomService" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 260.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/room&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
@@ -421,19 +114,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[245.0, 4.999999999999943]">
-            </property>
-        </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 49.99999999999994]">
-            </property>
-        </property>
-        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DE Director&#10;&quot;stopWhenQueueIsEmpty&quot;&#10;set to false&#10;&#10;&#10;&#10;">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 84.99999999999994]">
+            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[250.0, 25.0]">
             </property>
         </property>
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -451,7 +132,7 @@
         <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Locations of lights and sensors&#10;">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 94.99999999999994]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 115.0]">
             </property>
         </property>
         <property name="lights" class="ptolemy.data.expr.Parameter" value="{{name = &quot;L1&quot;, x = 50.0, y = 150.0}, {name = &quot;L2&quot;, x = 120.0, y = 20.0}, {name = &quot;L3&quot;, x = 300.0, y = 202.0}, {name = &quot;L4&quot;, x = 499.0, y = 199.0}, {name = &quot;L5&quot;, x = 88.0, y = 88.0}}">
@@ -510,25 +191,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 580.0]">
             </property>
         </property>
-        <property name="getRequestCount" class="ptolemy.data.expr.Parameter" value="2.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 140.0]">
-            </property>
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
@@ -543,13 +205,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 285.0]">
             </property>
         </property>
-        <port name="start" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-            </property>
-        </port>
         <port name="done" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1246,33 +901,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 780.0]">
             </property>
         </entity>
-        <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="getRequestCount">
-            </property>
-            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 200.0]">
-            </property>
-        </entity>
-        <entity name="Const6" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <doc>Create a constant sequence.</doc>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
-            </property>
-        </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="getRequestCount + 1">
             </property>
@@ -1447,10 +1075,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         </relation>
         <relation name="relation27" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -1469,7 +1093,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         </relation>
         <relation name="relation34" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="start" relation="relation28"/>
         <link port="done" relation="relation34"/>
         <link port="HttpActor.response" relation="relation8"/>
         <link port="HttpActor.getRequestURI" relation="relation26"/>
@@ -1528,9 +1151,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <link port="Const5.trigger" relation="relation21"/>
         <link port="TokenToJSON3.input" relation="relation22"/>
         <link port="TokenToJSON3.output" relation="relation23"/>
-        <link port="SetVariable4.input" relation="relation29"/>
-        <link port="Const6.output" relation="relation29"/>
-        <link port="Const6.trigger" relation="relation28"/>
         <link port="Expression.output" relation="relation30"/>
         <link port="Expression.trigger" relation="relation33"/>
         <link port="SetVariable5.input" relation="relation30"/>
@@ -1544,14 +1164,14 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <link port="MicrostepDelay5.output" relation="relation33"/>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[431.99961853027344, 181.66643524169922]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 185.0]">
         </property>
-        <port name="servicedone" class="ptolemy.actor.TypedIOPort">
+        <port name="clientdone" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="clientdone" class="ptolemy.actor.TypedIOPort">
+        <port name="servicedone" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -1567,38 +1187,508 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 205.0]">
         </property>
     </entity>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[190.0, 145.0]">
-        </vertex>
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="getRequestCount">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="SmartRoomClient" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 170.0]">
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">GET /room (also calls GET /room/markers and GET /room/map)</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 255.0]">
+            </property>
+        </property>
+        <property name="lights" class="ptolemy.data.expr.Parameter" value="{{name = &quot;L1&quot;, x = 50.0, y = 150.0}, {name = &quot;L2&quot;, x = 120.0, y = 20.0}, {name = &quot;L3&quot;, x = 300.0, y = 202.0}, {name = &quot;L4&quot;, x = 499.0, y = 199.0}, {name = &quot;L5&quot;, x = 88.0, y = 88.0}}">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 190.0]">
+            </property>
+        </property>
+        <property name="sensors" class="ptolemy.data.expr.Parameter" value="{{name = &quot;S1&quot;, value = 276.4607272626583, x = 11.0, y = 11.0}, {name = &quot;S2&quot;, value = 621.451367547874, x = 123.0, y = 224.0}, {name = &quot;S3&quot;, value = 214.2019819439534, x = 355.0, y = 401.0}}">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 210.0]">
+            </property>
+        </property>
+        <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">POST /room/markers</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[84.99999999999994, 435.0]">
+            </property>
+        </property>
+        <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">GET /room</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 580.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 10, 928, 617}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 418.46875}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ThreadedComposites (HttpGet, HttpPost): delay UNDEFINED for all">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 235.0]">
+            </property>
+        </property>
+        <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Strip any /r since these do not occur on all operating systems</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 345.0]">
+            </property>
+        </property>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="done" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 720.0]">
+            </property>
+        </port>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML&gt;\n&lt;html&gt;\n\t&lt;head&gt;\n\t\t&lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt;\n\t\t&lt;meta charset='utf-8'&gt;\n\t\t\n\t\t&lt;!--  Set width to pixel width of screen, so display isn't zoomed out\n\t\t      by default.  Mainly for mobile, but doesn't hurt on desktop. --&gt;\n\t\t&lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1\&quot;&gt;\n\t\t\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;common.css\&quot; /&gt;\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;berkeley.css\&quot; /&gt;\n\t\t\n\t\t&lt;!-- Desktop-specific CSS --&gt;\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css\&quot; /&gt;\n\t\t\n\t\t&lt;!-- Mobile-specific CSS--&gt;\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\n\t\t&lt;!--  &lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css\&quot; /&gt; --&gt;\n\t\t\n\t\t\n\t\t&lt;!--  Use Google CDN when possible, since it is very common, and \n\t\t      will probably already have downloaded to user's device.  \n\t\t      Scripts are generally cached by the device once downloaded,\n\t\t      with each CDN seen as unique, even if the script is the same.  --&gt;\n\t\t&lt;script src=\&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js\&quot;&gt; &lt;/script&gt;\n\t\t\n\t\t&lt;!-- Desktop-specific JS--&gt;\n\t\t&lt;!-- jQueryUI not available through Google CDN --&gt;\n\t\t&lt;!--  Used for toggle checkboxes --&gt;\n\t\t&lt;script src=\&quot;http://code.jquery.com/ui/1.10.2/jquery-ui.js\&quot;&gt;&lt;/script&gt;\n\t\t \n\t\t&lt;!-- Mobile-specific JS--&gt;\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\n\t\t&lt;!-- &lt;script src=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\&quot;&gt; &lt;/script&gt; --&gt; \n\t\t\n\t\t&lt;!--  Dygraphs --&gt;\n\t\t&lt;!-- &lt;script src=\&quot;http://dygraphs.com/dygraph-combined.js\&quot;&gt; &lt;/script&gt; --&gt;\n\t\t\n\t\t&lt;!--  Heat map graphic uses the d3 library --&gt; \n\t\t&lt;script src=\&quot;http://d3js.org/d3.v3.min.js\&quot;&gt; &lt;/script&gt;\n\t\t&lt;script src=\&quot;heatmap.js\&quot;&gt; &lt;/script&gt;\n\n\t\t&lt;title&gt; Smart Room &lt;/title&gt;\n\t&lt;/head&gt;\n\n\t&lt;body&gt;\n\t\n\t&lt;!-- Header --&gt;\n\t&lt;header data-role=\&quot;header\&quot;&gt; \n\t\t &lt;!-- Nav bar --&gt;\n\t\t &lt;!--  \n\t \t&lt;nav&gt;\n\t \t\t&lt;ul&gt; \n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;index.html\&quot;&gt; HEAT MAP &lt;/a&gt; &lt;/li&gt;\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;sensors.html\&quot;&gt; SENSORS &lt;/a&gt; &lt;/li&gt;\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;settings.html\&quot;&gt; SETTINGS &lt;/a&gt; &lt;/li&gt;\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;about.html\&quot;&gt; ABOUT&lt;/a&gt; &lt;/li&gt;\n\t \t\t&lt;/ul&gt;\n\t \t&lt;/nav&gt;\n\t \t--&gt;\n\t&lt;/header&gt;\t\t\n \t\n\n \t\n \t&lt;!-- Content --&gt;\n\t&lt;div&gt;\n\t\t&lt;!-- TODO:  Add flip switch for heat map? jQueryUI? --&gt;\n\t\t&lt;!--  \n\t\t&lt;label for=\&quot;flip\&quot;&gt; Heat map:&lt;/label&gt;\n\t\t&lt;select name=\&quot;flip\&quot; id=\&quot;flip\&quot; data-role=\&quot;slider\&quot;&gt;\n\t\t\t&lt;option value=\&quot;off\&quot;&gt;Off&lt;/option&gt;\n\t\t\t&lt;option value=\&quot;on\&quot;&gt;On&lt;/option&gt;\n\t\t&lt;/select&gt; \n\t\t--&gt;\n\t\t\n\t\t&lt;!-- Toggle radio group from jQueryUI --&gt;\n\t\t&lt;div id=\&quot;radio-group\&quot; class=\&quot;radio-group\&quot;&gt;\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio1\&quot; name=\&quot;radio\&quot; checked=\&quot;checked\&quot; onclick=\&quot;postMarkers()\&quot;/&gt;&lt;label for=\&quot;radio1\&quot;&gt;View Heat Map&lt;/label&gt;\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio2\&quot; name=\&quot;radio\&quot; onclick=\&quot;clearHeatMap()\&quot;/&gt;&lt;label for=\&quot;radio2\&quot;&gt;Move Markers&lt;/label&gt;\n\t\t&lt;/div&gt;\n\t\t\n\t\t&lt;div id=\&quot;room-map\&quot;&gt; \n\t\t\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n\t\n\t&lt;!-- Footer --&gt; \n\t&lt;footer data-role=\&quot;footer\&quot;&gt; \n\t\t&lt;ul&gt; \n\t\t\t&lt;li&gt; &lt;/li&gt;\n\t\t&lt;/ul&gt;\n\t&lt;/footer&gt;\n\t\n\t&lt;/body&gt;\n&lt;/html&gt;\n\n&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 415.0]">
+            </property>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 480.0]">
+            </property>
+            <port name="lightsList" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="sensorsList" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="lights">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[129.99999999999994, 495.0]">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="sensors">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[134.99999999999994, 530.0]">
+            </property>
+        </entity>
+        <entity name="Test2" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[\&quot;OK\&quot;]\n&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 620.0]">
+            </property>
+        </entity>
+        <entity name="Test3" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML&gt;\n&lt;html&gt;\n\t&lt;head&gt;\n\t\t&lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt;\n\t\t&lt;meta charset='utf-8'&gt;\n\t\t\n\t\t&lt;!--  Set width to pixel width of screen, so display isn't zoomed out\n\t\t      by default.  Mainly for mobile, but doesn't hurt on desktop. --&gt;\n\t\t&lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1\&quot;&gt;\n\t\t\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;common.css\&quot; /&gt;\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;berkeley.css\&quot; /&gt;\n\t\t\n\t\t&lt;!-- Desktop-specific CSS --&gt;\n\t\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css\&quot; /&gt;\n\t\t\n\t\t&lt;!-- Mobile-specific CSS--&gt;\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\n\t\t&lt;!--  &lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css\&quot; /&gt; --&gt;\n\t\t\n\t\t\n\t\t&lt;!--  Use Google CDN when possible, since it is very common, and \n\t\t      will probably already have downloaded to user's device.  \n\t\t      Scripts are generally cached by the device once downloaded,\n\t\t      with each CDN seen as unique, even if the script is the same.  --&gt;\n\t\t&lt;script src=\&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js\&quot;&gt; &lt;/script&gt;\n\t\t\n\t\t&lt;!-- Desktop-specific JS--&gt;\n\t\t&lt;!-- jQueryUI not available through Google CDN --&gt;\n\t\t&lt;!--  Used for toggle checkboxes --&gt;\n\t\t&lt;script src=\&quot;http://code.jquery.com/ui/1.10.2/jquery-ui.js\&quot;&gt;&lt;/script&gt;\n\t\t \n\t\t&lt;!-- Mobile-specific JS--&gt;\n\t\t&lt;!-- jQueryMobile not available through Google CDN --&gt;\n\t\t&lt;!-- &lt;script src=\&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\&quot;&gt; &lt;/script&gt; --&gt; \n\t\t\n\t\t&lt;!--  Dygraphs --&gt;\n\t\t&lt;!-- &lt;script src=\&quot;http://dygraphs.com/dygraph-combined.js\&quot;&gt; &lt;/script&gt; --&gt;\n\t\t\n\t\t&lt;!--  Heat map graphic uses the d3 library --&gt; \n\t\t&lt;script src=\&quot;http://d3js.org/d3.v3.min.js\&quot;&gt; &lt;/script&gt;\n\t\t&lt;script src=\&quot;heatmap.js\&quot;&gt; &lt;/script&gt;\n\n\t\t&lt;title&gt; Smart Room &lt;/title&gt;\n\t&lt;/head&gt;\n\n\t&lt;body&gt;\n\t\n\t&lt;!-- Header --&gt;\n\t&lt;header data-role=\&quot;header\&quot;&gt; \n\t\t &lt;!-- Nav bar --&gt;\n\t\t &lt;!--  \n\t \t&lt;nav&gt;\n\t \t\t&lt;ul&gt; \n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;index.html\&quot;&gt; HEAT MAP &lt;/a&gt; &lt;/li&gt;\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;sensors.html\&quot;&gt; SENSORS &lt;/a&gt; &lt;/li&gt;\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;settings.html\&quot;&gt; SETTINGS &lt;/a&gt; &lt;/li&gt;\n\t \t\t\t&lt;li&gt; &lt;a href=\&quot;about.html\&quot;&gt; ABOUT&lt;/a&gt; &lt;/li&gt;\n\t \t\t&lt;/ul&gt;\n\t \t&lt;/nav&gt;\n\t \t--&gt;\n\t&lt;/header&gt;\t\t\n \t\n\n \t\n \t&lt;!-- Content --&gt;\n\t&lt;div&gt;\n\t\t&lt;!-- TODO:  Add flip switch for heat map? jQueryUI? --&gt;\n\t\t&lt;!--  \n\t\t&lt;label for=\&quot;flip\&quot;&gt; Heat map:&lt;/label&gt;\n\t\t&lt;select name=\&quot;flip\&quot; id=\&quot;flip\&quot; data-role=\&quot;slider\&quot;&gt;\n\t\t\t&lt;option value=\&quot;off\&quot;&gt;Off&lt;/option&gt;\n\t\t\t&lt;option value=\&quot;on\&quot;&gt;On&lt;/option&gt;\n\t\t&lt;/select&gt; \n\t\t--&gt;\n\t\t\n\t\t&lt;!-- Toggle radio group from jQueryUI --&gt;\n\t\t&lt;div id=\&quot;radio-group\&quot; class=\&quot;radio-group\&quot;&gt;\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio1\&quot; name=\&quot;radio\&quot; checked=\&quot;checked\&quot; onclick=\&quot;postMarkers()\&quot;/&gt;&lt;label for=\&quot;radio1\&quot;&gt;View Heat Map&lt;/label&gt;\n\t\t\t&lt;input type=\&quot;radio\&quot; id=\&quot;radio2\&quot; name=\&quot;radio\&quot; onclick=\&quot;clearHeatMap()\&quot;/&gt;&lt;label for=\&quot;radio2\&quot;&gt;Move Markers&lt;/label&gt;\n\t\t&lt;/div&gt;\n\t\t\n\t\t&lt;div id=\&quot;room-map\&quot;&gt; \n\t\t\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n\t\n\t&lt;!-- Footer --&gt; \n\t&lt;footer data-role=\&quot;footer\&quot;&gt; \n\t\t&lt;ul&gt; \n\t\t\t&lt;li&gt; &lt;/li&gt;\n\t\t&lt;/ul&gt;\n\t&lt;/footer&gt;\n\t\n\t&lt;/body&gt;\n&lt;/html&gt;\n\n&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 695.0]">
+            </property>
+        </entity>
+        <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[219.99999999999994, 495.0]">
+            </property>
+        </entity>
+        <entity name="TokenToJSON2" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[219.99999999999994, 545.0]">
+            </property>
+        </entity>
+        <entity name="Const3" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 720.0]">
+            </property>
+        </entity>
+        <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+            <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
+            </property>
+            <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+                <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+            </property>
+            <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 350.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8063/room">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 370}">
+                </property>
+            </entity>
+        </entity>
+        <entity name="ThreadedComposite2" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+            <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
+            </property>
+            <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+                <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+            </property>
+            <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 500.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="output"/>
+            </port>
+            <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8063/room/markers">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{455, 420}">
+                </property>
+            </entity>
+        </entity>
+        <entity name="ThreadedComposite3" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+            <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
+            </property>
+            <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+                <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+            </property>
+            <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 655.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8063/room">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 615}">
+                </property>
+            </entity>
+        </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+            </property>
+            <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE HTML&gt;&#13;&#10;&lt;html&gt;&#13;&#10;	&lt;head&gt;&#13;&#10;		&lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt;&#13;&#10;		&lt;meta charset='utf-8'&gt;&#13;&#10;		&#13;&#10;		&lt;!--  Set width to pixel width of screen, so display isn't zoomed out&#13;&#10;		      by default.  Mainly for mobile, but doesn't hurt on desktop. --&gt;&#13;&#10;		&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&#13;&#10;		&#13;&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;common.css&quot; /&gt;&#13;&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;berkeley.css&quot; /&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Desktop-specific CSS --&gt;&#13;&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css&quot; /&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Mobile-specific CSS--&gt;&#13;&#10;		&lt;!-- jQueryMobile not available through Google CDN --&gt;&#13;&#10;		&lt;!--  &lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css&quot; /&gt; --&gt;&#13;&#10;		&#13;&#10;		&#13;&#10;		&lt;!--  Use Google CDN when possible, since it is very common, and &#13;&#10;		      will probably already have downloaded to user's device.  &#13;&#10;		      Scripts are generally cached by the device once downloaded,&#13;&#10;		      with each CDN seen as unique, even if the script is the same.  --&gt;&#13;&#10;		&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt; &lt;/script&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Desktop-specific JS--&gt;&#13;&#10;		&lt;!-- jQueryUI not available through Google CDN --&gt;&#13;&#10;		&lt;!--  Used for toggle checkboxes --&gt;&#13;&#10;		&lt;script src=&quot;http://code.jquery.com/ui/1.10.2/jquery-ui.js&quot;&gt;&lt;/script&gt;&#13;&#10;		 &#13;&#10;		&lt;!-- Mobile-specific JS--&gt;&#13;&#10;		&lt;!-- jQueryMobile not available through Google CDN --&gt;&#13;&#10;		&lt;!-- &lt;script src=&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js&quot;&gt; &lt;/script&gt; --&gt; &#13;&#10;		&#13;&#10;		&lt;!--  Dygraphs --&gt;&#13;&#10;		&lt;!-- &lt;script src=&quot;http://dygraphs.com/dygraph-combined.js&quot;&gt; &lt;/script&gt; --&gt;&#13;&#10;		&#13;&#10;		&lt;!--  Heat map graphic uses the d3 library --&gt; &#13;&#10;		&lt;script src=&quot;http://d3js.org/d3.v3.min.js&quot;&gt; &lt;/script&gt;&#13;&#10;		&lt;script src=&quot;heatmap.js&quot;&gt; &lt;/script&gt;&#13;&#10;&#13;&#10;		&lt;title&gt; Smart Room &lt;/title&gt;&#13;&#10;	&lt;/head&gt;&#13;&#10;&#13;&#10;	&lt;body&gt;&#13;&#10;	&#13;&#10;	&lt;!-- Header --&gt;&#13;&#10;	&lt;header data-role=&quot;header&quot;&gt; &#13;&#10;		 &lt;!-- Nav bar --&gt;&#13;&#10;		 &lt;!--  &#13;&#10;	 	&lt;nav&gt;&#13;&#10;	 		&lt;ul&gt; &#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;index.html&quot;&gt; HEAT MAP &lt;/a&gt; &lt;/li&gt;&#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;sensors.html&quot;&gt; SENSORS &lt;/a&gt; &lt;/li&gt;&#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;settings.html&quot;&gt; SETTINGS &lt;/a&gt; &lt;/li&gt;&#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;about.html&quot;&gt; ABOUT&lt;/a&gt; &lt;/li&gt;&#13;&#10;	 		&lt;/ul&gt;&#13;&#10;	 	&lt;/nav&gt;&#13;&#10;	 	--&gt;&#13;&#10;	&lt;/header&gt;		&#13;&#10; 	&#13;&#10;&#13;&#10; 	&#13;&#10; 	&lt;!-- Content --&gt;&#13;&#10;	&lt;div&gt;&#13;&#10;		&lt;!-- TODO:  Add flip switch for heat map? jQueryUI? --&gt;&#13;&#10;		&lt;!--  &#13;&#10;		&lt;label for=&quot;flip&quot;&gt; Heat map:&lt;/label&gt;&#13;&#10;		&lt;select name=&quot;flip&quot; id=&quot;flip&quot; data-role=&quot;slider&quot;&gt;&#13;&#10;			&lt;option value=&quot;off&quot;&gt;Off&lt;/option&gt;&#13;&#10;			&lt;option value=&quot;on&quot;&gt;On&lt;/option&gt;&#13;&#10;		&lt;/select&gt; &#13;&#10;		--&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Toggle radio group from jQueryUI --&gt;&#13;&#10;		&lt;div id=&quot;radio-group&quot; class=&quot;radio-group&quot;&gt;&#13;&#10;			&lt;input type=&quot;radio&quot; id=&quot;radio1&quot; name=&quot;radio&quot; checked=&quot;checked&quot; onclick=&quot;postMarkers()&quot;/&gt;&lt;label for=&quot;radio1&quot;&gt;View Heat Map&lt;/label&gt;&#13;&#10;			&lt;input type=&quot;radio&quot; id=&quot;radio2&quot; name=&quot;radio&quot; onclick=&quot;clearHeatMap()&quot;/&gt;&lt;label for=&quot;radio2&quot;&gt;Move Markers&lt;/label&gt;&#13;&#10;		&lt;/div&gt;&#13;&#10;		&#13;&#10;		&lt;div id=&quot;room-map&quot;&gt; &#13;&#10;		&#13;&#10;		&lt;/div&gt;&#13;&#10;	&lt;/div&gt;&#13;&#10;	&#13;&#10;	&lt;!-- Footer --&gt; &#13;&#10;	&lt;footer data-role=&quot;footer&quot;&gt; &#13;&#10;		&lt;ul&gt; &#13;&#10;			&lt;li&gt; &lt;/li&gt;&#13;&#10;		&lt;/ul&gt;&#13;&#10;	&lt;/footer&gt;&#13;&#10;	&#13;&#10;	&lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;&#13;&#10;">
+            </property>
+            <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 415.0}">
+            </property>
+        </entity>
+        <entity name="StringReplace3" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+            </property>
+            <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE HTML&gt;&#13;&#10;&lt;html&gt;&#13;&#10;	&lt;head&gt;&#13;&#10;		&lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt;&#13;&#10;		&lt;meta charset='utf-8'&gt;&#13;&#10;		&#13;&#10;		&lt;!--  Set width to pixel width of screen, so display isn't zoomed out&#13;&#10;		      by default.  Mainly for mobile, but doesn't hurt on desktop. --&gt;&#13;&#10;		&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&#13;&#10;		&#13;&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;common.css&quot; /&gt;&#13;&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;berkeley.css&quot; /&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Desktop-specific CSS --&gt;&#13;&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css&quot; /&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Mobile-specific CSS--&gt;&#13;&#10;		&lt;!-- jQueryMobile not available through Google CDN --&gt;&#13;&#10;		&lt;!--  &lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css&quot; /&gt; --&gt;&#13;&#10;		&#13;&#10;		&#13;&#10;		&lt;!--  Use Google CDN when possible, since it is very common, and &#13;&#10;		      will probably already have downloaded to user's device.  &#13;&#10;		      Scripts are generally cached by the device once downloaded,&#13;&#10;		      with each CDN seen as unique, even if the script is the same.  --&gt;&#13;&#10;		&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt; &lt;/script&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Desktop-specific JS--&gt;&#13;&#10;		&lt;!-- jQueryUI not available through Google CDN --&gt;&#13;&#10;		&lt;!--  Used for toggle checkboxes --&gt;&#13;&#10;		&lt;script src=&quot;http://code.jquery.com/ui/1.10.2/jquery-ui.js&quot;&gt;&lt;/script&gt;&#13;&#10;		 &#13;&#10;		&lt;!-- Mobile-specific JS--&gt;&#13;&#10;		&lt;!-- jQueryMobile not available through Google CDN --&gt;&#13;&#10;		&lt;!-- &lt;script src=&quot;http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js&quot;&gt; &lt;/script&gt; --&gt; &#13;&#10;		&#13;&#10;		&lt;!--  Dygraphs --&gt;&#13;&#10;		&lt;!-- &lt;script src=&quot;http://dygraphs.com/dygraph-combined.js&quot;&gt; &lt;/script&gt; --&gt;&#13;&#10;		&#13;&#10;		&lt;!--  Heat map graphic uses the d3 library --&gt; &#13;&#10;		&lt;script src=&quot;http://d3js.org/d3.v3.min.js&quot;&gt; &lt;/script&gt;&#13;&#10;		&lt;script src=&quot;heatmap.js&quot;&gt; &lt;/script&gt;&#13;&#10;&#13;&#10;		&lt;title&gt; Smart Room &lt;/title&gt;&#13;&#10;	&lt;/head&gt;&#13;&#10;&#13;&#10;	&lt;body&gt;&#13;&#10;	&#13;&#10;	&lt;!-- Header --&gt;&#13;&#10;	&lt;header data-role=&quot;header&quot;&gt; &#13;&#10;		 &lt;!-- Nav bar --&gt;&#13;&#10;		 &lt;!--  &#13;&#10;	 	&lt;nav&gt;&#13;&#10;	 		&lt;ul&gt; &#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;index.html&quot;&gt; HEAT MAP &lt;/a&gt; &lt;/li&gt;&#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;sensors.html&quot;&gt; SENSORS &lt;/a&gt; &lt;/li&gt;&#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;settings.html&quot;&gt; SETTINGS &lt;/a&gt; &lt;/li&gt;&#13;&#10;	 			&lt;li&gt; &lt;a href=&quot;about.html&quot;&gt; ABOUT&lt;/a&gt; &lt;/li&gt;&#13;&#10;	 		&lt;/ul&gt;&#13;&#10;	 	&lt;/nav&gt;&#13;&#10;	 	--&gt;&#13;&#10;	&lt;/header&gt;		&#13;&#10; 	&#13;&#10;&#13;&#10; 	&#13;&#10; 	&lt;!-- Content --&gt;&#13;&#10;	&lt;div&gt;&#13;&#10;		&lt;!-- TODO:  Add flip switch for heat map? jQueryUI? --&gt;&#13;&#10;		&lt;!--  &#13;&#10;		&lt;label for=&quot;flip&quot;&gt; Heat map:&lt;/label&gt;&#13;&#10;		&lt;select name=&quot;flip&quot; id=&quot;flip&quot; data-role=&quot;slider&quot;&gt;&#13;&#10;			&lt;option value=&quot;off&quot;&gt;Off&lt;/option&gt;&#13;&#10;			&lt;option value=&quot;on&quot;&gt;On&lt;/option&gt;&#13;&#10;		&lt;/select&gt; &#13;&#10;		--&gt;&#13;&#10;		&#13;&#10;		&lt;!-- Toggle radio group from jQueryUI --&gt;&#13;&#10;		&lt;div id=&quot;radio-group&quot; class=&quot;radio-group&quot;&gt;&#13;&#10;			&lt;input type=&quot;radio&quot; id=&quot;radio1&quot; name=&quot;radio&quot; checked=&quot;checked&quot; onclick=&quot;postMarkers()&quot;/&gt;&lt;label for=&quot;radio1&quot;&gt;View Heat Map&lt;/label&gt;&#13;&#10;			&lt;input type=&quot;radio&quot; id=&quot;radio2&quot; name=&quot;radio&quot; onclick=&quot;clearHeatMap()&quot;/&gt;&lt;label for=&quot;radio2&quot;&gt;Move Markers&lt;/label&gt;&#13;&#10;		&lt;/div&gt;&#13;&#10;		&#13;&#10;		&lt;div id=&quot;room-map&quot;&gt; &#13;&#10;		&#13;&#10;		&lt;/div&gt;&#13;&#10;	&lt;/div&gt;&#13;&#10;	&#13;&#10;	&lt;!-- Footer --&gt; &#13;&#10;	&lt;footer data-role=&quot;footer&quot;&gt; &#13;&#10;		&lt;ul&gt; &#13;&#10;			&lt;li&gt; &lt;/li&gt;&#13;&#10;		&lt;/ul&gt;&#13;&#10;	&lt;/footer&gt;&#13;&#10;	&#13;&#10;	&lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;&#13;&#10;">
+            </property>
+            <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 665.0]">
+            </property>
+        </entity>
+        <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+            </property>
+            <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="[&quot;OK&quot;]&#10;">
+            </property>
+            <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 620.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[440.0, 570.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[219.99999999999994, 655.0]">
+            </vertex>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[295.0, 425.0]">
+            </vertex>
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="start" relation="relation9"/>
+        <link port="done" relation="relation10"/>
+        <link port="Test.input" relation="relation11"/>
+        <link port="RecordAssembler.output" relation="relation6"/>
+        <link port="RecordAssembler.lightsList" relation="relation3"/>
+        <link port="RecordAssembler.sensorsList" relation="relation5"/>
+        <link port="Const.output" relation="relation2"/>
+        <link port="Const.trigger" relation="relation8"/>
+        <link port="Const2.output" relation="relation4"/>
+        <link port="Const2.trigger" relation="relation8"/>
+        <link port="Test2.input" relation="relation12"/>
+        <link port="Test3.input" relation="relation14"/>
+        <link port="TokenToJSON.input" relation="relation2"/>
+        <link port="TokenToJSON.output" relation="relation3"/>
+        <link port="TokenToJSON2.input" relation="relation4"/>
+        <link port="TokenToJSON2.output" relation="relation5"/>
+        <link port="Const3.output" relation="relation10"/>
+        <link port="Const3.trigger" relation="relation7"/>
+        <link port="ThreadedComposite.output" relation="relation8"/>
+        <link port="ThreadedComposite.trigger" relation="relation9"/>
+        <link port="ThreadedComposite2.input" relation="relation6"/>
+        <link port="ThreadedComposite2.output" relation="relation"/>
+        <link port="ThreadedComposite3.output" relation="relation7"/>
+        <link port="ThreadedComposite3.trigger" relation="relation"/>
+        <link port="StringReplace.stringToEdit" relation="relation8"/>
+        <link port="StringReplace.output" relation="relation11"/>
+        <link port="StringReplace3.stringToEdit" relation="relation7"/>
+        <link port="StringReplace3.output" relation="relation14"/>
+        <link port="StringReplace2.stringToEdit" relation="relation"/>
+        <link port="StringReplace2.output" relation="relation12"/>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 170.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SingleEvent.output" relation="relation8"/>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[60.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation10"/>
     <link port="Stop.input" relation="relation3"/>
     <link port="MicrostepDelay10.input" relation="relation5"/>
     <link port="MicrostepDelay10.output" relation="relation2"/>
-    <link port="Discrete TimeDelay.input" relation="relation8"/>
-    <link port="Discrete TimeDelay.output" relation="relation18"/>
-    <link port="SmartRoomClient.start" relation="relation18"/>
-    <link port="SmartRoomClient.done" relation="relation"/>
-    <link port="SmartRoomService.start" relation="relation18"/>
+    <link port="Discrete TimeDelay.input" relation="relation7"/>
+    <link port="Discrete TimeDelay.output" relation="relation"/>
     <link port="SmartRoomService.done" relation="relation4"/>
     <link port="RecordAssembler.output" relation="relation5"/>
+    <link port="RecordAssembler.clientdone" relation="relation9"/>
     <link port="RecordAssembler.servicedone" relation="relation4"/>
-    <link port="RecordAssembler.clientdone" relation="relation"/>
     <link port="Const.output" relation="relation3"/>
     <link port="Const.trigger" relation="relation2"/>
+    <link port="SetVariable.input" relation="relation6"/>
+    <link port="Const2.output" relation="relation6"/>
+    <link port="Const2.trigger" relation="relation10"/>
+    <link port="SmartRoomClient.start" relation="relation"/>
+    <link port="SmartRoomClient.done" relation="relation9"/>
+    <link port="MicrostepDelay.input" relation="relation10"/>
+    <link port="MicrostepDelay.output" relation="relation7"/>
 </entity>
