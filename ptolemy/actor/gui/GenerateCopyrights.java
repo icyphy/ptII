@@ -26,11 +26,16 @@
  */
 package ptolemy.actor.gui;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 
 import ptolemy.data.ArrayToken;
@@ -39,6 +44,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// GenerateCopyrights
@@ -97,7 +103,7 @@ public class GenerateCopyrights {
         // A Map of copyrights, where the key is a URL naming
         // the copyright and the value is a List of entities
         // that use that as a copyright.
-        TreeMap<String, Set<String>> copyrightsMap = new TreeMap<String, Set<String>>();
+        HashMap<String, Set<String>> copyrightsMap = new HashMap<String,Set<String>>();
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
@@ -106,7 +112,6 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "com.sun.jna.Pointer",
                 "lib/jna-license.htm");
-
         _addIfPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
                 "diva/gui/ExtensionFileFilter-license.htm");
 
@@ -308,10 +313,33 @@ public class GenerateCopyrights {
             // This application has no _applicationCopyrights
         }
 
+
+        // We also create a file that contains all the copyrights.
+        StringBuffer masterCopyrightBuffer = new StringBuffer();
+
+        StringBuffer masterCopyrightTable = new StringBuffer();
+
+        // Read in the header
+        String copyrightStartFileName = "$CLASSPATH/ptolemy/actor/gui/masterCopyrightStart.htm.in";
+        try { 
+            // Probably wrong to read it as bytes and convert to a
+            // string, but we have a convenient method, so we use it.
+            masterCopyrightBuffer.append(new String(FileUtilities.binaryReadURLToByteArray(FileUtilities.nameToURL(copyrightStartFileName, null, null))));
+        } catch (IOException ex) {
+            // Ignore this, we want to print the copyrights
+            System.out.println("Could not read " + copyrightStartFileName + ": " + ex);
+        }
+
         StringBuffer htmlBuffer = new StringBuffer(
                 generatePrimaryCopyrightHTML(configuration));
-        Iterator copyrights = copyrightsMap.entrySet().iterator();
 
+        // Sort by the copyright file name, which should start with the package name.
+        FileNameComparator fileNameComparator =  new FileNameComparator();
+        TreeMap<String, Set<String>> sortedCopyrightsMap = new TreeMap<String, Set<String>>(fileNameComparator);
+
+        sortedCopyrightsMap.putAll(copyrightsMap);
+
+        Iterator copyrights = sortedCopyrightsMap.entrySet().iterator();
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
             htmlBuffer
@@ -358,13 +386,111 @@ public class GenerateCopyrights {
                         + "</td>\n    <td> <a href=\"" + foundCopyright
                         + "\"><code>" + _canonicalizeURLToPTII(foundCopyright)
                         + "</code></a></td>\n</tr>\n");
+                try { 
+                    String copyright = new String(FileUtilities.binaryReadURLToByteArray(new URL(foundCopyright)));
+
+                    // Append the text between the body tags.
+
+                    // Look for <body> or </head>
+                    int startIndex = 0;
+                    if ((startIndex = copyright.indexOf("<body>")) == -1) {
+                        if ((startIndex = copyright.indexOf("</head>")) != -1) {
+                            startIndex += "</head>".length();
+                        } else {
+                            System.out.println("Could not find body or head in " + foundCopyright
+                                    + " " + copyright.substring(0,200));
+                            startIndex = 0;
+                        }
+                    } else {
+                        startIndex += "<body>".length();
+                    }
+
+                    // Look for </body> or </html>
+                    int endIndex = 0;
+                    if ((endIndex = copyright.indexOf("</body>")) == -1) {
+                        if ((endIndex = copyright.indexOf("</html>")) == -1) {
+                            endIndex = copyright.length();
+                        }
+                    }
+
+                    
+                    // Get read of the html head and close body.
+                    copyright = copyright.substring(startIndex, endIndex);
+
+                    // If there is a <h1> tag, make sure that it has <a name=...
+                    int hIndex = 0;
+                    if ( (hIndex = copyright.indexOf("<h1>")) == -1) {
+                        if ( (hIndex = copyright.indexOf("<h2>")) == -1) {
+                            System.out.println("Warning, no h1 or h2 in " + foundCopyright);
+                        } else {
+                        }
+                    }
+                    if (hIndex != -1) {
+                        int hEndIndex = copyright.indexOf("</h");
+                        if (hEndIndex < hIndex) {
+                            throw new RuntimeException("Generating copyrights: "
+                                    + "hEndIndex " + hEndIndex + " < " + hIndex
+                                    + " " + foundCopyright
+                                    + " copyright:\n"
+                                    + copyright);
+                        }
+                        String header = copyright.substring(hIndex, hEndIndex);
+                        if (header.indexOf("<a name") == -1) {
+                            // Insert a name tag that is the name of the package.
+
+                            // If the copyright file name contains a -,then the name of the package
+                            // is what is before the -.  If the name does not have a -, then
+                            // the package name is the directory.
+                            String packageName = "unknownPackage";
+                            File copyrightFile = new File(copyrightURL);
+                            String copyrightFileName = copyrightFile.getName();
+                            int hyphenIndex = 0;
+                            if ((hyphenIndex = copyrightFileName.indexOf("-")) > 0) {
+                                packageName = copyrightFileName.substring(0, hyphenIndex);
+                            } else {
+                                packageName = copyrightFile.getParent();
+                            }
+                            String newHeader = "<a name=\"" + packageName + "\">" + header;
+                            System.out.println(header + "---" + newHeader);
+                            copyright = copyright.replace(header, newHeader);
+                        }
+
+                        int nameIndex = 0;
+                        if ((nameIndex = header.indexOf("<a name")) != -1) {
+                            int labelIndex =  0;
+                            if ((labelIndex = header.indexOf("/>")) != -1) {
+                                String target = header.substring(nameIndex + "<a name=".length(), labelIndex);
+                                String label = header.substring(labelIndex);
+
+                                masterCopyrightTable.append("<tr>\n <td>\n  "
+                                        + "<a href=\"#" + target + "\">" + label + "</a>\n </td>\n");
+                                masterCopyrightTable.append("</tr>\n");
+                            }
+                        }
+                    }
+                    masterCopyrightBuffer.append(copyright);
+                } catch (IOException ex) {
+                    // Ignore this, we want to print the copyrights no matter what.
+                    System.out.println("Could not read " + foundCopyright + ": " + ex);
+                }
             }
 
             htmlBuffer.append("</table>\n</p>");
         }
 
+        try { 
+            URL masterCopyrightURL = HTMLAbout._temporaryHTMLFile("mastercopyright", ".htm",
+                masterCopyrightBuffer.toString());
+            htmlBuffer.append("<p>For the complete copyrights in one file\n"
+                    + "See the <a href=\"" + masterCopyrightURL + "\">master copyright</a>.</p>\n");
+        } catch (IOException ex) {
+            // Ignore this, we want to print the copyrights.
+            System.out.println("Could not write a temporary file with the complete copyrights: " + ex);
+        }
+
         htmlBuffer.append("<p>Other information <a href=\"about:\">about</a>\n"
                 + "this configuration.\n" + "</body>\n</html>");
+
         return htmlBuffer.toString();
     }
 
@@ -584,6 +710,22 @@ public class GenerateCopyrights {
             // Ignore and use the default applicationName
         }
         return applicationName;
+    }
+
+    /** Compare two filenames.
+     */   
+    static class FileNameComparator implements Comparator<String> {
+
+        /** Compare to Strings that should represent files by the name of the file. 
+         *  @param a The first file name.
+         *  @param b The second file name.
+         *  @return -1, 0 or 1
+         */
+        public int compare(String a, String b) {
+            File fileA = new File(a);
+            File fileB = new File(b);
+            return fileA.getName().compareTo(fileB.getName());
+        }
     }
 
 }
