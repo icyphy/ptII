@@ -135,7 +135,9 @@ public class QSSIntegrator extends TypedAtomicActor {
 		if (currentTime.equals(nextOutputTime) || nextOutputTime == null) {
 			// The fire method sent an output.
 			// Update the state to match that output value.
-			x = nextOutputValue;
+		    if (nextOutputTime != null) {
+		        x = nextOutputValue;
+		        }
 			previousOutputValue = nextOutputValue;
 
 			// Calculate the time of the next output, which is the time
@@ -158,6 +160,8 @@ public class QSSIntegrator extends TypedAtomicActor {
 				// get from the current state to previous output value plus or minus the quantum
 				// at the updated slope.
 				nextOutputTime = _nextCrossingTime(slope, x, previousOutputValue, quantumValue, currentTime);
+				// Reset the inputReceived flag
+				inputReceived = false;
 			}
 		}
 		// Calculate the next output value
